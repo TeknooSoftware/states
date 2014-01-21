@@ -1,0 +1,19 @@
+{
+    "name": "uni-alteri/states",
+    "version": "0.1.0",
+    "type": "library",
+    "description": "Uni Alteri is a lib to allow developpers to write states for their business object with PHP 5.5+",
+    "keywords": ["states"],
+    "homepage": "http://projects.agence.net.ua/states/",
+    "license": "BSD",
+    "authors": [
+        {
+            "name": "Richard Déloge",
+            "email": "r.deloge@uni-alteri.com"
+        }
+    ],
+    "require":{
+        "php": ">=5.5.0",
+        "pimple/pimple": "2.0.x-dev"
+    }
+}
