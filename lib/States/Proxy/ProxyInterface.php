@@ -51,30 +51,52 @@ interface ProxyInterface extends
      * Register dynamically a new state for this object
      * @param string $stateName
      * @param \UniAlteri\States\States\StateInterface $stateObject
+     * @return $this
      */
     public function registerState($stateName, \UniAlteri\States\States\StateInterface $stateObject);
 
     /**
      * Remove dynamically a state from this object
      * @param string $stateName
+     * @return $this
      */
     public function unregisterState($stateName);
 
     /**
-     * Return the name of the current state of this object
-     * @return string
-     */
-    public function getActiveState();
-
-    /**
-     * Return the name of the current state of this object
+     * Disable all actives states and load the required states
      * @param string $stateName
-     * @return mixed
+     * @return $this
      */
     public function switchState($stateName);
 
     /**
+     * Enable a loaded states
+     * @param $stateName
+     * @return $this
+     */
+    public function enableState($stateName);
+
+    /**
+     * Disable an active state (not available for calling, but already loaded)
+     * @param string $stateName
+     * @return $this
+     */
+    public function disableState($stateName);
+
+    /**
+     * Disable all actives states
+     * @return $this
+     */
+    public function disableAllStates();
+
+    /**
      * List all available states for this object. Include added dynamically states, exclude removed dynamically states
+     * @return string[]
+     */
+    public function listAvailableStates();
+
+    /**
+     * List all enable states for this object.
      * @return string[]
      */
     public function listActivesStates();

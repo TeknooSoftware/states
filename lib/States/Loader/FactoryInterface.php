@@ -29,8 +29,16 @@ interface FactoryInterface{
     const diFactoryName = 'FactoryLoader';
 
     const StatesPath = 'States';
-    const ProxyName = 'Proxy.php';
-    const FactoryName = 'Factory.php';
+    const ProxyFileName = 'Proxy.php';
+    const FactoryFileName = 'Factory.php';
+    const ProxySuffixClassName = 'Proxy';
+    const FactorySuffixClassName = 'Factory';
+
+    /**
+     * Initialize factory
+     * @param string|null $path
+     */
+    public function __construct($path=null);
 
     /**
      * Configure the path of loaded class

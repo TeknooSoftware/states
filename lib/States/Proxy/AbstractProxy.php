@@ -40,9 +40,9 @@ class AbstractProxy implements ProxyInterface{
     protected $_uniqueId = null;
 
     /**
-     * @var \UniAlteri\States\States\StateInterface
+     * @var \UniAlteri\States\States\StateInterface[]
      */
-    protected $_activeState = null;
+    protected $_activesStates = null;
 
     /**
      * @var \UniAlteri\States\States\StateInterface[]
@@ -54,13 +54,36 @@ class AbstractProxy implements ProxyInterface{
      * @param array $arguments
      */
     protected function _callThroughState($methodName, array $arguments){
-        $activeState = $this->getActiveState();
+        $methodsWithStatesArray = explode('Of', $methodName);
+        if(0 === count($methodsWithStatesArray)){
+            //No specific state required, browse all enable state to find the methdo
+            foreach($this->_activesStates as $activeStateObject){
+                if(true === $activeStateObject->testMethod($methodName)){
+                    //Method found, call it
+                    return call_user_func_array($activeStateObject->getClosure($methodName, $this), $arguments);
+                }
+            }
 
-        if(false === $activeState->testMethod($methodName)){
-            throw new \UniAlteri\States\Exception\MethodNotFound('Methode "'.$methodName.'" is not available for this state');
+            throw new \UniAlteri\States\Exception\MethodNotFound('Method "'.$methodName.'" is not available with actives states');
         }
+        else{
+            //A specific state is required for this call
+            $statesName = array_pop($methodsWithStatesArray);
+            if(!isset($this->_activesStates[$statesName])){
+                throw new \UniAlteri\States\Exception\UnavailableState('Error, the state "'.$statesName.'" is not currently available');
+            }
 
-        return call_user_func_array($activeState->getClosure($methodName, $this), $arguments);
+            //Get the state name
+            $methodName = implode('Of', $methodsWithStatesArray);
+
+            $activeStateObject = $this->_activesStates[$statesName];
+            if(true === $activeStateObject->testMethod($methodName)){
+                //Method found, call it
+                return call_user_func_array($activeStateObject->getClosure($methodName, $this), $arguments);
+            }
+
+            throw new \UniAlteri\States\Exception\MethodNotFound('Method "'.$methodName.'" is not available for the state "'.$statesName.'"');
+        }
     }
 
     /**
@@ -70,6 +93,7 @@ class AbstractProxy implements ProxyInterface{
     public function __construct($params = null){
         //Initialize internal vars
         $this->_states = new \ArrayObject();
+        $this->_activesStates = new \ArrayObject();
     }
 
     /**
@@ -106,13 +130,17 @@ class AbstractProxy implements ProxyInterface{
         foreach($this->_states as $state){
             //Clone each state object
             $clonedState = clone $state;
-            //Update active state to cloned state
-            if($state === $this->_activeState){
-                $this->_activeState = $clonedState;
-            }
             //Update new stack
             $clonedStatesArray[] = $clonedState;
         }
+
+        $activesStates = array_keys($this->_activesStates->getArrayCopy());
+        $this->_activesStates = $clonedStatesArray;
+        foreach($activesStates as $stateName){
+            $this->enableState($stateName);
+        }
+
+        return $this;
     }
 
     /***********************
@@ -126,6 +154,8 @@ class AbstractProxy implements ProxyInterface{
      */
     public function registerState($stateName, \UniAlteri\States\States\StateInterface $stateObject){
         $this->_states[$stateName] = $stateObject;
+
+        return $this;
     }
 
     /**
@@ -136,18 +166,8 @@ class AbstractProxy implements ProxyInterface{
         if(isset($this->_states[$stateName])){
             unset($this->_states[$stateName]);
         }
-    }
 
-    /**
-     * Return the name of the current state of this object
-     * @return \UniAlteri\States\States\StateInterface
-     */
-    public function getActiveState(){
-        if(!$this->_activeState instanceof \UniAlteri\States\States\StateInterface){
-            throw new \UniAlteri\States\Exception\IllegalState('There are no active state');
-        }
-
-        return $this->_activeState;
+        return $this;
     }
 
     /**
@@ -156,20 +176,64 @@ class AbstractProxy implements ProxyInterface{
      * @return mixed
      */
     public function switchState($stateName){
+        $this->disableAllStates();
+        $this->enableState($stateName);
+
+        return $this;
+    }
+
+    /**
+     * Enable a loaded states
+     * @param $stateName
+     * @return $this
+     */
+    public function enableState($stateName){
         if(isset($this->_states[$stateName])){
-            $this->_activeState = $this->_states[$stateName];
+            $this->_activesStates[$stateName] = $this->_states[$stateName];
         }
         else{
             throw new \UniAlteri\States\Exception\StateNotFound('State "'.$stateName.'" is not available');
         }
+
+        return $this;
+    }
+
+    /**
+     * Disable an active state (not available for calling, but already loaded)
+     * @param string $stateName
+     * @return $this
+     */
+    public function disableState($stateName){
+        if(isset($this->_activesStates[$stateName])){
+            unset($this->_activesStates[$stateName]);
+        }
+
+        return $this;
+    }
+
+    /**
+     * Disable all actives states
+     * @return $this
+     */
+    public function disableAllStates(){
+        $this->_activesStates = new \ArrayObject();
+        return $this;
     }
 
     /**
      * List all available states for this object. Include added dynamically states, exclude removed dynamically states
      * @return string[]
      */
-    public function listActivesStates(){
+    public function listAvailableStates(){
         return array_keys($this->_states->getArrayCopy());
+    }
+
+    /**
+     * List all enable states for this object.
+     * @return string[]
+     */
+    public function listActivesStates(){
+        return array_keys($this->_activesStates->getArrayCopy());
     }
 
     /*******************
@@ -195,11 +259,17 @@ class AbstractProxy implements ProxyInterface{
      */
     public function getMethodDescription($methodName, $stateName = null){
         if(null === $stateName){
-            return $this->getActiveState()->getMethodDescription($methodName);
+            foreach($this->_states as $stateObject){
+                if($stateObject->testMethod($methodName)){
+                    return $stateObject->getMethodDescription($methodName);
+                }
+            }
         }
 
-        if(isset($this->_states[$methodName])){
-            return $this->_states[$methodName]->getMethodDescription($methodName);
+        if(isset($this->_states[$stateName])){
+            if($this->_states[$stateName]->testMethod($methodName)){
+                return $this->_states[$stateName]->getMethodDescription($methodName);
+            }
         }
 
         throw new \UniAlteri\States\Exception\StateNotFound('State "'.$stateName.'" is not available');

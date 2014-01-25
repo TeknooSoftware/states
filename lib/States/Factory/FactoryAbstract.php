@@ -76,7 +76,6 @@ class FactoryAbstract implements  FactoryInterface{
         //Build a new proxy object
         $proxyObject = $factoryLoader->loadProxy();
         $diContainerObject = $this->getDIContainer();
-        $proxyObject->setDIContainer($diContainerObject);
 
         //Get all states available
         $statesList = $factoryLoader->listStates();
