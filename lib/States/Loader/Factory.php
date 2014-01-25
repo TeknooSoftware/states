@@ -55,7 +55,20 @@ class Factory implements  FactoryInterface{
      * @return boolean
      */
     protected function _checkClassExists($className, $pathName){
+        if(!is_readable($pathName)){
+            //File not found
+            return false;
+        }
 
+        //Load the file
+        include_once($pathName);
+        if(!class_exists($className)){
+            //Class not found
+            return false;
+        }
+
+        //Class loaded
+        return true;
     }
 
     /**
