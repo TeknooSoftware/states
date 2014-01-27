@@ -8,19 +8,14 @@
  * with this package in the file LICENSE.txt.
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@centurion-project.org so we can send you a copy immediately.
+ * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
- * @version     $Id$
- */
-
-/**
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @project     States
+ * @category    DI
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     $Id$
  */
 
 namespace UniAlteri\States\DI;
@@ -28,35 +23,40 @@ namespace UniAlteri\States\DI;
 interface ContainerInterface{
 
     /**
-     * To support object cloning
+     * To support object cloning : All registry must be cloning, but not theirs values
      */
     public function __clone();
 
     /**
      * Call an entry of the container to retrieve an instance
-     * @param string $name : interface name, class name, alias
-     * @param array $params : params to build a new instance
+     *
+     * @param string $name : identifier of the instance
      * @return mixed
+     * @throws Exception\InvalidArgument if the identifier is not defined
      */
     public function get($name);
 
     /**
-     * Return a new instance of the $name
+     * Register a new shared object into container (the same object is returned at each call)
      * @param string $name
-     * @param mixed $arguments
-     * @return mixed
+     * @param object|callable|string $instance
+     * @return $this
+     * @throws Exception\ClassNotFound if $instance is a non-existent class name
      */
     public function registerInstance($name, $instance);
 
     /**
+     * Register a new service into container (a new instance is returned at each call)
      * @param string $name : interface name, class name, alias
      * @param object|callable|string $instance
      * @return string unique identifier of the object
+     * @throws Exception\ClassNotFound if $instance is a non-existent class name
+     * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      */
     public function registerService($name, $instance);
 
     /**
-     * Test if an instance is already registered
+     * Test if an entry is already registered
      * @param string $name
      * @return boolean
      */
@@ -70,7 +70,7 @@ interface ContainerInterface{
 
     /**
      * Configure the container from an array (provided by an INI file or other)
-     * @param array|ArrayObject $params
+     * @param array|\ArrayObject $params
      * @return mixed
      */
     public function configure($params);

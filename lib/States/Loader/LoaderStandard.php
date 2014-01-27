@@ -8,19 +8,14 @@
  * with this package in the file LICENSE.txt.
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@centurion-project.org so we can send you a copy immediately.
+ * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
- * @version     $Id$
- */
-
-/**
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @project     States
+ * @category    Loader
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     $Id$
  */
 
 namespace UniAlteri\States\Loader;
@@ -35,11 +30,12 @@ class Loader implements  LoaderInterface{
 
     /**
      * List of path where namespace are available
-     * @var \ArrayObject
+     * @var \SplQueue[]
      */
     protected $_namespacesArray = null;
 
     /**
+     * Backup of previous included path configuretion
      * @var \SplStack
      */
     protected $_previousIncludedPathStack = null;
@@ -57,10 +53,11 @@ class Loader implements  LoaderInterface{
      * Method to add a path on the list of location where find class
      * @param string $path
      * @return $this
+     * @throws Exception\UnavailablePath if the path is not readable
      */
     public function addIncludePath($path){
         if(false === is_dir($path)){
-            throw new \UniAlteri\States\Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
+            throw new Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
         }
 
         $this->_includedPathArray[$path] = $path;
@@ -68,21 +65,23 @@ class Loader implements  LoaderInterface{
     }
 
     /**
-     * Register namespace with a location of class
+     * Register a location to find some classes of a namespace.
+     * A namespace can has several locations
      * @param string $namespace
      * @param string $path
      * @return $this
+     * @throws Exception\UnavailablePath if the path is not readable
      */
     public function registerNamespace($namespace, $path){
         if(false === is_dir($path)){
-            throw new \UniAlteri\States\Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
+            throw new Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
         }
 
         if(!isset($this->_namespacesArray[$namespace])){
             $this->_namespacesArray[$namespace] = new \SplQueue();
         }
 
-        $this->_namespacesArray[$namespace]->push($path);
+        $this->_namespacesArray[$namespace]->enqueue($path);
     }
 
     /**
@@ -102,7 +101,7 @@ class Loader implements  LoaderInterface{
      */
     protected function _restoreIncludedPaths(){
         if($this->_previousIncludedPathStack->isEmpty()){
-            throw new \UniAlteri\States\Exception\EmptyStack('Error, the stack of previous included path is empty');
+            throw new Exception\EmptyStack('Error, the stack of previous included path is empty');
         }
 
         $oldIncludedPaths = $this->_previousIncludedPathStack->pop();
@@ -110,11 +109,11 @@ class Loader implements  LoaderInterface{
     }
 
     /**
-     * Loaded namespaced class
+     * Loaded a class into a namespace
      * @param string $class
      * @return bool
      */
-    protected function _loadNamespacedClass($class){
+    protected function _loadNamespaceClass($class){
         $namespacePartsArray = explode('\\', $class);
 
         if(1 == count($namespacePartsArray)){
@@ -150,9 +149,11 @@ class Loader implements  LoaderInterface{
     }
 
     /**
-     * Method called to load a class of the specific class, proxy and state.
-     * @param string $className
+     * Method called to load a class.
+     * @param string $className class name, support namespace prefixes
      * @return boolean
+     * @throws Exception\EmptyStack if the stack of previous included path
+     * @throws \Exception
      */
     public function loadClass($className){
         if(class_exists($className, false)){
@@ -166,7 +167,7 @@ class Loader implements  LoaderInterface{
 
         try{
             //If the namespace is configured, check its paths
-            if(false === $this->_loadNamespacedClass($className)){
+            if(false === $this->_loadNamespaceClass($className)){
                 //Class not found, switch to basic mode, replace \ and _ by a directory separator
                 $classFile = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $className).'.php';
                 if(is_readable($classFile)){

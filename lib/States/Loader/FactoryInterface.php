@@ -8,34 +8,51 @@
  * with this package in the file LICENSE.txt.
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@centurion-project.org so we can send you a copy immediately.
+ * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
- * @version     $Id$
- */
-
-/**
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @project     States
+ * @category    DI
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     $Id$
  */
 
 namespace UniAlteri\States\Loader;
 
 interface FactoryInterface{
+    /**
+     * Name of Factory Loader (service to find and load elements of stated class)
+     */
     const diFactoryName = 'FactoryLoader';
 
+    /**
+     * Folder where stored states of the stated class
+     */
     const StatesPath = 'States';
+
+    /**
+     * PHP File of Proxy into each stated class
+     */
     const ProxyFileName = 'Proxy.php';
+
+    /**
+     * PHP File of Factory into each stated class
+     */
     const FactoryFileName = 'Factory.php';
+
+    /**
+     * Suffix name of the Proxy PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
+     */
     const ProxySuffixClassName = 'Proxy';
+
+    /**
+     * Suffix name of the Factory PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
+     */
     const FactorySuffixClassName = 'Factory';
 
     /**
-     * Initialize factory
+     * Initialize the factory loader
      * @param string|null $path
      */
     public function __construct($path=null);

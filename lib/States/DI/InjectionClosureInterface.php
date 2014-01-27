@@ -8,19 +8,14 @@
  * with this package in the file LICENSE.txt.
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@centurion-project.org so we can send you a copy immediately.
+ * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
- * @version     $Id$
- */
-
-/**
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @project     States
+ * @category    DI
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     $Id$
  */
 
 namespace UniAlteri\States\DI;
@@ -28,13 +23,13 @@ namespace UniAlteri\States\DI;
 interface InjectionClosureInterface{
     /**
      * Register a DI container for this object
-     * @param \UniAlteri\States\DI\ContainerInterface $container
+     * @param ContainerInterface $container
      */
-    public function setDIContainer(\UniAlteri\States\DI\ContainerInterface $container);
+    public function setDIContainer(ContainerInterface $container);
 
     /**
      * Return the DI Container used for this object
-     * @return \UniAlteri\States\DI\ContainerInterface
+     * @return ContainerInterface
      */
     public function getDIContainer();
 
@@ -58,10 +53,12 @@ interface InjectionClosureInterface{
     public function getClosure();
 
     /**
-     * To allow the closure to save a static property, to allow developer to not use "static" key word into the closure
+     * To allow the closure to save a static property,
+     * to allow developer to not use "static" key word into the closure
      * @param string $name
      * @param mixed $value
      * @return $this
+     * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
     public function saveStaticProperty($name, $value);
 
@@ -69,6 +66,7 @@ interface InjectionClosureInterface{
      * Remove a static property
      * @param string $name
      * @return $this
+     * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
     public function deleteStaticProperty($name);
 
@@ -76,6 +74,7 @@ interface InjectionClosureInterface{
      * Return to the closure a static property
      * @param string $name
      * @return mixed
+     * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
     public function getStaticProperty($name);
 
@@ -83,6 +82,7 @@ interface InjectionClosureInterface{
      * Check if a static property is stored
      * @param string $name
      * @return boolean
+     * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
     public function testStaticProperty($name);
 }

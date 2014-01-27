@@ -8,37 +8,33 @@
  * with this package in the file LICENSE.txt.
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@centurion-project.org so we can send you a copy immediately.
+ * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @category    States
- * @package     Factory
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @project     States
+ * @category    Factory
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
  */
 
-/**
- * @category    States
- * @package     Factory
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
- */
-
 namespace UniAlteri\States\Factory;
+
+use \UniAlteri\States;
+use \UniAlteri\States\DI;
 
 interface FactoryInterface{
     const OBJECT_LOADER_KEY = 'objectLoader';
 
     /**
      * Register a DI container for this object
-     * @param \UniAlteri\States\DI\ContainerInterface $container
+     * @param DI\ContainerInterface $container
      */
-    public function setDIContainer(\UniAlteri\States\DI\ContainerInterface $container);
+    public function setDIContainer(DI\ContainerInterface $container);
 
     /**
      * Return the DI Container used for this object
-     * @return \UniAlteri\States\DI\ContainerInterface
+     * @return DI\ContainerInterface
      */
     public function getDIContainer();
 
@@ -46,7 +42,9 @@ interface FactoryInterface{
      * Build a new instance of an object
      * @param mixed $arguments
      * @param string $stateName to build an object with a specific class
-     * @return \UniAlteri\States\ObjectInterface
+     * @return States\ObjectInterface
+     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
+     * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
     public function build($arguments=null, $stateName=null);
 }

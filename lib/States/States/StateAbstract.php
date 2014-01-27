@@ -8,49 +8,54 @@
  * with this package in the file LICENSE.txt.
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@centurion-project.org so we can send you a copy immediately.
+ * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @version     $Id$
  */
 
 /**
  * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
 namespace UniAlteri\States\States;
+use \UniAlteri\States\DI;
+use \UniAlteri\States\Proxy;
 
 abstract class StateAbstract implements StateInterface{
 
     /**
-     * @var \UniAlteri\States\DI\ContainerInterface
+     * DI Container to use for this object
+     * @var DI\ContainerInterface
      */
     protected $_diContainer = null;
 
     /**
+     * List of methods available for this state
      * @var \ArrayObject
      */
     protected $_methodsListArray = null;
 
     /**
-     *
+     * Reflection class object of this state to extract closures and description
      * @var \ReflectionClass
      */
     protected $_reflectionClass = null;
 
     /**
-     *
-     * @var \ArrayObject
+     * Reflections methods of this state to extract description and closures
+     * @var \ReflectionMethod[]
      */
     protected $_reflectionsMethods = null;
 
     /**
-     * @var \ArrayObject
+     * List of closure already extracted and set into Injection Closure Container
+     * @var DI\InjectionClosureInterface[]
      */
     protected $_closuresObjects = null;
 
@@ -68,15 +73,15 @@ abstract class StateAbstract implements StateInterface{
 
     /**
      * Register a DI container for this object
-     * @param \UniAlteri\States\DI\ContainerInterface $container
+     * @param DI\ContainerInterface $container
      */
-    public function setDIContainer(\UniAlteri\States\DI\ContainerInterface $container){
+    public function setDIContainer(DI\ContainerInterface $container){
         $this->_diContainer = $container;
     }
 
     /**
      * Return the DI Container used for this object
-     * @return \UniAlteri\States\DI\ContainerInterface
+     * @return DI\ContainerInterface
      */
     public function getDIContainer(){
         return $this->_diContainer;
@@ -88,8 +93,10 @@ abstract class StateAbstract implements StateInterface{
      */
     public function listMethods(){
         if(null === $this->_methodsListArray){
+            //Extract methods
             $thisReflectionClass = $this->_getReflectionClass();
-            $methodsArray = $thisReflectionClass->getMethods(\ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED | \ReflectionMethod::IS_PRIVATE | \ReflectionMethod::IS_FINAL);
+            $flags = \ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED | \ReflectionMethod::IS_PRIVATE;
+            $methodsArray = $thisReflectionClass->getMethods($flags);
 
             //Methods to not return into descriptions
             $methodsNamesToIgnoreArray = array_flip(
@@ -105,6 +112,7 @@ abstract class StateAbstract implements StateInterface{
             //Extracts methods' names
             $methodsFinalArray = new \ArrayObject();
             foreach($methodsArray as $methodReflection){
+                //Store reflection into local cache
                 $methodNameString = $methodReflection->getName();
                 if(!isset($methodsNamesToIgnoreArray[$methodNameString])){
                     $methodsFinalArray[] = $methodNameString;
@@ -119,11 +127,12 @@ abstract class StateAbstract implements StateInterface{
     }
 
     /**
-     * Test if a method exist into the
+     * Test if a method exist for this state
      * @param string $methodName
      * @return boolean
      */
     public function testMethod($methodName){
+        //Method is already extracted
         if(isset($this->_reflectionsMethods[$methodName])){
             if($this->_reflectionsMethods[$methodName] instanceof \ReflectionMethod){
                 return true;
@@ -134,10 +143,12 @@ abstract class StateAbstract implements StateInterface{
         }
 
         try{
+            //Try extract description
             $this->getMethodDescription($methodName);
             return true;
         }
         catch(\Exception $e){
+            //Method not found, store localy the result
             $this->_reflectionsMethods[$methodName] = false;
             return false;
         }
@@ -147,6 +158,7 @@ abstract class StateAbstract implements StateInterface{
      * Return the description of a method to configure the behavior of the proxy
      * @param string $methodName
      * @return \ReflectionMethod
+     * @throws Exception\MethodNotImplemented is the method does not exist
      */
     public function getMethodDescription($methodName){
         $thisReflectionClass = $this->_getReflectionClass();
@@ -165,7 +177,8 @@ abstract class StateAbstract implements StateInterface{
             return $this->_reflectionsMethods[$methodName];
         }
         catch(\Exception $e){
-            throw new \UniAlteri\States\Exception\MethodNotFound(
+            //Method not found
+            throw new Exception\MethodNotImplemented(
                 'Method "'.$methodName.'" is not available for this state',
                 $e->getCode(),
                 $e
@@ -175,29 +188,35 @@ abstract class StateAbstract implements StateInterface{
 
     /**
      * Build a new Injection Closure object
-     * @return \UniAlteri\States\DI\InjectionClosureInterface
+     * @return DI\InjectionClosureInterface
      */
     protected function _buildInjectionClosureObject(){
-        return $this->getDIContainer()->get(StateInterface::INJECTION_CLOSURE_IDENTIFIER);
+        return $this->getDIContainer()->get(StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER);
     }
 
     /**
      * Return a closure of the required method to use in the proxy
      * @param string $methodName
-     * @param \UniAlteri\States\Proxy\ProxyInterface $proxy
-     * @return \UniAlteri\States\DI\InjectionClosureInterface
+     * @param Proxy\ProxyInterface $proxy
+     * @return DI\InjectionClosureInterface
+     * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    public function getClosure($methodName, \UniAlteri\States\Proxy\ProxyInterface $proxy){
+    public function getClosure($methodName, Proxy\ProxyInterface $proxy){
         if(!($this->_closuresObjects instanceof \ArrayObject)){
+            //Initialize locale closure cache
             $this->_closuresObjects = new \ArrayObject();
         }
 
         if(!isset($this->_closuresObjects[$methodName])){
+            //The closure is not already generated
+            //Extract them
             $methodReflection = $this->getMethodDescription($methodName);
             $closure = $methodReflection->getClosure($this);
 
+            //Bind $this with proxy
             $closure = \Closure::bind($closure, $proxy, get_class($proxy));
 
+            //Include the closure into the container
             $args = array($closure);
             $injectionClosure = $this->_buildInjectionClosureObject()->setClosure($args);
             $injectionClosure->setDIContainer($this->getDIContainer());

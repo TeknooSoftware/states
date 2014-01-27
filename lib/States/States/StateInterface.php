@@ -8,35 +8,35 @@
  * with this package in the file LICENSE.txt.
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@centurion-project.org so we can send you a copy immediately.
+ * to contact@uni-alteri.com so we can send you a copy immediately.
  *
+ * @project     States
  * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
  */
 
-/**
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
- */
-
 namespace UniAlteri\States\States;
+use \UniAlteri\States\DI;
+use \UniAlteri\States\Proxy;
 
 interface StateInterface{
-    const INJECTION_CLOSURE_IDENTIFIER = 'injectionClosure';
+    /**
+     * Identifier into DI Container to generate a new Injection Closure Container
+     */
+    const INJECTION_CLOSURE_SERVICE_IDENTIFIER = 'injectionClosureService';
 
     /**
      * Register a DI container for this object
-     * @param \UniAlteri\States\DI\ContainerInterface $container
+     * @param DI\ContainerInterface $container
      */
-    public function setDIContainer(\UniAlteri\States\DI\ContainerInterface $container);
+    public function setDIContainer(DI\ContainerInterface $container);
 
     /**
      * Return the DI Container used for this object
-     * @return \UniAlteri\States\DI\ContainerInterface
+     * @return DI\ContainerInterface
      */
     public function getDIContainer();
 
@@ -47,7 +47,7 @@ interface StateInterface{
     public function listMethods();
 
     /**
-     * Test if a method exist into the
+     * Test if a method exist for this state
      * @param string $methodName
      * @return boolean
      */
@@ -57,14 +57,17 @@ interface StateInterface{
      * Return the description of a method to configure the behavior of the proxy
      * @param string $methodName
      * @return \ReflectionMethod
+     * @throws Exception\MethodNotFound is the method does not exist
+     * @throws Exception\MethodNotImplemented is the method does not exist
      */
     public function getMethodDescription($methodName);
 
     /**
      * Return a closure of the required method to use in the proxy
      * @param string $methodName
-     * @param \UniAlteri\States\Proxy\ProxyInterface $proxy
-     * @return \UniAlteri\States\DI\InjectionClosureInterface
+     * @param Proxy\ProxyInterface $proxy
+     * @return DI\InjectionClosureInterface
+     * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    public function getClosure($methodName, \UniAlteri\States\Proxy\ProxyInterface $proxy);
+    public function getClosure($methodName, Proxy\ProxyInterface $proxy);
 }

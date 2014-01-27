@@ -8,55 +8,58 @@
  * with this package in the file LICENSE.txt.
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@centurion-project.org so we can send you a copy immediately.
+ * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @category    States
- * @package     Proxy
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @project     States
+ * @category    Proxy
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
  */
 
-/**
- * @category    States
- * @package     Proxy
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
- */
-
 namespace UniAlteri\States\Proxy;
+use \UniAlteri\States\DI;
+use \UniAlteri\States;
 
 class AbstractProxy implements ProxyInterface{
 
     /**
-     * @var \UniAlteri\States\DI\ContainerInterface
+     * DI Container to use for this object
+     * @var DI\ContainerInterface
      */
     protected $_diContainer = null;
 
     /**
+     * Unique identifier of this object
      * @var string
      */
     protected $_uniqueId = null;
 
     /**
-     * @var \UniAlteri\States\States\StateInterface[]
+     * List of currently enabled states
+     * @var States\States\StateInterface[]
      */
     protected $_activesStates = null;
 
     /**
-     * @var \UniAlteri\States\States\StateInterface[]
+     * List of available states for this stated object
+     * @var States\States\StateInterface[]
      */
     protected $_states = null;
 
     /**
+     * Internal method to find closure and call it
      * @param string $methodName
-     * @param array $arguments
+     * @param array $arguments of the call
+     * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     protected function _callThroughState($methodName, array $arguments){
         $methodsWithStatesArray = explode('Of', $methodName);
         if(0 === count($methodsWithStatesArray)){
-            //No specific state required, browse all enable state to find the methdo
+            //No specific state required, browse all enable state to find the method
             foreach($this->_activesStates as $activeStateObject){
                 if(true === $activeStateObject->testMethod($methodName)){
                     //Method found, call it
@@ -64,13 +67,13 @@ class AbstractProxy implements ProxyInterface{
                 }
             }
 
-            throw new \UniAlteri\States\Exception\MethodNotFound('Method "'.$methodName.'" is not available with actives states');
+            throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available with actives states');
         }
         else{
             //A specific state is required for this call
             $statesName = array_pop($methodsWithStatesArray);
             if(!isset($this->_activesStates[$statesName])){
-                throw new \UniAlteri\States\Exception\UnavailableState('Error, the state "'.$statesName.'" is not currently available');
+                throw new Exception\UnavailableState('Error, the state "'.$statesName.'" is not currently available');
             }
 
             //Get the state name
@@ -82,15 +85,14 @@ class AbstractProxy implements ProxyInterface{
                 return call_user_func_array($activeStateObject->getClosure($methodName, $this), $arguments);
             }
 
-            throw new \UniAlteri\States\Exception\MethodNotFound('Method "'.$methodName.'" is not available for the state "'.$statesName.'"');
+            throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available for the state "'.$statesName.'"');
         }
     }
 
     /**
      * Initialize the proxy
-     * @param mixed $params
      */
-    public function __construct($params = null){
+    public function __construct(){
         //Initialize internal vars
         $this->_states = new \ArrayObject();
         $this->_activesStates = new \ArrayObject();
@@ -98,15 +100,15 @@ class AbstractProxy implements ProxyInterface{
 
     /**
      * Register a DI container for this object
-     * @param \UniAlteri\States\DI\ContainerInterface $container
+     * @param DI\ContainerInterface $container
      */
-    public function setDIContainer(\UniAlteri\States\DI\ContainerInterface $container){
+    public function setDIContainer(DI\ContainerInterface $container){
         $this->_diContainer = $container;
     }
 
     /**
      * Return the DI Container used for this object
-     * @return \UniAlteri\States\DI\ContainerInterface
+     * @return DI\ContainerInterface
      */
     public function getDIContainer(){
         return $this->_diContainer;
@@ -117,12 +119,17 @@ class AbstractProxy implements ProxyInterface{
      * @return string
      */
     public function getObjectUniqueId(){
-        $this->_uniqueId = uniqid(sha1(microtime(true)), true);
+        if(null === $this->_uniqueId){
+            //Generate the unique Id
+            $this->_uniqueId = uniqid(sha1(microtime(true)), true);
+        }
+
+        return $this->_uniqueId;
     }
 
     /**
-     * Called to clone an Obejct
-     * @return \UniAlteri\States\Object
+     * Called to clone an Object
+     * @return $this
      */
     public function __clone(){
         //Clone states stack
@@ -134,6 +141,7 @@ class AbstractProxy implements ProxyInterface{
             $clonedStatesArray[] = $clonedState;
         }
 
+        //Enabling states
         $activesStates = array_keys($this->_activesStates->getArrayCopy());
         $this->_activesStates = $clonedStatesArray;
         foreach($activesStates as $stateName){
@@ -150,9 +158,10 @@ class AbstractProxy implements ProxyInterface{
     /**
      * Register dynamically a new state for this object
      * @param string $stateName
-     * @param \UniAlteri\States\States\StateInterface $stateObject
+     * @param States\States\StateInterface $stateObject
+     * @return $this
      */
-    public function registerState($stateName, \UniAlteri\States\States\StateInterface $stateObject){
+    public function registerState($stateName, States\States\StateInterface $stateObject){
         $this->_states[$stateName] = $stateObject;
 
         return $this;
@@ -161,6 +170,7 @@ class AbstractProxy implements ProxyInterface{
     /**
      * Remove dynamically a state from this object
      * @param string $stateName
+     * @return $this
      */
     public function unregisterState($stateName){
         if(isset($this->_states[$stateName])){
@@ -171,9 +181,9 @@ class AbstractProxy implements ProxyInterface{
     }
 
     /**
-     * Return the name of the current state of this object
+     * Disable all actives states and load the required states
      * @param string $stateName
-     * @return mixed
+     * @return $this
      */
     public function switchState($stateName){
         $this->disableAllStates();
@@ -186,13 +196,14 @@ class AbstractProxy implements ProxyInterface{
      * Enable a loaded states
      * @param $stateName
      * @return $this
+     * @throws Exception\StateNotFound if $stateName does not exist
      */
     public function enableState($stateName){
         if(isset($this->_states[$stateName])){
             $this->_activesStates[$stateName] = $this->_states[$stateName];
         }
         else{
-            throw new \UniAlteri\States\Exception\StateNotFound('State "'.$stateName.'" is not available');
+            throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
         }
 
         return $this;
@@ -246,19 +257,24 @@ class AbstractProxy implements ProxyInterface{
      * @param $name
      * @param $arguments
      * @return mixed
+     * @throws \Exception
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function __call($name, $arguments){
         return $this->_callThroughState($name, $arguments);
     }
 
     /**
-     * Return the desciption of the method
+     * Return the description of the method
      * @param string $methodName
      * @param string $stateName : Return the description for a specific state of the object, if null, use the current state
      * @return \ReflectionMethod
+     * @throws Exception\StateNotFound is the state required is not available
      */
     public function getMethodDescription($methodName, $stateName = null){
         if(null === $stateName){
+            //Browse all state to find the method
             foreach($this->_states as $stateObject){
                 if($stateObject->testMethod($methodName)){
                     return $stateObject->getMethodDescription($methodName);
@@ -267,17 +283,20 @@ class AbstractProxy implements ProxyInterface{
         }
 
         if(isset($this->_states[$stateName])){
+            //Retrieve description from the required state
             if($this->_states[$stateName]->testMethod($methodName)){
                 return $this->_states[$stateName]->getMethodDescription($methodName);
             }
         }
 
-        throw new \UniAlteri\States\Exception\StateNotFound('State "'.$stateName.'" is not available');
+        throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
     }
 
     /**
-     * To use the object like a foncter
+     * To invoke an object as a function
      * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function __invoke(){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -293,27 +312,33 @@ class AbstractProxy implements ProxyInterface{
      * Hooks and event are automatically called
      * @param string $name
      * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function __get($name){
         return $this->_callThroughState(__METHOD__, func_get_args());
     }
 
     /**
-     * Test if a property is setted for the object
+     * Test if a property is set for the object
      * Hooks and event are automatically called
      * @param string $name
      * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function __isset($name){
         return $this->_callThroughState(__METHOD__, func_get_args());
     }
 
     /**
-     * Update a propert of the object
+     * Update a property of the object
      * Hooks and event are automatically called
      * @param string $name
      * @param string $value
      * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function __set($name, $value){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -324,15 +349,19 @@ class AbstractProxy implements ProxyInterface{
      * Hooks and event are automatically called
      * @param string $name
      * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function __unset($name){
         return $this->_callThroughState(__METHOD__, func_get_args());
     }
 
     /**
-     * TO transform the object to a string
+     * To transform the object to a string
      * Hooks and event are automatically called
      * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function __toString(){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -345,6 +374,8 @@ class AbstractProxy implements ProxyInterface{
     /**
      * This method is executed when using the count() function on an object implementing Countable.
      * @return int
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function count(){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -353,8 +384,10 @@ class AbstractProxy implements ProxyInterface{
     /**
      * Whether or not an offset exists.
      * This method is executed when using isset() or empty() on states implementing ArrayAccess.
-     * @param mixed $offset
+     * @param string|int $offset
      * @return bool
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function offsetExists($offset){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -363,8 +396,10 @@ class AbstractProxy implements ProxyInterface{
     /**
      * Returns the value at specified offset.
      * This method is executed when checking if offset is empty().
-     * @param mixed $offset
+     * @param string|int $offset
      * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function offsetGet($offset){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -372,8 +407,11 @@ class AbstractProxy implements ProxyInterface{
 
     /**
      * Assigns a value to the specified offset.
-     * @param mixed $offset
+     * @param string|int $offset
      * @param mixed $value
+     * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function offsetSet($offset, $value){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -381,10 +419,12 @@ class AbstractProxy implements ProxyInterface{
 
     /**
      * Unsets an offset.
-     * @param mixed $offset
+     * @param string|int $offset
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function offsetUnset($offset){
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        $this->_callThroughState(__METHOD__, func_get_args());
     }
 
     /************
@@ -394,6 +434,8 @@ class AbstractProxy implements ProxyInterface{
     /**
      * Returns the current element.
      * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function current(){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -402,6 +444,8 @@ class AbstractProxy implements ProxyInterface{
     /**
      * Returns the key of the current element.
      * @return mixed
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function key(){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -409,6 +453,8 @@ class AbstractProxy implements ProxyInterface{
 
     /**
      * Moves the current position to the next element.
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function next(){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -416,6 +462,8 @@ class AbstractProxy implements ProxyInterface{
 
     /**
      * Rewinds back to the first element of the Iterator.
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function rewind(){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -424,14 +472,18 @@ class AbstractProxy implements ProxyInterface{
     /**
      * Seeks to a given position in the iterator.
      * @param int $position
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function seek($position){
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        $this->_callThroughState(__METHOD__, func_get_args());
     }
 
     /**
      * This method is called after Iterator::rewind() and Iterator::next() to check if the current position is valid.
      * @return bool
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function valid(){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -440,6 +492,8 @@ class AbstractProxy implements ProxyInterface{
     /**
      * Returns an external iterator.
      * @return \Traversable
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function getIterator(){
         return $this->_callThroughState(__METHOD__, func_get_args());
@@ -452,17 +506,22 @@ class AbstractProxy implements ProxyInterface{
     /**
      * To serialize the object
      * Hooks and event are automatically called
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
+     * @return string
      */
     public function serialize(){
         return $this->_callThroughState(__METHOD__, func_get_args());
     }
 
     /**
-     * To wakeup the object
+     * To wake up the object
      * Hooks and event are automatically called
      * @param string $serialized
+     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\UnavailableState if the required state is not available
      */
     public function unserialize($serialized){
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        $this->_callThroughState(__METHOD__, func_get_args());
     }
 }

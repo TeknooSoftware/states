@@ -10,21 +10,16 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://agence.net.ua)
+ * @project     States
+ * @category    DI
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
  */
 
-/**
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://agence.net.ua)
- * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
- */
+namespace UniAlteri\States\DI\Exception;
 
-namespace UniAlteri\States\Exception;
-
-class StateNotFound extends Standard{
+class IllegalName extends \UniAlteri\States\Exception\IllegalName{
 
 }

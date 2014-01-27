@@ -25,6 +25,6 @@
 
 namespace UniAlteri\States\Exception;
 
-class StateNotFound extends Standard{
+class InvalidArgument extends Standard{
 
 }

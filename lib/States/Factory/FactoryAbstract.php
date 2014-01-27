@@ -8,43 +8,42 @@
  * with this package in the file LICENSE.txt.
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@centurion-project.org so we can send you a copy immediately.
+ * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @category    States
- * @package     Factory
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
- * @version     $Id$
- */
-
-/**
- * @category    States
- * @package     Factory
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @project     States
+ * @category    Factory
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     $Id$
  */
 
 namespace UniAlteri\States\Factory;
 
+use \UniAlteri\States;
+use \UniAlteri\States\DI;
+use \UniAlteri\States\Loader;
+use \UniAlteri\States\Proxy;
+
 class FactoryAbstract implements  FactoryInterface{
 
     /**
-     * @var \UniAlteri\States\DI\ContainerInterface
+     * DI Container to use with this factory object
+     * @var DI\ContainerInterface
      */
     protected $_diContainer = null;
 
     /**
      * Register a DI container for this object
-     * @param \UniAlteri\States\DI\ContainerInterface $container
+     * @param DI\ContainerInterface $container
      */
-    public function setDIContainer(\UniAlteri\States\DI\ContainerInterface $container){
+    public function setDIContainer(DI\ContainerInterface $container){
         $this->_diContainer = $container;
     }
 
     /**
      * Return the DI Container used for this object
-     * @return \UniAlteri\States\DI\ContainerInterface
+     * @return DI\ContainerInterface
      */
     public function getDIContainer(){
         return $this->_diContainer;
@@ -52,12 +51,13 @@ class FactoryAbstract implements  FactoryInterface{
 
     /**
      * Return the loader of this stated class from its DI Container
-     * @return \UniAlteri\States\Loader\FactoryInterface
+     * @return Loader\FactoryInterface
+     * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
     protected function _getLoader(){
-        $factoryLoader = $this->_diContainer->get(\UniAlteri\States\Loader\FactoryInterface::diFactoryName);
-        if(!$factoryLoader instanceof \UniAlteri\States\Loader\FactoryInterface){
-            throw new \UniAlteri\States\Exception\UnavailableLoader('Error, the loader is not available');
+        $factoryLoader = $this->_diContainer->get(Loader\FactoryInterface::diFactoryName);
+        if(!$factoryLoader instanceof Loader\FactoryInterface){
+            throw new Exception\UnavailableLoader('Error, the loader is not available');
         }
 
         return $factoryLoader;
@@ -67,7 +67,9 @@ class FactoryAbstract implements  FactoryInterface{
      * Build a new instance of an object
      * @param mixed $arguments
      * @param string $stateName to build an object with a specific class
-     * @return \UniAlteri\States\ObjectInterface
+     * @return States\ObjectInterface
+     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
+     * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
     public function build($arguments=null, $stateName=null){
         //Get factory loader
@@ -80,16 +82,16 @@ class FactoryAbstract implements  FactoryInterface{
         //Get all states available
         $statesList = $factoryLoader->listStates();
 
-        //Check if the defaut state is available
+        //Check if the default state is available
         $statesList = array_combine($statesList, $statesList);
-        $defaultStatedName = \UniAlteri\States\Proxy\ProxyInterface::DefaultProxyName;
+        $defaultStatedName = Proxy\ProxyInterface::DefaultStateName;
         if(!isset($statesList[$defaultStatedName])){
-            throw new \UniAlteri\States\Exception\StateNotFound('Error, the state "'.$defaultStatedName.'" was not found in this stated class');
+            throw new Exception\StateNotFound('Error, the state "'.$defaultStatedName.'" was not found in this stated class');
         }
 
         //Check if the require state is available
         if(null !== $stateName && !isset($statesList[$stateName])){
-            throw new \UniAlteri\States\Exception\StateNotFound('Error, the state "'.$stateName.'" was not found in this stated class');
+            throw new Exception\StateNotFound('Error, the state "'.$stateName.'" was not found in this stated class');
         }
 
         //Load each state into proxy

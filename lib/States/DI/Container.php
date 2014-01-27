@@ -8,19 +8,14 @@
  * with this package in the file LICENSE.txt.
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
- * to license@centurion-project.org so we can send you a copy immediately.
+ * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
- * @version     $Id$
- */
-
-/**
- * @category    States
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://uni-alteri.com/states/license/new-bsd     New BSD License
+ * @project     States
+ * @category    DI
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     $Id$
  */
 
 namespace UniAlteri\States\DI;
@@ -28,7 +23,7 @@ namespace UniAlteri\States\DI;
 class Container extends \Pimple implements ContainerInterface{
 
     /**
-     * To support object cloning
+     * To support object cloning : All registry must be cloning, but not theirs values
      */
     public function __clone(){
         /**
@@ -38,19 +33,27 @@ class Container extends \Pimple implements ContainerInterface{
 
     /**
      * Call an entry of the container to retrieve an instance
-     * @param string $name : interface name, class name, alias
-     * @param array $params : params to build a new instance
+     *
+     * @param string $name : identifier of the instance
      * @return mixed
+     * @throws Exception\InvalidArgument if the identifier is not defined
      */
     public function get($name){
-        return $this[$name];
+        try{
+            return $this[$name];
+        }
+        catch(\InvalidArgumentException $e){
+            throw new Exception\InvalidArgument($e->getMessage(), $e->getCode(), $e);
+        }
     }
 
     /**
-     * Return always the same instance of class
-     * @param string $name
-     * @param mixed $arguments
-     * @return mixed
+     * Register a new service into container (a new instance is returned at each call)
+     * @param string $name : interface name, class name, alias
+     * @param object|callable|string $instance
+     * @return string unique identifier of the object
+     * @throws Exception\ClassNotFound if $instance is a non-existent class name
+     * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      */
     public function registerInstance($name, $instance){
         if(is_string($instance)){
@@ -59,19 +62,24 @@ class Container extends \Pimple implements ContainerInterface{
                 $this[$name] = new $instance();
             }
             else{
-                throw new \UniAlteri\States\Exception\ClassNotFound('The class "'.$instance.'" is not available');
+                throw new Exception\ClassNotFound('The class "'.$instance.'" is not available');
             }
         }
         else{
             //For callable and object, regiester them
             $this[$name] = $instance;
         }
+
+        return $this;
     }
 
     /**
+     * Register a new service into container (a new instance is returned at each call)
      * @param string $name : interface name, class name, alias
      * @param object|callable|string $instance
      * @return string unique identifier of the object
+     * @throws Exception\ClassNotFound if $instance is a non-existent class name
+     * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      */
     public function registerService($name, $instance){
         if(is_string($instance)){
@@ -83,7 +91,7 @@ class Container extends \Pimple implements ContainerInterface{
                 });
             }
             else{
-                throw new \UniAlteri\States\Exception\ClassNotFound('The class "'.$instance.'" is not available');
+                throw new Exception\ClassNotFound('The class "'.$instance.'" is not available');
             }
         }
         elseif(is_object($instance)){
@@ -92,7 +100,7 @@ class Container extends \Pimple implements ContainerInterface{
                 $this[$name] = $this->factory($instance);
             }
             else{
-                throw new \UniAlteri\States\Exception\IllegalService('Error, the service for "'.$name.'" is not an invokable object');
+                throw new Exception\IllegalService('Error, the service for "'.$name.'" is not an invokable object');
             }
         }
         elseif(is_callable($instance)){
@@ -100,12 +108,12 @@ class Container extends \Pimple implements ContainerInterface{
             $this[$name] = $this->factory($instance);
         }
         else{
-            throw new \UniAlteri\States\Exception\IllegalService('Error, the service for "'.$name.'" is illegal');
+            throw new Exception\IllegalService('Error, the service for "'.$name.'" is illegal');
         }
     }
 
     /**
-     * Test if an instance is already registered
+     * Test if an entry is already registered
      * @param string $name
      * @return boolean
      */
@@ -123,13 +131,13 @@ class Container extends \Pimple implements ContainerInterface{
 
     /**
      * Configure the container from an array (provided by an INI file or other)
-     * @param array|ArrayObject $params
+     * @param array|\ArrayObject $params
      * @return mixed
      */
     public function configure($params){
-        if(isset($params['shared'])){
-            foreach($params['shared'] as $name=>$instance){
-                $this->shareInstance($name, $instance);
+        if(isset($params['services'])){
+            foreach($params['services'] as $name=>$instance){
+                $this->registerService($name, $instance);
             }
         }
 
