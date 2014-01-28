@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by JetBrains PhpStorm.
- * Author : Richard Déloge, richard@uni-alteri.fr, www.uni-alteri.fr
+ * Author : Richard Déloge, richard@uni-alteri.fr, agence.net.ua
  * Date: 27/05/13
  * Time: 16:25
  */
@@ -9,195 +9,309 @@
 namespace UniAlteri\States\DI;
 
 class ContainerTest extends \PHPUnit_Framework_TestCase{
-
     /**
      * Return a valid container for tests
      * @return ContainerInterface
      */
     protected function _buildContainer(){
-
+        return new Container();
     }
 
     /**
      * @param ContainerInterface $container
      */
     protected function _populateContainer($container){
-        $container->register('object1', new \stdClass());
-        $container->register('date1', function(){ return new \DateTime();});
-        $container->register('array1', '\ArrayObject');
-        $container->register('\Exception');
     }
 
     /**
-     * Storage must throw an exception if the name is not valid
+     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
      */
-    public function testRegisterWithBadName(){
-        $container = $this->_buildContainer();
+    public function testRegisterInstanceBadIdentifier(){
         try{
-            $container->register('##', new \stdClass());
+            $this->_buildContainer()->registerInstance('##', 'DateTime');
         }
-        catch(\Exception $e){
-            return true;
+        catch(Exception\IllegalName $exception){
+            return;
         }
+        catch(\Exception $e){}
 
-        $this->fail('Error, the idenfier must be a valid php var name http://www.php.net/manual/en/language.variables.basics.php');
+        $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
 
     /**
-     * Register into the container the final object to return
+     * The container must throws an exception if the class of the instance does not exist
      */
-    public function testRegisterWithObject(){
+    public function testRegisterInstanceBadClass(){
+        try{
+            $this->_buildContainer()->registerInstance('class', 'NonExistentClass');
+        }
+        catch(Exception\ClassNotFound $exception){
+            return;
+        }
+        catch(\Exception $e){}
+
+        $this->fail('Error, the container object must throws an Exception\ClassNotFound exception');
+    }
+
+    /**
+     * Test return of registerInstance
+     */
+    public function testRegisterInstanceClass(){
         $container = $this->_buildContainer();
-        $id = $container->register('object1', new \stdClass());
-        $this->assertTrue(is_string($id), 'Error, the unique id of the register instance must be a string');
-        $this->assertNotEmpty($id);
+        $result = $container->registerInstance('dateObject', '\DateTime');
+        $this->assertSame($container, $result, 'Error, the container must return $this after `registerInstance`');
     }
 
     /**
-     * Register into the container a closure to call to build the object to return
+     * Non invokable object are allowed for instance, but not for service
      */
-    public function testRegisterWithClosure(){
+    public function testRegisterInstanceNonInvokableObject(){
         $container = $this->_buildContainer();
-        $id = $container->register('date1', function(){ return new \DateTime();});
-        $this->assertTrue(is_string($id), 'Error, the unique id of the register instance must be a string');
-        $this->assertNotEmpty($id);
+        $result = $container->registerInstance('dateObject', new \DateTime());
+        $this->assertSame($container, $result, 'Error, the container must return $this after `registerInstance`');
     }
 
     /**
-     * Register into the container the class name
+     * Test return of registerInstance
      */
-    public function testRegisterWithClassName(){
+    public function testRegisterInstanceInvokableObject(){
         $container = $this->_buildContainer();
-        $id = $container->register('array1', '\ArrayObject');
-        $this->assertTrue(is_string($id), 'Error, the unique id of the register instance must be a string');
-        $this->assertNotEmpty($id);
+        $result = $container->registerInstance('dateObject', new \DateTime());
+        $this->assertSame($container, $result, 'Error, the container must return $this after `registerInstance`');
     }
 
     /**
-     * Register into the container only the class name as identifier, with no "factory" param
+     * Test return of registerInstance
      */
-    public function testRegisterWithOnlyClassNameAsIdentifier(){
+    public function testRegisterInstanceFunction(){
         $container = $this->_buildContainer();
-        $id = $container->register('\Exception');
-        $this->assertTrue(is_string($id), 'Error, the unique id of the register instance must be a string');
-        $this->assertNotEmpty($id);
+        $result = $container->registerInstance('dateObject', function(){return new \DateTime();});
+        $this->assertSame($container, $result, 'Error, the container must return $this after `registerInstance`');
     }
 
     /**
-     * Test if each registering ids are differents
+     * Test return of registerInstance
      */
-    public function testUniqueIdsForRegistering(){
+    public function testRegisterInstanceArray(){
+        try{
+            $container = $this->_buildContainer();
+            $container->registerInstance('dateObject', array());
+        }
+        catch(Exception\IllegalService $exception){
+            return;
+        }
+        catch(\Exception $e){}
+
+        $this->fail('Error, the container object must throws an Exception\IllegalService exception if the instance is invalid');
+    }
+
+    /**
+     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
+     */
+    public function testRegisterServiceBadIdentifier(){
+        try{
+            $this->_buildContainer()->registerService('##', 'DateTime');
+        }
+        catch(Exception\IllegalName $exception){
+            return;
+        }
+        catch(\Exception $e){}
+
+        $this->fail('Error, the container object must throws an Exception\IllegalName exception');
+    }
+
+    /**
+     * The container must throws an exception if the class of the service does not exist
+     */
+    public function testRegisterServiceBadClass(){
+        try{
+            $this->_buildContainer()->registerService('class', 'NonExistentClass');
+        }
+        catch(Exception\ClassNotFound $exception){
+            return;
+        }
+        catch(\Exception $e){}
+
+        $this->fail('Error, the container object must throws an Exception\ClassNotFound exception');
+    }
+
+    /**
+     * Test return of registerService
+     */
+    public function testRegisterServiceClass(){
         $container = $this->_buildContainer();
-        $array = array(
-            $container->register('object1', new \stdClass()),
-            $container->register('date1', function(){ return new \DateTime();}),
-            $container->register('array1', '\ArrayObject'),
-            $container->register('\Exception')
-        );
-
-        $this->assertEquals(4, count($array), 'Error, container must registered 4 instances and return 4 differents ids');
+        $result = $container->registerService('dateObject', '\DateTime');
+        $this->assertSame($container, $result, 'Error, the container must return $this after `registerService`');
     }
 
     /**
-     * Test container to retrieve an instance of the required element, and build it if needed
+     * Test return of registerService
      */
-    public function testGet(){
+    public function testRegisterServiceArray(){
+        try{
+            $container = $this->_buildContainer();
+            $container->registerService('dateObject', array());
+        }
+        catch(Exception\IllegalService $exception){
+            return;
+        }
+        catch(\Exception $e){}
+
+        $this->fail('Error, the container object must throws an Exception\IllegalService exception if the service is invalid');
+    }
+
+    /**
+     * Test return of registerService with non invokable object
+     */
+    public function testRegisterServiceNonInvokableObject(){
+        try{
+            $container = $this->_buildContainer();
+            $container->registerService('dateObject', new \DateTime());
+        }
+        catch(Exception\IllegalService $exception){
+            return;
+        }
+        catch(\Exception $e){}
+
+        $this->fail('Error, the container object must throws an Exception\IllegalService exception if the object is not invokable');
+    }
+
+    /**
+     * Test return of registerService
+     */
+    public function testRegisterServiceInvokableObject(){
+        $container = $this->_buildContainer();
+        $result = $container->registerService('dateObject', new InvokableClass());
+        $this->assertSame($container, $result, 'Error, the container must return $this after `registerService`');
+    }
+
+    /**
+     * Test return of registerService
+     */
+    public function testRegisterServiceFunction(){
+        $container = $this->_buildContainer();
+        $result = $container->registerService('dateObject', function(){return new \DateTime();});
+        $this->assertSame($container, $result, 'Error, the container must return $this after `registerService`');
+    }
+
+    /**
+     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
+     */
+    public function testTestInstanceBadIdentifier(){
+        try{
+            $this->_buildContainer()->testEntry('##');
+        }
+        catch(Exception\IllegalName $exception){
+            return;
+        }
+        catch(\Exception $e){}
+
+        $this->fail('Error, the container object must throws an Exception\IllegalName exception');
+    }
+
+    /**
+     * test behavior of testInstance(), return true if an instance of service exist
+     */
+    public function testTestInstance(){
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
-        $object = $container->get('object1');
-        $this->assertInstanceOf('stdClass', $object);
-        $date = $container->get('date1');
-        $this->assertInstanceOf('DateTime', $date);
-        $array = $container->get('array1');
-        $this->assertInstanceOf('ArrayObject', $array);
-        $exception = $container->get('Exception');
-        $this->assertInstanceOf('\Exception', $exception);
+        $this->assertTrue($container->testEntry('instanceClass'));
+        $this->assertTrue($container->testEntry('instanceObject'));
+        $this->assertTrue($container->testEntry('instanceFunction'));
+        $this->assertTrue($container->testEntry('serviceClass'));
+        $this->assertTrue($container->testEntry('serviceObject'));
+        $this->assertTrue($container->testEntry('serviceFunction'));
+        $this->assertFalse($container->testEntry('foo'));
     }
 
     /**
-     * Test if with several gets, the instance returned is the original instance
+     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
      */
-    public function testSeveralGetsWithObject(){
+    public function testGetBadIdentifier(){
+        try{
+            $this->_buildContainer()->get('##');
+        }
+        catch(Exception\IllegalName $exception){
+            return;
+        }
+        catch(\Exception $e){}
+
+        $this->fail('Error, the container object must throws an Exception\IllegalName exception');
+    }
+
+    /**
+     * Test to get an instance
+     */
+    public function testGetInstanceClass(){
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
-        $obj1 = $container->get('object1');
-        $obj2 = $container->get('object1');
-        $obj3 = $container->get('object1');
-
-        $this->assertSame($obj1, $obj2, 'Error, the container must only build the instance ar first call');
-        $this->assertSame($obj1, $obj3, 'Error, the container must only build the instance ar first call');
-        $this->assertInstanceOf('stdClass', $obj1);
+        $obj1 = $container->get('instanceClass');
+        $obj2 = $container->get('instanceClass');
+        $this->assertEquals(get_class($obj1), get_class($obj2), 'Error, container, must return the same object for a registered instance');
+        $this->assertSame($obj1, $obj2, 'Error, container, must return the same object for a registered instance');
     }
 
     /**
-     * Test if the factory is a closure, it is called only the first time
+     * Test to get an instance
      */
-    public function testSeveralGetsWithClosure(){
+    public function testGetInstanceObject(){
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
-        $obj1 = $container->get('date1');
-        $obj2 = $container->get('date1');
-        $obj3 = $container->get('date1');
-
-        $this->assertSame($obj1, $obj2, 'Error, the container must only build the instance ar first call');
-        $this->assertSame($obj1, $obj3, 'Error, the container must only build the instance ar first call');
-        $this->assertInstanceOf('DateTime', $obj1);
+        $obj1 = $container->get('instanceObject');
+        $obj2 = $container->get('instanceObject');
+        $this->assertEquals(get_class($obj1), get_class($obj2), 'Error, container, must return the same object for a registered instance');
+        $this->assertSame($obj1, $obj2, 'Error, container, must return the same object for a registered instance');
     }
 
     /**
-     * Test if the factory is only the class name, it is builded only the first time
+     * Test to get an instance
      */
-    public function testSeveralGetsWithClassName(){
+    public function testGetInstanceFunction(){
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
-        $obj1 = $container->get('array1');
-        $obj2 = $container->get('array1');
-        $obj3 = $container->get('array1');
-
-        $this->assertSame($obj1, $obj2, 'Error, the container must only build the instance ar first call');
-        $this->assertSame($obj1, $obj3, 'Error, the container must only build the instance ar first call');
-        $this->assertInstanceOf('ArrayObject', $obj1);
+        $obj1 = $container->get('instanceFunction');
+        $obj2 = $container->get('instanceFunction');
+        $this->assertEquals(get_class($obj1), get_class($obj2), 'Error, container, must return the same object for a registered instance');
+        $this->assertSame($obj1, $obj2, 'Error, container, must return the same object for a registered instance');
+        $this->assertInstanceOf('Closure', $obj1);
     }
 
     /**
-     * Test if the factory is only the class name as identifier, it is builded only the first type
+     * Test to get a service behavior
      */
-    public function testSeveralGetsWithClassNameAsIdentifier(){
+    public function testGetServiceClass(){
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
-        $obj1 = $container->get('Exception');
-        $obj2 = $container->get('Exception');
-        $obj3 = $container->get('Exception');
-
-        $this->assertSame($obj1, $obj2, 'Error, the container must only build the instance ar first call');
-        $this->assertSame($obj1, $obj3, 'Error, the container must only build the instance ar first call');
-        $this->assertInstanceOf('\Exception', $obj1);
+        $obj1 = $container->get('serviceClass');
+        $obj2 = $container->get('serviceClass');
+        $this->assertEquals(get_class($obj1), get_class($obj2), 'Error, container, must return the same object for a registered instance');
+        $this->assertNotSame($obj1, $obj2, 'Error, container, must return two different objects for a same service');
     }
 
     /**
-     * Test get instance with params to passs to constructor
+     * Test to get a service behavior for invokable
      */
-    public function testGetWithParams(){
+    public function testGetServiceObject(){
         $container = $this->_buildContainer();
-        $container->register('closure1', function($a, $b, $c){ return new \ArrayObject(array($a, $b, $c));});
+        $this->_populateContainer($container);
 
-        $obj1 = $container->get('closure1', 1, 2, 3); //First call, return array object [1, 2, 3]
-        $obj2 = $container->get('closure1', 4, 5, 6); //Second call, return the previous object, with 1, 2, 3
+        $obj1 = $container->get('instanceObject');
+        $this->assertEquals('\stdClass', $obj1, 'Error, for a service, the invokable object must be called and not returned');
+    }
 
-        $this->assertEquals(
-            array(1, 2, 3),
-            $obj1->getArrayCopy()
-        );
+    /**
+     * Test to get a service behavior for anonymous function
+     */
+    public function testGetServiceFunction(){
+        $container = $this->_buildContainer();
+        $this->_populateContainer($container);
 
-        $this->assertEquals(
-            array(1, 2, 3),
-            $obj2->getArrayCopy(),
-            'Error, the container must not rebuild the instance for second call, even if arguments change'
-        );
+        $obj1 = $container->get('serviceFunction');
+        $this->assertEquals('\DateTime', $obj1, 'Error, for a service, the invokable object must be called and not returned');
     }
 
     /**
@@ -221,18 +335,20 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     public function testConfigure(){
         $container = $this->_buildContainer();
         $container->configure(
-            new \ArrayObject(
-                array(
-                    'object1'   => new \stdClass(),
-                    'date1'     => function(){ return new \DateTime(); },
-                    'exception1'=> '\Exception'
+            array(
+                'instances' => array(
+                    'instanceClass'  => '\DateTime',
+                    'date1'         => function(){ return new \DateTime(); }
+                ),
+                'services'  => array(
+                    'stdClass'         => function(){ return new \stdClass(); }
                 )
             )
         );
 
-        $this->assertInstanceOf('stdClass', $container->get('object1'));
-        $this->assertInstanceOf('DateTime', $container->get('date1'));
-        $this->assertInstanceOf('Exception', $container->get('exception1'));
+        $this->assertInstanceOf('\DateTime', $container->get('instanceClass'));
+        $this->assertInstanceOf('\Closure', $container->get('date1'));
+        $this->assertInstanceOf('\stdClass', $container->get('stdClass'));
     }
 
     /**
@@ -243,11 +359,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
         try{
             $container->unregister('##');
         }
-        catch(\Exception $e){
-            return true;
+        catch(Exception\IllegalName $exception){
+            return;
         }
+        catch(\Exception $e){}
 
-        $this->fail('Error, the idenfier must be a valid php var name http://www.php.net/manual/en/language.variables.basics.php');
+        $this->fail('Error, the identifier must be a valid php var name http://www.php.net/manual/en/language.variables.basics.php');
     }
 
     /**
@@ -255,18 +372,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
      */
     public function testUnregister(){
         $container = $this->_buildContainer();
-        $id = $container->register('object1', new \stdClass());
-        $this->assertInstanceOf('stdClass', $container->get('object1'));
+        $this->_populateContainer($container);
+        $this->assertTrue($container->testEntry('instanceObject'));
 
-        $container->unregister($id);
-        try{
-            $container->get('object1');
-        }
-        catch(\Exception $e){
-            return;
-        }
-
-        $this->fail('Error, if the instance does not exist or it was removed, the container must throw an exception');
+        $container->unregister('instanceObject');
+        $this->assertFalse($container->testEntry('instanceObject'));
     }
 
     /**
@@ -279,7 +389,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
         $list = $container->listDefinitions();
         $this->assertEquals(
             array_values($list),
-            array('object1', 'date1', 'array1', 'Exception'),
+            array('instanceClass', 'instanceObject', 'instanceFunction', 'serviceClass', 'serviceObject', 'serviceFunction'),
             'Error, the container method "listContainer" must return all instance name with there unique id'
         );
     }

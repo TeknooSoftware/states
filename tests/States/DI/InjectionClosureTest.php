@@ -1,7 +1,7 @@
 <?php
 /**
  * Created by JetBrains PhpStorm.
- * Author : Richard Déloge, richard@uni-alteri.fr, www.uni-alteri.fr
+ * Author : Richard Déloge, richard@uni-alteri.fr, agence.net.ua
  * Date: 27/05/13
  * Time: 16:25
  */
@@ -19,10 +19,19 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
 
     /**
      * Return a valid InjectionClosureInterface object
-     * @return InjectionClosureInterface
+     * @param callable $closure
+     * @return InjectionClosure
      */
     protected function _buildClosure(\Closure $closure=null){
+        if(null === $closure){
+            $closure = function(){
+                return array_reverse(func_get_args());
+            };
+        }
 
+        $injectionClosureObject = new InjectionClosure();
+        $injectionClosureObject->setClosure($closure);
+        return $injectionClosureObject;
     }
 
     /**
@@ -31,11 +40,13 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
      */
     public function testBadClosureConstruct(){
         try{
-            $a = new InjectionClosure(new stdClass);
+            $a = new InjectionClosure();
+            $a->setClosure(new \stdClass());
         }
-        catch(\Exception $e){
-            return true;
+        catch(Exception\InvalidArgument $exception){
+            return;
         }
+        catch(\Exception $e){}
 
         $this->fail('Error, the Injection closure object must throw an exception if the object is not a closure');
     }
@@ -82,9 +93,10 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_buildClosure()->saveStaticProperty('##', 'foo');
         }
-        catch(\Exception $e){
-            return true;
+        catch(Exception\IllegalName $exception){
+            return;
         }
+        catch(\Exception $e){}
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -111,9 +123,10 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_buildClosure()->saveStaticProperty('##', 'foo');
         }
-        catch(\Exception $e){
-            return true;
+        catch(Exception\IllegalName $exception){
+            return;
         }
+        catch(\Exception $e){}
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -145,9 +158,10 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_buildClosure()->deleteStaticProperty('##');
         }
-        catch(\Exception $e){
-            return true;
+        catch(Exception\IllegalName $exception){
+            return;
         }
+        catch(\Exception $e){}
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -164,9 +178,10 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
         try{
             $closure->getStaticProperty('static1');
         }
-        catch(\Exception $e){
+        catch(Exception\IllegalName $exception){
             return;
         }
+        catch(\Exception $e){}
 
         $this->fail('Error, if the static attribute does not exist, the injector must throw an exception');
     }
@@ -178,9 +193,10 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_buildClosure()->testStaticProperty('##');
         }
-        catch(\Exception $e){
-            return true;
+        catch(Exception\IllegalName $exception){
+            return;
         }
+        catch(\Exception $e){}
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }

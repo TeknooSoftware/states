@@ -42,6 +42,7 @@ interface ContainerInterface{
      * @param object|callable|string $instance
      * @return $this
      * @throws Exception\ClassNotFound if $instance is a non-existent class name
+     * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      */
     public function registerInstance($name, $instance);
 
@@ -60,7 +61,7 @@ interface ContainerInterface{
      * @param string $name
      * @return boolean
      */
-    public function testInstance($name);
+    public function testEntry($name);
 
     /**
      * Remove an entry from the container
