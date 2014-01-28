@@ -19,6 +19,8 @@
  */
 
 namespace UniAlteri\States\Loader;
+use \UniAlteri\States\DI;
+use \UniAlteri\States;
 
 class Factory implements  FactoryInterface{
     /**
@@ -76,21 +78,21 @@ class Factory implements  FactoryInterface{
         }
 
         if(!file_exists($path)){
-            throw new \UniAlteri\States\Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
+            throw new Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
         }
     }
 
     /**
      * Register a DI container for this object
-     * @param \UniAlteri\States\DI\ContainerInterface $container
+     * @param DI\ContainerInterface $container
      */
-    public function setDIContainer(\UniAlteri\States\DI\ContainerInterface $container){
+    public function setDIContainer(DI\ContainerInterface $container){
         $this->_diContainer = $container;
     }
 
     /**
      * Return the DI Container used for this object
-     * @return \UniAlteri\States\DI\ContainerInterface
+     * @return DI\ContainerInterface
      */
     public function getDIContainer(){
         return $this->_diContainer;
@@ -99,18 +101,19 @@ class Factory implements  FactoryInterface{
     /**
      * List all available state object of the stated class
      * @return string[]
+     * @throws Exception\UnavailablePath if the path is not accessible
      */
     public function listStates(){
         //Check if states are stored into the standardized path
-        $statesPath = $this->_pathString.DIRECTORY_SEPARATOR.FactoryInterface::StatesPath;
+        $statesPath = $this->_pathString.DIRECTORY_SEPARATOR.FactoryInterface::STATES_PATH;
         if(!is_dir($statesPath)){
-            throw new \UniAlteri\States\Exception\UnavailablePath('Error, the path "'.$statesPath.'" was not found');
+            throw new Exception\UnavailablePath('Error, the path "'.$statesPath.'" was not found');
         }
 
         //Check if the path is available
         $hD = opendir($statesPath);
         if(false === $hD){
-            throw new \UniAlteri\States\Exception\UnavailablePath('Error, the path "'.$statesPath.'" is not available');
+            throw new Exception\UnavailablePath('Error, the path "'.$statesPath.'" is not available');
         }
 
         //Extract all states (No check class exists)
@@ -138,22 +141,24 @@ class Factory implements  FactoryInterface{
      * Load and build the required state object of the stated class
      * @param string $stateName
      * @return \UniAlteri\States\States\StateInterface
+     * @throws Exception\UnavailableState if the state was not found or can not be loaded
+     * @throws Exception\IllegalState if the state is invalid (not implement the interface)
      */
     public function loadState($stateName){
-        $statePath = $this->_pathString.DIRECTORY_SEPARATOR.FactoryInterface::StatesPath.DIRECTORY_SEPARATOR.$stateName.'.php';
+        $statePath = $this->_pathString.DIRECTORY_SEPARATOR.FactoryInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php';
 
         if(!is_readable($statePath)){
-            throw new \UniAlteri\States\Exception\UnavailableState('Error, the state "'.$stateName.'" was not found');
+            throw new Exception\UnavailableState('Error, the state "'.$stateName.'" was not found');
         }
 
         include_once($statePath);
         if(!class_exists($stateName)){
-            throw new \UniAlteri\States\Exception\UnavailableState('Error, the state "'.$stateName.'" is not available');
+            throw new Exception\UnavailableState('Error, the state "'.$stateName.'" is not available');
         }
 
         $stateObject = new $stateName;
-        if(!$stateObject instanceof \UniAlteri\States\States\StateInterface){
-            throw new \UniAlteri\States\Exception\IllegalState('Error, the state "'.$stateName.'" does not implement the interface "\UniAlteri\States\States\StateInterface"');
+        if(!$stateObject instanceof States\States\StateInterface){
+            throw new Exception\IllegalState('Error, the state "'.$stateName.'" does not implement the interface "\UniAlteri\States\States\StateInterface"');
         }
 
         return $stateObject;
@@ -165,9 +170,9 @@ class Factory implements  FactoryInterface{
      */
     public function loadFactory(){
         //Build the class file path for the factory (standardized into FactoryInterface)
-        $factoryPath = $this->_statedClassName.DIRECTORY_SEPARATOR.FactoryInterface::FactoryFileName;
+        $factoryPath = $this->_statedClassName.DIRECTORY_SEPARATOR.FactoryInterface::FACTORY_FILE_NAME;
         //Build the class name
-        $factoryClassName = $this->_statedClassName.FactoryInterface::FactorySuffixClassName;
+        $factoryClassName = $this->_statedClassName.FactoryInterface::FACTORY_SUFFIX_CLASS_NAME;
 
         //Check if the Stated class has its own factory
         if(true === $this->_checkClassExists($factoryClassName, $factoryPath)){
@@ -195,9 +200,9 @@ class Factory implements  FactoryInterface{
      */
     public function loadProxy(){
         //Build the class file path for the proxy (standardized into ProxyInterface)
-        $proxyPath = $this->_statedClassName.DIRECTORY_SEPARATOR.FactoryInterface::ProxyFileName;
+        $proxyPath = $this->_statedClassName.DIRECTORY_SEPARATOR.FactoryInterface::PROXY_FILE_NAME;
         //Build the class name
-        $proxyClassName = $this->_statedClassName.FactoryInterface::ProxySuffixClassName;
+        $proxyClassName = $this->_statedClassName.FactoryInterface::PROXY_SUFFIX_CLASS_NAME;
 
         //Check if the Stated class has its own proxy
         if(true === $this->_checkClassExists($proxyClassName, $proxyPath)){

@@ -19,37 +19,38 @@
  */
 
 namespace UniAlteri\States\Loader;
+use \UniAlteri\States\DI;
 
 interface FactoryInterface{
     /**
      * Name of Factory Loader (service to find and load elements of stated class)
      */
-    const diFactoryName = 'FactoryLoader';
+    const DI_FACTORY_NAME = 'FactoryLoader';
 
     /**
      * Folder where stored states of the stated class
      */
-    const StatesPath = 'States';
+    const STATES_PATH = 'States';
 
     /**
      * PHP File of Proxy into each stated class
      */
-    const ProxyFileName = 'Proxy.php';
+    const PROXY_FILE_NAME = 'Proxy.php';
 
     /**
      * PHP File of Factory into each stated class
      */
-    const FactoryFileName = 'Factory.php';
+    const FACTORY_FILE_NAME = 'Factory.php';
 
     /**
      * Suffix name of the Proxy PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
      */
-    const ProxySuffixClassName = 'Proxy';
+    const PROXY_SUFFIX_CLASS_NAME = 'Proxy';
 
     /**
      * Suffix name of the Factory PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
      */
-    const FactorySuffixClassName = 'Factory';
+    const FACTORY_SUFFIX_CLASS_NAME = 'Factory';
 
     /**
      * Initialize the factory loader
@@ -67,7 +68,7 @@ interface FactoryInterface{
      * Register a DI container for this object
      * @param \UniAlteri\States\DI\ContainerInterface $container
      */
-    public function setDIContainer(\UniAlteri\States\DI\ContainerInterface $container);
+    public function setDIContainer(DI\ContainerInterface $container);
 
     /**
      * Return the DI Container used for this object

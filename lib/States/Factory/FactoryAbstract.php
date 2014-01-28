@@ -55,7 +55,7 @@ class FactoryAbstract implements  FactoryInterface{
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
     protected function _getLoader(){
-        $factoryLoader = $this->_diContainer->get(Loader\FactoryInterface::diFactoryName);
+        $factoryLoader = $this->_diContainer->get(Loader\FactoryInterface::DI_FACTORY_NAME);
         if(!$factoryLoader instanceof Loader\FactoryInterface){
             throw new Exception\UnavailableLoader('Error, the loader is not available');
         }
@@ -84,7 +84,7 @@ class FactoryAbstract implements  FactoryInterface{
 
         //Check if the default state is available
         $statesList = array_combine($statesList, $statesList);
-        $defaultStatedName = Proxy\ProxyInterface::DefaultStateName;
+        $defaultStatedName = Proxy\ProxyInterface::DEFAULT_STATE_NAME;
         if(!isset($statesList[$defaultStatedName])){
             throw new Exception\StateNotFound('Error, the state "'.$defaultStatedName.'" was not found in this stated class');
         }

@@ -31,7 +31,7 @@ interface ProxyInterface extends
     \IteratorAggregate,
     \Countable
 {
-    const DefaultStateName = 'Default';
+    const DEFAULT_STATE_NAME = 'Default';
 
     /***********************
      *** States Management *
