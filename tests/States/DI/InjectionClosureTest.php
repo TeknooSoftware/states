@@ -174,16 +174,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
         $closure->saveStaticProperty('static1', 'foo');
         $this->assertEquals('foo', $closure->getStaticProperty('static1'));
         $closure->deleteStaticProperty('static1');
-
-        try{
-            $closure->getStaticProperty('static1');
-        }
-        catch(Exception\IllegalName $exception){
-            return;
-        }
-        catch(\Exception $e){}
-
-        $this->fail('Error, if the static attribute does not exist, the injector must throw an exception');
+        $this->assertNull($closure->getStaticProperty('static1'));
     }
 
     /**

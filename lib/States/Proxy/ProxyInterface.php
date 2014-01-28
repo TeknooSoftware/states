@@ -21,6 +21,7 @@
 namespace UniAlteri\States\Proxy;
 
 use \UniAlteri\States;
+use \UniAlteri\States\DI;
 
 interface ProxyInterface extends
     States\ObjectInterface,
@@ -90,6 +91,13 @@ interface ProxyInterface extends
      * @return string[]
      */
     public function listActivesStates();
+
+    /**
+     * Return the current injection closure object to access to its static properties
+     * @return DI\InjectionClosureInterface
+     * @throws Exception\UnavailableClosure
+     */
+    public function getStatic();
 
     /*******************
      * Methods Calling *

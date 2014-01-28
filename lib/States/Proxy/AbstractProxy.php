@@ -49,12 +49,19 @@ class AbstractProxy implements ProxyInterface{
     protected $_states = null;
 
     /**
+     * Current closure called, if not closure called, return null
+     * @var DI\InjectionClosureInterface
+     */
+    protected $_currentInjectionClosure = null;
+
+    /**
      * Internal method to find closure and call it
      * @param string $methodName
      * @param array $arguments of the call
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState if the required state is not available
+     * @throws \Exception
      */
     protected function _callThroughState($methodName, array $arguments){
         $methodsWithStatesArray = explode('Of', $methodName);
@@ -62,8 +69,25 @@ class AbstractProxy implements ProxyInterface{
             //No specific state required, browse all enable state to find the method
             foreach($this->_activesStates as $activeStateObject){
                 if(true === $activeStateObject->testMethod($methodName)){
-                    //Method found, call it
-                    return call_user_func_array($activeStateObject->getClosure($methodName, $this), $arguments);
+                    //Method found, extract it
+                    $callingClosure = $activeStateObject->getClosure($methodName, $this);
+                    //Change current injection
+                    $previousClosure = $this->_currentInjectionClosure;
+                    $this->_currentInjectionClosure = $callingClosure;
+
+                    //call it
+                    try{
+                        $returnValues = call_user_func_array($callingClosure, $arguments);
+                    }
+                    catch(\Exception $e){
+                        //Restore previous closure
+                        $this->_currentInjectionClosure = $previousClosure;
+                        throw $e;
+                    }
+
+                    //Restore previous closure
+                    $this->_currentInjectionClosure = $previousClosure;
+                    return $returnValues;
                 }
             }
 
@@ -81,8 +105,25 @@ class AbstractProxy implements ProxyInterface{
 
             $activeStateObject = $this->_activesStates[$statesName];
             if(true === $activeStateObject->testMethod($methodName)){
-                //Method found, call it
-                return call_user_func_array($activeStateObject->getClosure($methodName, $this), $arguments);
+                //Method found, extract it
+                $callingClosure = $activeStateObject->getClosure($methodName, $this);
+                //Change current injection
+                $previousClosure = $this->_currentInjectionClosure;
+                $this->_currentInjectionClosure = $callingClosure;
+
+                //Call it
+                try{
+                    $returnValues = call_user_func_array($callingClosure, $arguments);
+                }
+                catch(\Exception $e){
+                    //Restore previous closure
+                    $this->_currentInjectionClosure = $previousClosure;
+                    throw $e;
+                }
+
+                //Restore previous closure
+                $this->_currentInjectionClosure = $previousClosure;
+                return $returnValues;
             }
 
             throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available for the state "'.$statesName.'"');
@@ -245,6 +286,19 @@ class AbstractProxy implements ProxyInterface{
      */
     public function listActivesStates(){
         return array_keys($this->_activesStates->getArrayCopy());
+    }
+
+    /**
+     * Return the current injection closure object to access to its static properties
+     * @return DI\InjectionClosureInterface
+     * @throws Exception\UnavailableClosure
+     */
+    public function getStatic(){
+        if(!$this->_currentInjectionClosure instanceof DI\InjectionClosureInterface){
+            throw new Exception\UnavailableClosure('Error, there a no active closure currently into the proxy');
+        }
+
+        return $this->_currentInjectionClosure;
     }
 
     /*******************

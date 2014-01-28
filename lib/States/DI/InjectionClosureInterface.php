@@ -60,7 +60,7 @@ interface InjectionClosureInterface{
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
-    public function saveStaticProperty($name, $value);
+    public function saveProperty($name, $value);
 
     /**
      * Remove a static property
@@ -68,7 +68,7 @@ interface InjectionClosureInterface{
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
-    public function deleteStaticProperty($name);
+    public function deleteProperty($name);
 
     /**
      * Return to the closure a static property
@@ -76,7 +76,7 @@ interface InjectionClosureInterface{
      * @return mixed
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
-    public function getStaticProperty($name);
+    public function getProperty($name);
 
     /**
      * Check if a static property is stored
@@ -84,5 +84,5 @@ interface InjectionClosureInterface{
      * @return boolean
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
-    public function testStaticProperty($name);
+    public function testProperty($name);
 }
