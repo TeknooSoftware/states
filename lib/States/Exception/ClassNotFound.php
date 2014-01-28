@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class ClassNotFound extends Standard{
+class ClassNotFound extends Standard
+{
 
 }

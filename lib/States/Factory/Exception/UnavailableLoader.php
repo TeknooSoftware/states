@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\Factory\Exception;
 
-class UnavailableLoader extends \UniAlteri\States\Exception\UnavailableLoader{
+class UnavailableLoader extends \UniAlteri\States\Exception\UnavailableLoader
+{
 
 }

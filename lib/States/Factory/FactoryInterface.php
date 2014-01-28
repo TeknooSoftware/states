@@ -23,7 +23,8 @@ namespace UniAlteri\States\Factory;
 use \UniAlteri\States;
 use \UniAlteri\States\DI;
 
-interface FactoryInterface{
+interface FactoryInterface
+{
     const OBJECT_LOADER_KEY = 'objectLoader';
 
     /**

@@ -20,5 +20,6 @@
 
 namespace UniAlteri\States\Factory;
 
-class Standard extends FactoryAbstract{
+class Standard extends FactoryAbstract
+{
 }

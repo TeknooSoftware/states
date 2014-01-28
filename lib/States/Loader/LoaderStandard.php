@@ -20,7 +20,8 @@
 
 namespace UniAlteri\States\Loader;
 
-class Loader implements  LoaderInterface{
+class Loader implements LoaderInterface
+{
 
     /**
      * List of path to include for this loader

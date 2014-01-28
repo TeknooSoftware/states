@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\Proxy\Exception;
 
-class StateNotFound extends \UniAlteri\States\Exception\StateNotFound{
+class StateNotFound extends \UniAlteri\States\Exception\StateNotFound
+{
 
 }

@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class IllegalService extends Standard{
+class IllegalService extends Standard
+{
 
 }

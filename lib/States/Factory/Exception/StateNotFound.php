@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\Factory\Exception;
 
-class StateNotFound extends \UniAlteri\States\Exception\StateNotFound{
+class StateNotFound extends \UniAlteri\States\Exception\StateNotFound
+{
 
 }

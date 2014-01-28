@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\Loader\Exception;
 
-class EmptyStack extends \UniAlteri\States\Exception\EmptyStack{
+class EmptyStack extends \UniAlteri\States\Exception\EmptyStack
+{
 
 }

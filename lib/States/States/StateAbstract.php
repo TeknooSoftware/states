@@ -24,10 +24,12 @@
  */
 
 namespace UniAlteri\States\States;
+
 use \UniAlteri\States\DI;
 use \UniAlteri\States\Proxy;
 
-abstract class StateAbstract implements StateInterface{
+abstract class StateAbstract implements StateInterface
+{
 
     /**
      * DI Container to use for this object

@@ -22,7 +22,8 @@ namespace UniAlteri\States\Loader;
 use \UniAlteri\States\DI;
 use \UniAlteri\States;
 
-class Factory implements  FactoryInterface{
+class Factory implements  FactoryInterface
+{
     /**
      * @var string
      */

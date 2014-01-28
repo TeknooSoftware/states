@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class UnavailablePhar extends Standard{
+class UnavailablePhar extends Standard
+{
 
 }

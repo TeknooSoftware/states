@@ -20,7 +20,8 @@
 
 namespace UniAlteri\States\DI;
 
-interface ContainerInterface{
+interface ContainerInterface
+{
 
     /**
      * To support object cloning : All registry must be cloning, but not theirs values

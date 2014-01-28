@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class IllegalProxy extends Standard{
+class IllegalProxy extends Standard
+{
 
 }

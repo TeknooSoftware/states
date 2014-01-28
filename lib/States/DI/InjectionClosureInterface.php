@@ -20,7 +20,8 @@
 
 namespace UniAlteri\States\DI;
 
-interface InjectionClosureInterface{
+interface InjectionClosureInterface
+{
     /**
      * Register a DI container for this object
      * @param ContainerInterface $container

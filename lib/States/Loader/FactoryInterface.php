@@ -21,7 +21,8 @@
 namespace UniAlteri\States\Loader;
 use \UniAlteri\States\DI;
 
-interface FactoryInterface{
+interface FactoryInterface
+{
     /**
      * Name of Factory Loader (service to find and load elements of stated class)
      */

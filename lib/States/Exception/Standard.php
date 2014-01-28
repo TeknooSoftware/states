@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class Standard extends \Exception{
+class Standard extends \Exception
+{
 
 }

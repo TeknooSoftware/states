@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\DI\Exception;
 
-class IllegalName extends \UniAlteri\States\Exception\IllegalName{
+class IllegalName extends \UniAlteri\States\Exception\IllegalName
+{
 
 }

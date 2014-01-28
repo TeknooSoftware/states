@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\Proxy\Exception;
 
-class MethodNotImplemented extends \UniAlteri\States\Exception\MethodNotImplemented{
+class MethodNotImplemented extends \UniAlteri\States\Exception\MethodNotImplemented
+{
 
 }

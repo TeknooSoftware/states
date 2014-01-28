@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class UnavailableLoader extends Standard{
+class UnavailableLoader extends Standard
+{
 
 }

@@ -19,10 +19,12 @@
  */
 
 namespace UniAlteri\States\States;
+
 use \UniAlteri\States\DI;
 use \UniAlteri\States\Proxy;
 
-interface StateInterface{
+interface StateInterface
+{
     /**
      * Identifier into DI Container to generate a new Injection Closure Container
      */

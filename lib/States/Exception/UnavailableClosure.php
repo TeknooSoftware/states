@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class UnavailableClosure extends Standard{
+class UnavailableClosure extends Standard
+{
 
 }

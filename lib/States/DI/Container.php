@@ -20,7 +20,8 @@
 
 namespace UniAlteri\States\DI;
 
-class Container extends \Pimple implements ContainerInterface{
+class Container extends \Pimple implements ContainerInterface
+{
 
     /**
      * To support object cloning : All registry must be cloning, but not theirs values

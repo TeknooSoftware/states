@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class EmptyStack extends Standard{
+class EmptyStack extends Standard
+{
 
 }

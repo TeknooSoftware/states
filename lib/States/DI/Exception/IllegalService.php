@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\DI\Exception;
 
-class IllegalService extends \UniAlteri\States\Exception\IllegalService{
+class IllegalService extends \UniAlteri\States\Exception\IllegalService
+{
 
 }

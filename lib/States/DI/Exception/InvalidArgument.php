@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\DI\Exception;
 
-class InvalidArgument extends \UniAlteri\States\Exception\InvalidArgument{
+class InvalidArgument extends \UniAlteri\States\Exception\InvalidArgument
+{
 
 }

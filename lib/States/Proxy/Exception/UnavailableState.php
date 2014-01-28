@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\Proxy\Exception;
 
-class UnavailableState extends \UniAlteri\States\Exception\UnavailableState{
+class UnavailableState extends \UniAlteri\States\Exception\UnavailableState
+{
 
 }

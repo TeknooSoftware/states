@@ -20,7 +20,8 @@
 
 namespace UniAlteri\States\DI;
 
-class InjectionClosure implements InjectionClosureInterface{
+class InjectionClosure implements InjectionClosureInterface
+{
 
     /**
      * DI Container to use with this closure

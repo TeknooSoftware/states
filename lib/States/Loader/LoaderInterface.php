@@ -20,7 +20,8 @@
 
 namespace UniAlteri\States\Loader;
 
-interface LoaderInterface{
+interface LoaderInterface
+{
 
     /**
      * Method to add a path on the list of location where find class

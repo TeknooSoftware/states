@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class MethodNotImplemented extends Standard{
+class MethodNotImplemented extends Standard
+{
 
 }

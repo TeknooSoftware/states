@@ -22,7 +22,8 @@ namespace UniAlteri\States\Proxy;
 use \UniAlteri\States\DI;
 use \UniAlteri\States;
 
-class AbstractProxy implements ProxyInterface{
+class AbstractProxy implements ProxyInterface
+{
 
     /**
      * DI Container to use for this object

@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class InvalidArgument extends Standard{
+class InvalidArgument extends Standard
+{
 
 }

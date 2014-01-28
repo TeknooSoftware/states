@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class UnavailablePath extends Standard{
+class UnavailablePath extends Standard
+{
 
 }

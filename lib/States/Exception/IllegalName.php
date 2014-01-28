@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class IllegalName extends Standard{
+class IllegalName extends Standard
+{
 
 }

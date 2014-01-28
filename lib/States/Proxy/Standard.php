@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\Proxy;
 
-class Standard extends AbstractProxy{
+class Standard extends AbstractProxy
+{
 
 }

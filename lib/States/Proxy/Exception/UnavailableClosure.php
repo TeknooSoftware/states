@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Proxy\Exception;
 
-class UnavailableClosure extends \UniAlteri\States\Exception\UnavailableClosure{
+class UnavailableClosure extends \UniAlteri\States\Exception\UnavailableClosure
+{
 
 }

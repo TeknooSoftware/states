@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\Loader\Exception;
 
-class UnavailablePath extends \UniAlteri\States\Exception\UnavailablePath{
+class UnavailablePath extends \UniAlteri\States\Exception\UnavailablePath
+{
 
 }

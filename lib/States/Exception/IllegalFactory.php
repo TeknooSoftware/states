@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class IllegalFactory extends Standard{
+class IllegalFactory extends Standard
+{
 
 }

@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\DI\Exception;
 
-class ClassNotFound extends \UniAlteri\States\Exception\ClassNotFound{
+class ClassNotFound extends \UniAlteri\States\Exception\ClassNotFound
+{
 
 }

@@ -21,7 +21,8 @@
 namespace UniAlteri\States;
 use \UniAlteri\States\DI;
 
-interface ObjectInterface{
+interface ObjectInterface
+{
     /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container

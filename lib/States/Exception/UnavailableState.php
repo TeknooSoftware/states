@@ -25,6 +25,7 @@
 
 namespace UniAlteri\States\Exception;
 
-class UnavailableState extends Standard{
+class UnavailableState extends Standard
+{
 
 }
