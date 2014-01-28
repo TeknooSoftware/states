@@ -38,7 +38,8 @@ class FactoryAbstract implements FactoryInterface
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
      */
-    public function setDIContainer(DI\ContainerInterface $container){
+    public function setDIContainer(DI\ContainerInterface $container)
+    {
         $this->_diContainer = $container;
     }
 
@@ -46,7 +47,8 @@ class FactoryAbstract implements FactoryInterface
      * Return the DI Container used for this object
      * @return DI\ContainerInterface
      */
-    public function getDIContainer(){
+    public function getDIContainer()
+    {
         return $this->_diContainer;
     }
 
@@ -55,9 +57,10 @@ class FactoryAbstract implements FactoryInterface
      * @return Loader\FactoryInterface
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
-    protected function _getLoader(){
+    protected function _getLoader()
+    {
         $factoryLoader = $this->_diContainer->get(Loader\FactoryInterface::DI_FACTORY_NAME);
-        if(!$factoryLoader instanceof Loader\FactoryInterface){
+        if (!$factoryLoader instanceof Loader\FactoryInterface) {
             throw new Exception\UnavailableLoader('Error, the loader is not available');
         }
 
@@ -72,7 +75,8 @@ class FactoryAbstract implements FactoryInterface
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
-    public function build($arguments=null, $stateName=null){
+    public function build($arguments=null, $stateName=null)
+    {
         //Get factory loader
         $factoryLoader = $this->_getLoader();
 
@@ -86,27 +90,26 @@ class FactoryAbstract implements FactoryInterface
         //Check if the default state is available
         $statesList = array_combine($statesList, $statesList);
         $defaultStatedName = Proxy\ProxyInterface::DEFAULT_STATE_NAME;
-        if(!isset($statesList[$defaultStatedName])){
+        if (!isset($statesList[$defaultStatedName])) {
             throw new Exception\StateNotFound('Error, the state "'.$defaultStatedName.'" was not found in this stated class');
         }
 
         //Check if the require state is available
-        if(null !== $stateName && !isset($statesList[$stateName])){
+        if (null !== $stateName && !isset($statesList[$stateName])) {
             throw new Exception\StateNotFound('Error, the state "'.$stateName.'" was not found in this stated class');
         }
 
         //Load each state into proxy
-        foreach($statesList as $loadingStateName){
+        foreach ($statesList as $loadingStateName) {
             $stateObject = $factoryLoader->loadState($loadingStateName);
             $stateObject->setDIContainer($diContainerObject);
             $proxyObject->registerState($loadingStateName, $stateObject);
         }
 
         //Switch to required state
-        if(null !== $stateName){
+        if (null !== $stateName) {
             $proxyObject->switchState($stateName);
-        }
-        else{
+        } else {
             $proxyObject->switchState($defaultStatedName);
         }
 

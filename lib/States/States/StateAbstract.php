@@ -65,8 +65,9 @@ abstract class StateAbstract implements StateInterface
      * Build the ReflectionClass for the current object
      * @return \ReflectionClass
      */
-    protected function _getReflectionClass(){
-        if(null === $this->_reflectionClass){
+    protected function _getReflectionClass()
+    {
+        if (null === $this->_reflectionClass) {
             $this->_reflectionClass = new \ReflectionClass(\get_class($this));
         }
 
@@ -77,7 +78,8 @@ abstract class StateAbstract implements StateInterface
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
      */
-    public function setDIContainer(DI\ContainerInterface $container){
+    public function setDIContainer(DI\ContainerInterface $container)
+    {
         $this->_diContainer = $container;
     }
 
@@ -85,7 +87,8 @@ abstract class StateAbstract implements StateInterface
      * Return the DI Container used for this object
      * @return DI\ContainerInterface
      */
-    public function getDIContainer(){
+    public function getDIContainer()
+    {
         return $this->_diContainer;
     }
 
@@ -93,8 +96,9 @@ abstract class StateAbstract implements StateInterface
      * Return an array of string listing all methods available in the state
      * @return string[]
      */
-    public function listMethods(){
-        if(null === $this->_methodsListArray){
+    public function listMethods()
+    {
+        if (null === $this->_methodsListArray) {
             //Extract methods
             $thisReflectionClass = $this->_getReflectionClass();
             $flags = \ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED | \ReflectionMethod::IS_PRIVATE;
@@ -113,10 +117,10 @@ abstract class StateAbstract implements StateInterface
 
             //Extracts methods' names
             $methodsFinalArray = new \ArrayObject();
-            foreach($methodsArray as $methodReflection){
+            foreach ($methodsArray as $methodReflection) {
                 //Store reflection into local cache
                 $methodNameString = $methodReflection->getName();
-                if(!isset($methodsNamesToIgnoreArray[$methodNameString])){
+                if (!isset($methodsNamesToIgnoreArray[$methodNameString])) {
                     $methodsFinalArray[] = $methodNameString;
                     $this->_reflectionsMethods[$methodNameString] = $methodReflection;
                 }
@@ -133,23 +137,22 @@ abstract class StateAbstract implements StateInterface
      * @param string $methodName
      * @return boolean
      */
-    public function testMethod($methodName){
+    public function testMethod($methodName)
+    {
         //Method is already extracted
-        if(isset($this->_reflectionsMethods[$methodName])){
-            if($this->_reflectionsMethods[$methodName] instanceof \ReflectionMethod){
+        if (isset($this->_reflectionsMethods[$methodName])) {
+            if ($this->_reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
                 return true;
-            }
-            else{
+            } else {
                 return false;
             }
         }
 
-        try{
+        try {
             //Try extract description
             $this->getMethodDescription($methodName);
             return true;
-        }
-        catch(\Exception $e){
+        } catch(\Exception $e) {
             //Method not found, store localy the result
             $this->_reflectionsMethods[$methodName] = false;
             return false;
@@ -162,23 +165,23 @@ abstract class StateAbstract implements StateInterface
      * @return \ReflectionMethod
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    public function getMethodDescription($methodName){
+    public function getMethodDescription($methodName)
+    {
         $thisReflectionClass = $this->_getReflectionClass();
 
         //Initialize ArrayObject to store Reflection Methods
-        if(!($this->_reflectionsMethods instanceof \ArrayObject)){
+        if (!($this->_reflectionsMethods instanceof \ArrayObject)) {
             $this->_reflectionsMethods = new \ArrayObject();
         }
 
-        try{
+        try {
             //Load Reflection Methods if it is not already done
-            if(!isset($this->_reflectionsMethods[$methodName])){
+            if (!isset($this->_reflectionsMethods[$methodName])) {
                 $this->_reflectionsMethods[$methodName] = $thisReflectionClass->getMethod($methodName);
             }
 
             return $this->_reflectionsMethods[$methodName];
-        }
-        catch(\Exception $e){
+        } catch(\Exception $e) {
             //Method not found
             throw new Exception\MethodNotImplemented(
                 'Method "'.$methodName.'" is not available for this state',
@@ -192,7 +195,8 @@ abstract class StateAbstract implements StateInterface
      * Build a new Injection Closure object
      * @return DI\InjectionClosureInterface
      */
-    protected function _buildInjectionClosureObject(){
+    protected function _buildInjectionClosureObject()
+    {
         return $this->getDIContainer()->get(StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER);
     }
 
@@ -203,13 +207,14 @@ abstract class StateAbstract implements StateInterface
      * @return DI\InjectionClosureInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    public function getClosure($methodName, Proxy\ProxyInterface $proxy){
-        if(!($this->_closuresObjects instanceof \ArrayObject)){
+    public function getClosure($methodName, Proxy\ProxyInterface $proxy)
+    {
+        if (!($this->_closuresObjects instanceof \ArrayObject)) {
             //Initialize locale closure cache
             $this->_closuresObjects = new \ArrayObject();
         }
 
-        if(!isset($this->_closuresObjects[$methodName])){
+        if (!isset($this->_closuresObjects[$methodName])) {
             //The closure is not already generated
             //Extract them
             $methodReflection = $this->getMethodDescription($methodName);

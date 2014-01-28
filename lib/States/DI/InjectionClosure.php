@@ -44,7 +44,8 @@ class InjectionClosure implements InjectionClosureInterface
     /**
      * To create a closure for DI Container with a support of persistent vars. (aka "static")
      */
-    public function __construct(){;
+    public function __construct()
+    {
         $this->_properties = new \ArrayObject();
     }
 
@@ -52,7 +53,8 @@ class InjectionClosure implements InjectionClosureInterface
      * Register a DI container for this object
      * @param ContainerInterface $container
      */
-    public function setDIContainer(ContainerInterface $container){
+    public function setDIContainer(ContainerInterface $container)
+    {
         $this->_diContainer = $container;
     }
 
@@ -60,7 +62,8 @@ class InjectionClosure implements InjectionClosureInterface
      * Return the DI Container used for this object
      * @return ContainerInterface
      */
-    public function getDIContainer(){
+    public function getDIContainer()
+    {
         return $this->_diContainer;
     }
 
@@ -68,7 +71,8 @@ class InjectionClosure implements InjectionClosureInterface
      * Execute the closure
      * @return mixed
      */
-    public function __invoke(){
+    public function __invoke()
+    {
         return \call_user_func_array($this->_closure, \func_get_args());
     }
 
@@ -77,9 +81,9 @@ class InjectionClosure implements InjectionClosureInterface
      * @param \Closure $closure
      * @return $this
      */
-    public function setClosure(\Closure $closure){
+    public function setClosure(\Closure $closure)
+    {
         $this->_closure = $closure;
-
         return $this;
     }
 
@@ -87,7 +91,8 @@ class InjectionClosure implements InjectionClosureInterface
      * Return the closure contained into this
      * @return \Closure
      */
-    public function getClosure(){
+    public function getClosure()
+    {
         return $this->_closure;
     }
 
@@ -97,8 +102,9 @@ class InjectionClosure implements InjectionClosureInterface
      * @return boolean
      * @throws Exception\IllegalName
      */
-    protected function _validatingName($name){
-        if(0 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_]*$#iS', $name)){
+    protected function _validatingName($name)
+    {
+        if (0 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_]*$#iS', $name)) {
             throw new Exception\IllegalName('Illegal name for static property "'.$name.'"');
         }
 
@@ -113,8 +119,9 @@ class InjectionClosure implements InjectionClosureInterface
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
-    public function saveProperty($name, $value){
-        if(true === $this->_validatingName($name)){
+    public function saveProperty($name, $value)
+    {
+        if (true === $this->_validatingName($name)) {
             $this->_properties->{$name} = $value;
         }
 
@@ -127,8 +134,9 @@ class InjectionClosure implements InjectionClosureInterface
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
-    public function deleteProperty($name){
-        if(true === $this->_validatingName($name) && isset($this->_properties->{$name})){
+    public function deleteProperty($name)
+    {
+        if (true === $this->_validatingName($name) && isset($this->_properties->{$name})) {
             unset($this->_properties->{$name});
         }
 
@@ -141,8 +149,9 @@ class InjectionClosure implements InjectionClosureInterface
      * @return mixed
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
-    public function getProperty($name){
-        if(true === $this->_validatingName($name) && isset($this->_properties->{$name})){
+    public function getProperty($name)
+    {
+        if (true === $this->_validatingName($name) && isset($this->_properties->{$name})) {
             return $this->_properties->{$name};
         }
 
@@ -155,7 +164,12 @@ class InjectionClosure implements InjectionClosureInterface
      * @return boolean
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
-    public function testProperty($name){
-        return true === $this->_validatingName($name) && isset($this->_properties->{$name});
+    public function testProperty($name)
+    {
+        if (true === $this->_validatingName($name) && isset($this->_properties->{$name})) {
+            return true;
+        }
+
+        return false;
     }
 }

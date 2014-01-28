@@ -26,7 +26,8 @@ class Container extends \Pimple implements ContainerInterface
     /**
      * To support object cloning : All registry must be cloning, but not theirs values
      */
-    public function __clone(){
+    public function __clone()
+    {
         /**
          * Do nothing, Pimple use standard array, they are automatically cloned by php (but not theirs values)
          */
@@ -39,11 +40,11 @@ class Container extends \Pimple implements ContainerInterface
      * @return mixed
      * @throws Exception\InvalidArgument if the identifier is not defined
      */
-    public function get($name){
-        try{
+    public function get($name)
+    {
+        try {
             return $this[$name];
-        }
-        catch(\InvalidArgumentException $e){
+        } catch (\InvalidArgumentException $e) {
             throw new Exception\InvalidArgument($e->getMessage(), $e->getCode(), $e);
         }
     }
@@ -56,21 +57,19 @@ class Container extends \Pimple implements ContainerInterface
      * @throws Exception\ClassNotFound if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      */
-    public function registerInstance($name, $instance){
-        if(\is_string($instance)){
+    public function registerInstance($name, $instance)
+    {
+        if (\is_string($instance)) {
             //Load the class and build a new object of this class
-            if(\class_exists($instance)){
+            if (\class_exists($instance)) {
                 $this[$name] = new $instance();
-            }
-            else{
+            } else {
                 throw new Exception\ClassNotFound('The class "'.$instance.'" is not available');
             }
-        }
-        elseif(is_object($instance) || is_callable($instance)){
+        } elseif (is_object($instance) || is_callable($instance)) {
             //For callable and object, register them
             $this[$name] = $instance;
-        }
-        else{
+        } else {
             throw new Exception\IllegalService('Error, the instance for "'.$name.'" is illegal');
         }
 
@@ -85,33 +84,29 @@ class Container extends \Pimple implements ContainerInterface
      * @throws Exception\ClassNotFound if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      */
-    public function registerService($name, $instance){
-        if(\is_string($instance)){
+    public function registerService($name, $instance)
+    {
+        if (\is_string($instance)) {
             //Class, check if it is loaded
-            if(\class_exists($instance)){
+            if (\class_exists($instance)) {
                 //Write a new closure to build a new instance of this class, and use it as service
                 $this[$name] = $this->factory(function($c) use($instance){
                     return new $instance($c);
                 });
-            }
-            else{
+            } else {
                 throw new Exception\ClassNotFound('The class "'.$instance.'" is not available');
             }
-        }
-        elseif(\is_object($instance)){
+        } elseif (\is_object($instance)) {
             //Add the object as service into container
-            if(!\method_exists($instance, '__invoke')){
+            if (!\method_exists($instance, '__invoke')) {
                 $this[$name] = $this->factory($instance);
-            }
-            else{
+            } else {
                 throw new Exception\IllegalService('Error, the service for "'.$name.'" is not an invokable object');
             }
-        }
-        elseif(\is_callable($instance)){
+        } elseif(\is_callable($instance)) {
             //Add closure as service
             $this[$name] = $this->factory($instance);
-        }
-        else{
+        } else {
             throw new Exception\IllegalService('Error, the service for "'.$name.'" is illegal');
         }
     }
@@ -121,7 +116,8 @@ class Container extends \Pimple implements ContainerInterface
      * @param string $name
      * @return boolean
      */
-    public function testEntry($name){
+    public function testEntry($name)
+    {
         return isset($this[$name]);
     }
 
@@ -129,7 +125,8 @@ class Container extends \Pimple implements ContainerInterface
      * Remove an entry from the container
      * @param string $name
      */
-    public function unregister($name){
+    public function unregister($name)
+    {
         unset($this[$name]);
     }
 
@@ -138,15 +135,16 @@ class Container extends \Pimple implements ContainerInterface
      * @param array|\ArrayObject $params
      * @return mixed
      */
-    public function configure($params){
-        if(isset($params['services'])){
-            foreach($params['services'] as $name=>$instance){
+    public function configure($params)
+    {
+        if (isset($params['services'])) {
+            foreach ($params['services'] as $name => $instance) {
                 $this->registerService($name, $instance);
             }
         }
 
-        if(isset($params['instances'])){
-            foreach($params['instances'] as $name=>$instance){
+        if (isset($params['instances'])) {
+            foreach($params['instances'] as $name => $instance) {
                 $this->registerInstance($name, $instance);
             }
         }
@@ -156,7 +154,8 @@ class Container extends \Pimple implements ContainerInterface
      * List all entries of this container
      * @return string[]
      */
-    public function listDefinitions(){
+    public function listDefinitions()
+    {
         return $this->keys();
     }
 }

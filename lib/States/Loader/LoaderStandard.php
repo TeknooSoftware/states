@@ -44,7 +44,8 @@ class Loader implements LoaderInterface
     /**
      * Initialize the loader object
      */
-    public function __construct(){
+    public function __construct()
+    {
         $this->_includedPathArray = new \ArrayObject();
         $this->_namespacesArray = new \ArrayObject();
         $this->_previousIncludedPathStack = new \SplStack();
@@ -56,8 +57,9 @@ class Loader implements LoaderInterface
      * @return $this
      * @throws Exception\UnavailablePath if the path is not readable
      */
-    public function addIncludePath($path){
-        if(false === is_dir($path)){
+    public function addIncludePath($path)
+    {
+        if (false === is_dir($path)) {
             throw new Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
         }
 
@@ -73,12 +75,13 @@ class Loader implements LoaderInterface
      * @return $this
      * @throws Exception\UnavailablePath if the path is not readable
      */
-    public function registerNamespace($namespace, $path){
-        if(false === is_dir($path)){
+    public function registerNamespace($namespace, $path)
+    {
+        if (false === is_dir($path)) {
             throw new Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
         }
 
-        if(!isset($this->_namespacesArray[$namespace])){
+        if (!isset($this->_namespacesArray[$namespace])) {
             $this->_namespacesArray[$namespace] = new \SplQueue();
         }
 
@@ -88,7 +91,8 @@ class Loader implements LoaderInterface
     /**
      * Update included path before loading clas
      */
-    protected function _updateIncludedPaths(){
+    protected function _updateIncludedPaths()
+    {
         //Convert paths to string
         $newPaths = implode(PATH_SEPARATOR, $this->_includedPathArray->getArrayCopy());
         //Update path into PHP
@@ -100,8 +104,9 @@ class Loader implements LoaderInterface
     /**
      * Restore previous loaded class
      */
-    protected function _restoreIncludedPaths(){
-        if($this->_previousIncludedPathStack->isEmpty()){
+    protected function _restoreIncludedPaths()
+    {
+        if ($this->_previousIncludedPathStack->isEmpty()) {
             throw new Exception\EmptyStack('Error, the stack of previous included path is empty');
         }
 
@@ -114,33 +119,34 @@ class Loader implements LoaderInterface
      * @param string $class
      * @return bool
      */
-    protected function _loadNamespaceClass($class){
+    protected function _loadNamespaceClass($class)
+    {
         $namespacePartsArray = explode('\\', $class);
 
-        if(1 == count($namespacePartsArray)){
+        if (1 == count($namespacePartsArray)) {
             //No namespace, default to basic behavior
             return false;
         }
 
         $className = array_pop($namespacePartsArray);
-        if('' == $namespacePartsArray[0]){
+        if ('' == $namespacePartsArray[0]) {
             //Prevent '\' at start
             array_shift($namespacePartsArray);
         }
 
         //Rebuild namespace
         $namespaceString = '\\'.implode('\\', $namespacePartsArray);
-        if(!isset($this->_namespacesArray[$namespaceString])){
+        if (!isset($this->_namespacesArray[$namespaceString])) {
             return false;
         }
 
         //Browse each
-        foreach($this->_namespacesArray[$namespaceString] as $path){
+        foreach ($this->_namespacesArray[$namespaceString] as $path) {
             $classFile = $path.DIRECTORY_SEPARATOR.$className.'.php';
-            if(is_readable($classFile)){
+            if (is_readable($classFile)) {
                 include_once($classFile);
 
-                if(class_exists($classFile, false)){
+                if (class_exists($classFile, false)) {
                     return true;
                 }
             }
@@ -156,8 +162,9 @@ class Loader implements LoaderInterface
      * @throws Exception\EmptyStack if the stack of previous included path
      * @throws \Exception
      */
-    public function loadClass($className){
-        if(class_exists($className, false)){
+    public function loadClass($className)
+    {
+        if (class_exists($className, false)) {
             //Prevent class already loaded
             return true;
         }
@@ -166,25 +173,23 @@ class Loader implements LoaderInterface
         $this->_updateIncludedPaths();
         $classLoaded = false;
 
-        try{
+        try {
             //If the namespace is configured, check its paths
-            if(false === $this->_loadNamespaceClass($className)){
+            if (false === $this->_loadNamespaceClass($className)) {
                 //Class not found, switch to basic mode, replace \ and _ by a directory separator
                 $classFile = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $className).'.php';
-                if(is_readable($classFile)){
+                if (is_readable($classFile)) {
                     include_once($classFile);
 
-                    if(class_exists($className)){
+                    if (class_exists($className)) {
                         //Class found and loaded
                         $classLoaded = true;
                     }
                 }
-            }
-            else{
+            } else {
                 $classLoaded = true;
             }
-        }
-        catch(\Exception $e){
+        } catch(\Exception $e) {
             $this->_restoreIncludedPaths();
             throw $e;
         }
