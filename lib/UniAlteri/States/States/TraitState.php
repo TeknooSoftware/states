@@ -28,9 +28,8 @@ namespace UniAlteri\States\States;
 use \UniAlteri\States\DI;
 use \UniAlteri\States\Proxy;
 
-abstract class StateAbstract implements StateInterface
+trait TraitState
 {
-
     /**
      * DI Container to use for this object
      * @var DI\ContainerInterface

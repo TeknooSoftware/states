@@ -20,6 +20,7 @@
 
 namespace UniAlteri\States\Factory;
 
-class Standard extends AbstractFactory
+class Standard implements FactoryInterface
 {
+    use TraitFactory;
 }

@@ -19,10 +19,11 @@
  */
 
 namespace UniAlteri\States\Proxy;
+
 use \UniAlteri\States\DI;
 use \UniAlteri\States;
 
-class AbstractProxy implements ProxyInterface
+trait TraitProxy
 {
 
     /**

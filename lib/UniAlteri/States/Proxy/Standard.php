@@ -20,7 +20,7 @@
 
 namespace UniAlteri\States\Proxy;
 
-class Standard extends AbstractProxy
+class Standard implements ProxyInterface
 {
-
+    use TraitProxy;
 }
