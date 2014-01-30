@@ -25,7 +25,7 @@ use \UniAlteri\States\DI;
 use \UniAlteri\States\Loader;
 use \UniAlteri\States\Proxy;
 
-class FactoryAbstract implements FactoryInterface
+class AbstractFactory implements FactoryInterface
 {
 
     /**

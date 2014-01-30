@@ -6,19 +6,22 @@
  * Time: 16:25
  */
 
-namespace UniAlteri\States\DI;
+namespace UniAlteri\Tests\States\DI;
+
+use UniAlteri\States\DI;
+use UniAlteri\Tests\Support;
 
 class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Return a valid container for tests
-     * @return ContainerInterface
+     * @return DI\ContainerInterface
      */
     protected function _buildContainer(){
-        return new Container();
+        return new DI\Container();
     }
 
     /**
-     * @param ContainerInterface $container
+     * @param DI\ContainerInterface $container
      */
     protected function _populateContainer($container){
     }
@@ -30,7 +33,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_buildContainer()->registerInstance('##', 'DateTime');
         }
-        catch(Exception\IllegalName $exception){
+        catch(DI\Exception\IllegalName $exception){
             return;
         }
         catch(\Exception $e){}
@@ -45,7 +48,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_buildContainer()->registerInstance('class', 'NonExistentClass');
         }
-        catch(Exception\ClassNotFound $exception){
+        catch(DI\Exception\ClassNotFound $exception){
             return;
         }
         catch(\Exception $e){}
@@ -97,7 +100,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
             $container = $this->_buildContainer();
             $container->registerInstance('dateObject', array());
         }
-        catch(Exception\IllegalService $exception){
+        catch(DI\Exception\IllegalService $exception){
             return;
         }
         catch(\Exception $e){}
@@ -112,7 +115,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_buildContainer()->registerService('##', 'DateTime');
         }
-        catch(Exception\IllegalName $exception){
+        catch(DI\Exception\IllegalName $exception){
             return;
         }
         catch(\Exception $e){}
@@ -127,7 +130,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_buildContainer()->registerService('class', 'NonExistentClass');
         }
-        catch(Exception\ClassNotFound $exception){
+        catch(DI\Exception\ClassNotFound $exception){
             return;
         }
         catch(\Exception $e){}
@@ -152,7 +155,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
             $container = $this->_buildContainer();
             $container->registerService('dateObject', array());
         }
-        catch(Exception\IllegalService $exception){
+        catch(DI\Exception\IllegalService $exception){
             return;
         }
         catch(\Exception $e){}
@@ -168,7 +171,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
             $container = $this->_buildContainer();
             $container->registerService('dateObject', new \DateTime());
         }
-        catch(Exception\IllegalService $exception){
+        catch(DI\Exception\IllegalService $exception){
             return;
         }
         catch(\Exception $e){}
@@ -181,7 +184,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
      */
     public function testRegisterServiceInvokableObject(){
         $container = $this->_buildContainer();
-        $result = $container->registerService('dateObject', new InvokableClass());
+        $result = $container->registerService('dateObject', new Support\InvokableClass());
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerService`');
     }
 
@@ -201,7 +204,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_buildContainer()->testEntry('##');
         }
-        catch(Exception\IllegalName $exception){
+        catch(DI\Exception\IllegalName $exception){
             return;
         }
         catch(\Exception $e){}
@@ -231,7 +234,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_buildContainer()->get('##');
         }
-        catch(Exception\IllegalName $exception){
+        catch(DI\Exception\IllegalName $exception){
             return;
         }
         catch(\Exception $e){}
@@ -359,7 +362,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
         try{
             $container->unregister('##');
         }
-        catch(Exception\IllegalName $exception){
+        catch(DI\Exception\IllegalName $exception){
             return;
         }
         catch(\Exception $e){}

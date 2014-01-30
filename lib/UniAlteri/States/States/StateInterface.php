@@ -59,7 +59,6 @@ interface StateInterface
      * Return the description of a method to configure the behavior of the proxy
      * @param string $methodName
      * @return \ReflectionMethod
-     * @throws Exception\MethodNotFound is the method does not exist
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
     public function getMethodDescription($methodName);

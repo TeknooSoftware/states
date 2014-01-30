@@ -1,6 +1,6 @@
 <?php
 
-namespace UniAlteri\States\DI;
+namespace UniAlteri\Tests\Support;
 
 /**
  * Class invokableClass
