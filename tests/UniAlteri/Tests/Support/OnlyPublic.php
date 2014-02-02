@@ -9,7 +9,7 @@ use \UniAlteri\States\States;
  * Class OnlyPublic
  * @package UniAlteri\States\States
  */
-class OnlyPublic extends States\StateAbstract
+class OnlyPublic extends States\AbstractState
 {
     public function standardMethod1()
     {

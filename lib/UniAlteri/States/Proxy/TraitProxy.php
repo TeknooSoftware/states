@@ -25,7 +25,6 @@ use \UniAlteri\States;
 
 trait TraitProxy
 {
-
     /**
      * DI Container to use for this object
      * @var DI\ContainerInterface

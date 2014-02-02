@@ -9,7 +9,7 @@ use \UniAlteri\States\States;
  * Class OnlyPublic
  * @package UniAlteri\States\States
  */
-class OnlyProtected extends States\StateAbstract
+class OnlyProtected extends States\AbstractState
 {
     protected static function _staticMethod5()
     {
