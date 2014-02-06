@@ -51,10 +51,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     /**
      * Build a proxy object, into $this->_proxy to test it
      */
-    protected function _buildProxy()
-    {
-        $this->_proxy = new Proxy\Standard();
-    }
+    abstract protected function _buildProxy();
 
     /**
      * Initialize proxy for test, register all states and enable one it
@@ -142,6 +139,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the proxy must throw an Exception\IllegalState exception when the state does not implement State\StateInterface');
     }
 
+    /**
+     * Check behavior of the proxy when we add a new state
+     */
     public function testRegisterState()
     {
         $this->_proxy->registerState('state1', $this->_state1);
