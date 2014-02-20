@@ -22,7 +22,7 @@ namespace UniAlteri\States\Loader;
 use \UniAlteri\States\DI;
 use \UniAlteri\States;
 
-class Factory implements  FactoryInterface
+class FinderStandard implements FinderInterface
 {
     /**
      * @var string
@@ -163,36 +163,6 @@ class Factory implements  FactoryInterface
         }
 
         return $stateObject;
-    }
-
-    /**
-     * Load and build a factory object of the stated class
-     * @return \UniAlteri\States\Factory\FactoryInterface
-     */
-    public function loadFactory(){
-        //Build the class file path for the factory (standardized into FactoryInterface)
-        $factoryPath = $this->_statedClassName.DIRECTORY_SEPARATOR.FactoryInterface::FACTORY_FILE_NAME;
-        //Build the class name
-        $factoryClassName = $this->_statedClassName.FactoryInterface::FACTORY_SUFFIX_CLASS_NAME;
-
-        //Check if the Stated class has its own factory
-        if(true === $this->_checkClassExists($factoryClassName, $factoryPath)){
-            //Load an instance of this factory and test if it implements the interface FactoryInterface
-            $factoryObject = new $factoryClassName();
-            if($factoryObject instanceof \UniAlteri\States\Factory\FactoryInterface){
-                //Initialize the factory and return it
-                $factoryObject->setDIContainer($this->getDIContainer());
-                return $factoryObject;
-            }
-
-            //Throw an error
-            throw new \UniAlteri\States\Exception\IllegalFactory('Error, the factory of "'.$this->_statedClassName.'" does not implement "\UniAlteri\States\Factory\FactoryInterface"');
-        }
-        else{
-            //The stated class has not its own factory, reuse the standard factory, as an alias
-            class_alias('\UniAlteri\States\Factory\Standard', $factoryClassName);
-            return new $factoryClassName;
-        }
     }
 
     /**

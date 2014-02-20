@@ -20,7 +20,6 @@
 
 namespace UniAlteri\States\Factory;
 
-use \UniAlteri\States;
 use \UniAlteri\States\DI;
 use \UniAlteri\States\Loader;
 use \UniAlteri\States\Proxy;
@@ -54,38 +53,38 @@ trait TraitFactory
 
     /**
      * Return the loader of this stated class from its DI Container
-     * @return Loader\FactoryInterface
+     * @return Loader\FinderInterface
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
     protected function _getLoader()
     {
-        $factoryLoader = $this->_diContainer->get(Loader\FactoryInterface::DI_FACTORY_NAME);
-        if (!$factoryLoader instanceof Loader\FactoryInterface) {
+        $finderLoader = $this->_diContainer->get(Loader\FinderInterface::DI_FINDER_NAME);
+        if (!$finderLoader instanceof Loader\FinderInterface) {
             throw new Exception\UnavailableLoader('Error, the loader is not available');
         }
 
-        return $factoryLoader;
+        return $finderLoader;
     }
 
     /**
      * Build a new instance of an object
      * @param mixed $arguments
      * @param string $stateName to build an object with a specific class
-     * @return States\ObjectInterface
+     * @return Proxy\ProxyInterface
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
     public function build($arguments=null, $stateName=null)
     {
-        //Get factory loader
-        $factoryLoader = $this->_getLoader();
+        //Get finder loader
+        $finderLoader = $this->_getLoader();
 
         //Build a new proxy object
-        $proxyObject = $factoryLoader->loadProxy();
+        $proxyObject = $finderLoader->loadProxy($arguments);
         $diContainerObject = $this->getDIContainer();
 
         //Get all states available
-        $statesList = $factoryLoader->listStates();
+        $statesList = $finderLoader->listStates();
 
         //Check if the default state is available
         $statesList = array_combine($statesList, $statesList);
@@ -101,7 +100,7 @@ trait TraitFactory
 
         //Load each state into proxy
         foreach ($statesList as $loadingStateName) {
-            $stateObject = $factoryLoader->loadState($loadingStateName);
+            $stateObject = $finderLoader->loadState($loadingStateName);
             $stateObject->setDIContainer($diContainerObject);
             $proxyObject->registerState($loadingStateName, $stateObject);
         }

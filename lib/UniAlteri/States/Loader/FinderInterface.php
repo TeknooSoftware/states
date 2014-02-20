@@ -21,12 +21,12 @@
 namespace UniAlteri\States\Loader;
 use \UniAlteri\States\DI;
 
-interface FactoryInterface
+interface FinderInterface
 {
     /**
-     * Name of Factory Loader (service to find and load elements of stated class)
+     * Name of Finder (service to find and load elements of stated class)
      */
-    const DI_FACTORY_NAME = 'FactoryLoader';
+    const DI_FINDER_NAME = 'FinderLoader';
 
     /**
      * Folder where stored states of the stated class
@@ -54,18 +54,6 @@ interface FactoryInterface
     const FACTORY_SUFFIX_CLASS_NAME = 'Factory';
 
     /**
-     * Initialize the factory loader
-     * @param string|null $path
-     */
-    public function __construct($path=null);
-
-    /**
-     * Configure the path of loaded class
-     * @param string|null $path
-     */
-    public function setStatedClassPath($path=null);
-
-    /**
      * Register a DI container for this object
      * @param \UniAlteri\States\DI\ContainerInterface $container
      */
@@ -89,12 +77,6 @@ interface FactoryInterface
      * @return \UniAlteri\States\States\StateInterface
      */
     public function loadState($stateName);
-
-    /**
-     * Load and build a factory object of the stated class
-     * @return \UniAlteri\States\Factory\FactoryInterface
-     */
-    public function loadFactory();
 
     /**
      * Load and build a proxy object of the stated class

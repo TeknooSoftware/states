@@ -20,7 +20,7 @@
 
 namespace UniAlteri\States\Factory;
 
-use \UniAlteri\States;
+use \UniAlteri\States\Proxy;
 use \UniAlteri\States\DI;
 
 interface FactoryInterface
@@ -43,7 +43,7 @@ interface FactoryInterface
      * Build a new instance of an object
      * @param mixed $arguments
      * @param string $stateName to build an object with a specific class
-     * @return States\ObjectInterface
+     * @return Proxy\ProxyInterface
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
