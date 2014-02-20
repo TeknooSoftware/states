@@ -19,7 +19,10 @@
  */
 
 namespace UniAlteri\States\Loader;
+
 use \UniAlteri\States\DI;
+use \UniAlteri\States\States;
+use \UniAlteri\States\Proxy;
 
 interface FinderInterface
 {
@@ -54,14 +57,21 @@ interface FinderInterface
     const FACTORY_SUFFIX_CLASS_NAME = 'Factory';
 
     /**
+     * Initialize finder
+     * @param string $statedClassName
+     * @param string $pathString
+     */
+    public function __construct($statedClassName, $pathString);
+
+    /**
      * Register a DI container for this object
-     * @param \UniAlteri\States\DI\ContainerInterface $container
+     * @param DI\ContainerInterface $container
      */
     public function setDIContainer(DI\ContainerInterface $container);
 
     /**
      * Return the DI Container used for this object
-     * @return \UniAlteri\States\DI\ContainerInterface
+     * @return DI\ContainerInterface
      */
     public function getDIContainer();
 
@@ -74,13 +84,13 @@ interface FinderInterface
     /**
      * Load and build the required state object of the stated class
      * @param string $stateName
-     * @return \UniAlteri\States\States\StateInterface
+     * @return States\StateInterface
      */
     public function loadState($stateName);
 
     /**
-     * Load and build a proxy object of the stated class
-     * @return \UniAlteri\States\Proxy\ProxyInterface
+     * Load and build a proxy object for the stated class
+     * @return Proxy\ProxyInterface
      */
     public function loadProxy();
 }

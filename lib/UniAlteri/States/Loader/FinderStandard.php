@@ -19,68 +19,65 @@
  */
 
 namespace UniAlteri\States\Loader;
+
+use \UniAlteri\States\Loader\Exception;
 use \UniAlteri\States\DI;
-use \UniAlteri\States;
+use \UniAlteri\States\States;
+use \UniAlteri\States\Proxy;
 
 class FinderStandard implements FinderInterface
 {
     /**
-     * @var string
-     */
-    protected $_pathString = null;
-
-    /**
-     * @var \UniAlteri\States\DI\ContainerInterface
-     */
-    protected $_diContainer = null;
-
-    /**
+     * Current stated class's name
      * @var string
      */
     protected $_statedClassName = null;
 
     /**
-     * Initialize factory
-     * @param string|null $path
+     * Folder/Phar of the stated class
+     * @var string
      */
-    public function __construct($path=null){
-        $this->setStatedClassPath($path);
+    protected $_pathString = null;
+
+    /**
+     * DI Container to use with this finder
+     * @var DI\ContainerInterface
+     */
+    protected $_diContainer = null;
+
+    /**
+     * Initialize finder
+     * @param string $statedClassName
+     * @param string $pathString
+     */
+    public function __construct($statedClassName, $pathString)
+    {
+        $this->_statedClassName = $statedClassName;
+        $this->_pathString = $pathString;
     }
 
     /**
+     * Test if class exists
      * @param string $className
      * @param string $pathName
      * @return boolean
      */
-    protected function _checkClassExists($className, $pathName){
-        if(!is_readable($pathName)){
+    protected function _checkClassExists($className, $pathName)
+    {
+        if (!is_readable($pathName)) {
             //File not found
             return false;
         }
 
         //Load the file
         include_once($pathName);
-        if(!class_exists($className)){
+        if (!class_exists($className)) {
             //Class not found
             return false;
         }
 
         //Class loaded
         return true;
-    }
-
-    /**
-     * Configure the path of loaded class
-     * @param string|null $path
-     */
-    public function setStatedClassPath($path=null){
-        if(empty($path)){
-
-        }
-
-        if(!file_exists($path)){
-            throw new Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
-        }
     }
 
     /**
@@ -102,30 +99,31 @@ class FinderStandard implements FinderInterface
     /**
      * List all available state object of the stated class
      * @return string[]
-     * @throws Exception\UnavailablePath if the path is not accessible
+     * @throws Exception\UnavailablePath if the states's folder is not available
      */
-    public function listStates(){
+    public function listStates()
+    {
         //Check if states are stored into the standardized path
-        $statesPath = $this->_pathString.DIRECTORY_SEPARATOR.FactoryInterface::STATES_PATH;
-        if(!is_dir($statesPath)){
+        $statesPath = $this->_pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH;
+        if (!is_dir($statesPath)) {
             throw new Exception\UnavailablePath('Error, the path "'.$statesPath.'" was not found');
         }
 
         //Check if the path is available
         $hD = opendir($statesPath);
-        if(false === $hD){
+        if (false === $hD) {
             throw new Exception\UnavailablePath('Error, the path "'.$statesPath.'" is not available');
         }
 
         //Extract all states (No check class exists)
         $statesNameArray = new \ArrayObject();
-        while (false !== ($file = readdir($hD))){
-            switch($file){
+        while (false !== ($file = readdir($hD))) {
+            switch ($file) {
                 case '.';
                 case '..';
                     break;
                 default:
-                    if(strlen($file) - 4 == strrpos($file, '.php')){
+                    if (strlen($file) - 4 == strrpos($file, '.php')) {
                         $stateName = substr($file, 0, -4);
                         $statesNameArray[] = $stateName;
                     }
@@ -134,61 +132,62 @@ class FinderStandard implements FinderInterface
         }
 
         closedir($hD);
-
         return $statesNameArray;
     }
 
     /**
      * Load and build the required state object of the stated class
      * @param string $stateName
-     * @return \UniAlteri\States\States\StateInterface
-     * @throws Exception\UnavailableState if the state was not found or can not be loaded
-     * @throws Exception\IllegalState if the state is invalid (not implement the interface)
+     * @return States\StateInterface
+     * @throws Exception\UnavailableState if the required state is not available
+     * @throws Exception\IllegalState if the state object does not implement the interface
      */
-    public function loadState($stateName){
-        $statePath = $this->_pathString.DIRECTORY_SEPARATOR.FactoryInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php';
+    public function loadState($stateName)
+    {
+        $statePath = $this->_pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php';
 
-        if(!is_readable($statePath)){
+        if (!is_readable($statePath)) {
             throw new Exception\UnavailableState('Error, the state "'.$stateName.'" was not found');
         }
 
         include_once($statePath);
-        if(!class_exists($stateName)){
+        if (!class_exists($stateName)) {
             throw new Exception\UnavailableState('Error, the state "'.$stateName.'" is not available');
         }
 
         $stateObject = new $stateName;
-        if(!$stateObject instanceof States\States\StateInterface){
-            throw new Exception\IllegalState('Error, the state "'.$stateName.'" does not implement the interface "\UniAlteri\States\States\StateInterface"');
+        if (!$stateObject instanceof States\StateInterface) {
+            throw new Exception\IllegalState('Error, the state "'.$stateName.'" does not implement the interface "States\StateInterface"');
         }
 
         return $stateObject;
     }
 
     /**
-     * Load and build a proxy object of the stated class
-     * @return \UniAlteri\States\Proxy\ProxyInterface
+     * Load and build a proxy object for the stated class
+     * @return Proxy\ProxyInterface
+     * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function loadProxy(){
+    public function loadProxy()
+    {
         //Build the class file path for the proxy (standardized into ProxyInterface)
-        $proxyPath = $this->_statedClassName.DIRECTORY_SEPARATOR.FactoryInterface::PROXY_FILE_NAME;
+        $proxyPath = $this->_statedClassName.DIRECTORY_SEPARATOR.FinderInterface::PROXY_FILE_NAME;
         //Build the class name
-        $proxyClassName = $this->_statedClassName.FactoryInterface::PROXY_SUFFIX_CLASS_NAME;
+        $proxyClassName = $this->_statedClassName.FinderInterface::PROXY_SUFFIX_CLASS_NAME;
 
         //Check if the Stated class has its own proxy
-        if(true === $this->_checkClassExists($proxyClassName, $proxyPath)){
+        if (true === $this->_checkClassExists($proxyClassName, $proxyPath)) {
             //Load an instance of this proxy and test if it implements the interface ProxyInterface
             $proxyObject = new $proxyClassName();
-            if($proxyObject instanceof \UniAlteri\States\Proxy\ProxyInterface){
+            if ($proxyObject instanceof Proxy\ProxyInterface) {
                 //Initialize the proxy and return it
                 $proxyObject->setDIContainer($this->getDIContainer());
                 return $proxyObject;
             }
 
             //Throw an error
-            throw new \UniAlteri\States\Exception\IllegalProxy('Error, the proxy of "'.$this->_statedClassName.'" does not implement "\UniAlteri\States\Proxy\ProxyInterface"');
-        }
-        else{
+            throw new Exception\IllegalProxy('Error, the proxy of "'.$this->_statedClassName.'" does not implement "Proxy\ProxyInterface"');
+        } else {
             //The stated class has not its own proxy, reuse the standard proxy, as an alias
             class_alias('\UniAlteri\States\Proxy\Standard', $proxyClassName);
             return new $proxyClassName;
