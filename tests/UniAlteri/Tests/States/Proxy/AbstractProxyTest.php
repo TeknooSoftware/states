@@ -238,13 +238,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     public function testEnableStateInvalidName()
     {
-        try{
+        try {
             $this->_proxy->enableState(array());
-        }
-        catch(Exception\IllegalArgument $e){
+        } catch (Exception\IllegalArgument $e) {
             return;
-        }
-        catch(\Exception $e){
+        } catch(\Exception $e) {
         }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
@@ -252,13 +250,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     public function testEnableStateNonExistentName()
     {
-        try{
+        try {
             $this->_proxy->enableState('NonExistentState');
-        }
-        catch(Exception\StateNotFound $e){
+        } catch (Exception\StateNotFound $e) {
             return;
-        }
-        catch(\Exception $e){
+        } catch(\Exception $e) {
         }
 
         $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the stateName is not register');
@@ -279,13 +275,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     public function testDisableStateInvalidName()
     {
-        try{
+        try {
             $this->_proxy->disableState(array());
-        }
-        catch(Exception\IllegalArgument $e){
+        } catch (Exception\IllegalArgument $e) {
             return;
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
         }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
@@ -293,13 +287,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     public function testDisableStateNonExistentName()
     {
-        try{
+        try {
             $this->_proxy->disableState( 'NonExistentState');
-        }
-        catch(Exception\StateNotFound $e){
+        } catch (Exception\StateNotFound $e) {
             return;
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
         }
 
         $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the stateName is not register');
@@ -349,13 +341,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testGetStaticWithoutCalling()
     {
         $this->_initializeProxy('state1', true);
-        try{
+        try {
             $this->_proxy->getStatic();
-        }
-        catch(Exception\UnavailableClosure $e){
+        } catch (Exception\UnavailableClosure $e) {
             return;
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
         }
 
         $this->fail('Only current closure can call the method getStatic() to register static var, else, proxy must throws Exception\UnavailableClosure');
@@ -365,7 +355,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $state = new Support\VirtualState(function () {
             $this->getStatic()->saveProperty('name', 'value');
-
         });
 
         $this->_proxy->registerState(
@@ -374,7 +363,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         );
 
         $state->allowMethod();
-        $this->_proxy();
+        $this->_initializeProxy();
 
         $this->assertEquals('value', $state->getClosure('__invoke', $this->_proxy)->getProperty('name'));
     }
@@ -477,7 +466,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         try{
             $this->_proxy->getMethodDescription(array());
         }
-        catch(Exception\InvalidName $e){
+        catch(Exception\IllegalName $e){
             return;
         }
         catch(\Exception $e){
@@ -507,7 +496,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         try{
             $this->_proxy->getMethodDescription('method1', array());
         }
-        catch(Exception\InvalidArgument $e){
+        catch(Exception\IllegalArgument $e){
             return;
         }
         catch(\Exception $e){
@@ -541,7 +530,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy();
         try{
-            $this->_proxy();
+            $this->_initializeProxy();
         }
         catch(Exception\MethodNotImplemented $e){
             return;
@@ -555,7 +544,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testInvoke()
     {
         $this->_initializeProxy('state1', true);
-        $this->_proxy('foo', 'bar');
+        $proxy = $this->_proxy;
+        $proxy('foo', 'bar');
 
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('__invoke', $this->_state1->getMethodNameCalled());
@@ -591,7 +581,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy();
         try{
-            isset($this->_proxy->property);
+            $a = isset($this->_proxy->property);
         }
         catch(Exception\MethodNotImplemented $e){
             return;
@@ -605,7 +595,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testIsset()
     {
         $this->_initializeProxy('state1', true);
-        isset($this->_proxy->property);
+        $a = isset($this->_proxy->property);
 
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('__isset', $this->_state1->getMethodNameCalled());
@@ -716,7 +706,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy();
         try{
-            isset($this->_proxy[2]);
+            $a = isset($this->_proxy[2]);
         }
         catch(Exception\MethodNotImplemented $e){
             return;
@@ -730,7 +720,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testOffsetExist()
     {
         $this->_initializeProxy('state1', true);
-        isset($this->_proxy[2]);
+        $a = isset($this->_proxy[2]);
 
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('offsetExists', $this->_state1->getMethodNameCalled());

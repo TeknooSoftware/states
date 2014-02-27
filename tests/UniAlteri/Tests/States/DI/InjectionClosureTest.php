@@ -6,17 +6,20 @@
  * Time: 16:25
  */
 
-namespace UniAlteri\States\DI;
+namespace UniAlteri\Tests\States\DI;
 
 use UniAlteri\States\DI;
+use UniAlteri\States\DI\Exception;
 
-class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
-
-    protected function setUp(){
+class InjectionClosureTest extends \PHPUnit_Framework_TestCase
+{
+    protected function setUp()
+    {
         parent::setUp();
     }
 
-    protected function tearDown(){
+    protected function tearDown()
+    {
         parent::tearDown();
     }
 
@@ -25,14 +28,15 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
      * @param callable $closure
      * @return DI\InjectionClosure
      */
-    protected function _buildClosure(\Closure $closure=null){
-        if(null === $closure){
-            $closure = function(){
+    protected function _buildClosure(\Closure $closure=null)
+    {
+        if (null === $closure) {
+            $closure = function() {
                 return array_reverse(func_get_args());
             };
         }
 
-        $injectionClosureObject = new InjectionClosure();
+        $injectionClosureObject = new DI\InjectionClosure();
         $injectionClosureObject->setClosure($closure);
         return $injectionClosureObject;
     }
@@ -41,15 +45,14 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
      * The Injection Closure object must not accept object who not implement \Closure
      * @return bool
      */
-    public function testBadClosureConstruct(){
-        try{
-            $a = new InjectionClosure();
+    public function testBadClosureConstruct()
+    {
+        try {
+            $a = new DI\InjectionClosure();
             $a->setClosure(new \stdClass());
-        }
-        catch(Exception\InvalidArgument $exception){
+        } catch (Exception\InvalidArgument $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the Injection closure object must throw an exception if the object is not a closure');
     }
@@ -57,7 +60,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test Injection closure creation
      */
-    public function testCreateClosure(){
+    public function testCreateClosure()
+    {
         $closure = $this->_buildClosure();
         $this->assertInstanceOf('InjectionClosureInterface', $closure);
     }
@@ -65,7 +69,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test invokation from injection with the closure, execute the closure (the closure test returns arguments order
      */
-    public function testInvokeWithArgs(){
+    public function testInvokeWithArgs()
+    {
         $closure = $this->_buildClosure();
         $return = $closure('foo', 'boo', 'hello', 'world');
         $this->assertSame(
@@ -83,23 +88,26 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if the injector car return the original closure
      */
-    public function testGetClosure(){
-        $myClosure = function($i){return $i+1;};
-        $injectionClosure = new InjectionClosure($myClosure);
+    public function testGetClosure()
+    {
+        $myClosure = function($i) {
+            return $i+1;
+        };
+
+        $injectionClosure = new DI\InjectionClosure($myClosure);
         $this->assertSame($myClosure, $injectionClosure->getClosure());
     }
 
     /**
      * Storage must throw an exception if the attribute name is not valid
      */
-    public function testSaveBadStaticProperty(){
-        try{
+    public function testSaveBadStaticProperty()
+    {
+        try {
             $this->_buildClosure()->saveProperty('##', 'foo');
-        }
-        catch(Exception\IllegalName $exception){
+        } catch(Exception\IllegalName $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch(\Exception $e) {}
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -107,7 +115,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test behavior of injector with static properties
      */
-    public function testGetSaveStaticProperty(){
+    public function testGetSaveStaticProperty()
+    {
         $closure = $this->_buildClosure();
         $closure->saveProperty('static1', 'foo');
         $closure->saveProperty('static2', new \stdClass());
@@ -122,14 +131,13 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
     /**
      * Storage must throw an exception if the attribute name is not valid
      */
-    public function testGetBadStaticProperty(){
-        try{
+    public function testGetBadStaticProperty()
+    {
+        try {
             $this->_buildClosure()->saveProperty('##', 'foo');
-        }
-        catch(Exception\IllegalName $exception){
+        } catch (Exception\IllegalName $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -137,7 +145,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if statics properties are persistent on all call of the closure
      */
-    public function testPersistenceOfStaticProperty(){
+    public function testPersistenceOfStaticProperty()
+    {
         $closure = $this->_buildClosure();
         $closure->saveProperty('static1', 'foo');
         $result = $closure(1, 2, 3);
@@ -157,14 +166,13 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
     /**
      * Storage must throw an exception if the attribute name is not valid
      */
-    public function testDeleteBadStaticProperty(){
-        try{
+    public function testDeleteBadStaticProperty()
+    {
+        try {
             $this->_buildClosure()->deleteProperty('##');
-        }
-        catch(Exception\IllegalName $exception){
+        } catch (Exception\IllegalName $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch(\Exception $e) {}
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -172,7 +180,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test deletion
      */
-    public function testDeleteStaticProperty(){
+    public function testDeleteStaticProperty()
+    {
         $closure = $this->_buildClosure();
         $closure->saveProperty('static1', 'foo');
         $this->assertEquals('foo', $closure->getProperty('static1'));
@@ -183,14 +192,13 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
     /**
      * Storage must throw an exception if the attribute name is not valid
      */
-    public function testTestBadStaticProperty(){
-        try{
+    public function testTestBadStaticProperty()
+    {
+        try {
             $this->_buildClosure()->testProperty('##');
-        }
-        catch(Exception\IllegalName $exception){
+        } catch (Exception\IllegalName $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -198,7 +206,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test "test" to check if a static property exists
      */
-    public function testTestStaticProperty(){
+    public function testTestStaticProperty()
+    {
         $closure = $this->_buildClosure();
         $this->assertFalse($closure->testProperty('static1'));
         $closure->saveProperty('static1', 'foo');

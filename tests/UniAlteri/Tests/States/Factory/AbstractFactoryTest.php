@@ -49,7 +49,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionDefaultStateNotAvailable()
     {
-        try{
+        try {
             $this->_virtualFinder->ignoreDefaultState = true;
             $this->getFactoryObject()->build();
         } catch(Exception\StateNotFound $exception) {

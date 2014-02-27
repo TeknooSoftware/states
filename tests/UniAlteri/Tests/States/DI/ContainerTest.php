@@ -11,32 +11,34 @@ namespace UniAlteri\Tests\States\DI;
 use UniAlteri\States\DI;
 use UniAlteri\Tests\Support;
 
-class ContainerTest extends \PHPUnit_Framework_TestCase{
+class ContainerTest extends \PHPUnit_Framework_TestCase
+{
     /**
      * Return a valid container for tests
      * @return DI\ContainerInterface
      */
-    protected function _buildContainer(){
+    protected function _buildContainer()
+    {
         return new DI\Container();
     }
 
     /**
      * @param DI\ContainerInterface $container
      */
-    protected function _populateContainer($container){
+    protected function _populateContainer($container)
+    {
     }
 
     /**
      * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
      */
-    public function testRegisterInstanceBadIdentifier(){
-        try{
+    public function testRegisterInstanceBadIdentifier()
+    {
+        try {
             $this->_buildContainer()->registerInstance('##', 'DateTime');
-        }
-        catch(DI\Exception\IllegalName $exception){
+        } catch (DI\Exception\IllegalName $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch(\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
@@ -44,14 +46,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * The container must throws an exception if the class of the instance does not exist
      */
-    public function testRegisterInstanceBadClass(){
-        try{
+    public function testRegisterInstanceBadClass()
+    {
+        try {
             $this->_buildContainer()->registerInstance('class', 'NonExistentClass');
-        }
-        catch(DI\Exception\ClassNotFound $exception){
+        } catch (DI\Exception\ClassNotFound $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\ClassNotFound exception');
     }
@@ -59,7 +60,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test return of registerInstance
      */
-    public function testRegisterInstanceClass(){
+    public function testRegisterInstanceClass()
+    {
         $container = $this->_buildContainer();
         $result = $container->registerInstance('dateObject', '\DateTime');
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerInstance`');
@@ -68,7 +70,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Non invokable object are allowed for instance, but not for service
      */
-    public function testRegisterInstanceNonInvokableObject(){
+    public function testRegisterInstanceNonInvokableObject()
+    {
         $container = $this->_buildContainer();
         $result = $container->registerInstance('dateObject', new \DateTime());
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerInstance`');
@@ -77,7 +80,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test return of registerInstance
      */
-    public function testRegisterInstanceInvokableObject(){
+    public function testRegisterInstanceInvokableObject()
+    {
         $container = $this->_buildContainer();
         $result = $container->registerInstance('dateObject', new \DateTime());
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerInstance`');
@@ -86,7 +90,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test return of registerInstance
      */
-    public function testRegisterInstanceFunction(){
+    public function testRegisterInstanceFunction()
+    {
         $container = $this->_buildContainer();
         $result = $container->registerInstance('dateObject', function(){return new \DateTime();});
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerInstance`');
@@ -95,15 +100,14 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test return of registerInstance
      */
-    public function testRegisterInstanceArray(){
-        try{
+    public function testRegisterInstanceArray()
+    {
+        try {
             $container = $this->_buildContainer();
             $container->registerInstance('dateObject', array());
-        }
-        catch(DI\Exception\IllegalService $exception){
+        } catch (DI\Exception\IllegalService $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\IllegalService exception if the instance is invalid');
     }
@@ -111,14 +115,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
      */
-    public function testRegisterServiceBadIdentifier(){
-        try{
+    public function testRegisterServiceBadIdentifier()
+    {
+        try {
             $this->_buildContainer()->registerService('##', 'DateTime');
-        }
-        catch(DI\Exception\IllegalName $exception){
+        } catch (DI\Exception\IllegalName $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
@@ -126,14 +129,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * The container must throws an exception if the class of the service does not exist
      */
-    public function testRegisterServiceBadClass(){
-        try{
+    public function testRegisterServiceBadClass()
+    {
+        try {
             $this->_buildContainer()->registerService('class', 'NonExistentClass');
-        }
-        catch(DI\Exception\ClassNotFound $exception){
+        } catch (DI\Exception\ClassNotFound $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\ClassNotFound exception');
     }
@@ -141,7 +143,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test return of registerService
      */
-    public function testRegisterServiceClass(){
+    public function testRegisterServiceClass()
+    {
         $container = $this->_buildContainer();
         $result = $container->registerService('dateObject', '\DateTime');
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerService`');
@@ -150,15 +153,14 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test return of registerService
      */
-    public function testRegisterServiceArray(){
-        try{
+    public function testRegisterServiceArray()
+    {
+        try {
             $container = $this->_buildContainer();
             $container->registerService('dateObject', array());
-        }
-        catch(DI\Exception\IllegalService $exception){
+        } catch (DI\Exception\IllegalService $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch(\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\IllegalService exception if the service is invalid');
     }
@@ -166,15 +168,14 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test return of registerService with non invokable object
      */
-    public function testRegisterServiceNonInvokableObject(){
-        try{
+    public function testRegisterServiceNonInvokableObject()
+    {
+        try {
             $container = $this->_buildContainer();
             $container->registerService('dateObject', new \DateTime());
-        }
-        catch(DI\Exception\IllegalService $exception){
+        } catch (DI\Exception\IllegalService $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\IllegalService exception if the object is not invokable');
     }
@@ -182,7 +183,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test return of registerService
      */
-    public function testRegisterServiceInvokableObject(){
+    public function testRegisterServiceInvokableObject()
+    {
         $container = $this->_buildContainer();
         $result = $container->registerService('dateObject', new Support\InvokableClass());
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerService`');
@@ -191,7 +193,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test return of registerService
      */
-    public function testRegisterServiceFunction(){
+    public function testRegisterServiceFunction()
+    {
         $container = $this->_buildContainer();
         $result = $container->registerService('dateObject', function(){return new \DateTime();});
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerService`');
@@ -200,14 +203,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
      */
-    public function testTestInstanceBadIdentifier(){
-        try{
+    public function testTestInstanceBadIdentifier()
+    {
+        try {
             $this->_buildContainer()->testEntry('##');
-        }
-        catch(DI\Exception\IllegalName $exception){
+        } catch (DI\Exception\IllegalName $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
@@ -215,7 +217,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * test behavior of testInstance(), return true if an instance of service exist
      */
-    public function testTestInstance(){
+    public function testTestInstance()
+    {
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
         $this->assertTrue($container->testEntry('instanceClass'));
@@ -230,14 +233,13 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
      */
-    public function testGetBadIdentifier(){
-        try{
+    public function testGetBadIdentifier()
+    {
+        try {
             $this->_buildContainer()->get('##');
-        }
-        catch(DI\Exception\IllegalName $exception){
+        } catch (DI\Exception\IllegalName $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch(\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
@@ -245,7 +247,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test to get an instance
      */
-    public function testGetInstanceClass(){
+    public function testGetInstanceClass()
+    {
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
@@ -258,7 +261,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test to get an instance
      */
-    public function testGetInstanceObject(){
+    public function testGetInstanceObject()
+    {
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
@@ -271,7 +275,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test to get an instance
      */
-    public function testGetInstanceFunction(){
+    public function testGetInstanceFunction()
+    {
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
@@ -285,7 +290,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test to get a service behavior
      */
-    public function testGetServiceClass(){
+    public function testGetServiceClass()
+    {
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
@@ -298,7 +304,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test to get a service behavior for invokable
      */
-    public function testGetServiceObject(){
+    public function testGetServiceObject()
+    {
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
@@ -309,7 +316,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test to get a service behavior for anonymous function
      */
-    public function testGetServiceFunction(){
+    public function testGetServiceFunction()
+    {
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
@@ -320,12 +328,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if the params passed to configure is not an array, the container throw an exception
      */
-    public function testConfigureBadArray(){
+    public function testConfigureBadArray()
+    {
         $container = $this->_buildContainer();
-        try{
+        try {
             $container->configure(new \DateTime());
-        }
-        catch(\Exception $e){
+        } catch (\Exception $e) {
             return;
         }
 
@@ -335,7 +343,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test configuration of the container with an array
      */
-    public function testConfigure(){
+    public function testConfigure()
+    {
         $container = $this->_buildContainer();
         $container->configure(
             array(
@@ -357,15 +366,14 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if the id to unregister is not valid, the container throw an exception
      */
-    public function testUnregisterBadId(){
+    public function testUnregisterBadId()
+    {
         $container = $this->_buildContainer();
-        try{
+        try {
             $container->unregister('##');
-        }
-        catch(DI\Exception\IllegalName $exception){
+        } catch (DI\Exception\IllegalName $exception) {
             return;
-        }
-        catch(\Exception $e){}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the identifier must be a valid php var name http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -373,7 +381,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test unregister an instance from the DI
      */
-    public function testUnregister(){
+    public function testUnregister()
+    {
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
         $this->assertTrue($container->testEntry('instanceObject'));
@@ -385,7 +394,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if the container return all instances with the ids
      */
-    public function testListDefinitions(){
+    public function testListDefinitions()
+    {
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
