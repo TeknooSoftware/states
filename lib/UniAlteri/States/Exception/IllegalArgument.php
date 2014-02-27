@@ -20,7 +20,11 @@
 
 namespace UniAlteri\States\Exception;
 
+/**
+ * Class IllegalArgument
+ * @package UniAlteri\States\Exception
+ * Exception threw when the argument's value has not respected some business rules
+ */
 class IllegalArgument extends Standard
 {
-
 }

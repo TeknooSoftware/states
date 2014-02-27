@@ -24,6 +24,12 @@ use \UniAlteri\States\DI;
 use \UniAlteri\States\States;
 use \UniAlteri\States\Proxy;
 
+/**
+ * Interface FinderInterface
+ * @package UniAlteri\States\Loader
+ * Interface to define finder to use with this library to find and load from each stated class
+ * all states and the proxy
+ */
 interface FinderInterface
 {
     /**

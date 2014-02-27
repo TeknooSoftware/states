@@ -23,6 +23,11 @@ namespace UniAlteri\States\States;
 use \UniAlteri\States\DI;
 use \UniAlteri\States\Proxy;
 
+/**
+ * Interface StateInterface
+ * @package UniAlteri\States\States
+ * Interface to define a state for a stated class. Each state must implements this interface.
+ */
 interface StateInterface
 {
     /**

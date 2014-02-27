@@ -20,6 +20,12 @@
 namespace UniAlteri\States;
 use \UniAlteri\States\DI;
 
+/**
+ * Interface ObjectInterface
+ * @package UniAlteri\States
+ *
+ * All stated object must implement this method, even if they use another proxy interface and factory interface.
+ */
 interface ObjectInterface
 {
     /**

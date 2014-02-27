@@ -23,7 +23,11 @@ namespace UniAlteri\States\Factory\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class StateNotFound
+ * @package UniAlteri\States\Factory\Exception
+ * Exception thew when the requiring state is not available for the stated object
+ */
 class StateNotFound extends Exception\StateNotFound
 {
-
 }

@@ -23,6 +23,12 @@ namespace UniAlteri\States\States;
 use \UniAlteri\States\DI;
 use \UniAlteri\States\Proxy;
 
+/**
+ * Class AbstractState
+ * @package UniAlteri\States\States
+ *
+ * Standard implementation of the state interface for state class as a abstract class.
+ */
 abstract class AbstractState implements StateInterface
 {
     use TraitState;

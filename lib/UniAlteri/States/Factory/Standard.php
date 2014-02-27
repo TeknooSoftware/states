@@ -20,6 +20,15 @@
 
 namespace UniAlteri\States\Factory;
 
+/**
+ * Class Standard
+ * @package UniAlteri\States\Factory
+ * Default "stated object" factory to use with this library to build a new instance
+ * of a stated class. This class is used when a stated class does not provide its own factory.
+ *
+ * The library create an alias with the class's factory name and this default factory
+ * to simulate a dedicated factory to this class
+ */
 class Standard implements FactoryInterface
 {
     use TraitFactory;

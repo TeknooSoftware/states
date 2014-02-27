@@ -20,7 +20,11 @@
 
 namespace UniAlteri\States\Exception;
 
+/**
+ * Class UnavailableState
+ * @package UniAlteri\States\Exception
+ * Exception threw when the state's path is not available (not exist or not readable)
+ */
 class UnavailableState extends Standard
 {
-
 }

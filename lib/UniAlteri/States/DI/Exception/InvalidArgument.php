@@ -23,7 +23,11 @@ namespace UniAlteri\States\DI\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class InvalidArgument
+ * @package UniAlteri\States\DI\Exception
+ * Exception threw when the argument's value has not respected some business rules
+ */
 class InvalidArgument extends Exception\InvalidArgument
 {
-
 }

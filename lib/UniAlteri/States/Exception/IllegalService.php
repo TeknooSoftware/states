@@ -20,7 +20,11 @@
 
 namespace UniAlteri\States\Exception;
 
+/**
+ * Class IllegalService
+ * @package UniAlteri\States\Exception
+ * Exception threw when the service is not invokable
+ */
 class IllegalService extends Standard
 {
-
 }

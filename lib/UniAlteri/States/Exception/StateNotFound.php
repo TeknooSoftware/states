@@ -20,7 +20,11 @@
 
 namespace UniAlteri\States\Exception;
 
+/**
+ * Class StateNotFound
+ * @package UniAlteri\States\Exception
+ * Exception thew when the requiring state is not available for the stated object
+ */
 class StateNotFound extends Standard
 {
-
 }

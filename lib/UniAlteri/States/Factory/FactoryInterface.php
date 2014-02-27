@@ -23,6 +23,12 @@ namespace UniAlteri\States\Factory;
 use \UniAlteri\States\Proxy;
 use \UniAlteri\States\DI;
 
+/**
+ * Interface FactoryInterface
+ * @package UniAlteri\States\Factory
+ * Interface to define "stated object" factory to use with this library to build a new instance
+ * of a stated class.
+ */
 interface FactoryInterface
 {
     const OBJECT_LOADER_KEY = 'objectLoader';

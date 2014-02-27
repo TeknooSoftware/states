@@ -23,7 +23,11 @@ namespace UniAlteri\States\Loader\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class EmptyStack
+ * @package UniAlteri\States\Loader\Exception
+ * Exception threw when the developer wants unstack an empty stack
+ */
 class EmptyStack extends Exception\EmptyStack
 {
-
 }

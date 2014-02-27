@@ -23,7 +23,11 @@ namespace UniAlteri\States\DI\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class ClassNotFound
+ * @package UniAlteri\States\DI\Exception
+ * Exception threw when the required class was not found
+ */
 class ClassNotFound extends Exception\ClassNotFound
 {
-
 }

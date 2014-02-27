@@ -23,6 +23,15 @@ namespace UniAlteri\States\Proxy;
 use \UniAlteri\States;
 use \UniAlteri\States\DI;
 
+/**
+ * Interface ProxyInterface
+ * @package UniAlteri\States\Proxy
+ * Interface to define "Proxy Object" used in this library to create stated object.
+ *
+ * A stated object is a proxy, configured for its stated class, with its differents states objects.
+ * It is a proxy because, by default, all calls are redirected to enabled states.
+ * $this in all methods of the stated object (also of states'methods) points the proxy object.
+ */
 interface ProxyInterface extends
     States\ObjectInterface,
     \Serializable,

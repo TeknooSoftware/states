@@ -24,6 +24,14 @@ use \UniAlteri\States\DI;
 use \UniAlteri\States\Loader;
 use \UniAlteri\States\Proxy;
 
+/**
+ * Trait TraitFactory
+ * @package UniAlteri\States\Factory
+ * Standard implementation of the "stated object" factory to use with this library to build a new instance
+ * of a stated class.
+ *
+ * It is a trait to allow developer to write theirs owns factory, extendable from any class.
+ */
 trait TraitFactory
 {
 

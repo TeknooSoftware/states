@@ -23,7 +23,12 @@ namespace UniAlteri\States\Proxy\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class AvailableSeveralMethodImplementations
+ * @package UniAlteri\States\Proxy\Exception
+ * Exception threw when a stated object is having several implementations a the calling method
+ * in different enabled states
+ */
 class AvailableSeveralMethodImplementations extends Exception\AvailableSeveralMethodImplementations
 {
-
 }

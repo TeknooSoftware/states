@@ -20,6 +20,11 @@
 
 namespace UniAlteri\States\DI;
 
+/**
+ * Class Container
+ * @package UniAlteri\States\DI
+ * Default Dependency Injection Container, build on Pimple used in this library.
+ */
 class Container extends \Pimple implements ContainerInterface
 {
     /**

@@ -23,7 +23,11 @@ namespace UniAlteri\States\Proxy\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class UnavailableState
+ * @package UniAlteri\States\Proxy\Exception
+ * Exception threw when the path exist but is not readable.
+ */
 class UnavailableState extends Exception\UnavailableState
 {
-
 }

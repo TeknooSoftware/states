@@ -20,7 +20,11 @@
 
 namespace UniAlteri\States\Exception;
 
+/**
+ * Class Standard
+ * @package UniAlteri\States\Exception
+ * Default exception
+ */
 class Standard extends \Exception
 {
-
 }

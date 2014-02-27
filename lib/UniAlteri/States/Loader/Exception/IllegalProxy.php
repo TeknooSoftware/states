@@ -23,7 +23,11 @@ namespace UniAlteri\States\Loader\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class IllegalProxy
+ * @package UniAlteri\States\Loader\Exception
+ * Exception threw when the proxy does not implement the good interface
+ */
 class IllegalProxy extends Exception\IllegalProxy
 {
-
 }

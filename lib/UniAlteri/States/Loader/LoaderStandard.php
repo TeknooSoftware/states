@@ -20,6 +20,12 @@
 
 namespace UniAlteri\States\Loader;
 
+/**
+ * Class LoaderStandard
+ * @package UniAlteri\States\Loader
+ * Default implementation of the "stated class autoloader".
+ * It is used to allow php to load stated class
+ */
 class LoaderStandard implements LoaderInterface
 {
 

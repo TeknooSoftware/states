@@ -23,7 +23,11 @@ namespace UniAlteri\States\Factory\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class UnavailableLoader
+ * @package UniAlteri\States\Factory\Exception
+ * Exception threw when the factory can not load the class loader used for this library
+ */
 class UnavailableLoader extends Exception\UnavailableLoader
 {
-
 }

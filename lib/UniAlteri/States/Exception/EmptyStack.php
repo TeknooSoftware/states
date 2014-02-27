@@ -20,7 +20,11 @@
 
 namespace UniAlteri\States\Exception;
 
+/**
+ * Class EmptyStack
+ * @package UniAlteri\States\Exception
+ * Exception threw when the developer wants unstack an empty stack
+ */
 class EmptyStack extends Standard
 {
-
 }

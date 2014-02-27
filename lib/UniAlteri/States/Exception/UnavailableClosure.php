@@ -20,7 +20,12 @@
 
 namespace UniAlteri\States\Exception;
 
+/**
+ * Class UnavailableClosure
+ * @package UniAlteri\States\Exception
+ * Exception threw when the proxy requires a closure from a state (to use static behavior)
+ * but there are no available state.
+ */
 class UnavailableClosure extends Standard
 {
-
 }

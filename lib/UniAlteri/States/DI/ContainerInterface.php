@@ -20,6 +20,11 @@
 
 namespace UniAlteri\States\DI;
 
+/**
+ * Interface ContainerInterface
+ * @package UniAlteri\States\DI
+ * Interface for dependency injection container to use in this library.
+ */
 interface ContainerInterface
 {
     /**

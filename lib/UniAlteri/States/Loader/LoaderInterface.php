@@ -20,6 +20,11 @@
 
 namespace UniAlteri\States\Loader;
 
+/**
+ * Interface LoaderInterface
+ * @package UniAlteri\States\Loader
+ * Interface to define a "stated class autoloader" to allow php to load stated class
+ */
 interface LoaderInterface
 {
     /**

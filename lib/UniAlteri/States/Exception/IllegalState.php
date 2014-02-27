@@ -20,7 +20,11 @@
 
 namespace UniAlteri\States\Exception;
 
+/**
+ * Class IllegalState
+ * @package UniAlteri\States\Exception
+ * Exception threw when the state object does not implement the good interface
+ */
 class IllegalState extends Standard
 {
-
 }

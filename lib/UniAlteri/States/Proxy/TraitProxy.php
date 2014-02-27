@@ -23,6 +23,19 @@ namespace UniAlteri\States\Proxy;
 use \UniAlteri\States\DI;
 use \UniAlteri\States;
 
+/**
+ * Trait TraitProxy
+ * @package UniAlteri\States\Proxy
+ * Standard implementation of the "Proxy Object".
+ * It is used in this library to create stated object.
+ *
+ * A stated object is a proxy, configured for its stated class, with its differents states objects.
+ * It is a proxy because, by default, all calls are redirected to enabled states.
+ * $this in all methods of the stated object (also of states'methods) points the proxy object.
+ *
+ * It is a trait to allow developer to write theirs owns proxy for theirs stated class,
+ * extendable from any class.
+ */
 trait TraitProxy
 {
     /**

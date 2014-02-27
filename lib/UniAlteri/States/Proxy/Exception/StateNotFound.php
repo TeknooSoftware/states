@@ -23,7 +23,11 @@ namespace UniAlteri\States\Proxy\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class StateNotFound
+ * @package UniAlteri\States\Proxy\Exception
+ * Exception thew when the requiring state is not available for the stated object
+ */
 class StateNotFound extends Exception\StateNotFound
 {
-
 }

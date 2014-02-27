@@ -20,7 +20,11 @@
 
 namespace UniAlteri\States\Exception;
 
+/**
+ * Class UnavailableLoader
+ * @package UniAlteri\States\Exception
+ * Exception threw when the factory can not load the class loader used for this library
+ */
 class UnavailableLoader extends Standard
 {
-
 }

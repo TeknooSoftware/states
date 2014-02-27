@@ -25,6 +25,12 @@ use \UniAlteri\States\DI;
 use \UniAlteri\States\States;
 use \UniAlteri\States\Proxy;
 
+/**
+ * Class FinderStandard
+ * @package UniAlteri\States\Loader
+ * Default implementation of the finder. It is used with this library to find and load
+ * from each stated class all states and the proxy
+ */
 class FinderStandard implements FinderInterface
 {
     /**

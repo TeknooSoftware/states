@@ -23,7 +23,11 @@ namespace UniAlteri\States\DI\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class IllegalService
+ * @package UniAlteri\States\DI\Exception
+ * Exception threw when the service is not invokable
+ */
 class IllegalService extends Exception\IllegalService
 {
-
 }

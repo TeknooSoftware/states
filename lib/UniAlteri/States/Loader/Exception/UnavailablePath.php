@@ -23,7 +23,11 @@ namespace UniAlteri\States\Loader\Exception;
 
 use \UniAlteri\States\Exception;
 
+/**
+ * Class UnavailablePath
+ * @package UniAlteri\States\Loader\Exception
+ * Exception threw when the path is not available (not exist or not readable)
+ */
 class UnavailablePath extends Exception\UnavailablePath
 {
-
 }

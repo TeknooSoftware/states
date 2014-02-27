@@ -20,7 +20,11 @@
 
 namespace UniAlteri\States\Exception;
 
+/**
+ * Class ClassNotFound
+ * @package UniAlteri\States\Exception
+ * Exception threw when the required class was not found
+ */
 class ClassNotFound extends Standard
 {
-
 }

@@ -30,6 +30,13 @@ namespace UniAlteri\States\States;
 use \UniAlteri\States\DI;
 use \UniAlteri\States\Proxy;
 
+/**
+ * Class TraitState
+ * @package UniAlteri\States\States
+ * Standard implementation of the state interface for state class.
+ *
+ * It's tray to allow developer to implement easily the interface for theirs state class.
+ */
 trait TraitState
 {
     /**
