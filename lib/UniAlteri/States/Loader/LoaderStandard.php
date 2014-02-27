@@ -20,7 +20,7 @@
 
 namespace UniAlteri\States\Loader;
 
-class Loader implements LoaderInterface
+class LoaderStandard implements LoaderInterface
 {
 
     /**

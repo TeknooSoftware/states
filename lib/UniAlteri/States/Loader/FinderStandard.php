@@ -100,6 +100,7 @@ class FinderStandard implements FinderInterface
      * List all available state object of the stated class
      * @return string[]
      * @throws Exception\UnavailablePath if the states's folder is not available
+     * @throws Exception\UnReadablePath if the states's folder is not readable
      */
     public function listStates()
     {
@@ -112,7 +113,7 @@ class FinderStandard implements FinderInterface
         //Check if the path is available
         $hD = opendir($statesPath);
         if (false === $hD) {
-            throw new Exception\UnavailablePath('Error, the path "'.$statesPath.'" is not available');
+            throw new Exception\UnReadablePath('Error, the path "'.$statesPath.'" is not available');
         }
 
         //Extract all states (No check class exists)
@@ -139,6 +140,7 @@ class FinderStandard implements FinderInterface
      * Load and build the required state object of the stated class
      * @param string $stateName
      * @return States\StateInterface
+     * @throws Exception\UnReadablePath if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState if the state object does not implement the interface
      */
@@ -147,7 +149,7 @@ class FinderStandard implements FinderInterface
         $statePath = $this->_pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php';
 
         if (!is_readable($statePath)) {
-            throw new Exception\UnavailableState('Error, the state "'.$stateName.'" was not found');
+            throw new Exception\UnReadablePath('Error, the state "'.$stateName.'" was not found');
         }
 
         include_once($statePath);
