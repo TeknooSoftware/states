@@ -10,8 +10,8 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @project     States
- * @category    DI
+ * @package     States
+ * @subpackage  Loader
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -78,6 +78,8 @@ interface FinderInterface
     /**
      * List all available state object of the stated class
      * @return string[]
+     * @throws Exception\UnavailablePath if the states's folder is not available
+     * @throws Exception\UnReadablePath if the states's folder is not readable
      */
     public function listStates();
 
@@ -85,12 +87,16 @@ interface FinderInterface
      * Load and build the required state object of the stated class
      * @param string $stateName
      * @return States\StateInterface
+     * @throws Exception\UnReadablePath if the state file is not readable
+     * @throws Exception\UnavailableState if the required state is not available
+     * @throws Exception\IllegalState if the state object does not implement the interface
      */
     public function loadState($stateName);
 
     /**
      * Load and build a proxy object for the stated class
      * @return Proxy\ProxyInterface
+     * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function loadProxy();
 }
