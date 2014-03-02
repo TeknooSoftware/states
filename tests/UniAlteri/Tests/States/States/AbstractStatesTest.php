@@ -29,21 +29,24 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
 
     /**
      * Build an basic object to provide only public methods
+     * @param boolean $initializeContainer initialize virtual di container for state
      * @return Support\OnlyPublic
      */
-    abstract protected function _getPublicClassObject();
+    abstract protected function _getPublicClassObject($initializeContainer=true);
 
     /**
      * Build an basic object to provide only protected methods
+     * @param boolean $initializeContainer initialize virtual di container for state
      * @return Support\OnlyProtected
      */
-    abstract protected function _getProtectedClassObject();
+    abstract protected function _getProtectedClassObject($initializeContainer=true);
 
     /**
      * Build an basic object to provide only private methods
+     * @param boolean $initializeContainer initialize virtual di container for state
      * @return Support\OnlyPrivate
      */
-    abstract protected function _getPrivateClassObject();
+    abstract protected function _getPrivateClassObject($initializeContainer=true);
 
     /**
      * Build a virtual proxy for test
@@ -142,17 +145,25 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
+     * @param \ReflectionMethod $text
+     * @return string
+     */
+    protected function _formatDescription($text){
+        return trim(str_replace(array(PHP_EOL, '*', '/'), '', $text->getDocComment()));
+    }
+
+    /**
      * Test get method description
      */
     public function testGetMethodDescription(){
-        $this->assertSame('Final Method 9', $this->_getPrivateClassObject()->getMethodDescription('_finalMethod9'));
-        $this->assertSame('Standard Method 10', $this->_getPrivateClassObject()->getMethodDescription('_standardMethod10'));
+        $this->assertSame('Final Method 9', $this->_formatDescription($this->_getPrivateClassObject()->getMethodDescription('_finalMethod9')));
+        $this->assertSame('Standard Method 10', $this->_formatDescription($this->_getPrivateClassObject()->getMethodDescription('_standardMethod10')));
 
-        $this->assertSame('Standard Method 6', $this->_getProtectedClassObject()->getMethodDescription('_standardMethod6'));
-        $this->assertSame('Final Method 7', $this->_getProtectedClassObject()->getMethodDescription('_finalMethod7'));
+        $this->assertSame('Standard Method 6      @param $a      @param $b      @return mixed', $this->_formatDescription($this->_getProtectedClassObject()->getMethodDescription('_standardMethod6')));
+        $this->assertSame('Final Method 7', $this->_formatDescription($this->_getProtectedClassObject()->getMethodDescription('_finalMethod7')));
 
-        $this->assertSame('Standard Method 1', $this->_getPublicClassObject()->getMethodDescription('standardMethod1'));
-        $this->assertSame('Final Method 2', $this->_getPublicClassObject()->getMethodDescription('finalMethod2'));
+        $this->assertSame('Standard Method 1', $this->_formatDescription($this->_getPublicClassObject()->getMethodDescription('standardMethod1')));
+        $this->assertSame('Final Method 2', $this->_formatDescription($this->_getPublicClassObject()->getMethodDescription('finalMethod2')));
     }
 
     public function testTestMethodExceptionWithInvalidName(){
@@ -243,13 +254,42 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         try{
             $this->_getPublicClassObject()->getClosure('standardMethod1', new \DateTime());
         }
-        catch(States\Exception\MethodNotImplemented $e){
-            return;
-        }
         catch(\Exception $e){
+            return;
         }
 
         $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of non-existent method');
+    }
+
+    /**
+     * Test exception through by state if the closure method is static
+     */
+    public function testGetClosureWithInvalidDiContainer(){
+        try{
+            $object = $this->_getPublicClassObject(false);
+            $object->getClosure('standardMethod1', $this->_getVirtualProxy());
+        }
+        catch(States\Exception\IllegalService $e){
+            return;
+        }
+
+        $this->fail('Error, the state must throws an Exception\IllegalService if no Injection Container has been defined before getClosure');
+    }
+
+    /**
+     * Test exception through by state if the closure method is static
+     */
+    public function testGetClosureWithInvalidInjectContainer(){
+        try{
+            $object = $this->_getPublicClassObject();
+            $object->getDIContainer()->registerService(States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER, null);
+            $object->getClosure('standardMethod1', $this->_getVirtualProxy());
+        }
+        catch(States\Exception\IllegalService $e){
+            return;
+        }
+
+        $this->fail('Error, the state must throws an Exception\IllegalService if no DI Container has been defined before getClosure');
     }
 
     /**
@@ -257,8 +297,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
      */
     public function testGetClosure(){
         $closure = $this->_getProtectedClassObject()->getClosure('_standardMethod6', $this->_getVirtualProxy());
-        $this->assertSame('DI\InjectionClosure', $closure);
-        $this->assertSame('\Closure', $closure->getClosure());
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure->getClosure());
         $this->assertEquals(3, call_user_func_array($closure->getClosure(), array(1, 2)));
     }
 
@@ -266,12 +306,27 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
      * Test multiple call go getClosure for the same method
      */
     public function testGetMultipleSameClosures(){
-        $closure1 = $this->_getProtectedClassObject()->getClosure('_standardMethod6', $this->_getVirtualProxy());
-        $closure2 = $this->_getProtectedClassObject()->getClosure('_finalMethod7', $this->_getVirtualProxy());
-        $closure3 = $this->_getProtectedClassObject()->getClosure('_standardMethod8', $this->_getVirtualProxy());
+        $projected = $this->_getProtectedClassObject();
+        $closure1 = $projected->getClosure('_standardMethod6', $this->_getVirtualProxy());
+        $closure2 = $projected->getClosure('_finalMethod7', $this->_getVirtualProxy());
+        $closure3 = $projected->getClosure('_standardMethod6', $this->_getVirtualProxy());
 
         $this->assertSame($closure1, $closure3);
         $this->assertSame($closure1->getClosure(), $closure3->getClosure());
+        $this->assertNotSame($closure1, $closure2);
+        $this->assertNotSame($closure1->getClosure(), $closure2->getClosure());
+    }
+
+    /**
+     * Test multiple call go getClosure for the same method
+     */
+    public function testGetMultipleClosuresMultipleState(){
+        $closure1 = $this->_getProtectedClassObject()->getClosure('_standardMethod6', $this->_getVirtualProxy());
+        $closure2 = $this->_getProtectedClassObject()->getClosure('_finalMethod7', $this->_getVirtualProxy());
+        $closure3 = $this->_getProtectedClassObject()->getClosure('_standardMethod6', $this->_getVirtualProxy());
+
+        $this->assertNotSame($closure1, $closure3);
+        $this->assertNotSame($closure1->getClosure(), $closure3->getClosure());
         $this->assertNotSame($closure1, $closure2);
         $this->assertNotSame($closure1->getClosure(), $closure2->getClosure());
     }

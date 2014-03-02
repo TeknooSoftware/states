@@ -29,10 +29,33 @@ use \UniAlteri\States\States;
  */
 class OnlyPrivate extends States\AbstractState
 {
+    /**
+     * To simulate a real state behavior
+     * @param boolean $initializeContainer initialize virtual di container for state
+     */
+    public function __construct($initializeContainer=true)
+    {
+        if (true === $initializeContainer) {
+            $this->setDIContainer(new VirtualDIContainer());
+            $this->getDIContainer()->registerService(
+                States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER,
+                function() {
+                    return new VirtualInjectionClosure();
+                }
+            );
+        }
+    }
+
+    /**
+     * Final Method 9
+     */
     final private function _finalMethod9()
     {
     }
 
+    /**
+     * Standard Method 10
+     */
     private function _standardMethod10()
     {
     }

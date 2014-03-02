@@ -29,15 +29,41 @@ use \UniAlteri\States\States;
  */
 class OnlyProtected extends States\AbstractState
 {
+    /**
+     * To simulate a real state behavior
+     * @param boolean $initializeContainer initialize virtual di container for state
+     */
+    public function __construct($initializeContainer=true)
+    {
+        if (true === $initializeContainer) {
+            $this->setDIContainer(new VirtualDIContainer());
+            $this->getDIContainer()->registerService(
+                States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER,
+                function() {
+                    return new VirtualInjectionClosure();
+                }
+            );
+        }
+    }
+
     protected static function _staticMethod5()
     {
     }
 
+    /**
+     * Standard Method 6
+     * @param $a
+     * @param $b
+     * @return mixed
+     */
     protected function _standardMethod6($a, $b)
     {
         return $a+$b;
     }
 
+    /**
+     * Final Method 7
+     */
     final protected function _finalMethod7()
     {
     }

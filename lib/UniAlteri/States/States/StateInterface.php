@@ -57,6 +57,7 @@ interface StateInterface
      * Test if a method exist for this state
      * @param string $methodName
      * @return boolean
+     * @throws Exception\InvalidArgument when the method name is not a string
      */
     public function testMethod($methodName);
 
@@ -65,6 +66,7 @@ interface StateInterface
      * @param string $methodName
      * @return \ReflectionMethod
      * @throws Exception\MethodNotImplemented is the method does not exist
+     * @throws Exception\InvalidArgument when the method name is not a string
      */
     public function getMethodDescription($methodName);
 
@@ -74,6 +76,9 @@ interface StateInterface
      * @param Proxy\ProxyInterface $proxy
      * @return DI\InjectionClosureInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
+     * @throws Exception\InvalidArgument when the method name is not a string
+     * @throws Exception\IllegalProxy when the proxy does not implement the good interface
+     * @throws Exception\IllegalService when there are no DI Container or Injection Closure Container bought
      */
     public function getClosure($methodName, Proxy\ProxyInterface $proxy);
 }

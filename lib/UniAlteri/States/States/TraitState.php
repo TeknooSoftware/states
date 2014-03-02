@@ -28,6 +28,7 @@
 namespace UniAlteri\States\States;
 
 use \UniAlteri\States\DI;
+use UniAlteri\States\Exception\IllegalService;
 use \UniAlteri\States\Proxy;
 
 /**
@@ -118,19 +119,24 @@ trait TraitState
                     'setDIContainer',
                     'getDIContainer',
                     'listMethods',
+                    'testMethod',
                     'getMethodDescription',
-                    'getClosure'
+                    'getClosure',
+                    '_getReflectionClass',
+                    '_buildInjectionClosureObject'
                 )
             );
 
             //Extracts methods' names
             $methodsFinalArray = new \ArrayObject();
             foreach ($methodsArray as $methodReflection) {
-                //Store reflection into local cache
-                $methodNameString = $methodReflection->getName();
-                if (!isset($methodsNamesToIgnoreArray[$methodNameString])) {
-                    $methodsFinalArray[] = $methodNameString;
-                    $this->_reflectionsMethods[$methodNameString] = $methodReflection;
+                if (false === $methodReflection->isStatic()) {
+                    //Store reflection into local cache
+                    $methodNameString = $methodReflection->getName();
+                    if (!isset($methodsNamesToIgnoreArray[$methodNameString])) {
+                        $methodsFinalArray[] = $methodNameString;
+                        $this->_reflectionsMethods[$methodNameString] = $methodReflection;
+                    }
                 }
             }
 
@@ -144,9 +150,14 @@ trait TraitState
      * Test if a method exist for this state
      * @param string $methodName
      * @return boolean
+     * @throws Exception\InvalidArgument when the method name is not a string
      */
     public function testMethod($methodName)
     {
+        if (!is_string($methodName)) {
+            throw new Exception\InvalidArgument('Error, the method name is not a valid string');
+        }
+
         //Method is already extracted
         if (isset($this->_reflectionsMethods[$methodName])) {
             if ($this->_reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
@@ -172,9 +183,14 @@ trait TraitState
      * @param string $methodName
      * @return \ReflectionMethod
      * @throws Exception\MethodNotImplemented is the method does not exist
+     * @throws Exception\InvalidArgument when the method name is not a string
      */
     public function getMethodDescription($methodName)
     {
+        if (!is_string($methodName)) {
+            throw new Exception\InvalidArgument('Error, the method name is not a valid string');
+        }
+
         $thisReflectionClass = $this->_getReflectionClass();
 
         //Initialize ArrayObject to store Reflection Methods
@@ -202,10 +218,21 @@ trait TraitState
     /**
      * Build a new Injection Closure object
      * @return DI\InjectionClosureInterface
+     * @throws Exception\IllegalService when there are no DI Container or Injection Closure Container bought
      */
     protected function _buildInjectionClosureObject()
     {
-        return $this->getDIContainer()->get(StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER);
+        $container = $this->getDIContainer();
+        if (!$container instanceof DI\ContainerInterface) {
+            throw new Exception\IllegalService('Error, no DI Container has been defined');
+        }
+
+        $diContainer = $container->get(StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER);
+        if (!$diContainer instanceof DI\InjectionClosureInterface) {
+            throw new Exception\IllegalService('Error, no Injection Container has been defined');
+        }
+
+        return $diContainer;
     }
 
     /**
@@ -214,12 +241,23 @@ trait TraitState
      * @param Proxy\ProxyInterface $proxy
      * @return DI\InjectionClosureInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
+     * @throws Exception\InvalidArgument when the method name is not a string
+     * @throws Exception\IllegalProxy when the proxy does not implement the good interface
+     * @throws Exception\IllegalService when there are no DI Container or Injection Closure Container bought
      */
     public function getClosure($methodName, Proxy\ProxyInterface $proxy)
     {
+        if (!is_string($methodName)) {
+            throw new Exception\InvalidArgument('Error, the method name is not a valid string');
+        }
+
         if (!($this->_closuresObjects instanceof \ArrayObject)) {
             //Initialize locale closure cache
             $this->_closuresObjects = new \ArrayObject();
+        }
+
+        if (!$proxy instanceof Proxy\ProxyInterface) {
+            throw new Exception\IllegalProxy('Error, the proxy does not implement the required proxy');
         }
 
         if (!isset($this->_closuresObjects[$methodName])) {
@@ -232,8 +270,7 @@ trait TraitState
             $closure = \Closure::bind($closure, $proxy, get_class($proxy));
 
             //Include the closure into the container
-            $args = array($closure);
-            $injectionClosure = $this->_buildInjectionClosureObject()->setClosure($args);
+            $injectionClosure = $this->_buildInjectionClosureObject()->setClosure($closure);
             $injectionClosure->setDIContainer($this->getDIContainer());
             $this->_closuresObjects[$methodName] = $injectionClosure;
         }

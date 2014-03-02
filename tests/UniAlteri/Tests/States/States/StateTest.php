@@ -20,32 +20,36 @@
 
 namespace UniAlteri\Tests\States\States;
 
+use \UniAlteri\States\Proxy;
 use \UniAlteri\Tests\Support;
 
 class StateTest extends AbstractStatesTest
 {
     /**
      * Build an basic object to provide only public methods
+     * @param boolean $initializeContainer initialize virtual di container for state
      * @return Support\OnlyPublic
      */
-    protected function _getPublicClassObject(){
-        return new Support\OnlyPublic();
+    protected function _getPublicClassObject($initializeContainer=true){
+        return new Support\OnlyPublic($initializeContainer);
     }
 
     /**
      * Build an basic object to provide only protected methods
+     * @param boolean $initializeContainer initialize virtual di container for state
      * @return Support\OnlyProtected
      */
-    protected function _getProtectedClassObject(){
-        return new Support\OnlyProtected();
+    protected function _getProtectedClassObject($initializeContainer=true){
+        return new Support\OnlyProtected($initializeContainer);
     }
 
     /**
      * Build an basic object to provide only private methods
+     * @param boolean $initializeContainer initialize virtual di container for state
      * @return Support\OnlyPrivate
      */
-    protected function _getPrivateClassObject(){
-        return new Support\OnlyPrivate();
+    protected function _getPrivateClassObject($initializeContainer=true){
+        return new Support\OnlyPrivate($initializeContainer);
     }
 
     /**
@@ -53,6 +57,6 @@ class StateTest extends AbstractStatesTest
      * @return Proxy\ProxyInterface
      */
     protected function _getVirtualProxy(){
-        return new Support\VirtualProxy();
+        return new Support\VirtualProxy(array());
     }
 }

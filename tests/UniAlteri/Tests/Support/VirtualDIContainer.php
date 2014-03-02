@@ -26,6 +26,16 @@ use UniAlteri\States\DI\Exception;
 class VirtualDIContainer implements DI\ContainerInterface
 {
     /**
+     * @var array
+     */
+    protected $_instance = array();
+
+    /**
+     * @var array
+     */
+    protected $_service = array();
+
+    /**
      * To support object cloning : All registry must be cloning, but not theirs values
      */
     public function __clone()
@@ -42,7 +52,13 @@ class VirtualDIContainer implements DI\ContainerInterface
      */
     public function get($name)
     {
+        if (isset($this->_instance[$name])) {
+            return $this->_instance[$name];
+        }
 
+        if (isset($this->_service[$name])) {
+            return $this->_service[$name]();
+        }
     }
 
     /**
@@ -55,7 +71,7 @@ class VirtualDIContainer implements DI\ContainerInterface
      */
     public function registerInstance($name, $instance)
     {
-
+        $this->_instance[$name] = $instance;
     }
 
     /**
@@ -68,7 +84,7 @@ class VirtualDIContainer implements DI\ContainerInterface
      */
     public function registerService($name, $instance)
     {
-
+        $this->_service[$name] = $instance;
     }
 
     /**
@@ -78,7 +94,7 @@ class VirtualDIContainer implements DI\ContainerInterface
      */
     public function testEntry($name)
     {
-
+        return isset($this->_instance[$name]) || isset($this->_service[$name]);
     }
 
     /**
@@ -87,7 +103,13 @@ class VirtualDIContainer implements DI\ContainerInterface
      */
     public function unregister($name)
     {
+        if (isset($this->_instance[$name])) {
+            unset($this->_instance[$name]);
+        }
 
+        if (isset($this->_service[$name])) {
+            unset($this->_service[$name]);
+        }
     }
 
     /**

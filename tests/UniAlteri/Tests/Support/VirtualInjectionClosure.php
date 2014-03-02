@@ -63,6 +63,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
     public function setClosure(\Closure $closure)
     {
         $this->_closure = $closure;
+        return $this;
     }
 
     /**
@@ -84,6 +85,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function saveProperty($name, $value)
     {
+        return $this;
     }
 
     /**
@@ -94,6 +96,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function deleteProperty($name)
     {
+        return $this;
     }
 
     /**

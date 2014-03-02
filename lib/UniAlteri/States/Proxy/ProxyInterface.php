@@ -37,7 +37,6 @@ interface ProxyInterface extends
     \Serializable,
     \ArrayAccess,
     \SeekableIterator,
-    \IteratorAggregate,
     \Countable
 {
     const DEFAULT_STATE_NAME = 'Default';
