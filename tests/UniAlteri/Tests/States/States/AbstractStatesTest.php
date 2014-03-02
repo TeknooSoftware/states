@@ -64,7 +64,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
                 'finalMethod2',
                 'standardMethod4'
             ),
-            $this->_getPublicClassObject()->listMethods()
+            $this->_getPublicClassObject()->listMethods()->getArrayCopy()
         );
     }
 
@@ -78,7 +78,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
                 '_finalMethod7',
                 '_standardMethod8'
             ),
-            $this->_getProtectedClassObject()->listMethods()
+            $this->_getProtectedClassObject()->listMethods()->getArrayCopy()
         );
     }
 
@@ -92,7 +92,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
                 '_standardMethod10',
                 '_finalMethod11'
             ),
-            $this->_getPrivateClassObject()->listMethods()
+            $this->_getPrivateClassObject()->listMethods()->getArrayCopy()
         );
     }
 
@@ -236,7 +236,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
      */
     public function testGetStaticClosure(){
         try{
-            $this->_getPublicClassObject()->getClosure('standardMethod1', $this->_getVirtualProxy());
+            $this->_getPublicClassObject()->getClosure('staticMethod3', $this->_getVirtualProxy());
         }
         catch(States\Exception\MethodNotImplemented $e){
             return;

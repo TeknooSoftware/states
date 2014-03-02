@@ -71,6 +71,23 @@ trait TraitState
     protected $_closuresObjects = null;
 
     /**
+     * //Methods to not return into descriptions
+     * @var array
+     */
+    protected $_methodsNamesToIgnoreArray = array(
+        '__construct'                   => '__construct', //Ignore not accessible from proxy
+        '__destruct'                    => '__destruct',
+        'setDIContainer'                => 'setDIContainer',
+        'getDIContainer'                => 'getDIContainer',
+        'listMethods'                   => 'listMethods',
+        'testMethod'                    => 'testMethod',
+        'getMethodDescription'          => 'getMethodDescription',
+        'getClosure'                    => 'getClosure',
+        '_getReflectionClass'           => '_getReflectionClass',
+        '_buildInjectionClosureObject'  => '_buildInjectionClosureObject'
+    );
+
+    /**
      * Build the ReflectionClass for the current object
      * @return \ReflectionClass
      */
@@ -113,27 +130,14 @@ trait TraitState
             $flags = \ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED | \ReflectionMethod::IS_PRIVATE;
             $methodsArray = $thisReflectionClass->getMethods($flags);
 
-            //Methods to not return into descriptions
-            $methodsNamesToIgnoreArray = array_flip(
-                array(
-                    'setDIContainer',
-                    'getDIContainer',
-                    'listMethods',
-                    'testMethod',
-                    'getMethodDescription',
-                    'getClosure',
-                    '_getReflectionClass',
-                    '_buildInjectionClosureObject'
-                )
-            );
-
             //Extracts methods' names
             $methodsFinalArray = new \ArrayObject();
             foreach ($methodsArray as $methodReflection) {
-                if (false === $methodReflection->isStatic()) {
+                //ReflectionClass is not fully tested and can return always static methods
+                if (false == $methodReflection->isStatic()) {
                     //Store reflection into local cache
                     $methodNameString = $methodReflection->getName();
-                    if (!isset($methodsNamesToIgnoreArray[$methodNameString])) {
+                    if (!isset($this->_methodsNamesToIgnoreArray[$methodNameString])) {
                         $methodsFinalArray[] = $methodNameString;
                         $this->_reflectionsMethods[$methodNameString] = $methodReflection;
                     }
@@ -191,6 +195,10 @@ trait TraitState
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
         }
 
+        if (isset($this->_methodsNamesToIgnoreArray[$methodName])) {
+            throw new Exception\MethodNotImplemented('Error, this method is not implemented by this state');
+        }
+
         $thisReflectionClass = $this->_getReflectionClass();
 
         //Initialize ArrayObject to store Reflection Methods
@@ -201,7 +209,15 @@ trait TraitState
         try {
             //Load Reflection Methods if it is not already done
             if (!isset($this->_reflectionsMethods[$methodName])) {
-                $this->_reflectionsMethods[$methodName] = $thisReflectionClass->getMethod($methodName);
+                $methodDescription = $thisReflectionClass->getMethod($methodName);
+                if (false != $methodDescription->isStatic()) {
+                    //Method static are not available
+                    throw new Exception\MethodNotImplemented(
+                        'Method "'.$methodName.'" is not available for this state'
+                    );
+                }
+
+                $this->_reflectionsMethods[$methodName] = $methodDescription;
             }
 
             return $this->_reflectionsMethods[$methodName];
