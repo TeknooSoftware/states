@@ -62,9 +62,9 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
         try {
             $a = new DI\InjectionClosure();
             $a->setClosure(new \stdClass());
-        } catch (Exception\InvalidArgument $exception) {
+        } catch (\Exception $e) {
             return;
-        } catch (\Exception $e) {}
+        }
 
         $this->fail('Error, the Injection closure object must throw an exception if the object is not a closure');
     }
@@ -75,7 +75,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     public function testCreateClosure()
     {
         $closure = $this->_buildClosure();
-        $this->assertInstanceOf('InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
     }
 
     /**

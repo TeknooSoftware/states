@@ -50,10 +50,14 @@ class InjectionClosure implements InjectionClosureInterface
 
     /**
      * To create a closure for DI Container with a support of persistent vars. (aka "static")
+     * @param \Closure $closure to initialize container with a closure
      */
-    public function __construct()
+    public function __construct(\Closure $closure=null)
     {
         $this->_properties = new \ArrayObject();
+        if ($closure instanceof \Closure) {
+            $this->setClosure($closure);
+        }
     }
 
     /**
@@ -87,9 +91,14 @@ class InjectionClosure implements InjectionClosureInterface
      * Return the closure contained into this
      * @param \Closure $closure
      * @return $this
+     * @throws Exception\InvalidArgument when $closure is not an instance of \Closure
      */
     public function setClosure(\Closure $closure)
     {
+        if (!$closure instanceof \Closure) {
+            throw new Exception\InvalidArgument('Error, $closure is not an instance of \Closure');
+        }
+
         $this->_closure = $closure;
         return $this;
     }
