@@ -187,7 +187,7 @@ class LoaderStandard implements LoaderInterface
                 if (is_readable($classFile)) {
                     include_once($classFile);
 
-                    if (class_exists($className)) {
+                    if (class_exists($className, false)) {
                         //Class found and loaded
                         $classLoaded = true;
                     }

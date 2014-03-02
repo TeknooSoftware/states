@@ -39,6 +39,12 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
      */
     protected function _populateContainer($container)
     {
+        $container->registerInstance('instanceClass', '\DateTime');
+        $container->registerInstance('instanceObject', new \DateTime());
+        $container->registerInstance('instanceFunction', function() {return new \DateTime();});
+        $container->registerService('serviceClass', '\DateTime');
+        $container->registerService('serviceObject', new Support\InvokableClass());
+        $container->registerService('serviceFunction', function() {return new \stdClass();});
     }
 
     /**
@@ -296,7 +302,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $obj2 = $container->get('instanceFunction');
         $this->assertEquals(get_class($obj1), get_class($obj2), 'Error, container, must return the same object for a registered instance');
         $this->assertSame($obj1, $obj2, 'Error, container, must return the same object for a registered instance');
-        $this->assertInstanceOf('Closure', $obj1);
+        $this->assertInstanceOf('DateTime', $obj1);
     }
 
     /**
@@ -311,6 +317,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $obj2 = $container->get('serviceClass');
         $this->assertEquals(get_class($obj1), get_class($obj2), 'Error, container, must return the same object for a registered instance');
         $this->assertNotSame($obj1, $obj2, 'Error, container, must return two different objects for a same service');
+        $this->assertEquals('DateTime', get_class($obj1));
     }
 
     /**
@@ -321,8 +328,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container = $this->_buildContainer();
         $this->_populateContainer($container);
 
-        $obj1 = $container->get('instanceObject');
-        $this->assertEquals('\stdClass', $obj1, 'Error, for a service, the invokable object must be called and not returned');
+        $obj1 = $container->get('serviceObject');
+        $this->assertInstanceOf('\stdClass', $obj1, 'Error, for a service, the invokable object must be called and not returned');
     }
 
     /**
@@ -334,7 +341,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->_populateContainer($container);
 
         $obj1 = $container->get('serviceFunction');
-        $this->assertEquals('\DateTime', $obj1, 'Error, for a service, the invokable object must be called and not returned');
+        $this->assertInstanceOf('\stdClass', $obj1, 'Error, for a service, the invokable object must be called and not returned');
     }
 
     /**
@@ -345,8 +352,9 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container = $this->_buildContainer();
         try {
             $container->configure(new \DateTime());
-        } catch (\Exception $e) {
+        } catch (DI\Exception\InvalidArgument $e) {
             return;
+        } catch (\Exception $e) {
         }
 
         $this->fail('Error, method configure of the container must accept only array an ArrayObject');
@@ -361,7 +369,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container->configure(
             array(
                 'instances' => array(
-                    'instanceClass'  => '\DateTime',
+                    'instanceClass'  => '\ArrayObject',
                     'date1'         => function(){ return new \DateTime(); }
                 ),
                 'services'  => array(
@@ -370,8 +378,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             )
         );
 
-        $this->assertInstanceOf('\DateTime', $container->get('instanceClass'));
-        $this->assertInstanceOf('\Closure', $container->get('date1'));
+        $this->assertInstanceOf('\ArrayObject', $container->get('instanceClass'));
+        $this->assertInstanceOf('\DateTime', $container->get('date1'));
         $this->assertInstanceOf('\stdClass', $container->get('stdClass'));
     }
 

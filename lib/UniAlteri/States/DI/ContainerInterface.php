@@ -38,6 +38,7 @@ interface ContainerInterface
      * @param string $name : identifier of the instance
      * @return mixed
      * @throws Exception\InvalidArgument if the identifier is not defined
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function get($name);
 
@@ -48,6 +49,7 @@ interface ContainerInterface
      * @return $this
      * @throws Exception\ClassNotFound if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerInstance($name, $instance);
 
@@ -55,9 +57,10 @@ interface ContainerInterface
      * Register a new service into container (a new instance is returned at each call)
      * @param string $name : interface name, class name, alias
      * @param object|callable|string $instance
-     * @return string unique identifier of the object
+     * @return $this
      * @throws Exception\ClassNotFound if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerService($name, $instance);
 
@@ -65,12 +68,15 @@ interface ContainerInterface
      * Test if an entry is already registered
      * @param string $name
      * @return boolean
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function testEntry($name);
 
     /**
      * Remove an entry from the container
      * @param string $name
+     * @return $this
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function unregister($name);
 
@@ -78,6 +84,7 @@ interface ContainerInterface
      * Configure the container from an array (provided by an INI file or other)
      * @param array|\ArrayObject $params
      * @return mixed
+     * @throws Exception\InvalidArgument when $params is not an array or an ArrayAccess object
      */
     public function configure($params);
 

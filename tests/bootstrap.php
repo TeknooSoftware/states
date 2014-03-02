@@ -26,15 +26,31 @@ defined('PHPUNIT')
 
 ini_set('memory_limit', '128M');
 
+defined('DS')
+    || define('DS', DIRECTORY_SEPARATOR);
+
 //Update included Path for spl autoload
 set_include_path(
     __DIR__
     .PATH_SEPARATOR
-    .dirname(__DIR__).DIRECTORY_SEPARATOR.'lib'
+    .dirname(__DIR__).DS.'lib'
+    .PATH_SEPARATOR
+    .dirname(__DIR__).DS.'vendor'.DS.'pimple'.DS.'pimple'.DS.'lib'
     .PATH_SEPARATOR
     .get_include_path()
 );
 
+
+
 //Use default spl autoloader, States lib use PSR-0 standard
 spl_autoload_extensions('.php');
-spl_autoload_register();
+spl_autoload_register(
+    function ($className) {
+        $path = str_replace(array('\\', '_'), '/', $className).'.php';
+        $a = get_include_path();
+        include_once($path);
+        $included = class_exists($className, false);
+        return $included;
+    },
+    true
+);

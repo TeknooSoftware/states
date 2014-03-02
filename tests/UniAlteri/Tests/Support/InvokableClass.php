@@ -24,5 +24,7 @@ namespace UniAlteri\Tests\Support;
  * Class invokableClass
  */
 class InvokableClass{
-    public function __invoke(){}
+    public function __invoke(){
+        return new \stdClass();
+    }
 }

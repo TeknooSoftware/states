@@ -20,6 +20,8 @@
 
 namespace UniAlteri\States\DI;
 
+use UniAlteri\States\DI\Exception;
+
 /**
  * Class Container
  * @package UniAlteri\States\DI
@@ -27,6 +29,21 @@ namespace UniAlteri\States\DI;
  */
 class Container extends \Pimple implements ContainerInterface
 {
+    /**
+     * Test if the identifier respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @param string $name
+     * @return bool
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     */
+    protected function _validateName($name)
+    {
+        if (1 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_\-]*#iS', $name)) {
+            return true;
+        }
+
+        throw new Exception\IllegalName('Error, the identifier is invalid');
+    }
+
     /**
      * To support object cloning : All registry must be cloning, but not theirs values
      */
@@ -43,9 +60,12 @@ class Container extends \Pimple implements ContainerInterface
      * @param string $name : identifier of the instance
      * @return mixed
      * @throws Exception\InvalidArgument if the identifier is not defined
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function get($name)
     {
+        $this->_validateName($name);
+
         try {
             return $this[$name];
         } catch (\InvalidArgumentException $e) {
@@ -60,17 +80,20 @@ class Container extends \Pimple implements ContainerInterface
      * @return $this
      * @throws Exception\ClassNotFound if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerInstance($name, $instance)
     {
+        $this->_validateName($name);
+
         if (\is_string($instance)) {
             //Load the class and build a new object of this class
-            if (\class_exists($instance)) {
+            if (\class_exists($instance, false)) {
                 $this[$name] = new $instance();
             } else {
                 throw new Exception\ClassNotFound('The class "'.$instance.'" is not available');
             }
-        } elseif (is_object($instance) || is_callable($instance)) {
+        } elseif (is_object($instance)) {
             //For callable and object, register them
             $this[$name] = $instance;
         } else {
@@ -84,25 +107,28 @@ class Container extends \Pimple implements ContainerInterface
      * Register a new service into container (a new instance is returned at each call)
      * @param string $name : interface name, class name, alias
      * @param object|callable|string $instance
-     * @return string unique identifier of the object
+     * @return $this
      * @throws Exception\ClassNotFound if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerService($name, $instance)
     {
+        $this->_validateName($name);
+
         if (\is_string($instance)) {
             //Class, check if it is loaded
-            if (\class_exists($instance)) {
+            if (\class_exists($instance, false)) {
                 //Write a new closure to build a new instance of this class, and use it as service
                 $this[$name] = $this->factory(function($c) use($instance){
-                    return new $instance($c);
+                    return new $instance();
                 });
             } else {
                 throw new Exception\ClassNotFound('The class "'.$instance.'" is not available');
             }
         } elseif (\is_object($instance)) {
             //Add the object as service into container
-            if (!\method_exists($instance, '__invoke')) {
+            if (\method_exists($instance, '__invoke')) {
                 $this[$name] = $this->factory($instance);
             } else {
                 throw new Exception\IllegalService('Error, the service for "'.$name.'" is not an invokable object');
@@ -113,34 +139,47 @@ class Container extends \Pimple implements ContainerInterface
         } else {
             throw new Exception\IllegalService('Error, the service for "'.$name.'" is illegal');
         }
+
+        return $this;
     }
 
     /**
      * Test if an entry is already registered
      * @param string $name
      * @return boolean
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function testEntry($name)
     {
+        $this->_validateName($name);
         return isset($this[$name]);
     }
 
     /**
      * Remove an entry from the container
      * @param string $name
+     * @return $this
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function unregister($name)
     {
+        $this->_validateName($name);
         unset($this[$name]);
+        return $this;
     }
 
     /**
      * Configure the container from an array (provided by an INI file or other)
      * @param array|\ArrayObject $params
      * @return mixed
+     * @throws Exception\InvalidArgument when $params is not an array or an ArrayAccess object
      */
     public function configure($params)
     {
+        if (!is_array($params) && !$params instanceof \ArrayAccess) {
+            throw new Exception\InvalidArgument('Error, $params must be an array or an ArrayAccess');
+        }
+
         if (isset($params['services'])) {
             foreach ($params['services'] as $name => $instance) {
                 $this->registerService($name, $instance);

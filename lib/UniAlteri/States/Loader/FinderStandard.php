@@ -77,7 +77,7 @@ class FinderStandard implements FinderInterface
 
         //Load the file
         include_once($pathName);
-        if (!class_exists($className)) {
+        if (!class_exists($className, false)) {
             //Class not found
             return false;
         }
@@ -159,7 +159,7 @@ class FinderStandard implements FinderInterface
         }
 
         include_once($statePath);
-        if (!class_exists($stateName)) {
+        if (!class_exists($stateName, false)) {
             throw new Exception\UnavailableState('Error, the state "'.$stateName.'" is not available');
         }
 
