@@ -50,6 +50,8 @@ interface ProxyInterface extends
      * @param string $stateName
      * @param States\States\StateInterface $stateObject
      * @return $this
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerState($stateName, States\States\StateInterface $stateObject);
 
@@ -57,6 +59,9 @@ interface ProxyInterface extends
      * Remove dynamically a state from this object
      * @param string $stateName
      * @return $this
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\StateNotFound when the state was not found
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function unregisterState($stateName);
 
@@ -64,6 +69,8 @@ interface ProxyInterface extends
      * Disable all actives states and load the required states
      * @param string $stateName
      * @return $this
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function switchState($stateName);
 
@@ -72,6 +79,8 @@ interface ProxyInterface extends
      * @param $stateName
      * @return $this
      * @throws Exception\StateNotFound if $stateName does not exist
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function enableState($stateName);
 
@@ -79,6 +88,9 @@ interface ProxyInterface extends
      * Disable an active state (not available for calling, but already loaded)
      * @param string $stateName
      * @return $this
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\StateNotFound when the state was not found
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function disableState($stateName);
 
@@ -120,6 +132,7 @@ interface ProxyInterface extends
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState if the required state is not available
+     * @throws Exception\IllegalArgument if the method'name is not a string
      */
     public function __call($name, $arguments);
 

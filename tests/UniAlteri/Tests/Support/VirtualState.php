@@ -58,19 +58,23 @@ class VirtualState implements States\StateInterface
     protected $_methodName = null;
 
     /**
+     * @var VirtualInjectionClosure
+     */
+    protected $_virtualInjection = null;
+
+    /**
      * Initialize virtual state
      */
     public function __construct($closure=null)
     {
-        $this->_closure = new VirtualInjectionClosure();
-        $state = $this;
         if($closure instanceof \Closure){
-            $this->_closure->setClosure($closure);
+            $this->_closure = $closure;
         } else {
-            $this->_closure->setClosure(function () use ($state) {
+            $state = $this;
+            $this->_closure = $closure = function () use ($state) {
                 $state->setMethodCalled();
                 $state->setCalledArguments(func_get_args());
-            });
+            };
         }
     }
 
@@ -155,8 +159,15 @@ class VirtualState implements States\StateInterface
             throw new Exception\MethodNotImplemented();
         }
 
-        $this->_methodName = $methodName;
-        return $this->_closure;
+        if (null === $this->_virtualInjection) {
+            $this->_methodName = $methodName;
+            $this->_closure = \Closure::bind($this->_closure, $proxy, get_class($proxy));
+            $injection = new VirtualInjectionClosure();
+            $injection->setClosure($this->_closure);
+            $this->_virtualInjection = $injection;
+        }
+
+        return $this->_virtualInjection;
     }
 
     /**

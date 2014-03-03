@@ -77,9 +77,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->_proxy->registerState('state3', $this->_state3);
         $this->_proxy->enableState($stateToEnable);
         if (true === $allowingMethodCalling) {
-            $this->{$stateToEnable}->allowMethod();
+            $this->{'_'.$stateToEnable}->allowMethod();
         } else {
-            $this->{$stateToEnable}->disallowMethod();
+            $this->{'_'.$stateToEnable}->disallowMethod();
         }
     }
 
@@ -125,10 +125,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         try{
             $this->_proxy->registerState('state1', array());
         }
-        catch(Exception\IllegalState $e){
-            return;
-        }
         catch(\Exception $e){
+            return;
         }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalState exception when the state is not an object');
@@ -142,10 +140,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         try{
             $this->_proxy->registerState('state1', new \DateTime());
         }
-        catch(Exception\IllegalState $e){
-            return;
-        }
         catch(\Exception $e){
+            return;
         }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalState exception when the state does not implement State\StateInterface');
@@ -274,14 +270,16 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     public function testEnableState()
     {
+        $this->_initializeProxy();
+        $this->_proxy->disableState('state1');
         $this->_proxy->enableState('state2');
         $this->assertEquals(array('state2'), $this->_proxy->listActivesStates());
     }
 
     public function testEnableMultipleState()
     {
+        $this->_initializeProxy();
         $this->_proxy->enableState('state2');
-        $this->_proxy->enableState('state1');
         $this->assertEquals(array('state1', 'state2'), $this->_proxy->listActivesStates());
     }
 
@@ -375,9 +373,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         );
 
         $state->allowMethod();
-        $this->_initializeProxy();
+        $this->_proxy->enableState('static');
 
-        $this->assertEquals('value', $state->getClosure('__invoke', $this->_proxy)->getProperty('name'));
+        $closure = $state->getClosure('__invoke', $this->_proxy);
+        call_user_func(array($this->_proxy, '__invoke'));
+        $this->assertEquals('value', $closure->getProperty('name'));
     }
 
     public function testCallInvalidName()

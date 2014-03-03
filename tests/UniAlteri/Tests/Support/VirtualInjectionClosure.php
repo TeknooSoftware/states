@@ -31,6 +31,11 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
     protected $_closure = null;
 
     /**
+     * @var array
+     */
+    protected $_properties = array();
+
+    /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
      */
@@ -85,6 +90,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function saveProperty($name, $value)
     {
+        $this->_properties[$name] = $value;
         return $this;
     }
 
@@ -96,6 +102,10 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function deleteProperty($name)
     {
+        if (isset($this->_properties[$name])) {
+            unset($this->_properties[$name]);
+        }
+
         return $this;
     }
 
@@ -107,6 +117,11 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function getProperty($name)
     {
+        if (isset($this->_properties[$name])) {
+            return $this->_properties[$name];
+        }
+
+        return null;
     }
 
     /**
@@ -117,5 +132,6 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function testProperty($name)
     {
+        return isset($this->_properties[$name]);
     }
 }

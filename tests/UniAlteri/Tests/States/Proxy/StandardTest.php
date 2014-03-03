@@ -20,6 +20,7 @@
 
 namespace UniAlteri\Tests\States\Proxy;
 
+use \UniAlteri\States\Proxy;
 
 class StandardTest extends AbstractProxyTest
 {

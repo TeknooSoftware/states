@@ -75,12 +75,17 @@ trait TraitProxy
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState if the required state is not available
+     * @throws Exception\IllegalArgument if the method's name is not a string
      * @throws \Exception
      */
     protected function _callThroughState($methodName, array $arguments)
     {
+        if (!is_string($methodName)) {
+            throw new Exception\IllegalArgument('Error the methodName is not a string');
+        }
+
         $methodsWithStatesArray = explode('Of', $methodName);
-        if (0 === count($methodsWithStatesArray)) {
+        if (1 === count($methodsWithStatesArray)) {
             //No specific state required, browse all enable state to find the method
             foreach ($this->_activesStates as $activeStateObject) {
                 if (true === $activeStateObject->testMethod($methodName)) {
@@ -140,6 +145,26 @@ trait TraitProxy
 
             throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available for the state "'.$statesName.'"');
         }
+    }
+
+    /**
+     * Test if the identifier respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @param string $name
+     * @return bool
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     */
+    protected function _validateName($name)
+    {
+        if (!is_string($name)) {
+            throw new Exception\IllegalArgument('Error, the identifier is not a string');
+        }
+
+        if (1 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_\-]*#iS', $name)) {
+            return true;
+        }
+
+        throw new Exception\IllegalName('Error, the identifier is not a valid string');
     }
 
     /**
@@ -218,9 +243,13 @@ trait TraitProxy
      * @param string $stateName
      * @param States\States\StateInterface $stateObject
      * @return $this
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerState($stateName, States\States\StateInterface $stateObject)
     {
+        $this->_validateName($stateName);
+
         $this->_states[$stateName] = $stateObject;
 
         return $this;
@@ -230,11 +259,22 @@ trait TraitProxy
      * Remove dynamically a state from this object
      * @param string $stateName
      * @return $this
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\StateNotFound when the state was not found
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function unregisterState($stateName)
     {
+        $this->_validateName($stateName);
+
         if (isset($this->_states[$stateName])) {
             unset($this->_states[$stateName]);
+
+            if (isset($this->_activesStates[$stateName])) {
+                unset($this->_activesStates[$stateName]);
+            }
+        } else {
+            throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
         }
 
         return $this;
@@ -244,9 +284,13 @@ trait TraitProxy
      * Disable all actives states and load the required states
      * @param string $stateName
      * @return $this
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function switchState($stateName)
     {
+        $this->_validateName($stateName);
+
         $this->disableAllStates();
         $this->enableState($stateName);
 
@@ -258,9 +302,13 @@ trait TraitProxy
      * @param $stateName
      * @return $this
      * @throws Exception\StateNotFound if $stateName does not exist
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function enableState($stateName)
     {
+        $this->_validateName($stateName);
+
         if (isset($this->_states[$stateName])) {
             $this->_activesStates[$stateName] = $this->_states[$stateName];
         } else {
@@ -274,11 +322,18 @@ trait TraitProxy
      * Disable an active state (not available for calling, but already loaded)
      * @param string $stateName
      * @return $this
+     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\StateNotFound when the state was not found
+     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function disableState($stateName)
     {
+        $this->_validateName($stateName);
+
         if (isset($this->_activesStates[$stateName])) {
             unset($this->_activesStates[$stateName]);
+        } else {
+            throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
         }
 
         return $this;
@@ -339,6 +394,7 @@ trait TraitProxy
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState if the required state is not available
+     * @throws Exception\IllegalArgument if the method'name is not a string
      */
     public function __call($name, $arguments)
     {
