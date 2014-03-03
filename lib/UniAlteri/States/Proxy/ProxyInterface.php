@@ -205,9 +205,9 @@ interface ProxyInterface extends
     /**
      * To transform the object to a string
      * Hooks and event are automatically called
+     *
+     * You cannot throw an exception from within a __toString() method. Doing so will result in a fatal error.
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState if the required state is not available
      */
     public function __toString();
 

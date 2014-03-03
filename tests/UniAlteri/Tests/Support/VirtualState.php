@@ -74,6 +74,7 @@ class VirtualState implements States\StateInterface
             $this->_closure = $closure = function () use ($state) {
                 $state->setMethodCalled();
                 $state->setCalledArguments(func_get_args());
+                return '';
             };
         }
     }

@@ -542,7 +542,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy();
         try{
-            $this->_initializeProxy();
+            $proxy = $this->_proxy;
+            $proxy();
         }
         catch(Exception\MethodNotImplemented $e){
             return;
@@ -586,7 +587,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('__get', $this->_state1->getMethodNameCalled());
-        $this->assertSame(array('propery'), $this->_state1->getCalledArguments());
+        $this->assertSame(array('property'), $this->_state1->getCalledArguments());
     }
 
     public function testIssetNonImplemented()
@@ -667,16 +668,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testToStringNonImplemented()
     {
         $this->_initializeProxy();
+        $s='error';
         try{
             $s = (string) $this->_proxy;
         }
-        catch(Exception\MethodNotImplemented $e){
-            return;
-        }
         catch(\Exception $e){
+            $this->fail('Error, the proxy must not throw exception from __toString, forbidden by PHP engine');
         }
 
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when the stateName is not a string');
+        $this->assertEquals('', $s);
     }
 
     public function testToString()
@@ -1007,7 +1007,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testSerialize()
     {
         $this->_initializeProxy('state1', true);
-        $this->_proxy->getIterator();
+        $this->_proxy->serialize();
 
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('serialize', $this->_state1->getMethodNameCalled());
@@ -1038,7 +1038,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->_proxy->unserialize('foo');
 
         $this->assertTrue($this->_state1->methodWasCalled());
-        $this->assertSame('serialize', $this->_state1->getMethodNameCalled());
+        $this->assertSame('unserialize', $this->_state1->getMethodNameCalled());
         $this->assertSame(array('foo'), $this->_state1->getCalledArguments());
     }
 }

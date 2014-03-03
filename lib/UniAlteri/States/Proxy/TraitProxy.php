@@ -477,7 +477,7 @@ trait TraitProxy
      */
     public function __invoke()
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
 
@@ -495,7 +495,7 @@ trait TraitProxy
      */
     public function __get($name)
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -508,7 +508,7 @@ trait TraitProxy
      */
     public function __isset($name)
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -522,7 +522,7 @@ trait TraitProxy
      */
     public function __set($name, $value)
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -535,19 +535,22 @@ trait TraitProxy
      */
     public function __unset($name)
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
      * To transform the object to a string
      * Hooks and event are automatically called
+     * You cannot throw an exception from within a __toString() method. Doing so will result in a fatal error.
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState if the required state is not available
      */
     public function __toString()
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        try{
+            return $this->_callThroughState(__FUNCTION__, func_get_args());
+        } catch(\Exception $e) {
+            return '';
+        }
     }
 
     /****************
@@ -562,7 +565,7 @@ trait TraitProxy
      */
     public function count()
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -575,7 +578,7 @@ trait TraitProxy
      */
     public function offsetExists($offset)
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -588,7 +591,7 @@ trait TraitProxy
      */
     public function offsetGet($offset)
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -601,7 +604,7 @@ trait TraitProxy
      */
     public function offsetSet($offset, $value)
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -612,7 +615,7 @@ trait TraitProxy
      */
     public function offsetUnset($offset)
     {
-        $this->_callThroughState(__METHOD__, func_get_args());
+        $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /************
@@ -627,7 +630,7 @@ trait TraitProxy
      */
     public function current()
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -638,7 +641,7 @@ trait TraitProxy
      */
     public function key()
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -648,7 +651,7 @@ trait TraitProxy
      */
     public function next()
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -658,7 +661,7 @@ trait TraitProxy
      */
     public function rewind()
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -669,7 +672,7 @@ trait TraitProxy
      */
     public function seek($position)
     {
-        $this->_callThroughState(__METHOD__, func_get_args());
+        $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -680,7 +683,7 @@ trait TraitProxy
      */
     public function valid()
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -691,7 +694,7 @@ trait TraitProxy
      */
     public function getIterator()
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /*****************
@@ -707,7 +710,7 @@ trait TraitProxy
      */
     public function serialize()
     {
-        return $this->_callThroughState(__METHOD__, func_get_args());
+        return $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -719,6 +722,6 @@ trait TraitProxy
      */
     public function unserialize($serialized)
     {
-        $this->_callThroughState(__METHOD__, func_get_args());
+        $this->_callThroughState(__FUNCTION__, func_get_args());
     }
 }
