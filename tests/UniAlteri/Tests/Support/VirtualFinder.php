@@ -38,6 +38,16 @@ class VirtualFinder implements Loader\FinderInterface
     public $ignoreDefaultState = false;
 
     /**
+     * Initialize finder
+     * @param string $statedClassName
+     * @param string $pathString
+     */
+    public function __construct($statedClassName, $pathString)
+    {
+
+    }
+
+    /**
      * Register a DI container for this object
      * @param \UniAlteri\States\DI\ContainerInterface $container
      */
@@ -83,15 +93,16 @@ class VirtualFinder implements Loader\FinderInterface
      */
     public function loadState($stateName)
     {
-        return new $stateName;
+        return new VirtualState();
     }
 
     /**
      * Load and build a proxy object of the stated class
+     * @param array $arguments argument for proxy
      * @return \UniAlteri\States\Proxy\ProxyInterface
      */
-    public function loadProxy()
+    public function loadProxy($arguments=null)
     {
-        return new VirtualProxy();
+        return new VirtualProxy($arguments);
     }
 }

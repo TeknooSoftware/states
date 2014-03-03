@@ -173,10 +173,11 @@ class FinderStandard implements FinderInterface
 
     /**
      * Load and build a proxy object for the stated class
+     * @param array $arguments argument for proxy
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function loadProxy()
+    public function loadProxy($arguments)
     {
         //Build the class file path for the proxy (standardized into ProxyInterface)
         $proxyPath = $this->_statedClassName.DIRECTORY_SEPARATOR.FinderInterface::PROXY_FILE_NAME;
@@ -186,7 +187,7 @@ class FinderStandard implements FinderInterface
         //Check if the Stated class has its own proxy
         if (true === $this->_checkClassExists($proxyClassName, $proxyPath)) {
             //Load an instance of this proxy and test if it implements the interface ProxyInterface
-            $proxyObject = new $proxyClassName();
+            $proxyObject = new $proxyClassName($arguments);
             if ($proxyObject instanceof Proxy\ProxyInterface) {
                 //Initialize the proxy and return it
                 $proxyObject->setDIContainer($this->getDIContainer());

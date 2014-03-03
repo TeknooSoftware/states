@@ -101,8 +101,9 @@ interface FinderInterface
 
     /**
      * Load and build a proxy object for the stated class
+     * @param array $arguments argument for proxy
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function loadProxy();
+    public function loadProxy($arguments=null);
 }

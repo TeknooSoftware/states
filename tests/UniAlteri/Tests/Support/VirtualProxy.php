@@ -33,6 +33,13 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public $args = null;
 
+    /**
+     * @var array
+     */
+    protected $_states = array();
+
+    protected $_actives = array();
+
     public function __construct($arguments)
     {
         $this->args = $arguments;
@@ -82,6 +89,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function registerState($stateName, States\States\StateInterface $stateObject)
     {
+        $this->_states[$stateName] = $stateObject;
     }
 
     /**
@@ -91,6 +99,9 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function unregisterState($stateName)
     {
+        if (isset($this->_states[$stateName])) {
+            unset($this->_states[$stateName]);
+        }
     }
 
     /**
@@ -100,6 +111,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function switchState($stateName)
     {
+        $this->_actives = array($stateName => $stateName);
     }
 
     /**
@@ -110,6 +122,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function enableState($stateName)
     {
+        $this->_actives[$stateName] = $stateName;
     }
 
     /**
@@ -119,6 +132,9 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function disableState($stateName)
     {
+        if (isset($this->_actives[$stateName])) {
+            unset($this->_actives[$stateName]);
+        }
     }
 
     /**
@@ -127,6 +143,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function disableAllStates()
     {
+        $this->_actives = array();
     }
 
     /**
@@ -135,6 +152,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function listAvailableStates()
     {
+        return array_keys($this->_states);
     }
 
     /**
@@ -143,6 +161,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function listActivesStates()
     {
+        return array_keys($this->_actives);
     }
 
     /**
