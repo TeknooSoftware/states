@@ -74,7 +74,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->_statedClass3Path = $path.'Class3';
         $this->_statedClass4Path = $path.'Class4';
         $this->_statedClass5Path = $path.'Class5';
-        chmod($this->_statedClass1Path, 7,2, 2);
+        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0755);
     }
 
     /**
@@ -112,12 +112,12 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testListStatePathNotFoundInPhar()
     {
-        $this->fail();
+        $this->markTestSkipped(); //todo
     }
 
     public function testListStatePathNotReadable()
     {
-        chmod($this->_statedClass1Path, 000);
+        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
         $this->_initializeFind('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->listStates();
@@ -130,31 +130,33 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testListStatePathNotReadableInPhar()
     {
-        $this->fail();
+        $this->markTestSkipped();
     }
 
     public function testListStates()
     {
         $statesNamesArray = $this->_initializeFind('Class1', $this->_statedClass1Path)->listStates();
         $this->assertInstanceOf('ArrayObject', $statesNamesArray);
+        $states = $statesNamesArray->getArrayCopy();
+        sort($states);
         $this->assertEquals(
             array(
                 'State1',
                 'State3',
                 'State4'
             ),
-            $statesNamesArray->getArrayCopy()
+            $states
         );
     }
 
     public function testListStatesInPhar()
     {
-        $this->fail();
+        $this->markTestSkipped(); //todo
     }
 
     public function testLoadStateNotFound()
     {
-        chmod($this->_statedClass1Path, 000);
+        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
         $this->_initializeFind('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->loadState('State2');
@@ -167,12 +169,12 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadStateNotFoundInPhar()
     {
-        $this->fail();
+        $this->markTestSkipped(); //todo
     }
 
     public function testLoadStateWithoutClass()
     {
-        chmod($this->_statedClass1Path, 000);
+        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
         $this->_initializeFind('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->loadState('State1');
@@ -185,12 +187,12 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadStateWithoutClassInPhar()
     {
-        $this->fail();
+        $this->markTestSkipped(); //todo
     }
 
     public function testLoadStateBadImplementation()
     {
-        chmod($this->_statedClass1Path, 000);
+        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
         $this->_initializeFind('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->loadState('State3');
@@ -203,7 +205,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadStateBadImplementationInPhat()
     {
-        $this->fail();
+        $this->markTestSkipped(); //todo
     }
 
     public function testLoadState()
@@ -216,7 +218,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadStatePhat()
     {
-        $this->fail();
+        $this->markTestSkipped(); //todo
     }
 
     public function testLoadProxyDefault()
@@ -230,7 +232,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadProxyDefaultInPhar()
     {
-        $this->fail();
+        $this->markTestSkipped(); //todo
     }
 
     public function testLoadProxySpecificBadClass()
@@ -247,7 +249,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadProxySpecificBadClassInPhar()
     {
-        $this->fail();
+        $this->markTestSkipped(); //todo
     }
 
     public function testLoadProxySpecificBadInterface()
@@ -264,7 +266,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadProxySpecificBadInterfaceInPhar()
     {
-        $this->fail();
+        $this->markTestSkipped(); //todo
     }
 
     public function testLoadProxySpecific()
@@ -278,6 +280,6 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadProxySpecificInPhar()
     {
-        $this->fail();
+        $this->markTestSkipped(); //todo
     }
 }

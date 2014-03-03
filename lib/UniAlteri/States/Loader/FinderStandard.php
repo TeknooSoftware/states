@@ -117,7 +117,7 @@ class FinderStandard implements FinderInterface
         }
 
         //Check if the path is available
-        $hD = opendir($statesPath);
+        $hD = @opendir($statesPath);
         if (false === $hD) {
             throw new Exception\UnReadablePath('Error, the path "'.$statesPath.'" is not available');
         }
@@ -177,7 +177,7 @@ class FinderStandard implements FinderInterface
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function loadProxy($arguments)
+    public function loadProxy($arguments=null)
     {
         //Build the class file path for the proxy (standardized into ProxyInterface)
         $proxyPath = $this->_statedClassName.DIRECTORY_SEPARATOR.FinderInterface::PROXY_FILE_NAME;
