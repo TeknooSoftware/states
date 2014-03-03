@@ -399,13 +399,13 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         try{
             $this->_proxy->test();
         }
-        catch(Exception\UnavailableName $e){
+        catch(Exception\MethodNotImplemented $e){
             return;
         }
         catch(\Exception $e){
         }
 
-        $this->fail('Error, the proxy must throw an Exception\UnavailableName exception when no state are available');
+        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when no state are available');
     }
 
     public function testCallMultipleImplementation()
@@ -478,13 +478,13 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         try{
             $this->_proxy->getMethodDescription(array());
         }
-        catch(Exception\IllegalName $e){
+        catch(Exception\InvalidArgument $e){
             return;
         }
         catch(\Exception $e){
         }
 
-        $this->fail('Error, the proxy must throw an Exception\InvalidName exception when the method namee is not a string');
+        $this->fail('Error, the proxy must throw an Exception\InvalidArgument exception when the method namee is not a string');
     }
 
     public function testGetMethodDescriptionNonExistentName()
@@ -508,7 +508,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         try{
             $this->_proxy->getMethodDescription('method1', array());
         }
-        catch(Exception\IllegalArgument $e){
+        catch(Exception\InvalidArgument $e){
             return;
         }
         catch(\Exception $e){

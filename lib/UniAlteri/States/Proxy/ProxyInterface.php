@@ -142,6 +142,9 @@ interface ProxyInterface extends
      * @param string $stateName : Return the description for a specific state of the object, if null, use the current state
      * @return \ReflectionMethod
      * @throws Exception\StateNotFound is the state required is not available
+     * @throws Exception\InvalidArgument where $methodName or $stateName are not string
+     * @throws Exception\MethodNotImplemented when the method is not currenty available
+     * @throws \Exception to rethrows unknown exceptions
      */
     public function getMethodDescription($methodName, $stateName = null);
 

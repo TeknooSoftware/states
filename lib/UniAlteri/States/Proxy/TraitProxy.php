@@ -86,34 +86,45 @@ trait TraitProxy
 
         $methodsWithStatesArray = explode('Of', $methodName);
         if (1 === count($methodsWithStatesArray)) {
+            $activeStateFound = null;
             //No specific state required, browse all enable state to find the method
             foreach ($this->_activesStates as $activeStateObject) {
                 if (true === $activeStateObject->testMethod($methodName)) {
-                    //Method found, extract it
-                    $callingClosure = $activeStateObject->getClosure($methodName, $this);
-                    //Change current injection
-                    $previousClosure = $this->_currentInjectionClosure;
-                    $this->_currentInjectionClosure = $callingClosure;
-
-                    //call it
-                    try {
-                        $returnValues = call_user_func_array($callingClosure, $arguments);
-                    } catch(\Exception $e) {
-                        //Restore previous closure
-                        $this->_currentInjectionClosure = $previousClosure;
-                        throw $e;
+                    if (null === $activeStateFound) {
+                        //Check if there are only one enable state whom implements this method
+                        $activeStateFound = $activeStateObject;
+                    } else {
+                        //Else, throw an exception
+                        throw new Exception\AvailableSeveralMethodImplementations('Method "'.$methodName.'" has several implementation in different states');
                     }
+                }
+            }
 
+            if (null !== $activeStateFound) {
+                //Method found, extract it
+                $callingClosure = $activeStateFound->getClosure($methodName, $this);
+                //Change current injection
+                $previousClosure = $this->_currentInjectionClosure;
+                $this->_currentInjectionClosure = $callingClosure;
+
+                //call it
+                try {
+                    $returnValues = call_user_func_array($callingClosure, $arguments);
+                } catch(\Exception $e) {
                     //Restore previous closure
                     $this->_currentInjectionClosure = $previousClosure;
-                    return $returnValues;
+                    throw $e;
                 }
+
+                //Restore previous closure
+                $this->_currentInjectionClosure = $previousClosure;
+                return $returnValues;
             }
 
             throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available with actives states');
         } else {
             //A specific state is required for this call
-            $statesName = array_pop($methodsWithStatesArray);
+            $statesName = lcfirst(array_pop($methodsWithStatesArray));
             if (!isset($this->_activesStates[$statesName])) {
                 throw new Exception\UnavailableState('Error, the state "'.$statesName.'" is not currently available');
             }
@@ -407,26 +418,55 @@ trait TraitProxy
      * @param string $stateName : Return the description for a specific state of the object, if null, use the current state
      * @return \ReflectionMethod
      * @throws Exception\StateNotFound is the state required is not available
+     * @throws Exception\InvalidArgument where $methodName or $stateName are not string
+     * @throws Exception\MethodNotImplemented when the method is not currenty available
+     * @throws \Exception to rethrows unknown exceptions
      */
     public function getMethodDescription($methodName, $stateName = null)
     {
-        if (null === $stateName) {
-            //Browse all state to find the method
-            foreach ($this->_states as $stateObject) {
-                if ($stateObject->testMethod($methodName)) {
-                    return $stateObject->getMethodDescription($methodName);
+        if (!is_string($methodName)) {
+            throw new Exception\InvalidArgument('Error, the method name is not a valid string');
+        }
+
+        if (null !== $stateName && !is_string($stateName)) {
+            throw new Exception\InvalidArgument('Error, the state name name is not a valid string');
+        }
+
+        try{
+            if (null === $stateName) {
+                //Browse all state to find the method
+                foreach ($this->_states as $stateObject) {
+                    if ($stateObject->testMethod($methodName)) {
+                        return $stateObject->getMethodDescription($methodName);
+                    }
                 }
             }
-        }
 
-        if (isset($this->_states[$stateName])) {
-            //Retrieve description from the required state
-            if ($this->_states[$stateName]->testMethod($methodName)) {
-                return $this->_states[$stateName]->getMethodDescription($methodName);
+            if (null !== $stateName) {
+                if (isset($this->_states[$stateName])) {
+                    //Retrieve description from the required state
+                    if ($this->_states[$stateName]->testMethod($methodName)) {
+                        return $this->_states[$stateName]->getMethodDescription($methodName);
+                    }
+                } else {
+                    throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+                }
             }
+        } catch( States\Exception\MethodNotImplemented $e) {
+            throw new Exception\MethodNotImplemented(
+                $e->getMessage(),
+                $e->getCode(),
+                $e
+            );
+        } catch( \Exception $e) {
+            throw $e;
         }
 
-        throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+
+        //Method not found
+        throw new Exception\MethodNotImplemented(
+            'Method "'.$methodName.'" is not available for this state'
+        );
     }
 
     /**
