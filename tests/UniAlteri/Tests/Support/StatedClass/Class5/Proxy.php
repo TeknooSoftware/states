@@ -18,7 +18,10 @@
  * @version     $Id$
  */
 
-class Class4Proxy
-{
+namespace Class5;
 
+use \UniAlteri\Tests\Support\VirtualProxy;
+
+class Proxy extends VirtualProxy
+{
 }

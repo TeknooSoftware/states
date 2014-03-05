@@ -55,12 +55,12 @@ interface FinderInterface
     /**
      * Suffix name of the Proxy PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
      */
-    const PROXY_SUFFIX_CLASS_NAME = 'Proxy';
+    const PROXY_CLASS_NAME = 'Proxy';
 
     /**
      * Suffix name of the Factory PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
      */
-    const FACTORY_SUFFIX_CLASS_NAME = 'Factory';
+    const FACTORY_CLASS_NAME = 'Factory';
 
     /**
      * Initialize finder

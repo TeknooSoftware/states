@@ -17,3 +17,12 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
  */
+
+namespace Class1\States;
+
+use \UniAlteri\Tests\Support;
+
+class State4 extends Support\VirtualState
+{
+
+}

@@ -17,8 +17,3 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
  */
-
-class Class4Proxy
-{
-
-}

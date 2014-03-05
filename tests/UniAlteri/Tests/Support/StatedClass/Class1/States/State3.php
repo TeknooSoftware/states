@@ -17,3 +17,10 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
  */
+
+namespace Class1\States;
+
+class State3
+{
+
+}

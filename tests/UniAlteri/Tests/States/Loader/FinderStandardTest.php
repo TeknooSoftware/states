@@ -174,7 +174,6 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadStateWithoutClass()
     {
-        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
         $this->_initializeFind('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->loadState('State1');
@@ -192,7 +191,6 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testLoadStateBadImplementation()
     {
-        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
         $this->_initializeFind('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->loadState('State3');
@@ -212,8 +210,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeFind('Class1', $this->_statedClass1Path);
         $stateObject = $this->_finder->loadState('State4');
-        $this->assertEquals('State4', get_class($stateObject));
-        $this->assertInstanceOf('States\StateInterface', $stateObject);
+        $this->assertEquals('Class1\States\State4', get_class($stateObject));
+        $this->assertInstanceOf('\UniAlteri\States\States\StateInterface', $stateObject);
     }
 
     public function testLoadStatePhat()
@@ -225,9 +223,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeFind('Class2', $this->_statedClass2Path);
         $proxy = $this->_finder->loadProxy();
-        $this->assertInstanceOf('Proxy\ProxyInterface', $proxy);
-        $this->assertInstanceOf('Proxy\Standard', $proxy);
-        $this->assertInstanceOf('Class2'.Loader\FinderInterface::PROXY_SUFFIX_CLASS_NAME, $proxy);
+        $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
+        $this->assertInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
+        $this->assertInstanceOf('Class2\\'.Loader\FinderInterface::PROXY_CLASS_NAME, $proxy);
     }
 
     public function testLoadProxyDefaultInPhar()
@@ -272,10 +270,11 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     public function testLoadProxySpecific()
     {
         $this->_initializeFind('Class5', $this->_statedClass5Path);
+        $this->_finder->setDIContainer(new Support\VirtualDIContainer());
         $proxy = $this->_finder->loadProxy();
-        $this->assertInstanceOf('Proxy\ProxyInterface', $proxy);
-        $this->assertNotInstanceOf('Proxy\Standard', $proxy);
-        $this->assertInstanceOf('Class5'.Loader\FinderInterface::PROXY_SUFFIX_CLASS_NAME, $proxy);
+        $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
+        $this->assertNotInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
+        $this->assertInstanceOf('Class5\\'.Loader\FinderInterface::PROXY_CLASS_NAME, $proxy);
     }
 
     public function testLoadProxySpecificInPhar()

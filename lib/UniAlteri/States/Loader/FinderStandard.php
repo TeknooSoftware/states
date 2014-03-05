@@ -63,30 +63,6 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * Test if class exists
-     * @param string $className
-     * @param string $pathName
-     * @return boolean
-     */
-    protected function _checkClassExists($className, $pathName)
-    {
-        if (!is_readable($pathName)) {
-            //File not found
-            return false;
-        }
-
-        //Load the file
-        include_once($pathName);
-        if (!class_exists($className, false)) {
-            //Class not found
-            return false;
-        }
-
-        //Class loaded
-        return true;
-    }
-
-    /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
      */
@@ -158,12 +134,15 @@ class FinderStandard implements FinderInterface
             throw new Exception\UnReadablePath('Error, the state "'.$stateName.'" was not found');
         }
 
+        $a = get_declared_classes();
+
         include_once($statePath);
-        if (!class_exists($stateName, false)) {
+        $stateClassName = $this->_statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
+        if (!class_exists($stateClassName, false)) {
             throw new Exception\UnavailableState('Error, the state "'.$stateName.'" is not available');
         }
 
-        $stateObject = new $stateName;
+        $stateObject = new $stateClassName;
         if (!$stateObject instanceof States\StateInterface) {
             throw new Exception\IllegalState('Error, the state "'.$stateName.'" does not implement the interface "States\StateInterface"');
         }
@@ -180,26 +159,31 @@ class FinderStandard implements FinderInterface
     public function loadProxy($arguments=null)
     {
         //Build the class file path for the proxy (standardized into ProxyInterface)
-        $proxyPath = $this->_statedClassName.DIRECTORY_SEPARATOR.FinderInterface::PROXY_FILE_NAME;
+        $proxyPath = $this->_pathString.DIRECTORY_SEPARATOR.FinderInterface::PROXY_FILE_NAME;
+
         //Build the class name
-        $proxyClassName = $this->_statedClassName.FinderInterface::PROXY_SUFFIX_CLASS_NAME;
+        $proxyClassName = $this->_statedClassName.'\\'.FinderInterface::PROXY_CLASS_NAME;
 
-        //Check if the Stated class has its own proxy
-        if (true === $this->_checkClassExists($proxyClassName, $proxyPath)) {
-            //Load an instance of this proxy and test if it implements the interface ProxyInterface
-            $proxyObject = new $proxyClassName($arguments);
-            if ($proxyObject instanceof Proxy\ProxyInterface) {
-                //Initialize the proxy and return it
-                $proxyObject->setDIContainer($this->getDIContainer());
-                return $proxyObject;
-            }
-
-            //Throw an error
-            throw new Exception\IllegalProxy('Error, the proxy of "'.$this->_statedClassName.'" does not implement "Proxy\ProxyInterface"');
-        } else {
+        if (!is_readable($proxyPath)) {
             //The stated class has not its own proxy, reuse the standard proxy, as an alias
             class_alias('\UniAlteri\States\Proxy\Standard', $proxyClassName);
             return new $proxyClassName;
         }
+
+        include_once($proxyPath);
+        if (!class_exists($proxyClassName, false)) {
+            throw new Exception\IllegalProxy('Error, the proxy of "'.$this->_statedClassName.'" must be called <StatedClassName>\Proxy');
+        }
+
+        //Load an instance of this proxy and test if it implements the interface ProxyInterface
+        $proxyObject = new $proxyClassName($arguments);
+        if ($proxyObject instanceof Proxy\ProxyInterface) {
+            //Initialize the proxy and return it
+            $proxyObject->setDIContainer($this->getDIContainer());
+            return $proxyObject;
+        }
+
+        //Throw an error
+        throw new Exception\IllegalProxy('Error, the proxy of "'.$this->_statedClassName.'" does not implement "Proxy\ProxyInterface"');
     }
 }
