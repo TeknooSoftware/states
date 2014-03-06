@@ -54,3 +54,5 @@ spl_autoload_register(
     },
     true
 );
+
+date_default_timezone_set('Europe/Paris');
