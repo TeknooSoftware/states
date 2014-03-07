@@ -48,19 +48,9 @@ interface FinderInterface
     const PROXY_FILE_NAME = 'Proxy.php';
 
     /**
-     * PHP File of Factory into each stated class
-     */
-    const FACTORY_FILE_NAME = 'Factory.php';
-
-    /**
      * Suffix name of the Proxy PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
      */
     const PROXY_CLASS_NAME = 'Proxy';
-
-    /**
-     * Suffix name of the Factory PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
-     */
-    const FACTORY_CLASS_NAME = 'Factory';
 
     /**
      * Initialize finder
@@ -90,6 +80,15 @@ interface FinderInterface
     public function listStates();
 
     /**
+     * Load the required state object of the stated class
+     * @param string $stateName
+     * @return boolean
+     * @throws Exception\UnReadablePath if the state file is not readable
+     * @throws Exception\UnavailableState if the required state is not available
+     */
+    public function loadState($stateName);
+
+    /**
      * Load and build the required state object of the stated class
      * @param string $stateName
      * @return States\StateInterface
@@ -97,7 +96,15 @@ interface FinderInterface
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState if the state object does not implement the interface
      */
-    public function loadState($stateName);
+    public function buildState($stateName);
+
+    /**
+     * Search and load the proxy class for this stated class.
+     * If the class has not proxy, load the default proxy for this stated class
+     * @return boolean
+     * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
+     */
+    public function loadProxy();
 
     /**
      * Load and build a proxy object for the stated class
@@ -105,5 +112,5 @@ interface FinderInterface
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function loadProxy($arguments=null);
+    public function buildProxy($arguments=null);
 }

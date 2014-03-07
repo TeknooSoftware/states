@@ -148,11 +148,12 @@ class LoaderStandard implements LoaderInterface
 
         //Browse each
         foreach ($this->_namespacesArray[$namespaceString] as $path) {
-            $classFile = $path.DIRECTORY_SEPARATOR.$className.'.php';
-            if (is_readable($classFile)) {
-                include_once($classFile);
+            $factoryFile = $path.DIRECTORY_SEPARATOR.$className.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
+            if (is_readable($factoryFile)) {
+                include_once($factoryFile);
 
-                if (class_exists($classFile, false)) {
+                $factoryClassName = $namespaceString.'\\'.$className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
+                if (class_exists($factoryClassName, false)) {
                     return true;
                 }
             }
@@ -170,7 +171,8 @@ class LoaderStandard implements LoaderInterface
      */
     public function loadClass($className)
     {
-        if (class_exists($className, false)) {
+        $factoryClassName = $className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
+        if (class_exists($factoryClassName, false)) {
             //Prevent class already loaded
             return true;
         }
@@ -183,11 +185,11 @@ class LoaderStandard implements LoaderInterface
             //If the namespace is configured, check its paths
             if (false === $this->_loadNamespaceClass($className)) {
                 //Class not found, switch to basic mode, replace \ and _ by a directory separator
-                $classFile = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $className).'.php';
-                if (is_readable($classFile)) {
-                    include_once($classFile);
+                $factoryClassFile = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $className).DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
+                if (is_readable($factoryClassFile)) {
+                    include_once($factoryClassFile);
 
-                    if (class_exists($className, false)) {
+                    if (class_exists($factoryClassName, false)) {
                         //Class found and loaded
                         $classLoaded = true;
                     }

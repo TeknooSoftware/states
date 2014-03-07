@@ -21,8 +21,10 @@
 namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\DI;
+use UniAlteri\States\Loader\Exception;
 use UniAlteri\States\Proxy;
 use UniAlteri\States\Loader;
+use UniAlteri\States\States;
 
 class VirtualFinder implements Loader\FinderInterface
 {
@@ -89,12 +91,37 @@ class VirtualFinder implements Loader\FinderInterface
     /**
      * Load and build the required state object of the stated class
      * @param string $stateName
+     * @return States\StateInterface
+     * @throws Exception\UnReadablePath if the state file is not readable
+     * @throws Exception\UnavailableState if the required state is not available
+     * @throws Exception\IllegalState if the state object does not implement the interface
+     */
+    public function buildState($stateName)
+    {
+        return true;
+    }
+
+    /**
+     * Load and build the required state object of the stated class
+     * @param string $stateName
      * @return \UniAlteri\States\States\StateInterface
      */
     public function loadState($stateName)
     {
         return new VirtualState();
     }
+
+    /**
+     * Load and build a proxy object for the stated class
+     * @param array $arguments argument for proxy
+     * @return Proxy\ProxyInterface
+     * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
+     */
+    public function buildProxy($arguments = null)
+    {
+        return true;
+    }
+
 
     /**
      * Load and build a proxy object of the stated class

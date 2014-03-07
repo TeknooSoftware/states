@@ -28,6 +28,16 @@ namespace UniAlteri\States\Loader;
 interface LoaderInterface
 {
     /**
+     * PHP File of Factory into each stated class
+     */
+    const FACTORY_FILE_NAME = 'Factory.php';
+
+    /**
+     * Suffix name of the Factory PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
+     */
+    const FACTORY_CLASS_NAME = 'Factory';
+
+    /**
      * Method to add a path on the list of location where find class
      * @param string $path
      * @return $this
