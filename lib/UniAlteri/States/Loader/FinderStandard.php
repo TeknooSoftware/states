@@ -184,17 +184,16 @@ class FinderStandard implements FinderInterface
             if (!is_readable($proxyPath)) {
                 //The stated class has not its own proxy, reuse the standard proxy, as an alias
                 class_alias('\UniAlteri\States\Proxy\Standard', $proxyClassName);
-                return new $proxyClassName;
+                return $proxyClassName;
             }
 
             include_once($proxyPath);
             if (!class_exists($proxyClassName, false)) {
                 throw new Exception\IllegalProxy('Error, the proxy of "'.$this->_statedClassName.'" must be called <StatedClassName>\Proxy');
             }
-
-            //To allow developer to create a new stated object from the operator new
-            class_alias($proxyClassName, $this->_statedClassName);
         }
+
+        return $proxyClassName;
     }
 
     /**
@@ -214,8 +213,6 @@ class FinderStandard implements FinderInterface
         //Load an instance of this proxy and test if it implements the interface ProxyInterface
         $proxyObject = new $proxyClassName($arguments);
         if ($proxyObject instanceof Proxy\ProxyInterface) {
-            //Initialize the proxy and return it
-            $proxyObject->setDIContainer($this->getDIContainer());
             return $proxyObject;
         }
 

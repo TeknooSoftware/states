@@ -144,13 +144,62 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
             array(
                 'State1',
                 'State3',
-                'State4'
+                'State4',
+                'State4b'
             ),
             $states
         );
     }
 
     public function testListStatesInPhar()
+    {
+        $this->markTestSkipped(); //todo
+    }
+
+    public function testLoadStateNotFound()
+    {
+        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
+        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        try {
+            $this->_finder->loadState('State2');
+        } catch (Exception\UnReadablePath $e) {
+            return ;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, if the state class path does not exist, the Finder must throw an exception `Exception\UnReadablePath`');
+    }
+
+    public function testLoadStateNotFoundInPhar()
+    {
+        $this->markTestSkipped(); //todo
+    }
+
+    public function testLoadStateWithoutClass()
+    {
+        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        try {
+            $this->_finder->loadState('State1');
+        } catch (Exception\UnavailableState $e) {
+            return ;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, if the state file does not contain the required class, the Finder must throw an exception `Exception\UnavailableState`');
+    }
+
+    public function testLoadStateWithoutClassInPhar()
+    {
+        $this->markTestSkipped(); //todo
+    }
+
+    public function testLoadState()
+    {
+        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        $return = $this->_finder->loadState('State4b');
+        $this->assertTrue(class_exists('Class1\States\State4b', false));
+        $this->assertTrue($return);
+    }
+
+    public function testLoadStatePhar()
     {
         $this->markTestSkipped(); //todo
     }
@@ -220,6 +269,18 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->markTestSkipped(); //todo
     }
 
+    public function testLoaddProxyDefault()
+    {
+        $this->_initializeFind('Class2', $this->_statedClass2Path);
+        $proxyClassName = $this->_finder->loadProxy();
+        $this->assertEquals('Class2\\'.Loader\FinderInterface::PROXY_CLASS_NAME, $proxyClassName);
+    }
+
+    public function testLoadProxyDefaultInPhar()
+    {
+        $this->markTestSkipped(); //todo
+    }
+
     public function testBuildProxyDefault()
     {
         $this->_initializeFind('Class2', $this->_statedClass2Path);
@@ -230,6 +291,23 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testBuildProxyDefaultInPhar()
+    {
+        $this->markTestSkipped(); //todo
+    }
+
+    public function testLoadProxySpecificBadClass()
+    {
+        $this->_initializeFind('Class3', $this->_statedClass3Path);
+        try {
+            $proxy = $this->_finder->loadProxy();
+        } catch (Exception\IllegalProxy $e) {
+            return;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, the finder must throw an exception Exception\IllegalProxy when the proxy class was not found.');
+    }
+
+    public function testLoaddProxySpecificBadClassInPhar()
     {
         $this->markTestSkipped(); //todo
     }
@@ -264,6 +342,19 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testBuildProxySpecificBadInterfaceInPhar()
+    {
+        $this->markTestSkipped(); //todo
+    }
+
+    public function testLoadProxySpecific()
+    {
+        $this->_initializeFind('Class5', $this->_statedClass5Path);
+        $this->_finder->setDIContainer(new Support\VirtualDIContainer());
+        $proxyClassName = $this->_finder->loadProxy();
+        $this->assertEquals('Class5\\'.Loader\FinderInterface::PROXY_CLASS_NAME, $proxyClassName);
+    }
+
+    public function testLoadProxySpecificInPhar()
     {
         $this->markTestSkipped(); //todo
     }

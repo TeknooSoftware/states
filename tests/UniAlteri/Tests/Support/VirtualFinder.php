@@ -98,26 +98,26 @@ class VirtualFinder implements Loader\FinderInterface
      */
     public function buildState($stateName)
     {
-        return true;
+        return new VirtualState();
     }
 
     /**
-     * Load and build the required state object of the stated class
+     * Load the required state object of the stated class
      * @param string $stateName
      * @return \UniAlteri\States\States\StateInterface
      */
     public function loadState($stateName)
     {
-        return new VirtualState();
+        return true;
     }
 
     /**
-     * Load and build a proxy object for the stated class
+     * Load a proxy object for the stated class
      * @param array $arguments argument for proxy
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function buildProxy($arguments = null)
+    public function loadProxy($arguments = null)
     {
         return true;
     }
@@ -128,7 +128,7 @@ class VirtualFinder implements Loader\FinderInterface
      * @param array $arguments argument for proxy
      * @return \UniAlteri\States\Proxy\ProxyInterface
      */
-    public function loadProxy($arguments=null)
+    public function buildProxy($arguments=null)
     {
         return new VirtualProxy($arguments);
     }

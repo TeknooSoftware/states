@@ -46,6 +46,26 @@ interface FactoryInterface
     public function getDIContainer();
 
     /**
+     * Method called by the Loader to initialize the stated class :
+     *  Extends the proxy used by this stated class a child called like the stated class.
+     *  => To allow developer to build new object with the operator new
+     *  => To allow developer to use the operator "instanceof"
+     * @param string $statedClassName the name of the stated class
+     * @return boolean
+     */
+    public function initialize($statedClassName);
+
+    /**
+     * Initialize a proxy object with its container and states
+     * @param Proxy\ProxyInterface $proxyObject
+     * @param string $stateName
+     * @return boolean
+     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
+     * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     */
+    public function startup($proxyObject, $stateName=null);
+
+    /**
      * Build a new instance of an object
      * @param mixed $arguments
      * @param string $stateName to build an object with a specific class

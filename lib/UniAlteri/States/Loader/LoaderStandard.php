@@ -20,6 +20,9 @@
 
 namespace UniAlteri\States\Loader;
 
+use \UniAlteri\States\DI;
+use \UniAlteri\States\Factory;
+
 /**
  * Class LoaderStandard
  * @package UniAlteri\States\Loader
@@ -28,6 +31,11 @@ namespace UniAlteri\States\Loader;
  */
 class LoaderStandard implements LoaderInterface
 {
+    /**
+     * DI Container to use with this finder
+     * @var DI\ContainerInterface
+     */
+    protected $_diContainer = null;
 
     /**
      * List of path to include for this loader
@@ -55,6 +63,24 @@ class LoaderStandard implements LoaderInterface
         $this->_includedPathArray = new \ArrayObject();
         $this->_namespacesArray = new \ArrayObject();
         $this->_previousIncludedPathStack = new \SplStack();
+    }
+
+    /**
+     * Register a DI container for this object
+     * @param DI\ContainerInterface $container
+     */
+    public function setDIContainer(DI\ContainerInterface $container)
+    {
+        $this->_diContainer = $container;
+    }
+
+    /**
+     * Return the DI Container used for this object
+     * @return DI\ContainerInterface
+     */
+    public function getDIContainer()
+    {
+        return $this->_diContainer;
     }
 
     /**
@@ -124,6 +150,8 @@ class LoaderStandard implements LoaderInterface
      * Loaded a class into a namespace
      * @param string $class
      * @return bool
+     * @throws Exception\UnavailableFactory if the required factory is not available
+     * @throws Exception\IllegalFactory if the factory does not implement the good interface
      */
     protected function _loadNamespaceClass($class)
     {
@@ -167,6 +195,8 @@ class LoaderStandard implements LoaderInterface
      * @param string $className class name, support namespace prefixes
      * @return boolean
      * @throws Exception\EmptyStack if the stack of previous included path
+     * @throws Exception\UnavailableFactory if the required factory is not available
+     * @throws Exception\IllegalFactory if the factory does not implement the good interface
      * @throws \Exception
      */
     public function loadClass($className)
@@ -204,5 +234,32 @@ class LoaderStandard implements LoaderInterface
 
         $this->_restoreIncludedPaths();
         return $classLoaded;
+    }
+
+    /**
+     * Build the factory and initialize the loading stated class
+     * @param boolean $factoryClassName
+     * @param string $statedClassName
+     * @return Factory\FactoryInterface
+     * @throws Exception\UnavailableFactory if the required factory is not available
+     * @throws Exception\IllegalFactory if the factory does not implement the good interface
+     */
+    public function buildFactory($factoryClassName, $statedClassName)
+    {
+        if (!class_exists($factoryClassName, false)) {
+            throw new Exception\UnavailableFactory(
+                'The factory of '.$statedClassName.' is not available'
+            );
+        }
+
+        $factoryObject = new $factoryClassName();
+        if (!$factoryObject instanceof Factory\FactoryInterface) {
+            throw new Exception\IllegalFactory(
+                'The factory of '.$statedClassName.' does not implement the interface'
+            );
+        }
+
+        $factoryObject->initialize($statedClassName);
+        return $factoryObject;
     }
 }
