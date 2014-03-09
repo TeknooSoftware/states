@@ -238,7 +238,7 @@ class LoaderStandard implements LoaderInterface
 
     /**
      * Build the factory and initialize the loading stated class
-     * @param boolean $factoryClassName
+     * @param string $factoryClassName
      * @param string $statedClassName
      * @return Factory\FactoryInterface
      * @throws Exception\UnavailableFactory if the required factory is not available

@@ -110,4 +110,44 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->markTestSkipped(); //todo
     }
+
+    public function testBuildFactoryNonExistentFactory()
+    {
+        $loader = $this->_initializeLoader();
+        try {
+            $loader->buildFactory('badFactory', 'statedClassName');
+        } catch (Exception\UnavailableFactory $e) {
+            return;
+        } catch (\Exception $e){ }
+
+        $this->fail('Error, if factory\'s class was not found, Loader must throws the exception Exception\UnavailableFactory');
+    }
+
+    public function testBuildFactoryBadFactory()
+    {
+        $loader = $this->_initializeLoader();
+        try {
+            $loader->buildFactory('stdClass', 'statedClassName');
+        } catch (Exception\IllegalFactory $e) {
+            return;
+        } catch (\Exception $e){ }
+
+        $this->fail('Error, if factory\'s class does not implement the factory interface, Loader must throws the exception Exception\IllegalFactory');
+    }
+
+    public function testBuildFactory()
+    {
+        $loader = $this->_initializeLoader();
+        $this->assertEquals(array(), Support\VirtualFactory::listInitializedFactories());
+        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class1');
+        $this->assertEquals(array('class1'), Support\VirtualFactory::listInitializedFactories());
+        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class2');
+        $this->assertEquals(array('class1', 'class2'), Support\VirtualFactory::listInitializedFactories());
+        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class1');
+        $this->assertEquals(
+            array('class1', 'class2', 'class1'),
+            Support\VirtualFactory::listInitializedFactories(),
+            'Error, the loader must not manage factory building. If a even stated class is initialized several times, the loader must call the factory each time. '
+        );
+    }
 }
