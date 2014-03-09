@@ -35,4 +35,33 @@ namespace UniAlteri\States\Proxy;
 class Standard implements ProxyInterface
 {
     use TraitProxy;
+
+    /**
+     * Class name of the factory to use during set up to initialize this object
+     * @var string
+     */
+    protected static $startupFactoryClassName = null;
+
+    /**
+     * Factory'id to use for the current stated class
+     * @var string
+     */
+    protected static $_factoryIdentifier = null;
+
+    /**
+     * Default constructor used to initialize the stated object with its factory
+     * @param array $params
+     */
+    public function __construct($params = array())
+    {
+        $this->_initializeObjectWithFactory();
+    }
+
+    /**
+     * Method called by constructor to initialize this object from the stated class's factory
+     */
+    protected function _initializeObjectWithFactory()
+    {
+
+    }
 }
