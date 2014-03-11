@@ -183,6 +183,15 @@ trait TraitProxy
      */
     public function __construct()
     {
+        $this->_initializeProxy();
+    }
+
+    /**
+     * Method to call into constructor to initialize proxy's vars.
+     * Externalized from constructor to allow developers to write theirs owns constructors into theirs classes
+     */
+    protected function _initializeProxy()
+    {
         //Initialize internal vars
         $this->_states = new \ArrayObject();
         $this->_activesStates = new \ArrayObject();

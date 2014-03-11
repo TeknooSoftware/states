@@ -31,13 +31,14 @@ use \UniAlteri\States\Proxy;
 interface StartupFactoryInterface
 {
     /**
-     * Initialize a proxy object with its container and states.
+     * Find the factory to use for the new proxy object to initialize it with its container and states.
      * This method is called by the constructor of the stated object
+     * @param string $factoryIdentifier of the factory to use for this object
      * @param Proxy\ProxyInterface $proxyObject
      * @param string $stateName
      * @return boolean
-     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * @throws Exception\InvalidArgument when $factoryIdentifier is not an object
+     * @throws Exception\UnavailableFactory when the required factory was not found
      */
-    public static function forwardStartup($proxyObject, $stateName=null);
+    public static function forwardStartup($factoryIdentifier, $proxyObject, $stateName=null);
 }

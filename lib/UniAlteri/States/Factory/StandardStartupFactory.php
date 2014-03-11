@@ -19,6 +19,7 @@
  */
 
 namespace UniAlteri\States\Factory;
+
 use UniAlteri\States\Proxy;
 
 /**
@@ -31,15 +32,50 @@ use UniAlteri\States\Proxy;
 class StandardStartupFactory implements StartupFactoryInterface
 {
     /**
-     * Initialize a proxy object with its container and states.
+     * Registry of factory to use to initialize proxy object
+     * @var FactoryInterface[]
+     */
+    protected static $_factoryRegistry = null;
+
+    /**
+     * Find the factory to use for the new proxy object to initialize it with its container and states.
      * This method is called by the constructor of the stated object
+     * @param string $factoryIdentifier of the factory to use for this object
      * @param Proxy\ProxyInterface $proxyObject
      * @param string $stateName
      * @return boolean
-     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * @throws Exception\InvalidArgument when $factoryIdentifier is not an object
+     * @throws Exception\UnavailableFactory when the required factory was not found
      */
-    public static function forwardStartup($proxyObject, $stateName = null)
+    public static function forwardStartup($factoryIdentifier, $proxyObject, $stateName = null)
     {
+        if (!is_string($factoryIdentifier)) {
+            throw new Exception\InvalidArgument('Error the factory identifier is not a string');
+        }
+
+        if (!static::$_factoryRegistry instanceof \ArrayObject || !isset(static::$_factoryRegistry[$factoryIdentifier])) {
+            throw new Exception\UnavailableFactory('Error, the factory "'.$factoryIdentifier.'" is not available');
+        }
+
+        return static::$_factoryRegistry[$factoryIdentifier]->startup($proxyObject, $stateName);
+    }
+
+    /**
+     * Register a new factory object to initialize proxy objects
+     * @param string $factoryIdentifier
+     * @param FactoryInterface $factoryObject
+     * @throws Exception\IllegalFactory
+     */
+    public static function registerFactory($factoryIdentifier, $factoryObject)
+    {
+        if (!static::$_factoryRegistry instanceof \ArrayObject) {
+            static::$_factoryRegistry = new \ArrayObject();
+        }
+
+        if (!$factoryObject instanceof FactoryInterface) {
+            throw new Exception\IllegalFactory('Error, the factory object must implement the interface Factory\FactoryInterface');
+        }
+
+        static::$_factoryRegistry[$factoryIdentifier] = $factoryObject;
     }
 }
