@@ -120,7 +120,7 @@ class Container extends \Pimple implements ContainerInterface
             //Class, check if it is loaded
             if (\class_exists($instance, false)) {
                 //Write a new closure to build a new instance of this class, and use it as service
-                $this[$name] = $this->factory(function($c) use($instance){
+                $this[$name] = $this->factory(function() use($instance){
                     return new $instance();
                 });
             } else {

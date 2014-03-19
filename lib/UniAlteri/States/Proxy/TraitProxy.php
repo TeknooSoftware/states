@@ -52,13 +52,13 @@ trait TraitProxy
 
     /**
      * List of currently enabled states
-     * @var States\States\StateInterface[]
+     * @var \ArrayObject|States\States\StateInterface[]
      */
     protected $_activesStates = null;
 
     /**
      * List of available states for this stated object
-     * @var States\States\StateInterface[]
+     * @var \ArrayObject|States\States\StateInterface[]
      */
     protected $_states = null;
 
