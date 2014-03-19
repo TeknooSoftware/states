@@ -48,11 +48,6 @@ interface FinderInterface
     const PROXY_FILE_NAME = 'Proxy.php';
 
     /**
-     * Suffix name of the Proxy PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
-     */
-    const PROXY_CLASS_NAME = 'Proxy';
-
-    /**
      * Initialize finder
      * @param string $statedClassName
      * @param string $pathString
@@ -82,7 +77,7 @@ interface FinderInterface
     /**
      * Load the required state object of the stated class
      * @param string $stateName
-     * @return boolean
+     * @return string
      * @throws Exception\UnReadablePath if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
@@ -101,7 +96,7 @@ interface FinderInterface
     /**
      * Search and load the proxy class for this stated class.
      * If the class has not proxy, load the default proxy for this stated class
-     * @return boolean
+     * @return string
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function loadProxy();

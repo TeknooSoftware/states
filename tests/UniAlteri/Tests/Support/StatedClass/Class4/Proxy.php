@@ -20,7 +20,7 @@
 
 namespace Class4;
 
-class Proxy
+class Class4
 {
 
 }

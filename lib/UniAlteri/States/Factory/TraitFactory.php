@@ -84,7 +84,8 @@ trait TraitFactory
      */
     public function initialize($statedClassName)
     {
-
+        $finderLoader = $this->_diContainer->get(Loader\FinderInterface::DI_FINDER_NAME);
+        $finderLoader->loadProxy();
     }
 
     /**

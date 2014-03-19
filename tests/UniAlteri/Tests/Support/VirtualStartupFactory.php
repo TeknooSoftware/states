@@ -11,24 +11,20 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @package     States
- * @subpackage  Factory
+ * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
  */
 
-namespace UniAlteri\States\Factory;
+namespace UniAlteri\Tests\Support;
 
+use \UniAlteri\States\Factory;
+use \UniAlteri\States\Factory\Exception;
 use \UniAlteri\States\Proxy;
 
-/**
- * Interface StartupFactoryInterface
- * @package UniAlteri\States\Factory
- * Interface to define a factory used to initialize a stated object during in constructor.
- * This factory will only find the object's factory to forward to it the call
- */
-interface StartupFactoryInterface
+class VirtualStartupFactory implements Factory\StartupFactoryInterface
 {
     /**
      * Find the factory to use for the new proxy object to initialize it with its container and states.
@@ -39,5 +35,8 @@ interface StartupFactoryInterface
      * @throws Exception\InvalidArgument when $factoryIdentifier is not an object
      * @throws Exception\UnavailableFactory when the required factory was not found
      */
-    public static function forwardStartup($proxyObject, $stateName=null);
+    public static function forwardStartup($proxyObject, $stateName=null)
+    {
+
+    }
 }

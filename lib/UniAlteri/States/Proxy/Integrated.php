@@ -44,12 +44,6 @@ class Integrated extends Standard
     protected static $_startupFactoryClassName = null;
 
     /**
-     * Factory'id to use for the current stated class
-     * @var string
-     */
-    protected static $_factoryIdentifier = null;
-
-    /**
      * Default constructor used to initialize the stated object with its factory
      * @throws Exception\IllegalFactory
      * @throws Exception\UnavailableFactory
@@ -72,17 +66,16 @@ class Integrated extends Standard
         }
 
         $interfacesImplementedArray = array_flip(
-            class_implements(static::$_startupFactoryClassName, false)
+            class_implements(static::$_startupFactoryClassName)
         );
 
-        if (!isset($interfacesImplementedArray['\UniAlteri\States\Factory\StartupFactoryInterface'])) {
+        if (!isset($interfacesImplementedArray['UniAlteri\States\Factory\StartupFactoryInterface'])) {
             throw new Exception\IllegalFactory('Error, the startup factory does not implement the startup interface');
         }
 
         call_user_func_array(
             array(static::$_startupFactoryClassName, 'forwardStartup'),
             array(
-                static::$_factoryIdentifier,
                 $this
             )
         );

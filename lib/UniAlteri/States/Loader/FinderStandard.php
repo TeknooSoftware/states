@@ -52,6 +52,12 @@ class FinderStandard implements FinderInterface
     protected $_diContainer = null;
 
     /**
+     * Default proxy class name to use when there are no proxy class name
+     * @var string
+     */
+    protected $_defaultProxyClassName = '\UniAlteri\States\Proxy\Standard';
+
+    /**
      * Initialize finder
      * @param string $statedClassName
      * @param string $pathString
@@ -121,7 +127,7 @@ class FinderStandard implements FinderInterface
     /**
      * Load the required state object of the stated class
      * @param string $stateName
-     * @return boolean
+     * @return string
      * @throws Exception\UnReadablePath if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
@@ -142,7 +148,7 @@ class FinderStandard implements FinderInterface
             }
         }
 
-        return true;
+        return $stateClassName;
     }
 
     /**
@@ -156,8 +162,7 @@ class FinderStandard implements FinderInterface
     public function buildState($stateName)
     {
         //Load the state class if it is not already done
-        $this->loadState($stateName);
-        $stateClassName = $this->_statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
+        $stateClassName = $this->loadState($stateName);
 
         $stateObject = new $stateClassName;
         if (!$stateObject instanceof States\StateInterface) {
@@ -168,28 +173,44 @@ class FinderStandard implements FinderInterface
     }
 
     /**
+     * Extract the class name from the stated class name with namespace
+     * @param string $statedClassName
+     * @return string
+     */
+    protected function _getClassedName($statedClassName)
+    {
+        $parts = explode('\\', $statedClassName);
+        return array_pop($parts);
+    }
+
+    /**
      * Search and load the proxy class for this stated class.
      * If the class has not proxy, load the default proxy for this stated class
-     * @return boolean
+     * @return string
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function loadProxy()
     {
         //Build the class name
-        $proxyClassName = $this->_statedClassName.'\\'.FinderInterface::PROXY_CLASS_NAME;
+        $classPartName = $this->_getClassedName($this->_statedClassName);
+        $proxyClassName = $this->_statedClassName.'\\'.$classPartName;
         if (!class_exists($proxyClassName, false)) {
             //Build the class file path for the proxy (standardized into ProxyInterface)
             $proxyPath = $this->_pathString.DIRECTORY_SEPARATOR.FinderInterface::PROXY_FILE_NAME;
 
             if (!is_readable($proxyPath)) {
                 //The stated class has not its own proxy, reuse the standard proxy, as an alias
-                class_alias('\UniAlteri\States\Proxy\Standard', $proxyClassName);
+                class_alias($this->_defaultProxyClassName, $proxyClassName);
+                class_alias($this->_defaultProxyClassName, $this->_statedClassName);
                 return $proxyClassName;
             }
 
             include_once($proxyPath);
             if (!class_exists($proxyClassName, false)) {
-                throw new Exception\IllegalProxy('Error, the proxy of "'.$this->_statedClassName.'" must be called <StatedClassName>\Proxy');
+                throw new Exception\IllegalProxy('Error, the proxy of "'.$this->_statedClassName.'" must be called <StatedClassName>\''.$classPartName);
+            } else {
+                //To access to this class directly without repeat the stated class name
+                class_alias($proxyClassName, $this->_statedClassName);
             }
         }
 
@@ -205,10 +226,7 @@ class FinderStandard implements FinderInterface
     public function buildProxy($arguments=null)
     {
         //Load the proxy if it is not already done
-        $this->loadProxy();
-
-        //Build the class name
-        $proxyClassName = $this->_statedClassName.'\\'.FinderInterface::PROXY_CLASS_NAME;
+        $proxyClassName = $this->loadProxy();
 
         //Load an instance of this proxy and test if it implements the interface ProxyInterface
         $proxyObject = new $proxyClassName($arguments);

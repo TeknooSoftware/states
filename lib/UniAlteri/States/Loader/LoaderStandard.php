@@ -182,6 +182,7 @@ class LoaderStandard implements LoaderInterface
 
                 $factoryClassName = $namespaceString.'\\'.$className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
                 if (class_exists($factoryClassName, false)) {
+                    $this->buildFactory($factoryClassName, $class);
                     return true;
                 }
             }
@@ -221,6 +222,7 @@ class LoaderStandard implements LoaderInterface
 
                     if (class_exists($factoryClassName, false)) {
                         //Class found and loaded
+                        $this->buildFactory($factoryClassName, $className);
                         $classLoaded = true;
                     }
                 }
@@ -257,6 +259,11 @@ class LoaderStandard implements LoaderInterface
             throw new Exception\IllegalFactory(
                 'The factory of '.$statedClassName.' does not implement the interface'
             );
+        }
+
+        if ($this->_diContainer instanceof DI\ContainerInterface) {
+            $diContainer = clone $this->_diContainer;
+            $factoryObject->setDIContainer($diContainer);
         }
 
         $factoryObject->initialize($statedClassName);

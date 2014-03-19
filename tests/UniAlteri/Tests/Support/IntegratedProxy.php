@@ -18,24 +18,15 @@
  * @version     $Id$
  */
 
-namespace UniAlteri\Tests\States\Proxy;
+namespace UniAlteri\Tests\Support;
 
-use PHPUnit_Framework_TestCase;
 use \UniAlteri\States\Proxy;
-use \UniAlteri\Tests\Support;
 
-class IntegratedTest extends AbstractProxyTest
+class IntegratedProxy extends Proxy\Integrated
 {
-    protected function setUp()
-    {
-        include_once('UniAlteri/Tests/Support/VirtualStartupFactory.php');
-        parent::setUp();
-    }
     /**
-     * Build a proxy object, into $this->_proxy to test it
+     * Class name of the factory to use during set up to initialize this object
+     * @var string
      */
-    protected function _buildProxy()
-    {
-        $this->_proxy = new Support\IntegratedProxy();
-    }
+    protected static $_startupFactoryClassName = '\UniAlteri\Tests\Support\VirtualStartupFactory';
 }
