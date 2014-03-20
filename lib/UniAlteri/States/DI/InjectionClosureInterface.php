@@ -39,6 +39,7 @@ interface InjectionClosureInterface
     /**
      * Return the DI Container used for this object
      * @return ContainerInterface
+     * @return $this
      */
     public function getDIContainer();
 

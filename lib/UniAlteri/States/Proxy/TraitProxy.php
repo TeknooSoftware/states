@@ -200,10 +200,12 @@ trait TraitProxy
     /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
+     * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
         $this->_diContainer = $container;
+        return $this;
     }
 
     /**
@@ -232,6 +234,7 @@ trait TraitProxy
     /**
      * Called to clone an Object
      * @return $this
+     * @todo test
      */
     public function __clone()
     {

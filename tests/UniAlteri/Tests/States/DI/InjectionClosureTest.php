@@ -22,6 +22,7 @@ namespace UniAlteri\Tests\States\DI;
 
 use UniAlteri\States\DI;
 use UniAlteri\States\DI\Exception;
+use UniAlteri\Tests\Support;
 
 class InjectionClosureTest extends \PHPUnit_Framework_TestCase
 {
@@ -51,6 +52,33 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
         $injectionClosureObject = new DI\InjectionClosure();
         $injectionClosureObject->setClosure($closure);
         return $injectionClosureObject;
+    }
+
+    /**
+     * Test exception when the Container is not valid when we set a bad object as di container
+     */
+    public function testSetDiContainerBad()
+    {
+        $injectionClosureObject = new DI\InjectionClosure();
+        try {
+            $injectionClosureObject->setDIContainer(new \DateTime());
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->fail('Error, the object must throw an exception when the DI Container is not valid');
+    }
+
+    /**
+     * Test behavior for methods Set And GetDiContainer
+     */
+    public function testSetAndGetDiContainer()
+    {
+        $object = new DI\InjectionClosure();
+        $this->assertNull($object->getDIContainer());
+        $virtualContainer = new Support\VirtualDIContainer();
+        $this->assertSame($object, $object->setDIContainer($virtualContainer));
+        $this->assertSame($virtualContainer, $object->getDIContainer());
     }
 
     /**

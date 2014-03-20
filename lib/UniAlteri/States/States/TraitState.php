@@ -103,10 +103,12 @@ trait TraitState
     /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
+     * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
         $this->_diContainer = $container;
+        return $this;
     }
 
     /**

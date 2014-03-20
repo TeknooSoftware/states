@@ -68,10 +68,12 @@ class LoaderStandard implements LoaderInterface
     /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
+     * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
         $this->_diContainer = $container;
+        return $this;
     }
 
     /**
@@ -245,6 +247,7 @@ class LoaderStandard implements LoaderInterface
      * @return Factory\FactoryInterface
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory if the factory does not implement the good interface
+     * @todo test
      */
     public function buildFactory($factoryClassName, $statedClassName)
     {

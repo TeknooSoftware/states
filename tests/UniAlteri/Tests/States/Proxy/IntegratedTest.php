@@ -33,9 +33,11 @@ class IntegratedTest extends AbstractProxyTest
     }
     /**
      * Build a proxy object, into $this->_proxy to test it
+     * @return Proxy\ProxyInterface
      */
     protected function _buildProxy()
     {
         $this->_proxy = new Support\IntegratedProxy();
+        return $this->_proxy;
     }
 }

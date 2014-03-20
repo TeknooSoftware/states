@@ -52,9 +52,37 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Return the Factory Object Interface
+     * @param boolean $populateContainer to populate di container of this factory
      * @return Factory\FactoryInterface
      */
-    abstract public function getFactoryObject();
+    abstract public function getFactoryObject($populateContainer=true);
+
+    /**
+     * Test exception when the Container is not valid when we set a bad object as di container
+     */
+    public function testSetDiContainerBad()
+    {
+        $object = $this->getFactoryObject(false);
+        try {
+            $object->setDIContainer(new \DateTime());
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->fail('Error, the object must throw an exception when the DI Container is not valid');
+    }
+
+    /**
+     * Test behavior for methods Set And GetDiContainer
+     */
+    public function testSetAndGetDiContainer()
+    {
+        $object = $this->getFactoryObject(false);
+        $this->assertNull($object->getDIContainer());
+        $virtualContainer = new Support\VirtualDIContainer();
+        $this->assertSame($object, $object->setDIContainer($virtualContainer));
+        $this->assertSame($virtualContainer, $object->getDIContainer());
+    }
 
     /**
      * Test exceptions thrown when the stated class has no default state

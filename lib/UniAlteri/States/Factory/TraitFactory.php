@@ -44,10 +44,12 @@ trait TraitFactory
     /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
+     * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
         $this->_diContainer = $container;
+        return $this;
     }
 
     /**
@@ -81,6 +83,7 @@ trait TraitFactory
      *  => To allow developer to use the operator "instanceof"
      * @param string $statedClassName the name of the stated class
      * @return boolean
+     * @todo test
      */
     public function initialize($statedClassName)
     {
@@ -95,6 +98,7 @@ trait TraitFactory
      * @return boolean
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * @todo test
      */
     public function startup($proxyObject, $stateName=null)
     {

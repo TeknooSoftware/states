@@ -62,10 +62,12 @@ class InjectionClosure implements InjectionClosureInterface
     /**
      * Register a DI container for this object
      * @param ContainerInterface $container
+     * @return $this
      */
     public function setDIContainer(ContainerInterface $container)
     {
         $this->_diContainer = $container;
+        return $this;
     }
 
     /**

@@ -45,6 +45,7 @@ class StandardStartupFactory implements StartupFactoryInterface
      * @return boolean
      * @throws Exception\InvalidArgument when $factoryIdentifier is not an object
      * @throws Exception\UnavailableFactory when the required factory was not found
+     * @todo test
      */
     public static function forwardStartup($proxyObject, $stateName = null)
     {
@@ -66,6 +67,7 @@ class StandardStartupFactory implements StartupFactoryInterface
      * @param string $factoryIdentifier
      * @param FactoryInterface $factoryObject
      * @throws Exception\IllegalFactory
+     * @todo test
      */
     public static function registerFactory($factoryIdentifier, $factoryObject)
     {

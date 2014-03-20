@@ -47,6 +47,7 @@ class Integrated extends Standard
      * Default constructor used to initialize the stated object with its factory
      * @throws Exception\IllegalFactory
      * @throws Exception\UnavailableFactory
+     * @todo test
      */
     public function __construct()
     {
@@ -58,6 +59,7 @@ class Integrated extends Standard
      * Method called by constructor to initialize this object from the stated class's factory
      * @throws Exception\IllegalFactory
      * @throws Exception\UnavailableFactory
+     * @todo test
      */
     protected function _initializeObjectWithFactory()
     {

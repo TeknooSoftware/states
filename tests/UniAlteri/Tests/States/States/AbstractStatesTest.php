@@ -53,6 +53,32 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
      * @return Proxy\ProxyInterface
      */
     abstract protected function _getVirtualProxy();
+    /**
+     * Test exception when the Container is not valid when we set a bad object as di container
+     */
+    public function testSetDiContainerBad()
+    {
+        $object = $this->_getPublicClassObject(false);
+        try {
+            $object->setDIContainer(new \DateTime());
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->fail('Error, the object must throw an exception when the DI Container is not valid');
+    }
+
+    /**
+     * Test behavior for methods Set And GetDiContainer
+     */
+    public function testSetAndGetDiContainer()
+    {
+        $object = $this->_getPublicClassObject(false);
+        $this->assertNull($object->getDIContainer());
+        $virtualContainer = new Support\VirtualDIContainer();
+        $this->assertSame($object, $object->setDIContainer($virtualContainer));
+        $this->assertSame($virtualContainer, $object->getDIContainer());
+    }
 
     /**
      * Test if the state can return all its public method, without static

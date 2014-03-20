@@ -426,4 +426,40 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             'Error, the container method "listContainer" must return all instance name with there unique id'
         );
     }
+
+    /**
+     * Test cloning behavior : Previous service/instance are shared between two cloned instance
+     * But, each container progresses independently (can update, add or remove instance or service)
+     */
+    public function testCloning()
+    {
+        $originalContainer = $this->_buildContainer();
+        $stdObject = new \stdClass();
+        $stdObject->foo = 'bar';
+        $originalContainer->registerInstance('object', $stdObject);
+        $originalContainer->registerService('date', function(){
+            return new \DateTime();
+        });
+
+        $this->assertSame($stdObject, $originalContainer->get('object'));
+        $this->assertInstanceOf('\DateTime', $originalContainer->get('date'));
+
+        $clonedContainer = clone $originalContainer;
+        $this->assertSame($stdObject, $clonedContainer->get('object'));
+        $this->assertInstanceOf('\DateTime', $clonedContainer->get('date'));
+
+        $stdObject2 = new \stdClass();
+        $stdObject2->bar = 'foo';
+        $clonedContainer->registerInstance('object2', $stdObject2);
+        $this->assertSame($stdObject2, $clonedContainer->get('object2'));
+        $this->assertFalse($originalContainer->testEntry('object2'));
+
+        $clonedContainer->unregister('date');
+        $clonedContainer->registerInstance('date', function(){
+            return 123;
+        });
+
+        $this->assertSame(123, $clonedContainer->get('date'));
+        $this->assertInstanceOf('\DateTime', $originalContainer->get('date'));
+    }
 }
