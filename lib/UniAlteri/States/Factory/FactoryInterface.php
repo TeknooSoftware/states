@@ -63,6 +63,7 @@ interface FactoryInterface
      * @return boolean
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * @throws Exception\IllegalProxy if the proxy object does not implement the interface
      */
     public function startup($proxyObject, $stateName=null);
 

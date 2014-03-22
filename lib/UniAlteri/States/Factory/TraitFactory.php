@@ -98,10 +98,14 @@ trait TraitFactory
      * @return boolean
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
-     * @todo test
+     * @throws Exception\IllegalProxy if the proxy object does not implement the interface
      */
     public function startup($proxyObject, $stateName=null)
     {
+        if (!$proxyObject instanceof Proxy\ProxyInterface) {
+            throw new Exception\IllegalProxy('Error, the Proxy does not implements the Proxy Interface');
+        }
+
         $diContainerObject = clone $this->getDIContainer();
         $proxyObject->setDIContainer($diContainerObject);
 

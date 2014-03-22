@@ -85,6 +85,79 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test the exception of the library when the proxy object doest not implement the exception
+     */
+    public function testExceptionBadProxyStartup()
+    {
+        try {
+            $this->getFactoryObject()->startup(array());
+        } catch(Exception\IllegalProxy $exception) {
+            return;
+        }
+
+        $this->fail('Error, if the proxy does not implement the proxy object, the factory must throw an exception');
+    }
+
+    /**
+     * Test exceptions thrown when the stated class has no default state
+     */
+    public function testExceptionDefaultStateNotAvailableInStartup()
+    {
+        try {
+            $this->_virtualFinder->ignoreDefaultState = true;
+            $this->getFactoryObject()->startup(new Support\VirtualProxy(null));
+        } catch(Exception\StateNotFound $exception) {
+            return;
+        }
+
+        $this->fail('Error, if the stated class has not a default state, the factory must throw an exception StateNotFound');
+    }
+
+    /**
+     * Test exceptions thrown when the stated class has not the required starting state
+     */
+    public function testExceptionRequiredStateNotAvailableInStartup()
+    {
+        try{
+            $this->_virtualFinder->ignoreDefaultState = false;
+            $this->getFactoryObject()->startup(new Support\VirtualProxy(null), 'NonExistentState');
+        } catch(Exception\StateNotFound $exception) {
+            return;
+        }
+
+        $this->fail('Error, if the stated class has not the required starting state, the factory must throw an exception StateNotFound');
+    }
+
+    public function testListAvailableStateInStartup()
+    {
+        $proxy = new Support\VirtualProxy(null);
+        $this->getFactoryObject()->startup($proxy);
+        $this->assertEquals(
+            array(
+                'VirtualState1',
+                Proxy\ProxyInterface::DEFAULT_STATE_NAME,
+                'VirtualState2',
+                'VirtualState3'
+            ),
+            $proxy->listAvailableStates()
+        );
+    }
+
+    public function testDefaultStateAutomaticallySelectedInStartup()
+    {
+        $proxy = new Support\VirtualProxy(null);
+        $this->getFactoryObject()->startup($proxy);
+        $this->assertEquals($proxy->listActivesStates(), array('Default'));
+    }
+
+    public function testRequiredStateSelectedInStartup()
+    {
+        $proxy = new Support\VirtualProxy(null);
+        $this->getFactoryObject()->startup($proxy, 'VirtualState1');
+        $this->assertEquals($proxy->listActivesStates(), array('VirtualState1'));
+    }
+
+    /**
      * Test exceptions thrown when the stated class has no default state
      */
     public function testExceptionDefaultStateNotAvailable()
