@@ -234,22 +234,28 @@ trait TraitProxy
     /**
      * Called to clone an Object
      * @return $this
-     * @todo test
      */
     public function __clone()
     {
+        $this->_uniqueId = null;
+
+        if ($this->_diContainer instanceof DI\ContainerInterface) {
+            $this->_diContainer = clone $this->_diContainer;
+        }
+
         //Clone states stack
         $clonedStatesArray = new \ArrayObject();
-        foreach ($this->_states as $state) {
+        foreach ($this->_states as $key=>$state) {
             //Clone each state object
             $clonedState = clone $state;
             //Update new stack
-            $clonedStatesArray[] = $clonedState;
+            $clonedStatesArray[$key] = $clonedState;
         }
+        $this->_states = $clonedStatesArray;
 
         //Enabling states
         $activesStates = array_keys($this->_activesStates->getArrayCopy());
-        $this->_activesStates = $clonedStatesArray;
+        $this->_activesStates = new \ArrayObject();
         foreach ($activesStates as $stateName) {
             $this->enableState($stateName);
         }

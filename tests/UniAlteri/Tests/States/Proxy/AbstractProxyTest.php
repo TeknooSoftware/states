@@ -1069,4 +1069,38 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->assertSame('unserialize', $this->_state1->getMethodNameCalled());
         $this->assertSame(array('foo'), $this->_state1->getCalledArguments());
     }
+
+    public function testCloning()
+    {
+        $this->_initializeProxy('state1', true);
+        $this->_proxy->setDIContainer(new Support\VirtualDIContainer());
+        $obj = new \stdClass();
+        $obj->foo = 'bar';
+        $this->_proxy->getDIContainer()->registerInstance('obj', $obj);
+        $clonedProxy = clone $this->_proxy;
+        //States must be independently
+        $this->assertEquals(array('state1', 'state2', 'state3'), $this->_proxy->listAvailableStates());
+        $this->assertEquals(array('state1'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state1', 'state2', 'state3'), $clonedProxy->listAvailableStates());
+        $this->assertEquals(array('state1'), $clonedProxy->listActivesStates());
+
+        //List must perform independently
+        $clonedProxy->switchState('state2');
+        $clonedProxy->unregisterState('state3');
+        $this->assertEquals(array('state1', 'state2', 'state3'), $this->_proxy->listAvailableStates());
+        $this->assertEquals(array('state1'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state1', 'state2'), $clonedProxy->listAvailableStates());
+        $this->assertEquals(array('state2'), $clonedProxy->listActivesStates());
+
+        //container must be cloned
+        $diContainer = $this->_proxy->getDIContainer();
+        $clonedDiContainer = $clonedProxy->getDIContainer();
+
+        $this->assertEquals(get_class($diContainer), get_class($clonedDiContainer));
+        $this->assertNotSame($diContainer, $clonedDiContainer);
+        $this->assertEquals('bar', $clonedDiContainer->get('obj')->foo);
+
+        //unique ids must differe
+        $this->assertNotEquals($this->_proxy->getObjectUniqueId(), $clonedProxy->getObjectUniqueId());
+    }
 }

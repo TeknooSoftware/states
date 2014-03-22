@@ -83,7 +83,7 @@ trait TraitFactory
      *  => To allow developer to use the operator "instanceof"
      * @param string $statedClassName the name of the stated class
      * @return boolean
-     * @todo test
+     * @todo test and finish
      */
     public function initialize($statedClassName)
     {
