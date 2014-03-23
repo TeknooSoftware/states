@@ -47,7 +47,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
         $this->_container = new DI\Container();
         $this->_virtualFinder = new Support\VirtualFinder('', '');
-        $this->_container->registerInstance(Loader\FinderInterface::DI_FINDER_NAME, $this->_virtualFinder);
+        $this->_container->registerInstance(Loader\FinderInterface::DI_FINDER_SERVICE, $this->_virtualFinder);
     }
 
     /**

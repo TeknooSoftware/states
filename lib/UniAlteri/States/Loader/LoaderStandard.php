@@ -32,7 +32,7 @@ use \UniAlteri\States\Factory;
 class LoaderStandard implements LoaderInterface
 {
     /**
-     * DI Container to use with this finder
+     * DI Container to use with this loader
      * @var DI\ContainerInterface
      */
     protected $_diContainer = null;

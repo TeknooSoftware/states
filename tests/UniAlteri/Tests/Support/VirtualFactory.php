@@ -23,6 +23,7 @@ namespace UniAlteri\Tests\Support;
 use \UniAlteri\States\DI;
 use \UniAlteri\States\Factory;
 use \UniAlteri\States\Factory\Exception;
+use UniAlteri\States\Loader;
 use \UniAlteri\States\Proxy;
 
 class VirtualFactory implements Factory\FactoryInterface
@@ -37,6 +38,16 @@ class VirtualFactory implements Factory\FactoryInterface
      * @var Proxy\ProxyInterface
      */
     protected $_startupProxy;
+
+    /**
+     * @var string
+     */
+    protected $_statedClassName = null;
+
+    /**
+     * @var string
+     */
+    protected $_path = null;
 
     /**
      * Return the DI Container used for this object
@@ -56,6 +67,34 @@ class VirtualFactory implements Factory\FactoryInterface
     }
 
     /**
+     * Return the loader of this stated class from its DI Container
+     * @return Loader\FinderInterface
+     * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     */
+    public function getFinder()
+    {
+        return new VirtualFinder($this->_statedClassName, $this->_path);
+    }
+
+    /**
+     * Return the path of the stated class
+     * @return string
+     */
+    public function getPath()
+    {
+        return $this->_path;
+    }
+
+    /**
+     * Return the stated class name used with this factory
+     * @return string
+     */
+    public function getStatedClassName()
+    {
+        return $this->_statedClassName;
+    }
+
+    /**
      * Method called by the Loader to initialize the stated class :
      *  Extends the proxy used by this stated class a child called like the stated class.
      *  => To allow developer to build new object with the operator new
@@ -66,6 +105,8 @@ class VirtualFactory implements Factory\FactoryInterface
      */
     public function initialize($statedClassName, $path)
     {
+        $this->_statedClassName = $statedClassName;
+        $this->_path = $path;
         self::$_initializedFactoryNameArray[] = $statedClassName.':'.$path;
     }
 

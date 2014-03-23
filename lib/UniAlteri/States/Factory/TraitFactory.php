@@ -42,6 +42,24 @@ trait TraitFactory
     protected $_diContainer = null;
 
     /**
+     * Finder used by this factory to load states and proxy for this states class
+     * @var Loader\FinderInterface
+     */
+    protected $_finder = null;
+
+    /**
+     * The stated class name used with this factory
+     * @var string
+     */
+    protected $_statedClassName = null;
+
+    /**
+     * The path of the stated class
+     * @var string
+     */
+    protected $_path = null;
+
+    /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
      * @return $this
@@ -64,16 +82,43 @@ trait TraitFactory
     /**
      * Return the loader of this stated class from its DI Container
      * @return Loader\FinderInterface
-     * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     * @todo test
      */
-    protected function _getLoader()
+    public function getFinder()
     {
-        $finderLoader = $this->_diContainer->get(Loader\FinderInterface::DI_FINDER_NAME);
-        if (!$finderLoader instanceof Loader\FinderInterface) {
-            throw new Exception\UnavailableLoader('Error, the loader is not available');
+        if (!$this->_finder instanceof Loader\FinderInterface) {
+            if (false === $this->_diContainer->testEntry(Loader\FinderInterface::DI_FINDER_SERVICE)) {
+                throw new Exception\UnavailableLoader('Error, the finder is not available for this factory');
+            }
+
+            $this->_finder = $this->_diContainer->get(Loader\FinderInterface::DI_FINDER_SERVICE);
+            if (!$this->_finder instanceof Loader\FinderInterface) {
+                throw new Exception\UnavailableLoader('Error, the service does not return a finder object for this factory');
+            }
         }
 
-        return $finderLoader;
+        return $this->_finder;
+    }
+
+    /**
+     * Return the stated class name used with this factory
+     * @return string
+     * @todo test
+     */
+    public function getStatedClassName()
+    {
+        return $this->_statedClassName;
+    }
+
+    /**
+     * Return the path of the stated class
+     * @return string
+     * @todo test
+     */
+    public function getPath()
+    {
+        return $this->_path;
     }
 
     /**
@@ -84,12 +129,26 @@ trait TraitFactory
      * @param string $statedClassName the name of the stated class
      * @param string $path of the stated class
      * @return boolean
-     * @throws Exception\UnavailableLoader if any loader are available for this factory
+     * @throws Exception\UnavailableLoader if any finder are available for this stated class
      * @todo test and finish
      */
     public function initialize($statedClassName, $path)
     {
+        //Initialize this factory
+        $this->_statedClassName = $statedClassName;
+        $this->_path = $path;
 
+        //Initialize Stated class container
+        $diContainer = $this->getDIContainer();
+        $diContainer[FactoryInterface::DI_FACTORY_NAME] = $this;
+
+        //Initialize proxy
+        $finder = $this->getFinder();
+        if (!$finder instanceof Loader\FinderInterface) {
+            throw new Exception\UnavailableLoader('The finder is not available for this stated class');
+        }
+
+        $finder->loadProxy();
     }
 
     /**
@@ -98,7 +157,7 @@ trait TraitFactory
      * @param string $stateName
      * @return boolean
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * @throws Exception\UnavailableLoader if any finder are available for this stated class
      * @throws Exception\IllegalProxy if the proxy object does not implement the interface
      */
     public function startup($proxyObject, $stateName=null)
@@ -111,7 +170,7 @@ trait TraitFactory
         $proxyObject->setDIContainer($diContainerObject);
 
         //Get all states available
-        $finderLoader = $this->_getLoader();
+        $finderLoader = $this->getFinder();
         $statesList = $finderLoader->listStates();
 
         //Check if the default state is available
@@ -147,12 +206,12 @@ trait TraitFactory
      * @param string $stateName to build an object with a specific class
      * @return Proxy\ProxyInterface
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * @throws Exception\UnavailableLoader if any finder are available for this stated class
      */
     public function build($arguments=null, $stateName=null)
     {
         //Get finder loader
-        $finderLoader = $this->_getLoader();
+        $finderLoader = $this->getFinder();
 
         //Build a new proxy object
         $proxyObject = $finderLoader->buildProxy($arguments);

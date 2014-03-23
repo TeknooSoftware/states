@@ -22,6 +22,7 @@ namespace UniAlteri\States\Factory;
 
 use \UniAlteri\States\Proxy;
 use \UniAlteri\States\DI;
+use \UniAlteri\States\Loader;
 
 /**
  * Interface FactoryInterface
@@ -31,7 +32,10 @@ use \UniAlteri\States\DI;
  */
 interface FactoryInterface
 {
-    const OBJECT_LOADER_KEY = 'objectLoader';
+    /**
+     * Name of this factory into the DI Container available for each stated class
+     */
+    const DI_FACTORY_NAME = 'Factory';
 
     /**
      * Register a DI container for this object
@@ -47,6 +51,25 @@ interface FactoryInterface
     public function getDIContainer();
 
     /**
+     * Return the loader of this stated class from its DI Container
+     * @return Loader\FinderInterface
+     * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     */
+    public function getFinder();
+
+    /**
+     * Return the stated class name used with this factory
+     * @return string
+     */
+    public function getStatedClassName();
+
+    /**
+     * Return the path of the stated class
+     * @return string
+     */
+    public function getPath();
+
+    /**
      * Method called by the Loader to initialize the stated class :
      *  Extends the proxy used by this stated class a child called like the stated class.
      *  => To allow developer to build new object with the operator new
@@ -54,6 +77,7 @@ interface FactoryInterface
      * @param string $statedClassName the name of the stated class
      * @param string $path of the stated class
      * @return boolean
+     * @throws Exception\UnavailableLoader if any finder are available for this stated class
      */
     public function initialize($statedClassName, $path);
 
@@ -63,7 +87,7 @@ interface FactoryInterface
      * @param string $stateName
      * @return boolean
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * @throws Exception\UnavailableLoader if any finder are available for this stated class
      * @throws Exception\IllegalProxy if the proxy object does not implement the interface
      */
     public function startup($proxyObject, $stateName=null);
@@ -74,7 +98,7 @@ interface FactoryInterface
      * @param string $stateName to build an object with a specific class
      * @return Proxy\ProxyInterface
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * @throws Exception\UnavailableLoader if any finder are available for this stated class
      */
     public function build($arguments=null, $stateName=null);
 }

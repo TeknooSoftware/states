@@ -35,7 +35,7 @@ interface FinderInterface
     /**
      * Name of Finder (service to find and load elements of stated class)
      */
-    const DI_FINDER_NAME = 'FinderLoader';
+    const DI_FINDER_SERVICE = 'FinderLoader';
 
     /**
      * Folder where stored states of the stated class
