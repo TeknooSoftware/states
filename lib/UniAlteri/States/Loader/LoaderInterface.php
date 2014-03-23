@@ -41,6 +41,13 @@ interface LoaderInterface
     const FACTORY_CLASS_NAME = 'Factory';
 
     /**
+     * Initialize the loader object
+     * @param IncludePathManagementInterface $includePathManager
+     * @throws Exception\IllegalArgument $includePathManager does not implement the interface  IncludePathManagementInterface
+     */
+    public function __construct(IncludePathManagementInterface $includePathManager);
+
+    /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
      * @return $this
@@ -62,14 +69,26 @@ interface LoaderInterface
     public function addIncludePath($path);
 
     /**
+     * List all active included path for this loaded
+     * @return string[]
+     */
+    public function getIncludedPaths();
+
+    /**
      * Register a location to find some classes of a namespace.
      * A namespace can has several locations
      * @param string $namespace
      * @param string $path
      * @return $this
-     * @throws Exception\UnavailablePath if the path is not readable
+     * @throws Exception\IllegalArgument if the path is not a valid string
      */
     public function registerNamespace($namespace, $path);
+
+    /**
+     * List all registered namespace
+     * @return \ArrayObject
+     */
+    public function listNamespaces();
 
     /**
      * Method called to load a class.

@@ -32,10 +32,16 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     protected $_loader = null;
 
     /**
+     * @var Support\VirtualIncludePathManager
+     */
+    protected $_includePathManager = null;
+
+    /**
      * Prepare environment before test
      */
     protected function setUp()
     {
+        $this->_includePathManager = new Support\VirtualIncludePathManager();
         parent::setUp();
     }
 
@@ -53,7 +59,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     protected function _initializeLoader()
     {
-        $this->_loader = new Loader\LoaderStandard();
+        $this->_loader = new Loader\LoaderStandard($this->_includePathManager);
         return $this->_loader;
     }
 
@@ -62,7 +68,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetDiContainerBad()
     {
-        $object = new Loader\LoaderStandard();
+        $object = new Loader\LoaderStandard($this->_includePathManager);
         try {
             $object->setDIContainer(new \DateTime());
         } catch (\Exception $e) {
@@ -77,7 +83,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetDiContainer()
     {
-        $object = new Loader\LoaderStandard();
+        $object = new Loader\LoaderStandard($this->_includePathManager);
         $this->assertNull($object->getDIContainer());
         $virtualContainer = new Support\VirtualDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
@@ -89,7 +95,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->_initializeLoader()->loadClass('badName'));
     }
 
-    public function testAddIncludePathbadDir()
+    public function testAddIncludePathBadDir()
     {
         $loader = $this->_initializeLoader();
         try {
@@ -103,34 +109,92 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testAddIncludePath()
     {
-        $this->markTestSkipped(); //todo
+        $loader = $this->_initializeLoader();
+        $loader->addIncludePath(__DIR__);
+        $loader->addIncludePath(dirname(__DIR__));
+        $this->assertEquals(
+            array(
+                __DIR__,
+                dirname(__DIR__)
+            ),
+            array_values($loader->getIncludedPaths()->getArrayCopy())
+        );
     }
 
     public function testRegisterNamespaceBadName()
     {
         $loader = $this->_initializeLoader();
         try {
-            $loader->registerNamespace('badNamespace', 'badPath');
-        } catch (Exception\UnavailablePath $e) {
+            $loader->registerNamespace('badNamespace', array());
+        } catch (Exception\IllegalArgument $e) {
             return;
         } catch (\Exception $e){ }
 
-        $this->fail('Error, if the path of namespace to register is unavailable, the loader must throws the exception Exception\UnavailablePath');
+        $this->fail('Error, if the path of namespace to register is not a valid string, the loader must throws the exception Exception\UnavailablePath');
     }
 
     public function testRegisterNamespace()
     {
-        $this->markTestSkipped(); //todo
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('namespace1', 'path1');
+        $loader->registerNamespace('namespace2', 'path2');
+        $this->assertEquals(
+            array(
+                'namespace1'    => new \SplQueue(array('path1')),
+                'namespace2'    => new \SplQueue(array('path2')),
+            ),
+            $loader->listNamespaces()->getArrayCopy()
+        );
     }
 
     public function testRegisterNamespaceMultiplePath()
     {
-        $this->markTestSkipped(); //todo
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('namespace2', 'path2');
+        $loader->registerNamespace('namespace1', 'path1');
+        $loader->registerNamespace('namespace1', 'path3');
+        $this->assertEquals(
+            array(
+                'namespace1'    => new \SplQueue(array('path1', 'path3')),
+                'namespace2'    => new \SplQueue(array('path2')),
+            ),
+            $loader->listNamespaces()->getArrayCopy()
+        );
     }
 
     public function testLoadClassRestoreOldIncludedPathAfterCalling()
     {
-        $this->markTestSkipped(); //todo
+        $this->_includePathManager->resetAllChangePath();
+        $this->_includePathManager->setIncludePath(
+            array(
+                __DIR__
+            )
+        );
+        $loader = $this->_initializeLoader();
+        $loader->addIncludePath(dirname(__DIR__));
+        $loader->loadClass('fakeClass');
+        $this->assertEquals(
+            array(
+                __DIR__
+            ),
+            $this->_includePathManager->getIncludePath()
+        );
+
+        $this->assertEquals(
+            array(
+                array(
+                    __DIR__
+                ),
+                array(
+                    __DIR__,
+                    dirname(__DIR__)
+                ),
+                array(
+                    __DIR__
+                )
+            ),
+            $this->_includePathManager->getAllChangePaths()
+        );
     }
 
     public function testLoadClassRestoreOldIncludedPathAfterException()

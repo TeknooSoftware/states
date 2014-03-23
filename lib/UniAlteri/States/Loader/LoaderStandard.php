@@ -41,7 +41,7 @@ class LoaderStandard implements LoaderInterface
      * List of path to include for this loader
      * @var \ArrayObject
      */
-    protected $_includedPathArray = null;
+    protected $_includedPathsArray = null;
 
     /**
      * List of path where namespace are available
@@ -56,13 +56,34 @@ class LoaderStandard implements LoaderInterface
     protected $_previousIncludedPathStack = null;
 
     /**
-     * Initialize the loader object
+     * @var IncludePathManagementInterface
      */
-    public function __construct()
+    protected $_includePathManager = null;
+
+    /**
+     * Initialize the loader object
+     * @param IncludePathManagementInterface $includePathManager
+     * @throws Exception\IllegalArgument $includePathManager does not implement the interface  IncludePathManagementInterface
+     */
+    public function __construct(IncludePathManagementInterface $includePathManager)
     {
-        $this->_includedPathArray = new \ArrayObject();
+        if (!$includePathManager instanceof IncludePathManagementInterface) {
+            throw new Exception\IllegalArgument('Error, the include path manager does not implement the interface IncludePathManagementInterface');
+        }
+
+        $this->_includedPathsArray = new \ArrayObject();
         $this->_namespacesArray = new \ArrayObject();
         $this->_previousIncludedPathStack = new \SplStack();
+        $this->_includePathManager = $includePathManager;
+    }
+
+    /**
+     * Return the current include path managger
+     * @return IncludePathManagementInterface
+     */
+    protected function _getIncludePathManager()
+    {
+        return $this->_includePathManager;
     }
 
     /**
@@ -97,8 +118,17 @@ class LoaderStandard implements LoaderInterface
             throw new Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
         }
 
-        $this->_includedPathArray[$path] = $path;
+        $this->_includedPathsArray[$path] = $path;
         return $this;
+    }
+
+    /**
+     * List all active included path for this loaded
+     * @return string[]
+     */
+    public function getIncludedPaths()
+    {
+        return $this->_includedPathsArray;
     }
 
     /**
@@ -107,12 +137,12 @@ class LoaderStandard implements LoaderInterface
      * @param string $namespace
      * @param string $path
      * @return $this
-     * @throws Exception\UnavailablePath if the path is not readable
+     * @throws Exception\IllegalArgument if the path is not a valid string
      */
     public function registerNamespace($namespace, $path)
     {
-        if (false === is_dir($path)) {
-            throw new Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
+        if (!is_string($path)) {
+            throw new Exception\IllegalArgument('Error, the path is not a valid string');
         }
 
         if (!isset($this->_namespacesArray[$namespace])) {
@@ -123,14 +153,27 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * Update included path before loading clas
+     * List all registered namespace
+     * @return \ArrayObject
+     */
+    public function listNamespaces()
+    {
+        return $this->_namespacesArray;
+    }
+
+    /**
+     * Update included path before loading class
      */
     protected function _updateIncludedPaths()
     {
         //Convert paths to string
-        $newPaths = implode(PATH_SEPARATOR, $this->_includedPathArray->getArrayCopy());
         //Update path into PHP
-        $oldIncludedPaths = set_include_path(get_include_path().PATH_SEPARATOR.$newPaths);
+        $oldIncludedPaths = $this->_getIncludePathManager()->setIncludePath(
+            array_merge(
+                $this->_getIncludePathManager()->getIncludePath(),
+                array_values($this->_includedPathsArray->getArrayCopy())
+            )
+        );
         //Store previous path to restore them
         $this->_previousIncludedPathStack->push($oldIncludedPaths);
     }
@@ -145,7 +188,7 @@ class LoaderStandard implements LoaderInterface
         }
 
         $oldIncludedPaths = $this->_previousIncludedPathStack->pop();
-        set_include_path($oldIncludedPaths);
+        $this->_getIncludePathManager()->setIncludePath($oldIncludedPaths);
     }
 
     /**
