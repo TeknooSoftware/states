@@ -197,6 +197,7 @@ class LoaderStandard implements LoaderInterface
      * @return bool
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory if the factory does not implement the good interface
+     * @todo test
      */
     protected function _loadNamespaceClass($class)
     {
@@ -227,8 +228,12 @@ class LoaderStandard implements LoaderInterface
 
                 $factoryClassName = $namespaceString.'\\'.$className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
                 if (class_exists($factoryClassName, false)) {
-                    $this->buildFactory($factoryClassName, $class);
-                    return true;
+                    try {
+                        $this->buildFactory($factoryClassName, $class);
+                        return true;
+                    } catch (\Exception $e) {
+                        return false;
+                    }
                 }
             }
         }
@@ -244,6 +249,7 @@ class LoaderStandard implements LoaderInterface
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory if the factory does not implement the good interface
      * @throws \Exception
+     * @todo test
      */
     public function loadClass($className)
     {
@@ -267,8 +273,12 @@ class LoaderStandard implements LoaderInterface
 
                     if (class_exists($factoryClassName, false)) {
                         //Class found and loaded
-                        $this->buildFactory($factoryClassName, $className);
-                        $classLoaded = true;
+                        try {
+                            $this->buildFactory($factoryClassName, $className);
+                            $classLoaded = true;
+                        } catch (\Exception $e) {
+                            $classLoaded = false;
+                        }
                     }
                 }
             } else {
@@ -290,7 +300,6 @@ class LoaderStandard implements LoaderInterface
      * @return Factory\FactoryInterface
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory if the factory does not implement the good interface
-     * @todo test
      */
     public function buildFactory($factoryClassName, $statedClassName)
     {

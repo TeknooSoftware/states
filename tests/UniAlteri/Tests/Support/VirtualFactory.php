@@ -34,6 +34,11 @@ class VirtualFactory implements Factory\FactoryInterface
     protected static $_initializedFactoryNameArray = array();
 
     /**
+     * @var Proxy\ProxyInterface
+     */
+    protected $_startupProxy;
+
+    /**
      * Return the DI Container used for this object
      * @return DI\ContainerInterface
      */
@@ -44,6 +49,7 @@ class VirtualFactory implements Factory\FactoryInterface
     /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
+     * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
@@ -93,5 +99,15 @@ class VirtualFactory implements Factory\FactoryInterface
      */
     public function startup($proxyObject, $stateName = null)
     {
+        $this->_startupProxy = $proxyObject;
+    }
+
+    /**
+     * Get the proxy called to startup it
+     * @return Proxy\ProxyInterface
+     */
+    public function getStartupProxy()
+    {
+        return $this->_startupProxy;
     }
 }
