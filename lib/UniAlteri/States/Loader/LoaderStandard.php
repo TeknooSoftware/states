@@ -229,7 +229,7 @@ class LoaderStandard implements LoaderInterface
                 $factoryClassName = $namespaceString.'\\'.$className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
                 if (class_exists($factoryClassName, false)) {
                     try {
-                        $this->buildFactory($factoryClassName, $class);
+                        $this->buildFactory($factoryClassName, $class, $path.DIRECTORY_SEPARATOR.$className);
                         return true;
                     } catch (\Exception $e) {
                         return false;
@@ -267,14 +267,15 @@ class LoaderStandard implements LoaderInterface
             //If the namespace is configured, check its paths
             if (false === $this->_loadNamespaceClass($className)) {
                 //Class not found, switch to basic mode, replace \ and _ by a directory separator
-                $factoryClassFile = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $className).DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
+                $path = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $className);
+                $factoryClassFile = $path.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
                 if (is_readable($factoryClassFile)) {
                     include_once($factoryClassFile);
 
                     if (class_exists($factoryClassName, false)) {
                         //Class found and loaded
                         try {
-                            $this->buildFactory($factoryClassName, $className);
+                            $this->buildFactory($factoryClassName, $className, $path);
                             $classLoaded = true;
                         } catch (\Exception $e) {
                             $classLoaded = false;
@@ -297,11 +298,12 @@ class LoaderStandard implements LoaderInterface
      * Build the factory and initialize the loading stated class
      * @param string $factoryClassName
      * @param string $statedClassName
+     * @param string $path
      * @return Factory\FactoryInterface
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory if the factory does not implement the good interface
      */
-    public function buildFactory($factoryClassName, $statedClassName)
+    public function buildFactory($factoryClassName, $statedClassName, $path)
     {
         if (!class_exists($factoryClassName, false)) {
             throw new Exception\UnavailableFactory(
@@ -321,7 +323,7 @@ class LoaderStandard implements LoaderInterface
             $factoryObject->setDIContainer($diContainer);
         }
 
-        $factoryObject->initialize($statedClassName);
+        $factoryObject->initialize($statedClassName, $path);
         return $factoryObject;
     }
 }

@@ -201,7 +201,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->_initializeLoader();
         try {
-            $loader->buildFactory('badFactory', 'statedClassName');
+            $loader->buildFactory('badFactory', 'statedClassName', 'path');
         } catch (Exception\UnavailableFactory $e) {
             return;
         } catch (\Exception $e){ }
@@ -213,7 +213,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->_initializeLoader();
         try {
-            $loader->buildFactory('stdClass', 'statedClassName');
+            $loader->buildFactory('stdClass', 'statedClassName', 'path');
         } catch (Exception\IllegalFactory $e) {
             return;
         } catch (\Exception $e){ }
@@ -225,13 +225,13 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->_initializeLoader();
         $this->assertEquals(array(), Support\VirtualFactory::listInitializedFactories());
-        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class1');
-        $this->assertEquals(array('class1'), Support\VirtualFactory::listInitializedFactories());
-        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class2');
-        $this->assertEquals(array('class1', 'class2'), Support\VirtualFactory::listInitializedFactories());
-        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class1');
+        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class1', 'path1');
+        $this->assertEquals(array('class1:path1'), Support\VirtualFactory::listInitializedFactories());
+        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class2', 'path2');
+        $this->assertEquals(array('class1:path1', 'class2:path2'), Support\VirtualFactory::listInitializedFactories());
+        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class1', 'path3');
         $this->assertEquals(
-            array('class1', 'class2', 'class1'),
+            array('class1:path1', 'class2:path2', 'class1:path3'),
             Support\VirtualFactory::listInitializedFactories(),
             'Error, the loader must not manage factory building. If a even stated class is initialized several times, the loader must call the factory each time. '
         );

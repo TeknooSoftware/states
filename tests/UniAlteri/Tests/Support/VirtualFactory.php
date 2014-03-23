@@ -61,11 +61,12 @@ class VirtualFactory implements Factory\FactoryInterface
      *  => To allow developer to build new object with the operator new
      *  => To allow developer to use the operator "instanceof"
      * @param string $statedClassName the name of the stated class
+     * @param string $path of the stated class
      * @return boolean
      */
-    public function initialize($statedClassName)
+    public function initialize($statedClassName, $path)
     {
-        self::$_initializedFactoryNameArray[] = $statedClassName;
+        self::$_initializedFactoryNameArray[] = $statedClassName.':'.$path;
     }
 
     /**

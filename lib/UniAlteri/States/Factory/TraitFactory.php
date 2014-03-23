@@ -82,13 +82,14 @@ trait TraitFactory
      *  => To allow developer to build new object with the operator new
      *  => To allow developer to use the operator "instanceof"
      * @param string $statedClassName the name of the stated class
+     * @param string $path of the stated class
      * @return boolean
+     * @throws Exception\UnavailableLoader if any loader are available for this factory
      * @todo test and finish
      */
-    public function initialize($statedClassName)
+    public function initialize($statedClassName, $path)
     {
-        $finderLoader = $this->_diContainer->get(Loader\FinderInterface::DI_FINDER_NAME);
-        $finderLoader->loadProxy();
+
     }
 
     /**

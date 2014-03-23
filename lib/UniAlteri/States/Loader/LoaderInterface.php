@@ -105,9 +105,10 @@ interface LoaderInterface
      * Build the factory and initialize the loading stated class
      * @param string $factoryClassName
      * @param string $statedClassName
+     * @param string $path
      * @return Factory\FactoryInterface
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory if the factory does not implement the good interface
      */
-    public function buildFactory($factoryClassName, $statedClassName);
+    public function buildFactory($factoryClassName, $statedClassName, $path);
 }
