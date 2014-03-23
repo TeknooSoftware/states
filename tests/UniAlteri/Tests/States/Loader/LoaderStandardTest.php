@@ -197,11 +197,6 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testLoadClassRestoreOldIncludedPathAfterException()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
     public function testBuildFactoryNonExistentFactory()
     {
         $loader = $this->_initializeLoader();
