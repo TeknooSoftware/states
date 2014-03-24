@@ -25,6 +25,6 @@ namespace UniAlteri\States\Exception;
  * @package UniAlteri\States\Exception
  * Exception threw when the argument's value, used to called an element has not respected a defined pattern
  */
-class IllegalName extends Standard
+class IllegalName extends IllegalArgument
 {
 }

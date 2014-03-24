@@ -25,6 +25,6 @@ namespace UniAlteri\States\Exception;
  * @package UniAlteri\States\Exception
  * Exception threw when the factory object does not implement the good interface
  */
-class IllegalFactory extends Standard
+class IllegalFactory extends IllegalArgument
 {
 }

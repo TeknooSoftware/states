@@ -25,6 +25,6 @@ namespace UniAlteri\States\Exception;
  * @package UniAlteri\States\Exception
  * Exception threw when the calling method is not currently available in the proxy object with enabled states
  */
-class MethodNotImplemented extends Standard
+class MethodNotImplemented extends \BadFunctionCallException
 {
 }

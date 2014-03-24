@@ -25,6 +25,6 @@ namespace UniAlteri\States\Exception;
  * @package UniAlteri\States\Exception
  * Exception threw when the argument's value has not respected some business rules
  */
-class InvalidArgument extends Standard
+class InvalidArgument extends \InvalidArgumentException
 {
 }

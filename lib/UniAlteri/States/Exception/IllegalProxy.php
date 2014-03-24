@@ -25,6 +25,6 @@ namespace UniAlteri\States\Exception;
  * @package UniAlteri\States\Exception
  * Exception threw when the proxy object does not implement the good interface
  */
-class IllegalProxy extends Standard
+class IllegalProxy extends IllegalArgument
 {
 }

@@ -25,6 +25,6 @@ namespace UniAlteri\States\Exception;
  * @package UniAlteri\States\Exception
  * Exception threw when the developer wants unstack an empty stack
  */
-class EmptyStack extends Standard
+class EmptyStack extends \LengthException
 {
 }

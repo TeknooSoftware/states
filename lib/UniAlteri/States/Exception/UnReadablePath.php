@@ -25,6 +25,6 @@ namespace UniAlteri\States\Exception;
  * @package UniAlteri\States\Exception
  * Exception threw when the path exist but is not readable.
  */
-class UnReadablePath extends Standard
+class UnReadablePath extends \RuntimeException
 {
 }

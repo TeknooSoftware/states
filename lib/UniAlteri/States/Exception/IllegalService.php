@@ -25,6 +25,6 @@ namespace UniAlteri\States\Exception;
  * @package UniAlteri\States\Exception
  * Exception threw when the service is not invokable
  */
-class IllegalService extends Standard
+class IllegalService extends IllegalArgument
 {
 }
