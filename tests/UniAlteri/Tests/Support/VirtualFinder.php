@@ -37,7 +37,7 @@ class VirtualFinder implements Loader\FinderInterface
      * To not return the default state
      * @var bool
      */
-    public $ignoreDefaultState = false;
+    public static $ignoreDefaultState = false;
 
     /**
      * Initialize finder
@@ -52,10 +52,12 @@ class VirtualFinder implements Loader\FinderInterface
     /**
      * Register a DI container for this object
      * @param \UniAlteri\States\DI\ContainerInterface $container
+     * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
         $this->_container = $container;
+        return $this;
     }
 
     /**
@@ -72,7 +74,7 @@ class VirtualFinder implements Loader\FinderInterface
      */
     public function listStates()
     {
-        if (empty($this->ignoreDefaultState)) {
+        if (empty(static::$ignoreDefaultState)) {
             return array(
                 'VirtualState1',
                 Proxy\ProxyInterface::DEFAULT_STATE_NAME,

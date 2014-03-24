@@ -57,7 +57,7 @@ class VirtualDIContainer implements DI\ContainerInterface
         }
 
         if (isset($this->_service[$name])) {
-            return $this->_service[$name]();
+            return $this->_service[$name]($this);
         }
     }
 

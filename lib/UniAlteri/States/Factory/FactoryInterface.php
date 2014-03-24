@@ -78,6 +78,7 @@ interface FactoryInterface
      * @param string $path of the stated class
      * @return boolean
      * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function initialize($statedClassName, $path);
 
@@ -89,6 +90,7 @@ interface FactoryInterface
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any finder are available for this stated class
      * @throws Exception\IllegalProxy if the proxy object does not implement the interface
+     * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function startup($proxyObject, $stateName=null);
 
@@ -99,6 +101,7 @@ interface FactoryInterface
      * @return Proxy\ProxyInterface
      * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function build($arguments=null, $stateName=null);
 }

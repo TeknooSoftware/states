@@ -30,7 +30,7 @@ use \UniAlteri\Tests\Support;
 abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var DI\Container
+     * @var Support\VirtualDIContainer
      */
     protected $_container = null;
 
@@ -45,9 +45,15 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_container = new DI\Container();
-        $this->_virtualFinder = new Support\VirtualFinder('', '');
-        $this->_container->registerInstance(Loader\FinderInterface::DI_FINDER_SERVICE, $this->_virtualFinder);
+        $this->_container = new Support\VirtualDIContainer();
+        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container){
+            if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
+                $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
+                return new Support\VirtualFinder($factory->getStatedClassName(), $factory->getPath());
+            } else {
+                return new Support\VirtualFinder('', '');
+            }
+        });
     }
 
     /**
@@ -85,6 +91,69 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * The method getFinder of the factory requires the di container to get the finder generator, else throw exception
+     */
+    public function testGetFinderExceptionNoContainer()
+    {
+        try {
+            $this->getFactoryObject(false)->getFinder();
+        } catch (Exception\UnavailableDIContainer $e) {
+            return;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, the factory must throw an exception when there are no di contauner');
+    }
+
+    /**
+     * The method getFinder of the factory requires the finder generator, else throw exception
+     */
+    public function testGetFinderExceptionNoFinderServiceGenerator()
+    {
+        try {
+            $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
+            $this->getFactoryObject(true)->getFinder();
+        } catch (Exception\UnavailableLoader $e) {
+            return;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, the factory must throw an exception when there are no finder generator into di container');
+    }
+
+    public function testGetFinder()
+    {
+        $this->assertInstanceOf('UniAlteri\States\Loader\FinderInterface', $this->getFactoryObject(true)->getFinder());
+    }
+
+    public function testGetStatedClassNameNotInitialized()
+    {
+        $this->assertNull($this->getFactoryObject()->getStatedClassName());
+    }
+
+    public function testGetPathNotInitialized()
+    {
+        $this->assertNull($this->getFactoryObject()->getPath());
+    }
+
+    public function testGetStatedClassName()
+    {
+        $factory = $this->getFactoryObject(true);
+        $factory->initialize('foo', 'bar');
+        $this->assertEquals('foo', $factory->getStatedClassName());
+    }
+
+    public function testGetPath()
+    {
+        $factory = $this->getFactoryObject(true);
+        $factory->initialize('foo', 'bar');
+        $this->assertEquals('bar', $factory->getPath());
+    }
+
+    public function testInitialize()
+    {
+
+    }
+
+    /**
      * Test the exception of the library when the proxy object doest not implement the exception
      */
     public function testExceptionBadProxyStartup()
@@ -104,7 +173,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testExceptionDefaultStateNotAvailableInStartup()
     {
         try {
-            $this->_virtualFinder->ignoreDefaultState = true;
+            Support\VirtualFinder::$ignoreDefaultState = true;
             $this->getFactoryObject()->startup(new Support\VirtualProxy(null));
         } catch(Exception\StateNotFound $exception) {
             return;
@@ -119,7 +188,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testExceptionRequiredStateNotAvailableInStartup()
     {
         try{
-            $this->_virtualFinder->ignoreDefaultState = false;
+            Support\VirtualFinder::$ignoreDefaultState = false;
             $this->getFactoryObject()->startup(new Support\VirtualProxy(null), 'NonExistentState');
         } catch(Exception\StateNotFound $exception) {
             return;
@@ -163,7 +232,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testExceptionDefaultStateNotAvailable()
     {
         try {
-            $this->_virtualFinder->ignoreDefaultState = true;
+            Support\VirtualFinder::$ignoreDefaultState = true;
             $this->getFactoryObject()->build();
         } catch(Exception\StateNotFound $exception) {
             return;
@@ -178,7 +247,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testExceptionRequiredStateNotAvailable()
     {
         try{
-            $this->_virtualFinder->ignoreDefaultState = false;
+            Support\VirtualFinder::$ignoreDefaultState = false;
             $this->getFactoryObject()->build(false, 'NonExistentState');
         } catch(Exception\StateNotFound $exception) {
             return;
