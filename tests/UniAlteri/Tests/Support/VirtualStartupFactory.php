@@ -27,6 +27,12 @@ use \UniAlteri\States\Proxy;
 class VirtualStartupFactory implements Factory\StartupFactoryInterface
 {
     /**
+     * Proxy to initialize called with forwardStartup
+     * @var Proxy\ProxyInterface
+     */
+    public static $calledProxyObject = null;
+
+    /**
      * Find the factory to use for the new proxy object to initialize it with its container and states.
      * This method is called by the constructor of the stated object
      * @param Proxy\ProxyInterface $proxyObject
@@ -37,6 +43,6 @@ class VirtualStartupFactory implements Factory\StartupFactoryInterface
      */
     public static function forwardStartup($proxyObject, $stateName=null)
     {
-
+        self::$calledProxyObject = $proxyObject;
     }
 }

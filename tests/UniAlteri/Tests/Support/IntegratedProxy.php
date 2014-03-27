@@ -29,4 +29,13 @@ class IntegratedProxy extends Proxy\Integrated
      * @var string
      */
     protected static $_startupFactoryClassName = '\UniAlteri\Tests\Support\VirtualStartupFactory';
+
+    /**
+     * Method to update static::$_startupFactoryClassName to run unit test
+     * @param string $className
+     */
+    public static function defineStartupFactoryClassName($className)
+    {
+        static::$_startupFactoryClassName = $className;
+    }
 }

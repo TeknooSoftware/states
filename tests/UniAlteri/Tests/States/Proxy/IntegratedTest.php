@@ -20,8 +20,8 @@
 
 namespace UniAlteri\Tests\States\Proxy;
 
-use PHPUnit_Framework_TestCase;
 use \UniAlteri\States\Proxy;
+use \UniAlteri\States\Proxy\Exception;
 use \UniAlteri\Tests\Support;
 
 class IntegratedTest extends AbstractProxyTest
@@ -29,6 +29,7 @@ class IntegratedTest extends AbstractProxyTest
     protected function setUp()
     {
         include_once('UniAlteri/Tests/Support/VirtualStartupFactory.php');
+        Support\IntegratedProxy::defineStartupFactoryClassName('\UniAlteri\Tests\Support\VirtualStartupFactory');
         parent::setUp();
     }
     /**
@@ -39,5 +40,56 @@ class IntegratedTest extends AbstractProxyTest
     {
         $this->_proxy = new Support\IntegratedProxy();
         return $this->_proxy;
+    }
+
+    /**
+     * Test if the class initialize its vars
+     */
+    public function testInitializationProxyVar()
+    {
+        $proxy = new Support\IntegratedProxy();
+        try {
+            $this->assertSame(array(), $proxy->listAvailableStates());
+            return;
+        } catch (\Exception $e) { }
+
+        $this->fail('Error, the method _initializeProxy() of the trait proxy has not been called');
+    }
+
+    /**
+     * Test if the factory to use to initialize the proxy does not exist, proxy throws an exception
+     */
+    public function testInitializationProxyVByFactoryFactoryDoestNotExist()
+    {
+        Support\IntegratedProxy::defineStartupFactoryClassName('badName');
+        try {
+            $proxy = new Support\IntegratedProxy();
+        } catch (Exception\UnavailableFactory $e) {
+            return;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, the Integrated Proxy must throw the exception UnavailableFactory when the factory class is not available');
+    }
+
+    /**
+     * Test if the factory to use to initialize the proxy does not implement the method, proxy throws an exception
+     */
+    public function testInitializationProxyVByFactoryFactoryInvalid()
+    {
+        Support\IntegratedProxy::defineStartupFactoryClassName('DateTime');
+        try {
+            $proxy = new Support\IntegratedProxy();
+        } catch (Exception\IllegalFactory $e) {
+            return;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, the Integrated Proxy must throw the exception IllegalFactory when the factory class does not implement the interface StartupFactoryInterface');
+    }
+
+    public function testInitializationProxyVByFactory()
+    {
+        Support\VirtualStartupFactory::$calledProxyObject = null;
+        $proxy = new Support\IntegratedProxy();
+        $this->assertSame($proxy, Support\VirtualStartupFactory::$calledProxyObject);
     }
 }
