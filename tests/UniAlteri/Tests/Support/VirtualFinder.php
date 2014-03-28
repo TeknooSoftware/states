@@ -40,6 +40,12 @@ class VirtualFinder implements Loader\FinderInterface
     public static $ignoreDefaultState = false;
 
     /**
+     * To test if the proxy has been loaded by the factory
+     * @var bool
+     */
+    protected $_proxyLoaded = false;
+
+    /**
      * Initialize finder
      * @param string $statedClassName
      * @param string $pathString
@@ -121,9 +127,18 @@ class VirtualFinder implements Loader\FinderInterface
      */
     public function loadProxy($arguments = null)
     {
+        $this->_proxyLoaded = true;
         return true;
     }
 
+    /**
+     * To test if the proxy has been loaded by the proxy
+     * @return boolean
+     */
+    public function proxyHasBeenLoaded()
+    {
+        return $this->_proxyLoaded;
+    }
 
     /**
      * Load and build a proxy object of the stated class

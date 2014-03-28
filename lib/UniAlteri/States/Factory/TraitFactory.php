@@ -149,11 +149,7 @@ trait TraitFactory
 
         //Initialize proxy
         $finder = $this->getFinder();
-        if ($finder instanceof Loader\FinderInterface) {
-            $finder->loadProxy();
-        } else {
-            throw new Exception\UnavailableLoader('Error, the Finder Loader is not available');
-        }
+        $finder->loadProxy();
     }
 
     /**

@@ -119,6 +119,24 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the factory must throw an exception when there are no finder generator into di container');
     }
 
+    /**
+     * The method getFinder of the factory requires the finder generator, else throw exception
+     */
+    public function testGetFinderExceptionBadFinderReturnedServiceGenerator()
+    {
+        try {
+            $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
+            $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container){
+                return new \stdClass();
+            });
+            $this->getFactoryObject(true)->getFinder();
+        } catch (Exception\UnavailableLoader $e) {
+            return;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, the factory must throw an exception when there are the finder generator into di container return a bad object, not implementing the Finder Interface');
+    }
+
     public function testGetFinder()
     {
         $this->assertInstanceOf('UniAlteri\States\Loader\FinderInterface', $this->getFactoryObject(true)->getFinder());
@@ -148,9 +166,32 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('bar', $factory->getPath());
     }
 
+    /**
+     * The factory must throw an exception if there are no Di Container
+     */
+    public function testInitializeWithoutDiContainer()
+    {
+        try {
+            $factory = $this->getFactoryObject(false);
+            $factory->initialize('foo', 'bar');
+        } catch (Exception\UnavailableDIContainer $e) {
+            return;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, the factory must throw an exception if there are no Di Container');
+    }
+
     public function testInitialize()
     {
+        $virtualFinder = new Support\VirtualFinder('', '');
+        $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
+        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container) use ($virtualFinder) {
+            return $virtualFinder;
+        });
 
+        $factory = $this->getFactoryObject(true);
+        $factory->initialize('foo', 'bar');
+        $this->assertTrue($virtualFinder->proxyHasBeenLoaded());
     }
 
     /**
