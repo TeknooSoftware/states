@@ -142,11 +142,19 @@ trait TraitFactory
 
         //Initialize Stated class container
         $diContainer = $this->getDIContainer();
-        $diContainer->registerInstance(FactoryInterface::DI_FACTORY_NAME, $this);
+        if ($diContainer instanceof DI\ContainerInterface) {
+            $diContainer->registerInstance(FactoryInterface::DI_FACTORY_NAME, $this);
+        } else {
+            throw new Exception\UnavailableDIContainer('Error, the Di Container is not available');
+        }
 
         //Initialize proxy
         $finder = $this->getFinder();
-        $finder->loadProxy();
+        if ($finder instanceof Loader\FinderInterface) {
+            $finder->loadProxy();
+        } else {
+            throw new Exception\UnavailableLoader('Error, the Finder Loader is not available');
+        }
     }
 
     /**

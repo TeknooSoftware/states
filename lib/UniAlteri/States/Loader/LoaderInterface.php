@@ -38,7 +38,7 @@ interface LoaderInterface
     /**
      * Suffix name of the Factory PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
      */
-    const FACTORY_CLASS_NAME = 'Factory';
+    const FACTORY_CLASS_NAME = 'FactoryClass';
 
     /**
      * Initialize the loader object

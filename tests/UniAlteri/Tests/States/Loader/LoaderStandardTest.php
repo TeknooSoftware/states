@@ -55,11 +55,25 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Load object to test it
+     * @param boolean $standardIncludePathManader to load the standard Include Path Manager from this lib and not
+     *                  the test manager
      * @return Loader\LoaderStandard
      */
-    protected function _initializeLoader()
+    protected function _initializeLoader($standardIncludePathManader=false)
     {
-        $this->_loader = new Loader\LoaderStandard($this->_includePathManager);
+        if (false == $standardIncludePathManader) {
+            $this->_loader = new Loader\LoaderStandard($this->_includePathManager);
+        } else {
+            $this->_loader = new Loader\LoaderStandard(new Loader\IncludePathManagement());
+        }
+
+        $this->_loader->setDIContainer(new Support\VirtualDIContainer());
+        $this->_loader->getDIContainer()->registerService(
+            Loader\FinderInterface::DI_FINDER_SERVICE,
+            function(){
+                return new Support\VirtualFinder('', '');
+            }
+        );
         return $this->_loader;
     }
 
@@ -140,8 +154,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $loader->registerNamespace('namespace2', 'path2');
         $this->assertEquals(
             array(
-                'namespace1'    => new \SplQueue(array('path1')),
-                'namespace2'    => new \SplQueue(array('path2')),
+                '\\namespace1'    => new \SplQueue(array('path1')),
+                '\\namespace2'    => new \SplQueue(array('path2')),
             ),
             $loader->listNamespaces()->getArrayCopy()
         );
@@ -155,8 +169,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $loader->registerNamespace('namespace1', 'path3');
         $this->assertEquals(
             array(
-                'namespace1'    => new \SplQueue(array('path1', 'path3')),
-                'namespace2'    => new \SplQueue(array('path2')),
+                '\\namespace1'    => new \SplQueue(array('path1', 'path3')),
+                '\\namespace2'    => new \SplQueue(array('path2')),
             ),
             $loader->listNamespaces()->getArrayCopy()
         );
@@ -225,15 +239,79 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->_initializeLoader();
         $this->assertEquals(array(), Support\VirtualFactory::listInitializedFactories());
-        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class1', 'path1');
+        $factory = $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class1', 'path1');
         $this->assertEquals(array('class1:path1'), Support\VirtualFactory::listInitializedFactories());
-        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class2', 'path2');
+        $factory = $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class2', 'path2');
         $this->assertEquals(array('class1:path1', 'class2:path2'), Support\VirtualFactory::listInitializedFactories());
-        $factory = $loader->buildFactory('\UniAlteri\Tests\Support\VirtualFactory', 'class1', 'path3');
+        $factory = $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class1', 'path3');
         $this->assertEquals(
             array('class1:path1', 'class2:path2', 'class1:path3'),
             Support\VirtualFactory::listInitializedFactories(),
             'Error, the loader must not manage factory building. If a even stated class is initialized several times, the loader must call the factory each time. '
         );
+    }
+
+    public function testLoadClassViaNameSpaceRelativeWithoutFactoryFile()
+    {
+        $loader = $this->_initializeLoader();
+        $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
+    }
+
+    public function testLoadClassViaNameSpaceRelative()
+    {
+        $loader = $this->_initializeLoader();
+        $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
+    }
+
+    public function testLoadClassViaNameSpaceAbsoluteWithoutFactoryFile()
+    {
+        $loader = $this->_initializeLoader();
+        $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
+    }
+
+    public function testLoadClassViaNameSpaceAbsolute()
+    {
+        $loader = $this->_initializeLoader();
+        $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
+    }
+
+    public function testLoadClassViaFileWithoutFileAbsolute()
+    {
+        $loader = $this->_initializeLoader(true);
+        $path = dirname(dirname(__DIR__));
+        $loader->addIncludePath($path);
+        $this->assertFalse($loader->loadClass('\\Support\\FileLoader\\Class1'));
+    }
+
+    public function testLoadClassViaFileAbsolute()
+    {
+        $loader = $this->_initializeLoader(true);
+        $path = dirname(dirname(__DIR__));
+        $loader->addIncludePath($path);
+        $this->assertTrue($loader->loadClass('\\Support\\FileLoader\\Class2'));
+    }
+
+    public function testLoadClassViaFileWithoutFile()
+    {
+        $loader = $this->_initializeLoader(true);
+        $path = dirname(dirname(__DIR__));
+        $loader->addIncludePath($path);
+        $this->assertFalse($loader->loadClass('Support\\FileLoader\\Class1'));
+    }
+
+    public function testLoadClassViaFile()
+    {
+        $loader = $this->_initializeLoader(true);
+        $path = dirname(dirname(__DIR__));
+        $loader->addIncludePath($path);
+        $this->assertTrue($loader->loadClass('Support\\FileLoader\\Class2'));
     }
 }

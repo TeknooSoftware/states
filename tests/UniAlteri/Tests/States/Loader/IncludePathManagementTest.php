@@ -100,7 +100,7 @@ class IncludePathManagementTest extends \PHPUnit_Framework_TestCase
     public function testGetIncludePath()
     {
         $this->assertEquals(
-            $this->_getManagementObject()->getIncludePath()->getArrayCopy(),
+            $this->_getManagementObject()->getIncludePath(),
             explode(PATH_SEPARATOR, get_include_path())
         );
     }

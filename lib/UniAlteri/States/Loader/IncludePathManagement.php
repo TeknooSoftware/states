@@ -53,7 +53,6 @@ class IncludePathManagement implements IncludePathManagementInterface
      */
     public function getIncludePath()
     {
-        $paths = explode(PATH_SEPARATOR, get_include_path());
-        return new \ArrayObject($paths);
+        return explode(PATH_SEPARATOR, get_include_path());
     }
 }

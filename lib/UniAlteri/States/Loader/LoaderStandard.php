@@ -145,8 +145,16 @@ class LoaderStandard implements LoaderInterface
             throw new Exception\IllegalArgument('Error, the path is not a valid string');
         }
 
+        if ('\\' != $namespace[0]) {
+            $namespace = '\\'.$namespace;
+        }
+
         if (!isset($this->_namespacesArray[$namespace])) {
             $this->_namespacesArray[$namespace] = new \SplQueue();
+        }
+
+        if ('/' == $path[strlen($path)-1]){
+            $path = substr($path, 0, strlen($path)-1);
         }
 
         $this->_namespacesArray[$namespace]->enqueue($path);
@@ -197,7 +205,6 @@ class LoaderStandard implements LoaderInterface
      * @return bool
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory if the factory does not implement the good interface
-     * @todo test
      */
     protected function _loadNamespaceClass($class)
     {
@@ -242,6 +249,26 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
+     * Test if a file exists, check also in all included path
+     * @param string $pathFile
+     * @return boolean
+     */
+    protected function _testFileExist($pathFile)
+    {
+        if (is_readable($pathFile)) {
+            return true;
+        }
+
+        foreach ($this->_getIncludePathManager()->getIncludePath() as $includedPath) {
+            if (is_readable($includedPath.DIRECTORY_SEPARATOR.$pathFile)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
      * Method called to load a class.
      * @param string $className class name, support namespace prefixes
      * @return boolean
@@ -249,7 +276,6 @@ class LoaderStandard implements LoaderInterface
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory if the factory does not implement the good interface
      * @throws \Exception
-     * @todo test
      */
     public function loadClass($className)
     {
@@ -268,8 +294,11 @@ class LoaderStandard implements LoaderInterface
             if (false === $this->_loadNamespaceClass($className)) {
                 //Class not found, switch to basic mode, replace \ and _ by a directory separator
                 $path = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $className);
+                if (DIRECTORY_SEPARATOR == $path[0]) {
+                    $path = substr($path, 1);
+                }
                 $factoryClassFile = $path.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
-                if (is_readable($factoryClassFile)) {
+                if ($this->_testFileExist($factoryClassFile)) {
                     include_once($factoryClassFile);
 
                     if (class_exists($factoryClassName, false)) {
