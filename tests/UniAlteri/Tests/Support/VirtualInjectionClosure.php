@@ -65,7 +65,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      * @param \Closure $closure
      * @return $this
      */
-    public function setClosure(\Closure $closure)
+    public function setClosure($closure)
     {
         $this->_closure = $closure;
         return $this;

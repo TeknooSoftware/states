@@ -94,7 +94,7 @@ class InjectionClosure implements InjectionClosureInterface
      * @return $this
      * @throws Exception\InvalidArgument when $closure is not an instance of \Closure
      */
-    public function setClosure(\Closure $closure)
+    public function setClosure($closure)
     {
         if (!$closure instanceof \Closure) {
             throw new Exception\InvalidArgument('Error, $closure is not an instance of \Closure');

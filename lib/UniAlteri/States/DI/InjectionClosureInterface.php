@@ -55,7 +55,7 @@ interface InjectionClosureInterface
      * @return $this
      * @throws Exception\InvalidArgument when $closure is not an instance of \Closure
      */
-    public function setClosure(\Closure $closure);
+    public function setClosure($closure);
 
     /**
      * Return the closure contained into this

@@ -90,9 +90,9 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
         try {
             $a = new DI\InjectionClosure();
             $a->setClosure(new \stdClass());
-        } catch (\Exception $e) {
+        } catch(Exception\InvalidArgument $e) {
             return;
-        }
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the Injection closure object must throw an exception if the object is not a closure');
     }
