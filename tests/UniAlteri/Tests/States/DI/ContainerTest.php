@@ -263,6 +263,20 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * The container must throw the exception Exception\InvalidArgument when the element is not registered
+     */
+    public function testGetNotRegistered()
+    {
+        try {
+            $this->_buildContainer()->get('unknown');
+        } catch (DI\Exception\InvalidArgument $exception) {
+            return;
+        } catch(\Exception $e) {}
+
+        $this->fail('Error, the container object must throws an Exception\InvalidArgument exception');
+    }
+
+    /**
      * Test to get an instance
      */
     public function testGetInstanceClass()

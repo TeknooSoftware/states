@@ -116,7 +116,14 @@ class Container extends \Pimple implements ContainerInterface
     {
         $this->_validateName($name);
 
-        if (\is_string($instance)) {
+        if (\is_object($instance)) {
+            //Add the object as service into container
+            if (\method_exists($instance, '__invoke')) {
+                $this[$name] = $this->factory($instance);
+            } else {
+                throw new Exception\IllegalService('Error, the service for "'.$name.'" is not an invokable object');
+            }
+        } elseif (\is_string($instance)) {
             //Class, check if it is loaded
             if (\class_exists($instance, false)) {
                 //Write a new closure to build a new instance of this class, and use it as service
@@ -126,16 +133,6 @@ class Container extends \Pimple implements ContainerInterface
             } else {
                 throw new Exception\ClassNotFound('The class "'.$instance.'" is not available');
             }
-        } elseif (\is_object($instance)) {
-            //Add the object as service into container
-            if (\method_exists($instance, '__invoke')) {
-                $this[$name] = $this->factory($instance);
-            } else {
-                throw new Exception\IllegalService('Error, the service for "'.$name.'" is not an invokable object');
-            }
-        } elseif(\is_callable($instance)) {
-            //Add closure as service
-            $this[$name] = $this->factory($instance);
         } else {
             throw new Exception\IllegalService('Error, the service for "'.$name.'" is illegal');
         }
