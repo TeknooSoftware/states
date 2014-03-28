@@ -95,6 +95,29 @@ class IncludePathManagementTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test set include path
+     */
+    public function testSetIncludePathWithArrayObjet()
+    {
+        $manager = $this->_getManagementObject();
+
+        $array = new \ArrayObject(
+            array(
+                __DIR__,
+                dirname(__DIR__)
+            )
+        );
+        $this->assertEquals(
+            explode(PATH_SEPARATOR, get_include_path()),
+            $manager->setIncludePath(
+                $array
+            )
+        );
+
+        $this->assertEquals(__DIR__.PATH_SEPARATOR.dirname(__DIR__), get_include_path());
+    }
+
+    /**
      * Test get include path
      */
     public function testGetIncludePath()

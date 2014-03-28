@@ -34,7 +34,6 @@ use \UniAlteri\States\Proxy;
  */
 trait TraitFactory
 {
-
     /**
      * DI Container to use with this factory object
      * @var DI\ContainerInterface

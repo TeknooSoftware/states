@@ -262,7 +262,7 @@ trait TraitState
      * @throws Exception\IllegalProxy when the proxy does not implement the good interface
      * @throws Exception\IllegalService when there are no DI Container or Injection Closure Container bought
      */
-    public function getClosure($methodName, Proxy\ProxyInterface $proxy)
+    public function getClosure($methodName, $proxy)
     {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');

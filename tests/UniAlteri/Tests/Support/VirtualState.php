@@ -34,6 +34,12 @@ class VirtualState implements States\StateInterface
     protected $_methodAllowed = false;
 
     /**
+     * To simulate a failure of the getMethodDescription, return an exception method not implemented, but testMethod return true..
+     * @var bool
+     */
+    protected $_simulateMethodDescriptionFailure = false;
+
+    /**
      * To check if a method has been called or not
      * @var bool
      */
@@ -105,6 +111,13 @@ class VirtualState implements States\StateInterface
     }
 
     /**
+     * To simulate a failure of the getMethodDescription, return an exception method not implemented, but testMethod return true..
+     */
+    public function simulateFailureInGetMethodDescription(){
+        $this->_simulateMethodDescriptionFailure = true;
+    }
+
+    /**
      * To forbid all call of testMethod and getClosure and return a fake closure
      */
     public function disallowMethod()
@@ -139,7 +152,7 @@ class VirtualState implements States\StateInterface
      */
     public function getMethodDescription($methodName)
     {
-        if(false === $this->_methodAllowed){
+        if(false === $this->_methodAllowed || true === $this->_simulateMethodDescriptionFailure){
             throw new Exception\MethodNotImplemented();
         }
 
@@ -154,7 +167,7 @@ class VirtualState implements States\StateInterface
      * @return DI\InjectionClosureInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    public function getClosure($methodName, Proxy\ProxyInterface $proxy)
+    public function getClosure($methodName, $proxy)
     {
         if(false === $this->_methodAllowed){
             throw new Exception\MethodNotImplemented();

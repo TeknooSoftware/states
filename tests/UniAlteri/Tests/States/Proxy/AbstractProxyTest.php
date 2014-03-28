@@ -408,6 +408,72 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('value', $closure->getProperty('name'));
     }
 
+    public function testGetStaticRestoredAfterException()
+    {
+        $state = new Support\VirtualState(function () {
+            throw new \Exception('failure');
+            $this->getStatic()->saveProperty('name', 'value');
+        });
+
+        $this->_proxy->registerState(
+            'static',
+            $state
+        );
+
+        $state->allowMethod();
+        $this->_proxy->enableState('static');
+
+        $closure = $state->getClosure('__invoke', $this->_proxy);
+        $fail = false;
+        try{
+            call_user_func(array($this->_proxy, '__invoke'));
+        } catch( \Exception $e) {
+            $fail = true;
+        }
+
+        $this->assertTrue($fail, 'Error, proxy must throw the exception of the called closure');
+        $this->assertEquals(null, $closure->getProperty('name'));
+        try {
+            $this->_proxy->getStatic();
+        } catch (Exception\UnavailableClosure $e) {
+            return;
+        } catch ( \Exception $e){}
+        $this->fail('Error, the proxy was not restored previous injection closure state during the exception');
+    }
+
+    public function testGetStaticRestoredAfterExceptionWithSpecificState()
+    {
+        $state = new Support\VirtualState(function () {
+            throw new \Exception('failure');
+            $this->getStatic()->saveProperty('name', 'value');
+        });
+
+        $this->_proxy->registerState(
+            'static',
+            $state
+        );
+
+        $state->allowMethod();
+        $this->_proxy->enableState('static');
+
+        $closure = $state->getClosure('__invoke', $this->_proxy);
+        $fail = false;
+        try{
+            call_user_func(array($this->_proxy, '__invokeOfStatic'));
+        } catch( \Exception $e) {
+            $fail = true;
+        }
+
+        $this->assertTrue($fail, 'Error, proxy must throw the exception of the called closure');
+        $this->assertEquals(null, $closure->getProperty('name'));
+        try {
+            $this->_proxy->getStatic();
+        } catch (Exception\UnavailableClosure $e) {
+            return;
+        } catch ( \Exception $e){}
+        $this->fail('Error, the proxy was not restored previous injection closure state during the exception');
+    }
+
     public function testCallInvalidName()
     {
         try{
@@ -422,10 +488,25 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the method name is not a string');
     }
 
-    public function testCallWithoutState()
+    public function testCallNonImplementedWithoutState()
     {
         try{
             $this->_proxy->test();
+        }
+        catch(Exception\MethodNotImplemented $e){
+            return;
+        }
+        catch(\Exception $e){
+        }
+
+        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when no state are available');
+    }
+
+    public function testCallNonImplementedWithState()
+    {
+        $this->_initializeProxy();
+        try{
+            $this->_proxy->testOfState1();
         }
         catch(Exception\MethodNotImplemented $e){
             return;
@@ -530,6 +611,22 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when the method was not found');
     }
 
+    public function testGetMethodDescriptionNonExistentNameByState()
+    {
+        $this->_initializeProxy('state1', true);
+        $this->_state1->simulateFailureInGetMethodDescription();
+        try{
+            $this->_proxy->getMethodDescription('NonExistantMethod');
+        }
+        catch(Exception\MethodNotImplemented $e){
+            return;
+        }
+        catch(\Exception $e){
+        }
+
+        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when the method was not found');
+    }
+
     public function testGetMethodDescriptionInvalidStateName()
     {
         $this->_initializeProxy('state1', true);
@@ -564,6 +661,13 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy('state1', true);
         $this->assertInstanceOf('\ReflectionMethod', $this->_proxy->getMethodDescription('test'));
+    }
+
+    public function testGetMethodDescriptionOfState()
+    {
+        $this->_initializeProxy('state1', true);
+        $this->_state2->allowMethod();
+        $this->assertInstanceOf('\ReflectionMethod', $this->_proxy->getMethodDescription('test', 'state2'));
     }
 
     public function testInvokeNonImplemented()

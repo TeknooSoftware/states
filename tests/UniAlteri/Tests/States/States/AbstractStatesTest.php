@@ -155,6 +155,22 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
+     * Test if exception when we get a description of an ignored method, the behavior must like non-existent method
+     */
+    public function testGetIgnoredMethodDescriptionUsedByTrait(){
+        try{
+            $this->_getPublicClassObject()->getMethodDescription('setDIContainer');
+        }
+        catch(States\Exception\MethodNotImplemented $e){
+            return;
+        }
+        catch(\Exception $e){
+        }
+
+        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of non-existent method');
+    }
+
+    /**
      * Test if exception when we get a description of a static method
      */
     public function testGetStaticMethodDescription(){
@@ -209,10 +225,13 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
      * Test the test method this method must throws never an exception, only return false or true
      */
     public function testTestMethod(){
-        $this->assertTrue($this->_getPrivateClassObject()->testMethod('_finalMethod9'));
-        $this->assertTrue($this->_getPrivateClassObject()->testMethod('_standardMethod10'));
-        $this->assertTrue($this->_getPrivateClassObject()->testMethod('_finalMethod11'));
-        $this->assertFalse($this->_getPrivateClassObject()->testMethod('_staticMethod12'));
+        $private = $this->_getPrivateClassObject();
+        $this->assertTrue($private->testMethod('_finalMethod9'));
+        $this->assertTrue($private->testMethod('_finalMethod9'));
+        $this->assertTrue($private->testMethod('_standardMethod10'));
+        $this->assertTrue($private->testMethod('_finalMethod11'));
+        $this->assertFalse($private->testMethod('_staticMethod12'));
+        $this->assertFalse($private->testMethod('_staticMethod12'));
 
         $this->assertFalse($this->_getProtectedClassObject()->testMethod('_staticMethod5'));
         $this->assertTrue($this->_getProtectedClassObject()->testMethod('_standardMethod6'));
@@ -279,10 +298,9 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     public function testGetClosureWithInvalidProxy(){
         try{
             $this->_getPublicClassObject()->getClosure('standardMethod1', new \DateTime());
-        }
-        catch(\Exception $e){
+        } catch (States\Exception\IllegalProxy $e) {
             return;
-        }
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of non-existent method');
     }
