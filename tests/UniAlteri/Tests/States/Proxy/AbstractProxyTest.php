@@ -889,7 +889,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testOffsetGet()
     {
         $this->_initializeProxy('state1', true);
-        $value = $this->_proxy[2];
+        $this->_proxy[2];
 
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('offsetGet', $this->_state1->getMethodNameCalled());

@@ -126,7 +126,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         try {
             $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-            $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container){
+            $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function(){
                 return new \stdClass();
             });
             $this->getFactoryObject(true)->getFinder();
@@ -185,7 +185,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $virtualFinder = new Support\VirtualFinder('', '');
         $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container) use ($virtualFinder) {
+        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function() use ($virtualFinder) {
             return $virtualFinder;
         });
 

@@ -83,7 +83,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     public function testConstructWithBadManager()
     {
         try {
-            $loader = new Loader\LoaderStandard(new \stdClass());
+            new Loader\LoaderStandard(new \stdClass());
         } catch (Exception\IllegalArgument $e) {
             return;
         } catch (\Exception $e) {}
@@ -253,11 +253,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->_initializeLoader();
         $this->assertEquals(array(), Support\VirtualFactory::listInitializedFactories());
-        $factory = $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class1', 'path1');
+        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class1', 'path1');
         $this->assertEquals(array('class1:path1'), Support\VirtualFactory::listInitializedFactories());
-        $factory = $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class2', 'path2');
+        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class2', 'path2');
         $this->assertEquals(array('class1:path1', 'class2:path2'), Support\VirtualFactory::listInitializedFactories());
-        $factory = $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class1', 'path3');
+        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class1', 'path3');
         $this->assertEquals(
             array('class1:path1', 'class2:path2', 'class1:path3'),
             Support\VirtualFactory::listInitializedFactories(),

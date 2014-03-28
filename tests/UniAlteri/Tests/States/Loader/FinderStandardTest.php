@@ -326,7 +326,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeFind('Class3', $this->_statedClass3Path);
         try {
-            $proxy = $this->_finder->loadProxy();
+            $this->_finder->loadProxy();
         } catch (Exception\IllegalProxy $e) {
             return;
         } catch (\Exception $e) {}
@@ -343,7 +343,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeFind('Class3', $this->_statedClass3Path);
         try {
-            $proxy = $this->_finder->buildProxy();
+            $this->_finder->buildProxy();
         } catch (Exception\IllegalProxy $e) {
             return;
         } catch (\Exception $e) {}
@@ -360,7 +360,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeFind('Class4', $this->_statedClass4Path);
         try {
-            $proxy = $this->_finder->buildProxy();
+            $this->_finder->buildProxy();
         } catch (Exception\IllegalProxy $e) {
             return;
         } catch (\Exception $e) {}

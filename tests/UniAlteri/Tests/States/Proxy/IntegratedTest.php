@@ -63,7 +63,7 @@ class IntegratedTest extends AbstractProxyTest
     {
         Support\IntegratedProxy::defineStartupFactoryClassName('badName');
         try {
-            $proxy = new Support\IntegratedProxy();
+            new Support\IntegratedProxy();
         } catch (Exception\UnavailableFactory $e) {
             return;
         } catch (\Exception $e) {}
@@ -78,7 +78,7 @@ class IntegratedTest extends AbstractProxyTest
     {
         Support\IntegratedProxy::defineStartupFactoryClassName('DateTime');
         try {
-            $proxy = new Support\IntegratedProxy();
+            new Support\IntegratedProxy();
         } catch (Exception\IllegalFactory $e) {
             return;
         } catch (\Exception $e) {}
