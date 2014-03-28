@@ -29,10 +29,10 @@ class FactoryClass extends Support\VirtualFactory
      * @param string $statedClassName
      * @param string $path
      * @return bool|void
-     * @throws Exception
+     * @throws \Exception
      */
     public function initialize($statedClassName, $path)
     {
-        throw new Exception('test');
+        throw new \Exception('test');
     }
 }

@@ -101,7 +101,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             return;
         } catch (\Exception $e) {}
 
-        $this->fail('Error, the factory must throw an exception when there are no di contauner');
+        $this->fail('Error, the factory must throw an exception when there are no di container');
     }
 
     /**

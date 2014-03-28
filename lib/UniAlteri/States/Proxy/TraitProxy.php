@@ -29,7 +29,7 @@ use \UniAlteri\States;
  * Standard implementation of the "Proxy Object".
  * It is used in this library to create stated object.
  *
- * A stated object is a proxy, configured for its stated class, with its differents states objects.
+ * A stated object is a proxy, configured for its stated class, with its different states objects.
  * It is a proxy because, by default, all calls are redirected to enabled states.
  * $this in all methods of the stated object (also of states'methods) points the proxy object.
  *
@@ -423,7 +423,7 @@ trait TraitProxy
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState if the required state is not available
-     * @throws Exception\IllegalArgument if the method'name is not a string
+     * @throws Exception\IllegalArgument if the method's name is not a string
      */
     public function __call($name, $arguments)
     {
@@ -437,7 +437,7 @@ trait TraitProxy
      * @return \ReflectionMethod
      * @throws Exception\StateNotFound is the state required is not available
      * @throws Exception\InvalidArgument where $methodName or $stateName are not string
-     * @throws Exception\MethodNotImplemented when the method is not currenty available
+     * @throws Exception\MethodNotImplemented when the method is not currently available
      * @throws \Exception to rethrows unknown exceptions
      */
     public function getMethodDescription($methodName, $stateName = null)
@@ -624,7 +624,7 @@ trait TraitProxy
     }
 
     /**
-     * Unsets an offset.
+     * Unset an offset.
      * @param string|int $offset
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState if the required state is not available

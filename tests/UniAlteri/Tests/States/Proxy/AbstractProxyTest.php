@@ -593,14 +593,14 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         catch(\Exception $e){
         }
 
-        $this->fail('Error, the proxy must throw an Exception\InvalidArgument exception when the method namee is not a string');
+        $this->fail('Error, the proxy must throw an Exception\InvalidArgument exception when the method name is not a string');
     }
 
     public function testGetMethodDescriptionNonExistentName()
     {
         $this->_initializeProxy();
         try{
-            $this->_proxy->getMethodDescription('NonExistantMethod');
+            $this->_proxy->getMethodDescription('NonExistentMethod');
         }
         catch(Exception\MethodNotImplemented $e){
             return;
@@ -616,7 +616,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->_initializeProxy('state1', true);
         $this->_state1->simulateFailureInGetMethodDescription();
         try{
-            $this->_proxy->getMethodDescription('NonExistantMethod');
+            $this->_proxy->getMethodDescription('NonExistentMethod');
         }
         catch(Exception\MethodNotImplemented $e){
             return;
@@ -1204,7 +1204,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->assertNotSame($diContainer, $clonedDiContainer);
         $this->assertEquals('bar', $clonedDiContainer->get('obj')->foo);
 
-        //unique ids must differe
+        //unique ids must differ
         $this->assertNotEquals($this->_proxy->getObjectUniqueId(), $clonedProxy->getObjectUniqueId());
     }
 }

@@ -107,7 +107,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test invokation from injection with the closure, execute the closure (the closure test returns arguments order
+     * Test invoking from injection with the closure, execute the closure (the closure test returns arguments order
      */
     public function testInvokeWithArgs()
     {

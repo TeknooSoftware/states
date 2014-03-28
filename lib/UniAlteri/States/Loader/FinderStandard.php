@@ -89,8 +89,8 @@ class FinderStandard implements FinderInterface
     /**
      * List all available state object of the stated class
      * @return string[]
-     * @throws Exception\UnavailablePath if the states's folder is not available
-     * @throws Exception\UnReadablePath if the states's folder is not readable
+     * @throws Exception\UnavailablePath if the states' folder is not available
+     * @throws Exception\UnReadablePath if the states' folder is not readable
      */
     public function listStates()
     {

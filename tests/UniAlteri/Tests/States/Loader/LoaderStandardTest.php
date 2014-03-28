@@ -55,13 +55,13 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Load object to test it
-     * @param boolean $standardIncludePathManader to load the standard Include Path Manager from this lib and not
+     * @param boolean $standardIncludePathManager to load the standard Include Path Manager from this lib and not
      *                  the test manager
      * @return Loader\LoaderStandard
      */
-    protected function _initializeLoader($standardIncludePathManader=false)
+    protected function _initializeLoader($standardIncludePathManager=false)
     {
-        if (false == $standardIncludePathManader) {
+        if (false == $standardIncludePathManager) {
             $this->_loader = new Loader\LoaderStandard($this->_includePathManager);
         } else {
             $this->_loader = new Loader\LoaderStandard(new Loader\IncludePathManagement());

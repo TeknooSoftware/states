@@ -50,7 +50,7 @@ class LoaderStandard implements LoaderInterface
     protected $_namespacesArray = null;
 
     /**
-     * Backup of previous included path configuretion
+     * Backup of previous included path configuration
      * @var \SplStack
      */
     protected $_previousIncludedPathStack = null;
@@ -78,7 +78,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * Return the current include path managger
+     * Return the current include path manager
      * @return IncludePathManagementInterface
      */
     protected function _getIncludePathManager()

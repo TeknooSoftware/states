@@ -177,7 +177,7 @@ trait TraitState
             $this->getMethodDescription($methodName);
             return true;
         } catch(\Exception $e) {
-            //Method not found, store localy the result
+            //Method not found, store locally the result
             $this->_reflectionsMethods[$methodName] = false;
             return false;
         }

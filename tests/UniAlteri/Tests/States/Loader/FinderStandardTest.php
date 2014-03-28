@@ -128,7 +128,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     public function testListStatePathNotFound()
     {
-        $this->_initializeFind('virtualStatedClass', '/NonExistantPath');
+        $this->_initializeFind('virtualStatedClass', '/NonExistentPath');
         try {
             $this->_finder->listStates();
         } catch (Exception\UnavailablePath $e) {
@@ -296,7 +296,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->markTestSkipped(); //todo
     }
 
-    public function testLoaddProxyDefault()
+    public function testLoadProxyDefault()
     {
         $this->_initializeFind('Class2', $this->_statedClass2Path);
         $proxyClassName = $this->_finder->loadProxy();
@@ -334,7 +334,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the finder must throw an exception Exception\IllegalProxy when the proxy class was not found.');
     }
 
-    public function testLoaddProxySpecificBadClassInPhar()
+    public function testLoad()
     {
         $this->markTestSkipped(); //todo
     }

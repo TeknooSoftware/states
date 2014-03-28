@@ -25,7 +25,7 @@ namespace UniAlteri\States\Proxy;
  * @package UniAlteri\States\Proxy
  * Default Proxy class to use in stated class when no proxy are defined in these classes.
  *
- * A stated object is a proxy, configured for its stated class, with its differents states objects.
+ * A stated object is a proxy, configured for its stated class, with its different states objects.
  * It is a proxy because, by default, all calls are redirected to enabled states.
  * $this in all methods of the stated object (also of states'methods) points the proxy object.
  *

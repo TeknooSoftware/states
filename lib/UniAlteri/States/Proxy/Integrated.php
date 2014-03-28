@@ -32,8 +32,8 @@ namespace UniAlteri\States\Proxy;
  * The library create an alias with the class's proxy name and this default proxy
  * to simulate a dedicated proxy to this class
  *
- * This proxy is a variant of the default proxy to allow developer to instanciate a stated class like another class
- * wit the operator new
+ * This proxy is a variant of the default proxy to allow developer to create an instance a stated class
+ * like another class with the operator new
  */
 class Integrated extends Standard
 {
