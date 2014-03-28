@@ -29,8 +29,8 @@ class IncludePathManagement implements IncludePathManagementInterface
 {
     /**
      * Sets the include_path configuration option
-     * @param string[] $paths (paths must be split into an array)
-     * @return string[] old paths
+     * @param array|string[] $paths (paths must be split into an array)
+     * @return array|string[] old paths
      * @throws Exception\IllegalArgument if the argument $paths is not an array of string
      */
     public function setIncludePath($paths)

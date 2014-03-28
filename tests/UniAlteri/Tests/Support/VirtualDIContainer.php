@@ -59,6 +59,8 @@ class VirtualDIContainer implements DI\ContainerInterface
         if (isset($this->_service[$name])) {
             return $this->_service[$name]($this);
         }
+
+        return null;
     }
 
     /**
@@ -100,6 +102,7 @@ class VirtualDIContainer implements DI\ContainerInterface
     /**
      * Remove an entry from the container
      * @param string $name
+     * @return $this
      */
     public function unregister($name)
     {
@@ -110,6 +113,8 @@ class VirtualDIContainer implements DI\ContainerInterface
         if (isset($this->_service[$name])) {
             unset($this->_service[$name]);
         }
+
+        return $this;
     }
 
     /**

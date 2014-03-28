@@ -21,7 +21,6 @@
 namespace UniAlteri\Tests\Support\Loader\Class3;
 
 use \UniAlteri\Tests\Support;
-use UniAlteri\Tests\Support\VirtualFactory;
 
 class FactoryClass extends Support\VirtualFactory
 {

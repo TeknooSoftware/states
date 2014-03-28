@@ -48,9 +48,11 @@ class VirtualProxy implements Proxy\ProxyInterface
     /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
+     * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
+        return $this;
     }
 
     /**
