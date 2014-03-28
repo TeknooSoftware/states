@@ -49,7 +49,7 @@ class IncludePathManagement implements IncludePathManagementInterface
 
     /**
      * Gets the current include_path configuration option
-     * @return string[] (paths must be split into an array)
+     * @return array|string[] (paths must be split into an array)
      */
     public function getIncludePath()
     {
