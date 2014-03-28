@@ -45,7 +45,7 @@ interface LoaderInterface
      * @param IncludePathManagementInterface $includePathManager
      * @throws Exception\IllegalArgument $includePathManager does not implement the interface  IncludePathManagementInterface
      */
-    public function __construct(IncludePathManagementInterface $includePathManager);
+    public function __construct($includePathManager);
 
     /**
      * Register a DI container for this object
@@ -94,7 +94,6 @@ interface LoaderInterface
      * Method called to load a class.
      * @param string $className class name, support namespace prefixes
      * @return boolean
-     * @throws Exception\EmptyStack if the stack of previous included path
      * @throws \Exception
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory if the factory does not implement the good interface

@@ -78,6 +78,20 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagementInterface
+     */
+    public function testConstructWithBadManager()
+    {
+        try {
+            $loader = new Loader\LoaderStandard(new \stdClass());
+        } catch (Exception\IllegalArgument $e) {
+            return;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagementInterface');
+    }
+
+    /**
      * Test exception when the Container is not valid when we set a bad object as di container
      */
     public function testSetDiContainerBad()
@@ -259,6 +273,14 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
     }
 
+    public function testLoadClassViaNameSpaceRelativeWithEmptyFactoryFile()
+    {
+        $loader = $this->_initializeLoader();
+        $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1b'));
+    }
+
     public function testLoadClassViaNameSpaceRelative()
     {
         $loader = $this->_initializeLoader();
@@ -281,6 +303,14 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
+    }
+
+    public function testLoadClassViaNameSpaceAbsoluteWithFactoryException()
+    {
+        $loader = $this->_initializeLoader();
+        $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3'));
     }
 
     public function testLoadClassViaFileWithoutFileAbsolute()
@@ -313,5 +343,29 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertTrue($loader->loadClass('Support\\FileLoader\\Class2'));
+    }
+
+    public function testLoadClassViaFileWithFactoryException()
+    {
+        $loader = $this->_initializeLoader(true);
+        $path = dirname(dirname(__DIR__));
+        $loader->addIncludePath($path);
+        $this->assertFalse($loader->loadClass('Support\\FileLoader\\Class3'));
+    }
+
+    public function testLoadClassBehaviorDuringExceptionMustRestoreIncludedPath()
+    {
+        $loader = $this->_initializeLoader(false);
+        $path = dirname(dirname(dirname(dirname(__DIR__))));
+        $loader->addIncludePath($path);
+
+        $fail = false;
+        try {
+            $loader->loadClass('UniAlteri\\Tests\\Support\\FileLoader\\Class3b');
+        } catch (\Exception $e) {
+            $fail = true;
+        }
+
+        $this->assertTrue($fail, 'Error, the loader must rethrow exception during loading class');
     }
 }

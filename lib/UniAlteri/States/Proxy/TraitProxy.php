@@ -460,15 +460,13 @@ trait TraitProxy
                 }
             }
 
-            if (null !== $stateName) {
-                if (isset($this->_states[$stateName])) {
-                    //Retrieve description from the required state
-                    if ($this->_states[$stateName]->testMethod($methodName)) {
-                        return $this->_states[$stateName]->getMethodDescription($methodName);
-                    }
-                } else {
-                    throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+            if (null !== $stateName && isset($this->_states[$stateName])) {
+                //Retrieve description from the required state
+                if ($this->_states[$stateName]->testMethod($methodName)) {
+                    return $this->_states[$stateName]->getMethodDescription($methodName);
                 }
+            } elseif(null !== $stateName) {
+                throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
             }
         } catch( States\Exception\MethodNotImplemented $e) {
             throw new Exception\MethodNotImplemented(

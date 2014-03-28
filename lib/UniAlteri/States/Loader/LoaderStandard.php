@@ -65,7 +65,7 @@ class LoaderStandard implements LoaderInterface
      * @param IncludePathManagementInterface $includePathManager
      * @throws Exception\IllegalArgument $includePathManager does not implement the interface  IncludePathManagementInterface
      */
-    public function __construct(IncludePathManagementInterface $includePathManager)
+    public function __construct($includePathManager)
     {
         if (!$includePathManager instanceof IncludePathManagementInterface) {
             throw new Exception\IllegalArgument('Error, the include path manager does not implement the interface IncludePathManagementInterface');
@@ -191,12 +191,10 @@ class LoaderStandard implements LoaderInterface
      */
     protected function _restoreIncludedPaths()
     {
-        if ($this->_previousIncludedPathStack->isEmpty()) {
-            throw new Exception\EmptyStack('Error, the stack of previous included path is empty');
+        if (!$this->_previousIncludedPathStack->isEmpty()) {
+            $oldIncludedPaths = $this->_previousIncludedPathStack->pop();
+            $this->_getIncludePathManager()->setIncludePath($oldIncludedPaths);
         }
-
-        $oldIncludedPaths = $this->_previousIncludedPathStack->pop();
-        $this->_getIncludePathManager()->setIncludePath($oldIncludedPaths);
     }
 
     /**
@@ -228,6 +226,7 @@ class LoaderStandard implements LoaderInterface
         }
 
         //Browse each
+        $result = false;
         foreach ($this->_namespacesArray[$namespaceString] as $path) {
             $factoryFile = $path.DIRECTORY_SEPARATOR.$className.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
             if (is_readable($factoryFile)) {
@@ -237,15 +236,16 @@ class LoaderStandard implements LoaderInterface
                 if (class_exists($factoryClassName, false)) {
                     try {
                         $this->buildFactory($factoryClassName, $class, $path.DIRECTORY_SEPARATOR.$className);
-                        return true;
+                        $result = true;
                     } catch (\Exception $e) {
-                        return false;
+                        $result = false;
                     }
+                    break;
                 }
             }
         }
 
-        return false;
+        return $result;
     }
 
     /**
@@ -255,10 +255,6 @@ class LoaderStandard implements LoaderInterface
      */
     protected function _testFileExist($pathFile)
     {
-        if (is_readable($pathFile)) {
-            return true;
-        }
-
         foreach ($this->_getIncludePathManager()->getIncludePath() as $includedPath) {
             if (is_readable($includedPath.DIRECTORY_SEPARATOR.$pathFile)) {
                 return true;
@@ -272,7 +268,6 @@ class LoaderStandard implements LoaderInterface
      * Method called to load a class.
      * @param string $className class name, support namespace prefixes
      * @return boolean
-     * @throws Exception\EmptyStack if the stack of previous included path
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory if the factory does not implement the good interface
      * @throws \Exception
