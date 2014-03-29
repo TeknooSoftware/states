@@ -39,7 +39,7 @@ interface ProxyInterface extends
     \SeekableIterator,
     \Countable
 {
-    const DEFAULT_STATE_NAME = 'Default';
+    const DEFAULT_STATE_NAME = 'StateDefault';
 
     /***********************
      *** States Management *

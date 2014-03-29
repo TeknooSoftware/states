@@ -257,7 +257,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $proxy = new Support\VirtualProxy(null);
         $this->getFactoryObject()->startup($proxy);
-        $this->assertEquals($proxy->listActivesStates(), array('Default'));
+        $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
     }
 
     public function testRequiredStateSelectedInStartup()
@@ -314,7 +314,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testDefaultStateAutomaticallySelected()
     {
         $proxy = $this->getFactoryObject()->build();
-        $this->assertEquals($proxy->listActivesStates(), array('Default'));
+        $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
     }
 
     public function testRequiredStateSelected()
