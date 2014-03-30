@@ -46,12 +46,36 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         parent::setUp();
         $this->_container = new Support\VirtualDIContainer();
+        $this->_registerVirtualFinderService();
+    }
+
+    /**
+     * Configure container
+     */
+    protected function _registerVirtualFinderService()
+    {
         $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container){
             if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
                 $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
                 return new Support\VirtualFinder($factory->getStatedClassName(), $factory->getPath());
             } else {
                 return new Support\VirtualFinder('', '');
+            }
+        });
+    }
+
+    /**
+     * Replace finder service to generate virtual finder whom return ArrayObject instead of php array
+     */
+    protected function _registerVirtualFinderServiceWithArrayObject()
+    {
+        $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
+        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container){
+            if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
+                $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
+                return new Support\VirtualFinderWithArray($factory->getStatedClassName(), $factory->getPath());
+            } else {
+                return new Support\VirtualFinderWithArray('', '');
             }
         });
     }
@@ -263,6 +287,38 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testRequiredStateSelectedInStartup()
     {
         $proxy = new Support\VirtualProxy(null);
+        $this->getFactoryObject()->startup($proxy, 'VirtualState1');
+        $this->assertEquals($proxy->listActivesStates(), array('VirtualState1'));
+    }
+
+    public function testListAvailableStateInStartupWithArrayObject()
+    {
+        $proxy = new Support\VirtualProxy(null);
+        $this->_registerVirtualFinderServiceWithArrayObject();
+        $this->getFactoryObject()->startup($proxy);
+        $this->assertEquals(
+            array(
+                'VirtualState1',
+                'VirtualState2',
+                Proxy\ProxyInterface::DEFAULT_STATE_NAME,
+                'VirtualState3'
+            ),
+            $proxy->listAvailableStates()
+        );
+    }
+
+    public function testDefaultStateAutomaticallySelectedInStartupWithArrayObject()
+    {
+        $proxy = new Support\VirtualProxy(null);
+        $this->_registerVirtualFinderServiceWithArrayObject();
+        $this->getFactoryObject()->startup($proxy);
+        $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
+    }
+
+    public function testRequiredStateSelectedInStartupWithArrayObject()
+    {
+        $proxy = new Support\VirtualProxy(null);
+        $this->_registerVirtualFinderServiceWithArrayObject();
         $this->getFactoryObject()->startup($proxy, 'VirtualState1');
         $this->assertEquals($proxy->listActivesStates(), array('VirtualState1'));
     }
