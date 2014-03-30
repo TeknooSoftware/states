@@ -33,7 +33,7 @@ class StandardStartupFactory implements StartupFactoryInterface
 {
     /**
      * Registry of factory to use to initialize proxy object
-     * @var FactoryInterface[]
+     * @var FactoryInterface[]|\ArrayObject
      */
     protected static $_factoryRegistry = null;
 
@@ -83,5 +83,28 @@ class StandardStartupFactory implements StartupFactoryInterface
         }
 
         static::$_factoryRegistry[$factoryIdentifier] = $factoryObject;
+    }
+
+    /**
+     * Reset startup registry
+     */
+    public static function reset()
+    {
+        if (static::$_factoryRegistry instanceof \ArrayObject) {
+            static::$_factoryRegistry = null;
+        }
+    }
+
+    /**
+     * Return all registered factories
+     * @return string[]|array
+     */
+    public static function listRegisteredFactory()
+    {
+        if (!static::$_factoryRegistry instanceof \ArrayObject) {
+            return array();
+        }
+
+        return array_keys(static::$_factoryRegistry->getArrayCopy());
     }
 }

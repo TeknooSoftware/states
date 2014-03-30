@@ -27,6 +27,12 @@ use \UniAlteri\Tests\Support;
 
 class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        Factory\StandardStartupFactory::reset();
+        parent::setUp();
+    }
+
     /**
      * The startup factory must throw an exception when the proxy does not implement the proxy interface
      */
@@ -93,5 +99,36 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) { }
 
         $this->fail('Error, the startup factory class must throw an exception when a the registering factory does not implement the factory interface');
+    }
+
+    /**
+     * Test Factory\StandardStartupFactory::listRegisteredFactory if its return all initialized factory
+     */
+    public function testListRegisteredFactory()
+    {
+        $factory = new Support\VirtualFactory();
+        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\VirtualProxy1', $factory);
+        Factory\StandardStartupFactory::reset();
+        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\VirtualProxy2', $factory);
+        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\VirtualProxy3', $factory);
+        $this->assertEquals(
+            array(
+                'UniAlteri\Tests\Support\VirtualProxy2',
+                'UniAlteri\Tests\Support\VirtualProxy3'
+            ),
+            Factory\StandardStartupFactory::listRegisteredFactory()
+        );
+    }
+
+    /**
+     * Test Factory\StandardStartupFactory::listRegisteredFactory if its return all initialized factory
+     */
+    public function testListRegisteredFactoryEmpty()
+    {
+        Factory\StandardStartupFactory::reset();
+        $this->assertEquals(
+            array(),
+            Factory\StandardStartupFactory::listRegisteredFactory()
+        );
     }
 }
