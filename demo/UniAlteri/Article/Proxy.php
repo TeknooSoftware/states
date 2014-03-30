@@ -21,6 +21,7 @@
 namespace demo\UniAlteri\Article;
 
 use UniAlteri\States\Proxy;
+use UniAlteri\States\Proxy\Exception;
 
 class Article extends Proxy\Integrated
 {
@@ -52,5 +53,20 @@ class Article extends Proxy\Integrated
     public function _setAttribute($name, $value)
     {
         $this->_data[$name] = $value;
+    }
+
+    /**
+     * To initialize this article with some data
+     * @param array $data
+     */
+    public function __construct($data=array())
+    {
+        $this->_data = $data;
+        parent::__construct();
+        if (false === $this->isPublished()) {
+            $this->enableState('Draft');
+        } else {
+            $this->enableState('Published');
+        }
     }
 }

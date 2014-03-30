@@ -27,14 +27,62 @@ $loader = require_once(dirname(__DIR__).DS.'lib'.DS.'UniAlteri'.DS.'States'.DS.'
 
 $loader->registerNamespace('\\demo\\UniAlteri', __DIR__.DS.'UniAlteri');
 
+print 'Uni Alteri - States library - Demo :'.PHP_EOL.PHP_EOL;
+print 'Empty article'.PHP_EOL;
 $article = new \demo\UniAlteri\Article();
 
-print $article->getTitle().PHP_EOL;
-$article->enableState('Draft');
+print 'Active states :';
+print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
+print 'title : '.$article->getTitle().PHP_EOL.PHP_EOL;
+print 'set some data'.PHP_EOL;
 $article->setTitle('Hello world');
 $article->setBody('Lorem [b]Ipsum[/b]');
-print $article->getTitle().PHP_EOL;
-print $article->getBodySource().PHP_EOL;
+print 'title : '.$article->getTitle().PHP_EOL;
+print 'body : '.$article->getBodySource().PHP_EOL;
+
+print PHP_EOL.'publishing...'.PHP_EOL;
 $article->publishing();
+print 'Active states :';
+print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
+print $article->getTitle().PHP_EOL;
+print $article->getFormattedBody().PHP_EOL;
+
+print 'Open article'.PHP_EOL;
+$article = new \demo\UniAlteri\Article(
+    array(
+        'is_published'  => true,
+        'title'         => 'title 2',
+        'body'          => 'body 2'
+    )
+);
+
+print PHP_EOL.PHP_EOL.'Active states :';
+print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
+print 'title : '.$article->getTitle().PHP_EOL.PHP_EOL;
+print 'set some data'.PHP_EOL;
+try {
+    $article->setTitle('Hello world');
+} catch (\Exception $e) {
+    echo $e->getMessage().PHP_EOL;
+}
+try {
+    $article->setBody('Lorem [b]Ipsum[/b]');
+} catch (\Exception $e) {
+    echo $e->getMessage().PHP_EOL;
+}
+print 'title : '.$article->getTitle().PHP_EOL;
+try {
+    print 'body : '.$article->getBodySource().PHP_EOL;
+} catch (\Exception $e) {
+    echo $e->getMessage().PHP_EOL;
+}
+print PHP_EOL.'publishing...'.PHP_EOL;
+try {
+    $article->publishing();
+} catch (\Exception $e) {
+    echo $e->getMessage().PHP_EOL;
+}
+print 'Active states :';
+print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
 print $article->getTitle().PHP_EOL;
 print $article->getFormattedBody().PHP_EOL;
