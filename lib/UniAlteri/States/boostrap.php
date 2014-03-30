@@ -52,3 +52,6 @@ spl_autoload_register(
     array($loader, 'loadClass'),
     true
 );
+
+//Return the loader for the caller file
+return $loader;
