@@ -56,19 +56,19 @@ class LoaderStandard implements LoaderInterface
     protected $_previousIncludedPathStack = null;
 
     /**
-     * @var IncludePathManagementInterface
+     * @var IncludePathManagerInterface
      */
     protected $_includePathManager = null;
 
     /**
      * Initialize the loader object
-     * @param IncludePathManagementInterface $includePathManager
-     * @throws Exception\IllegalArgument $includePathManager does not implement the interface  IncludePathManagementInterface
+     * @param IncludePathManagerInterface $includePathManager
+     * @throws Exception\IllegalArgument $includePathManager does not implement the interface  IncludePathManagerInterface
      */
     public function __construct($includePathManager)
     {
-        if (!$includePathManager instanceof IncludePathManagementInterface) {
-            throw new Exception\IllegalArgument('Error, the include path manager does not implement the interface IncludePathManagementInterface');
+        if (!$includePathManager instanceof IncludePathManagerInterface) {
+            throw new Exception\IllegalArgument('Error, the include path manager does not implement the interface IncludePathManagerInterface');
         }
 
         $this->_includedPathsArray = new \ArrayObject();
@@ -79,7 +79,7 @@ class LoaderStandard implements LoaderInterface
 
     /**
      * Return the current include path manager
-     * @return IncludePathManagementInterface
+     * @return IncludePathManagerInterface
      */
     protected function _getIncludePathManager()
     {

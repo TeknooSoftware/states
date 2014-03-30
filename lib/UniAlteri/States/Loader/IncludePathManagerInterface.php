@@ -21,11 +21,11 @@
 namespace UniAlteri\States\Loader;
 
 /**
- * Class IncludePathManagement
+ * Interface IncludedPathManagementInterface
  * @package UniAlteri\States\Loader
- * Object to manage set_included_path and unit test this section
+ * Interface to define manager object to manage set_included_path and unit test this section
  */
-class IncludePathManagement implements IncludePathManagementInterface
+interface IncludePathManagerInterface
 {
     /**
      * Sets the include_path configuration option
@@ -33,26 +33,11 @@ class IncludePathManagement implements IncludePathManagementInterface
      * @return array|string[] old paths
      * @throws Exception\IllegalArgument if the argument $paths is not an array of string
      */
-    public function setIncludePath($paths)
-    {
-        if (!is_array($paths) && !$paths instanceof \ArrayObject) {
-            throw new Exception\IllegalArgument('Error, $paths is not an array of string');
-        }
-
-        if ($paths instanceof \ArrayObject) {
-            //Convert to array
-            $paths = $paths->getArrayCopy();
-        }
-
-        return explode(PATH_SEPARATOR, set_include_path(implode(PATH_SEPARATOR, $paths)));
-    }
+    public function setIncludePath($paths);
 
     /**
      * Gets the current include_path configuration option
      * @return array|string[] (paths must be split into an array)
      */
-    public function getIncludePath()
-    {
-        return explode(PATH_SEPARATOR, get_include_path());
-    }
+    public function getIncludePath();
 }

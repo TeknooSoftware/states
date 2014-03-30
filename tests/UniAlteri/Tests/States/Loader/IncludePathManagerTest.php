@@ -23,7 +23,7 @@ namespace UniAlteri\Tests\States\Loader;
 use UniAlteri\States\Loader;
 use UniAlteri\States\Loader\Exception;
 
-class IncludePathManagementTest extends \PHPUnit_Framework_TestCase
+class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * To restore include path to continue test
@@ -51,11 +51,11 @@ class IncludePathManagementTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Return object for test
-     * @return Loader\IncludePathManagement
+     * @return Loader\IncludePathManager
      */
     protected function _getManagementObject()
     {
-        return new Loader\IncludePathManagement();
+        return new Loader\IncludePathManager();
     }
 
     /**

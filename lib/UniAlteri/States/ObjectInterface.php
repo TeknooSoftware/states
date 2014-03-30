@@ -18,6 +18,7 @@
  */
 
 namespace UniAlteri\States;
+
 use \UniAlteri\States\DI;
 
 /**

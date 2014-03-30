@@ -23,7 +23,7 @@ namespace UniAlteri\Tests\Support;
 use UniAlteri\States\Loader;
 use UniAlteri\States\Loader\Exception;
 
-class VirtualIncludePathManager implements Loader\IncludePathManagementInterface
+class VirtualIncludePathManager implements Loader\IncludePathManagerInterface
 {
     /**
      * Current included path

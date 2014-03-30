@@ -31,6 +31,11 @@ use \UniAlteri\States\Factory;
 interface LoaderInterface
 {
     /**
+     * Name of Finder (service to find and load elements of stated class)
+     */
+    const DI_LOADER_INSTANCE = 'ClassLoader';
+
+    /**
      * PHP File of Factory into each stated class
      */
     const FACTORY_FILE_NAME = 'Factory.php';
@@ -42,8 +47,8 @@ interface LoaderInterface
 
     /**
      * Initialize the loader object
-     * @param IncludePathManagementInterface $includePathManager
-     * @throws Exception\IllegalArgument $includePathManager does not implement the interface  IncludePathManagementInterface
+     * @param IncludePathManagerInterface $includePathManager
+     * @throws Exception\IllegalArgument $includePathManager does not implement the interface  IncludePathManagerInterface
      */
     public function __construct($includePathManager);
 

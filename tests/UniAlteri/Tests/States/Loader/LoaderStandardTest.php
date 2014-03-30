@@ -64,7 +64,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         if (false == $standardIncludePathManager) {
             $this->_loader = new Loader\LoaderStandard($this->_includePathManager);
         } else {
-            $this->_loader = new Loader\LoaderStandard(new Loader\IncludePathManagement());
+            $this->_loader = new Loader\LoaderStandard(new Loader\IncludePathManager());
         }
 
         $this->_loader->setDIContainer(new Support\VirtualDIContainer());
@@ -78,7 +78,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagementInterface
+     * the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagerInterface
      */
     public function testConstructWithBadManager()
     {
@@ -88,7 +88,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         } catch (\Exception $e) {}
 
-        $this->fail('Error, the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagementInterface');
+        $this->fail('Error, the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagerInterface');
     }
 
     /**
