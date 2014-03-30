@@ -31,7 +31,7 @@ class Draft extends States\AbstractState
     {
         $this->_setAttribute('is_published', true);
         $this->disableState('Draft');
-        $this->disableState('Published');
+        $this->enableState('Published');
     }
 
     /**

@@ -49,7 +49,7 @@ class Article extends Proxy\Integrated
      * @param string $name
      * @param mixed $value
      */
-    public function _setAttribute($name, &$value)
+    public function _setAttribute($name, $value)
     {
         $this->_data[$name] = $value;
     }

@@ -18,10 +18,23 @@
  * @version     $Id$
  */
 
-namespace demo\UniAlteri\Article;
+namespace demo;
 
-use UniAlteri\States\Factory;
+defined('DS')
+    || define('DS', DIRECTORY_SEPARATOR);
 
-class FactoryClass extends Factory\Integrated
-{
-}
+$loader = require_once(dirname(__DIR__).DS.'lib'.DS.'UniAlteri'.DS.'States'.DS.'bootstrap.php');
+
+$loader->registerNamespace('\\demo\\UniAlteri', __DIR__.DS.'UniAlteri');
+
+$article = new \demo\UniAlteri\Article();
+
+print $article->getTitle().PHP_EOL;
+$article->enableState('Draft');
+$article->setTitle('Hello world');
+$article->setBody('Lorem [b]Ipsum[/b]');
+print $article->getTitle().PHP_EOL;
+print $article->getBodySource().PHP_EOL;
+$article->publishing();
+print $article->getTitle().PHP_EOL;
+print $article->getFormattedBody().PHP_EOL;
