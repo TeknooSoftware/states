@@ -40,6 +40,4 @@ class FinderIntegrated extends FinderStandard
      * @var string
      */
     protected $_defaultProxyClassName = '\UniAlteri\States\Proxy\Integrated';
-
-
 }

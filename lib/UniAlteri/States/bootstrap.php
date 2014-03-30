@@ -53,6 +53,13 @@ $finderService = function ($container) {
 //Register finder generator
 $diContainer->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, $finderService);
 
+//Register injection closure generator
+$injectionClosureService = function () {
+    return new DI\InjectionClosure();
+};
+
+$diContainer->registerService(States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER, $injectionClosureService);
+
 //Stated class loader, initialize
 $includePathManager = new Loader\IncludePathManager();
 $loader = new Loader\LoaderStandard($includePathManager);

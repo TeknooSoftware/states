@@ -37,6 +37,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\\UniAlteri\\States\\DI\\Container', $container);
 
         $this->assertTrue($container->testEntry(Loader\FinderInterface::DI_FINDER_SERVICE));
+        $this->assertTrue($container->testEntry(States\States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER));
 
         $fail = false;
         try {
@@ -49,7 +50,9 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
 
         $container->registerInstance(Factory\FactoryInterface::DI_FACTORY_NAME, new Support\VirtualFactory());
         $finder = $container->get(Loader\FinderInterface::DI_FINDER_SERVICE);
-
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderIntegrated', $finder);
+
+        $injectionClosure = $container->get(States\States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER);
+        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\InjectionClosure', $injectionClosure);
     }
 }

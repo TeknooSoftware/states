@@ -176,6 +176,9 @@ trait TraitFactory
         $statesList = $finderLoader->listStates();
 
         //Check if the default state is available
+        if ($statesList instanceof \ArrayObject) {
+            $statesList = $statesList->getArrayCopy();
+        }
         $statesList = array_combine($statesList, $statesList);
         $defaultStatedName = Proxy\ProxyInterface::DEFAULT_STATE_NAME;
         if (!isset($statesList[$defaultStatedName])) {
