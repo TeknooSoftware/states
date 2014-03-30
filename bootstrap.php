@@ -28,10 +28,11 @@ defined('DS')
 set_include_path(
     __DIR__.DS.'lib'
     .PATH_SEPARATOR
-    .__DIR__.DS.'vendor'.DS.'pimple'.DS.'pimple'.DS.'lib'
-    .PATH_SEPARATOR
     .get_include_path()
 );
+
+//Use autoloader of composer
+require 'vendor/autoload.php';
 
 //Use  spl autoloader, UA States lib uses PSR-0 standards
 spl_autoload_register(
