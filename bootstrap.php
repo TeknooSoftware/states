@@ -33,11 +33,16 @@ set_include_path(
 //Use default spl autoloader, UA States lib use PSR-0 standards
 spl_autoload_register(
     function ($className) {
-        $path = str_replace(array('\\', '_'), '/', $className).'.php';
-        $a = get_include_path();
-        include_once($path);
-        $included = class_exists($className, false);
-        return $included;
+        $filePath = str_replace(array('\\', '_'), '/', $className).'.php';
+        $includePathArray = explode(PATH_SEPARATOR, get_include_path());
+        foreach ($includePathArray as $includePath) {
+            $path = $includePath.DS.$filePath;
+            if (is_readable($path)) {
+                include_once($path);
+                $included = class_exists($className, false);
+                return $included;
+            }
+        }
     },
     true
 );
