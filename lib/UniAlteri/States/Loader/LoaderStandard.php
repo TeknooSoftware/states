@@ -56,6 +56,7 @@ class LoaderStandard implements LoaderInterface
     protected $_previousIncludedPathStack = null;
 
     /**
+     * Manager to use by this loader to manipulate include path
      * @var IncludePathManagerInterface
      */
     protected $_includePathManager = null;

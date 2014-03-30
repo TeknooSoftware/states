@@ -36,6 +36,17 @@ class Integrated implements FactoryInterface
         TraitFactory::initialize as traitInitialize;
     }
 
+    /**
+     * Method called by the Loader to initialize the stated class :
+     *  Extends the proxy used by this stated class a child called like the stated class.
+     *  => To allow developer to build new object with the operator new
+     *  => To allow developer to use the operator "instanceof"
+     * @param string $statedClassName the name of the stated class
+     * @param string $path of the stated class
+     * @return boolean
+     * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     * @throws Exception\UnavailableDIContainer if there are no di container
+     */
     public function initialize($statedClassName, $path)
     {
         //Call trait's method to initialize this stated class
