@@ -47,6 +47,17 @@ $loader->setDIContainer($diContainer);
 //Register loader into container
 $diContainer->registerInstance(Loader\LoaderInterface::DI_LOADER_INSTANCE, $loader);
 
+//Use default spl autoloader, UA States lib use PSR-0 standards
+spl_autoload_register(
+    function ($className) {
+        $path = str_replace(array('\\', '_'), '/', $className).'.php';
+        include_once($path);
+        $included = class_exists($className, false);
+        return $included;
+    },
+    true
+);
+
 //Register autoload function in the spl autoloader stack
 spl_autoload_register(
     array($loader, 'loadClass'),
