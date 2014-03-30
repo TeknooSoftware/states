@@ -60,28 +60,34 @@ print PHP_EOL.PHP_EOL.'Active states :';
 print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
 print 'title : '.$article->getTitle().PHP_EOL.PHP_EOL;
 print 'set some data'.PHP_EOL;
+
 try {
     $article->setTitle('Hello world');
 } catch (\Exception $e) {
     echo $e->getMessage().PHP_EOL;
 }
+
 try {
     $article->setBody('Lorem [b]Ipsum[/b]');
 } catch (\Exception $e) {
     echo $e->getMessage().PHP_EOL;
 }
+
 print 'title : '.$article->getTitle().PHP_EOL;
+
 try {
     print 'body : '.$article->getBodySource().PHP_EOL;
 } catch (\Exception $e) {
     echo $e->getMessage().PHP_EOL;
 }
+
 print PHP_EOL.'publishing...'.PHP_EOL;
 try {
     $article->publishing();
 } catch (\Exception $e) {
     echo $e->getMessage().PHP_EOL;
 }
+
 print 'Active states :';
 print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
 print $article->getTitle().PHP_EOL;
