@@ -137,7 +137,9 @@ class FinderStandard implements FinderInterface
     {
         $stateClassName = $this->_statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
         if (!class_exists($stateClassName, false)) {
-            $statePath = $this->_pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php';
+            $statePath = $this->_pathString
+                            .DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH
+                            .DIRECTORY_SEPARATOR.$stateName.'.php';
 
             if (!is_readable($statePath)) {
                 throw new Exception\UnReadablePath('Error, the state "'.$stateName.'" was not found');
@@ -168,7 +170,9 @@ class FinderStandard implements FinderInterface
 
         $stateObject = new $stateClassName;
         if (!$stateObject instanceof States\StateInterface) {
-            throw new Exception\IllegalState('Error, the state "'.$stateName.'" does not implement the interface "States\StateInterface"');
+            throw new Exception\IllegalState(
+                'Error, the state "'.$stateName.'" does not implement the interface "States\StateInterface"'
+            );
         }
 
         return $stateObject;
@@ -209,7 +213,9 @@ class FinderStandard implements FinderInterface
 
             include_once($proxyPath);
             if (!class_exists($proxyClassName, false)) {
-                throw new Exception\IllegalProxy('Error, the proxy of "'.$this->_statedClassName.'" must be called <StatedClassName>\''.$classPartName);
+                throw new Exception\IllegalProxy(
+                    'Error, the proxy of "'.$this->_statedClassName.'" must be called <StatedClassName>\''.$classPartName
+                );
             } else {
                 //To access to this class directly without repeat the stated class name
                 class_alias($proxyClassName, $this->_statedClassName);
@@ -237,6 +243,8 @@ class FinderStandard implements FinderInterface
         }
 
         //Throw an error
-        throw new Exception\IllegalProxy('Error, the proxy of "'.$this->_statedClassName.'" does not implement "Proxy\ProxyInterface"');
+        throw new Exception\IllegalProxy(
+            'Error, the proxy of "'.$this->_statedClassName.'" does not implement "Proxy\ProxyInterface"'
+        );
     }
 }

@@ -63,14 +63,17 @@ class LoaderStandard implements LoaderInterface
     /**
      * Initialize the loader object
      * @param IncludePathManagerInterface $includePathManager
-     * @throws Exception\IllegalArgument $includePathManager does not implement the interface  IncludePathManagerInterface
+     * @throws Exception\IllegalArgument $includePathManager does not implement the interface IncludePathManagerInterface
      */
     public function __construct($includePathManager)
     {
         if (!$includePathManager instanceof IncludePathManagerInterface) {
-            throw new Exception\IllegalArgument('Error, the include path manager does not implement the interface IncludePathManagerInterface');
+            throw new Exception\IllegalArgument(
+                'Error, the include path manager does not implement the interface IncludePathManagerInterface'
+            );
         }
 
+        //Initialize the object
         $this->_includedPathsArray = new \ArrayObject();
         $this->_namespacesArray = new \ArrayObject();
         $this->_previousIncludedPathStack = new \SplStack();
@@ -145,10 +148,12 @@ class LoaderStandard implements LoaderInterface
             throw new Exception\IllegalArgument('Error, the path is not a valid string');
         }
 
+        //Prepend the namespace with "\" to avoid mismatchig error
         if ('\\' != $namespace[0]) {
             $namespace = '\\'.$namespace;
         }
 
+        //Initialize the stack of paths for this namespace
         if (!isset($this->_namespacesArray[$namespace])) {
             $this->_namespacesArray[$namespace] = new \SplQueue();
         }
@@ -228,12 +233,16 @@ class LoaderStandard implements LoaderInterface
         //Browse each
         $result = false;
         foreach ($this->_namespacesArray[$namespaceString] as $path) {
+            //Compute the factory file of the stated class
             $factoryFile = $path.DIRECTORY_SEPARATOR.$className.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
             if (is_readable($factoryFile)) {
+                //Factory found, load it
                 include_once($factoryFile);
 
+                //Compute factory class name with its namespace
                 $factoryClassName = $namespaceString.'\\'.$className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
                 if (class_exists($factoryClassName, false)) {
+                    //Initialize the factory
                     try {
                         $this->buildFactory($factoryClassName, $class, $path.DIRECTORY_SEPARATOR.$className);
                         $result = true;
@@ -292,13 +301,16 @@ class LoaderStandard implements LoaderInterface
                 if (DIRECTORY_SEPARATOR == $path[0]) {
                     $path = substr($path, 1);
                 }
+                //Compute the factory file of the stated class
                 $factoryClassFile = $path.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
                 if ($this->_testFileExist($factoryClassFile)) {
+                    //Factory found, load it
                     include_once($factoryClassFile);
 
                     if (class_exists($factoryClassName, false)) {
                         //Class found and loaded
                         try {
+                            //Initialize the factory
                             $this->buildFactory($factoryClassName, $className, $path);
                             $classLoaded = true;
                         } catch (\Exception $e) {
@@ -329,12 +341,14 @@ class LoaderStandard implements LoaderInterface
      */
     public function buildFactory($factoryClassName, $statedClassName, $path)
     {
+        //Check if the factory class is loaded
         if (!class_exists($factoryClassName, false)) {
             throw new Exception\UnavailableFactory(
                 'The factory of '.$statedClassName.' is not available'
             );
         }
 
+        //Create a new instance of the factory
         $factoryObject = new $factoryClassName();
         if (!$factoryObject instanceof Factory\FactoryInterface) {
             throw new Exception\IllegalFactory(
@@ -342,11 +356,13 @@ class LoaderStandard implements LoaderInterface
             );
         }
 
+        //clone the di container for this stated class, it will has its own di container
         if ($this->_diContainer instanceof DI\ContainerInterface) {
             $diContainer = clone $this->_diContainer;
             $factoryObject->setDIContainer($diContainer);
         }
 
+        //Call its initialize methods to load the stated class
         $factoryObject->initialize($statedClassName, $path);
         return $factoryObject;
     }

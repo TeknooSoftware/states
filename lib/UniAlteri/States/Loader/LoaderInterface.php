@@ -48,7 +48,7 @@ interface LoaderInterface
     /**
      * Initialize the loader object
      * @param IncludePathManagerInterface $includePathManager
-     * @throws Exception\IllegalArgument $includePathManager does not implement the interface  IncludePathManagerInterface
+     * @throws Exception\IllegalArgument $includePathManager does not implement the interface IncludePathManagerInterface
      */
     public function __construct($includePathManager);
 

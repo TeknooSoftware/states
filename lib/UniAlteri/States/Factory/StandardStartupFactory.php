@@ -79,7 +79,9 @@ class StandardStartupFactory implements StartupFactoryInterface
         }
 
         if (!$factoryObject instanceof FactoryInterface) {
-            throw new Exception\IllegalFactory('Error, the factory object must implement the interface Factory\FactoryInterface');
+            throw new Exception\IllegalFactory(
+                'Error, the factory object must implement the interface Factory\FactoryInterface'
+            );
         }
 
         static::$_factoryRegistry[$factoryIdentifier] = $factoryObject;

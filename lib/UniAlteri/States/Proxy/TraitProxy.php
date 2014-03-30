@@ -95,7 +95,9 @@ trait TraitProxy
                         $activeStateFound = $activeStateObject;
                     } else {
                         //Else, throw an exception
-                        throw new Exception\AvailableSeveralMethodImplementations('Method "'.$methodName.'" has several implementation in different states');
+                        throw new Exception\AvailableSeveralMethodImplementations(
+                            'Method "'.$methodName.'" has several implementation in different states'
+                        );
                     }
                 }
             }
@@ -154,7 +156,9 @@ trait TraitProxy
                 return $returnValues;
             }
 
-            throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available for the state "'.$statesName.'"');
+            throw new Exception\MethodNotImplemented(
+                'Method "'.$methodName.'" is not available for the state "'.$statesName.'"'
+            );
         }
     }
 
@@ -433,7 +437,8 @@ trait TraitProxy
     /**
      * Return the description of the method
      * @param string $methodName
-     * @param string $stateName : Return the description for a specific state of the object, if null, use the current state
+     * @param string $stateName : Return the description for a specific state of the object,
+     *                              if null, use the current state
      * @return \ReflectionMethod
      * @throws Exception\StateNotFound is the state required is not available
      * @throws Exception\InvalidArgument where $methodName or $stateName are not string

@@ -97,7 +97,9 @@ trait TraitFactory
 
             $this->_finder = $this->_diContainer->get(Loader\FinderInterface::DI_FINDER_SERVICE);
             if (!$this->_finder instanceof Loader\FinderInterface) {
-                throw new Exception\UnavailableLoader('Error, the service does not return a finder object for this factory');
+                throw new Exception\UnavailableLoader(
+                    'Error, the service does not return a finder object for this factory'
+                );
             }
         }
 
@@ -182,7 +184,9 @@ trait TraitFactory
         $statesList = array_combine($statesList, $statesList);
         $defaultStatedName = Proxy\ProxyInterface::DEFAULT_STATE_NAME;
         if (!isset($statesList[$defaultStatedName])) {
-            throw new Exception\StateNotFound('Error, the state "'.$defaultStatedName.'" was not found in this stated class');
+            throw new Exception\StateNotFound(
+                'Error, the state "'.$defaultStatedName.'" was not found in this stated class'
+            );
         }
 
         //Check if the require state is available

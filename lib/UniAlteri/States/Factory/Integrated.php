@@ -38,9 +38,12 @@ class Integrated implements FactoryInterface
 
     public function initialize($statedClassName, $path)
     {
+        //Call trait's method to initialize this stated class
         $this->traitInitialize($statedClassName, $path);
+        //Build the factory identifier (the proxy class name)
         $parts = explode('\\', $statedClassName);
         $statedClassName .= '\\'.array_pop($parts);
+        //Register this factory into the startup factory
         StandardStartupFactory::registerFactory($statedClassName, $this);
     }
 }
