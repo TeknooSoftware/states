@@ -24,6 +24,8 @@ use \UniAlteri\States\DI;
 use \UniAlteri\States\Loader;
 use \UniAlteri\States\Factory;
 
+//Needed for test, but we can use your own autloader to load file of this lib.
+//This lib respects PSR-0 and PSR-1
 $iniFile = dirname(dirname(dirname(__DIR__))).DIRECTORY_SEPARATOR.'bootstrap.php';
 if (is_readable($iniFile)) {
     include_once($iniFile);
