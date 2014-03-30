@@ -11,28 +11,32 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
  */
 
-defined('RUN_CLI_MODE')
-    || define('RUN_CLI_MODE', true);
-
-defined('PHPUNIT')
-    || define('PHPUNIT', true);
-
-ini_set('memory_limit', '128M');
-
-require_once (dirname(__DIR__).DIRECTORY_SEPARATOR.'bootstrap.php');
+defined('DS')
+    || define('DS', DIRECTORY_SEPARATOR);
 
 //Update included Path for spl autoload
 set_include_path(
-    __DIR__
+    __DIR__.DS.'lib'
+    .PATH_SEPARATOR
+    .__DIR__.DS.'vendor'.DS.'pimple'.DS.'pimple'.DS.'lib'
     .PATH_SEPARATOR
     .get_include_path()
 );
 
-date_default_timezone_set('Europe/Paris');
+//Use default spl autoloader, UA States lib use PSR-0 standards
+spl_autoload_register(
+    function ($className) {
+        $path = str_replace(array('\\', '_'), '/', $className).'.php';
+        $a = get_include_path();
+        include_once($path);
+        $included = class_exists($className, false);
+        return $included;
+    },
+    true
+);

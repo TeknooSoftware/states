@@ -19,9 +19,15 @@
 
 namespace UniAlteri\States;
 
+use \UniAlteri\States\Exception;
 use \UniAlteri\States\DI;
 use \UniAlteri\States\Loader;
 use \UniAlteri\States\Factory;
+
+$iniFile = dirname(dirname(dirname(__DIR__))).DIRECTORY_SEPARATOR.'bootstrap.php';
+if (is_readable($iniFile)) {
+    include_once($iniFile);
+}
 
 //Initial DI Container
 $diContainer = new DI\Container();
@@ -30,8 +36,13 @@ $diContainer = new DI\Container();
 /**
  * @param DI\ContainerInterface $container
  * @return Loader\FinderIntegrated
+ * @throws Exception\UnavailableFactory if the local factory is not availables
  */
 $finderService = function ($container) {
+    if (false === $container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
+        throw new Exception\UnavailableFactory('Error, the factory is not available into container');
+    }
+
     $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
     return new Loader\FinderIntegrated($factory->getStatedClassName(), $factory->getPath());
 };
@@ -46,17 +57,6 @@ $loader->setDIContainer($diContainer);
 
 //Register loader into container
 $diContainer->registerInstance(Loader\LoaderInterface::DI_LOADER_INSTANCE, $loader);
-
-//Use default spl autoloader, UA States lib use PSR-0 standards
-spl_autoload_register(
-    function ($className) {
-        $path = str_replace(array('\\', '_'), '/', $className).'.php';
-        include_once($path);
-        $included = class_exists($className, false);
-        return $included;
-    },
-    true
-);
 
 //Register autoload function in the spl autoloader stack
 spl_autoload_register(
