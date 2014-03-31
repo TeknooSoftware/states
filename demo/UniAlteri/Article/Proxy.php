@@ -63,6 +63,7 @@ class Article extends Proxy\Integrated
     {
         $this->_data = $data;
         parent::__construct();
+        //If the article is published, load the state Published, else load the state Draft
         if (false === $this->isPublished()) {
             $this->enableState('Draft');
         } else {
