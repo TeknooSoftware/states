@@ -161,37 +161,36 @@ trait TraitState
      */
     protected function _checkVisibility($methodName, $scope)
     {
-        return true;
-        if (!isset($this->_reflectionsMethods[$methodName])) {
-            return false;
+        $visible = false;
+        if (isset($this->_reflectionsMethods[$methodName])) {
+            //Check visibility scope
+            switch ($scope) {
+                case StateInterface::VISIBILITY_PRIVATE:
+                    //Private, can access all
+                    $visible = true;
+                    break;
+                case StateInterface::VISIBILITY_PROTECTED:
+                    //Can not access to private methods
+                    if (false == $this->_reflectionsMethods[$methodName]->isPrivate()) {
+                        //It's a private method, do like if there is no method
+                        $visible = true;
+                    }
+                    break;
+                case StateInterface::VISIBILITY_PUBLIC:
+                    //Can not access to protected and private method.
+                    if (true == $this->_reflectionsMethods[$methodName]->isPublic()) {
+                        //It's not a public method, do like if there is no method
+                        $visible = true;
+                    }
+                    break;
+                default:
+                    //Bad parameter, throws exception
+                    throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
+                    break;
+            }
         }
 
-        //Check visibility scope
-        switch ($scope) {
-            case StateInterface::VISIBILITY_PRIVATE:
-                //Private, can access all
-                break;
-            case StateInterface::VISIBILITY_PROTECTED:
-                //Can not access to private methods
-                if (true == $this->_reflectionsMethods[$methodName]->isPrivate()) {
-                    //It's a private method, do like if there is no method
-                    return false;
-                }
-                break;
-            case StateInterface::VISIBILITY_PUBLIC:
-                //Can not access to protected and private method.
-                if (false == $this->_reflectionsMethods[$methodName]->isPublic()) {
-                    //It's not a public method, do like if there is no method
-                    return false;
-                }
-                break;
-            default:
-                //Bad parameter, throws exception
-                throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
-                break;
-        }
-
-        return true;
+        return $visible;
     }
 
     /**
@@ -219,12 +218,13 @@ trait TraitState
         try {
             //Try extract description
             $this->getMethodDescription($methodName);
-            return $this->_checkVisibility($methodName, $scope);;
         } catch(\Exception $e) {
             //Method not found, store locally the result
             $this->_reflectionsMethods[$methodName] = false;
             return false;
         }
+
+        return $this->_checkVisibility($methodName, $scope);;
     }
 
     /**

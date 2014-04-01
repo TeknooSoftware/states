@@ -221,22 +221,104 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         $this->fail('Error, the state must throws an Exception\InvalidArgument exception if we require a description with an invalid string');
     }
 
+    public function testTestMethodExceptionWithInvalidScope(){
+        try{
+            $this->_getPublicClassObject()->testMethod('standardMethod1', 'badScope');
+        }
+        catch(States\Exception\InvalidArgument $e){
+            return;
+        }
+        catch(\Exception $e){
+        }
+
+        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if we require a description with an invalid string');
+    }
+
     /**
-     * Test the test method this method must throws never an exception, only return false or true
+     * Test if the method exist into the state into the defined scope
      */
-    public function testTestMethod(){
+    public function testTestMethodPrivateScope(){
         $private = $this->_getPrivateClassObject();
-        $this->assertTrue($private->testMethod('_finalMethod9'));
-        $this->assertTrue($private->testMethod('_finalMethod9'));
-        $this->assertTrue($private->testMethod('_standardMethod10'));
-        $this->assertTrue($private->testMethod('_finalMethod11'));
+        $this->assertTrue($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($private->testMethod('_standardMethod10', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($private->testMethod('_finalMethod11', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertFalse($private->testMethod('_staticMethod12', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertFalse($private->testMethod('_staticMethod12', States\StateInterface::VISIBILITY_PRIVATE));
+
+        $this->assertFalse($this->_getProtectedClassObject()->testMethod('_staticMethod5', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->_getProtectedClassObject()->testMethod('_standardMethod6', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->_getProtectedClassObject()->testMethod('_finalMethod7', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->_getProtectedClassObject()->testMethod('_standardMethod8', States\StateInterface::VISIBILITY_PRIVATE));
+
+        $this->assertTrue($this->_getPublicClassObject()->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->_getPublicClassObject()->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertFalse($this->_getPublicClassObject()->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->_getPublicClassObject()->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PRIVATE));
+    }
+
+    /**
+     * Test if the method exist into the state into the defined scope
+     */
+    public function testTestMethodProtectedScope(){
+        $private = $this->_getPrivateClassObject();
+        $this->assertFalse($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertFalse($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertFalse($private->testMethod('_standardMethod10', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertFalse($private->testMethod('_finalMethod11', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertFalse($private->testMethod('_staticMethod12', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertFalse($private->testMethod('_staticMethod12', States\StateInterface::VISIBILITY_PROTECTED));
+
+        $this->assertFalse($this->_getProtectedClassObject()->testMethod('_staticMethod5', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->_getProtectedClassObject()->testMethod('_standardMethod6', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->_getProtectedClassObject()->testMethod('_finalMethod7', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->_getProtectedClassObject()->testMethod('_standardMethod8', States\StateInterface::VISIBILITY_PROTECTED));
+
+        $this->assertTrue($this->_getPublicClassObject()->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->_getPublicClassObject()->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertFalse($this->_getPublicClassObject()->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->_getPublicClassObject()->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PROTECTED));
+    }
+
+    /**
+     * Test if the method exist into the state into the defined scope
+     */
+    public function testTestMethodPublicScope(){
+        $private = $this->_getPrivateClassObject();
+        $this->assertFalse($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($private->testMethod('_standardMethod10', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($private->testMethod('_finalMethod11', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($private->testMethod('_staticMethod12', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($private->testMethod('_staticMethod12', States\StateInterface::VISIBILITY_PUBLIC));
+
+        $this->assertFalse($this->_getProtectedClassObject()->testMethod('_staticMethod5', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($this->_getProtectedClassObject()->testMethod('_standardMethod6', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($this->_getProtectedClassObject()->testMethod('_finalMethod7', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($this->_getProtectedClassObject()->testMethod('_standardMethod8', States\StateInterface::VISIBILITY_PUBLIC));
+
+        $this->assertTrue($this->_getPublicClassObject()->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertTrue($this->_getPublicClassObject()->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($this->_getPublicClassObject()->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertTrue($this->_getPublicClassObject()->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PUBLIC));
+    }
+
+    /**
+     * Test if the method exist into the state into the defined scope
+     */
+    public function testTestMethodDefaultAsPublicScope(){
+        $private = $this->_getPrivateClassObject();
+        $this->assertFalse($private->testMethod('_finalMethod9'));
+        $this->assertFalse($private->testMethod('_finalMethod9'));
+        $this->assertFalse($private->testMethod('_standardMethod10'));
+        $this->assertFalse($private->testMethod('_finalMethod11'));
         $this->assertFalse($private->testMethod('_staticMethod12'));
         $this->assertFalse($private->testMethod('_staticMethod12'));
 
         $this->assertFalse($this->_getProtectedClassObject()->testMethod('_staticMethod5'));
-        $this->assertTrue($this->_getProtectedClassObject()->testMethod('_standardMethod6'));
-        $this->assertTrue($this->_getProtectedClassObject()->testMethod('_finalMethod7'));
-        $this->assertTrue($this->_getProtectedClassObject()->testMethod('_standardMethod8'));
+        $this->assertFalse($this->_getProtectedClassObject()->testMethod('_standardMethod6'));
+        $this->assertFalse($this->_getProtectedClassObject()->testMethod('_finalMethod7'));
+        $this->assertFalse($this->_getProtectedClassObject()->testMethod('_standardMethod8'));
 
         $this->assertTrue($this->_getPublicClassObject()->testMethod('standardMethod1'));
         $this->assertTrue($this->_getPublicClassObject()->testMethod('finalMethod2'));
@@ -293,7 +375,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
-     * Test exception through by state if the closure method is static
+     *
      */
     public function testGetClosureWithInvalidProxy(){
         try{
@@ -306,16 +388,29 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
+     * Test exception through by state if the scope is invalid
+     */
+    public function testGetClosureWithInvalidScope(){
+        try{
+            $this->_getPublicClassObject()->getClosure('standardMethod1', $this->_getVirtualProxy(), 'badScope');
+        } catch (States\Exception\InvalidArgument $e) {
+            return;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if the scope is invalid');
+    }
+
+    /**
      * Test exception through by state if the closure method is static
      */
     public function testGetClosureWithInvalidDiContainer(){
         try{
             $object = $this->_getPublicClassObject(false);
             $object->getClosure('standardMethod1', $this->_getVirtualProxy());
-        }
-        catch(States\Exception\IllegalService $e){
+        } catch (States\Exception\IllegalService $e) {
             return;
-        }
+        } catch (\Exception $e) {}
+
 
         $this->fail('Error, the state must throws an Exception\IllegalService if no Injection Container has been defined before getClosure');
     }
@@ -328,19 +423,165 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
             $object = $this->_getPublicClassObject();
             $object->getDIContainer()->registerService(States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER, null);
             $object->getClosure('standardMethod1', $this->_getVirtualProxy());
-        }
-        catch(States\Exception\IllegalService $e){
+        } catch (States\Exception\IllegalService $e) {
             return;
-        }
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the state must throws an Exception\IllegalService if no DI Container has been defined before getClosure');
     }
 
     /**
+     * Test if the closure can be get into the state into the defined scope
+     */
+    public function testGetClosureWithPrivateScope()
+    {
+        $closure = $this->_getPrivateClassObject()->getClosure(
+            '_standardMethod10',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PRIVATE
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+
+        $closure = $this->_getProtectedClassObject()->getClosure(
+            '_standardMethod6',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PRIVATE
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+
+        $closure = $this->_getPublicClassObject()->getClosure(
+            'standardMethod1',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PRIVATE
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+    }
+
+    /**
+     * Test if the closure can be get into the state into the defined scope
+     */
+    public function testGetClosureWithProtectedScope()
+    {
+        $fail = false;
+        try{
+            $this->_getPrivateClassObject()->getClosure(
+                '_standardMethod10',
+                $this->_getVirtualProxy(),
+                States\StateInterface::VISIBILITY_PROTECTED
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+
+        $this->assertTrue($fail);
+
+        $closure = $this->_getProtectedClassObject()->getClosure(
+            '_standardMethod6',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PROTECTED
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+
+        $closure = $this->_getPublicClassObject()->getClosure(
+            'standardMethod1',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PROTECTED
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+    }
+
+    /**
+     * Test if the closure can be get into the state into the defined scope
+     */
+    public function testGetClosureWithPublicScope()
+    {
+        $fail = false;
+        try{
+            $this->_getPrivateClassObject()->getClosure(
+                '_standardMethod10',
+                $this->_getVirtualProxy(),
+                States\StateInterface::VISIBILITY_PUBLIC
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+
+        $this->assertTrue($fail);
+
+        $fail = false;
+        try{
+            $this->_getProtectedClassObject()->getClosure(
+                '_standardMethod6',
+                $this->_getVirtualProxy(),
+                States\StateInterface::VISIBILITY_PUBLIC
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+
+        $this->assertTrue($fail);
+
+        $closure = $this->_getPublicClassObject()->getClosure(
+            'standardMethod1',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PUBLIC
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+    }
+
+    /**
+     * Test if the closure can be get into the state into the defined scope
+     */
+    public function testGetClosureWithPublicAsDefaultScope()
+    {
+        $fail = false;
+        try{
+            $this->_getPrivateClassObject()->getClosure(
+                '_standardMethod10',
+                $this->_getVirtualProxy()
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+
+        $this->assertTrue($fail);
+
+        $fail = false;
+        try{
+            $this->_getProtectedClassObject()->getClosure(
+                '_standardMethod6',
+                $this->_getVirtualProxy()
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+
+        $this->assertTrue($fail);
+
+        $closure = $this->_getPublicClassObject()->getClosure(
+            'standardMethod1',
+            $this->_getVirtualProxy()
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+    }
+
+    /**
      * Test Closure
      */
-    public function testGetClosure(){
-        $closure = $this->_getProtectedClassObject()->getClosure('_standardMethod6', $this->_getVirtualProxy());
+    public function testCallingAfterGetClosure(){
+        $closure = $this->_getProtectedClassObject()->getClosure(
+            '_standardMethod6',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PROTECTED
+        );
+
         $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
         $this->assertInstanceOf('\Closure', $closure->getClosure());
         $this->assertEquals(3, call_user_func_array($closure->getClosure(), array(1, 2)));
@@ -351,9 +592,23 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
      */
     public function testGetMultipleSameClosures(){
         $projected = $this->_getProtectedClassObject();
-        $closure1 = $projected->getClosure('_standardMethod6', $this->_getVirtualProxy());
-        $closure2 = $projected->getClosure('_finalMethod7', $this->_getVirtualProxy());
-        $closure3 = $projected->getClosure('_standardMethod6', $this->_getVirtualProxy());
+        $closure1 = $projected->getClosure(
+            '_standardMethod6',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PROTECTED
+        );
+
+        $closure2 = $projected->getClosure(
+            '_finalMethod7',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PROTECTED
+        );
+
+        $closure3 = $projected->getClosure(
+            '_standardMethod6',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PROTECTED
+        );
 
         $this->assertSame($closure1, $closure3);
         $this->assertSame($closure1->getClosure(), $closure3->getClosure());
@@ -365,9 +620,23 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
      * Test multiple call go getClosure for the same method
      */
     public function testGetMultipleClosuresMultipleState(){
-        $closure1 = $this->_getProtectedClassObject()->getClosure('_standardMethod6', $this->_getVirtualProxy());
-        $closure2 = $this->_getProtectedClassObject()->getClosure('_finalMethod7', $this->_getVirtualProxy());
-        $closure3 = $this->_getProtectedClassObject()->getClosure('_standardMethod6', $this->_getVirtualProxy());
+        $closure1 = $this->_getProtectedClassObject()->getClosure(
+            '_standardMethod6',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PROTECTED
+        );
+
+        $closure2 = $this->_getProtectedClassObject()->getClosure(
+            '_finalMethod7',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PROTECTED
+        );
+
+        $closure3 = $this->_getProtectedClassObject()->getClosure(
+            '_standardMethod6',
+            $this->_getVirtualProxy(),
+            States\StateInterface::VISIBILITY_PROTECTED
+        );
 
         $this->assertNotSame($closure1, $closure3);
         $this->assertNotSame($closure1->getClosure(), $closure3->getClosure());
