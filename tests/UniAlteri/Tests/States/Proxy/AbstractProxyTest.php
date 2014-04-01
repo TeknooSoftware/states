@@ -657,11 +657,369 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the required state does not exist');
     }
 
-    public function testGetMethodDescription()
+    ///////////////////
+    /////////////////// VISIBILITY TEST ON getMethodDescription
+    ///////////////////
+
+    public function testGetMethodDescriptionFromFunction()
     {
         $this->_initializeProxy('state1', true);
-        $this->assertInstanceOf('\ReflectionMethod', $this->_proxy->getMethodDescription('test'));
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->_proxy;
+
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a function to get a description of a private method
+        $fail = false;
+        try {
+            testGetMethodDescriptionFromFunctionPrivate();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a function to get a description of a protected method
+        $fail = false;
+        try {
+            testGetMethodDescriptionFromFunctionProtected();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a function to get a description of a public method
+        $this->assertInstanceOf('\ReflectionMethod', testGetMethodDescriptionFromFunctionPublic());
     }
+
+    public function testGetMethodDescriptionFromOtherObject()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->_proxy;
+
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of private methods
+        $fail = false;
+        try {
+            $object = new \testGetMethodDescriptionFromOtherObject();
+            $object->privateMethod();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of protected methods
+        $fail = false;
+        try {
+            $object = new \testGetMethodDescriptionFromOtherObject();
+            $object->protectedMethod();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of public methods
+        $object = new \testGetMethodDescriptionFromOtherObject();
+        $this->assertInstanceOf('\ReflectionMethod', $object->publicMethod());
+    }
+
+    public function testGetMethodDescriptionFromChildObject()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->_proxy;
+
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+
+        //Create a temp child class to test
+        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $childClassName = $childClassName.'Child';
+        $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testGetMethodDescriptionTrait; }';
+        eval($code);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of private methods
+        $fail = false;
+        try {
+            $object = new $childClassName();
+            $object->privateMethod();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of protected methods
+        $object = new $childClassName;
+        $this->assertInstanceOf('\ReflectionMethod', $object->protectedMethod());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of public methods
+        $object = new $childClassName;
+        $this->assertInstanceOf('\ReflectionMethod', $object->publicMethod());
+    }
+
+    public function testGetMethodDescriptionFromOtherObjectSameClass()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+
+        //Create a temp child class to test
+        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $childClassName = $childClassName.'Child';
+        $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testGetMethodDescriptionTrait; }';
+        eval($code);
+
+        /**
+         * In this test, use a child proxy and not directly the proxy because we can not add on the fly
+         * method into the proxy to run the test
+         */
+        global $proxy;
+        $proxy = new $childClassName();
+        $proxy->registerState('state1', $this->_state1);
+        $proxy->registerState('state2', $this->_state2);
+        $proxy->registerState('state3', $this->_state3);
+        $proxy->enableState('state1');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class object to get a description of private methods
+        $proxy2 = new $childClassName;
+        $this->assertInstanceOf('\ReflectionMethod', $proxy2->privateMethod());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class object to get a description of protected methods
+        $this->assertInstanceOf('\ReflectionMethod', $proxy2->protectedMethod());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class object to get a description of public methods
+        $this->assertInstanceOf('\ReflectionMethod', $proxy2->publicMethod());
+    }
+
+    public function testGetMethodDescriptionFromThis()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+
+        //Create a temp child class to test
+        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $childClassName = $childClassName.'Child';
+        $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testGetMethodDescriptionTrait; }';
+        eval($code);
+
+        /**
+         * In this test, use a child proxy and not directly the proxy because we can not add on the fly
+         * method into the proxy to run the test
+         */
+        global $proxy;
+        $proxy = new $childClassName();
+        $proxy->registerState('state1', $this->_state1);
+        $proxy->registerState('state2', $this->_state2);
+        $proxy->registerState('state3', $this->_state3);
+        $proxy->enableState('state1');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from $this to get a description of private methods
+        $this->assertInstanceOf('\ReflectionMethod', $proxy->privateMethod());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from $this to get a description of protected methods
+        $this->assertInstanceOf('\ReflectionMethod', $proxy->protectedMethod());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from $this to get a description of public methods
+        $this->assertInstanceOf('\ReflectionMethod', $proxy->publicMethod());
+    }
+
+    public function testGetMethodDescriptionFromStaticOtherClass()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->_proxy;
+
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external class to get a description of private methods
+        $fail = false;
+        try {
+            \testGetMethodDescriptionFromOtherObject::privateMethodStatic();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external class to get a description of protected methods
+        $fail = false;
+        try {
+            \testGetMethodDescriptionFromOtherObject::protectedMethodStatic();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external class to get a description of public methods
+        $this->assertInstanceOf('\ReflectionMethod', \testGetMethodDescriptionFromOtherObject::publicMethodStatic());
+    }
+
+    public function testGetMethodDescriptionFromStaticChildClass()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->_proxy;
+
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+
+        //Create a temp child class to test
+        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $childClassName = $childClassName.'Child';
+        $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testGetMethodDescriptionTrait; }';
+        eval($code);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of private methods
+        $fail = false;
+        try {
+            $childClassName::privateMethodStatic();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of protected methods
+        $this->assertInstanceOf('\ReflectionMethod', $childClassName::protectedMethodStatic());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of public methods
+        $this->assertInstanceOf('\ReflectionMethod', $childClassName::publicMethodStatic());
+    }
+
+    public function testGetMethodDescriptionFromStaticSameClass()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+
+        //Create a temp child class to test
+        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $childClassName = $childClassName.'Child';
+        $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testGetMethodDescriptionTrait; }';
+        eval($code);
+
+        /**
+         * In this test, use a child proxy and not directly the proxy because we can not add on the fly
+         * method into the proxy to run the test
+         */
+        global $proxy;
+        $proxy = new $childClassName();
+        $proxy->registerState('state1', $this->_state1);
+        $proxy->registerState('state2', $this->_state2);
+        $proxy->registerState('state3', $this->_state3);
+        $proxy->enableState('state1');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class to get a description of private methods
+        $this->assertInstanceOf('\ReflectionMethod', $childClassName::privateMethodStatic());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class to get a description of protected methods
+        $this->assertInstanceOf('\ReflectionMethod', $childClassName::protectedMethodStatic());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class to get a description of public methods
+        $this->assertInstanceOf('\ReflectionMethod', $childClassName::publicMethodStatic());
+    }
+
+    public function testGetMethodDescriptionFromClosure()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        $proxy = $this->_proxy;
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a closure to get a description of a private method
+        $fail = false;
+        try {
+            $closure = function () use ($proxy) {
+                return $proxy->getMethodDescription('privateTest');
+            };
+            $closure();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a closure to get a description of a protected method
+        $fail = false;
+        try {
+            $closure = function () use ($proxy) {
+                return $proxy->getMethodDescription('protectedTest');
+            };
+            $closure();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a closure to get a description of a public method
+        $closure = function () use ($proxy) {
+            return $proxy->getMethodDescription('publicTest');
+        };
+        $this->assertInstanceOf('\ReflectionMethod', $closure());
+    }
+
+    public function testGetMethodDescriptionFromClosureBound()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        $proxy = $this->_proxy;
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a bound closure to get a description of a private method
+        $closureOriginal = function () use ($proxy) {
+            return $proxy->getMethodDescription('privateTest');
+        };
+        $closure = \Closure::bind($closureOriginal, $this->_proxy);
+        $this->assertInstanceOf('\ReflectionMethod', $closure());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a bound closure to get a description of a protected method
+        $closureOriginal = function () use ($proxy) {
+            return $proxy->getMethodDescription('protectedTest');
+        };
+        $closure = \Closure::bind($closureOriginal, $this->_proxy);
+        $this->assertInstanceOf('\ReflectionMethod', $closure());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a bound closure to get a description of a public method
+        $closureOriginal = function () use ($proxy) {
+            return $proxy->getMethodDescription('publicTest');
+        };
+        $closure = \Closure::bind($closureOriginal, $this->_proxy);
+        $this->assertInstanceOf('\ReflectionMethod', $closure());
+    }
+
+    //////////////////////////////////////
+    //////////////////////////////////////
+    //////////////////////////////////////
 
     public function testGetMethodDescriptionOfState()
     {

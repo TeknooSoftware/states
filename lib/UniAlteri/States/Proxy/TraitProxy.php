@@ -84,6 +84,7 @@ trait TraitProxy
             throw new Exception\IllegalArgument('Error the methodName is not a string');
         }
 
+        //Get the visibility scope to forbidden call to a protected or private method from not allowed method
         $scopeVisbility = $this->_getVisibilityScope();
 
         $methodsWithStatesArray = explode('Of', $methodName);
@@ -506,6 +507,7 @@ trait TraitProxy
             throw new Exception\InvalidArgument('Error, the state name name is not a valid string');
         }
 
+        //Retrieve the visibility scope
         $scopeVisibility = $this->_getVisibilityScope();
         try{
             if (null === $stateName) {

@@ -142,8 +142,33 @@ class VirtualState implements States\StateInterface
      * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean
      */
-    public function testMethod($methodName, $scope=StateInterface::VISIBILITY_PUBLIC)
+    public function testMethod($methodName, $scope=States\StateInterface::VISIBILITY_PUBLIC)
     {
+        switch ($scope) {
+            case States\StateInterface::VISIBILITY_PRIVATE:
+                //Private, can access all
+                break;
+            case States\StateInterface::VISIBILITY_PROTECTED:
+                //Can not access to private methods
+                if (false !== stripos($methodName, 'private')){
+                    return false;
+                }
+                break;
+            case States\StateInterface::VISIBILITY_PUBLIC:
+                //Can not access to protected and private method.
+                if (false !== stripos($methodName, 'private')){
+                    return false;
+                }
+
+                if (false !== stripos($methodName, 'protected')){
+                    return false;
+                }
+                break;
+            default:
+                //Bad parameter, throws exception
+                throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
+                break;
+        }
         return $this->_methodAllowed;
     }
 
@@ -175,6 +200,32 @@ class VirtualState implements States\StateInterface
     {
         if(false === $this->_methodAllowed){
             throw new Exception\MethodNotImplemented();
+        }
+
+        switch ($scope) {
+            case States\StateInterface::VISIBILITY_PRIVATE:
+                //Private, can access all
+                break;
+            case States\StateInterface::VISIBILITY_PROTECTED:
+                //Can not access to private methods
+                if (false !== stripos($methodName, 'private')){
+                    throw new Exception\MethodNotImplemented();
+                }
+                break;
+            case States\StateInterface::VISIBILITY_PUBLIC:
+                //Can not access to protected and private method.
+                if (false !== stripos($methodName, 'private')){
+                    throw new Exception\MethodNotImplemented();
+                }
+
+                if (false !== stripos($methodName, 'protected')){
+                    throw new Exception\MethodNotImplemented();
+                }
+                break;
+            default:
+                //Bad parameter, throws exception
+                throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
+                break;
         }
 
         if (null === $this->_virtualInjection) {
