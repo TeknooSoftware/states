@@ -139,9 +139,10 @@ class VirtualState implements States\StateInterface
     /**
      * Test if a method exist for this state
      * @param string $methodName
+     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean
      */
-    public function testMethod($methodName)
+    public function testMethod($methodName, $scope=StateInterface::VISIBILITY_PUBLIC)
     {
         return $this->_methodAllowed;
     }
@@ -166,10 +167,11 @@ class VirtualState implements States\StateInterface
      * Return a closure of the required method to use in the proxy
      * @param string $methodName
      * @param Proxy\ProxyInterface $proxy
+     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return DI\InjectionClosureInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    public function getClosure($methodName, $proxy)
+    public function getClosure($methodName, $proxy, $scope=States\StateInterface::VISIBILITY_PUBLIC)
     {
         if(false === $this->_methodAllowed){
             throw new Exception\MethodNotImplemented();

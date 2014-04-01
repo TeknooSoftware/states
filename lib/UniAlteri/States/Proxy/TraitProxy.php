@@ -84,12 +84,14 @@ trait TraitProxy
             throw new Exception\IllegalArgument('Error the methodName is not a string');
         }
 
+        $scopeVisbility = $this->_getVisibilityScope();
+
         $methodsWithStatesArray = explode('Of', $methodName);
         if (1 === count($methodsWithStatesArray)) {
             $activeStateFound = null;
             //No specific state required, browse all enable state to find the method
             foreach ($this->_activesStates as $activeStateObject) {
-                if (true === $activeStateObject->testMethod($methodName)) {
+                if (true === $activeStateObject->testMethod($methodName, $scopeVisbility)) {
                     if (null === $activeStateFound) {
                         //Check if there are only one enable state whom implements this method
                         $activeStateFound = $activeStateObject;
@@ -104,7 +106,7 @@ trait TraitProxy
 
             if (null !== $activeStateFound) {
                 //Method found, extract it
-                $callingClosure = $activeStateFound->getClosure($methodName, $this);
+                $callingClosure = $activeStateFound->getClosure($methodName, $this, $scopeVisbility);
                 //Change current injection
                 $previousClosure = $this->_currentInjectionClosure;
                 $this->_currentInjectionClosure = $callingClosure;
@@ -135,9 +137,9 @@ trait TraitProxy
             $methodName = implode('Of', $methodsWithStatesArray);
 
             $activeStateObject = $this->_activesStates[$statesName];
-            if (true === $activeStateObject->testMethod($methodName)) {
+            if (true === $activeStateObject->testMethod($methodName, $scopeVisbility)) {
                 //Method found, extract it
-                $callingClosure = $activeStateObject->getClosure($methodName, $this);
+                $callingClosure = $activeStateObject->getClosure($methodName, $this, $scopeVisbility);
                 //Change current injection
                 $previousClosure = $this->_currentInjectionClosure;
                 $this->_currentInjectionClosure = $callingClosure;
@@ -219,6 +221,55 @@ trait TraitProxy
     public function getDIContainer()
     {
         return $this->_diContainer;
+    }
+
+    /**
+     * To determine the caller visibility scope to not permit to call protected or private method.
+     * Use debug_backtrace to get the calling stack
+     * @param int $limit To define the caller into the calling stack
+     * @return string|StateInterface::VISIBILITY_PUBLIC|StateInterface::VISIBILITY_PROTECTED|StateInterface::VISIBILITY_PRIVATE
+     */
+    protected function _getVisibilityScope($limit = 5)
+    {
+        //Get the calling stack
+        $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT|DEBUG_BACKTRACE_IGNORE_ARGS, intval($limit));
+
+        if (isset($callingStack[2]['function']) && '__call' !== $callingStack[2]['function']){
+            //Magic method __call add a line into calling stack, but not other magic method
+            $limit--;
+        }
+
+        if (count($callingStack) < $limit) {
+            //Calling stack is corrupted or in unknown state, use default method : public
+            return States\States\StateInterface::VISIBILITY_PUBLIC;
+        }
+
+        $callerLine = array_pop($callingStack);
+
+        if (empty($callerLine['object']) || !is_object($callerLine['object'])) {
+            //Called not from an object, public only
+            return States\States\StateInterface::VISIBILITY_PUBLIC;
+        }
+
+        $caller = $callerLine['object'];
+
+        if ($this === $caller) {
+            //It's me ! Mario ! Private
+            return States\States\StateInterface::VISIBILITY_PRIVATE;
+        }
+
+        if (get_class($this) === get_class($caller)) {
+            //Its a brother (another instance of an single class), Private
+            return States\States\StateInterface::VISIBILITY_PRIVATE;
+        }
+
+        if ($caller instanceof $this) {
+            //Its a child class, Protected
+            return States\States\StateInterface::VISIBILITY_PROTECTED;
+        }
+
+        //All another case (not same class), public
+        return States\States\StateInterface::VISIBILITY_PUBLIC;
     }
 
     /**
@@ -455,11 +506,12 @@ trait TraitProxy
             throw new Exception\InvalidArgument('Error, the state name name is not a valid string');
         }
 
+        $scopeVisibility = $this->_getVisibilityScope();
         try{
             if (null === $stateName) {
                 //Browse all state to find the method
                 foreach ($this->_states as $stateObject) {
-                    if ($stateObject->testMethod($methodName)) {
+                    if ($stateObject->testMethod($methodName, $scopeVisibility)) {
                         return $stateObject->getMethodDescription($methodName);
                     }
                 }
@@ -467,7 +519,7 @@ trait TraitProxy
 
             if (null !== $stateName && isset($this->_states[$stateName])) {
                 //Retrieve description from the required state
-                if ($this->_states[$stateName]->testMethod($methodName)) {
+                if ($this->_states[$stateName]->testMethod($methodName, $scopeVisibility)) {
                     return $this->_states[$stateName]->getMethodDescription($methodName);
                 }
             } elseif(null !== $stateName) {

@@ -76,14 +76,15 @@ trait TraitState
     protected $_methodsNamesToIgnoreArray = array(
         '__construct'                   => '__construct', //Ignore not accessible from proxy
         '__destruct'                    => '__destruct',
+        '_getReflectionClass'           => '_getReflectionClass',
+        '_buildInjectionClosureObject'  => '_buildInjectionClosureObject',
+        '_checkVisibility'              => '_checkVisibility',
         'setDIContainer'                => 'setDIContainer',
         'getDIContainer'                => 'getDIContainer',
         'listMethods'                   => 'listMethods',
         'testMethod'                    => 'testMethod',
         'getMethodDescription'          => 'getMethodDescription',
-        'getClosure'                    => 'getClosure',
-        '_getReflectionClass'           => '_getReflectionClass',
-        '_buildInjectionClosureObject'  => '_buildInjectionClosureObject'
+        'getClosure'                    => 'getClosure'
     );
 
     /**
@@ -152,12 +153,55 @@ trait TraitState
     }
 
     /**
+     * Check if the method is available in the scope
+     * @param string $methodName
+     * @param string $scope
+     * @return bool
+     * @throws Exception\InvalidArgument
+     */
+    protected function _checkVisibility($methodName, $scope)
+    {
+        return true;
+        if (!isset($this->_reflectionsMethods[$methodName])) {
+            return false;
+        }
+
+        //Check visibility scope
+        switch ($scope) {
+            case StateInterface::VISIBILITY_PRIVATE:
+                //Private, can access all
+                break;
+            case StateInterface::VISIBILITY_PROTECTED:
+                //Can not access to private methods
+                if (true == $this->_reflectionsMethods[$methodName]->isPrivate()) {
+                    //It's a private method, do like if there is no method
+                    return false;
+                }
+                break;
+            case StateInterface::VISIBILITY_PUBLIC:
+                //Can not access to protected and private method.
+                if (false == $this->_reflectionsMethods[$methodName]->isPublic()) {
+                    //It's not a public method, do like if there is no method
+                    return false;
+                }
+                break;
+            default:
+                //Bad parameter, throws exception
+                throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
+                break;
+        }
+
+        return true;
+    }
+
+    /**
      * Test if a method exist for this state
      * @param string $methodName
+     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName)
+    public function testMethod($methodName, $scope=StateInterface::VISIBILITY_PUBLIC)
     {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
@@ -166,7 +210,7 @@ trait TraitState
         //Method is already extracted
         if (isset($this->_reflectionsMethods[$methodName])) {
             if ($this->_reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
-                return true;
+                return $this->_checkVisibility($methodName, $scope);
             } else {
                 return false;
             }
@@ -175,7 +219,7 @@ trait TraitState
         try {
             //Try extract description
             $this->getMethodDescription($methodName);
-            return true;
+            return $this->_checkVisibility($methodName, $scope);;
         } catch(\Exception $e) {
             //Method not found, store locally the result
             $this->_reflectionsMethods[$methodName] = false;
@@ -256,13 +300,14 @@ trait TraitState
      * Return a closure of the required method to use in the proxy
      * @param string $methodName
      * @param Proxy\ProxyInterface $proxy
+     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return DI\InjectionClosureInterface
-     * @throws Exception\MethodNotImplemented is the method does not exist
+     * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
      * @throws Exception\InvalidArgument when the method name is not a string
      * @throws Exception\IllegalProxy when the proxy does not implement the good interface
      * @throws Exception\IllegalService when there are no DI Container or Injection Closure Container bought
      */
-    public function getClosure($methodName, $proxy)
+    public function getClosure($methodName, $proxy, $scope=StateInterface::VISIBILITY_PUBLIC)
     {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
@@ -290,6 +335,13 @@ trait TraitState
             $injectionClosure = $this->_buildInjectionClosureObject()->setClosure($closure);
             $injectionClosure->setDIContainer($this->getDIContainer());
             $this->_closuresObjects[$methodName] = $injectionClosure;
+        }
+
+        //Check visibility scope
+        if (false === $this->_checkVisibility($methodName, $scope)) {
+            throw new Exception\MethodNotImplemented(
+                'Method "'.$methodName.'" is not available for this state'
+            );
         }
 
         return $this->_closuresObjects[$methodName];

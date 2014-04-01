@@ -36,6 +36,21 @@ interface StateInterface
     const INJECTION_CLOSURE_SERVICE_IDENTIFIER = 'injectionClosureService';
 
     /**
+     * Const to get a closure into a public scope
+     */
+    const VISIBILITY_PUBLIC = 'public';
+
+    /**
+     * Const to get a closure into a protected scope
+     */
+    const VISIBILITY_PROTECTED = 'protected';
+
+    /**
+     * Const to get a closure into a private scope
+     */
+    const VISIBILITY_PRIVATE = 'private';
+
+    /**
      * Register a DI container for this object
      * @param DI\ContainerInterface $container
      * @return $this
@@ -57,10 +72,11 @@ interface StateInterface
     /**
      * Test if a method exist for this state
      * @param string $methodName
+     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName);
+    public function testMethod($methodName, $scope=StateInterface::VISIBILITY_PUBLIC);
 
     /**
      * Return the description of a method to configure the behavior of the proxy
@@ -75,11 +91,12 @@ interface StateInterface
      * Return a closure of the required method to use in the proxy
      * @param string $methodName
      * @param Proxy\ProxyInterface $proxy
+     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return DI\InjectionClosureInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws Exception\InvalidArgument when the method name is not a string
      * @throws Exception\IllegalProxy when the proxy does not implement the good interface
      * @throws Exception\IllegalService when there are no DI Container or Injection Closure Container bought
      */
-    public function getClosure($methodName, $proxy);
+    public function getClosure($methodName, $proxy, $scope=StateInterface::VISIBILITY_PUBLIC);
 }
