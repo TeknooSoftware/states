@@ -668,7 +668,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Build temp func to test proxy behavior with scope visibility
         //from a function to get a description of a private method
@@ -702,7 +702,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Build temp func to test proxy behavior with scope visibility
         //from a external object to get a description of private methods
@@ -739,7 +739,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Create a temp child class to test
         $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
@@ -773,7 +773,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy('state1', true);
         //To access to the proxy in the method
-        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Create a temp child class to test
         $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
@@ -810,7 +810,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy('state1', true);
         //To access to the proxy in the method
-        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Create a temp child class to test
         $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
@@ -849,7 +849,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Build temp func to test proxy behavior with scope visibility
         //from a external class to get a description of private methods
@@ -883,7 +883,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Create a temp child class to test
         $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
@@ -914,7 +914,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy('state1', true);
         //To access to the proxy in the method
-        include_once('UniAlteri/Tests/Support/TestVisibilityFunctions.php');
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Create a temp child class to test
         $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
@@ -1027,6 +1027,430 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->_state2->allowMethod();
         $this->assertInstanceOf('\ReflectionMethod', $this->_proxy->getMethodDescription('test', 'state2'));
     }
+
+    ///////////////////
+    /////////////////// VISIBILITY TEST ON getMethodDescription
+    ///////////////////
+
+    public function testCallFromFunction()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->_proxy;
+
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a function to get a description of a private method
+        $fail = false;
+        try {
+            testCallFromFunctionPrivate();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a function to get a description of a protected method
+        $fail = false;
+        try {
+            testCallFromFunctionProtected();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a function to get a description of a public method
+        testCallFromFunctionPublic();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+    }
+
+    public function testCallFromOtherObject()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->_proxy;
+
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of private methods
+        $fail = false;
+        try {
+            $object = new \testCallFromOtherObject();
+            $object->privateMethod();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of protected methods
+        $fail = false;
+        try {
+            $object = new \testCallFromOtherObject();
+            $object->protectedMethod();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of public methods
+        $object = new \testCallFromOtherObject();
+        $object->publicMethod();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+    }
+
+    public function testCallFromChildObject()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->_proxy;
+
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
+
+        //Create a temp child class to test
+        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $childClassName = $childClassName.'Child';
+        $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testCallTrait; }';
+        eval($code);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of private methods
+        $fail = false;
+        try {
+            $object = new $childClassName();
+            $object->privateMethod();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of protected methods
+        $object = new $childClassName;
+        $object->protectedMethod();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('protectedTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of public methods
+        $object = new $childClassName;
+        $object->publicMethod();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+    }
+
+    public function testCallFromOtherObjectSameClass()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
+
+        //Create a temp child class to test
+        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $childClassName = $childClassName.'Child';
+        $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testCallTrait; }';
+        eval($code);
+
+        /**
+         * In this test, use a child proxy and not directly the proxy because we can not add on the fly
+         * method into the proxy to run the test
+         */
+        global $proxy;
+        $proxy = new $childClassName();
+        $proxy->registerState('state1', $this->_state1);
+        $proxy->registerState('state2', $this->_state2);
+        $proxy->registerState('state3', $this->_state3);
+        $proxy->enableState('state1');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class object to get a description of private methods
+        $proxy2 = new $childClassName;
+        $proxy2->privateMethod();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('proxyTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class object to get a description of protected methods
+        $proxy2->protectedMethod();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('protectedTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class object to get a description of public methods
+        $proxy2->publicMethod();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+    }
+
+    public function testCallFromThis()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
+
+        //Create a temp child class to test
+        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $childClassName = $childClassName.'Child';
+        $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testCallTrait; }';
+        eval($code);
+
+        /**
+         * In this test, use a child proxy and not directly the proxy because we can not add on the fly
+         * method into the proxy to run the test
+         */
+        global $proxy;
+        $proxy = new $childClassName();
+        $proxy->registerState('state1', $this->_state1);
+        $proxy->registerState('state2', $this->_state2);
+        $proxy->registerState('state3', $this->_state3);
+        $proxy->enableState('state1');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from $this to get a description of private methods
+        $proxy->privateMethod();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('privateTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from $this to get a description of protected methods
+        $proxy->protectedMethod();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('protectedTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from $this to get a description of public methods
+        $proxy->publicMethod();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+    }
+
+    public function testCallFromStaticOtherClass()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->_proxy;
+
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external class to get a description of private methods
+        $fail = false;
+        try {
+            \testCallFromOtherObject::privateMethodStatic();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external class to get a description of protected methods
+        $fail = false;
+        try {
+            \testCallFromOtherObject::protectedMethodStatic();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external class to get a description of public methods
+        \testCallFromOtherObject::publicMethodStatic();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+    }
+
+    public function testCallFromStaticChildClass()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->_proxy;
+
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
+
+        //Create a temp child class to test
+        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $childClassName = $childClassName.'Child';
+        $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testCallTrait; }';
+        eval($code);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of private methods
+        $fail = false;
+        try {
+            $childClassName::privateMethodStatic();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of protected methods
+        $childClassName::protectedMethodStatic();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('protectedTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a external object to get a description of public methods
+        $childClassName::publicMethodStatic();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+    }
+
+    public function testCallFromStaticSameClass()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
+
+        //Create a temp child class to test
+        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $childClassName = $childClassName.'Child';
+        $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testCallTrait; }';
+        eval($code);
+
+        /**
+         * In this test, use a child proxy and not directly the proxy because we can not add on the fly
+         * method into the proxy to run the test
+         */
+        global $proxy;
+        $proxy = new $childClassName();
+        $proxy->registerState('state1', $this->_state1);
+        $proxy->registerState('state2', $this->_state2);
+        $proxy->registerState('state3', $this->_state3);
+        $proxy->enableState('state1');
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class to get a description of private methods
+        $childClassName::privateMethodStatic();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('privateTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class to get a description of protected methods
+        $childClassName::protectedMethodStatic();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('protectedTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a same class to get a description of public methods
+        $childClassName::publicMethodStatic();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+    }
+
+    public function testCallFromClosure()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        $proxy = $this->_proxy;
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a closure to get a description of a private method
+        $fail = false;
+        try {
+            $closure = function () use ($proxy) {
+                return $proxy->privateTest();
+            };
+            $closure();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a closure to get a description of a protected method
+        $fail = false;
+        try {
+            $closure = function () use ($proxy) {
+                return $proxy->protectedTest();
+            };
+            $closure();
+        } catch (Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {}
+        $this->assertTrue($fail);
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a closure to get a description of a public method
+        $closure = function () use ($proxy) {
+            return $proxy->publicTest();
+        };
+        $closure();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+    }
+
+    public function testCallFromClosureBound()
+    {
+        $this->_initializeProxy('state1', true);
+        //To access to the proxy in the method
+        $proxy = $this->_proxy;
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a bound closure to get a description of a private method
+        $closureOriginal = function () use ($proxy) {
+            return $proxy->privateTest();
+        };
+        $closure = \Closure::bind($closureOriginal, $this->_proxy);
+        $closure();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('privateTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a bound closure to get a description of a protected method
+        $closureOriginal = function () use ($proxy) {
+            return $proxy->protectedTest();
+        };
+        $closure = \Closure::bind($closureOriginal, $this->_proxy);
+        $closure();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('protectedTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+
+        //Build temp func to test proxy behavior with scope visibility
+        //from a bound closure to get a description of a public method
+        $closureOriginal = function () use ($proxy) {
+            return $proxy->publicTest();
+        };
+        $closure = \Closure::bind($closureOriginal, $this->_proxy);
+        $closure();
+        $this->assertTrue($this->_state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->_state1->getCalledArguments());
+    }
+
+    //////////////////////////////////////
+    //////////////////////////////////////
+    //////////////////////////////////////
 
     public function testInvokeNonImplemented()
     {
