@@ -224,7 +224,7 @@ trait TraitState
             return false;
         }
 
-        return $this->_checkVisibility($methodName, $scope);;
+        return $this->_checkVisibility($methodName, $scope);
     }
 
     /**
