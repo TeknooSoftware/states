@@ -243,6 +243,7 @@ trait TraitProxy
         }
 
         if (count($callingStack) >= $limit) {
+            //If size of the calling stack is less : called from main php file, or corrupted stack : apply default behavior : Public
             $callerLine = array_pop($callingStack);
 
             if (!empty($callerLine['object']) && is_object($callerLine['object'])) {
