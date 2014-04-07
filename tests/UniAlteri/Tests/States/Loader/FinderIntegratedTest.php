@@ -28,7 +28,6 @@ use UniAlteri\Tests\Support;
 
 class FinderIntegratedTest extends FinderStandardTest
 {
-
     /**
      * Initialize the finder for test
      * @param string $statedClassName

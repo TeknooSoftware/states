@@ -228,7 +228,9 @@ trait TraitProxy
      * To determine the caller visibility scope to not permit to call protected or private method.
      * Use debug_backtrace to get the calling stack
      * @param int $limit To define the caller into the calling stack
-     * @return string|StateInterface::VISIBILITY_PUBLIC|StateInterface::VISIBILITY_PROTECTED|StateInterface::VISIBILITY_PRIVATE
+     * @return string Return :  States\States\StateInterface::VISIBILITY_PUBLIC
+     *                          States\States\StateInterface::VISIBILITY_PROTECTED
+     *                          States\States\StateInterface::VISIBILITY_PRIVATE
      */
     protected function _getVisibilityScope($limit = 5)
     {
@@ -240,36 +242,51 @@ trait TraitProxy
             $limit--;
         }
 
-        if (count($callingStack) < $limit) {
-            //Calling stack is corrupted or in unknown state, use default method : public
-            return States\States\StateInterface::VISIBILITY_PUBLIC;
-        }
+        if (count($callingStack) >= $limit) {
+            $callerLine = array_pop($callingStack);
 
-        $callerLine = array_pop($callingStack);
+            if (!empty($callerLine['object']) && is_object($callerLine['object'])) {
+                //It is an object
+                $callerObject = $callerLine['object'];
 
-        if (empty($callerLine['object']) || !is_object($callerLine['object'])) {
-            //Called not from an object, public only
-            return States\States\StateInterface::VISIBILITY_PUBLIC;
-        }
+                if ($this === $callerObject) {
+                    //It's me ! Mario ! Private
+                    return States\States\StateInterface::VISIBILITY_PRIVATE;
+                }
 
-        $caller = $callerLine['object'];
+                if (get_class($this) === get_class($callerObject)) {
+                    //Its a brother (another instance of an single class), Private
+                    return States\States\StateInterface::VISIBILITY_PRIVATE;
+                }
 
-        if ($this === $caller) {
-            //It's me ! Mario ! Private
-            return States\States\StateInterface::VISIBILITY_PRIVATE;
-        }
+                if ($callerObject instanceof $this) {
+                    //Its a child class, Protected
+                    return States\States\StateInterface::VISIBILITY_PROTECTED;
+                }
 
-        if (get_class($this) === get_class($caller)) {
-            //Its a brother (another instance of an single class), Private
-            return States\States\StateInterface::VISIBILITY_PRIVATE;
-        }
+                //All another case (not same class), public
+                return States\States\StateInterface::VISIBILITY_PUBLIC;
+            }
 
-        if ($caller instanceof $this) {
-            //Its a child class, Protected
-            return States\States\StateInterface::VISIBILITY_PROTECTED;
+            if (!empty($callerLine['class']) && is_string($callerLine['class']) && class_exists($callerLine['class'], false)) {
+                //It is an class
+                $callerName = $callerLine['class'];
+                $thisClassName = \get_class($this);
+
+                if (is_subclass_of($callerName, $thisClassName, true)) {
+                    //Its a child class, Protected
+                    return States\States\StateInterface::VISIBILITY_PROTECTED;
+                }
+
+                if (is_a($callerName, $thisClassName, true)) {
+                    //Its this class, private
+                    return States\States\StateInterface::VISIBILITY_PRIVATE;
+                }
+            }
         }
 
         //All another case (not same class), public
+        //Info, If Calling stack is corrupted or in unknown state (the stack's size is less than the excepted size), use default method : public
         return States\States\StateInterface::VISIBILITY_PUBLIC;
     }
 
@@ -508,7 +525,7 @@ trait TraitProxy
         }
 
         //Retrieve the visibility scope
-        $scopeVisibility = $this->_getVisibilityScope();
+        $scopeVisibility = $this->_getVisibilityScope(3);
         try{
             if (null === $stateName) {
                 //Browse all state to find the method

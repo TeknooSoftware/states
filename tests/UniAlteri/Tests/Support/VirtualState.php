@@ -228,8 +228,9 @@ class VirtualState implements States\StateInterface
                 break;
         }
 
+        $this->_methodName = $methodName;
+
         if (null === $this->_virtualInjection) {
-            $this->_methodName = $methodName;
             $this->_closure = \Closure::bind($this->_closure, $proxy, get_class($proxy));
             $injection = new VirtualInjectionClosure();
             $injection->setClosure($this->_closure);
