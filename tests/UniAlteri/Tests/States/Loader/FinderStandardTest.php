@@ -334,11 +334,6 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the finder must throw an exception Exception\IllegalProxy when the proxy class was not found.');
     }
 
-    public function testLoad()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
     public function testBuildProxySpecificBadClass()
     {
         $this->_initializeFind('Class3', $this->_statedClass3Path);
