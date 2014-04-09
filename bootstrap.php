@@ -51,6 +51,8 @@ spl_autoload_register(
                 return $included;
             }
         }
+
+        return false;
     },
     true
 );

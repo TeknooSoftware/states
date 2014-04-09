@@ -106,3 +106,9 @@ print 'Active states :';
 print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
 print $article->getTitle().PHP_EOL;
 print $article->getFormattedBody().PHP_EOL;
+
+try {
+    $article->_getDate();
+} catch (\Exception $e) {
+    echo $e->getMessage().PHP_EOL;
+}

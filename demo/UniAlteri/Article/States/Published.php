@@ -45,4 +45,12 @@ class Published extends States\AbstractState
             $body
         );
     }
+
+    /**
+     * Fake method not callable in public scope
+     */
+    protected function _getDate()
+    {
+
+    }
 }
