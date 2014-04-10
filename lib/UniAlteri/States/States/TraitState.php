@@ -13,6 +13,7 @@
  * @package     States
  * @subpackage  States
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
  * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
@@ -89,6 +90,7 @@ trait TraitState
 
     /**
      * Build the ReflectionClass for the current object
+     * @api
      * @return \ReflectionClass
      */
     protected function _getReflectionClass()
@@ -154,6 +156,7 @@ trait TraitState
 
     /**
      * Check if the method is available in the scope
+     * @api
      * @param string $methodName
      * @param string $scope
      * @return bool
@@ -278,6 +281,7 @@ trait TraitState
 
     /**
      * Build a new Injection Closure object
+     * @api
      * @return DI\InjectionClosureInterface
      * @throws Exception\IllegalService when there are no DI Container or Injection Closure Container bought
      */

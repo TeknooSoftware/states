@@ -13,6 +13,7 @@
  * @package     States
  * @subpackage  Loader
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
  * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
@@ -23,6 +24,8 @@ namespace UniAlteri\States\Loader;
 /**
  * Interface IncludedPathManagementInterface
  * @package UniAlteri\States\Loader
+ * @api
+ *
  * Interface to define manager object to manage set_included_path and unit test this section
  */
 interface IncludePathManagerInterface

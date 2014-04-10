@@ -13,6 +13,7 @@
  * @package     States
  * @subpackage  Loader
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
  * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
@@ -28,6 +29,8 @@ use \UniAlteri\States\Proxy;
 /**
  * Class FinderStandard
  * @package UniAlteri\States\Loader
+ * @api
+ *
  * Default implementation of the finder. It is used with this library to find and load
  * from each stated class all states and the proxy
  */

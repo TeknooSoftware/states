@@ -13,6 +13,7 @@
  * @package     States
  * @subpackage  Loader
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
  * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
@@ -26,6 +27,8 @@ use \UniAlteri\States\Factory;
 /**
  * Interface LoaderInterface
  * @package UniAlteri\States\Loader
+ * @api
+ *
  * Interface to define a "stated class autoloader" to allow php to load stated class
  */
 interface LoaderInterface

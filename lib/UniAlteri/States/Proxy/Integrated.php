@@ -13,6 +13,7 @@
  * @package     States
  * @subpackage  Proxy
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
  * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
@@ -56,6 +57,7 @@ class Integrated extends Standard
 
     /**
      * Method called by constructor to initialize this object from the stated class's factory
+     * @api
      * @throws Exception\IllegalFactory
      * @throws Exception\UnavailableFactory
      */

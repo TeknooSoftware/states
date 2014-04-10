@@ -13,6 +13,7 @@
  * @package     States
  * @subpackage  Factory
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
  * @license     http://agence.net.ua/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     $Id$
@@ -25,6 +26,8 @@ use \UniAlteri\States\Proxy;
 /**
  * Interface StartupFactoryInterface
  * @package UniAlteri\States\Factory
+ * @api
+ *
  * Interface to define a factory used to initialize a stated object during in constructor.
  * This factory will only find the object's factory to forward to it the call
  */
