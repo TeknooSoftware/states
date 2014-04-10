@@ -70,7 +70,7 @@ interface StateInterface
     public function listMethods();
 
     /**
-     * Test if a method exist for this state
+     * Test if a method exists for this state
      * @param string $methodName
      * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean

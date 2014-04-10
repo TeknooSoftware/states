@@ -41,7 +41,7 @@ trait TraitFactory
     protected $_diContainer = null;
 
     /**
-     * Finder used by this factory to load states and proxy for this states class
+     * Finder used by this factory to load states and proxy for this stated class
      * @var Loader\FinderInterface
      */
     protected $_finder = null;

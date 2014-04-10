@@ -84,7 +84,7 @@ trait TraitProxy
             throw new Exception\IllegalArgument('Error the methodName is not a string');
         }
 
-        //Get the visibility scope to forbidden call to a protected or private method from not allowed method
+        //Get the visibility scope forbidden to call to a protected or private method from not allowed method
         $scopeVisbility = $this->_getVisibilityScope();
 
         $methodsWithStatesArray = explode('Of', $methodName);
@@ -99,7 +99,7 @@ trait TraitProxy
                     } else {
                         //Else, throw an exception
                         throw new Exception\AvailableSeveralMethodImplementations(
-                            'Method "'.$methodName.'" has several implementation in different states'
+                            'Method "'.$methodName.'" has several implementations in different states'
                         );
                     }
                 }
@@ -169,7 +169,7 @@ trait TraitProxy
      * Test if the identifier respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      * @param string $name
      * @return bool
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     protected function _validateName($name)
@@ -256,12 +256,12 @@ trait TraitProxy
                 }
 
                 if (get_class($this) === get_class($callerObject)) {
-                    //Its a brother (another instance of an single class), Private
+                    //It's a brother (another instance of a single class), Private
                     return States\States\StateInterface::VISIBILITY_PRIVATE;
                 }
 
                 if ($callerObject instanceof $this) {
-                    //Its a child class, Protected
+                    //It's a child class, Protected
                     return States\States\StateInterface::VISIBILITY_PROTECTED;
                 }
 
@@ -270,17 +270,17 @@ trait TraitProxy
             }
 
             if (!empty($callerLine['class']) && is_string($callerLine['class']) && class_exists($callerLine['class'], false)) {
-                //It is an class
+                //It is a class
                 $callerName = $callerLine['class'];
                 $thisClassName = \get_class($this);
 
                 if (is_subclass_of($callerName, $thisClassName, true)) {
-                    //Its a child class, Protected
+                    //It's a child class, Protected
                     return States\States\StateInterface::VISIBILITY_PROTECTED;
                 }
 
                 if (is_a($callerName, $thisClassName, true)) {
-                    //Its this class, private
+                    //It's this class, private
                     return States\States\StateInterface::VISIBILITY_PRIVATE;
                 }
             }
@@ -320,7 +320,7 @@ trait TraitProxy
         //Clone states stack
         $clonedStatesArray = new \ArrayObject();
         foreach ($this->_states as $key=>$state) {
-            //Clone each state object
+            //Clone each stated object
             $clonedState = clone $state;
             //Update new stack
             $clonedStatesArray[$key] = $clonedState;
@@ -346,7 +346,7 @@ trait TraitProxy
      * @param string $stateName
      * @param States\States\StateInterface $stateObject
      * @return $this
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerState($stateName, States\States\StateInterface $stateObject)
@@ -362,7 +362,7 @@ trait TraitProxy
      * Remove dynamically a state from this object
      * @param string $stateName
      * @return $this
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\StateNotFound when the state was not found
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
@@ -387,7 +387,7 @@ trait TraitProxy
      * Disable all actives states and load the required states
      * @param string $stateName
      * @return $this
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function switchState($stateName)
@@ -405,7 +405,7 @@ trait TraitProxy
      * @param $stateName
      * @return $this
      * @throws Exception\StateNotFound if $stateName does not exist
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function enableState($stateName)
@@ -425,7 +425,7 @@ trait TraitProxy
      * Disable an active state (not available for calling, but already loaded)
      * @param string $stateName
      * @return $this
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\StateNotFound when the state was not found
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */

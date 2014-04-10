@@ -25,8 +25,8 @@ namespace UniAlteri\States\DI;
  * @package UniAlteri\States\DI
  * Interface to define Injection Closure container to use in this library.
  * An Injection Closure container is used to extract and manipulate all methods of a stated class
- * in the proxy. There containers implement also a "static" mechanism to allow developers to use
- * cleanly static var in there function
+ * in the proxy. These containers implement also a "static" mechanism to allow developers to use
+ * cleanly static var in these functions
  */
 interface InjectionClosureInterface
 {

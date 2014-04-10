@@ -25,11 +25,11 @@ namespace UniAlteri\States\Proxy;
  * @package UniAlteri\States\Proxy
  * Variant of default Proxy class to use in stated class when no proxy are defined in these classes.
  *
- * A stated object is a proxy, configured for its stated class, with its different states objects.
+ * A stated object is a proxy, configured for its stated class, with its different stated objects.
  * It is a proxy because, by default, all calls are redirected to enabled states.
- * $this in all methods of the stated object (also of states'methods) points the proxy object.
+ * $this in all methods of the stated object (also of states' methods) points the proxy object.
  *
- * The library create an alias with the class's proxy name and this default proxy
+ * The library creates an alias with the proxy class name and this default proxy
  * to simulate a dedicated proxy to this class
  *
  * This proxy is a variant of the default proxy to allow developer to create an instance a stated class
@@ -38,7 +38,7 @@ namespace UniAlteri\States\Proxy;
 class Integrated extends Standard
 {
     /**
-     * Class name of the factory to use during set up to initialize this object
+     * Class name of the factory to use in set up to initialize this object
      * @var string
      */
     protected static $_startupFactoryClassName = '\UniAlteri\States\Factory\StandardStartupFactory';
