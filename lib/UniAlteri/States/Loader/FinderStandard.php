@@ -130,7 +130,7 @@ class FinderStandard implements FinderInterface
      * Load the required state object of the stated class
      * @param string $stateName
      * @return string
-     * @throws Exception\UnReadablePath if the state file is not readable
+     * @throws Exception\UnReadablePath if the stated file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
     public function loadState($stateName)
@@ -217,7 +217,7 @@ class FinderStandard implements FinderInterface
                     'Error, the proxy of "'.$this->_statedClassName.'" must be called <StatedClassName>\''.$classPartName
                 );
             } else {
-                //To access to this class directly without repeat the stated class name
+                //To access this class directly without repeat the stated class name
                 class_alias($proxyClassName, $this->_statedClassName);
             }
         }

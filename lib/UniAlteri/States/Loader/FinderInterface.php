@@ -79,7 +79,7 @@ interface FinderInterface
      * Load the required state object of the stated class
      * @param string $stateName
      * @return string
-     * @throws Exception\UnReadablePath if the state file is not readable
+     * @throws Exception\UnReadablePath if the stated file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
     public function loadState($stateName);

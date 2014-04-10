@@ -177,7 +177,7 @@ trait TraitState
                     }
                     break;
                 case StateInterface::VISIBILITY_PUBLIC:
-                    //Can not access to protected and private method.
+                    //Can not access to protect and private method.
                     if (true == $this->_reflectionsMethods[$methodName]->isPublic()) {
                         //It's not a public method, do like if there is no method
                         $visible = true;
@@ -194,7 +194,7 @@ trait TraitState
     }
 
     /**
-     * Test if a method exist for this state
+     * Test if a method exists for this state
      * @param string $methodName
      * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean
@@ -252,7 +252,7 @@ trait TraitState
         }
 
         try {
-            //Load Reflection Methods if it is not already done
+            //Load Reflection Method if it is not already done
             if (!isset($this->_reflectionsMethods[$methodName])) {
                 $methodDescription = $thisReflectionClass->getMethod($methodName);
                 if (false != $methodDescription->isStatic()) {

@@ -28,9 +28,9 @@ use \UniAlteri\States\DI;
  * @package UniAlteri\States\Proxy
  * Interface to define "Proxy Object" used in this library to create stated object.
  *
- * A stated object is a proxy, configured for its stated class, with its different states objects.
+ * A stated object is a proxy, configured for its stated class, with its different stated objects.
  * It is a proxy because, by default, all calls are redirected to enabled states.
- * $this in all methods of the stated object (also of states'methods) points the proxy object.
+ * $this in all methods of the stated object (also of states' methods) points the proxy object.
  */
 interface ProxyInterface extends
     States\ObjectInterface,
@@ -50,7 +50,7 @@ interface ProxyInterface extends
      * @param string $stateName
      * @param States\States\StateInterface $stateObject
      * @return $this
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerState($stateName, States\States\StateInterface $stateObject);
@@ -59,7 +59,7 @@ interface ProxyInterface extends
      * Remove dynamically a state from this object
      * @param string $stateName
      * @return $this
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\StateNotFound when the state was not found
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
@@ -69,7 +69,7 @@ interface ProxyInterface extends
      * Disable all actives states and load the required states
      * @param string $stateName
      * @return $this
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function switchState($stateName);
@@ -79,7 +79,7 @@ interface ProxyInterface extends
      * @param $stateName
      * @return $this
      * @throws Exception\StateNotFound if $stateName does not exist
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function enableState($stateName);
@@ -88,7 +88,7 @@ interface ProxyInterface extends
      * Disable an active state (not available for calling, but already loaded)
      * @param string $stateName
      * @return $this
-     * @throws Exception\IllegalArgument when te identifier is not a string
+     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\StateNotFound when the state was not found
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */

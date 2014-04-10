@@ -27,7 +27,7 @@ use UniAlteri\States\DI;
  * Default "stated object" factory to use with this library to build a new instance
  * of a stated class. This class is used when a stated class does not provide its own factory.
  *
- * The library create an alias with the class's factory name and this default factory
+ * The library creates an alias with the class's factory name and this default factory
  * to simulate a dedicated factory to this class
  */
 class Integrated implements FactoryInterface
