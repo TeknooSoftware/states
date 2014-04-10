@@ -15,7 +15,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States;
@@ -24,9 +24,13 @@ use \UniAlteri\States\DI;
 
 /**
  * Interface ObjectInterface
- * @package UniAlteri\States
- *
  * All stated object must implement this method, even if they use another proxy interface and factory interface.
+ *
+ * @package     States
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 interface ObjectInterface
 {

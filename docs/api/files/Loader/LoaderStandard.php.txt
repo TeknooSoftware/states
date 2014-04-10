@@ -16,7 +16,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Loader;
@@ -26,11 +26,16 @@ use \UniAlteri\States\Factory;
 
 /**
  * Class LoaderStandard
- * @package UniAlteri\States\Loader
- * @api
- *
  * Default implementation of the "stated class autoloader".
  * It is used to allow php to load stated class
+ *
+ * @package     States
+ * @subpackage  Loader
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @api
  */
 class LoaderStandard implements LoaderInterface
 {

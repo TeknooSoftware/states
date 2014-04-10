@@ -16,17 +16,22 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Loader;
 
 /**
  * Class IncludePathManager
- * @package UniAlteri\States\Loader
- * @api
- *
  * Object to manage set_included_path and unit test this section
+ *
+ * @package     States
+ * @subpackage  Loader
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @api
  */
 class IncludePathManager implements IncludePathManagerInterface
 {

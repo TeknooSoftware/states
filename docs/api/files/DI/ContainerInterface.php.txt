@@ -16,15 +16,21 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\DI;
 
 /**
  * Interface ContainerInterface
- * @package UniAlteri\States\DI
  * Interface for dependency injection container to use in this library.
+ *
+ * @package     States
+ * @subpackage  DI
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 interface ContainerInterface
 {

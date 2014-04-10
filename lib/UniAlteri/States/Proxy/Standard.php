@@ -16,14 +16,13 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Proxy;
 
 /**
  * Class Standard
- * @package UniAlteri\States\Proxy
  * Default Proxy class to use in stated class when no proxy are defined in these classes.
  *
  * A stated object is a proxy, configured for its stated class, with its different stated objects.
@@ -32,6 +31,13 @@ namespace UniAlteri\States\Proxy;
  *
  * The library creates an alias with the proxy class's name and this default proxy
  * to simulate a dedicated proxy to this class
+ *
+ * @package     States
+ * @subpackage  Proxy
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class Standard implements ProxyInterface
 {

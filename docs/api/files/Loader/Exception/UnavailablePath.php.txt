@@ -17,7 +17,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Loader\Exception;
@@ -26,8 +26,15 @@ use \UniAlteri\States\Exception;
 
 /**
  * Class UnavailablePath
- * @package UniAlteri\States\Loader\Exception
  * Exception threw when the path is not available (not exist or not readable)
+ *
+ * @package     States
+ * @subpackage  Loader
+ * @category    Exception
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class UnavailablePath extends Exception\UnavailablePath
 {

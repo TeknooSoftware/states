@@ -16,19 +16,24 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\DI;
 
 /**
  * Class InjectionClosure
- * @package UniAlteri\States\DI
- * @api
- *
  * Default Injection Closure container to use to extract and manipulate all methods of a stated class
  * in the proxy. These containers implement also a "static" mechanism to allow developers to use
  * cleanly static var in these functions.
+ *
+ * @package     States
+ * @subpackage  DI
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com> *
+ * @api
  */
 class InjectionClosure implements InjectionClosureInterface
 {

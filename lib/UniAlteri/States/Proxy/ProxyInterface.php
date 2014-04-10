@@ -16,7 +16,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Proxy;
@@ -26,12 +26,18 @@ use \UniAlteri\States\DI;
 
 /**
  * Interface ProxyInterface
- * @package UniAlteri\States\Proxy
  * Interface to define "Proxy Object" used in this library to create stated object.
  *
  * A stated object is a proxy, configured for its stated class, with its different stated objects.
  * It is a proxy because, by default, all calls are redirected to enabled states.
  * $this in all methods of the stated object (also of states' methods) points the proxy object.
+ *
+ * @package     States
+ * @subpackage  Proxy
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 interface ProxyInterface extends
     States\ObjectInterface,

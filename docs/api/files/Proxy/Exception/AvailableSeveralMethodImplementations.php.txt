@@ -17,7 +17,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Proxy\Exception;
@@ -26,9 +26,16 @@ use \UniAlteri\States\Exception;
 
 /**
  * Class AvailableSeveralMethodImplementations
- * @package UniAlteri\States\Proxy\Exception
  * Exception threw when a stated object is having several implementations a the calling method
  * in different enabled states
+ *
+ * @package     States
+ * @subpackage  Proxy
+ * @category    Exception
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class AvailableSeveralMethodImplementations extends Exception\AvailableSeveralMethodImplementations
 {

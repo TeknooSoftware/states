@@ -16,7 +16,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\States;
@@ -26,9 +26,14 @@ use \UniAlteri\States\Proxy;
 
 /**
  * Class AbstractState
- * @package UniAlteri\States\States
- *
  * Standard implementation of the state interface for state class as a abstract class.
+ *
+ * @package     States
+ * @subpackage  States
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 abstract class AbstractState implements StateInterface
 {

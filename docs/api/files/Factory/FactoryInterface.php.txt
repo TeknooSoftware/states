@@ -16,7 +16,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Factory;
@@ -27,9 +27,15 @@ use \UniAlteri\States\Loader;
 
 /**
  * Interface FactoryInterface
- * @package UniAlteri\States\Factory
  * Interface to define "stated object" factory to use with this library to build a new instance
  * of a stated class.
+ *
+ * @package     States
+ * @subpackage  Factory
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 interface FactoryInterface
 {

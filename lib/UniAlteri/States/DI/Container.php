@@ -16,7 +16,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\DI;
@@ -25,8 +25,14 @@ use UniAlteri\States\DI\Exception;
 
 /**
  * Class Container
- * @package UniAlteri\States\DI
  * Default Dependency Injection Container, build on Pimple used in this library.
+ *
+ * @package     States
+ * @subpackage  DI
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com> *
  */
 class Container extends \Pimple implements ContainerInterface
 {

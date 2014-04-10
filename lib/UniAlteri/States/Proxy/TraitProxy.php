@@ -16,7 +16,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Proxy;
@@ -26,7 +26,6 @@ use \UniAlteri\States;
 
 /**
  * Trait TraitProxy
- * @package UniAlteri\States\Proxy
  * Standard implementation of the "Proxy Object".
  * It is used in this library to create stated object.
  *
@@ -36,6 +35,13 @@ use \UniAlteri\States;
  *
  * It is a trait to allow developer to write theirs owns proxy for theirs stated class,
  * extendable from any class.
+ *
+ * @package     States
+ * @subpackage  Proxy
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 trait TraitProxy
 {

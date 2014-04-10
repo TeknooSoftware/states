@@ -17,7 +17,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Proxy\Exception;
@@ -26,9 +26,16 @@ use \UniAlteri\States\Exception;
 
 /**
  * Class UnavailableClosure
- * @package UniAlteri\States\Proxy\Exception
  * Exception threw when the proxy requires a closure from a state (to use static behavior)
  * but there are no available state.
+ *
+ * @package     States
+ * @subpackage  Proxy
+ * @category    Exception
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class UnavailableClosure extends Exception\UnavailableClosure
 {

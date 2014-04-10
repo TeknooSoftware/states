@@ -17,7 +17,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\DI\Exception;
@@ -26,8 +26,14 @@ use \UniAlteri\States\Exception;
 
 /**
  * Class ClassNotFound
- * @package UniAlteri\States\DI\Exception
  * Exception threw when the required class was not found
+ * @package     States
+ * @subpackage  DI
+ * @category    Exception
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class ClassNotFound extends Exception\ClassNotFound
 {

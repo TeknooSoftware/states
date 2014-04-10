@@ -16,7 +16,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\States;
@@ -26,8 +26,14 @@ use \UniAlteri\States\Proxy;
 
 /**
  * Interface StateInterface
- * @package UniAlteri\States\States
  * Interface to define a state for a stated class. Each state must implements this interface.
+ *
+ * @package     States
+ * @subpackage  States
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 interface StateInterface
 {

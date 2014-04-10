@@ -16,7 +16,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Loader;
@@ -27,11 +27,16 @@ use \UniAlteri\States\Proxy;
 
 /**
  * Interface FinderInterface
- * @package UniAlteri\States\Loader
- * @api
- *
  * Interface to define finder to use with this library to find and load from each stated class
  * all states and the proxy
+ *
+ * @package     States
+ * @subpackage  Loader
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @api
  */
 interface FinderInterface
 {

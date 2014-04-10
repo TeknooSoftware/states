@@ -16,7 +16,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 namespace UniAlteri\States\Factory;
@@ -24,12 +24,18 @@ use UniAlteri\States\DI;
 
 /**
  * Class Integrated
- * @package UniAlteri\States\Factory
  * Default "stated object" factory to use with this library to build a new instance
  * of a stated class. This class is used when a stated class does not provide its own factory.
  *
  * The library creates an alias with the class's factory name and this default factory
  * to simulate a dedicated factory to this class
+ *
+ * @package     States
+ * @subpackage  Factory
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class Integrated implements FactoryInterface
 {

@@ -16,7 +16,7 @@
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     $Id$
+ * @version     0.9.2
  */
 
 /**
@@ -24,6 +24,7 @@
  * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://agence.net.ua)
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  */
 
 namespace UniAlteri\States\States;
@@ -33,10 +34,15 @@ use \UniAlteri\States\Proxy;
 
 /**
  * Class TraitState
- * @package UniAlteri\States\States
  * Standard implementation of the state interface for state class.
- *
  * It's tray to allow developer to implement easily the interface for theirs state class.
+ *
+ * @package     States
+ * @subpackage  States
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 trait TraitState
 {
