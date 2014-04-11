@@ -17,12 +17,25 @@
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
+ *
+ * Mock state file to test finder behavior with a valid state class
  */
 
 namespace Class1\States;
 
 use \UniAlteri\Tests\Support;
 
+/**
+ * Class State4
+ * Mock state file to test finder behavior with a valid state class
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class State4 extends Support\VirtualState
 {
 

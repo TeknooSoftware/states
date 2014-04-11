@@ -17,10 +17,25 @@
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
+ *
+ * Mock state file to test finder behavior when the state class does not implement the Sates interface
+ * \UniAlteri\States\States\StateInterface
  */
 
 namespace Class1\States;
 
+/**
+ * Class State3
+ * Mock state file to test finder behavior when the state class does not implement the Sates interface
+ * \UniAlteri\States\States\StateInterface
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class State3
 {
 

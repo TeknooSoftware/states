@@ -17,10 +17,25 @@
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
+ *
+ * Mock proxy file to test finder behavior when the proxy class does not implement the good interface :
+ * \UniAlteri\States\Proxy\ProxyInterface
  */
 
 namespace Class4;
 
+/**
+ * Class Class4
+ * Mock proxy file to test finder behavior when the proxy class does not implement the good interface :
+ * \UniAlteri\States\Proxy\ProxyInterface
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class Class4
 {
 

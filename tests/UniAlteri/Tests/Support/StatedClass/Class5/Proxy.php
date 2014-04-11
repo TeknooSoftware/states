@@ -17,12 +17,25 @@
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
+ *
+ * Mock proxy file to test finder behavior when the proxy class is valid
  */
 
 namespace Class5;
 
 use \UniAlteri\Tests\Support\VirtualProxy;
 
+/**
+ * Class Class5
+ * Mock proxy file to test finder behavior when the proxy class is valid
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class Class5 extends VirtualProxy
 {
 }

@@ -17,12 +17,31 @@
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
+ *
+ * Mock factory file to test loader behavior when the factory class is missing but its initialize method
+ * throws an exception
+ * This factory is included from namespace definitions registered into loader.
+ * The path is not computed from the class's name following PSR-0 recommendations
  */
 
 namespace UniAlteri\Tests\Support\Loader\Class3;
 
 use \UniAlteri\Tests\Support;
 
+/**
+ * Class FactoryClass
+ * Mock factory file to test loader behavior when the factory class is missing but its initialize method
+ * throws an exception
+ * This factory is included from namespace definitions registered into loader.
+ * The path is not computed from the class's name following PSR-0 recommendations
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class FactoryClass extends Support\VirtualFactory
 {
     /**

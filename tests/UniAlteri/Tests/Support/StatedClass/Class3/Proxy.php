@@ -17,4 +17,6 @@
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
+ *
+ * Mock proxy file to test finder behavior when the proxy class is missing
  */
