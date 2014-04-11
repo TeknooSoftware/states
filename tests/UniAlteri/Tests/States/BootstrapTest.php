@@ -17,6 +17,12 @@
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
+ *
+ * Test behavior of the bootstrap file. It initialize the library :
+ * * Create an instance of the loader
+ * * Create a new instance of the DI Container
+ * * Register the service to build new finders for each stated class
+ * * Register the service to build new injection closure for each stated classes' methods
  */
 
 namespace UniAlteri\Tests\States;
@@ -27,16 +33,36 @@ use UniAlteri\States\Factory;
 use UniAlteri\States\Exception;
 use UniAlteri\Tests\Support;
 
+/**
+ * Class BootstrapTest
+ * Test behavior of the bootstrap file. It initialize the library :
+ * * Create an instance of the loader
+ * * Create a new instance of the DI Container
+ * * Register the service to build new finders for each stated class
+ * * Register the service to build new injection closure for each stated classes' methods
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class BootstrapTest extends \PHPUnit_Framework_TestCase
 {
     public function testLoaderInitialisation()
     {
+        //Call the boostrap, it return the loader
         $loader = include('UniAlteri/States/bootstrap.php');
-        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderStandard', $loader);
 
+        //Check if the loader implements the good interface
+        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $loader);
+
+        //Check if the loader is initialized with a di container
         $container = $loader->getDIContainer();
-        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\Container', $container);
+        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\ContainerInterface', $container);
 
+        //Check if required services are present into the di container
         $this->assertTrue($container->testEntry(Loader\FinderInterface::DI_FINDER_SERVICE));
         $this->assertTrue($container->testEntry(States\States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER));
 
@@ -47,13 +73,15 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {}
 
-        $this->assertTrue($fail);
+        $this->assertTrue($fail, 'Error, the service to create finder must throw exception if the DI Container for the class has not registered factory object');
 
+        //Test behavior of the service to create finder for a stated class
         $container->registerInstance(Factory\FactoryInterface::DI_FACTORY_NAME, new Support\MockFactory());
         $finder = $container->get(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderIntegrated', $finder);
+        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderInterface', $finder);
 
+        //Test behavior of the service to create injection closure
         $injectionClosure = $container->get(States\States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER);
-        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\InjectionClosure', $injectionClosure);
+        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\InjectionClosureInterface', $injectionClosure);
     }
 }
