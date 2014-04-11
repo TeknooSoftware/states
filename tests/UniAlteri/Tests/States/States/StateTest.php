@@ -24,6 +24,18 @@ namespace UniAlteri\Tests\States\States;
 use \UniAlteri\States\Proxy;
 use \UniAlteri\Tests\Support;
 
+/**
+ * Class StateTest
+ * Implementation of AbstractStatesTest to test the trait \UniAlteri\States\States\TraitState and
+ * the abstract class \UniAlteri\States\States\AbstractState
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class StateTest extends AbstractStatesTest
 {
     /**

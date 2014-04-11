@@ -26,6 +26,17 @@ use \UniAlteri\States\Proxy;
 use \UniAlteri\States\States;
 use \UniAlteri\Tests\Support;
 
+/**
+ * Class AbstractStatesTest
+ * Set of tests to test the excepted behaviors of all implementations of \UniAlteri\States\States\StateInterface *
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
 
     /**
@@ -54,6 +65,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
      * @return Proxy\ProxyInterface
      */
     abstract protected function _getMockProxy();
+
     /**
      * Test exception when the Container is not valid when we set a bad object as di container
      */
@@ -84,7 +96,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if the state can return all its public method, without static
      */
-    public function testListMethodsPublic(){
+    public function testListMethodsPublic()
+    {
         $this->assertEquals(
             array(
                 'standardMethod1',
@@ -98,7 +111,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if the state can return all its protected method, without static
      */
-    public function testListMethodsProtected(){
+    public function testListMethodsProtected()
+    {
         $this->assertEquals(
             array(
                 '_standardMethod6',
@@ -112,7 +126,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if the state can return all its private method, without static
      */
-    public function testListMethodsPrivate(){
+    public function testListMethodsPrivate()
+    {
         $this->assertEquals(
             array(
                 '_finalMethod9',
@@ -126,7 +141,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if exception when the name is not a valid string
      */
-    public function testGetBadNameMethodDescription(){
+    public function testGetBadNameMethodDescription()
+    {
         try{
             $this->_getPublicClassObject()->getMethodDescription(array());
         }
@@ -142,7 +158,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if exception when we get a description of a non-existent method
      */
-    public function testGetBadMethodDescription(){
+    public function testGetBadMethodDescription()
+    {
         try{
             $this->_getPublicClassObject()->getMethodDescription('badMethod');
         }
@@ -158,7 +175,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test if exception when we get a description of an ignored method, the behavior must like non-existent method
      */
-    public function testGetIgnoredMethodDescriptionUsedByTrait(){
+    public function testGetIgnoredMethodDescriptionUsedByTrait()
+    {
         try{
             $this->_getPublicClassObject()->getMethodDescription('setDIContainer');
         }
@@ -168,13 +186,14 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         catch(\Exception $e){
         }
 
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of non-existent method');
+        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of internal method of the trait');
     }
 
     /**
      * Test if exception when we get a description of a static method
      */
-    public function testGetStaticMethodDescription(){
+    public function testGetStaticMethodDescription()
+    {
         try{
             $this->_getPublicClassObject()->getMethodDescription('staticMethod3');
         }
@@ -184,21 +203,24 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         catch(\Exception $e){
         }
 
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of static method');
+        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of a static method');
     }
 
     /**
+     * Clean description text to simplify tests
      * @param \ReflectionMethod $text
      * @return string
      */
-    protected function _formatDescription($text){
+    protected function _formatDescription($text)
+    {
         return trim(str_replace(array(PHP_EOL, '*', '/'), '', $text->getDocComment()));
     }
 
     /**
      * Test get method description
      */
-    public function testGetMethodDescription(){
+    public function testGetMethodDescription()
+    {
         $this->assertSame('Final Method 9', $this->_formatDescription($this->_getPrivateClassObject()->getMethodDescription('_finalMethod9')));
         $this->assertSame('Standard Method 10', $this->_formatDescription($this->_getPrivateClassObject()->getMethodDescription('_standardMethod10')));
 
@@ -209,7 +231,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         $this->assertSame('Final Method 2', $this->_formatDescription($this->_getPublicClassObject()->getMethodDescription('finalMethod2')));
     }
 
-    public function testTestMethodExceptionWithInvalidName(){
+    public function testTestMethodExceptionWithInvalidName()
+    {
         try{
             $this->_getPublicClassObject()->testMethod(array());
         }
@@ -222,7 +245,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         $this->fail('Error, the state must throws an Exception\InvalidArgument exception if we require a description with an invalid string');
     }
 
-    public function testTestMethodExceptionWithInvalidScope(){
+    public function testTestMethodExceptionWithInvalidScope()
+    {
         try{
             $this->_getPublicClassObject()->testMethod('standardMethod1', 'badScope');
         }
@@ -232,13 +256,14 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         catch(\Exception $e){
         }
 
-        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if we require a description with an invalid string');
+        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if we require a description with an invalid scope name');
     }
 
     /**
-     * Test if the method exist into the state into the defined scope
+     * Test if the method exist into the state into the defined scope (private)
      */
-    public function testTestMethodPrivateScope(){
+    public function testTestMethodPrivateScope()
+    {
         $private = $this->_getPrivateClassObject();
         $this->assertTrue($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PRIVATE));
         $this->assertTrue($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PRIVATE));
@@ -259,9 +284,10 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
-     * Test if the method exist into the state into the defined scope
+     * Test if the method exist into the state into the defined scope (protected)
      */
-    public function testTestMethodProtectedScope(){
+    public function testTestMethodProtectedScope()
+    {
         $private = $this->_getPrivateClassObject();
         $this->assertFalse($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PROTECTED));
         $this->assertFalse($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PROTECTED));
@@ -282,9 +308,10 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
-     * Test if the method exist into the state into the defined scope
+     * Test if the method exist into the state into the defined scope (public)
      */
-    public function testTestMethodPublicScope(){
+    public function testTestMethodPublicScope()
+    {
         $private = $this->_getPrivateClassObject();
         $this->assertFalse($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PUBLIC));
         $this->assertFalse($private->testMethod('_finalMethod9', States\StateInterface::VISIBILITY_PUBLIC));
@@ -305,9 +332,10 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
-     * Test if the method exist into the state into the defined scope
+     * Test if the method exist into the state into the default scope (public)
      */
-    public function testTestMethodDefaultAsPublicScope(){
+    public function testTestMethodDefaultAsPublicScope()
+    {
         $private = $this->_getPrivateClassObject();
         $this->assertFalse($private->testMethod('_finalMethod9'));
         $this->assertFalse($private->testMethod('_finalMethod9'));
@@ -330,7 +358,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test exception through by state if the name is invalid
      */
-    public function testGetClosureWithInvalidName(){
+    public function testGetClosureWithInvalidName()
+    {
         try{
             $this->_getPublicClassObject()->getClosure(array(), $this->_getMockProxy());
         }
@@ -340,13 +369,14 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         catch(\Exception $e){
         }
 
-        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if we require a description of non-existent method');
+        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if the method name is not a string');
     }
 
     /**
      * Test exception through by state if the closure method does not exist
      */
-    public function testGetBadClosure(){
+    public function testGetBadClosure()
+    {
         try{
             $this->_getPublicClassObject()->getClosure('badMethod', $this->_getMockProxy());
         }
@@ -356,13 +386,14 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         catch(\Exception $e){
         }
 
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of non-existent method');
+        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if the method does not exist');
     }
 
     /**
      * Test exception through by state if the closure method is static
      */
-    public function testGetStaticClosure(){
+    public function testGetStaticClosure()
+    {
         try{
             $this->_getPublicClassObject()->getClosure('staticMethod3', $this->_getMockProxy());
         }
@@ -372,26 +403,28 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         catch(\Exception $e){
         }
 
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of non-existent method');
+        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if the method is static');
     }
 
     /**
      *
      */
-    public function testGetClosureWithInvalidProxy(){
+    public function testGetClosureWithInvalidProxy()
+    {
         try{
             $this->_getPublicClassObject()->getClosure('standardMethod1', new \DateTime());
         } catch (States\Exception\IllegalProxy $e) {
             return;
         } catch (\Exception $e) {}
 
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of non-existent method');
+        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if the proxy does not implement the interface Proxy\ProxyInterface');
     }
 
     /**
      * Test exception through by state if the scope is invalid
      */
-    public function testGetClosureWithInvalidScope(){
+    public function testGetClosureWithInvalidScope()
+    {
         try{
             $this->_getPublicClassObject()->getClosure('standardMethod1', $this->_getMockProxy(), 'badScope');
         } catch (States\Exception\InvalidArgument $e) {
@@ -404,7 +437,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     /**
      * Test exception through by state if the closure method is static
      */
-    public function testGetClosureWithInvalidDiContainer(){
+    public function testGetClosureWithInvalidDiContainer()
+    {
         try{
             $object = $this->_getPublicClassObject(false);
             $object->getClosure('standardMethod1', $this->_getMockProxy());
@@ -413,13 +447,14 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
         } catch (\Exception $e) {}
 
 
-        $this->fail('Error, the state must throws an Exception\IllegalService if no Injection Container has been defined before getClosure');
+        $this->fail('Error, the state must throws an Exception\IllegalService if no DI Container has been defined before getClosure');
     }
 
     /**
      * Test exception through by state if the closure method is static
      */
-    public function testGetClosureWithInvalidInjectContainer(){
+    public function testGetClosureWithInvalidInjectContainer()
+    {
         try{
             $object = $this->_getPublicClassObject();
             $object->getDIContainer()->registerService(States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER, null);
@@ -428,11 +463,11 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
             return;
         } catch (\Exception $e) {}
 
-        $this->fail('Error, the state must throws an Exception\IllegalService if no DI Container has been defined before getClosure');
+        $this->fail('Error, the state must throws an Exception\IllegalService if no Injection Container service has been defined before getClosure');
     }
 
     /**
-     * Test if the closure can be get into the state into the defined scope
+     * Test if the closure can be get into the state into the defined scope (private)
      */
     public function testGetClosureWithPrivateScope()
     {
@@ -462,7 +497,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
-     * Test if the closure can be get into the state into the defined scope
+     * Test if the closure can be get into the state into the defined scope (protected, so privates methods are not available)
      */
     public function testGetClosureWithProtectedScope()
     {
@@ -477,7 +512,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
             $fail = true;
         } catch (\Exception $e) {}
 
-        $this->assertTrue($fail);
+        $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
 
         $closure = $this->_getProtectedClassObject()->getClosure(
             '_standardMethod6',
@@ -497,7 +532,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
-     * Test if the closure can be get into the state into the defined scope
+     * Test if the closure can be get into the state into the defined scope (public)
      */
     public function testGetClosureWithPublicScope()
     {
@@ -512,7 +547,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
             $fail = true;
         } catch (\Exception $e) {}
 
-        $this->assertTrue($fail);
+        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
         $fail = false;
         try{
@@ -525,7 +560,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
             $fail = true;
         } catch (\Exception $e) {}
 
-        $this->assertTrue($fail);
+        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
         $closure = $this->_getPublicClassObject()->getClosure(
             'standardMethod1',
@@ -537,7 +572,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
-     * Test if the closure can be get into the state into the defined scope
+     * Test if the closure can be get into the state into the default scope (public)
      */
     public function testGetClosureWithPublicAsDefaultScope()
     {
@@ -551,7 +586,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
             $fail = true;
         } catch (\Exception $e) {}
 
-        $this->assertTrue($fail);
+        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
         $fail = false;
         try{
@@ -563,7 +598,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
             $fail = true;
         } catch (\Exception $e) {}
 
-        $this->assertTrue($fail);
+        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
         $closure = $this->_getPublicClassObject()->getClosure(
             'standardMethod1',
@@ -574,9 +609,10 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
-     * Test Closure
+     * Test calling closure from states
      */
-    public function testCallingAfterGetClosure(){
+    public function testCallingAfterGetClosure()
+    {
         $closure = $this->_getProtectedClassObject()->getClosure(
             '_standardMethod6',
             $this->_getMockProxy(),
@@ -589,9 +625,10 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
-     * Test multiple call go getClosure for the same method
+     * Test multiple call to getClosure for the same method
      */
-    public function testGetMultipleSameClosures(){
+    public function testGetMultipleSameClosures()
+    {
         $projected = $this->_getProtectedClassObject();
         $closure1 = $projected->getClosure(
             '_standardMethod6',
@@ -618,9 +655,10 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase{
     }
 
     /**
-     * Test multiple call go getClosure for the same method
+     * Test multiple call to getClosure for the same method
      */
-    public function testGetMultipleClosuresMultipleState(){
+    public function testGetMultipleClosuresMultipleState()
+    {
         $closure1 = $this->_getProtectedClassObject()->getClosure(
             '_standardMethod6',
             $this->_getMockProxy(),
