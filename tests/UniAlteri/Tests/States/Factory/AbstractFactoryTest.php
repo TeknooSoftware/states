@@ -31,12 +31,12 @@ use \UniAlteri\Tests\Support;
 abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Support\VirtualDIContainer
+     * @var Support\MockDIContainer
      */
     protected $_container = null;
 
     /**
-     * @var Support\VirtualFinder
+     * @var Support\MockFinder
      */
     protected $_virtualFinder = null;
 
@@ -46,21 +46,21 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_container = new Support\VirtualDIContainer();
-        $this->_registerVirtualFinderService();
+        $this->_container = new Support\MockDIContainer();
+        $this->_registerMockFinderService();
     }
 
     /**
      * Configure container
      */
-    protected function _registerVirtualFinderService()
+    protected function _registerMockFinderService()
     {
         $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container){
             if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
                 $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
-                return new Support\VirtualFinder($factory->getStatedClassName(), $factory->getPath());
+                return new Support\MockFinder($factory->getStatedClassName(), $factory->getPath());
             } else {
-                return new Support\VirtualFinder('', '');
+                return new Support\MockFinder('', '');
             }
         });
     }
@@ -68,15 +68,15 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Replace finder service to generate virtual finder whom return ArrayObject instead of php array
      */
-    protected function _registerVirtualFinderServiceWithArrayObject()
+    protected function _registerMockFinderServiceWithArrayObject()
     {
         $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
         $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container){
             if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
                 $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
-                return new Support\VirtualFinderWithArray($factory->getStatedClassName(), $factory->getPath());
+                return new Support\MockFinderWithArray($factory->getStatedClassName(), $factory->getPath());
             } else {
-                return new Support\VirtualFinderWithArray('', '');
+                return new Support\MockFinderWithArray('', '');
             }
         });
     }
@@ -110,7 +110,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $object = $this->getFactoryObject(false);
         $this->assertNull($object->getDIContainer());
-        $virtualContainer = new Support\VirtualDIContainer();
+        $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
     }
@@ -208,7 +208,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testInitialize()
     {
-        $virtualFinder = new Support\VirtualFinder('', '');
+        $virtualFinder = new Support\MockFinder('', '');
         $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
         $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function() use ($virtualFinder) {
             return $virtualFinder;
@@ -239,8 +239,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testExceptionDefaultStateNotAvailableInStartup()
     {
         try {
-            Support\VirtualFinder::$ignoreDefaultState = true;
-            $this->getFactoryObject()->startup(new Support\VirtualProxy(null));
+            Support\MockFinder::$ignoreDefaultState = true;
+            $this->getFactoryObject()->startup(new Support\MockProxy(null));
         } catch(Exception\StateNotFound $exception) {
             return;
         }
@@ -254,8 +254,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testExceptionRequiredStateNotAvailableInStartup()
     {
         try{
-            Support\VirtualFinder::$ignoreDefaultState = false;
-            $this->getFactoryObject()->startup(new Support\VirtualProxy(null), 'NonExistentState');
+            Support\MockFinder::$ignoreDefaultState = false;
+            $this->getFactoryObject()->startup(new Support\MockProxy(null), 'NonExistentState');
         } catch(Exception\StateNotFound $exception) {
             return;
         }
@@ -265,14 +265,14 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testListAvailableStateInStartup()
     {
-        $proxy = new Support\VirtualProxy(null);
+        $proxy = new Support\MockProxy(null);
         $this->getFactoryObject()->startup($proxy);
         $this->assertEquals(
             array(
-                'VirtualState1',
+                'MockState1',
                 Proxy\ProxyInterface::DEFAULT_STATE_NAME,
-                'VirtualState2',
-                'VirtualState3'
+                'MockState2',
+                'MockState3'
             ),
             $proxy->listAvailableStates()
         );
@@ -280,29 +280,29 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testDefaultStateAutomaticallySelectedInStartup()
     {
-        $proxy = new Support\VirtualProxy(null);
+        $proxy = new Support\MockProxy(null);
         $this->getFactoryObject()->startup($proxy);
         $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
     }
 
     public function testRequiredStateSelectedInStartup()
     {
-        $proxy = new Support\VirtualProxy(null);
-        $this->getFactoryObject()->startup($proxy, 'VirtualState1');
-        $this->assertEquals($proxy->listActivesStates(), array('VirtualState1'));
+        $proxy = new Support\MockProxy(null);
+        $this->getFactoryObject()->startup($proxy, 'MockState1');
+        $this->assertEquals($proxy->listActivesStates(), array('MockState1'));
     }
 
     public function testListAvailableStateInStartupWithArrayObject()
     {
-        $proxy = new Support\VirtualProxy(null);
-        $this->_registerVirtualFinderServiceWithArrayObject();
+        $proxy = new Support\MockProxy(null);
+        $this->_registerMockFinderServiceWithArrayObject();
         $this->getFactoryObject()->startup($proxy);
         $this->assertEquals(
             array(
-                'VirtualState1',
-                'VirtualState2',
+                'MockState1',
+                'MockState2',
                 Proxy\ProxyInterface::DEFAULT_STATE_NAME,
-                'VirtualState3'
+                'MockState3'
             ),
             $proxy->listAvailableStates()
         );
@@ -310,18 +310,18 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testDefaultStateAutomaticallySelectedInStartupWithArrayObject()
     {
-        $proxy = new Support\VirtualProxy(null);
-        $this->_registerVirtualFinderServiceWithArrayObject();
+        $proxy = new Support\MockProxy(null);
+        $this->_registerMockFinderServiceWithArrayObject();
         $this->getFactoryObject()->startup($proxy);
         $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
     }
 
     public function testRequiredStateSelectedInStartupWithArrayObject()
     {
-        $proxy = new Support\VirtualProxy(null);
-        $this->_registerVirtualFinderServiceWithArrayObject();
-        $this->getFactoryObject()->startup($proxy, 'VirtualState1');
-        $this->assertEquals($proxy->listActivesStates(), array('VirtualState1'));
+        $proxy = new Support\MockProxy(null);
+        $this->_registerMockFinderServiceWithArrayObject();
+        $this->getFactoryObject()->startup($proxy, 'MockState1');
+        $this->assertEquals($proxy->listActivesStates(), array('MockState1'));
     }
 
     /**
@@ -330,7 +330,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testExceptionDefaultStateNotAvailable()
     {
         try {
-            Support\VirtualFinder::$ignoreDefaultState = true;
+            Support\MockFinder::$ignoreDefaultState = true;
             $this->getFactoryObject()->build();
         } catch(Exception\StateNotFound $exception) {
             return;
@@ -345,7 +345,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testExceptionRequiredStateNotAvailable()
     {
         try{
-            Support\VirtualFinder::$ignoreDefaultState = false;
+            Support\MockFinder::$ignoreDefaultState = false;
             $this->getFactoryObject()->build(false, 'NonExistentState');
         } catch(Exception\StateNotFound $exception) {
             return;
@@ -359,10 +359,10 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $proxy = $this->getFactoryObject()->build();
         $this->assertEquals(
             array(
-                'VirtualState1',
+                'MockState1',
                 Proxy\ProxyInterface::DEFAULT_STATE_NAME,
-                'VirtualState2',
-                'VirtualState3'
+                'MockState2',
+                'MockState3'
             ),
             $proxy->listAvailableStates()
         );
@@ -376,8 +376,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     public function testRequiredStateSelected()
     {
-        $proxy = $this->getFactoryObject()->build(null, 'VirtualState1');
-        $this->assertEquals($proxy->listActivesStates(), array('VirtualState1'));
+        $proxy = $this->getFactoryObject()->build(null, 'MockState1');
+        $this->assertEquals($proxy->listActivesStates(), array('MockState1'));
     }
 
     public function testPassedArguments()

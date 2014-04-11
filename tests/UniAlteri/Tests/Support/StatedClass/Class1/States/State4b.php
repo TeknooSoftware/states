@@ -36,7 +36,7 @@ use \UniAlteri\Tests\Support;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class State4b extends Support\VirtualState
+class State4b extends Support\MockState
 {
 
 }

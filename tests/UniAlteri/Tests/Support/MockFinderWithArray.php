@@ -21,12 +21,16 @@
 
 namespace UniAlteri\Tests\Support;
 
-use \UniAlteri\States\States;
+use UniAlteri\States\DI;
+use UniAlteri\States\Loader\Exception;
+use UniAlteri\States\Proxy;
+use UniAlteri\States\Loader;
+use UniAlteri\States\States;
 
 /**
- * Class OnlyPublic
- * Mock class to test the default trait State behavior with public methods.
- * All methods have not a description to check the state's behavior with these methods.
+ * Class MockFinderWithArray
+ * Mock finder to test behavior of proxies and factories
+ * This mock return ArrayObject instead of array values in the method listStates
  *
  * @package     States
  * @subpackage  Tests
@@ -35,44 +39,31 @@ use \UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class OnlyPublic extends States\AbstractState
+class MockFinderWithArray extends MockFinder
 {
     /**
-     * To simulate a real state behavior
-     * @param boolean $initializeContainer initialize virtual di container for state
+     * List all available state object of the stated class
+     * @return string[]
      */
-    public function __construct($initializeContainer=true)
+    public function listStates()
     {
-        if (true === $initializeContainer) {
-            $this->setDIContainer(new VirtualDIContainer());
-            $this->getDIContainer()->registerService(
-                States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER,
-                function() {
-                    return new VirtualInjectionClosure();
-                }
+        if (empty(static::$ignoreDefaultState)) {
+            return new \ArrayObject(
+                array(
+                    'MockState1',
+                    'MockState2',
+                    Proxy\ProxyInterface::DEFAULT_STATE_NAME,
+                    'MockState3'
+                )
+            );
+        } else {
+            return new \ArrayObject(
+                array(
+                    'MockState1',
+                    'MockState2',
+                    'MockState3'
+                )
             );
         }
-    }
-
-    /**
-     * Standard Method 1
-     */
-    public function standardMethod1()
-    {
-    }
-
-    /**
-     * Final Method 2
-     */
-    final public function finalMethod2()
-    {
-    }
-
-    public static function staticMethod3()
-    {
-    }
-
-    public function standardMethod4()
-    {
     }
 }

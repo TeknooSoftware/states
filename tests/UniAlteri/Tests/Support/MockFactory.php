@@ -28,7 +28,7 @@ use UniAlteri\States\Loader;
 use \UniAlteri\States\Proxy;
 
 /**
- * Class VirtualFactory
+ * Class MockFactory
  * Mock factory to tests proxies and loaders. Logs only all actions
  *
  * @package     States
@@ -38,7 +38,7 @@ use \UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class VirtualFactory implements Factory\FactoryInterface
+class MockFactory implements Factory\FactoryInterface
 {
     /**
      * To list initialized factory by loader
@@ -88,7 +88,7 @@ class VirtualFactory implements Factory\FactoryInterface
     public function getFinder()
     {
         //Build a new mock finder
-        return new VirtualFinder($this->_statedClassName, $this->_path);
+        return new MockFinder($this->_statedClassName, $this->_path);
     }
 
     /**

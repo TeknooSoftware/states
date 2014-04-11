@@ -25,7 +25,7 @@ use UniAlteri\States\Loader;
 use UniAlteri\States\Loader\Exception;
 
 /**
- * Class VirtualIncludePathManager
+ * Class MockIncludePathManager
  * Mock Include Path manager to unit test Loader behavior
  *
  * @package     States
@@ -35,7 +35,7 @@ use UniAlteri\States\Loader\Exception;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class VirtualIncludePathManager implements Loader\IncludePathManagerInterface
+class MockIncludePathManager implements Loader\IncludePathManagerInterface
 {
     /**
      * Current included paths, not use current include path to avoid conflict with the testing environment

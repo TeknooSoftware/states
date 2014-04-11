@@ -27,7 +27,7 @@ use \UniAlteri\States\DI;
 use \UniAlteri\States;
 
 /**
- * Class VirtualProxy
+ * Class MockProxy
  * Mock proxy to tests factories behavior and trait state behavior
  *
  * @package     States
@@ -37,7 +37,7 @@ use \UniAlteri\States;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class VirtualProxy implements Proxy\ProxyInterface
+class MockProxy implements Proxy\ProxyInterface
 {
     /**
      * To test args passed by factory

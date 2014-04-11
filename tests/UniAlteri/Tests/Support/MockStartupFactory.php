@@ -21,16 +21,13 @@
 
 namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\DI;
-use UniAlteri\States\Loader\Exception;
-use UniAlteri\States\Proxy;
-use UniAlteri\States\Loader;
-use UniAlteri\States\States;
+use \UniAlteri\States\Factory;
+use \UniAlteri\States\Factory\Exception;
+use \UniAlteri\States\Proxy;
 
 /**
- * Class VirtualFinderWithArray
- * Mock finder to test behavior of proxies and factories
- * This mock return ArrayObject instead of array values in the method listStates
+ * Class MockStartupFactory
+ * Mock startup factory to test integrated proxy behavior
  *
  * @package     States
  * @subpackage  Tests
@@ -39,31 +36,26 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class VirtualFinderWithArray extends VirtualFinder
+class MockStartupFactory implements Factory\StartupFactoryInterface
 {
     /**
-     * List all available state object of the stated class
-     * @return string[]
+     * Proxy to initialize called with forwardStartup
+     * Public to allow testCase to check its value to confirm the behavior of the integrated proxy
+     * @var Proxy\ProxyInterface
      */
-    public function listStates()
+    public static $calledProxyObject = null;
+
+    /**
+     * Find the factory to use for the new proxy object to initialize it with its container and states.
+     * This method is called by the constructor of the stated object
+     * @param Proxy\ProxyInterface $proxyObject
+     * @param string $stateName
+     * @return boolean
+     * @throws Exception\InvalidArgument when $factoryIdentifier is not an object
+     * @throws Exception\UnavailableFactory when the required factory was not found
+     */
+    public static function forwardStartup($proxyObject, $stateName=null)
     {
-        if (empty(static::$ignoreDefaultState)) {
-            return new \ArrayObject(
-                array(
-                    'VirtualState1',
-                    'VirtualState2',
-                    Proxy\ProxyInterface::DEFAULT_STATE_NAME,
-                    'VirtualState3'
-                )
-            );
-        } else {
-            return new \ArrayObject(
-                array(
-                    'VirtualState1',
-                    'VirtualState2',
-                    'VirtualState3'
-                )
-            );
-        }
+        self::$calledProxyObject = $proxyObject;
     }
 }

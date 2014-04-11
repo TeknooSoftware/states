@@ -33,7 +33,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     protected $_loader = null;
 
     /**
-     * @var Support\VirtualIncludePathManager
+     * @var Support\MockIncludePathManager
      */
     protected $_includePathManager = null;
 
@@ -42,7 +42,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $this->_includePathManager = new Support\VirtualIncludePathManager();
+        $this->_includePathManager = new Support\MockIncludePathManager();
         parent::setUp();
     }
 
@@ -68,11 +68,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             $this->_loader = new Loader\LoaderStandard(new Loader\IncludePathManager());
         }
 
-        $this->_loader->setDIContainer(new Support\VirtualDIContainer());
+        $this->_loader->setDIContainer(new Support\MockDIContainer());
         $this->_loader->getDIContainer()->registerService(
             Loader\FinderInterface::DI_FINDER_SERVICE,
             function(){
-                return new Support\VirtualFinder('', '');
+                return new Support\MockFinder('', '');
             }
         );
         return $this->_loader;
@@ -114,7 +114,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Loader\LoaderStandard($this->_includePathManager);
         $this->assertNull($object->getDIContainer());
-        $virtualContainer = new Support\VirtualDIContainer();
+        $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
     }
@@ -253,15 +253,15 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     public function testBuildFactory()
     {
         $loader = $this->_initializeLoader();
-        $this->assertEquals(array(), Support\VirtualFactory::listInitializedFactories());
-        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class1', 'path1');
-        $this->assertEquals(array('class1:path1'), Support\VirtualFactory::listInitializedFactories());
-        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class2', 'path2');
-        $this->assertEquals(array('class1:path1', 'class2:path2'), Support\VirtualFactory::listInitializedFactories());
-        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\VirtualFactory', 'class1', 'path3');
+        $this->assertEquals(array(), Support\MockFactory::listInitializedFactories());
+        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class1', 'path1');
+        $this->assertEquals(array('class1:path1'), Support\MockFactory::listInitializedFactories());
+        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class2', 'path2');
+        $this->assertEquals(array('class1:path1', 'class2:path2'), Support\MockFactory::listInitializedFactories());
+        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class1', 'path3');
         $this->assertEquals(
             array('class1:path1', 'class2:path2', 'class1:path3'),
-            Support\VirtualFactory::listInitializedFactories(),
+            Support\MockFactory::listInitializedFactories(),
             'Error, the loader must not manage factory building. If a even stated class is initialized several times, the loader must call the factory each time. '
         );
     }

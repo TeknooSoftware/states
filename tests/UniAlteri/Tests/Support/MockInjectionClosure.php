@@ -25,7 +25,7 @@ use \UniAlteri\States\DI;
 use \UniAlteri\States\DI\Exception;
 
 /**
- * Class VirtualInjectionClosure
+ * Class MockInjectionClosure
  * Mock injection closure to tests the trait state and proxies behaviors
  *
  * @package     States
@@ -35,7 +35,7 @@ use \UniAlteri\States\DI\Exception;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class VirtualInjectionClosure implements DI\InjectionClosureInterface
+class MockInjectionClosure implements DI\InjectionClosureInterface
 {
     /**
      * @var \Closure

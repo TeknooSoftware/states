@@ -54,7 +54,7 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
     public function testForwardStartupProxyNotInitialized()
     {
         try {
-            Factory\StandardStartupFactory::forwardStartup(new Support\VirtualProxy(null));
+            Factory\StandardStartupFactory::forwardStartup(new Support\MockProxy(null));
         } catch (Exception\UnavailableFactory $e) {
             return;
         } catch (\Exception $e) { }
@@ -67,9 +67,9 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testForwardStartup()
     {
-        $factory = new Support\VirtualFactory();
-        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\VirtualProxy', $factory);
-        $proxy = new Support\VirtualProxy(null);
+        $factory = new Support\MockFactory();
+        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\MockProxy', $factory);
+        $proxy = new Support\MockProxy(null);
         Factory\StandardStartupFactory::forwardStartup($proxy);
         $this->assertSame($factory->getStartupProxy(), $proxy);
     }
@@ -80,7 +80,7 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
     public function testRegisterFactoryInvalidIdentifier()
     {
         try {
-            Factory\StandardStartupFactory::registerFactory(array(), new Support\VirtualFactory());
+            Factory\StandardStartupFactory::registerFactory(array(), new Support\MockFactory());
         } catch (Exception\InvalidArgument $exception) {
             return;
         } catch (\Exception $e) { }
@@ -107,15 +107,15 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testListRegisteredFactory()
     {
-        $factory = new Support\VirtualFactory();
-        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\VirtualProxy1', $factory);
+        $factory = new Support\MockFactory();
+        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\MockProxy1', $factory);
         Factory\StandardStartupFactory::reset();
-        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\VirtualProxy2', $factory);
-        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\VirtualProxy3', $factory);
+        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\MockProxy2', $factory);
+        Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\MockProxy3', $factory);
         $this->assertEquals(
             array(
-                'UniAlteri\Tests\Support\VirtualProxy2',
-                'UniAlteri\Tests\Support\VirtualProxy3'
+                'UniAlteri\Tests\Support\MockProxy2',
+                'UniAlteri\Tests\Support\MockProxy3'
             ),
             Factory\StandardStartupFactory::listRegisteredFactory()
         );

@@ -27,7 +27,7 @@ use \UniAlteri\States\States;
 use \UniAlteri\States\States\Exception;
 
 /**
- * Class VirtualState
+ * Class MockState
  * Mock state to check behavior of factory, finder and proxy
  *
  * @package     States
@@ -37,7 +37,7 @@ use \UniAlteri\States\States\Exception;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class VirtualState implements States\StateInterface
+class MockState implements States\StateInterface
 {
     /**
      * To allow always tested method or not
@@ -76,7 +76,7 @@ class VirtualState implements States\StateInterface
     protected $_methodName = null;
 
     /**
-     * @var VirtualInjectionClosure
+     * @var MockInjectionClosure
      */
     protected $_virtualInjection = null;
 
@@ -256,7 +256,7 @@ class VirtualState implements States\StateInterface
 
         if (null === $this->_virtualInjection) {
             $this->_closure = \Closure::bind($this->_closure, $proxy, get_class($proxy));
-            $injection = new VirtualInjectionClosure();
+            $injection = new MockInjectionClosure();
             $injection->setClosure($this->_closure);
             $this->_virtualInjection = $injection;
         }

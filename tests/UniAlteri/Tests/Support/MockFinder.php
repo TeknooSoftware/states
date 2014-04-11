@@ -28,7 +28,7 @@ use UniAlteri\States\Loader;
 use UniAlteri\States\States;
 
 /**
- * Class VirtualFinder
+ * Class MockFinder
  * Mock finder to test behavior of proxies and factories
  *
  * @package     States
@@ -38,7 +38,7 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class VirtualFinder implements Loader\FinderInterface
+class MockFinder implements Loader\FinderInterface
 {
     /**
      * Mock container used for tests
@@ -96,16 +96,16 @@ class VirtualFinder implements Loader\FinderInterface
         //Return mock states
         if (empty(static::$ignoreDefaultState)) {
             return array(
-                'VirtualState1',
+                'MockState1',
                 Proxy\ProxyInterface::DEFAULT_STATE_NAME,
-                'VirtualState2',
-                'VirtualState3'
+                'MockState2',
+                'MockState3'
             );
         } else {
             return array(
-                'VirtualState1',
-                'VirtualState2',
-                'VirtualState3'
+                'MockState1',
+                'MockState2',
+                'MockState3'
             );
         }
     }
@@ -121,7 +121,7 @@ class VirtualFinder implements Loader\FinderInterface
     public function buildState($stateName)
     {
         //Return a new mock state object for tests
-        return new VirtualState();
+        return new MockState();
     }
 
     /**
@@ -163,6 +163,6 @@ class VirtualFinder implements Loader\FinderInterface
      */
     public function buildProxy($arguments=null)
     {
-        return new VirtualProxy($arguments);
+        return new MockProxy($arguments);
     }
 }

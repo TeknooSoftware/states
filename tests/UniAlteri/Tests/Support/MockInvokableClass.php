@@ -22,7 +22,7 @@
 namespace UniAlteri\Tests\Support;
 
 /**
- * Class invokableClass
+ * Class MockInvokableClass
  * Mock class to test invokable object in unit tests with DI Container
  *
  * @package     States
@@ -33,7 +33,7 @@ namespace UniAlteri\Tests\Support;
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
  */
-class InvokableClass{
+class MockInvokableClass{
     /**
      * Invokable magic method
      * @return \stdClass

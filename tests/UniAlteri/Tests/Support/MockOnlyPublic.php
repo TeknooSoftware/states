@@ -21,13 +21,12 @@
 
 namespace UniAlteri\Tests\Support;
 
-use \UniAlteri\States\Factory;
-use \UniAlteri\States\Factory\Exception;
-use \UniAlteri\States\Proxy;
+use \UniAlteri\States\States;
 
 /**
- * Class VirtualStartupFactory
- * Mock startup factory to test integrated proxy behavior
+ * Class MockOnlyPublic
+ * Mock class to test the default trait State behavior with public methods.
+ * All methods have not a description to check the state's behavior with these methods.
  *
  * @package     States
  * @subpackage  Tests
@@ -36,26 +35,44 @@ use \UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class VirtualStartupFactory implements Factory\StartupFactoryInterface
+class MockOnlyPublic extends States\AbstractState
 {
     /**
-     * Proxy to initialize called with forwardStartup
-     * Public to allow testCase to check its value to confirm the behavior of the integrated proxy
-     * @var Proxy\ProxyInterface
+     * To simulate a real state behavior
+     * @param boolean $initializeContainer initialize virtual di container for state
      */
-    public static $calledProxyObject = null;
+    public function __construct($initializeContainer=true)
+    {
+        if (true === $initializeContainer) {
+            $this->setDIContainer(new MockDIContainer());
+            $this->getDIContainer()->registerService(
+                States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER,
+                function() {
+                    return new MockInjectionClosure();
+                }
+            );
+        }
+    }
 
     /**
-     * Find the factory to use for the new proxy object to initialize it with its container and states.
-     * This method is called by the constructor of the stated object
-     * @param Proxy\ProxyInterface $proxyObject
-     * @param string $stateName
-     * @return boolean
-     * @throws Exception\InvalidArgument when $factoryIdentifier is not an object
-     * @throws Exception\UnavailableFactory when the required factory was not found
+     * Standard Method 1
      */
-    public static function forwardStartup($proxyObject, $stateName=null)
+    public function standardMethod1()
     {
-        self::$calledProxyObject = $proxyObject;
+    }
+
+    /**
+     * Final Method 2
+     */
+    final public function finalMethod2()
+    {
+    }
+
+    public static function staticMethod3()
+    {
+    }
+
+    public function standardMethod4()
+    {
     }
 }

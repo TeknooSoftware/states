@@ -44,7 +44,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container->registerInstance('instanceObject', new \DateTime());
         $container->registerInstance('instanceFunction', function() {return new \DateTime();});
         $container->registerService('serviceClass', '\DateTime');
-        $container->registerService('serviceObject', new Support\InvokableClass());
+        $container->registerService('serviceObject', new Support\MockInvokableClass());
         $container->registerService('serviceFunction', function() {return new \stdClass();});
     }
 
@@ -205,7 +205,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testRegisterServiceInvokableObject()
     {
         $container = $this->_buildContainer();
-        $result = $container->registerService('dateObject', new Support\InvokableClass());
+        $result = $container->registerService('dateObject', new Support\MockInvokableClass());
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerService`');
     }
 

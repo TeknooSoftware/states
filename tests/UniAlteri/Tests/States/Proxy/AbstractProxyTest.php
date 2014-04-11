@@ -30,17 +30,17 @@ use \UniAlteri\Tests\Support;
 abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var Support\VirtualState
+     * @var Support\MockState
      */
     protected $_state1;
 
     /**
-     * @var Support\VirtualState
+     * @var Support\MockState
      */
     protected $_state2;
 
     /**
-     * @var Support\VirtualState
+     * @var Support\MockState
      */
     protected $_state3;
 
@@ -55,9 +55,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_state1 = new Support\VirtualState();
-        $this->_state2 = new Support\VirtualState();
-        $this->_state3 = new Support\VirtualState();
+        $this->_state1 = new Support\MockState();
+        $this->_state2 = new Support\MockState();
+        $this->_state3 = new Support\MockState();
         $this->_buildProxy();
     }
 
@@ -107,7 +107,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $object = $this->_buildProxy();
         $this->assertNull($object->getDIContainer());
-        $virtualContainer = new Support\VirtualDIContainer();
+        $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
     }
@@ -392,7 +392,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     public function testGetStatic()
     {
-        $state = new Support\VirtualState(function () {
+        $state = new Support\MockState(function () {
             $this->getStatic()->saveProperty('name', 'value');
         });
 
@@ -411,7 +411,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     public function testGetStaticRestoredAfterException()
     {
-        $state = new Support\VirtualState(function () {
+        $state = new Support\MockState(function () {
             throw new \Exception('failure');
             $this->getStatic()->saveProperty('name', 'value');
         });
@@ -444,7 +444,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     public function testGetStaticRestoredAfterExceptionWithSpecificState()
     {
-        $state = new Support\VirtualState(function () {
+        $state = new Support\MockState(function () {
             throw new \Exception('failure');
             $this->getStatic()->saveProperty('name', 'value');
         });
@@ -1960,7 +1960,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testCloning()
     {
         $this->_initializeProxy('state1', true);
-        $this->_proxy->setDIContainer(new Support\VirtualDIContainer());
+        $this->_proxy->setDIContainer(new Support\MockDIContainer());
         $obj = new \stdClass();
         $obj->foo = 'bar';
         $this->_proxy->getDIContainer()->registerInstance('obj', $obj);

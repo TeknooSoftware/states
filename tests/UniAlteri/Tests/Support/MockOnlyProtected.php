@@ -24,7 +24,7 @@ namespace UniAlteri\Tests\Support;
 use \UniAlteri\States\States;
 
 /**
- * Class OnlyProtected
+ * Class MockOnlyProtected
  * Mock class to test the default trait State behavior with protected methods.
  * All methods have not a description to check the state's behavior with these methods.
  *
@@ -35,7 +35,7 @@ use \UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class OnlyProtected extends States\AbstractState
+class MockOnlyProtected extends States\AbstractState
 {
     /**
      * To simulate a real state behavior
@@ -45,12 +45,12 @@ class OnlyProtected extends States\AbstractState
     {
         if (true === $initializeContainer) {
             //Mock DI Container
-            $this->setDIContainer(new VirtualDIContainer());
+            $this->setDIContainer(new MockDIContainer());
             //Register the service to generate a mock injection closure object
             $this->getDIContainer()->registerService(
                 States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER,
                 function() {
-                    return new VirtualInjectionClosure();
+                    return new MockInjectionClosure();
                 }
             );
         }

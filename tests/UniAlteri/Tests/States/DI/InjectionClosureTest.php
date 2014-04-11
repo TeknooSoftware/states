@@ -77,7 +77,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     {
         $object = new DI\InjectionClosure();
         $this->assertNull($object->getDIContainer());
-        $virtualContainer = new Support\VirtualDIContainer();
+        $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
     }

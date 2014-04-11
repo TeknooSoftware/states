@@ -23,7 +23,7 @@
 
 namespace Class5;
 
-use \UniAlteri\Tests\Support\VirtualProxy;
+use \UniAlteri\Tests\Support\MockProxy;
 
 /**
  * Class Class5
@@ -36,6 +36,6 @@ use \UniAlteri\Tests\Support\VirtualProxy;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Class5 extends VirtualProxy
+class Class5 extends MockProxy
 {
 }

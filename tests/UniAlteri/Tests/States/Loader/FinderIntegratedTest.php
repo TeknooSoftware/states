@@ -37,7 +37,7 @@ class FinderIntegratedTest extends FinderStandardTest
      */
     protected function _initializeFind($statedClassName, $pathString)
     {
-        $virtualDIContainer = new Support\VirtualDIContainer();
+        $virtualDIContainer = new Support\MockDIContainer();
         $this->_finder = new Loader\FinderIntegrated($statedClassName, $pathString);
         $this->_finder->setDIContainer($virtualDIContainer);
         return $this->_finder;
@@ -65,14 +65,14 @@ class FinderIntegratedTest extends FinderStandardTest
     {
         $object = new Loader\FinderIntegrated('', '');
         $this->assertNull($object->getDIContainer());
-        $virtualContainer = new Support\VirtualDIContainer();
+        $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
     }
 
     public function testBuildProxyDefault()
     {
-        Factory\StandardStartupFactory::registerFactory('UniAlteri\States\Proxy\Integrated', new Support\VirtualFactory());
+        Factory\StandardStartupFactory::registerFactory('UniAlteri\States\Proxy\Integrated', new Support\MockFactory());
         parent::testBuildProxyDefault();
     }
 }

@@ -49,7 +49,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($fail);
 
-        $container->registerInstance(Factory\FactoryInterface::DI_FACTORY_NAME, new Support\VirtualFactory());
+        $container->registerInstance(Factory\FactoryInterface::DI_FACTORY_NAME, new Support\MockFactory());
         $finder = $container->get(Loader\FinderInterface::DI_FINDER_SERVICE);
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderIntegrated', $finder);
 

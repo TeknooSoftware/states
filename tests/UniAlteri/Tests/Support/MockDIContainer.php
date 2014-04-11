@@ -25,7 +25,7 @@ use UniAlteri\States\DI;
 use UniAlteri\States\DI\Exception;
 
 /**
- * Class VirtualDIContainer
+ * Class MockDIContainer
  * Mock DI Container to unit testing different elements of this libs
  * @package     States
  * @subpackage  Tests
@@ -34,7 +34,7 @@ use UniAlteri\States\DI\Exception;
  * @license     http://teknoo.it/states/license/new-bsd     New BSD License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class VirtualDIContainer implements DI\ContainerInterface
+class MockDIContainer implements DI\ContainerInterface
 {
     /**
      * Registered instance in this container

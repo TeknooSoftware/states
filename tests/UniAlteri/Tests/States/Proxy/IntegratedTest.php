@@ -29,8 +29,8 @@ class IntegratedTest extends AbstractProxyTest
 {
     protected function setUp()
     {
-        include_once('UniAlteri/Tests/Support/VirtualStartupFactory.php');
-        Support\IntegratedProxy::defineStartupFactoryClassName('\UniAlteri\Tests\Support\VirtualStartupFactory');
+        include_once('UniAlteri/Tests/Support/MockStartupFactory.php');
+        Support\IntegratedProxy::defineStartupFactoryClassName('\UniAlteri\Tests\Support\MockStartupFactory');
         parent::setUp();
     }
     /**
@@ -89,8 +89,8 @@ class IntegratedTest extends AbstractProxyTest
 
     public function testInitializationProxyVByFactory()
     {
-        Support\VirtualStartupFactory::$calledProxyObject = null;
+        Support\MockStartupFactory::$calledProxyObject = null;
         $proxy = new Support\IntegratedProxy();
-        $this->assertSame($proxy, Support\VirtualStartupFactory::$calledProxyObject);
+        $this->assertSame($proxy, Support\MockStartupFactory::$calledProxyObject);
     }
 }

@@ -94,7 +94,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     protected function _initializeFind($statedClassName, $pathString)
     {
-        $virtualDIContainer = new Support\VirtualDIContainer();
+        $virtualDIContainer = new Support\MockDIContainer();
         $this->_finder = new Loader\FinderStandard($statedClassName, $pathString);
         $this->_finder->setDIContainer($virtualDIContainer);
         return $this->_finder;
@@ -122,7 +122,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $object = new Loader\FinderStandard('', '');
         $this->assertNull($object->getDIContainer());
-        $virtualContainer = new Support\VirtualDIContainer();
+        $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
     }
@@ -372,7 +372,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     public function testLoadProxySpecific()
     {
         $this->_initializeFind('Class5', $this->_statedClass5Path);
-        $this->_finder->setDIContainer(new Support\VirtualDIContainer());
+        $this->_finder->setDIContainer(new Support\MockDIContainer());
         $proxyClassName = $this->_finder->loadProxy();
         $this->assertEquals('Class5\\Class5', $proxyClassName);
     }
@@ -385,7 +385,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     public function testBuildProxySpecific()
     {
         $this->_initializeFind('Class5', $this->_statedClass5Path);
-        $this->_finder->setDIContainer(new Support\VirtualDIContainer());
+        $this->_finder->setDIContainer(new Support\MockDIContainer());
         $proxy = $this->_finder->buildProxy();
         $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
         $this->assertNotInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
