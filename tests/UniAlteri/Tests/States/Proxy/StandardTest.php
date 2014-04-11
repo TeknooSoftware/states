@@ -23,6 +23,17 @@ namespace UniAlteri\Tests\States\Proxy;
 
 use \UniAlteri\States\Proxy;
 
+/**
+ * Class StandardTest
+ * Implementation of AbstractProxyTest to test the proxy Proxy\Standard
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class StandardTest extends AbstractProxyTest
 {
     /**

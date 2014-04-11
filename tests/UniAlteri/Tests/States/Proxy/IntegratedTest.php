@@ -25,14 +25,31 @@ use \UniAlteri\States\Proxy;
 use \UniAlteri\States\Proxy\Exception;
 use \UniAlteri\Tests\Support;
 
+/**
+ * Class IntegratedTest
+ * Implementation of AbstractProxyTest to test the proxy Proxy\Integrated
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class IntegratedTest extends AbstractProxyTest
 {
+    /**
+     * For these tests, we use Support\IntegratedProxy instead of Proxy\Integrated to use the
+     * Support\MockStartupFactory instead of Factory\StandardStartupFactory
+     */
     protected function setUp()
     {
         include_once('UniAlteri/Tests/Support/MockStartupFactory.php');
+        //Change the startup factory to the mock for each test
         Support\IntegratedProxy::defineStartupFactoryClassName('\UniAlteri\Tests\Support\MockStartupFactory');
         parent::setUp();
     }
+
     /**
      * Build a proxy object, into $this->_proxy to test it
      * @return Proxy\ProxyInterface
@@ -44,7 +61,7 @@ class IntegratedTest extends AbstractProxyTest
     }
 
     /**
-     * Test if the class initialize its vars
+     * Test if the class initialize its vars from the trait constructor
      */
     public function testInitializationProxyVar()
     {
