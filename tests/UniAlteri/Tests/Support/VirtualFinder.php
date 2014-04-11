@@ -27,10 +27,22 @@ use UniAlteri\States\Proxy;
 use UniAlteri\States\Loader;
 use UniAlteri\States\States;
 
+/**
+ * Class VirtualFinder
+ * Mock finder to test behavior of proxies and factories
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class VirtualFinder implements Loader\FinderInterface
 {
     /**
-     * @var DI\Container
+     * Mock container used for tests
+     * @var DI\ContainerInterface
      */
     protected $_container = null;
 
@@ -81,6 +93,7 @@ class VirtualFinder implements Loader\FinderInterface
      */
     public function listStates()
     {
+        //Return mock states
         if (empty(static::$ignoreDefaultState)) {
             return array(
                 'VirtualState1',
@@ -107,6 +120,7 @@ class VirtualFinder implements Loader\FinderInterface
      */
     public function buildState($stateName)
     {
+        //Return a new mock state object for tests
         return new VirtualState();
     }
 
@@ -134,6 +148,7 @@ class VirtualFinder implements Loader\FinderInterface
 
     /**
      * To test if the proxy has been loaded by the proxy
+     * Method added for tests to check factory behavior
      * @return boolean
      */
     public function proxyHasBeenLoaded()

@@ -24,14 +24,26 @@ namespace UniAlteri\Tests\Support;
 use UniAlteri\States\DI;
 use UniAlteri\States\DI\Exception;
 
+/**
+ * Class VirtualDIContainer
+ * Mock DI Container to unit testing different elements of this libs
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class VirtualDIContainer implements DI\ContainerInterface
 {
     /**
+     * Registered instance in this container
      * @var array
      */
     protected $_instance = array();
 
     /**
+     * Registered service in this container
      * @var array
      */
     protected $_service = array();
@@ -41,11 +53,11 @@ class VirtualDIContainer implements DI\ContainerInterface
      */
     public function __clone()
     {
-
+        //Do nothing, array are already cloned, but not theirs values by PHP
     }
 
     /**
-     * Call an entry of the container to retrieve an instance
+     * Call an entry of the container to retrieve an instance or a service
      *
      * @param string $name : identifier of the instance
      * @return mixed
@@ -54,10 +66,12 @@ class VirtualDIContainer implements DI\ContainerInterface
     public function get($name)
     {
         if (isset($this->_instance[$name])) {
+            //It is an instance, return it
             return $this->_instance[$name];
         }
 
         if (isset($this->_service[$name])) {
+            //It is a service, call it and return the result
             return $this->_service[$name]($this);
         }
 
@@ -125,7 +139,7 @@ class VirtualDIContainer implements DI\ContainerInterface
      */
     public function configure($params)
     {
-
+        //Not used to test others elements
     }
 
     /**
@@ -134,6 +148,6 @@ class VirtualDIContainer implements DI\ContainerInterface
      */
     public function listDefinitions()
     {
-
+        //Not used to test others elements
     }
 }

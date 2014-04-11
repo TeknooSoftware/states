@@ -23,8 +23,21 @@ namespace UniAlteri\Tests\Support;
 
 /**
  * Class invokableClass
+ * Mock class to test invokable object in unit tests with DI Container
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     0.9.2
  */
 class InvokableClass{
+    /**
+     * Invokable magic method
+     * @return \stdClass
+     */
     public function __invoke(){
         return new \stdClass();
     }

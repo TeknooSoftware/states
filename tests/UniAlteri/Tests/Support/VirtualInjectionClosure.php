@@ -24,6 +24,17 @@ namespace UniAlteri\Tests\Support;
 use \UniAlteri\States\DI;
 use \UniAlteri\States\DI\Exception;
 
+/**
+ * Class VirtualInjectionClosure
+ * Mock injection closure to tests the trait state and proxies behaviors
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class VirtualInjectionClosure implements DI\InjectionClosureInterface
 {
     /**
@@ -42,6 +53,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
+        //Not used in tests
     }
 
     /**
@@ -50,6 +62,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function getDIContainer()
     {
+        //Not used in tests
     }
 
     /**
@@ -58,6 +71,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function __invoke()
     {
+        //Simulate the behavior of a real injection closure class : call the closure with args
         return \call_user_func_array($this->_closure, \func_get_args());
     }
 
@@ -91,6 +105,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function saveProperty($name, $value)
     {
+        //Simulate real property management
         $this->_properties[$name] = $value;
         return $this;
     }
@@ -103,6 +118,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function deleteProperty($name)
     {
+        //Simulate real property management
         if (isset($this->_properties[$name])) {
             unset($this->_properties[$name]);
         }
@@ -118,6 +134,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function getProperty($name)
     {
+        //Simulate real property management
         if (isset($this->_properties[$name])) {
             return $this->_properties[$name];
         }
@@ -133,6 +150,7 @@ class VirtualInjectionClosure implements DI\InjectionClosureInterface
      */
     public function testProperty($name)
     {
+        //Simulate real property management
         return isset($this->_properties[$name]);
     }
 }

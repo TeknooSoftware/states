@@ -21,8 +21,15 @@
 
 if (!function_exists('testGetMethodDescriptionFromFunctionPrivate')) {
     /**
-     * Build temp func to test proxy behavior with scope visibility
+     * Build temp functions to test proxy behavior with different scope visibility
      * from a function to get a description of a private method
+     *
+     * @package     States
+     * @subpackage  Tests
+     * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+     * @link        http://teknoo.it/states Project website
+     * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+     * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testGetMethodDescriptionFromFunctionPrivate() {
         global $proxy;
@@ -32,8 +39,15 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPrivate')) {
 
 if (!function_exists('testGetMethodDescriptionFromFunctionProtected')) {
     /**
-     * Build temp func to test proxy behavior with scope visibility
+     * Build temp functions to test proxy behavior with different scope visibility
      * from a function to get a description of a protected method
+     *
+     * @package     States
+     * @subpackage  Tests
+     * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+     * @link        http://teknoo.it/states Project website
+     * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+     * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testGetMethodDescriptionFromFunctionProtected() {
         global $proxy;
@@ -43,10 +57,16 @@ if (!function_exists('testGetMethodDescriptionFromFunctionProtected')) {
 
 if (!function_exists('testGetMethodDescriptionFromFunctionPublic')) {
     /**
-     * Build temp func to test proxy behavior with scope visibility
+     * Build temp functions to test proxy behavior with different scope visibility
      * from a function to get a description of a public method
-     * @return \ReflectionMethod
      *
+     * @package     States
+     * @subpackage  Tests
+     * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+     * @link        http://teknoo.it/states Project website
+     * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+     * @author      Richard Déloge <r.deloge@uni-alteri.com>
+     * @return \ReflectionMethod     *
      */
     function testGetMethodDescriptionFromFunctionPublic() {
         global $proxy;
@@ -55,8 +75,17 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPublic')) {
 }
 
 if (!trait_exists('testGetMethodDescriptionTrait')) {
-    //Build temp func to test proxy behavior with scope visibility
-    //from a object to get a description of methods
+    /**
+     * Build temp functions to test proxy behavior with different scope visibility
+     * from object of a the same class of a inherited class
+     *
+     * @package     States
+     * @subpackage  Tests
+     * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+     * @link        http://teknoo.it/states Project website
+     * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+     * @author      Richard Déloge <r.deloge@uni-alteri.com>
+     */
     trait testGetMethodDescriptionTrait{
         public function privateMethod() {
             global $proxy;
@@ -91,8 +120,17 @@ if (!trait_exists('testGetMethodDescriptionTrait')) {
 }
 
 if (!class_exists('testGetMethodDescriptionFromOtherObject')) {
-    //Build temp func to test proxy behavior with scope visibility
-    //from a external object to get a description of methods
+    /**
+     * Build temp functions to test proxy behavior with different scope visibility
+     * from a external object to get a description of methods
+     *
+     * @package     States
+     * @subpackage  Tests
+     * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+     * @link        http://teknoo.it/states Project website
+     * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+     * @author      Richard Déloge <r.deloge@uni-alteri.com>
+     */
     class testGetMethodDescriptionFromOtherObject{
         use testGetMethodDescriptionTrait;
     }

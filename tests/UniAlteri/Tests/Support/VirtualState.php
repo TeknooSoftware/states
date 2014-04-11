@@ -26,6 +26,17 @@ use \UniAlteri\States\Proxy;
 use \UniAlteri\States\States;
 use \UniAlteri\States\States\Exception;
 
+/**
+ * Class VirtualState
+ * Mock state to check behavior of factory, finder and proxy
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class VirtualState implements States\StateInterface
 {
     /**
@@ -75,8 +86,11 @@ class VirtualState implements States\StateInterface
     public function __construct($closure=null)
     {
         if($closure instanceof \Closure){
+            //Use as testing closure the passed closure
             $this->_closure = $closure;
         } else {
+            //No testing closure defined, build a default closure, this closure logs in this state all calls
+            //Bind $this in another var because $this is not allowed into use()
             $state = $this;
             $this->_closure = $closure = function () use ($state) {
                 $state->setMethodCalled();
@@ -103,6 +117,7 @@ class VirtualState implements States\StateInterface
      */
     public function getDIContainer()
     {
+        //Not used in tests
     }
 
     /**
@@ -145,6 +160,10 @@ class VirtualState implements States\StateInterface
      */
     public function testMethod($methodName, $scope=States\StateInterface::VISIBILITY_PUBLIC)
     {
+        //Simulate real behavior from the name of the method,
+        //if the method name contains private, its a private method
+        //if the method name contains protected, its a protected method
+        //else its a public method
         switch ($scope) {
             case States\StateInterface::VISIBILITY_PRIVATE:
                 //Private, can access all
@@ -203,6 +222,10 @@ class VirtualState implements States\StateInterface
             throw new Exception\MethodNotImplemented();
         }
 
+        //Simulate real behavior from the name of the method,
+        //if the method name contains private, its a private method
+        //if the method name contains protected, its a protected method
+        //else its a public method
         switch ($scope) {
             case States\StateInterface::VISIBILITY_PRIVATE:
                 //Private, can access all
@@ -243,6 +266,8 @@ class VirtualState implements States\StateInterface
 
     /**
      * Check if a method has been called
+     * Method added for test to check different behavior in calling method
+     * @return boolean
      */
     public function methodWasCalled()
     {
@@ -253,6 +278,7 @@ class VirtualState implements States\StateInterface
 
     /**
      * Register into the state the argument used for the closure
+     * Method added for test to check different behavior in calling method
      * @param array $arguments
      */
     public function setCalledArguments($arguments){
@@ -261,6 +287,7 @@ class VirtualState implements States\StateInterface
 
     /**
      * Return arguments used for the closure
+     * Method added for test to check different behavior in calling method
      * @return array
      */
     public function getCalledArguments(){
@@ -271,6 +298,7 @@ class VirtualState implements States\StateInterface
 
     /**
      * Remember that the closure has been called
+     * Method added for test to check different behavior in calling method
      */
     public function setMethodCalled(){
         $this->_methodCalled = true;
@@ -278,6 +306,7 @@ class VirtualState implements States\StateInterface
 
     /**
      * Return the called method name
+     * Method added for test to check different behavior in calling method
      * @return string
      */
     public function getMethodNameCalled()

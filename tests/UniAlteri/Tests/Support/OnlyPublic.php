@@ -24,9 +24,16 @@ namespace UniAlteri\Tests\Support;
 use \UniAlteri\States\States;
 
 /**
- * Fake class to test state behavior
  * Class OnlyPublic
- * @package UniAlteri\States\States
+ * Mock class to test the default trait State behavior with public methods.
+ * All methods have not a description to check the state's behavior with these methods.
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class OnlyPublic extends States\AbstractState
 {

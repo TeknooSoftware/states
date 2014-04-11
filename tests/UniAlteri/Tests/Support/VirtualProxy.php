@@ -26,6 +26,17 @@ use \UniAlteri\States\Proxy;
 use \UniAlteri\States\DI;
 use \UniAlteri\States;
 
+/**
+ * Class VirtualProxy
+ * Mock proxy to tests factories behavior and trait state behavior
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class VirtualProxy implements Proxy\ProxyInterface
 {
     /**
@@ -35,12 +46,20 @@ class VirtualProxy implements Proxy\ProxyInterface
     public $args = null;
 
     /**
+     * Local registry of loaded states, to simulate a real proxy
      * @var array
      */
     protected $_states = array();
 
+    /**
+     * Local registry of active states, to simulate a real proxy
+     * @var array
+     */
     protected $_actives = array();
 
+    /**
+     * @param mixed $arguments
+     */
     public function __construct($arguments)
     {
         $this->args = $arguments;
@@ -62,6 +81,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function getDIContainer()
     {
+        //Not used in tests
     }
 
     /**
@@ -70,6 +90,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function getObjectUniqueId()
     {
+        //Not used in tests
     }
 
     /**
@@ -78,6 +99,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function __clone()
     {
+        //Not used in tests
     }
 
     /***********************
@@ -92,6 +114,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function registerState($stateName, States\States\StateInterface $stateObject)
     {
+        //Simulate real behavior
         $this->_states[$stateName] = $stateObject;
     }
 
@@ -102,6 +125,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function unregisterState($stateName)
     {
+        //Simulate real behavior
         if (isset($this->_states[$stateName])) {
             unset($this->_states[$stateName]);
         }
@@ -114,6 +138,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function switchState($stateName)
     {
+        //Simulate real behavior
         $this->_actives = array($stateName => $stateName);
     }
 
@@ -125,6 +150,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function enableState($stateName)
     {
+        //Simulate real behavior
         $this->_actives[$stateName] = $stateName;
     }
 
@@ -135,6 +161,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function disableState($stateName)
     {
+        //Simulate real behavior
         if (isset($this->_actives[$stateName])) {
             unset($this->_actives[$stateName]);
         }
@@ -146,6 +173,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function disableAllStates()
     {
+        //Simulate real behavior
         $this->_actives = array();
     }
 
@@ -155,6 +183,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function listAvailableStates()
     {
+        //Simulate real behavior
         return array_keys($this->_states);
     }
 
@@ -164,6 +193,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function listActivesStates()
     {
+        //Simulate real behavior
         return array_keys($this->_actives);
     }
 
@@ -174,6 +204,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function getStatic()
     {
+        //Not used in tests
     }
 
     /*******************
@@ -192,6 +223,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function __call($name, $arguments)
     {
+        //Not used in tests
     }
 
     /**
@@ -203,6 +235,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function getMethodDescription($methodName, $stateName = null)
     {
+        //Not used in tests
     }
 
     /**
@@ -213,6 +246,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function __invoke()
     {
+        //Not used in tests
     }
 
 
@@ -230,6 +264,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function __get($name)
     {
+        //Not used in tests
     }
 
     /**
@@ -242,6 +277,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function __isset($name)
     {
+        //Not used in tests
     }
 
     /**
@@ -255,6 +291,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function __set($name, $value)
     {
+        //Not used in tests
     }
 
     /**
@@ -267,6 +304,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function __unset($name)
     {
+        //Not used in tests
     }
 
     /**
@@ -278,6 +316,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function __toString()
     {
+        //Not used in tests
     }
 
     /****************
@@ -292,6 +331,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function count()
     {
+        //Not used in tests
     }
 
     /**
@@ -304,6 +344,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function offsetExists($offset)
     {
+        //Not used in tests
     }
 
     /**
@@ -316,6 +357,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function offsetGet($offset)
     {
+        //Not used in tests
     }
 
     /**
@@ -328,6 +370,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function offsetSet($offset, $value)
     {
+        //Not used in tests
     }
 
     /**
@@ -338,6 +381,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function offsetUnset($offset)
     {
+        //Not used in tests
     }
 
     /************
@@ -352,6 +396,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function current()
     {
+        //Not used in tests
     }
 
     /**
@@ -362,6 +407,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function key()
     {
+        //Not used in tests
     }
 
     /**
@@ -371,6 +417,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function next()
     {
+        //Not used in tests
     }
 
     /**
@@ -380,6 +427,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function rewind()
     {
+        //Not used in tests
     }
 
     /**
@@ -390,6 +438,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function seek($position)
     {
+        //Not used in tests
     }
 
     /**
@@ -400,6 +449,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function valid()
     {
+        //Not used in tests
     }
 
     /**
@@ -410,6 +460,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function getIterator()
     {
+        //Not used in tests
     }
 
     /*****************
@@ -425,6 +476,7 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function serialize()
     {
+        //Not used in tests
     }
 
     /**
@@ -436,5 +488,6 @@ class VirtualProxy implements Proxy\ProxyInterface
      */
     public function unserialize($serialized)
     {
+        //Not used in tests
     }
 }

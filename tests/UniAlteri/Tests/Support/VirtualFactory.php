@@ -27,6 +27,17 @@ use \UniAlteri\States\Factory\Exception;
 use UniAlteri\States\Loader;
 use \UniAlteri\States\Proxy;
 
+/**
+ * Class VirtualFactory
+ * Mock factory to tests proxies and loaders. Logs only all actions
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class VirtualFactory implements Factory\FactoryInterface
 {
     /**
@@ -56,6 +67,7 @@ class VirtualFactory implements Factory\FactoryInterface
      */
     public function getDIContainer()
     {
+        //Not used in tests
     }
 
     /**
@@ -65,6 +77,7 @@ class VirtualFactory implements Factory\FactoryInterface
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
+        //Not used in tests
     }
 
     /**
@@ -74,6 +87,7 @@ class VirtualFactory implements Factory\FactoryInterface
      */
     public function getFinder()
     {
+        //Build a new mock finder
         return new VirtualFinder($this->_statedClassName, $this->_path);
     }
 
@@ -112,6 +126,7 @@ class VirtualFactory implements Factory\FactoryInterface
     }
 
     /**
+     * Method added for tests to get action logs
      * Return the list of initialized factories by the loader
      * @return string[]
      */
@@ -130,6 +145,7 @@ class VirtualFactory implements Factory\FactoryInterface
      */
     public function build($arguments = null, $stateName = null)
     {
+        //Not used in tests
     }
 
     /**
@@ -147,6 +163,7 @@ class VirtualFactory implements Factory\FactoryInterface
 
     /**
      * Get the proxy called to startup it
+     * Method added for tests to check startup behavior
      * @return Proxy\ProxyInterface
      */
     public function getStartupProxy()

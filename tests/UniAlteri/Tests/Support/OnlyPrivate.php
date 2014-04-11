@@ -24,9 +24,17 @@ namespace UniAlteri\Tests\Support;
 use \UniAlteri\States\States;
 
 /**
- * Fake class to test state behavior
- * Class OnlyPublic
- * @package UniAlteri\States\States
+ * Class OnlyPrivate
+ * Mock class to test the default trait State behavior with private methods.
+ * All methods have not a description to check the state's behavior with these methods.
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     0.9.2
  */
 class OnlyPrivate extends States\AbstractState
 {
@@ -37,7 +45,9 @@ class OnlyPrivate extends States\AbstractState
     public function __construct($initializeContainer=true)
     {
         if (true === $initializeContainer) {
+            //Mock DI Container
             $this->setDIContainer(new VirtualDIContainer());
+            //Register the service to generate a mock injection closure object
             $this->getDIContainer()->registerService(
                 States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER,
                 function() {

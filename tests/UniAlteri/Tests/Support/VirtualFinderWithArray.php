@@ -27,6 +27,18 @@ use UniAlteri\States\Proxy;
 use UniAlteri\States\Loader;
 use UniAlteri\States\States;
 
+/**
+ * Class VirtualFinderWithArray
+ * Mock finder to test behavior of proxies and factories
+ * This mock return ArrayObject instead of array values in the method listStates
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class VirtualFinderWithArray extends VirtualFinder
 {
     /**

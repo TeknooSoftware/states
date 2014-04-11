@@ -25,10 +25,22 @@ use \UniAlteri\States\Factory;
 use \UniAlteri\States\Factory\Exception;
 use \UniAlteri\States\Proxy;
 
+/**
+ * Class VirtualStartupFactory
+ * Mock startup factory to test integrated proxy behavior
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class VirtualStartupFactory implements Factory\StartupFactoryInterface
 {
     /**
      * Proxy to initialize called with forwardStartup
+     * Public to allow testCase to check its value to confirm the behavior of the integrated proxy
      * @var Proxy\ProxyInterface
      */
     public static $calledProxyObject = null;
