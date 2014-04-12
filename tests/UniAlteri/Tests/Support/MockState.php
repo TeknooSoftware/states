@@ -157,6 +157,7 @@ class MockState implements States\StateInterface
      * @param string $methodName
      * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean
+     * @throws Exception\InvalidArgument when the method name is not a string
      */
     public function testMethod($methodName, $scope=States\StateInterface::VISIBILITY_PUBLIC)
     {
@@ -215,6 +216,7 @@ class MockState implements States\StateInterface
      * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return DI\InjectionClosureInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
+     * @throws Exception\InvalidArgument when the method name is not a string
      */
     public function getClosure($methodName, $proxy, $scope=States\StateInterface::VISIBILITY_PUBLIC)
     {

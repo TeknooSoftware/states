@@ -63,7 +63,7 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The startup factory must throw an exception when the proxy can not be initialized
+     * The startup factory must throw an exception when the proxy cannot be initialized
      */
     public function testForwardStartupProxyNotInitialized()
     {
@@ -73,7 +73,7 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
             return;
         } catch (\Exception $e) { }
 
-        $this->fail('Error, the startup factory must throw an exception when the proxy can not be initialized');
+        $this->fail('Error, the startup factory must throw an exception when the proxy cannot be initialized');
     }
 
     /**
@@ -103,7 +103,7 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The startup factory class must throw an exception when a the registering factory does not implement the factory interface.
+     * The startup factory class must throw an exception when the registering factory does not implement the factory interface.
      */
     public function testRegisterFactoryInvalidFactory()
     {
@@ -113,7 +113,7 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
             return;
         } catch (\Exception $e) { }
 
-        $this->fail('Error, the startup factory class must throw an exception when a the registering factory does not implement the factory interface');
+        $this->fail('Error, the startup factory class must throw an exception when the registering factory does not implement the factory interface');
     }
 
     /**

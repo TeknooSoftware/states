@@ -39,7 +39,7 @@ use \UniAlteri\Tests\Support;
 class StateTest extends AbstractStatesTest
 {
     /**
-     * Build an basic object to provide only public methods
+     * Build a basic object to provide only public methods
      * @param boolean $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyPublic
      */
@@ -48,7 +48,7 @@ class StateTest extends AbstractStatesTest
     }
 
     /**
-     * Build an basic object to provide only protected methods
+     * Build a basic object to provide only protected methods
      * @param boolean $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyProtected
      */
@@ -57,7 +57,7 @@ class StateTest extends AbstractStatesTest
     }
 
     /**
-     * Build an basic object to provide only private methods
+     * Build a basic object to provide only private methods
      * @param boolean $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyPrivate
      */

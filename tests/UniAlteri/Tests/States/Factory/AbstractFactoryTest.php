@@ -78,7 +78,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Replace finder service to generate virtual finder whom return ArrayObject instead of php array
+     * Replace finder service to generate virtual finder whose return ArrayObject instead of php array
      */
     protected function _registerMockFinderServiceWithArrayObject()
     {

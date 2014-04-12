@@ -132,7 +132,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of the loader when it can not found and load the required class : it must return false
+     * Test behavior of the loader when it cannot found and load the required class : it must return false
      * and give the hand to another loader
      */
     public function testLoadClassNonExistent()
@@ -311,7 +311,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array('class1:path1', 'class2:path2', 'class1:path3'),
             Support\MockFactory::listInitializedFactories(),
-            'Error, the loader must not manage factory building. If a even stated class is initialized several times, the loader must call the factory each time. '
+            'Error, the loader must not manage factory building. If an even stated class is initialized several times, the loader must call the factory each time. '
         );
     }
 
