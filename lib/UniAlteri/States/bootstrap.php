@@ -26,7 +26,7 @@ use \UniAlteri\States\DI;
 use \UniAlteri\States\Loader;
 use \UniAlteri\States\Factory;
 
-//Needed for test, but we can use your own autloader to load file of this lib.
+//Needed for test, but we can use your own autoloader to load file of this lib.
 //This lib respects PSR-0 and PSR-1
 $iniFile = dirname(dirname(dirname(__DIR__))).DIRECTORY_SEPARATOR.'bootstrap.php';
 if (is_readable($iniFile)) {
@@ -40,7 +40,7 @@ $diContainer = new DI\Container();
 /**
  * @param DI\ContainerInterface $container
  * @return Loader\FinderIntegrated
- * @throws Exception\UnavailableFactory if the local factory is not availables
+ * @throws Exception\UnavailableFactory if the local factory is not available
  */
 $finderService = function ($container) {
     if (false === $container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {

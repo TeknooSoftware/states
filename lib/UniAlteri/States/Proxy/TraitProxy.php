@@ -92,14 +92,14 @@ trait TraitProxy
         }
 
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
-        $scopeVisbility = $this->_getVisibilityScope();
+        $scopeVisibility = $this->_getVisibilityScope();
 
         $methodsWithStatesArray = explode('Of', $methodName);
         if (1 === count($methodsWithStatesArray)) {
             $activeStateFound = null;
             //No specific state required, browse all enable state to find the method
             foreach ($this->_activesStates as $activeStateObject) {
-                if (true === $activeStateObject->testMethod($methodName, $scopeVisbility)) {
+                if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
                     if (null === $activeStateFound) {
                         //Check if there are only one enable state whom implements this method
                         $activeStateFound = $activeStateObject;
@@ -114,7 +114,7 @@ trait TraitProxy
 
             if (null !== $activeStateFound) {
                 //Method found, extract it
-                $callingClosure = $activeStateFound->getClosure($methodName, $this, $scopeVisbility);
+                $callingClosure = $activeStateFound->getClosure($methodName, $this, $scopeVisibility);
                 //Change current injection
                 $previousClosure = $this->_currentInjectionClosure;
                 $this->_currentInjectionClosure = $callingClosure;
@@ -145,9 +145,9 @@ trait TraitProxy
             $methodName = implode('Of', $methodsWithStatesArray);
 
             $activeStateObject = $this->_activesStates[$statesName];
-            if (true === $activeStateObject->testMethod($methodName, $scopeVisbility)) {
+            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
                 //Method found, extract it
-                $callingClosure = $activeStateObject->getClosure($methodName, $this, $scopeVisbility);
+                $callingClosure = $activeStateObject->getClosure($methodName, $this, $scopeVisibility);
                 //Change current injection
                 $previousClosure = $this->_currentInjectionClosure;
                 $this->_currentInjectionClosure = $callingClosure;

@@ -157,7 +157,7 @@ class LoaderStandard implements LoaderInterface
             throw new Exception\IllegalArgument('Error, the path is not a valid string');
         }
 
-        //Prepend the namespace with "\" to avoid mismatchig error
+        //Prepend the namespace with "\" to avoid mismatch error
         if ('\\' != $namespace[0]) {
             $namespace = '\\'.$namespace;
         }
