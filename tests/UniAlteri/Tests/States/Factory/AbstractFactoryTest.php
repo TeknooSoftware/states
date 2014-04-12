@@ -28,14 +28,26 @@ use \UniAlteri\States\Factory;
 use \UniAlteri\States\Factory\Exception;
 use \UniAlteri\Tests\Support;
 
+/**
+ * Class AbstractFactoryTest
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Mock container used for test
      * @var Support\MockDIContainer
      */
     protected $_container = null;
 
     /**
+     * Mock finder used for test
      * @var Support\MockFinder
      */
     protected $_virtualFinder = null;
@@ -162,21 +174,34 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the factory must throw an exception when there are the finder generator into di container return a bad object, not implementing the Finder Interface');
     }
 
+    /**
+     * Test the factory behavior to build a new finder object from the service registered into its DI
+     */
     public function testGetFinder()
     {
         $this->assertInstanceOf('UniAlteri\States\Loader\FinderInterface', $this->getFactoryObject(true)->getFinder());
     }
 
+    /**
+     * Test the behavior of the method getStatedClassName() when the factory is not goodly initialized
+     */
     public function testGetStatedClassNameNotInitialized()
     {
         $this->assertNull($this->getFactoryObject()->getStatedClassName());
     }
 
+    /**
+     * Test the behavior of the method getPath() when the factory is not goodly initialized
+     */
     public function testGetPathNotInitialized()
     {
         $this->assertNull($this->getFactoryObject()->getPath());
     }
 
+    /**
+     * Test the behavior of the method getStatedClassName() with values (stated class name and path) defined
+     * by the loading during factory initialization
+     */
     public function testGetStatedClassName()
     {
         $factory = $this->getFactoryObject(true);
@@ -184,6 +209,10 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('foo', $factory->getStatedClassName());
     }
 
+    /**
+     * Test the behavior of the method getPath() with values (stated class name and path) defined
+     * by the loading during factory initialization
+     */
     public function testGetPath()
     {
         $factory = $this->getFactoryObject(true);
@@ -206,6 +235,12 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the factory must throw an exception if there are no Di Container');
     }
 
+    /**
+     * Test the behavior of the method initialize() called by the loading during factory initialization
+     * - Prerequisite : Finder service (to create new Finder instance dedicated for its stated class)
+     * The factory must find and load the proxy class (but not create an instance) :
+     * If the proxy class is not defined for the stated class, it must create an alias from the standard or integrated proxy
+     */
     public function testInitialize()
     {
         $virtualFinder = new Support\MockFinder('', '');
@@ -263,6 +298,9 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, if the stated class has not the required starting state, the factory must throw an exception StateNotFound');
     }
 
+    /**
+     * Test if the factory can retrieve from the finder the list of available states for the stated class
+     */
     public function testListAvailableStateInStartup()
     {
         $proxy = new Support\MockProxy(null);
@@ -278,6 +316,9 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Check if the factory, when it initialize a new proxy, enable the default state if there is no defined startup state
+     */
     public function testDefaultStateAutomaticallySelectedInStartup()
     {
         $proxy = new Support\MockProxy(null);
@@ -285,6 +326,9 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
     }
 
+    /**
+     * Check if the factory, when it initialize a new proxy, enable the required state if there is defined startup state
+     */
     public function testRequiredStateSelectedInStartup()
     {
         $proxy = new Support\MockProxy(null);
@@ -292,6 +336,10 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($proxy->listActivesStates(), array('MockState1'));
     }
 
+    /**
+     * Check if the factory register all available states of the stated class in the new proxy
+     * (Finder use ArrayObject instead of array to return the list of states)
+     */
     public function testListAvailableStateInStartupWithArrayObject()
     {
         $proxy = new Support\MockProxy(null);
@@ -308,6 +356,10 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Check if the factory, when it initialize a new proxy, enable the default state if there is no defined startup state
+     * (Finder use ArrayObject instead of array to return the list of states)
+     */
     public function testDefaultStateAutomaticallySelectedInStartupWithArrayObject()
     {
         $proxy = new Support\MockProxy(null);
@@ -316,6 +368,10 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
     }
 
+    /**
+     * Check if the factory, when it initialize a new proxy, enable the required state if there is defined startup state
+     * (Finder use ArrayObject instead of array to return the list of states)
+     */
     public function testRequiredStateSelectedInStartupWithArrayObject()
     {
         $proxy = new Support\MockProxy(null);
@@ -354,6 +410,9 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, if the stated class has not the required starting state, the factory must throw an exception StateNotFound');
     }
 
+    /**
+     * Check if the factory register all available states of the stated class in the new proxy
+     */
     public function testListAvailableState()
     {
         $proxy = $this->getFactoryObject()->build();
@@ -368,18 +427,27 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Check if the factory, when it initialize a new proxy, enable the default state if there is no defined startup state
+     */
     public function testDefaultStateAutomaticallySelected()
     {
         $proxy = $this->getFactoryObject()->build();
         $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
     }
 
+    /**
+     * Check if the factory, when it initialize a new proxy, enable the required state if there is defined startup state
+     */
     public function testRequiredStateSelected()
     {
         $proxy = $this->getFactoryObject()->build(null, 'MockState1');
         $this->assertEquals($proxy->listActivesStates(), array('MockState1'));
     }
 
+    /**
+     * Check if the factory pass arguments to the
+     */
     public function testPassedArguments()
     {
         $args = array('foo' => 'bar');

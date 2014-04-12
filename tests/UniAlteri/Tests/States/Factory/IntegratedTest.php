@@ -24,6 +24,17 @@ namespace UniAlteri\Tests\States\Factory;
 use \UniAlteri\States\Factory;
 use \UniAlteri\Tests\Support;
 
+/**
+ * Class IntegratedTest
+ * Test the exception behavior of the integrated factory
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class IntegratedTest extends AbstractFactoryTest
 {
     /**

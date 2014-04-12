@@ -24,6 +24,18 @@ namespace UniAlteri\Tests\States\Loader;
 use UniAlteri\States\Loader;
 use UniAlteri\States\Loader\Exception;
 
+/**
+ * Class IncludePathManagerTest
+ * Tests the excepted behavior of standard include path manager implementing
+ * the interface \UniAlteri\States\Loader\IncludePathManagerInterface
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**

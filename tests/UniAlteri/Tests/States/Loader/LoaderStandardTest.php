@@ -25,9 +25,21 @@ use UniAlteri\States\Loader;
 use UniAlteri\States\Loader\Exception;
 use UniAlteri\Tests\Support;
 
+/**
+ * Class LoaderStandardTest
+ * Tests the excepted behavior of standard loader implementing the interface \UniAlteri\States\Loader\LoaderInterface
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Loader to test
      * @var Loader\LoaderInterface
      */
     protected $_loader = null;
@@ -119,11 +131,19 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertSame($virtualContainer, $object->getDIContainer());
     }
 
+    /**
+     * Test behavior of the loader when it can not found and load the required class : it must return false
+     * and give the hand to another loader
+     */
     public function testLoadClassNonExistent()
     {
         $this->assertFalse($this->_initializeLoader()->loadClass('badName'));
     }
 
+    /**
+     * Loader can accept additional include path during loading process.
+     * It must throw an exception if the required directory is not available
+     */
     public function testAddIncludePathBadDir()
     {
         $loader = $this->_initializeLoader();
@@ -136,6 +156,9 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, if the path to include is unavailable, the loader must throws the exception Exception\UnavailablePath');
     }
 
+    /**
+     * Loader can accept additional include path during loading process.
+     */
     public function testAddIncludePath()
     {
         $loader = $this->_initializeLoader();
@@ -150,6 +173,10 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Developers can register several namespace with several locations into the loader to accelerate the loading process
+     * If the location is invalid, loader must throws exception
+     */
     public function testRegisterNamespaceBadName()
     {
         $loader = $this->_initializeLoader();
@@ -162,6 +189,9 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, if the path of namespace to register is not a valid string, the loader must throws the exception Exception\UnavailablePath');
     }
 
+    /**
+     * Developers can register several namespace with several locations into the loader to accelerate the loading process
+     */
     public function testRegisterNamespace()
     {
         $loader = $this->_initializeLoader();
@@ -176,6 +206,10 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Developers can register several namespace with several locations into the loader to accelerate the loading process
+     * A same namespace can accept several locations
+     */
     public function testRegisterNamespaceMultiplePath()
     {
         $loader = $this->_initializeLoader();
@@ -191,6 +225,10 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * Loader can accept additional include path during loading process.
+     * It can overload include path before loading, but, after the loading process, it must restore them
+     */
     public function testLoadClassRestoreOldIncludedPathAfterCalling()
     {
         $this->_includePathManager->resetAllChangePath();
@@ -226,6 +264,10 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found, the loader must throw an exception
+     */
     public function testBuildFactoryNonExistentFactory()
     {
         $loader = $this->_initializeLoader();
@@ -238,6 +280,10 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, if factory\'s class was not found, Loader must throws the exception Exception\UnavailableFactory');
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory class does not implement the method Factory\FactoryInterface, the loader must throw an exception.
+     */
     public function testBuildFactoryBadFactory()
     {
         $loader = $this->_initializeLoader();
@@ -250,6 +296,9 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, if factory\'s class does not implement the factory interface, Loader must throws the exception Exception\IllegalFactory');
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     */
     public function testBuildFactory()
     {
         $loader = $this->_initializeLoader();
@@ -266,6 +315,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaNameSpaceRelativeWithoutFactoryFile()
     {
         $loader = $this->_initializeLoader();
@@ -274,6 +328,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaNameSpaceRelativeWithEmptyFactoryFile()
     {
         $loader = $this->_initializeLoader();
@@ -282,6 +341,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1b'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaNameSpaceRelative()
     {
         $loader = $this->_initializeLoader();
@@ -290,6 +354,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaNameSpaceAbsoluteWithoutFactoryFile()
     {
         $loader = $this->_initializeLoader();
@@ -298,6 +367,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaNameSpaceAbsolute()
     {
         $loader = $this->_initializeLoader();
@@ -306,6 +380,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaNameSpaceAbsoluteWithFactoryException()
     {
         $loader = $this->_initializeLoader();
@@ -314,6 +393,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaFileWithoutFileAbsolute()
     {
         $loader = $this->_initializeLoader(true);
@@ -322,6 +406,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($loader->loadClass('\\Support\\FileLoader\\Class1'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaFileAbsolute()
     {
         $loader = $this->_initializeLoader(true);
@@ -330,6 +419,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($loader->loadClass('\\Support\\FileLoader\\Class2'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaFileWithoutFile()
     {
         $loader = $this->_initializeLoader(true);
@@ -338,6 +432,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($loader->loadClass('Support\\FileLoader\\Class1'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaFile()
     {
         $loader = $this->_initializeLoader(true);
@@ -346,6 +445,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($loader->loadClass('Support\\FileLoader\\Class2'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaFileWithFactoryException()
     {
         $loader = $this->_initializeLoader(true);
@@ -354,6 +458,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($loader->loadClass('Support\\FileLoader\\Class3'));
     }
 
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory throws an exception during its initialization, the loader must restore include path and throw the
+     * exception
+     */
     public function testLoadClassBehaviorDuringExceptionMustRestoreIncludedPath()
     {
         $loader = $this->_initializeLoader(false);

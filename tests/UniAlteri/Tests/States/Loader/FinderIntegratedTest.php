@@ -27,10 +27,21 @@ use UniAlteri\States\States;
 use UniAlteri\States\Loader\Exception;
 use UniAlteri\Tests\Support;
 
+/**
+ * Class FinderIntegratedTest
+ * Tests the excepted behavior of integrated finder implementing the interface \UniAlteri\States\Loader\FinderInterface
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class FinderIntegratedTest extends FinderStandardTest
 {
     /**
-     * Initialize the finder for test
+     * Initialize the integrated finder for test with mock objects
      * @param string $statedClassName
      * @param string $pathString
      * @return Loader\FinderStandard
@@ -70,6 +81,9 @@ class FinderIntegratedTest extends FinderStandardTest
         $this->assertSame($virtualContainer, $object->getDIContainer());
     }
 
+    /**
+     * Initialize the startup factory to run this tests with the integrated finder (use the integrated proxy)
+     */
     public function testBuildProxyDefault()
     {
         Factory\StandardStartupFactory::registerFactory('UniAlteri\States\Proxy\Integrated', new Support\MockFactory());

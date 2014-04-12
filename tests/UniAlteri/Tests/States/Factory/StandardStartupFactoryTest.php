@@ -26,8 +26,22 @@ use \UniAlteri\States\Factory;
 use \UniAlteri\States\Factory\Exception;
 use \UniAlteri\Tests\Support;
 
+/**
+ * Class StandardStartupFactoryTest
+ * Test the exception behavior of the start up standard factory
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * Prepare test, reinitialize the StandardStartupFactory
+     */
     protected function setUp()
     {
         Factory\StandardStartupFactory::reset();
