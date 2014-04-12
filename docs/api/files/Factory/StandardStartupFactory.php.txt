@@ -47,10 +47,10 @@ class StandardStartupFactory implements StartupFactoryInterface
     /**
      * Find the factory to use for the new proxy object to initialize it with its container and states.
      * This method is called by the constructor of the stated object
-     * @param Proxy\ProxyInterface $proxyObject
-     * @param string $stateName
+     * @param  Proxy\ProxyInterface         $proxyObject
+     * @param  string                       $stateName
      * @return boolean
-     * @throws Exception\InvalidArgument when $factoryIdentifier is not an object
+     * @throws Exception\InvalidArgument    when $factoryIdentifier is not an object
      * @throws Exception\UnavailableFactory when the required factory was not found
      */
     public static function forwardStartup($proxyObject, $stateName = null)
@@ -70,10 +70,10 @@ class StandardStartupFactory implements StartupFactoryInterface
 
     /**
      * Register a new factory object to initialize proxy objects
-     * @param string $factoryIdentifier
-     * @param FactoryInterface $factoryObject
+     * @param  string                    $factoryIdentifier
+     * @param  FactoryInterface          $factoryObject
      * @throws Exception\InvalidArgument when $factoryIdentifier is not a string
-     * @throws Exception\IllegalFactory when $factoryObject doest not implement the interface FactoryInterface
+     * @throws Exception\IllegalFactory  when $factoryObject doest not implement the interface FactoryInterface
      */
     public static function registerFactory($factoryIdentifier, $factoryObject)
     {
@@ -117,3 +117,4 @@ class StandardStartupFactory implements StartupFactoryInterface
         return array_keys(static::$_factoryRegistry->getArrayCopy());
     }
 }
+

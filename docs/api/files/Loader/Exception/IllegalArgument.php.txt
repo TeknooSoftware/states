@@ -39,3 +39,4 @@ use \UniAlteri\States\Exception;
 class IllegalArgument extends Exception\IllegalArgument
 {
 }
+

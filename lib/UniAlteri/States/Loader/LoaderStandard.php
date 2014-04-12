@@ -71,8 +71,8 @@ class LoaderStandard implements LoaderInterface
 
     /**
      * Initialize the loader object
-     * @param IncludePathManagerInterface $includePathManager
-     * @throws Exception\IllegalArgument $includePathManager does not implement the interface IncludePathManagerInterface
+     * @param  IncludePathManagerInterface $includePathManager
+     * @throws Exception\IllegalArgument   $includePathManager does not implement the interface IncludePathManagerInterface
      */
     public function __construct($includePathManager)
     {
@@ -100,12 +100,13 @@ class LoaderStandard implements LoaderInterface
 
     /**
      * Register a DI container for this object
-     * @param DI\ContainerInterface $container
+     * @param  DI\ContainerInterface $container
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
         $this->_diContainer = $container;
+
         return $this;
     }
 
@@ -120,7 +121,7 @@ class LoaderStandard implements LoaderInterface
 
     /**
      * Method to add a path on the list of location where find class
-     * @param string $path
+     * @param  string                    $path
      * @return $this
      * @throws Exception\UnavailablePath if the path is not readable
      */
@@ -131,6 +132,7 @@ class LoaderStandard implements LoaderInterface
         }
 
         $this->_includedPathsArray[$path] = $path;
+
         return $this;
     }
 
@@ -146,8 +148,8 @@ class LoaderStandard implements LoaderInterface
     /**
      * Register a location to find some classes of a namespace.
      * A namespace can has several locations
-     * @param string $namespace
-     * @param string $path
+     * @param  string                    $namespace
+     * @param  string                    $path
      * @return $this
      * @throws Exception\IllegalArgument if the path is not a valid string
      */
@@ -167,7 +169,7 @@ class LoaderStandard implements LoaderInterface
             $this->_namespacesArray[$namespace] = new \SplQueue();
         }
 
-        if ('/' == $path[strlen($path)-1]){
+        if ('/' == $path[strlen($path)-1]) {
             $path = substr($path, 0, strlen($path)-1);
         }
 
@@ -213,10 +215,10 @@ class LoaderStandard implements LoaderInterface
 
     /**
      * Loaded a class into a namespace
-     * @param string $class
+     * @param  string                       $class
      * @return bool
      * @throws Exception\UnavailableFactory if the required factory is not available
-     * @throws Exception\IllegalFactory if the factory does not implement the good interface
+     * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      */
     protected function _loadNamespaceClass($class)
     {
@@ -268,7 +270,7 @@ class LoaderStandard implements LoaderInterface
 
     /**
      * Test if a file exists, check also in all included path
-     * @param string $pathFile
+     * @param  string  $pathFile
      * @return boolean
      */
     protected function _testFileExist($pathFile)
@@ -284,10 +286,10 @@ class LoaderStandard implements LoaderInterface
 
     /**
      * Method called to load a class.
-     * @param string $className class name, support namespace prefixes
+     * @param  string                       $className class name, support namespace prefixes
      * @return boolean
      * @throws Exception\UnavailableFactory if the required factory is not available
-     * @throws Exception\IllegalFactory if the factory does not implement the good interface
+     * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      * @throws \Exception
      */
     public function loadClass($className)
@@ -330,23 +332,24 @@ class LoaderStandard implements LoaderInterface
             } else {
                 $classLoaded = true;
             }
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             $this->_restoreIncludedPaths();
             throw $e;
         }
 
         $this->_restoreIncludedPaths();
+
         return $classLoaded;
     }
 
     /**
      * Build the factory and initialize the loading stated class
-     * @param string $factoryClassName
-     * @param string $statedClassName
-     * @param string $path
+     * @param  string                       $factoryClassName
+     * @param  string                       $statedClassName
+     * @param  string                       $path
      * @return Factory\FactoryInterface
      * @throws Exception\UnavailableFactory if the required factory is not available
-     * @throws Exception\IllegalFactory if the factory does not implement the good interface
+     * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      */
     public function buildFactory($factoryClassName, $statedClassName, $path)
     {
@@ -373,6 +376,7 @@ class LoaderStandard implements LoaderInterface
 
         //Call its initialize methods to load the stated class
         $factoryObject->initialize($statedClassName, $path);
+
         return $factoryObject;
     }
 }

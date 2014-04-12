@@ -39,3 +39,4 @@ use \UniAlteri\States\Exception;
 class StateNotFound extends Exception\StateNotFound
 {
 }
+

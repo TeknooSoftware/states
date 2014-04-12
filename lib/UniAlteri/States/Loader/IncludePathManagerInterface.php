@@ -37,8 +37,8 @@ interface IncludePathManagerInterface
 {
     /**
      * Sets the include_path configuration option
-     * @param array|string[] $paths (paths must be split into an array)
-     * @return array|string[] old paths
+     * @param  array|string[]            $paths (paths must be split into an array)
+     * @return array|string[]            old paths
      * @throws Exception\IllegalArgument if the argument $paths is not an array of string
      */
     public function setIncludePath($paths);

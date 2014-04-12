@@ -20,8 +20,6 @@
 
 namespace UniAlteri\States;
 
-use \UniAlteri\States\DI;
-
 /**
  * Interface ObjectInterface
  * All stated object must implement this method, even if they use another proxy interface and factory interface.
@@ -36,7 +34,7 @@ interface ObjectInterface
 {
     /**
      * Register a DI container for this object
-     * @param DI\ContainerInterface $container
+     * @param  DI\ContainerInterface $container
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container);

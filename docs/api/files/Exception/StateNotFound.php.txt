@@ -35,3 +35,4 @@ namespace UniAlteri\States\Exception;
 class StateNotFound extends Standard
 {
 }
+

@@ -40,3 +40,4 @@ class Standard implements FactoryInterface
 {
     use TraitFactory;
 }
+

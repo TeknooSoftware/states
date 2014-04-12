@@ -38,3 +38,4 @@ use \UniAlteri\States\Exception;
 class ClassNotFound extends Exception\ClassNotFound
 {
 }
+

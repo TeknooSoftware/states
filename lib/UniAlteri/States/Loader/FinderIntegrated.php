@@ -21,8 +21,6 @@
 
 namespace UniAlteri\States\Loader;
 
-use \UniAlteri\States\Loader\Exception;
-use \UniAlteri\States\DI;
 use \UniAlteri\States\States;
 use \UniAlteri\States\Proxy;
 

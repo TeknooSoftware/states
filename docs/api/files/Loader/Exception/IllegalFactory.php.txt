@@ -39,3 +39,4 @@ use \UniAlteri\States\Exception;
 class IllegalFactory extends Exception\IllegalFactory
 {
 }
+

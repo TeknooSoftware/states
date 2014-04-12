@@ -21,11 +21,6 @@
 
 namespace UniAlteri\States;
 
-use \UniAlteri\States\Exception;
-use \UniAlteri\States\DI;
-use \UniAlteri\States\Loader;
-use \UniAlteri\States\Factory;
-
 //Needed for test, but we can use your own autoloader to load file of this lib.
 //This lib respects PSR-0 and PSR-1
 $iniFile = dirname(dirname(dirname(__DIR__))).DIRECTORY_SEPARATOR.'bootstrap.php';
@@ -48,6 +43,7 @@ $finderService = function ($container) {
     }
 
     $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
+
     return new Loader\FinderIntegrated($factory->getStatedClassName(), $factory->getPath());
 };
 

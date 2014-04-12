@@ -36,3 +36,4 @@ namespace UniAlteri\States\Exception;
 class UnavailableClosure extends \BadFunctionCallException
 {
 }
+

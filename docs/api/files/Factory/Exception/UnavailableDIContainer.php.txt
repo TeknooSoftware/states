@@ -39,3 +39,4 @@ use \UniAlteri\States\Exception;
 class UnavailableDIContainer extends Exception\UnavailableDIContainer
 {
 }
+

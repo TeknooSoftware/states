@@ -21,8 +21,6 @@
 
 namespace UniAlteri\States\DI;
 
-use UniAlteri\States\DI\Exception;
-
 /**
  * Class Container
  * Default Dependency Injection Container, build on Pimple used in this library.
@@ -38,7 +36,7 @@ class Container extends \Pimple implements ContainerInterface
 {
     /**
      * Test if the identifier respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
-     * @param string $name
+     * @param  string                $name
      * @return bool
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
@@ -64,10 +62,10 @@ class Container extends \Pimple implements ContainerInterface
     /**
      * Call an entry of the container to retrieve an instance
      *
-     * @param string $name : identifier of the instance
+     * @param  string                    $name : identifier of the instance
      * @return mixed
      * @throws Exception\InvalidArgument if the identifier is not defined
-     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function get($name)
     {
@@ -82,12 +80,12 @@ class Container extends \Pimple implements ContainerInterface
 
     /**
      * Register a new shared object into container (the same object is returned at each call)
-     * @param string $name
-     * @param object|callable|string $instance
+     * @param  string                   $name
+     * @param  object|callable|string   $instance
      * @return $this
-     * @throws Exception\ClassNotFound if $instance is a non-existent class name
+     * @throws Exception\ClassNotFound  if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
-     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName    when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerInstance($name, $instance)
     {
@@ -112,12 +110,12 @@ class Container extends \Pimple implements ContainerInterface
 
     /**
      * Register a new service into container (a new instance is returned at each call)
-     * @param string $name : interface name, class name, alias
-     * @param object|callable|string $instance
+     * @param  string                   $name     : interface name, class name, alias
+     * @param  object|callable|string   $instance
      * @return $this
-     * @throws Exception\ClassNotFound if $instance is a non-existent class name
+     * @throws Exception\ClassNotFound  if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
-     * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName    when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerService($name, $instance)
     {
@@ -134,7 +132,7 @@ class Container extends \Pimple implements ContainerInterface
             //Class, check if it is loaded
             if (\class_exists($instance, false)) {
                 //Write a new closure to build a new instance of this class, and use it as service
-                $this[$name] = $this->factory(function() use($instance){
+                $this[$name] = $this->factory(function () use ($instance) {
                     return new $instance();
                 });
             } else {
@@ -149,19 +147,20 @@ class Container extends \Pimple implements ContainerInterface
 
     /**
      * Test if an entry is already registered
-     * @param string $name
+     * @param  string                $name
      * @return boolean
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function testEntry($name)
     {
         $this->_validateName($name);
+
         return isset($this[$name]);
     }
 
     /**
      * Remove an entry from the container
-     * @param string $name
+     * @param  string                $name
      * @return $this
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
@@ -169,12 +168,13 @@ class Container extends \Pimple implements ContainerInterface
     {
         $this->_validateName($name);
         unset($this[$name]);
+
         return $this;
     }
 
     /**
      * Configure the container from an array (provided by an INI file or other)
-     * @param array|\ArrayObject $params
+     * @param  array|\ArrayObject        $params
      * @return mixed
      * @throws Exception\InvalidArgument when $params is not an array or an ArrayAccess object
      */
@@ -191,7 +191,7 @@ class Container extends \Pimple implements ContainerInterface
         }
 
         if (isset($params['instances'])) {
-            foreach($params['instances'] as $name => $instance) {
+            foreach ($params['instances'] as $name => $instance) {
                 $this->registerInstance($name, $instance);
             }
         }
@@ -206,3 +206,4 @@ class Container extends \Pimple implements ContainerInterface
         return $this->keys();
     }
 }
+

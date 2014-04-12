@@ -21,7 +21,6 @@
 
 namespace UniAlteri\States\Loader;
 
-use \UniAlteri\States\Loader\Exception;
 use \UniAlteri\States\DI;
 use \UniAlteri\States\States;
 use \UniAlteri\States\Proxy;
@@ -78,11 +77,13 @@ class FinderStandard implements FinderInterface
 
     /**
      * Register a DI container for this object
-     * @param DI\ContainerInterface $container
+     * @param  DI\ContainerInterface $container
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container){
+    public function setDIContainer(DI\ContainerInterface $container)
+    {
         $this->_diContainer = $container;
+
         return $this;
     }
 
@@ -90,7 +91,8 @@ class FinderStandard implements FinderInterface
      * Return the DI Container used for this object
      * @return DI\ContainerInterface
      */
-    public function getDIContainer(){
+    public function getDIContainer()
+    {
         return $this->_diContainer;
     }
 
@@ -98,7 +100,7 @@ class FinderStandard implements FinderInterface
      * List all available state object of the stated class
      * @return string[]
      * @throws Exception\UnavailablePath if the states' folder is not available
-     * @throws Exception\UnReadablePath if the states' folder is not readable
+     * @throws Exception\UnReadablePath  if the states' folder is not readable
      */
     public function listStates()
     {
@@ -131,14 +133,15 @@ class FinderStandard implements FinderInterface
         }
 
         closedir($hD);
+
         return $statesNameArray;
     }
 
     /**
      * Load the required state object of the stated class
-     * @param string $stateName
+     * @param  string                     $stateName
      * @return string
-     * @throws Exception\UnReadablePath if the stated file is not readable
+     * @throws Exception\UnReadablePath   if the stated file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
     public function loadState($stateName)
@@ -165,11 +168,11 @@ class FinderStandard implements FinderInterface
 
     /**
      * Load and build the required state object of the stated class
-     * @param string $stateName
+     * @param  string                     $stateName
      * @return States\StateInterface
-     * @throws Exception\UnReadablePath if the state file is not readable
+     * @throws Exception\UnReadablePath   if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
-     * @throws Exception\IllegalState if the state object does not implement the interface
+     * @throws Exception\IllegalState     if the state object does not implement the interface
      */
     public function buildState($stateName)
     {
@@ -188,12 +191,13 @@ class FinderStandard implements FinderInterface
 
     /**
      * Extract the class name from the stated class name with namespace
-     * @param string $statedClassName
+     * @param  string $statedClassName
      * @return string
      */
     protected function _getClassedName($statedClassName)
     {
         $parts = explode('\\', $statedClassName);
+
         return array_pop($parts);
     }
 
@@ -216,6 +220,7 @@ class FinderStandard implements FinderInterface
                 //The stated class has not its own proxy, reuse the standard proxy, as an alias
                 class_alias($this->_defaultProxyClassName, $proxyClassName);
                 class_alias($this->_defaultProxyClassName, $this->_statedClassName);
+
                 return $proxyClassName;
             }
 
@@ -235,7 +240,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * Load and build a proxy object for the stated class
-     * @param array $arguments argument for proxy
+     * @param  array                  $arguments argument for proxy
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */

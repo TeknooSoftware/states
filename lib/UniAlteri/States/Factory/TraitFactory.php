@@ -67,12 +67,13 @@ trait TraitFactory
 
     /**
      * Register a DI container for this object
-     * @param DI\ContainerInterface $container
+     * @param  DI\ContainerInterface $container
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
         $this->_diContainer = $container;
+
         return $this;
     }
 
@@ -88,7 +89,7 @@ trait TraitFactory
     /**
      * Return the loader of this stated class from its DI Container
      * @return Loader\FinderInterface
-     * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function getFinder()
@@ -136,10 +137,10 @@ trait TraitFactory
      *  Extends the proxy used by this stated class a child called like the stated class.
      *  => To allow developer to build new object with the operator new
      *  => To allow developer to use the operator "instanceof"
-     * @param string $statedClassName the name of the stated class
-     * @param string $path of the stated class
+     * @param  string                           $statedClassName the name of the stated class
+     * @param  string                           $path            of the stated class
      * @return boolean
-     * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function initialize($statedClassName, $path)
@@ -163,12 +164,12 @@ trait TraitFactory
 
     /**
      * Initialize a proxy object with its container and states
-     * @param Proxy\ProxyInterface $proxyObject
-     * @param string $stateName
+     * @param  Proxy\ProxyInterface             $proxyObject
+     * @param  string                           $stateName
      * @return boolean
-     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader if any finder are available for this stated class
-     * @throws Exception\IllegalProxy if the proxy object does not implement the interface
+     * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
+     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
+     * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function startup($proxyObject, $stateName=null)
@@ -218,11 +219,11 @@ trait TraitFactory
 
     /**
      * Build a new instance of an object
-     * @param mixed $arguments
-     * @param string $stateName to build an object with a specific class
+     * @param  mixed                            $arguments
+     * @param  string                           $stateName to build an object with a specific class
      * @return Proxy\ProxyInterface
-     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
+     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function build($arguments=null, $stateName=null)

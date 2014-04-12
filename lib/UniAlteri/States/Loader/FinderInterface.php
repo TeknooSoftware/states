@@ -64,7 +64,7 @@ interface FinderInterface
 
     /**
      * Register a DI container for this object
-     * @param DI\ContainerInterface $container
+     * @param  DI\ContainerInterface $container
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container);
@@ -79,26 +79,26 @@ interface FinderInterface
      * List all available state object of the stated class
      * @return string[]
      * @throws Exception\UnavailablePath if the states' folder is not available
-     * @throws Exception\UnReadablePath if the states' folder is not readable
+     * @throws Exception\UnReadablePath  if the states' folder is not readable
      */
     public function listStates();
 
     /**
      * Load the required state object of the stated class
-     * @param string $stateName
+     * @param  string                     $stateName
      * @return string
-     * @throws Exception\UnReadablePath if the stated file is not readable
+     * @throws Exception\UnReadablePath   if the stated file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
     public function loadState($stateName);
 
     /**
      * Load and build the required state object of the stated class
-     * @param string $stateName
+     * @param  string                     $stateName
      * @return States\StateInterface
-     * @throws Exception\UnReadablePath if the state file is not readable
+     * @throws Exception\UnReadablePath   if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
-     * @throws Exception\IllegalState if the state object does not implement the interface
+     * @throws Exception\IllegalState     if the state object does not implement the interface
      */
     public function buildState($stateName);
 
@@ -112,7 +112,7 @@ interface FinderInterface
 
     /**
      * Load and build a proxy object for the stated class
-     * @param array $arguments argument for proxy
+     * @param  array                  $arguments argument for proxy
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */

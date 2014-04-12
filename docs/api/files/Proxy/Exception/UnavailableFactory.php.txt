@@ -39,3 +39,4 @@ use \UniAlteri\States\Exception;
 class UnavailableFactory extends Exception\UnavailableFactory
 {
 }
+

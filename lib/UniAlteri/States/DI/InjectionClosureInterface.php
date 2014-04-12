@@ -59,7 +59,7 @@ interface InjectionClosureInterface
 
     /**
      * Return the closure contained into this
-     * @param \Closure $closure
+     * @param  \Closure                  $closure
      * @return $this
      * @throws Exception\InvalidArgument when $closure is not an instance of \Closure
      */
@@ -74,8 +74,8 @@ interface InjectionClosureInterface
     /**
      * To allow the closure to save a static property,
      * to allow developer to not use "static" key word into the closure
-     * @param string $name
-     * @param mixed $value
+     * @param  string $name
+     * @param  mixed  $value
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -83,7 +83,7 @@ interface InjectionClosureInterface
 
     /**
      * Remove a static property
-     * @param string $name
+     * @param  string $name
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -91,7 +91,7 @@ interface InjectionClosureInterface
 
     /**
      * Return to the closure a static property
-     * @param string $name
+     * @param  string $name
      * @return mixed
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -99,7 +99,7 @@ interface InjectionClosureInterface
 
     /**
      * Check if a static property is stored
-     * @param string $name
+     * @param  string  $name
      * @return boolean
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */

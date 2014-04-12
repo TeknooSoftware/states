@@ -39,3 +39,4 @@ use \UniAlteri\States\Exception;
 class IllegalService extends Exception\IllegalService
 {
 }
+

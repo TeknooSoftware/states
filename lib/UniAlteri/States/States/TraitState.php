@@ -110,12 +110,13 @@ trait TraitState
 
     /**
      * Register a DI container for this object
-     * @param DI\ContainerInterface $container
+     * @param  DI\ContainerInterface $container
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
         $this->_diContainer = $container;
+
         return $this;
     }
 
@@ -163,8 +164,8 @@ trait TraitState
     /**
      * Check if the method is available in the scope
      * @api
-     * @param string $methodName
-     * @param string $scope
+     * @param  string                    $methodName
+     * @param  string                    $scope
      * @return bool
      * @throws Exception\InvalidArgument
      */
@@ -204,8 +205,8 @@ trait TraitState
 
     /**
      * Test if a method exists for this state
-     * @param string $methodName
-     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param  string                    $methodName
+     * @param  string                    $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean
      * @throws Exception\InvalidArgument when the method name is not a string
      */
@@ -227,9 +228,10 @@ trait TraitState
         try {
             //Try extract description
             $this->getMethodDescription($methodName);
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             //Method not found, store locally the result
             $this->_reflectionsMethods[$methodName] = false;
+
             return false;
         }
 
@@ -238,10 +240,10 @@ trait TraitState
 
     /**
      * Return the description of a method to configure the behavior of the proxy
-     * @param string $methodName
+     * @param  string                         $methodName
      * @return \ReflectionMethod
      * @throws Exception\MethodNotImplemented is the method does not exist
-     * @throws Exception\InvalidArgument when the method name is not a string
+     * @throws Exception\InvalidArgument      when the method name is not a string
      */
     public function getMethodDescription($methodName)
     {
@@ -275,7 +277,7 @@ trait TraitState
             }
 
             return $this->_reflectionsMethods[$methodName];
-        } catch(\Exception $e) {
+        } catch (\Exception $e) {
             //Method not found
             throw new Exception\MethodNotImplemented(
                 'Method "'.$methodName.'" is not available for this state',
@@ -289,7 +291,7 @@ trait TraitState
      * Build a new Injection Closure object
      * @api
      * @return DI\InjectionClosureInterface
-     * @throws Exception\IllegalService when there are no DI Container or Injection Closure Container bought
+     * @throws Exception\IllegalService     when there are no DI Container or Injection Closure Container bought
      */
     protected function _buildInjectionClosureObject()
     {
@@ -308,14 +310,14 @@ trait TraitState
 
     /**
      * Return a closure of the required method to use in the proxy
-     * @param string $methodName
-     * @param Proxy\ProxyInterface $proxy
-     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param  string                         $methodName
+     * @param  Proxy\ProxyInterface           $proxy
+     * @param  string                         $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return DI\InjectionClosureInterface
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
-     * @throws Exception\InvalidArgument when the method name is not a string
-     * @throws Exception\IllegalProxy when the proxy does not implement the good interface
-     * @throws Exception\IllegalService when there are no DI Container or Injection Closure Container bought
+     * @throws Exception\InvalidArgument      when the method name is not a string
+     * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
+     * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought
      */
     public function getClosure($methodName, $proxy, $scope=StateInterface::VISIBILITY_PUBLIC)
     {

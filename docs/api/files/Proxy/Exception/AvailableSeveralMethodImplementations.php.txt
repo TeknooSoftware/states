@@ -40,3 +40,4 @@ use \UniAlteri\States\Exception;
 class AvailableSeveralMethodImplementations extends Exception\AvailableSeveralMethodImplementations
 {
 }
+

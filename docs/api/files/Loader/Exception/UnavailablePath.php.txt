@@ -39,3 +39,4 @@ use \UniAlteri\States\Exception;
 class UnavailablePath extends Exception\UnavailablePath
 {
 }
+
