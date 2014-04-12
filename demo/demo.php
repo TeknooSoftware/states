@@ -21,6 +21,8 @@
 
 namespace demo;
 
+error_reporting(E_ALL | E_STRICT);
+
 defined('DS')
     || define('DS', DIRECTORY_SEPARATOR);
 

@@ -774,7 +774,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Create a temp child class to test
-        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $classNamePartArray = explode('\\', get_class($this->_proxy));
+        $childClassName = array_pop($classNamePartArray);
         $childClassName = $childClassName.'ChildDescription';
         $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testGetMethodDescriptionTrait; }';
         eval($code);
@@ -808,7 +809,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Create a temp child class to test
-        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $classNamePartArray = explode('\\', get_class($this->_proxy));
+        $childClassName = array_pop($classNamePartArray);
         $childClassName = $childClassName.'ChildDescription';
         $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testGetMethodDescriptionTrait; }';
         eval($code);
@@ -845,7 +847,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Create a temp child class to test
-        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $classNamePartArray = explode('\\', get_class($this->_proxy));
+        $childClassName = array_pop($classNamePartArray);
         $childClassName = $childClassName.'ChildDescription';
         $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testGetMethodDescriptionTrait; }';
         eval($code);
@@ -918,7 +921,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Create a temp child class to test
-        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $classNamePartArray = explode('\\', get_class($this->_proxy));
+        $childClassName = array_pop($classNamePartArray);
         $childClassName = $childClassName.'ChildDescription';
         $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testGetMethodDescriptionTrait; }';
         eval($code);
@@ -949,7 +953,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php');
 
         //Create a temp child class to test
-        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $classNamePartArray = explode('\\', get_class($this->_proxy));
+        $childClassName = array_pop($classNamePartArray);
         $childClassName = $childClassName.'ChildDescription';
         $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testGetMethodDescriptionTrait; }';
         eval($code);
@@ -1151,7 +1156,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
 
         //Create a temp child class to test
-        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $classNamePartArray = explode('\\', get_class($this->_proxy));
+        $childClassName = array_pop($classNamePartArray);
         $childClassName = $childClassName.'ChildClass';
         $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testCallTrait; }';
         eval($code);
@@ -1191,7 +1197,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
 
         //Create a temp child class to test
-        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $classNamePartArray = explode('\\', get_class($this->_proxy));
+        $childClassName = array_pop($classNamePartArray);
         $childClassName = $childClassName.'ChildClass';
         $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testCallTrait; }';
         eval($code);
@@ -1237,7 +1244,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
 
         //Create a temp child class to test
-        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $classNamePartArray = explode('\\', get_class($this->_proxy));
+        $childClassName = array_pop($classNamePartArray);
         $childClassName = $childClassName.'ChildClass';
         $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testCallTrait; }';
         eval($code);
@@ -1322,7 +1330,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
 
         //Create a temp child class to test
-        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $classNamePartArray = explode('\\', get_class($this->_proxy));
+        $childClassName = array_pop($classNamePartArray);
         $childClassName = $childClassName.'ChildClass';
         $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testCallTrait; }';
         eval($code);
@@ -1359,7 +1368,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         include_once('UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php');
 
         //Create a temp child class to test
-        $childClassName = array_pop(explode('\\', get_class($this->_proxy)));
+        $classNamePartArray = explode('\\', get_class($this->_proxy));
+        $childClassName = array_pop($classNamePartArray);
         $childClassName = $childClassName.'ChildClass';
         $code = 'if(class_exists("'.$childClassName.'")){return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->_proxy).'{ use testCallTrait; }';
         eval($code);
