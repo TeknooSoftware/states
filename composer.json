@@ -1,10 +1,10 @@
 {
     "name": "uni-alteri/states",
-    "version": "0.1.0",
+    "version": "0.9.2",
     "type": "library",
-    "description": "Uni Alteri is a lib to allow developpers to write states for their business object with PHP 5.5+",
+    "description": "Uni Alteri is a lib to allow developers to write states for their business object with PHP 5.5+",
     "keywords": ["states"],
-    "homepage": "http://projects.agence.net.ua/states/",
+    "homepage": "http://teknoo.it/states",
     "license": "BSD",
     "authors": [
         {
