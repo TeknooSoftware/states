@@ -25,6 +25,17 @@ use UniAlteri\States\DI;
 use UniAlteri\States\DI\Exception;
 use UniAlteri\Tests\Support;
 
+/**
+ * Class InjectionClosureTest
+ * Check if the Injection Closure class has the excepted behavior defined by the DI\InjectionClosureInterface
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class InjectionClosureTest extends \PHPUnit_Framework_TestCase
 {
     protected function setUp()

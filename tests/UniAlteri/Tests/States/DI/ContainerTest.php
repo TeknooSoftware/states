@@ -24,6 +24,17 @@ namespace UniAlteri\Tests\States\DI;
 use UniAlteri\States\DI;
 use UniAlteri\Tests\Support;
 
+/**
+ * Class ContainerTest
+ * Check if the DI Container has the excepted behavior defined by the interface DI\ContainerInterface
+ *
+ * @package     States
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
     /**
