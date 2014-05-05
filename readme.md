@@ -9,6 +9,10 @@ Quick startup
 -------------
 Quick How-to to learn how use this library : [docs/howto/quick-startup.md](Startup).
 
+Example
+-------
+An example of using this library is available in the folder `demo`.
+
 API Documentation
 -----------------
 Generated documentation from the library with PhpDocumentor : [docs/api/index.html](Open).

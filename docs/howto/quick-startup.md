@@ -113,3 +113,32 @@ The behavior of the startup factory (SF) behavior is as follows :
 with the stated class of the proxy.
 
 ##Write your first stated class
+
+###Load the library
+To load the library, you can include the file `bootstrap.php` locate in the folder `/lib/UniAlteri/States` of this library.
+It does it :
+
+*   This bootstrap file instantiate a new DI Container from the implementation of the library.
+*   Create the service to build a new finder (object to locate files of each stated class) for each stated class. (The service is a closure).
+*   Register the previous service in the DI Container.
+*   Create the service to build a new injection closure (object to manage methods of states) and register in the DI Container.
+*   Instantiate a new loader instance. (object called by spl_autoload to detect stated class).
+*   Register the loader in the stack __autoload.
+
+Warning : the library require also a `PSR-0 autoloader` (http://www.php-fig.org/psr/psr-0/). An implementation is available
+in the root of this project (file called `psr0_autoloader.php`), if it has been detected, it is automatically loaded by
+the file `bootstrap.php`. Else you can use another implementation.
+
+###Prepare folders
+
+###Create factory
+
+###Create the default state
+
+###Add new states
+
+###Optional, create the proxy
+
+###Enjoy
+
+

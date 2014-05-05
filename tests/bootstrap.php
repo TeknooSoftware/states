@@ -27,7 +27,7 @@ defined('PHPUNIT')
 
 ini_set('memory_limit', '128M');
 
-require_once (dirname(__DIR__).DIRECTORY_SEPARATOR.'bootstrap.php');
+require_once (dirname(__DIR__).DIRECTORY_SEPARATOR.'psr0_autoloader.php');
 
 //Update included Path for spl autoload
 set_include_path(
