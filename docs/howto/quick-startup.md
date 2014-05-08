@@ -142,15 +142,40 @@ The instance of the loader instantiated in the bootstrap file is returned by its
 `include`, `include_once`, `require` or `require_once`.
 
 ###Prepare folders
+Files of your stated classes must be placed into folder called with the same name as the stated class.
+A subfolder, called `States` must be added in these folders. It will welcome states files.
 
 ###Create factory
+The factory is a mandatory file. It used by the loader to determine stated class and load them. The factory must be defined
+in the file `Factory.php`. The factory class must be called `FactoryClass` (independently of the stated class's name)
+and must implement the interface `\UniAlteri\States\Factory\FactoryInterface`.
 
-###Create the default state
+To help you, your factory class can extends the embedded factories `\UniAlteri\States\Factory\Integrated` or
+ `\UniAlteri\States\Factory\Standard`.
 
-###Add new states
+###Create states and the default state
+States must be declared in separate files. A state is represented by PHP class and must implement the interface
+`\UniAlteri\States\States\StateInterface`. To help you, you can use the trait `\UniAlteri\States\States\TraitState` or
+directly extends the class `\UniAlteri\States\States\AbstractState`.
+
+Each stated class must has at least one state and this state must be called `StateDefault`. Its the default state enabled
+in the constructor of each stated object.
 
 ###Optional, create the proxy
+The proxy is not mandatory to use a stated class. If their are no defined proxy, embedded proxy `\UniAlteri\States\Proxy\Standard`
+or `\UniAlteri\States\Proxy\Integrated` will be used. (the proxy defined by the factory).
+
+But if you need add some features to your proxy, you can define it in the file `Proxy.php`. The proxy class must be called
+ with the same name as the stated class and must implements the interface `\UniAlteri\States\Proxy\ProxyInterface`.
+
+To help you, you can use the trait `\UniAlteri\States\Proxy\TraitProxy` or directly extends one of these implementations :
+`\UniAlteri\States\Proxy\Standard` or `\UniAlteri\States\Proxy\Integrated`. *Warning, if you use the factory
+`\UniAlteri\States\Factory\Integrated`, you must extend the proxy `Integrated`, else, you must extend the proxy `Standard`.*
 
 ###Enjoy
+Now, you can use your stated class. If you use the integrated proxy, you can directly instantiate yours objects with the
+operator `new` like this `$myObject = new \Your\NameSpace\YourStateName();`.
 
-
+It is not needed to call the directly the proxy class like this `$myObject = new \Your\NameSpace\YourStateName\YourStateName();`,
+you can directly use the full stated class name. The factory has created an alias from `\Your\NameSpace\YourStateName`
+to `\Your\NameSpace\YourStateName\Your\NameSpace\YourStateName`

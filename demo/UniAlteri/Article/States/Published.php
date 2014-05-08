@@ -23,8 +23,10 @@ namespace demo\UniAlteri\Article\States;
 
 use UniAlteri\States\States;
 
-class Published extends States\AbstractState
+class Published implements States\StateInterface
 {
+    use States\TraitState;
+
     /**
      * Get the body and transform BBCode to HTML
      * @return string

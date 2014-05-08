@@ -235,6 +235,12 @@ class LoaderStandard implements LoaderInterface
             array_shift($namespacePartsArray);
         }
 
+        if (end($namespacePartsArray) === $className) {
+            //Prevent when developper call directly the proxy class name
+            array_pop($namespacePartsArray);
+            $class = implode('\\', $namespacePartsArray).'\\'.$className;
+        }
+
         //Rebuild namespace
         $namespaceString = '\\'.implode('\\', $namespacePartsArray);
         if (!isset($this->_namespacesArray[$namespaceString])) {
