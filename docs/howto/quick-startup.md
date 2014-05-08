@@ -113,6 +113,7 @@ The behavior of the startup factory (SF) behavior is as follows :
 with the stated class of the proxy.
 
 ##Write your first stated class
+**All following instructions are shown in the demo available in the folder `demo` at the root of this library.**
 
 ###Load the library
 To load the library, you can include the file `bootstrap.php` locate in the folder `/lib/UniAlteri/States` of this library.
@@ -128,6 +129,17 @@ It does it :
 Warning : the library require also a `PSR-0 autoloader` (http://www.php-fig.org/psr/psr-0/). An implementation is available
 in the root of this project (file called `psr0_autoloader.php`), if it has been detected, it is automatically loaded by
 the file `bootstrap.php`. Else you can use another implementation.
+
+###Configure autoloader
+The library is now loaded but it is not known where your stated class are present. By default, the loader instantiate
+in the bootstrap file use path defined in the php configuration option `include_path` to find and load stated class.
+
+The loader can also register specifics namespaces with their locations. If one of these namespace is detected during an
+autoloading, namespace's paths will be checked before `include_path`. A namespace can accept several paths. To register
+a namespace, you must use the method `registerNamespace` of the loader.
+
+The instance of the loader instantiated in the bootstrap file is returned by itself when it is included with statements
+`include`, `include_once`, `require` or `require_once`.
 
 ###Prepare folders
 

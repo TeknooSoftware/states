@@ -11,7 +11,7 @@ Quick How-to to learn how use this library : [docs/howto/quick-startup.md](Start
 
 Example
 -------
-An example of using this library is available in the folder `demo`.
+An example of using this library is available in the folder [demo/demo.php](Demo).
 
 API Documentation
 -----------------
