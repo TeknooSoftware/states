@@ -236,7 +236,7 @@ class LoaderStandard implements LoaderInterface
         }
 
         if (end($namespacePartsArray) === $className) {
-            //Prevent when developper call directly the proxy class name
+            //Prevent when developer call directly the proxy class name
             array_pop($namespacePartsArray);
             $class = implode('\\', $namespacePartsArray).'\\'.$className;
         }
