@@ -6,16 +6,16 @@ more usable thanks to by cutting your code according to states of your objects.
 
 Quick startup
 -------------
-Quick How-to to learn how use this library : [docs/howto/quick-startup.md](Startup).
+Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.md).
 
 Example
 -------
-An example of using this library is available in the folder : [demo/demo.php](Demo).
+An example of using this library is available in the folder : [Demo](demo/demo.php).
 
 API Documentation
 -----------------
-Generated documentation from the library with PhpDocumentor : [docs/api/index.html](Open).
+Generated documentation from the library with PhpDocumentor : [Open](docs/api/index.html).
 
 Behavior Documentation
 ----------------------
-Documentation to explain how this library works : [docs/howto/behavior.md](Behavior).
+Documentation to explain how this library works : [Behavior](Documentation to explain how this library works : [Behavior](Behavior).).
