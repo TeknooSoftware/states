@@ -117,7 +117,7 @@ interface ProxyInterface extends
      * List all enable states for this object.
      * @return string[]
      */
-    public function listActivesStates();
+    public function listEnabledStates();
 
     /**
      * Return the current injection closure object to access to its static properties

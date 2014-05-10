@@ -68,7 +68,7 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * Register a DI container for this object
+     * To register a DI container for this object
      * @param  ContainerInterface $container
      * @return $this
      */
@@ -80,7 +80,7 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * Return the DI Container used for this object
+     * To return the DI Container used for this object
      * @return ContainerInterface
      */
     public function getDIContainer()

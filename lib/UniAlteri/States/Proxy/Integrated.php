@@ -29,11 +29,11 @@ namespace UniAlteri\States\Proxy;
  * It is a proxy because, by default, all calls are redirected to enabled states.
  * $this in all methods of the stated object (also of states' methods) points the proxy object.
  *
- * The library creates an alias with the proxy class name and this default proxy
- * to simulate a dedicated proxy to this class
+ * The library creates an alias with the proxy class name and this default proxy to simulate a dedicated proxy
+ * to this class.
  *
  * This proxy is a variant of the default proxy to allow developer to create an instance a stated class
- * like another class with the operator new
+ * like another class with the operator new.
  *
  * @package     States
  * @subpackage  Proxy
@@ -45,7 +45,7 @@ namespace UniAlteri\States\Proxy;
 class Integrated extends Standard
 {
     /**
-     * Class name of the factory to use in set up to initialize this object
+     * Class name of the factory to use in set up to initialize this object in this construction
      * @var string
      */
     protected static $_startupFactoryClassName = '\UniAlteri\States\Factory\StandardStartupFactory';
@@ -57,7 +57,9 @@ class Integrated extends Standard
      */
     public function __construct()
     {
+        //Call the method of the trait to initialize local attributes of the proxy
         $this->_initializeProxy();
+        //Call the startup factory to initialize this proxy
         $this->_initializeObjectWithFactory();
     }
 
@@ -69,11 +71,13 @@ class Integrated extends Standard
      */
     protected function _initializeObjectWithFactory()
     {
+        //Check if the startup class exists
         if (!class_exists(static::$_startupFactoryClassName, false)) {
             throw new Exception\UnavailableFactory('Error, the startup factory is not available');
         }
 
-        $interfacesImplementedArray = array_flip(
+        //Check if the startup class implements the interface 'UniAlteri\States\Factory\StartupFactoryInterface'
+        $interfacesImplementedArray = array_flip( //Do a flip because isset is more effecient than in_array
             class_implements(static::$_startupFactoryClassName)
         );
 
@@ -81,6 +85,7 @@ class Integrated extends Standard
             throw new Exception\IllegalFactory('Error, the startup factory does not implement the startup interface');
         }
 
+        //Call the startup factory
         call_user_func_array(
             array(static::$_startupFactoryClassName, 'forwardStartup'),
             array(

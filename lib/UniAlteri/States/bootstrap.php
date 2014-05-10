@@ -22,7 +22,7 @@
 namespace UniAlteri\States;
 
 //Needed for test, but we can use your own autoloader to load file of this lib.
-//This lib respects PSR-0 and PSR-1
+//This lib respects PSR-0, PSR-1 and PSR-2
 $iniFile = dirname(dirname(dirname(__DIR__))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 if (is_readable($iniFile)) {
     include_once($iniFile);

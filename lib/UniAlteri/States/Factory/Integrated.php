@@ -24,11 +24,8 @@ use UniAlteri\States\DI;
 
 /**
  * Class Integrated
- * Default "stated object" factory to use with this library to build a new instance
- * of a stated class. This class is used when a stated class does not provide its own factory.
- *
- * The library creates an alias with the class's factory name and this default factory
- * to simulate a dedicated factory to this class
+ * Embedded "stated object" factory to use with this library to build a new instance of a stated class.
+ * It is an alternative of Standard factory to allow developers to use the operator `new` with the stated class.
  *
  * @package     States
  * @subpackage  Factory
@@ -40,14 +37,15 @@ use UniAlteri\States\DI;
 class Integrated implements FactoryInterface
 {
     use TraitFactory {
+        //Rename the initialize method of the trait to override it into this class.
         TraitFactory::initialize as traitInitialize;
     }
 
     /**
      * Method called by the Loader to initialize the stated class :
-     *  Extends the proxy used by this stated class a child called like the stated class.
-     *  => To allow developer to build new object with the operator new
-     *  => To allow developer to use the operator "instanceof"
+     * It registers the class name and its path, retrieves the DI Container,
+     * register the factory in the DI Container, it retrieves the finder object and load the proxy
+     * from the finder.
      * @param  string                           $statedClassName the name of the stated class
      * @param  string                           $path            of the stated class
      * @return boolean

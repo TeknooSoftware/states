@@ -25,8 +25,8 @@ use UniAlteri\States\Proxy;
 
 /**
  * Class StandardStartupFactory
- * Interface to define a factory used to initialize a stated object during in constructor.
- * This factory will only find the object's factory to forward to it the call
+ * Default implementation of the startup factory to define a factory used to initialize a stated object during
+ * in constructor. This factory will only find the object's factory to forward to it the call.
  *
  * @package     States
  * @subpackage  Factory
@@ -45,7 +45,7 @@ class StandardStartupFactory implements StartupFactoryInterface
     protected static $_factoryRegistry = null;
 
     /**
-     * Find the factory to use for the new proxy object to initialize it with its container and states.
+     * To find the factory to use for the new proxy object to initialize it with its container and states.
      * This method is called by the constructor of the stated object
      * @param  Proxy\ProxyInterface         $proxyObject
      * @param  string                       $stateName
@@ -69,7 +69,7 @@ class StandardStartupFactory implements StartupFactoryInterface
     }
 
     /**
-     * Register a new factory object to initialize proxy objects
+     * To register a new factory object to initialize proxy objects
      * @param  string                    $factoryIdentifier
      * @param  FactoryInterface          $factoryObject
      * @throws Exception\InvalidArgument when $factoryIdentifier is not a string
@@ -95,7 +95,7 @@ class StandardStartupFactory implements StartupFactoryInterface
     }
 
     /**
-     * Reset startup registry
+     * To reset startup registry
      */
     public static function reset()
     {
@@ -105,7 +105,7 @@ class StandardStartupFactory implements StartupFactoryInterface
     }
 
     /**
-     * Return all registered factories
+     * To return all registered factories
      * @return string[]|array
      */
     public static function listRegisteredFactory()

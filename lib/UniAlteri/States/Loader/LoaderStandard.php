@@ -27,7 +27,7 @@ use \UniAlteri\States\Factory;
 /**
  * Class LoaderStandard
  * Default implementation of the "stated class autoloader".
- * It is used to allow php to load stated class
+ * It is used to allow php to load automatically stated class.
  *
  * @package     States
  * @subpackage  Loader
@@ -46,13 +46,13 @@ class LoaderStandard implements LoaderInterface
     protected $_diContainer = null;
 
     /**
-     * List of path to include for this loader
+     * List of paths to include for this loader
      * @var \ArrayObject
      */
     protected $_includedPathsArray = null;
 
     /**
-     * List of path where namespace are available
+     * List of paths where namespace are available
      * @var \SplQueue[]
      */
     protected $_namespacesArray = null;
@@ -99,7 +99,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * Register a DI container for this object
+     * To register a DI container for this object
      * @param  DI\ContainerInterface $container
      * @return $this
      */
@@ -111,7 +111,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * Return the DI Container used for this object
+     * To return the DI Container used for this object
      * @return DI\ContainerInterface
      */
     public function getDIContainer()
@@ -137,7 +137,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * List all active included path for this loaded
+     * To list all active included path for this loaded
      * @return string[]
      */
     public function getIncludedPaths()
@@ -146,7 +146,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * Register a location to find some classes of a namespace.
+     * To register a location to find some classes of a namespace.
      * A namespace can has several locations
      * @param  string                    $namespace
      * @param  string                    $path
@@ -177,7 +177,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * List all registered namespace
+     * To list all registered namespace
      * @return \ArrayObject
      */
     public function listNamespaces()
@@ -186,7 +186,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * Update included path before loading class
+     * To update included path before loading class
      */
     protected function _updateIncludedPaths()
     {
@@ -203,7 +203,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * Restore previous loaded class
+     * To restore previous loaded class
      */
     protected function _restoreIncludedPaths()
     {
@@ -214,7 +214,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * Loaded a class into a namespace
+     * To load a class into a namespace
      * @param  string                       $class
      * @return bool
      * @throws Exception\UnavailableFactory if the required factory is not available
@@ -275,7 +275,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * Test if a file exists, check also in all included path
+     * To test if a file exists, check also in all included path
      * @param  string  $pathFile
      * @return boolean
      */
@@ -291,7 +291,7 @@ class LoaderStandard implements LoaderInterface
     }
 
     /**
-     * Method called to load a class.
+     * Method called to load a class by __autoload of PHP Engine
      * @param  string                       $className class name, support namespace prefixes
      * @return boolean
      * @throws Exception\UnavailableFactory if the required factory is not available

@@ -39,13 +39,13 @@ namespace UniAlteri\States\DI;
 interface InjectionClosureInterface
 {
     /**
-     * Register a DI container for this object
+     * To register a DI container for this object
      * @param ContainerInterface $container
      */
     public function setDIContainer(ContainerInterface $container);
 
     /**
-     * Return the DI Container used for this object
+     * To return the DI Container used for this object
      * @return ContainerInterface
      * @return $this
      */

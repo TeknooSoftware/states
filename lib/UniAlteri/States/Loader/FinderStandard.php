@@ -27,8 +27,8 @@ use \UniAlteri\States\Proxy;
 
 /**
  * Class FinderStandard
- * Default implementation of the finder. It is used with this library to find and load
- * from each stated class all states and the proxy
+ * Default implementation of the finder. It is used with this library to find from each stated class
+ * all states and the proxy
  *
  * @package     States
  * @subpackage  Loader
@@ -59,7 +59,7 @@ class FinderStandard implements FinderInterface
     protected $_diContainer = null;
 
     /**
-     * Default proxy class name to use when there are no proxy class name
+     * Default proxy class to use when there are no proxy class
      * @var string
      */
     protected $_defaultProxyClassName = '\UniAlteri\States\Proxy\Standard';
@@ -76,7 +76,7 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * Register a DI container for this object
+     * To register a DI container for this object
      * @param  DI\ContainerInterface $container
      * @return $this
      */
@@ -88,7 +88,7 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * Return the DI Container used for this object
+     * To return the DI Container used for this object
      * @return DI\ContainerInterface
      */
     public function getDIContainer()
@@ -97,26 +97,26 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * List all available state object of the stated class
+     * To list all available states of the stated class
      * @return string[]
      * @throws Exception\UnavailablePath if the states' folder is not available
      * @throws Exception\UnReadablePath  if the states' folder is not readable
      */
     public function listStates()
     {
-        //Check if states are stored into the standardized path
+        //Checks if states are stored into the standardized path
         $statesPath = $this->_pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH;
         if (!is_dir($statesPath)) {
             throw new Exception\UnavailablePath('Error, the path "'.$statesPath.'" was not found');
         }
 
-        //Check if the path is available
+        //Checks if the path is available
         $hD = @opendir($statesPath);
         if (false === $hD) {
             throw new Exception\UnReadablePath('Error, the path "'.$statesPath.'" is not available');
         }
 
-        //Extract all states (No check class exists)
+        //Extracts all states (No check class exists)
         $statesNameArray = new \ArrayObject();
         while (false !== ($file = readdir($hD))) {
             switch ($file) {
@@ -138,7 +138,7 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * Load the required state object of the stated class
+     * To load the required state object of the stated class
      * @param  string                     $stateName
      * @return string
      * @throws Exception\UnReadablePath   if the stated file is not readable
@@ -167,7 +167,7 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * Load and build the required state object of the stated class
+     * To load and build the required state object of the stated class
      * @param  string                     $stateName
      * @return States\StateInterface
      * @throws Exception\UnReadablePath   if the state file is not readable
@@ -190,7 +190,7 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * Extract the class name from the stated class name with namespace
+     * To extract the class name from the stated class name with namespace
      * @param  string $statedClassName
      * @return string
      */
@@ -202,7 +202,7 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * Search and load the proxy class for this stated class.
+     * To search and load the proxy class for this stated class.
      * If the class has not proxy, load the default proxy for this stated class
      * @return string
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
@@ -239,7 +239,7 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * Load and build a proxy object for the stated class
+     * To load and build a proxy object for the stated class
      * @param  array                  $arguments argument for proxy
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface

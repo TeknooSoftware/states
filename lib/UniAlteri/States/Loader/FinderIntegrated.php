@@ -26,9 +26,8 @@ use \UniAlteri\States\Proxy;
 
 /**
  * Class FinderIntegrated
- * Implementation of the finder. It is used with this library to find and load
- * from each stated class all states and the proxy.
- * Extend FinderStandard to use '\UniAlteri\States\Proxy\Integrated' instead of
+ * Implementation of the finder. It is used with this library to find from each stated class all states
+ * and the proxy. It extends FinderStandard to use '\UniAlteri\States\Proxy\Integrated' instead of
  * '\UniAlteri\States\Proxy\Standard'
  *
  * @package     States
@@ -42,7 +41,7 @@ use \UniAlteri\States\Proxy;
 class FinderIntegrated extends FinderStandard
 {
     /**
-     * Default proxy class name to use when there are no proxy class name
+     * Default proxy class to use when there are no proxy class
      * @var string
      */
     protected $_defaultProxyClassName = '\UniAlteri\States\Proxy\Integrated';

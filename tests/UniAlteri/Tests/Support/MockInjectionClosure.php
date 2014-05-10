@@ -48,7 +48,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     protected $_properties = array();
 
     /**
-     * Register a DI container for this object
+     * To register a DI container for this object
      * @param DI\ContainerInterface $container
      */
     public function setDIContainer(DI\ContainerInterface $container)
@@ -57,7 +57,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     }
 
     /**
-     * Return the DI Container used for this object
+     * To return the DI Container used for this object
      * @return DI\ContainerInterface
      */
     public function getDIContainer()

@@ -238,10 +238,10 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy();
         $this->_proxy->enableState('state3');
-        $this->assertEquals(array('state1', 'state3'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state1', 'state3'), $this->_proxy->listEnabledStates());
         $this->_proxy->unregisterState('state3');
         $this->assertEquals(array('state1', 'state2'), $this->_proxy->listAvailableStates());
-        $this->assertEquals(array('state1'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state1'), $this->_proxy->listEnabledStates());
     }
 
     /**
@@ -279,7 +279,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy();
         $this->_proxy->switchState('state3');
-        $this->assertEquals(array('state3'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state3'), $this->_proxy->listEnabledStates());
     }
 
     /**
@@ -290,7 +290,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->_initializeProxy();
         $this->_proxy->enableState('state2');
         $this->_proxy->switchState('state2');
-        $this->assertEquals(array('state2'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state2'), $this->_proxy->listEnabledStates());
     }
 
     /**
@@ -329,7 +329,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->_initializeProxy();
         $this->_proxy->disableState('state1');
         $this->_proxy->enableState('state2');
-        $this->assertEquals(array('state2'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state2'), $this->_proxy->listEnabledStates());
     }
 
     /**
@@ -339,7 +339,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy();
         $this->_proxy->enableState('state2');
-        $this->assertEquals(array('state1', 'state2'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state1', 'state2'), $this->_proxy->listEnabledStates());
     }
 
     /**
@@ -378,7 +378,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->_initializeProxy();
         $this->_proxy->enableState('state2');
         $this->_proxy->disableState('state1');
-        $this->assertEquals(array('state2'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state2'), $this->_proxy->listEnabledStates());
     }
 
     /**
@@ -389,7 +389,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->_initializeProxy();
         $this->_proxy->enableState('state2');
         $this->_proxy->disableAllStates();
-        $this->assertEquals(array(), $this->_proxy->listActivesStates());
+        $this->assertEquals(array(), $this->_proxy->listEnabledStates());
     }
 
     /**
@@ -411,22 +411,22 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check the proxy's method listActivesStates behavior when there are no enable state
+     * Check the proxy's method listEnabledStates behavior when there are no enable state
      */
-    public function testListActivesStatesOfEmpty()
+    public function testListEnabledStatesOfEmpty()
     {
         $this->_proxy->registerState('state1', $this->_state1);
         $this->_proxy->registerState('state3', $this->_state3);
-        $this->assertEquals(array(), $this->_proxy->listActivesStates());
+        $this->assertEquals(array(), $this->_proxy->listEnabledStates());
     }
 
     /**
-     * Check the proxy's method listActivesStates behavior
+     * Check the proxy's method listEnabledStates behavior
      */
-    public function testListActivesStates()
+    public function testListEnabledStates()
     {
         $this->_initializeProxy();
-        $this->assertEquals(array('state1'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state1'), $this->_proxy->listEnabledStates());
     }
 
     /**
@@ -2272,17 +2272,17 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //States must be independently
         $this->assertEquals(array('state1', 'state2', 'state3'), $this->_proxy->listAvailableStates());
-        $this->assertEquals(array('state1'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state1'), $this->_proxy->listEnabledStates());
         $this->assertEquals(array('state1', 'state2', 'state3'), $clonedProxy->listAvailableStates());
-        $this->assertEquals(array('state1'), $clonedProxy->listActivesStates());
+        $this->assertEquals(array('state1'), $clonedProxy->listEnabledStates());
 
         //List must perform independently
         $clonedProxy->switchState('state2');
         $clonedProxy->unregisterState('state3');
         $this->assertEquals(array('state1', 'state2', 'state3'), $this->_proxy->listAvailableStates());
-        $this->assertEquals(array('state1'), $this->_proxy->listActivesStates());
+        $this->assertEquals(array('state1'), $this->_proxy->listEnabledStates());
         $this->assertEquals(array('state1', 'state2'), $clonedProxy->listAvailableStates());
-        $this->assertEquals(array('state2'), $clonedProxy->listActivesStates());
+        $this->assertEquals(array('state2'), $clonedProxy->listEnabledStates());
 
         //container must be cloned
         $diContainer = $this->_proxy->getDIContainer();

@@ -45,42 +45,43 @@ interface FactoryInterface
     const DI_FACTORY_NAME = 'Factory';
 
     /**
-     * Register a DI container for this object
+     * To register a DI container for this object
      * @param  DI\ContainerInterface $container
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container);
 
     /**
-     * Return the DI Container used for this object
+     * To return the DI Container used for this object
      * @return DI\ContainerInterface
      */
     public function getDIContainer();
 
     /**
-     * Return the loader of this stated class from its DI Container
+     * To return the loader of this stated class from its DI Container
      * @return Loader\FinderInterface
-     * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
+     * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function getFinder();
 
     /**
-     * Return the stated class name used with this factory
+     * To return the stated class name used with this factory
      * @return string
      */
     public function getStatedClassName();
 
     /**
-     * Return the path of the stated class
+     * To return the path of the stated class
      * @return string
      */
     public function getPath();
 
     /**
      * Method called by the Loader to initialize the stated class :
-     *  Extends the proxy used by this stated class a child called like the stated class.
-     *  => To allow developer to build new object with the operator new
-     *  => To allow developer to use the operator "instanceof"
+     * It registers the class name and its path, retrieves the DI Container,
+     * register the factory in the DI Container, it retrieves the finder object and load the proxy
+     * from the finder.
      * @param  string                           $statedClassName the name of the stated class
      * @param  string                           $path            of the stated class
      * @return boolean
@@ -90,7 +91,7 @@ interface FactoryInterface
     public function initialize($statedClassName, $path);
 
     /**
-     * Initialize a proxy object with its container and states
+     * To initialize a proxy object with its container and states. States are fetched by the finder of this stated class.
      * @param  Proxy\ProxyInterface             $proxyObject
      * @param  string                           $stateName
      * @return boolean

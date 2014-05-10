@@ -66,7 +66,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Register a DI container for this object
+     * To register a DI container for this object
      * @param DI\ContainerInterface $container
      * @return $this
      */
@@ -76,7 +76,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Return the DI Container used for this object
+     * To return the DI Container used for this object
      * @return DI\ContainerInterface
      */
     public function getDIContainer()
@@ -191,7 +191,7 @@ class MockProxy implements Proxy\ProxyInterface
      * List all enable states for this object.
      * @return string[]
      */
-    public function listActivesStates()
+    public function listEnabledStates()
     {
         //Simulate real behavior
         return array_keys($this->_actives);
@@ -213,7 +213,6 @@ class MockProxy implements Proxy\ProxyInterface
 
     /**
      * Call a method of the Object.
-     * Hooks and event are automatically called
      * @param $name
      * @param $arguments
      * @return mixed
@@ -256,7 +255,6 @@ class MockProxy implements Proxy\ProxyInterface
 
     /**
      * Get a property of the object
-     * Hooks and event are automatically called
      * @param string $name
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
@@ -269,7 +267,6 @@ class MockProxy implements Proxy\ProxyInterface
 
     /**
      * Test if a property is set for the object
-     * Hooks and event are automatically called
      * @param string $name
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
@@ -282,7 +279,6 @@ class MockProxy implements Proxy\ProxyInterface
 
     /**
      * Update a property of the object
-     * Hooks and event are automatically called
      * @param string $name
      * @param string $value
      * @return mixed
@@ -296,7 +292,6 @@ class MockProxy implements Proxy\ProxyInterface
 
     /**
      * To remove a property of the object
-     * Hooks and event are automatically called
      * @param string $name
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
@@ -309,7 +304,6 @@ class MockProxy implements Proxy\ProxyInterface
 
     /**
      * To transform the object to a string
-     * Hooks and event are automatically called
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState if the required state is not available
@@ -469,7 +463,6 @@ class MockProxy implements Proxy\ProxyInterface
 
     /**
      * To serialize the object
-     * Hooks and event are automatically called
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState if the required state is not available
      * @return string
@@ -481,7 +474,6 @@ class MockProxy implements Proxy\ProxyInterface
 
     /**
      * To wake up the object
-     * Hooks and event are automatically called
      * @param string $serialized
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState if the required state is not available

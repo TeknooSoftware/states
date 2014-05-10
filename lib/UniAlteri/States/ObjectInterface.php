@@ -33,20 +33,20 @@ namespace UniAlteri\States;
 interface ObjectInterface
 {
     /**
-     * Register a DI container for this object
+     * To register a DI container for this object
      * @param  DI\ContainerInterface $container
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container);
 
     /**
-     * Return the DI Container used for this object
+     * To return the DI Container used for this object
      * @return DI\ContainerInterface
      */
     public function getDIContainer();
 
     /**
-     * Return a stable unique id of the current object. It must identify
+     * To return a unique stable id of the current object. It must identify
      * @return string
      */
     public function getObjectUniqueId();

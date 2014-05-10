@@ -62,7 +62,7 @@ class MockFactory implements Factory\FactoryInterface
     protected $_path = null;
 
     /**
-     * Return the DI Container used for this object
+     * To return the DI Container used for this object
      * @return DI\ContainerInterface
      */
     public function getDIContainer()
@@ -71,7 +71,7 @@ class MockFactory implements Factory\FactoryInterface
     }
 
     /**
-     * Register a DI container for this object
+     * To register a DI container for this object
      * @param DI\ContainerInterface $container
      * @return $this
      */

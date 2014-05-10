@@ -69,7 +69,7 @@ class MockFinder implements Loader\FinderInterface
     }
 
     /**
-     * Register a DI container for this object
+     * To register a DI container for this object
      * @param \UniAlteri\States\DI\ContainerInterface $container
      * @return $this
      */
@@ -80,7 +80,7 @@ class MockFinder implements Loader\FinderInterface
     }
 
     /**
-     * Return the DI Container used for this object
+     * To return the DI Container used for this object
      * @return \UniAlteri\States\DI\ContainerInterface
      */
     public function getDIContainer(){

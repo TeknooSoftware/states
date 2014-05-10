@@ -323,7 +323,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $proxy = new Support\MockProxy(null);
         $this->getFactoryObject()->startup($proxy);
-        $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
+        $this->assertEquals($proxy->listEnabledStates(), array('StateDefault'));
     }
 
     /**
@@ -333,7 +333,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $proxy = new Support\MockProxy(null);
         $this->getFactoryObject()->startup($proxy, 'MockState1');
-        $this->assertEquals($proxy->listActivesStates(), array('MockState1'));
+        $this->assertEquals($proxy->listEnabledStates(), array('MockState1'));
     }
 
     /**
@@ -365,7 +365,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $proxy = new Support\MockProxy(null);
         $this->_registerMockFinderServiceWithArrayObject();
         $this->getFactoryObject()->startup($proxy);
-        $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
+        $this->assertEquals($proxy->listEnabledStates(), array('StateDefault'));
     }
 
     /**
@@ -377,7 +377,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $proxy = new Support\MockProxy(null);
         $this->_registerMockFinderServiceWithArrayObject();
         $this->getFactoryObject()->startup($proxy, 'MockState1');
-        $this->assertEquals($proxy->listActivesStates(), array('MockState1'));
+        $this->assertEquals($proxy->listEnabledStates(), array('MockState1'));
     }
 
     /**
@@ -433,7 +433,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testDefaultStateAutomaticallySelected()
     {
         $proxy = $this->getFactoryObject()->build();
-        $this->assertEquals($proxy->listActivesStates(), array('StateDefault'));
+        $this->assertEquals($proxy->listEnabledStates(), array('StateDefault'));
     }
 
     /**
@@ -442,7 +442,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testRequiredStateSelected()
     {
         $proxy = $this->getFactoryObject()->build(null, 'MockState1');
-        $this->assertEquals($proxy->listActivesStates(), array('MockState1'));
+        $this->assertEquals($proxy->listEnabledStates(), array('MockState1'));
     }
 
     /**

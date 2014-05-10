@@ -39,7 +39,7 @@ $article = new UniAlteri\Article();
 
 //It is a new article, not published, the constructor load the state 'Draft'
 print 'Active states :';
-print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
+print implode(', ', $article->listEnabledStates()).PHP_EOL.PHP_EOL;
 //Empty article, getTitle return nothing
 print 'title : '.$article->getTitle().PHP_EOL.PHP_EOL;
 //Call method of state "Draft" to update the article
@@ -53,7 +53,7 @@ print 'body : '.$article->getBodySource().PHP_EOL;
 print PHP_EOL.'publishing...'.PHP_EOL;
 $article->publishing();
 print 'Active states :';
-print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
+print implode(', ', $article->listEnabledStates()).PHP_EOL.PHP_EOL;
 print $article->getTitle().PHP_EOL;
 //Method available into Published state
 print $article->getFormattedBody().PHP_EOL;
@@ -70,7 +70,7 @@ $article = new UniAlteri\Article(
 
 //Already published, so constructor enable state "Default" and "Published"
 print PHP_EOL.PHP_EOL.'Active states :';
-print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
+print implode(', ', $article->listEnabledStates()).PHP_EOL.PHP_EOL;
 print 'title : '.$article->getTitle().PHP_EOL.PHP_EOL;
 print 'set some data'.PHP_EOL;
 
@@ -106,7 +106,7 @@ try {
 }
 
 print 'Active states :';
-print implode(', ', $article->listActivesStates()).PHP_EOL.PHP_EOL;
+print implode(', ', $article->listEnabledStates()).PHP_EOL.PHP_EOL;
 print $article->getTitle().PHP_EOL;
 print $article->getFormattedBody().PHP_EOL;
 
