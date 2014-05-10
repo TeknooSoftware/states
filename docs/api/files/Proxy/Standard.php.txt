@@ -29,8 +29,8 @@ namespace UniAlteri\States\Proxy;
  * It is a proxy because, by default, all calls are redirected to enabled states.
  * $this in all methods of the stated object (also of states' methods) points the proxy object.
  *
- * The library creates an alias with the proxy class's name and this default proxy
- * to simulate a dedicated proxy to this class
+ * The library creates an alias with the proxy class name and this default proxy to simulate a dedicated proxy
+ * to this class.
  *
  * @package     States
  * @subpackage  Proxy

@@ -26,7 +26,7 @@ use \UniAlteri\States\Proxy;
 
 /**
  * Interface StateInterface
- * Interface to define a state for a stated class. Each state must implements this interface.
+ * Interface to define a state for a stated class. Each state must implement this interface.
  *
  * @package     States
  * @subpackage  States
@@ -71,13 +71,13 @@ interface StateInterface
     public function getDIContainer();
 
     /**
-     * Return an array of string listing all methods available in the state
+     * To return an array of string listing all methods available in the state
      * @return string[]
      */
     public function listMethods();
 
     /**
-     * Test if a method exists for this state
+     * To test if a method exists for this state in the current visibility scope.
      * @param  string                    $methodName
      * @param  string                    $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean
@@ -86,7 +86,8 @@ interface StateInterface
     public function testMethod($methodName, $scope=StateInterface::VISIBILITY_PUBLIC);
 
     /**
-     * Return the description of a method to configure the behavior of the proxy
+     * To return the description of a method to configure the behavior of the proxy. Return also description of private
+     * methods
      * @param  string                         $methodName
      * @return \ReflectionMethod
      * @throws Exception\MethodNotImplemented is the method does not exist
@@ -95,12 +96,12 @@ interface StateInterface
     public function getMethodDescription($methodName);
 
     /**
-     * Return a closure of the required method to use in the proxy
+     * To return a closure of the required method to use in the proxy, according with the current visibility scope
      * @param  string                         $methodName
      * @param  Proxy\ProxyInterface           $proxy
      * @param  string                         $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return DI\InjectionClosureInterface
-     * @throws Exception\MethodNotImplemented is the method does not exist
+     * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
      * @throws Exception\InvalidArgument      when the method name is not a string
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought

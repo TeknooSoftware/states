@@ -39,7 +39,7 @@ use \UniAlteri\States\Proxy;
 interface StartupFactoryInterface
 {
     /**
-     * Find the factory to use for the new proxy object to initialize it with its container and states.
+     * To find the factory to use for the new proxy object to initialize it with its container and states.
      * This method is called by the constructor of the stated object
      * @param  Proxy\ProxyInterface         $proxyObject
      * @param  string                       $stateName

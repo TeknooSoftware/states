@@ -23,7 +23,7 @@ namespace UniAlteri\States\DI;
 
 /**
  * Class Container
- * Default Dependency Injection Container, build on Pimple used in this library.
+ * Default Dependency Injection Container, built on Pimple, used in this library.
  *
  * @package     States
  * @subpackage  DI
@@ -35,7 +35,7 @@ namespace UniAlteri\States\DI;
 class Container extends \Pimple implements ContainerInterface
 {
     /**
-     * Test if the identifier respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * Test if the identifier respects the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      * @param  string                $name
      * @return bool
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
@@ -50,12 +50,12 @@ class Container extends \Pimple implements ContainerInterface
     }
 
     /**
-     * To support object cloning : All registry must be cloning, but not theirs values
+     * To support the object cloning : All registries must be cloning, but not their values
      */
     public function __clone()
     {
         /**
-         * Do nothing, Pimple uses standard array, they are automatically cloned by php (but not theirs values)
+         * Do nothing, Pimple uses standard arrays, they are automatically cloned by php (but not theirs values)
          */
     }
 
@@ -99,7 +99,7 @@ class Container extends \Pimple implements ContainerInterface
                 throw new Exception\ClassNotFound('The class "'.$instance.'" is not available');
             }
         } elseif (is_object($instance)) {
-            //For callable and object, register them
+            //For callables and objects, register them
             $this[$name] = $instance;
         } else {
             throw new Exception\IllegalService('Error, the instance for "'.$name.'" is illegal');

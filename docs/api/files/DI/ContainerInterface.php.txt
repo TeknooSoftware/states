@@ -35,7 +35,7 @@ namespace UniAlteri\States\DI;
 interface ContainerInterface
 {
     /**
-     * To support object cloning : All registry must be cloning, but not theirs values
+     * To support the object cloning : All registries must be cloning, but not their values
      */
     public function __clone();
 

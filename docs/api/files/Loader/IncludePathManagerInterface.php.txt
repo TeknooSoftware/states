@@ -23,7 +23,8 @@ namespace UniAlteri\States\Loader;
 
 /**
  * Interface IncludedPathManagementInterface
- * Interface to define manager object to manage set_included_path and unit test this section
+ * Interface to define manager object to manage set_included_path and unit test this section.
+ * It used by the loader to configure include_path.
  *
  * @package     States
  * @subpackage  Loader
@@ -36,7 +37,7 @@ namespace UniAlteri\States\Loader;
 interface IncludePathManagerInterface
 {
     /**
-     * Sets the include_path configuration option
+     * To set the include_path configuration option
      * @param  array|string[]            $paths (paths must be split into an array)
      * @return array|string[]            old paths
      * @throws Exception\IllegalArgument if the argument $paths is not an array of string
@@ -44,7 +45,7 @@ interface IncludePathManagerInterface
     public function setIncludePath($paths);
 
     /**
-     * Gets the current include_path configuration option
+     * To get the current include_path configuration option
      * @return array|string[] (paths must be split into an array)
      */
     public function getIncludePath();

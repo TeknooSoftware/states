@@ -27,8 +27,7 @@ use \UniAlteri\States\Proxy;
 
 /**
  * Interface FinderInterface
- * Interface to define finder to use with this library to find and load from each stated class
- * all states and the proxy
+ * Interface to define finder to use with this library to find from each stated class all states and the proxy.
  *
  * @package     States
  * @subpackage  Loader
@@ -76,7 +75,7 @@ interface FinderInterface
     public function getDIContainer();
 
     /**
-     * List all available state object of the stated class
+     * To list all available states of the stated class
      * @return string[]
      * @throws Exception\UnavailablePath if the states' folder is not available
      * @throws Exception\UnReadablePath  if the states' folder is not readable
@@ -84,7 +83,7 @@ interface FinderInterface
     public function listStates();
 
     /**
-     * Load the required state object of the stated class
+     * To load the required state object of the stated class
      * @param  string                     $stateName
      * @return string
      * @throws Exception\UnReadablePath   if the stated file is not readable
@@ -93,7 +92,7 @@ interface FinderInterface
     public function loadState($stateName);
 
     /**
-     * Load and build the required state object of the stated class
+     * To load and build the required state object of the stated class
      * @param  string                     $stateName
      * @return States\StateInterface
      * @throws Exception\UnReadablePath   if the state file is not readable
@@ -103,7 +102,7 @@ interface FinderInterface
     public function buildState($stateName);
 
     /**
-     * Search and load the proxy class for this stated class.
+     * To search and load the proxy class for this stated class.
      * If the class has not proxy, load the default proxy for this stated class
      * @return string
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
@@ -111,7 +110,7 @@ interface FinderInterface
     public function loadProxy();
 
     /**
-     * Load and build a proxy object for the stated class
+     * To load and build a proxy object for the stated class
      * @param  array                  $arguments argument for proxy
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface

@@ -32,6 +32,9 @@ use \UniAlteri\States\DI;
  * It is a proxy because, by default, all calls are redirected to enabled states.
  * $this in all methods of the stated object (also of states' methods) points the proxy object.
  *
+ * The library creates an alias with the proxy class name and this default proxy to simulate a dedicated proxy
+ * to this class.
+ *
  * @package     States
  * @subpackage  Proxy
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
@@ -46,6 +49,9 @@ interface ProxyInterface extends
     \SeekableIterator,
     \Countable
 {
+    /**
+     * Name of the default state to load automatically in the construction
+     */
     const DEFAULT_STATE_NAME = 'StateDefault';
 
     /***********************
@@ -53,7 +59,7 @@ interface ProxyInterface extends
      ***********************/
 
     /**
-     * Register dynamically a new state for this object
+     * To register dynamically a new state for this object
      * @param  string                       $stateName
      * @param  States\States\StateInterface $stateObject
      * @return $this
@@ -63,7 +69,7 @@ interface ProxyInterface extends
     public function registerState($stateName, States\States\StateInterface $stateObject);
 
     /**
-     * Remove dynamically a state from this object
+     * To remove dynamically a state from this object
      * @param  string                    $stateName
      * @return $this
      * @throws Exception\IllegalArgument when the identifier is not a string
@@ -73,7 +79,7 @@ interface ProxyInterface extends
     public function unregisterState($stateName);
 
     /**
-     * Disable all actives states and load the required states
+     * To disable all actives states and enable the required states
      * @param  string                    $stateName
      * @return $this
      * @throws Exception\IllegalArgument when the identifier is not a string
@@ -82,7 +88,7 @@ interface ProxyInterface extends
     public function switchState($stateName);
 
     /**
-     * Enable a loaded states
+     * To enable a loaded states
      * @param $stateName
      * @return $this
      * @throws Exception\StateNotFound   if $stateName does not exist
@@ -92,7 +98,7 @@ interface ProxyInterface extends
     public function enableState($stateName);
 
     /**
-     * Disable an active state (not available for calling, but already loaded)
+     * To disable an active state (not available for calling, but always loaded)
      * @param  string                    $stateName
      * @return $this
      * @throws Exception\IllegalArgument when the identifier is not a string
@@ -102,25 +108,25 @@ interface ProxyInterface extends
     public function disableState($stateName);
 
     /**
-     * Disable all actives states
+     * To disable all actives states
      * @return $this
      */
     public function disableAllStates();
 
     /**
-     * List all available states for this object. Include added dynamically states, exclude removed dynamically states
+     * To list all currently available states for this object.
      * @return string[]
      */
     public function listAvailableStates();
 
     /**
-     * List all enable states for this object.
+     * To list all enable states for this object.
      * @return string[]
      */
     public function listEnabledStates();
 
     /**
-     * Return the current injection closure object to access to its static properties
+     * To return the current injection closure object to access to its static properties
      * @return DI\InjectionClosureInterface
      * @throws Exception\UnavailableClosure
      */
@@ -131,20 +137,19 @@ interface ProxyInterface extends
      *******************/
 
     /**
-     * Call a method of the Object.
-     * Hooks and event are automatically called
-     * @param $name
-     * @param $arguments
+     * To call a method of the Object.
+     * @param string $name
+     * @param array $arguments
      * @return mixed
      * @throws \Exception
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      * @throws Exception\IllegalArgument      if the method's name is not a string
      */
     public function __call($name, $arguments);
 
     /**
-     * Return the description of the method
+     * To return the description of the method
      * @param  string                         $methodName
      * @param  string                         $stateName  : Return the description for a specific state of the object,
      *                                                    if null, use the current state
@@ -159,7 +164,7 @@ interface ProxyInterface extends
     /**
      * To invoke an object as a function
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __invoke();
@@ -169,50 +174,44 @@ interface ProxyInterface extends
      *******************/
 
     /**
-     * Get a property of the object
-     * Hooks and event are automatically called
+     * To get a property of the object
      * @param  string                         $name
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __get($name);
 
     /**
-     * Test if a property is set for the object
-     * Hooks and event are automatically called
+     * To test if a property is set for the object.
      * @param  string                         $name
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __isset($name);
 
     /**
-     * Update a property of the object
-     * Hooks and event are automatically called
+     * To update a property of the object.
      * @param  string                         $name
      * @param  string                         $value
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __set($name, $value);
 
     /**
-     * To remove a property of the object
-     * Hooks and event are automatically called
+     * To remove a property of the object.
      * @param  string                         $name
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __unset($name);
 
     /**
      * To transform the object to a string
-     * Hooks and event are automatically called
-     *
      * You cannot throw an exception from within a __toString() method. Doing so will result in a fatal error.
      * @return mixed
      */
@@ -223,9 +222,9 @@ interface ProxyInterface extends
      ****************/
 
     /**
-     * This method is executed when using the count() function on an object implementing Countable.
+    This method is executed when using the count() function on an object implementing Countable.
      * @return int
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function count();
@@ -235,7 +234,7 @@ interface ProxyInterface extends
      * This method is executed when using isset() or empty() on states implementing ArrayAccess.
      * @param  string|int                     $offset
      * @return bool
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetExists($offset);
@@ -245,7 +244,7 @@ interface ProxyInterface extends
      * This method is executed when checking if offset is empty().
      * @param  string|int                     $offset
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetGet($offset);
@@ -255,7 +254,7 @@ interface ProxyInterface extends
      * @param  string|int                     $offset
      * @param  mixed                          $value
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetSet($offset, $value);
@@ -263,7 +262,7 @@ interface ProxyInterface extends
     /**
      * Unset an offset.
      * @param  string|int                     $offset
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetUnset($offset);
@@ -275,7 +274,7 @@ interface ProxyInterface extends
     /**
      * Returns the current element.
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function current();
@@ -283,21 +282,21 @@ interface ProxyInterface extends
     /**
      * Returns the key of the current element.
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function key();
 
     /**
      * Moves the current position to the next element.
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function next();
 
     /**
      * Rewinds back to the first element of the Iterator.
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function rewind();
@@ -305,7 +304,7 @@ interface ProxyInterface extends
     /**
      * Seeks to a given position in the iterator.
      * @param  int                            $position
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function seek($position);
@@ -313,7 +312,7 @@ interface ProxyInterface extends
     /**
      * This method is called after Iterator::rewind() and Iterator::next() to check if the current position is valid.
      * @return bool
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function valid();
@@ -321,7 +320,7 @@ interface ProxyInterface extends
     /**
      * Returns an external iterator.
      * @return \Traversable
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function getIterator();
@@ -332,8 +331,7 @@ interface ProxyInterface extends
 
     /**
      * To serialize the object
-     * Hooks and event are automatically called
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      * @return string
      */
@@ -341,9 +339,8 @@ interface ProxyInterface extends
 
     /**
      * To wake up the object
-     * Hooks and event are automatically called
      * @param  string                         $serialized
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function unserialize($serialized);

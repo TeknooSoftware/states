@@ -26,7 +26,7 @@ use \UniAlteri\States\Factory;
 
 /**
  * Interface LoaderInterface
- * Interface to define a "stated class autoloader" to allow php to load stated class
+ * Interface to define a "stated class autoloader" to allow php to load automatically stated class.
  *
  * @package     States
  * @subpackage  Loader
@@ -49,7 +49,7 @@ interface LoaderInterface
     const FACTORY_FILE_NAME = 'Factory.php';
 
     /**
-     * Suffix name of the Factory PHP Class of each Stated Class (The pattern is <statedClassName>[Suffix]
+     * Class name of the Factory PHP Class of each Stated Class
      */
     const FACTORY_CLASS_NAME = 'FactoryClass';
 
@@ -82,13 +82,13 @@ interface LoaderInterface
     public function addIncludePath($path);
 
     /**
-     * List all active included path for this loaded
+     * To list all active included path for this loaded
      * @return string[]
      */
     public function getIncludedPaths();
 
     /**
-     * Register a location to find some classes of a namespace.
+     * To register a location to find some classes of a namespace.
      * A namespace can has several locations
      * @param  string                    $namespace
      * @param  string                    $path
@@ -98,13 +98,13 @@ interface LoaderInterface
     public function registerNamespace($namespace, $path);
 
     /**
-     * List all registered namespace
+     * To list all registered namespace
      * @return \ArrayObject
      */
     public function listNamespaces();
 
     /**
-     * Method called to load a class.
+     * Method called to load a class by __autoload of PHP Engine
      * @param  string                       $className class name, support namespace prefixes
      * @return boolean
      * @throws \Exception

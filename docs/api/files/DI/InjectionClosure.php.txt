@@ -56,7 +56,7 @@ class InjectionClosure implements InjectionClosureInterface
     protected $_properties = null;
 
     /**
-     * To create a closure for DI Container with a support of persistent vars. (aka "static")
+     * To create a closure for a state with a support of persistent vars. (aka "static")
      * @param \Closure $closure to initialize container with a closure
      */
     public function __construct(\Closure $closure=null)
@@ -68,7 +68,7 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * To register a DI container for this object
+     * To To register a DI container for this object
      * @param  ContainerInterface $container
      * @return $this
      */
@@ -98,7 +98,7 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * Return the closure contained into this
+     * To define the closure contained into $this
      * @param  \Closure                  $closure
      * @return $this
      * @throws Exception\InvalidArgument when $closure is not an instance of \Closure
@@ -115,7 +115,7 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * Return the closure contained into this
+     * To return the closure contained into $this
      * @return \Closure
      */
     public function getClosure()
@@ -124,7 +124,7 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * Test if the name of the static property is valid
+     * To test if the name of the static property is valid
      * @param  string                $name
      * @return boolean
      * @throws Exception\IllegalName
@@ -156,7 +156,7 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * Remove a static property
+     * To remove a static property
      * @param  string $name
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
@@ -171,7 +171,7 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * Return to the closure a static property
+     * To return to the closure a static property
      * @param  string $name
      * @return mixed
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
@@ -186,7 +186,7 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * Check if a static property is stored
+     * To check if a static property is stored
      * @param  string  $name
      * @return boolean
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*

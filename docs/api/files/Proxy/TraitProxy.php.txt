@@ -29,12 +29,12 @@ use \UniAlteri\States;
  * Standard implementation of the "Proxy Object".
  * It is used in this library to create stated object.
  *
- * A stated object is a proxy, configured for its stated class, with its different states objects.
+ * A stated object is a proxy, configured for its stated class, with its different stated objects.
  * It is a proxy because, by default, all calls are redirected to enabled states.
- * $this in all methods of the stated object (also of states'methods) points the proxy object.
+ * $this in all methods of the stated object (also of states' methods) points the proxy object.
  *
- * It is a trait to allow developer to write theirs owns proxy for theirs stated class,
- * extendable from any class.
+ * The library creates an alias with the proxy class name and this default proxy to simulate a dedicated proxy
+ * to this class.
  *
  * @package     States
  * @subpackage  Proxy
@@ -80,7 +80,7 @@ trait TraitProxy
      * @param  string                         $methodName
      * @param  array                          $arguments  of the call
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      * @throws Exception\IllegalArgument      if the method's name is not a string
      * @throws \Exception
@@ -97,11 +97,11 @@ trait TraitProxy
         $methodsWithStatesArray = explode('Of', $methodName);
         if (1 === count($methodsWithStatesArray)) {
             $activeStateFound = null;
-            //No specific state required, browse all enable state to find the method
+            //No specific state required, browse all enabled state to find the method
             foreach ($this->_activesStates as $activeStateObject) {
                 if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
                     if (null === $activeStateFound) {
-                        //Check if there are only one enable state whom implements this method
+                        //Check if there are only one enabled state whom implements this method
                         $activeStateFound = $activeStateObject;
                     } else {
                         //Else, throw an exception
@@ -175,7 +175,7 @@ trait TraitProxy
     }
 
     /**
-     * Test if the identifier respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * To test if the identifier respects the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      * @param  string                    $name
      * @return bool
      * @throws Exception\IllegalArgument when the identifier is not a string
@@ -203,8 +203,8 @@ trait TraitProxy
     }
 
     /**
-     * Method to call into constructor to initialize proxy's vars.
-     * Externalized from constructor to allow developers to write theirs owns constructors into theirs classes
+     * Method to call into the constructor to initialize proxy's vars.
+     * Externalized from the constructor to allow developers to write their own constructors into theirs classes
      */
     protected function _initializeProxy()
     {
@@ -235,8 +235,9 @@ trait TraitProxy
     }
 
     /**
-     * To determine the caller visibility scope to not permit to call protected or private method.
-     * Use debug_backtrace to get the calling stack
+     * To determine the caller visibility scope to not permit to call protected or private method from an external object.
+     * Use debug_backtrace to get the calling stack.
+     * (PHP does not provide a method to get this, but the cost of debug_backtrace is light).
      * @param  int    $limit To define the caller into the calling stack
      * @return string Return :  States\States\StateInterface::VISIBILITY_PUBLIC
      *                      States\States\StateInterface::VISIBILITY_PROTECTED
@@ -248,12 +249,13 @@ trait TraitProxy
         $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT|DEBUG_BACKTRACE_IGNORE_ARGS, intval($limit));
 
         if (isset($callingStack[2]['function']) && '__call' !== $callingStack[2]['function']) {
-            //Magic method __call add a line into calling stack, but not other magic method
+            //Magic method __call adds a line into calling stack, but not other magic method
             $limit--;
         }
 
         if (count($callingStack) >= $limit) {
-            //If size of the calling stack is less : called from main php file, or corrupted stack : apply default behavior : Public
+            //If size of the calling stack is less : called from main php file, or corrupted stack :
+            //apply default behavior : Public
             $callerLine = array_pop($callingStack);
 
             if (!empty($callerLine['object']) && is_object($callerLine['object'])) {
@@ -297,12 +299,13 @@ trait TraitProxy
         }
 
         //All another case (not same class), public
-        //Info, If Calling stack is corrupted or in unknown state (the stack's size is less than the excepted size), use default method : public
+        //Info, If Calling stack is corrupted or in unknown state (the stack's size is less than the excepted size),
+        //use default method : public
         return States\States\StateInterface::VISIBILITY_PUBLIC;
     }
 
     /**
-     * Return a stable unique id of the current object. It must identify
+     * To return a unique stable id of the current object. It must identify
      * @return string
      */
     public function getObjectUniqueId()
@@ -352,7 +355,7 @@ trait TraitProxy
      ***********************/
 
     /**
-     * Register dynamically a new state for this object
+     * To register dynamically a new state for this object
      * @param  string                       $stateName
      * @param  States\States\StateInterface $stateObject
      * @return $this
@@ -369,7 +372,7 @@ trait TraitProxy
     }
 
     /**
-     * Remove dynamically a state from this object
+     * To remove dynamically a state from this object
      * @param  string                    $stateName
      * @return $this
      * @throws Exception\IllegalArgument when the identifier is not a string
@@ -394,7 +397,7 @@ trait TraitProxy
     }
 
     /**
-     * Disable all actives states and load the required states
+     * To disable all actives states and enable the required states
      * @param  string                    $stateName
      * @return $this
      * @throws Exception\IllegalArgument when the identifier is not a string
@@ -411,7 +414,7 @@ trait TraitProxy
     }
 
     /**
-     * Enable a loaded states
+     * To enable a loaded states
      * @param $stateName
      * @return $this
      * @throws Exception\StateNotFound   if $stateName does not exist
@@ -432,7 +435,7 @@ trait TraitProxy
     }
 
     /**
-     * Disable an active state (not available for calling, but already loaded)
+     * To disable an active state (not available for calling, but always loaded)
      * @param  string                    $stateName
      * @return $this
      * @throws Exception\IllegalArgument when the identifier is not a string
@@ -453,7 +456,7 @@ trait TraitProxy
     }
 
     /**
-     * Disable all actives states
+     * To disable all actives states
      * @return $this
      */
     public function disableAllStates()
@@ -464,7 +467,7 @@ trait TraitProxy
     }
 
     /**
-     * List all available states for this object. Include added dynamically states, exclude removed dynamically states
+     * To list all currently available states for this object.
      * @return string[]
      */
     public function listAvailableStates()
@@ -473,7 +476,7 @@ trait TraitProxy
     }
 
     /**
-     * List all enable states for this object.
+     * To list all enable states for this object.
      * @return string[]
      */
     public function listEnabledStates()
@@ -482,7 +485,7 @@ trait TraitProxy
     }
 
     /**
-     * Return the current injection closure object to access to its static properties
+     * To return the current injection closure object to access to its static properties
      * @return DI\InjectionClosureInterface
      * @throws Exception\UnavailableClosure
      */
@@ -500,13 +503,12 @@ trait TraitProxy
      *******************/
 
     /**
-     * Call a method of the Object.
-     * Hooks and event are automatically called
-     * @param $name
-     * @param $arguments
+     * To call a method of the Object.
+     * @param string $name
+     * @param array $arguments
      * @return mixed
      * @throws \Exception
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      * @throws Exception\IllegalArgument      if the method's name is not a string
      */
@@ -516,7 +518,7 @@ trait TraitProxy
     }
 
     /**
-     * Return the description of the method
+     * To return the description of the method
      * @param  string                         $methodName
      * @param  string                         $stateName  : Return the description for a specific state of the object,
      *                                                    if null, use the current state
@@ -533,7 +535,7 @@ trait TraitProxy
         }
 
         if (null !== $stateName && !is_string($stateName)) {
-            throw new Exception\InvalidArgument('Error, the state name name is not a valid string');
+            throw new Exception\InvalidArgument('Error, the state name is not a valid string');
         }
 
         //Retrieve the visibility scope
@@ -575,7 +577,7 @@ trait TraitProxy
     /**
      * To invoke an object as a function
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __invoke()
@@ -588,11 +590,10 @@ trait TraitProxy
      *******************/
 
     /**
-     * Get a property of the object
-     * Hooks and event are automatically called
+     * To get a property of the object.
      * @param  string                         $name
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __get($name)
@@ -601,11 +602,10 @@ trait TraitProxy
     }
 
     /**
-     * Test if a property is set for the object
-     * Hooks and event are automatically called
+     * To test if a property is set for the object.
      * @param  string                         $name
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __isset($name)
@@ -614,12 +614,11 @@ trait TraitProxy
     }
 
     /**
-     * Update a property of the object
-     * Hooks and event are automatically called
+     * To update a property of the object.
      * @param  string                         $name
      * @param  string                         $value
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __set($name, $value)
@@ -628,11 +627,10 @@ trait TraitProxy
     }
 
     /**
-     * To remove a property of the object
-     * Hooks and event are automatically called
+     * To remove a property of the object.
      * @param  string                         $name
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __unset($name)
@@ -642,7 +640,6 @@ trait TraitProxy
 
     /**
      * To transform the object to a string
-     * Hooks and event are automatically called
      * You cannot throw an exception from within a __toString() method. Doing so will result in a fatal error.
      * @return mixed
      */
@@ -662,7 +659,7 @@ trait TraitProxy
     /**
      * This method is executed when using the count() function on an object implementing Countable.
      * @return int
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function count()
@@ -675,7 +672,7 @@ trait TraitProxy
      * This method is executed when using isset() or empty() on states implementing ArrayAccess.
      * @param  string|int                     $offset
      * @return bool
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetExists($offset)
@@ -688,7 +685,7 @@ trait TraitProxy
      * This method is executed when checking if offset is empty().
      * @param  string|int                     $offset
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetGet($offset)
@@ -701,7 +698,7 @@ trait TraitProxy
      * @param  string|int                     $offset
      * @param  mixed                          $value
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetSet($offset, $value)
@@ -712,7 +709,7 @@ trait TraitProxy
     /**
      * Unset an offset.
      * @param  string|int                     $offset
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetUnset($offset)
@@ -727,7 +724,7 @@ trait TraitProxy
     /**
      * Returns the current element.
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function current()
@@ -738,7 +735,7 @@ trait TraitProxy
     /**
      * Returns the key of the current element.
      * @return mixed
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function key()
@@ -748,7 +745,7 @@ trait TraitProxy
 
     /**
      * Moves the current position to the next element.
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function next()
@@ -758,7 +755,7 @@ trait TraitProxy
 
     /**
      * Rewinds back to the first element of the Iterator.
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function rewind()
@@ -769,7 +766,7 @@ trait TraitProxy
     /**
      * Seeks to a given position in the iterator.
      * @param  int                            $position
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function seek($position)
@@ -780,7 +777,7 @@ trait TraitProxy
     /**
      * This method is called after Iterator::rewind() and Iterator::next() to check if the current position is valid.
      * @return bool
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function valid()
@@ -791,7 +788,7 @@ trait TraitProxy
     /**
      * Returns an external iterator.
      * @return \Traversable
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function getIterator()
@@ -805,8 +802,7 @@ trait TraitProxy
 
     /**
      * To serialize the object
-     * Hooks and event are automatically called
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      * @return string
      */
@@ -817,9 +813,8 @@ trait TraitProxy
 
     /**
      * To wake up the object
-     * Hooks and event are automatically called
      * @param  string                         $serialized
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function unserialize($serialized)

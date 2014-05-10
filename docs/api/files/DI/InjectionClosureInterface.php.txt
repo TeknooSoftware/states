@@ -26,7 +26,7 @@ namespace UniAlteri\States\DI;
  * Interface to define Injection Closure container to use in this library.
  * An Injection Closure container is used to extract and manipulate all methods of a stated class
  * in the proxy. These containers implement also a "static" mechanism to allow developers to use
- * cleanly static var in these functions
+ * cleanly static var in these functions.
  *
  * @package     States
  * @subpackage  DI
@@ -39,7 +39,7 @@ namespace UniAlteri\States\DI;
 interface InjectionClosureInterface
 {
     /**
-     * To register a DI container for this object
+     * To To register a DI container for this object
      * @param ContainerInterface $container
      */
     public function setDIContainer(ContainerInterface $container);
@@ -58,7 +58,7 @@ interface InjectionClosureInterface
     public function __invoke();
 
     /**
-     * Return the closure contained into this
+     * To define the closure contained into $this
      * @param  \Closure                  $closure
      * @return $this
      * @throws Exception\InvalidArgument when $closure is not an instance of \Closure
@@ -66,7 +66,7 @@ interface InjectionClosureInterface
     public function setClosure($closure);
 
     /**
-     * Return the closure contained into this
+     * To return the closure contained into $this
      * @return \Closure
      */
     public function getClosure();
@@ -82,7 +82,7 @@ interface InjectionClosureInterface
     public function saveProperty($name, $value);
 
     /**
-     * Remove a static property
+     * To remove a static property
      * @param  string $name
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
@@ -90,7 +90,7 @@ interface InjectionClosureInterface
     public function deleteProperty($name);
 
     /**
-     * Return to the closure a static property
+     * To return to the closure a static property
      * @param  string $name
      * @return mixed
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
@@ -98,7 +98,7 @@ interface InjectionClosureInterface
     public function getProperty($name);
 
     /**
-     * Check if a static property is stored
+     * To check if a static property is stored
      * @param  string  $name
      * @return boolean
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
