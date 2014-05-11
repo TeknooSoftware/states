@@ -44,7 +44,7 @@ class IntegratedTest extends AbstractProxyTest
      */
     protected function setUp()
     {
-        include_once('UniAlteri/Tests/Support/MockStartupFactory.php');
+        include_once 'UniAlteri/Tests/Support/MockStartupFactory.php';
         //Change the startup factory to the mock for each test
         Support\IntegratedProxy::defineStartupFactoryClassName('\UniAlteri\Tests\Support\MockStartupFactory');
         parent::setUp();
@@ -57,6 +57,7 @@ class IntegratedTest extends AbstractProxyTest
     protected function _buildProxy()
     {
         $this->_proxy = new Support\IntegratedProxy();
+
         return $this->_proxy;
     }
 
@@ -68,6 +69,7 @@ class IntegratedTest extends AbstractProxyTest
         $proxy = new Support\IntegratedProxy();
         try {
             $this->assertSame(array(), $proxy->listAvailableStates());
+
             return;
         } catch (\Exception $e) { }
 

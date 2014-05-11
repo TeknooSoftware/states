@@ -50,19 +50,20 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Return a valid InjectionClosureInterface object
-     * @param callable $closure
+     * @param  callable            $closure
      * @return DI\InjectionClosure
      */
     protected function _buildClosure(\Closure $closure=null)
     {
         if (null === $closure) {
-            $closure = function() {
+            $closure = function () {
                 return array_reverse(func_get_args());
             };
         }
 
         $injectionClosureObject = new DI\InjectionClosure();
         $injectionClosureObject->setClosure($closure);
+
         return $injectionClosureObject;
     }
 
@@ -102,7 +103,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
         try {
             $a = new DI\InjectionClosure();
             $a->setClosure(new \stdClass());
-        } catch(Exception\InvalidArgument $e) {
+        } catch (Exception\InvalidArgument $e) {
             return;
         } catch (\Exception $e) {}
 
@@ -142,7 +143,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetClosure()
     {
-        $myClosure = function($i) {
+        $myClosure = function ($i) {
             return $i+1;
         };
 
@@ -157,9 +158,9 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     {
         try {
             $this->_buildClosure()->saveProperty('##', 'foo');
-        } catch(Exception\IllegalName $exception) {
+        } catch (Exception\IllegalName $exception) {
             return;
-        } catch(\Exception $e) {}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -224,7 +225,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
             $this->_buildClosure()->deleteProperty('##');
         } catch (Exception\IllegalName $exception) {
             return;
-        } catch(\Exception $e) {}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }

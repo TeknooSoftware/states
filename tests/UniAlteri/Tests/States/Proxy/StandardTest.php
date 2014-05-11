@@ -43,6 +43,7 @@ class StandardTest extends AbstractProxyTest
     protected function _buildProxy()
     {
         $this->_proxy = new Proxy\Standard();
+
         return $this->_proxy;
     }
 }

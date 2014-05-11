@@ -40,28 +40,31 @@ class StateTest extends AbstractStatesTest
 {
     /**
      * Build a basic object to provide only public methods
-     * @param boolean $initializeContainer initialize virtual di container for state
+     * @param  boolean                $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyPublic
      */
-    protected function _getPublicClassObject($initializeContainer=true){
+    protected function _getPublicClassObject($initializeContainer=true)
+    {
         return new Support\MockOnlyPublic($initializeContainer);
     }
 
     /**
      * Build a basic object to provide only protected methods
-     * @param boolean $initializeContainer initialize virtual di container for state
+     * @param  boolean                   $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyProtected
      */
-    protected function _getProtectedClassObject($initializeContainer=true){
+    protected function _getProtectedClassObject($initializeContainer=true)
+    {
         return new Support\MockOnlyProtected($initializeContainer);
     }
 
     /**
      * Build a basic object to provide only private methods
-     * @param boolean $initializeContainer initialize virtual di container for state
+     * @param  boolean                 $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyPrivate
      */
-    protected function _getPrivateClassObject($initializeContainer=true){
+    protected function _getPrivateClassObject($initializeContainer=true)
+    {
         return new Support\MockOnlyPrivate($initializeContainer);
     }
 
@@ -69,7 +72,8 @@ class StateTest extends AbstractStatesTest
      * Build a virtual proxy for test
      * @return Proxy\ProxyInterface
      */
-    protected function _getMockProxy(){
+    protected function _getMockProxy()
+    {
         return new Support\MockProxy(array());
     }
 }

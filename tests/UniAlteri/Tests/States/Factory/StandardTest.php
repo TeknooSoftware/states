@@ -22,7 +22,6 @@
 namespace UniAlteri\Tests\States\Factory;
 
 use \UniAlteri\States\Factory;
-use \UniAlteri\Tests\Support;
 
 /**
  * Class StandardTest
@@ -39,7 +38,7 @@ class StandardTest extends AbstractFactoryTest
 {
     /**
      * Return the Factory Object Interface
-     * @param boolean $populateContainer to populate di container of this factory
+     * @param  boolean                  $populateContainer to populate di container of this factory
      * @return Factory\FactoryInterface
      */
     public function getFactoryObject($populateContainer=true)
@@ -48,7 +47,7 @@ class StandardTest extends AbstractFactoryTest
         if (true === $populateContainer) {
             $factory->setDIContainer($this->_container);
         }
+
         return $factory;
     }
 }
-

@@ -68,8 +68,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Load object to test it
-     * @param boolean $standardIncludePathManager to load the standard Include Path Manager from this lib and not
-     *                  the test manager
+     * @param  boolean               $standardIncludePathManager to load the standard Include Path Manager from this lib and not
+     *                                                           the test manager
      * @return Loader\LoaderStandard
      */
     protected function _initializeLoader($standardIncludePathManager=false)
@@ -83,10 +83,11 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->_loader->setDIContainer(new Support\MockDIContainer());
         $this->_loader->getDIContainer()->registerService(
             Loader\FinderInterface::DI_FINDER_SERVICE,
-            function(){
+            function () {
                 return new Support\MockFinder('', '');
             }
         );
+
         return $this->_loader;
     }
 
@@ -151,7 +152,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             $loader->addIncludePath('badPath');
         } catch (Exception\UnavailablePath $e) {
             return;
-        } catch (\Exception $e){ }
+        } catch (\Exception $e) { }
 
         $this->fail('Error, if the path to include is unavailable, the loader must throws the exception Exception\UnavailablePath');
     }
@@ -184,7 +185,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             $loader->registerNamespace('badNamespace', array());
         } catch (Exception\IllegalArgument $e) {
             return;
-        } catch (\Exception $e){ }
+        } catch (\Exception $e) { }
 
         $this->fail('Error, if the path of namespace to register is not a valid string, the loader must throws the exception Exception\UnavailablePath');
     }
@@ -275,7 +276,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             $loader->buildFactory('badFactory', 'statedClassName', 'path');
         } catch (Exception\UnavailableFactory $e) {
             return;
-        } catch (\Exception $e){ }
+        } catch (\Exception $e) { }
 
         $this->fail('Error, if factory\'s class was not found, Loader must throws the exception Exception\UnavailableFactory');
     }
@@ -291,7 +292,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             $loader->buildFactory('stdClass', 'statedClassName', 'path');
         } catch (Exception\IllegalFactory $e) {
             return;
-        } catch (\Exception $e){ }
+        } catch (\Exception $e) { }
 
         $this->fail('Error, if factory\'s class does not implement the factory interface, Loader must throws the exception Exception\IllegalFactory');
     }

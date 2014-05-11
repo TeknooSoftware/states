@@ -53,10 +53,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     {
         $container->registerInstance('instanceClass', '\DateTime');
         $container->registerInstance('instanceObject', new \DateTime());
-        $container->registerInstance('instanceFunction', function() {return new \DateTime();});
+        $container->registerInstance('instanceFunction', function () {return new \DateTime();});
         $container->registerService('serviceClass', '\DateTime');
         $container->registerService('serviceObject', new Support\MockInvokableClass());
-        $container->registerService('serviceFunction', function() {return new \stdClass();});
+        $container->registerService('serviceFunction', function () {return new \stdClass();});
     }
 
     /**
@@ -68,7 +68,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->_buildContainer()->registerInstance('##', 'DateTime');
         } catch (DI\Exception\IllegalName $exception) {
             return;
-        } catch(\Exception $e) {}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
@@ -123,7 +123,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testRegisterInstanceFunction()
     {
         $container = $this->_buildContainer();
-        $result = $container->registerInstance('dateObject', function(){return new \DateTime();});
+        $result = $container->registerInstance('dateObject', function () {return new \DateTime();});
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerInstance`');
     }
 
@@ -190,7 +190,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $container->registerService('dateObject', array());
         } catch (DI\Exception\IllegalService $exception) {
             return;
-        } catch(\Exception $e) {}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\IllegalService exception if the service is invalid');
     }
@@ -226,7 +226,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     public function testRegisterServiceFunction()
     {
         $container = $this->_buildContainer();
-        $result = $container->registerService('dateObject', function(){return new \DateTime();});
+        $result = $container->registerService('dateObject', function () {return new \DateTime();});
         $this->assertSame($container, $result, 'Error, the container must return $this after `registerService`');
     }
 
@@ -269,7 +269,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->_buildContainer()->get('##');
         } catch (DI\Exception\IllegalName $exception) {
             return;
-        } catch(\Exception $e) {}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
@@ -283,7 +283,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->_buildContainer()->get('unknown');
         } catch (DI\Exception\InvalidArgument $exception) {
             return;
-        } catch(\Exception $e) {}
+        } catch (\Exception $e) {}
 
         $this->fail('Error, the container object must throws an Exception\InvalidArgument exception');
     }
@@ -396,10 +396,10 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             array(
                 'instances' => array(
                     'instanceClass'  => '\ArrayObject',
-                    'date1'         => function(){ return new \DateTime(); }
+                    'date1'         => function () { return new \DateTime(); }
                 ),
                 'services'  => array(
-                    'stdClass'         => function(){ return new \stdClass(); }
+                    'stdClass'         => function () { return new \stdClass(); }
                 )
             )
         );
@@ -463,7 +463,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $stdObject = new \stdClass();
         $stdObject->foo = 'bar';
         $originalContainer->registerInstance('object', $stdObject);
-        $originalContainer->registerService('date', function(){
+        $originalContainer->registerService('date', function () {
             return new \DateTime();
         });
 
@@ -481,7 +481,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($originalContainer->testEntry('object2'));
 
         $clonedContainer->unregister('date');
-        $clonedContainer->registerInstance('date', function(){
+        $clonedContainer->registerInstance('date', function () {
             return 123;
         });
 

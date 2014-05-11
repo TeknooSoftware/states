@@ -101,8 +101,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Initialize the finder for test
-     * @param string $statedClassName
-     * @param string $pathString
+     * @param  string                $statedClassName
+     * @param  string                $pathString
      * @return Loader\FinderStandard
      */
     protected function _initializeFind($statedClassName, $pathString)
@@ -110,6 +110,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $virtualDIContainer = new Support\MockDIContainer();
         $this->_finder = new Loader\FinderStandard($statedClassName, $pathString);
         $this->_finder->setDIContainer($virtualDIContainer);
+
         return $this->_finder;
     }
 
@@ -304,7 +305,6 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->markTestSkipped(); //todo
     }
-
 
     /**
      * Test the behavior of the finder when the state class has not been loaded after including

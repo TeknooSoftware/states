@@ -67,9 +67,10 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function _registerMockFinderService()
     {
-        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container){
+        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
             if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
                 $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
+
                 return new Support\MockFinder($factory->getStatedClassName(), $factory->getPath());
             } else {
                 return new Support\MockFinder('', '');
@@ -83,9 +84,10 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     protected function _registerMockFinderServiceWithArrayObject()
     {
         $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function($container){
+        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
             if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
                 $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
+
                 return new Support\MockFinderWithArray($factory->getStatedClassName(), $factory->getPath());
             } else {
                 return new Support\MockFinderWithArray('', '');
@@ -95,7 +97,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Return the Factory Object Interface
-     * @param boolean $populateContainer to populate di container of this factory
+     * @param  boolean                  $populateContainer to populate di container of this factory
      * @return Factory\FactoryInterface
      */
     abstract public function getFactoryObject($populateContainer=true);
@@ -163,7 +165,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         try {
             $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-            $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function(){
+            $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function () {
                 return new \stdClass();
             });
             $this->getFactoryObject(true)->getFinder();
@@ -245,7 +247,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $virtualFinder = new Support\MockFinder('', '');
         $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function() use ($virtualFinder) {
+        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function () use ($virtualFinder) {
             return $virtualFinder;
         });
 
@@ -261,7 +263,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         try {
             $this->getFactoryObject()->startup(array());
-        } catch(Exception\IllegalProxy $exception) {
+        } catch (Exception\IllegalProxy $exception) {
             return;
         }
 
@@ -276,7 +278,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         try {
             Support\MockFinder::$ignoreDefaultState = true;
             $this->getFactoryObject()->startup(new Support\MockProxy(null));
-        } catch(Exception\StateNotFound $exception) {
+        } catch (Exception\StateNotFound $exception) {
             return;
         }
 
@@ -288,10 +290,10 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionRequiredStateNotAvailableInStartup()
     {
-        try{
+        try {
             Support\MockFinder::$ignoreDefaultState = false;
             $this->getFactoryObject()->startup(new Support\MockProxy(null), 'NonExistentState');
-        } catch(Exception\StateNotFound $exception) {
+        } catch (Exception\StateNotFound $exception) {
             return;
         }
 
@@ -388,7 +390,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         try {
             Support\MockFinder::$ignoreDefaultState = true;
             $this->getFactoryObject()->build();
-        } catch(Exception\StateNotFound $exception) {
+        } catch (Exception\StateNotFound $exception) {
             return;
         }
 
@@ -400,10 +402,10 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testExceptionRequiredStateNotAvailable()
     {
-        try{
+        try {
             Support\MockFinder::$ignoreDefaultState = false;
             $this->getFactoryObject()->build(false, 'NonExistentState');
-        } catch(Exception\StateNotFound $exception) {
+        } catch (Exception\StateNotFound $exception) {
             return;
         }
 

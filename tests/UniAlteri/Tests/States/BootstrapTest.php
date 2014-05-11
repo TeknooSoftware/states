@@ -53,7 +53,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
     public function testLoaderInitialisation()
     {
         //Call the bootstrap, it returns the loader
-        $loader = include('UniAlteri/States/bootstrap.php');
+        $loader = include 'UniAlteri/States/bootstrap.php';
 
         //Check if the loader implements the good interface
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $loader);
