@@ -205,7 +205,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     protected function _formatDescription($text)
     {
-        return trim(str_replace(array(PHP_EOL, '\r\n', '*', '/'), '', $text->getDocComment()));
+        $s = trim(str_replace(array('*', '/'), '', $text->getDocComment()));
+        return preg_replace('~[[:cntrl:]]~', '', $s);
     }
 
     /**
