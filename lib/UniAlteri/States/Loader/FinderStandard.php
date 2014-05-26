@@ -218,8 +218,8 @@ class FinderStandard implements FinderInterface
 
             if (!is_readable($proxyPath)) {
                 //The stated class has not its own proxy, reuse the standard proxy, as an alias
-                class_alias($this->_defaultProxyClassName, $proxyClassName);
-                class_alias($this->_defaultProxyClassName, $this->_statedClassName);
+                class_alias($this->_defaultProxyClassName, $proxyClassName, true);
+                class_alias($this->_defaultProxyClassName, $this->_statedClassName, false);
 
                 return $proxyClassName;
             }
@@ -231,7 +231,7 @@ class FinderStandard implements FinderInterface
                 );
             } else {
                 //To access this class directly without repeat the stated class name
-                class_alias($proxyClassName, $this->_statedClassName);
+                class_alias($proxyClassName, $this->_statedClassName, false);
             }
         }
 
