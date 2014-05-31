@@ -19,22 +19,11 @@
  * @version     0.9.2
  */
 
-namespace demo;
+namespace demo\UniAlteri\Single;
 
-error_reporting(E_ALL | E_STRICT);
+use UniAlteri\States\Proxy;
+use UniAlteri\States\Proxy\Exception;
 
-defined('DS')
-    || define('DS', DIRECTORY_SEPARATOR);
-
-//Loading lib States
-$loader = require_once(dirname(__DIR__).DS.'lib'.DS.'UniAlteri'.DS.'States'.DS.'bootstrap.php');
-
-//Register demo namespace
-$loader->registerNamespace('\\demo\\UniAlteri', __DIR__.DS.'UniAlteri');
-
-print 'Uni Alteri - States library - Demo :'.PHP_EOL.PHP_EOL;
-print 'Instantiate stated object from its phar'.PHP_EOL;
-$stateObject = new UniAlteri\Single();
-
-print 'Call the default method of the default state'.PHP_EOL;
-$stateObject->methodD();
+class Single extends Proxy\Integrated
+{
+}

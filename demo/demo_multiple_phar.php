@@ -60,5 +60,6 @@ print 'admin transforms the user as modo :'.PHP_EOL;
 $administrator->setModerator($simpleUser);
 print 'user is moderator '.$simpleUser->isModerator().PHP_EOL;
 
-//Initialize juste another stated class of this phar
+//Initialize another stated class of this phar
 $newPost = new UniAlteri\Multiple\Post();
+print 'object post created'.PHP_EOL;

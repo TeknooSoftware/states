@@ -28,12 +28,12 @@ defined('DS')
 
 //Compute Path for this Phar
 $singlePath = __DIR__.DS.'src'.DS.'UniAlteri'.DS.'Single';
-$singlePharPath = __DIR__.DS.'UniAlteri'.DS.'single.phar';
+$singlePharPath = __DIR__.DS.'UniAlteri'.DS.'Single.phar';
 if (file_exists($singlePharPath)) {
     unlink($singlePharPath);
 }
 //Build phat
-$phar = new \Phar($singlePharPath, 0, 'single.phar');
+$phar = new \Phar($singlePharPath, 0, 'Single.phar');
 $phar->buildFromDirectory($singlePath);
 
 //Compute Path for this Phar
