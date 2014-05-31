@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>Uni Alteri States</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="https://netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="https://html5shim.googlecode.com/svn/trunk/html5.js" type="text/javascript"></script>
+    <![endif]-->
+    <script src="https://code.jquery.com/jquery-1.11.0.min.js" type="text/javascript"></script>
+    <script src="https://code.jquery.com/ui/1.10.4/jquery-ui.min.js" type="text/javascript"></script>
+    <script src="https://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+        <script type="text/javascript">
+        function loadExternalCodeSnippets() {
+            Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+                var src = pre.getAttribute('data-src');
+                var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+                var language = 'php';
+
+                var code = document.createElement('code');
+                code.className = 'language-' + language;
+
+                pre.textContent = '';
+
+                code.textContent = 'Loading…';
+
+                pre.appendChild(code);
+
+                var xhr = new XMLHttpRequest();
+
+                xhr.open('GET', src, true);
+
+                xhr.onreadystatechange = function () {
+                    if (xhr.readyState == 4) {
+
+                        if (xhr.status < 400 && xhr.responseText) {
+                            code.textContent = xhr.responseText;
+
+                            Prism.highlightElement(code);
+                        }
+                        else if (xhr.status >= 400) {
+                            code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                        }
+                        else {
+                            code.textContent = '✖ Error: File does not exist or is empty';
+                        }
+                    }
+                };
+
+                xhr.send(null);
+            });
+        }
+
+        $(document).ready(function(){
+            loadExternalCodeSnippets();
+        });
+        $('#source-view').on('shown', function () {
+            loadExternalCodeSnippets();
+        })
+    </script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">Uni Alteri States</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/UniAlteri.html">\UniAlteri</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-647881904"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-647881904" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-641791801"></a>
+                                <a href="../namespaces/UniAlteri.html" style="margin-left: 30px; padding-left: 0">UniAlteri</a>
+            </div>
+            <div id="namespace-641791801" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1220431129"></a>
+                                <a href="../namespaces/UniAlteri.States.html" style="margin-left: 30px; padding-left: 0">States</a>
+            </div>
+            <div id="namespace-1220431129" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1541879797"></a>
+                                <a href="../namespaces/UniAlteri.States.DI.html" style="margin-left: 30px; padding-left: 0">DI</a>
+            </div>
+            <div id="namespace-1541879797" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-113489089"></a>
+                                <a href="../namespaces/UniAlteri.States.DI.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-113489089" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/UniAlteri.States.DI.Exception.ClassNotFound.html">ClassNotFound</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.DI.Exception.IllegalName.html">IllegalName</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.DI.Exception.IllegalService.html">IllegalService</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.DI.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/UniAlteri.States.DI.ContainerInterface.html">ContainerInterface</a></li>
+                                                    <li class="interface"><a href="../classes/UniAlteri.States.DI.InjectionClosureInterface.html">InjectionClosureInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/UniAlteri.States.DI.Container.html">Container</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.DI.InjectionClosure.html">InjectionClosure</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-771610573"></a>
+                                <a href="../namespaces/UniAlteri.States.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-771610573" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.AvailableSeveralMethodImplementations.html">AvailableSeveralMethodImplementations</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.ClassNotFound.html">ClassNotFound</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.IllegalArgument.html">IllegalArgument</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.IllegalName.html">IllegalName</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.IllegalService.html">IllegalService</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.IllegalState.html">IllegalState</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.MethodNotImplemented.html">MethodNotImplemented</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.Standard.html">Standard</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.StateNotFound.html">StateNotFound</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.UnavailableClosure.html">UnavailableClosure</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.UnavailableDIContainer.html">UnavailableDIContainer</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.UnavailableLoader.html">UnavailableLoader</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.UnavailablePath.html">UnavailablePath</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.UnavailableState.html">UnavailableState</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Exception.UnReadablePath.html">UnReadablePath</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1743399903"></a>
+                                <a href="../namespaces/UniAlteri.States.Factory.html" style="margin-left: 30px; padding-left: 0">Factory</a>
+            </div>
+            <div id="namespace-1743399903" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1630055474"></a>
+                                <a href="../namespaces/UniAlteri.States.Factory.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1630055474" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/UniAlteri.States.Factory.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Factory.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Factory.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Factory.Exception.StateNotFound.html">StateNotFound</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Factory.Exception.UnavailableDIContainer.html">UnavailableDIContainer</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Factory.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Factory.Exception.UnavailableLoader.html">UnavailableLoader</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/UniAlteri.States.Factory.FactoryInterface.html">FactoryInterface</a></li>
+                                                    <li class="interface"><a href="../classes/UniAlteri.States.Factory.StartupFactoryInterface.html">StartupFactoryInterface</a></li>
+                                                                            <li class="trait"><a href="../classes/UniAlteri.States.Factory.TraitFactory.html">TraitFactory</a></li>
+                                                                            <li class="class"><a href="../classes/UniAlteri.States.Factory.Integrated.html">Integrated</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Factory.Standard.html">Standard</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Factory.StandardStartupFactory.html">StandardStartupFactory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-18138145"></a>
+                                <a href="../namespaces/UniAlteri.States.Loader.html" style="margin-left: 30px; padding-left: 0">Loader</a>
+            </div>
+            <div id="namespace-18138145" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1359167746"></a>
+                                <a href="../namespaces/UniAlteri.States.Loader.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1359167746" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.Exception.IllegalArgument.html">IllegalArgument</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.Exception.IllegalState.html">IllegalState</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.Exception.UnavailablePath.html">UnavailablePath</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.Exception.UnavailableState.html">UnavailableState</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.Exception.UnReadablePath.html">UnReadablePath</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/UniAlteri.States.Loader.FinderInterface.html">FinderInterface</a></li>
+                                                    <li class="interface"><a href="../classes/UniAlteri.States.Loader.IncludePathManagerInterface.html">IncludePathManagerInterface</a></li>
+                                                    <li class="interface"><a href="../classes/UniAlteri.States.Loader.LoaderInterface.html">LoaderInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.FinderIntegrated.html">FinderIntegrated</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.FinderStandard.html">FinderStandard</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.IncludePathManager.html">IncludePathManager</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Loader.LoaderStandard.html">LoaderStandard</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-7020316"></a>
+                                <a href="../namespaces/UniAlteri.States.Proxy.html" style="margin-left: 30px; padding-left: 0">Proxy</a>
+            </div>
+            <div id="namespace-7020316" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1557819908"></a>
+                                <a href="../namespaces/UniAlteri.States.Proxy.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1557819908" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Exception.AvailableSeveralMethodImplementations.html">AvailableSeveralMethodImplementations</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Exception.IllegalArgument.html">IllegalArgument</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Exception.IllegalName.html">IllegalName</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Exception.MethodNotImplemented.html">MethodNotImplemented</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Exception.StateNotFound.html">StateNotFound</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Exception.UnavailableClosure.html">UnavailableClosure</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Exception.UnavailableState.html">UnavailableState</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/UniAlteri.States.Proxy.ProxyInterface.html">ProxyInterface</a></li>
+                                                                            <li class="trait"><a href="../classes/UniAlteri.States.Proxy.TraitProxy.html">TraitProxy</a></li>
+                                                                            <li class="class"><a href="../classes/UniAlteri.States.Proxy.Integrated.html">Integrated</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.Proxy.Standard.html">Standard</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-29444148"></a>
+                                <a href="../namespaces/UniAlteri.States.States.html" style="margin-left: 30px; padding-left: 0">States</a>
+            </div>
+            <div id="namespace-29444148" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-6561584"></a>
+                                <a href="../namespaces/UniAlteri.States.States.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-6561584" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/UniAlteri.States.States.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.States.Exception.IllegalService.html">IllegalService</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.States.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                                    <li class="class"><a href="../classes/UniAlteri.States.States.Exception.MethodNotImplemented.html">MethodNotImplemented</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/UniAlteri.States.States.StateInterface.html">StateInterface</a></li>
+                                                                            <li class="trait"><a href="../classes/UniAlteri.States.States.TraitState.html">TraitState</a></li>
+                                                                            <li class="class"><a href="../classes/UniAlteri.States.States.AbstractState.html">AbstractState</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/UniAlteri.States.ObjectInterface.html">ObjectInterface</a></li>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content file">
+                    <nav>
+                                                                    </nav>
+
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+                    <h1><small>Exception</small>UnavailableState.php</h1>
+                    <p><em>States</em></p>
+                    <p>LICENSE</p>
+<p>This source file is subject to the new BSD license that is bundled
+with this package in the file LICENSE.txt.
+If you did not receive a copy of the license and are unable to
+obtain it through the world-wide-web, please send an email
+to contact@uni-alteri.com so we can send you a copy immediately.</p>
+
+                    
+                    
+                                        <h2>Classes</h2>
+                    <table class="table table-hover">
+                                            <tr>
+                            <td><a href="../classes/UniAlteri.States.Exception.UnavailableState.html">UnavailableState</a></td>
+                            <td><em>Class UnavailableState
+Exception threw when the state&#039;s path is not available (not exist or not readable)</em></td>
+                        </tr>
+                                        </table>
+                                    </div>
+
+                <aside class="span4 detailsbar">
+                    <dl>
+                                                    <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">\States</div></dd>
+                        
+                                                                                    <dt>See also</dt>
+                                                                                        <dd><a href="http://teknoo.it/states"><div class="namespace-wrapper">Project website</div></a></dd>
+                                                    
+                    </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                                    <tr>
+                                <th>
+                                    category
+                                </th>
+                                <td>
+                                                                            <p>Exception</p>
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <th>
+                                    copyright
+                                </th>
+                                <td>
+                                                                            <p>Copyright (c) 2009-2014 Uni Alteri (<a href="http://agence.net.ua">http://agence.net.ua</a>)</p>
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <th>
+                                    license
+                                </th>
+                                <td>
+                                                                            <p><a href="http://teknoo.it/states/license/new-bsd">http://teknoo.it/states/license/new-bsd</a>     New BSD License</p>
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <th>
+                                    author
+                                </th>
+                                <td>
+                                                                            <p>Richard Déloge <a href="mailto:r.deloge@uni-alteri.com">r.deloge@uni-alteri.com</a></p>
+                                                                    </td>
+                            </tr>
+                                                    <tr>
+                                <th>
+                                    version
+                                </th>
+                                <td>
+                                                                            
+                                                                    </td>
+                            </tr>
+                                            </table>
+
+                </aside>
+            </div>
+
+            
+            
+        </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label"></h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Exception/UnavailableState.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/UniAlteri.html">\UniAlteri</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on May 31st, 2014 at 22:38.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

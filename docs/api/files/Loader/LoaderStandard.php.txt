@@ -87,6 +87,11 @@ class LoaderStandard implements LoaderInterface
         $this->_namespacesArray = new \ArrayObject();
         $this->_previousIncludedPathStack = new \SplStack();
         $this->_includePathManager = $includePathManager;
+
+        if (class_exists('\Phar', false)) {
+            //instructs phar to intercept fopen, file_get_contents, opendir, and all of the stat-related functions
+            \Phar::interceptFileFuncs();
+        }
     }
 
     /**

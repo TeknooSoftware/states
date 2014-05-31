@@ -138,8 +138,8 @@ interface ProxyInterface extends
 
     /**
      * To call a method of the Object.
-     * @param string $name
-     * @param array $arguments
+     * @param  string                         $name
+     * @param  array                          $arguments
      * @return mixed
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
