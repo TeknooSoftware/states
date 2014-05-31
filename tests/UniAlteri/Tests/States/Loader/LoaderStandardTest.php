@@ -50,11 +50,34 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     protected $_includePathManager = null;
 
     /**
+     * Where files to generate the phar file for test are located
+     * @var string
+     */
+    protected $_srcPharPath = null;
+
+    /**
+     * Where the phar file for test is located
+     * @var string
+     */
+    protected $_pharFileNamespace = null;
+
+    /**
      * Prepare environment before test
      */
     protected function setUp()
     {
         $this->_includePathManager = new Support\MockIncludePathManager();
+
+        //Build phar archives
+        $this->_srcPharPath = dirname(dirname(dirname(__FILE__))).'/Support/src/';
+        //namespace
+        $this->_pharFileNamespace = dirname(dirname(dirname(__FILE__))).'/Support/pharFileNamespace.phar';
+        if (file_exists($this->_pharFileNamespace)) {
+            @unlink($this->_pharFileNamespace);
+        }
+        $phar = new \Phar($this->_pharFileNamespace, 0, 'pharFileNamespace.phar');
+        $phar->buildFromDirectory($this->_srcPharPath.'/NamespaceLoader/');
+
         parent::setUp();
     }
 
@@ -63,6 +86,10 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
+        if (file_exists($this->_pharFileNamespace)) {
+            @unlink($this->_pharFileNamespace);
+        }
+
         parent::tearDown();
     }
 
@@ -535,6 +562,150 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertFalse($loader->loadClass('Support\\FileLoader\\Class3'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceRelativeWithoutFactoryFile()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceWithProxyRelativeWithoutFactoryFile()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceRelativeWithEmptyFactoryFile()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1bOharPhar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceWithProxyRelativeWithEmptyFactoryFile()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceRelative()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceWithProxyRelative()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceAbsoluteWithoutFactoryFile()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceAbsoluteWithProxyWithoutFactoryFile()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceAbsolute()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceAbsoluteWithProxy()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceAbsoluteWithFactoryException()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
+    public function testLoadClassInPharViaNameSpaceWithProxyAbsoluteWithFactoryException()
+    {
+        $loader = $this->_initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar'));
     }
 
     /**

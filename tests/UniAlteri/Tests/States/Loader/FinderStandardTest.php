@@ -105,7 +105,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      * @param  string                $pathString
      * @return Loader\FinderStandard
      */
-    protected function _initializeFind($statedClassName, $pathString)
+    protected function _initializeFinder($statedClassName, $pathString)
     {
         $virtualDIContainer = new Support\MockDIContainer();
         $this->_finder = new Loader\FinderStandard($statedClassName, $pathString);
@@ -146,7 +146,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testListStatePathNotFound()
     {
-        $this->_initializeFind('virtualStatedClass', '/NonExistentPath');
+        $this->_initializeFinder('virtualStatedClass', '/NonExistentPath');
         try {
             $this->_finder->listStates();
         } catch (Exception\UnavailablePath $e) {
@@ -161,7 +161,14 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testListStatePathNotFoundInPhar()
     {
-        $this->markTestSkipped(); //todo
+        $this->_initializeFinder('virtualStatedClass', 'phar://');
+        try {
+            $this->_finder->listStates();
+        } catch (Exception\UnavailablePath $e) {
+            return ;
+        } catch (\Exception $e) {}
+
+        $this->fail('Error, if the state path does not exist, the Finder must throw an exception `Exception\UnavailablePath`');
     }
 
     /**
@@ -170,7 +177,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     public function testListStatePathNotReadable()
     {
         chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
-        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        $this->_initializeFinder('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->listStates();
         } catch (Exception\UnReadablePath $e) {
@@ -181,19 +188,11 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
-     */
-    public function testListStatePathNotReadableInPhar()
-    {
-        $this->markTestSkipped();
-    }
-
-    /**
      * Test the behavior of the finder when the sub directory is browsed
      */
     public function testListStates()
     {
-        $statesNamesArray = $this->_initializeFind('Class1', $this->_statedClass1Path)->listStates();
+        $statesNamesArray = $this->_initializeFinder('Class1', $this->_statedClass1Path)->listStates();
         $this->assertInstanceOf('ArrayObject', $statesNamesArray);
         $states = $statesNamesArray->getArrayCopy();
         sort($states);
@@ -209,20 +208,12 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
-     */
-    public function testListStatesInPhar()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
-    /**
      * Test the behavior of the finder when the file of the loading state is not readable
      */
     public function testLoadStateNotFound()
     {
         chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
-        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        $this->_initializeFinder('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->loadState('State2');
         } catch (Exception\UnReadablePath $e) {
@@ -233,19 +224,11 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
-     */
-    public function testLoadStateNotFoundInPhar()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
-    /**
      * Test the behavior of the finder when the state class has not been loaded after including
      */
     public function testLoadStateWithoutClass()
     {
-        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        $this->_initializeFinder('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->loadState('State1');
         } catch (Exception\UnavailableState $e) {
@@ -256,30 +239,14 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
-     */
-    public function testLoadStateWithoutClassInPhar()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
-    /**
      * Test normal behavior of the finder to load state
      */
     public function testLoadState()
     {
-        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        $this->_initializeFinder('Class1', $this->_statedClass1Path);
         $return = $this->_finder->loadState('State4b');
         $this->assertTrue(class_exists('Class1\States\State4b', false));
         $this->assertEquals('Class1\\States\\State4b', $return);
-    }
-
-    /**
-     * Phar are not currently supported
-     */
-    public function testLoadStatePhar()
-    {
-        $this->markTestSkipped(); //todo
     }
 
     /**
@@ -288,7 +255,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     public function testBuildStateNotFound()
     {
         chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
-        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        $this->_initializeFinder('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->buildState('State2');
         } catch (Exception\UnReadablePath $e) {
@@ -299,19 +266,11 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
-     */
-    public function testBuildStateNotFoundInPhar()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
-    /**
      * Test the behavior of the finder when the state class has not been loaded after including
      */
     public function testBuildStateWithoutClass()
     {
-        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        $this->_initializeFinder('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->buildState('State1');
         } catch (Exception\UnavailableState $e) {
@@ -322,19 +281,11 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
-     */
-    public function testBuildStateWithoutClassInPhar()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
-    /**
      * Test the behavior of the finder when the building state does not implement the interface States\StateInterface
      */
     public function testBuildStateBadImplementation()
     {
-        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        $this->_initializeFinder('Class1', $this->_statedClass1Path);
         try {
             $this->_finder->buildState('State3');
         } catch (Exception\IllegalState $e) {
@@ -345,30 +296,14 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
-     */
-    public function testBuildStateBadImplementationInPhar()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
-    /**
      * Test normal behavior of the finder to load (if needed) and build state
      */
     public function testBuildState()
     {
-        $this->_initializeFind('Class1', $this->_statedClass1Path);
+        $this->_initializeFinder('Class1', $this->_statedClass1Path);
         $stateObject = $this->_finder->buildState('State4');
         $this->assertEquals('Class1\States\State4', get_class($stateObject));
         $this->assertInstanceOf('\UniAlteri\States\States\StateInterface', $stateObject);
-    }
-
-    /**
-     * Phar are not currently supported
-     */
-    public function testBuildStatePhar()
-    {
-        $this->markTestSkipped(); //todo
     }
 
     /**
@@ -377,17 +312,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadProxyDefault()
     {
-        $this->_initializeFind('Class2', $this->_statedClass2Path);
+        $this->_initializeFinder('Class2', $this->_statedClass2Path);
         $proxyClassName = $this->_finder->loadProxy();
         $this->assertEquals('Class2\\Class2', $proxyClassName);
-    }
-
-    /**
-     * Phar are not currently supported
-     */
-    public function testLoadProxyDefaultInPhar()
-    {
-        $this->markTestSkipped(); //todo
     }
 
     /**
@@ -396,7 +323,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildProxyDefault()
     {
-        $this->_initializeFind('Class2', $this->_statedClass2Path);
+        $this->_initializeFinder('Class2', $this->_statedClass2Path);
         $proxy = $this->_finder->buildProxy();
         $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
         $this->assertInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
@@ -404,19 +331,11 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
-     */
-    public function testBuildProxyDefaultInPhar()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
-    /**
      * Test the behavior of the finder when the building proxy has not been found into the proxy file
      */
     public function testLoadProxySpecificBadClass()
     {
-        $this->_initializeFind('Class3', $this->_statedClass3Path);
+        $this->_initializeFinder('Class3', $this->_statedClass3Path);
         try {
             $this->_finder->loadProxy();
         } catch (Exception\IllegalProxy $e) {
@@ -431,7 +350,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildProxySpecificBadClass()
     {
-        $this->_initializeFind('Class3', $this->_statedClass3Path);
+        $this->_initializeFinder('Class3', $this->_statedClass3Path);
         try {
             $this->_finder->buildProxy();
         } catch (Exception\IllegalProxy $e) {
@@ -442,19 +361,11 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
-     */
-    public function testBuildProxySpecificBadClassInPhar()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
-    /**
      * Test the behavior of the finder when the building proxy does not implement the interface Proxy\ProxyInterface
      */
     public function testBuildProxySpecificBadInterface()
     {
-        $this->_initializeFind('Class4', $this->_statedClass4Path);
+        $this->_initializeFinder('Class4', $this->_statedClass4Path);
         try {
             $this->_finder->buildProxy();
         } catch (Exception\IllegalProxy $e) {
@@ -465,30 +376,14 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
-     */
-    public function testBuildProxySpecificBadInterfaceInPhar()
-    {
-        $this->markTestSkipped(); //todo
-    }
-
-    /**
      * Test normal behavior of the finder load the developer defined proxy into the proxy file in the stated class path
      */
     public function testLoadProxySpecific()
     {
-        $this->_initializeFind('Class5', $this->_statedClass5Path);
+        $this->_initializeFinder('Class5', $this->_statedClass5Path);
         $this->_finder->setDIContainer(new Support\MockDIContainer());
         $proxyClassName = $this->_finder->loadProxy();
         $this->assertEquals('Class5\\Class5', $proxyClassName);
-    }
-
-    /**
-     * Phar are not currently supported
-     */
-    public function testLoadProxySpecificInPhar()
-    {
-        $this->markTestSkipped(); //todo
     }
 
     /**
@@ -497,19 +392,11 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildProxySpecific()
     {
-        $this->_initializeFind('Class5', $this->_statedClass5Path);
+        $this->_initializeFinder('Class5', $this->_statedClass5Path);
         $this->_finder->setDIContainer(new Support\MockDIContainer());
         $proxy = $this->_finder->buildProxy();
         $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
         $this->assertNotInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
         $this->assertInstanceOf('Class5\\Class5', $proxy);
-    }
-
-    /**
-     * Phar are not currently supported
-     */
-    public function testBuildProxySpecificInPhar()
-    {
-        $this->markTestSkipped(); //todo
     }
 }

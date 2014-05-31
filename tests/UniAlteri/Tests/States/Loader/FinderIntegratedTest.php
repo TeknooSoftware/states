@@ -46,7 +46,7 @@ class FinderIntegratedTest extends FinderStandardTest
      * @param  string                $pathString
      * @return Loader\FinderStandard
      */
-    protected function _initializeFind($statedClassName, $pathString)
+    protected function _initializeFinder($statedClassName, $pathString)
     {
         $virtualDIContainer = new Support\MockDIContainer();
         $this->_finder = new Loader\FinderIntegrated($statedClassName, $pathString);
