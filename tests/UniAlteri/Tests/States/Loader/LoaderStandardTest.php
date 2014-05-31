@@ -86,10 +86,6 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        if (file_exists($this->_pharFileNamespace)) {
-            @unlink($this->_pharFileNamespace);
-        }
-
         parent::tearDown();
     }
 
