@@ -64,9 +64,9 @@ The proxy must implement the interface `\UniAlteri\States\Proxy\ProxyInterface`.
 The library provides a default implementation with the trait `\UniAlteri\States\Proxy\TraitProxy`.
 `\UniAlteri\States\Proxy\Standard` is the default proxy class, implementing this interface and uses this trait.
 
-Proxy are not mandatory to create a stated class : if the factory cannot find the proxy, it will use the default proxy
+By default, Proxy are not mandatory to create a stated class : if the factory cannot find the proxy, it will use the default proxy
 `\UniAlteri\States\Proxy\Standard` and creates a class alias with the php method `class_alias` from the default proxy
-with the name of your stated class to simulate an implementation.
+with the name of your stated class to simulate an implementation. But in other implementation, the proxy may be mandatory.
 
 With the default proxy, all stated class cannot be instantiated with the operator `new`. You must use the method `build`
  of your factory. Unlike  with the proxy `\UniAlteri\States\Proxy\Integrated`, the operator `new` is available
@@ -111,6 +111,9 @@ The behavior of the startup factory (SF) behavior is as follows :
 
 *   The factory or the stated class is registered into the SF the current stated class with the factory instance to use.
 *   The proxy, in the constructor, call the SF and passes itself : the SF follows the call to the good factory in accordance with the stated class.
+
+**Warning : With the Integrated implementation, the proxy must be always defined in your stated class. You can inherits the
+implementation `\UniAlteri\States\Proxy\Integrated` without complete it.**
 
 ##Write your first stated class
 **All following instructions are illustrated in the demo available in the folder `demo` at the root of this library.**
@@ -161,9 +164,9 @@ directly extend the class `\UniAlteri\States\States\AbstractState`.
 Each stated class must have at least one state and this state must be called `StateDefault`. It is the default state enabled
 in the constructor of each stated object.
 
-###Optional, create the proxy
-The proxy is not mandatory to use a stated class. If there are no defined proxy, the embedded proxy `\UniAlteri\States\Proxy\Standard`
-or `\UniAlteri\States\Proxy\Integrated` will be used. (the proxy is defined by the factory).
+###Create the proxy
+The proxy is mandatory to use a stated class only if we use the Integrated implementation.
+If there are no defined proxy, the embedded proxy `\UniAlteri\States\Proxy\Standard`  will be used. (the proxy is defined by the factory).
 
 But if you need to add some features to your proxy, you can define it in the file `Proxy.php`. The proxy class must be called
  with the same name as the stated class and must implement the interface `\UniAlteri\States\Proxy\ProxyInterface`.

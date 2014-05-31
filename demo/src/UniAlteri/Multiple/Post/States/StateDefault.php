@@ -27,7 +27,7 @@ class StateDefault extends States\AbstractState
 {
     /**
      * Return the name of the post, or empty if no body has been defined
-     * @return string string
+     * @return string
      */
     public function getTitle()
     {
