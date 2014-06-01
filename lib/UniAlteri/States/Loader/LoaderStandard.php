@@ -90,6 +90,7 @@ class LoaderStandard implements LoaderInterface
 
         if (class_exists('\Phar', false)) {
             //instructs phar to intercept fopen, file_get_contents, opendir, and all of the stat-related functions
+            //Needed to support Phar with the loader
             \Phar::interceptFileFuncs();
         }
     }
