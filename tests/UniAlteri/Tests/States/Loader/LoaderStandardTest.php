@@ -72,7 +72,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->_srcPharPath = dirname(dirname(dirname(__FILE__))).'/Support/src/';
         //namespace
         $this->_pharFileNamespace = dirname(dirname(dirname(__FILE__))).'/Support/pharFileNamespace.phar';
-        if (!file_exists($this->_pharFileNamespace)) {
+
+        if (0 == ini_get('phar.readonly') && !file_exists($this->_pharFileNamespace)) {
             $phar = new \Phar($this->_pharFileNamespace, 0, 'pharFileNamespace.phar');
             $phar->buildFromDirectory($this->_srcPharPath.'/NamespaceLoader/');
         }
@@ -86,6 +87,15 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     protected function tearDown()
     {
         parent::tearDown();
+    }
+
+    /**
+     * Test if this suit test can run test on Phar
+     * @return boolean
+     */
+    protected function _pharTestsAreAvailable()
+    {
+        return (class_exists('\Phar', false) && file_exists($this->_pharFileNamespace));
     }
 
     /**
@@ -566,7 +576,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassInPharViaNameSpaceRelativeWithoutFactoryFile()
     {
-        if (!class_exists('\Phar', false)) {
+        if (!$this->_pharTestsAreAvailable()) {
             $this->markTestSkipped('Phar extension is not available');
             return;
         }
@@ -583,7 +593,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassInPharViaNameSpaceWithProxyRelativeWithoutFactoryFile()
     {
-        if (!class_exists('\Phar', false)) {
+        if (!$this->_pharTestsAreAvailable()) {
             $this->markTestSkipped('Phar extension is not available');
             return;
         }
