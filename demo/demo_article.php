@@ -74,14 +74,14 @@ print implode(', ', $article->listEnabledStates()).PHP_EOL.PHP_EOL;
 print 'title : '.$article->getTitle().PHP_EOL.PHP_EOL;
 print 'set some data'.PHP_EOL;
 
-//Method not available, because state Draft is not enable
+//Method not available, because state Draft is not enabled
 try {
     $article->setTitle('Hello world');
 } catch (\Exception $e) {
     echo $e->getMessage().PHP_EOL;
 }
 
-//Method not available, because state Draft is not enable
+//Method not available, because state Draft is not enabled
 try {
     $article->setBody('Lorem [b]Ipsum[/b]');
 } catch (\Exception $e) {
@@ -90,14 +90,14 @@ try {
 
 print 'title : '.$article->getTitle().PHP_EOL;
 
-//Method not available, because state Draft is not enable
+//Method not available, because state Draft is not enabled
 try {
     print 'body : '.$article->getBodySource().PHP_EOL;
 } catch (\Exception $e) {
     echo $e->getMessage().PHP_EOL;
 }
 
-//Method not available, because state Draft is not enable
+//Method not available, because state Draft is not enabled
 print PHP_EOL.'publishing...'.PHP_EOL;
 try {
     $article->publishing();

@@ -623,7 +623,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test proxy behavior when the required state in the call is not enable
+     * Test proxy behavior when the required state in the call is not enabled
      */
     public function testCallMethodOfDisabledState()
     {
@@ -639,7 +639,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) {
         }
 
-        $this->fail('Error, the proxy must throw an Exception\UnavailableState when the required state is not enable');
+        $this->fail('Error, the proxy must throw an Exception\UnavailableState when the required state is not enabled');
     }
 
     /**

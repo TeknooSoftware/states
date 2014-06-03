@@ -47,7 +47,7 @@ print 'admin'.PHP_EOL;
 $administrator = new UniAlteri\Multiple\User('admin', true, true);
 print 'get name : '.$administrator->getName().PHP_EOL.PHP_EOL;
 
-//Method not available, because state Moderator is not enable
+//Method not available, because state Moderator is not enabled
 try {
     print 'user is moderator '.$simpleUser->isModerator().PHP_EOL;
 } catch (\Exception $e) {
