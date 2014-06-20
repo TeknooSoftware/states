@@ -1,19 +1,34 @@
 {
-    "name": "uni-alteri/states",
-    "version": "0.9.2",
+    "name": "UniAlteri/states",
+    "version": "0.9.7-beta",
     "type": "library",
     "description": "Uni Alteri is a lib to allow developers to write states for their business object with PHP 5.4+",
-    "keywords": ["states"],
+    "keywords": ["states","class"],
+    "time": "2014-06-18",
     "homepage": "http://teknoo.it/states",
-    "license": "BSD",
+    "license": ["MIT","GPL-3.0+"],
     "authors": [
         {
             "name": "Richard Déloge",
-            "email": "r.deloge@uni-alteri.com"
+            "email": "r.deloge@uni-alteri.com",
+            "role":"Software architect, Developer"
         }
     ],
+    "support": {
+        "issues": "http://teknoo.it/states",
+        "source": "https://github.com/UniAlteri/states"
+    },
     "require":{
         "php": ">=5.4.0",
         "pimple/pimple": "2.0.*"
+    },
+    "require-dev": {
+        "phpunit/phpunit": ">=3.7.0"
+    },
+    "autoload": {
+        "psr-0": { "UniAlteri\\": ["lib/"] }
+    },
+    "archive": {
+        "exclude": ["!demo", "!vendor"]
     }
 }
