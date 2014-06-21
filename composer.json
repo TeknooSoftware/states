@@ -15,7 +15,7 @@
         }
     ],
     "support": {
-        "issues": "http://teknoo.it/states",
+        "issues": "https://github.com/UniAlteri/states/issues",
         "source": "https://github.com/UniAlteri/states"
     },
     "require":{
