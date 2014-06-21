@@ -26,9 +26,12 @@
         "phpunit/phpunit": ">=3.7.0"
     },
     "autoload": {
-        "psr-0": { "UniAlteri\\": ["lib/"] }
+        "psr-0": { "UniAlteri": ["lib/"] }
+    },
+    "autoload-dev": {
+        "psr-0": { "UniAlteri": ["tests/"] }
     },
     "archive": {
-        "exclude": ["!demo", "!vendor"]
+        "exclude": ["demo", "vendor", ".idea"]
     }
 }
