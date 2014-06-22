@@ -14,7 +14,8 @@
  * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @link        http://teknoo.it/states Project website
- * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
  */
@@ -28,7 +29,8 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPrivate')) {
      * @subpackage  Tests
      * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
-     * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+     * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testGetMethodDescriptionFromFunctionPrivate() {
@@ -46,7 +48,8 @@ if (!function_exists('testGetMethodDescriptionFromFunctionProtected')) {
      * @subpackage  Tests
      * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
-     * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+     * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testGetMethodDescriptionFromFunctionProtected() {
@@ -64,7 +67,8 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPublic')) {
      * @subpackage  Tests
      * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
-     * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+     * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      * @return \ReflectionMethod     *
      */
@@ -83,7 +87,8 @@ if (!trait_exists('testGetMethodDescriptionTrait')) {
      * @subpackage  Tests
      * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
-     * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+     * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     trait testGetMethodDescriptionTrait{
@@ -128,7 +133,8 @@ if (!class_exists('testGetMethodDescriptionFromOtherObject')) {
      * @subpackage  Tests
      * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
-     * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+     * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     class testGetMethodDescriptionFromOtherObject{

@@ -14,7 +14,8 @@
  * @subpackage  Loader
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @link        http://teknoo.it/states Project website
- * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
  */
@@ -33,7 +34,8 @@ use \UniAlteri\States\Factory;
  * @subpackage  Loader
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @link        http://teknoo.it/states Project website
- * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @api
  */
@@ -90,6 +92,7 @@ class LoaderStandard implements LoaderInterface
 
         if (class_exists('\Phar', false)) {
             //instructs phar to intercept fopen, file_get_contents, opendir, and all of the stat-related functions
+            //Needed to support Phar with the loader
             \Phar::interceptFileFuncs();
         }
     }

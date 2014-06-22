@@ -14,7 +14,8 @@
  * @subpackage  Demo
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @link        http://teknoo.it/states Project website
- * @license     http://teknoo.it/states/license/new-bsd     New BSD License
+ * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
  */
@@ -23,6 +24,18 @@ namespace demo\UniAlteri\Article\States;
 
 use UniAlteri\States\States;
 
+/**
+ * State Published
+ * State for a published article
+ *
+ * @package     States
+ * @subpackage  Demo
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ */
 class Published implements States\StateInterface
 {
     use States\TraitState;
