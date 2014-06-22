@@ -52,16 +52,32 @@ use UniAlteri\Tests\Support;
  */
 class BootstrapTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var \UniAlteri\States\Loader\LoaderInterface
+     */
+    protected $_loader = null;
+
+    protected function tearDown()
+    {
+        if ($this->_loader instanceof \UniAlteri\States\Loader\LoaderInterface) {
+            spl_autoload_unregister(
+                array($this->_loader, 'loadClass')
+            );
+        }
+
+        parent::tearDown();
+    }
+
     public function testLoaderInitialisation()
     {
         //Call the bootstrap, it returns the loader
-        $loader = include 'UniAlteri/States/bootstrap.php';
+        $this->_loader = include 'UniAlteri/States/bootstrap.php';
 
         //Check if the loader implements the good interface
-        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $loader);
+        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->_loader);
 
         //Check if the loader is initialized with a di container
-        $container = $loader->getDIContainer();
+        $container = $this->_loader->getDIContainer();
         $this->assertInstanceOf('\\UniAlteri\\States\\DI\\ContainerInterface', $container);
 
         //Check if required services are present into the di container
