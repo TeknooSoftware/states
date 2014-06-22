@@ -41,9 +41,9 @@ class Administrator extends States\AbstractState
 {
     /**
      * Transform an user has moderator
-     * @param \demo\UniAlteri\Multiple\User $user
+     * @param \UniAlteri\Tests\Support\Multiple\User $user
      */
-    public function setModerator(\demo\UniAlteri\Multiple\User $user)
+    public function setModerator(\UniAlteri\Tests\Support\Multiple\User $user)
     {
         $user->_setModerator(true);
     }

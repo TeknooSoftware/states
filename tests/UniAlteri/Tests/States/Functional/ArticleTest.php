@@ -39,11 +39,13 @@ use \UniAlteri\States\Loader;
 class ArticleTest extends \PHPUnit_Framework_TestCase
 {
     /**
+     * Loader of the states library
      * @var \UniAlteri\States\Loader\LoaderInterface
      */
     protected $_loader = null;
 
     /**
+     * Load the library State and retrieve its default loader from its bootstrap
      * @return \UniAlteri\States\Loader\LoaderInterface
      */
     protected function _getLoader()
@@ -55,6 +57,9 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         return $this->_loader;
     }
 
+    /**
+     * Unload the loader from SPL Autoload to not interfere with others tests
+     */
     protected function tearDown()
     {
         if ($this->_loader instanceof Loader\LoaderInterface) {
@@ -66,7 +71,6 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         parent::tearDown();
     }
 
-
     /**
      * Functional test on article
      */
@@ -76,29 +80,29 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
             || define('DS', DIRECTORY_SEPARATOR);
 
         //Register demo namespace
-        $this->_getLoader()->registerNamespace('\\UniAlteri\Tests\Support\Article', UA_STATES_TEST_PATH.DS.'Support');
+        $this->_getLoader()->registerNamespace('\\UniAlteri\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
 
-        $article = new UniAlteri\Tests\Support\Article();
+        $article = new \UniAlteri\Tests\Support\Article();
 
         //It is a new article, not published, the constructor load the state 'Draft'
-        $article->listEnabledStates();
+        $this->assertEquals(array('StateDefault', 'Draft'), $article->listEnabledStates());
         //Empty article, getTitle return nothing
-        $article->getTitle();
+        $this->assertEquals('', $article->getTitle());
         //Call method of state "Draft" to update the article
         $article->setTitle('Hello world');
         $article->setBody('Lorem [b]Ipsum[/b]');
         //Now article is fulled
-        $article->getTitle();
-        $article->getBodySource();
+        $this->assertEquals('Hello world', $article->getTitle());
+        $this->assertEquals('Lorem [b]Ipsum[/b]', $article->getBodySource());
         //Publishing method available into Draft state to switch to Published state
         $article->publishing();
-        $article->listEnabledStates();
-        $article->getTitle();
+        $this->assertEquals(array('StateDefault', 'Published'), $article->listEnabledStates());
+        $this->assertEquals('Hello world', $article->getTitle());
         //Method available into Published state
-        $article->getFormattedBody();
+        $this->assertEquals('Lorem <strong>Ipsum</strong>', $article->getFormattedBody());
 
         //Open a published article
-        $article = new UniAlteri\Tests\Support\Article(
+        $article = new \UniAlteri\Tests\Support\Article(
             array(
                 'is_published'  => true,
                 'title'         => 'title 2',
@@ -107,8 +111,8 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         );
 
         //Already published, so constructor enable state "Default" and "Published"
-        $article->listEnabledStates();
-        $article->getTitle();
+        $this->assertEquals(array('StateDefault', 'Published'), $article->listEnabledStates());
+        $this->assertEquals('title 2', $article->getTitle());
 
         //Method not available, because state Draft is not enabled
         $fail = false;
@@ -119,7 +123,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception');
+            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
         //Method not available, because state Draft is not enabled
@@ -131,10 +135,10 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception');
+            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
-        $article->getTitle();
+        $this->assertEquals('title 2', $article->getTitle());
 
         //Method not available, because state Draft is not enabled
         $fail = false;
@@ -145,7 +149,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception');
+            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
         //Method not available, because state Draft is not enabled
@@ -157,12 +161,12 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception');
+            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
-        $article->listEnabledStates();
-        $article->getTitle();
-        $article->getFormattedBody();
+        $this->assertEquals(array('StateDefault', 'Published'), $article->listEnabledStates());
+        $this->assertEquals('title 2', $article->getTitle());
+        $this->assertEquals('body 2', $article->getFormattedBody());
 
         $fail = false;
         try {
@@ -172,7 +176,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception');
+            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
     }
 }

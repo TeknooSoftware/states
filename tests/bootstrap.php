@@ -27,7 +27,7 @@ defined('PHPUNIT')
     || define('PHPUNIT', true);
 
 defined('UA_STATES_TEST_PATH')
-    || define('UA_STATES_TEST_PATH', __DIR__.DIRECTORY_SEPARATOR.'Tests');
+    || define('UA_STATES_TEST_PATH', __DIR__.DIRECTORY_SEPARATOR.'UniAlteri'.DIRECTORY_SEPARATOR.'Tests');
 
 ini_set('memory_limit', '128M');
 
