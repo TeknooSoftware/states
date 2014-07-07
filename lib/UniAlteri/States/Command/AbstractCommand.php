@@ -20,11 +20,15 @@
  * @version     0.9.2
  */
 
-namespace UniAlteri\States\Command\Writer;
+namespace UniAlteri\States\Command;
+
+use spec\Gaufrette\Adapter;
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputDefinition;
 
 /**
- * Class Writer
- * Abstract class Writer to create, update or delete a file
+ * Class ClassCreate
+ * Command to create a new empty stated class
  *
  * @package     States
  * @subpackage  Command
@@ -34,6 +38,20 @@ namespace UniAlteri\States\Command\Writer;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-abstract class Writer
+class AbstractCommand extends Command
 {
+    /**
+     * @var Adapter
+     */
+    protected $_adapter;
+
+    /**
+     * @param string $name
+     * @param null $adapter
+     */
+    public function __construct($name = null, $adapter = null)
+    {
+        $this->_adapter = $adapter;
+        parent::__construct($name);
+    }
 }

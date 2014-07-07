@@ -41,8 +41,8 @@ class State extends AbstractParser
 {
     /**
      * List all defined states for this class
-     * @return \string[]
-     * @throws Command\Exception\UnavailablePath when the path is not available
+     * @return \string[]|\ArrayObject
+     * @throws Exception\UnavailablePath when the path is not available
      */
     public function listStates()
     {
@@ -58,7 +58,7 @@ class State extends AbstractParser
      * Test if the state implements the good interface defined in the library States
      * @param string $stateName to test
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isValidState($stateName)
     {
@@ -70,7 +70,7 @@ class State extends AbstractParser
      * Test if the state is a subclass of the standard state implemented in the library States
      * @param string $stateName to test
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isStandardState($stateName)
     {
@@ -83,7 +83,7 @@ class State extends AbstractParser
      * @param string $stateName to test
      * \UniAlteri\States\States\TraitStates
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function useTraitState($stateName)
     {

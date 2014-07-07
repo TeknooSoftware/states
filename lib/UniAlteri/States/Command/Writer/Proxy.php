@@ -34,6 +34,15 @@ namespace UniAlteri\States\Command\Writer;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
- class Proxy extends Writer
+ class Proxy extends AbstractWriter
  {
+     public function createStandardProxy($className, $namespace)
+     {
+
+     }
+
+     public function createIntegratedProxy($className, $namespace)
+     {
+
+     }
  }

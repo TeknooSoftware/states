@@ -27,10 +27,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use UniAlteri\States\Command\Parser\StatedClass;
 
 /**
- * Class ClassCreate
- * Command to create a new empty stated class
+ * Class ClassInformation
+ * Command to list class informations
  *
  * @package     States
  * @subpackage  Command
@@ -40,25 +41,20 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
- class ClassCreate extends AbstractCommand
+ class ClassInformation extends AbstractCommand
  {
      /**
       * Configures the current command.
       */
      protected function configure()
      {
-         $this->setName('class:create')
-            ->setDescription('Create a new empty stated class')
-            ->addArgument(
-                'name',
-                 InputArgument::REQUIRED,
-                 'Full qualified name of the new stated class'
-             )
-            ->addOption(
-                'path',
+         $this->setName('class:info')
+             ->setDescription('Create a new empty stated class')
+             ->addOption(
+                 'path',
                  'p',
                  InputOption::VALUE_NONE,
-                 'Path where localise the new stated class'
+                 'Path of the stated class'
              );
      }
 
@@ -80,5 +76,19 @@ use Symfony\Component\Console\Output\OutputInterface;
       */
      protected function execute(InputInterface $input, OutputInterface $output)
      {
+         $parser = new StatedClass($this->_adapter, $input->getOption('path'));
+         $output->write('Proxy defined: '.$parser->hasProxy(), true);
+
+         $proxyParser = $parser->getProxyParser();
+         $output->write('Proxy is valid: '.$proxyParser->isValidProxy(), true);
+         $output->write('Proxy is standard: '.$proxyParser->isStandardProxy(), true);
+         $output->write('Proxy is integrated: '.$proxyParser->isIntegratedProxy(), true);
+         $output->write('Factory defined: '.$parser->hasFactory(), true);
+
+         $factoryParser = $parser->getFactoryParser();
+         $output->write('Factory is valid: '.$factoryParser->isValidFactory(), true);
+         $output->write('Factory is standard: '.$factoryParser->isStandardFactory(), true);
+         $output->write('Factory is integrated: '.$factoryParser->isIntegratedFactory(), true);
+         $output->write('States: '.implode(', ', $parser->getStatesParser()->listStates()->getArrayCopy()), true);
      }
  }

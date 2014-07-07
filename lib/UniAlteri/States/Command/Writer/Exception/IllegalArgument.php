@@ -11,7 +11,7 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @package     States
- * @subpackage  Command
+ * @category    Exception
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/mit         MIT License
@@ -20,29 +20,23 @@
  * @version     0.9.2
  */
 
-namespace UniAlteri\States\Command\Writer;
+namespace UniAlteri\States\Command\Writer\Exception;
+
+use \UniAlteri\States\Exception;
 
 /**
- * Class Factory
- * Writer to create or update a factory
+ * Class IllegalArgument
+ * Exception threw when the argument's value has not respected some business rules
  *
  * @package     States
  * @subpackage  Command
+ * @category    Exception
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
- class Factory extends AbstractWriter
- {
-     public function createStandardFactory($className, $namespace)
-     {
-
-     }
-
-     public function createIntegratedFactory($className, $namespace)
-     {
-
-     }
- }
+class IllegalArgument extends Exception\IllegalArgument
+{
+}

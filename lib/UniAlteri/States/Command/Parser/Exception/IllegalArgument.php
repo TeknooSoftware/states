@@ -20,13 +20,13 @@
  * @version     0.9.2
  */
 
-namespace UniAlteri\States\Command\Exception;
+namespace UniAlteri\States\Command\Parser\Exception;
 
-use \UniAlteri\States\Loader\Exception;
+use \UniAlteri\States\Exception;
 
 /**
- * Class UnavailablePath
- * Exception threw when the path is not available (not exist or not readable)
+ * Class IllegalArgument
+ * Exception threw when the argument's value has not respected some business rules
  *
  * @package     States
  * @subpackage  Command
@@ -37,6 +37,6 @@ use \UniAlteri\States\Loader\Exception;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class UnavailablePath extends Exception\UnavailablePath
+class IllegalArgument extends Exception\IllegalArgument
 {
 }

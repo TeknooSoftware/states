@@ -22,13 +22,17 @@
 
 namespace UniAlteri\States\Command;
 
+use Gaufrette\Adapter\Local;
 use Symfony\Component\Console\Application;
 
+require_once dirname(dirname(dirname(dirname(__DIR__)))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
+
+$localAdapter = new Local(__DIR__);
+
 $application = new Application();
-$application->add(new ClassCreate());
-$application->add(new ClassMigrateIntegrated());
-$application->add(new ClassMigrateStandard());
-$application->add(new StateAdd());
-$application->add(new StateDelete());
-$application->add(new StateList());
+$application->add(new ClassCreate(null, $localAdapter));
+$application->add(new ClassInformation(null, $localAdapter));
+$application->add(new StateAdd(null, $localAdapter));
+$application->add(new StateDelete(null, $localAdapter));
+$application->add(new StateList(null, $localAdapter));
 $application->run();

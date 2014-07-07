@@ -34,6 +34,15 @@ namespace UniAlteri\States\Command\Writer;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
- class State extends Writer
+ class State extends AbstractWriter
  {
+     public function createState($stateName, $className)
+     {
+
+     }
+
+     public function deleteState($stateName)
+     {
+
+     }
  }

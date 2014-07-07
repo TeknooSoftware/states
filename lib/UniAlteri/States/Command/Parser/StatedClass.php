@@ -81,7 +81,7 @@ class StatedClass extends AbstractParser
      */
     public function getFactoryParser()
     {
-        return new Factory($this->_statedClassPath);
+        return new Factory($this->_adapter, $this->_statedClassPath);
     }
 
     /**
@@ -90,7 +90,7 @@ class StatedClass extends AbstractParser
      */
     public function getProxyParser()
     {
-        return new Proxy($this->_statedClassPath);
+        return new Proxy($this->_adapter, $this->_statedClassPath);
     }
 
     /**
@@ -99,6 +99,6 @@ class StatedClass extends AbstractParser
      */
     public function getStatesParser()
     {
-        return new State($this->_statedClassPath);
+        return new State($this->_adapter, $this->_statedClassPath);
     }
 }

@@ -26,6 +26,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use UniAlteri\States\Command\Parser\StatedClass;
 
 /**
  * Class StateList
@@ -39,7 +40,7 @@ use Symfony\Component\Console\Output\OutputInterface;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateList extends Command
+class StateList extends AbstractCommand
 {
     /**
      * Configures the current command.
@@ -74,5 +75,8 @@ class StateList extends Command
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $parser = new StatedClass($this->_adapter, $input->getOption('path'));
+        $stateParser = $parser->getStatesParser();
+        $output->write(implode(PHP_EOL, $stateParser->listStates()), true);
     }
 }
