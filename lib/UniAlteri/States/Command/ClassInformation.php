@@ -50,10 +50,9 @@ use UniAlteri\States\Command\Parser\StatedClass;
      {
          $this->setName('class:info')
              ->setDescription('Create a new empty stated class')
-             ->addOption(
+             ->addArgument(
                  'path',
-                 'p',
-                 InputOption::VALUE_NONE,
+                 InputArgument::REQUIRED,
                  'Path of the stated class'
              );
      }
@@ -76,19 +75,27 @@ use UniAlteri\States\Command\Parser\StatedClass;
       */
      protected function execute(InputInterface $input, OutputInterface $output)
      {
-         $parser = new StatedClass($this->_adapter, $input->getOption('path'));
+         $parser = new StatedClass($this->_adapter, $input->getArgument('path'));
          $output->write('Proxy defined: '.$parser->hasProxy(), true);
 
+         $boolToStr = function ($value) {
+             if (!empty($value)) {
+                 return 'true';
+             } else {
+                 return 'false';
+             }
+         };
+
          $proxyParser = $parser->getProxyParser();
-         $output->write('Proxy is valid: '.$proxyParser->isValidProxy(), true);
-         $output->write('Proxy is standard: '.$proxyParser->isStandardProxy(), true);
-         $output->write('Proxy is integrated: '.$proxyParser->isIntegratedProxy(), true);
-         $output->write('Factory defined: '.$parser->hasFactory(), true);
+         $output->write('Proxy is valid: '.$boolToStr($proxyParser->isValidProxy()), true);
+         $output->write('Proxy is standard: '.$boolToStr($proxyParser->isStandardProxy()), true);
+         $output->write('Proxy is integrated: '.$boolToStr($proxyParser->isIntegratedProxy()), true);
+         $output->write('Factory defined: '.$boolToStr($parser->hasFactory()), true);
 
          $factoryParser = $parser->getFactoryParser();
-         $output->write('Factory is valid: '.$factoryParser->isValidFactory(), true);
-         $output->write('Factory is standard: '.$factoryParser->isStandardFactory(), true);
-         $output->write('Factory is integrated: '.$factoryParser->isIntegratedFactory(), true);
+         $output->write('Factory is valid: '.$boolToStr($factoryParser->isValidFactory()), true);
+         $output->write('Factory is standard: '.$boolToStr($factoryParser->isStandardFactory()), true);
+         $output->write('Factory is integrated: '.$boolToStr($factoryParser->isIntegratedFactory()), true);
          $output->write('States: '.implode(', ', $parser->getStatesParser()->listStates()->getArrayCopy()), true);
      }
  }

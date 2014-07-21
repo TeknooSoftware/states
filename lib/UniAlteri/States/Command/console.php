@@ -23,16 +23,19 @@
 namespace UniAlteri\States\Command;
 
 use Gaufrette\Adapter\Local;
+use Gaufrette\Adapter\SafeLocal;
 use Symfony\Component\Console\Application;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 
-$localAdapter = new Local(__DIR__);
+$localAdapterFactory = function ($directory) {
+    return new Local(realpath($directory));
+};
 
 $application = new Application();
-$application->add(new ClassCreate(null, $localAdapter));
-$application->add(new ClassInformation(null, $localAdapter));
-$application->add(new StateAdd(null, $localAdapter));
-$application->add(new StateDelete(null, $localAdapter));
-$application->add(new StateList(null, $localAdapter));
+$application->add(new ClassCreate(null, $localAdapterFactory));
+$application->add(new ClassInformation(null, $localAdapterFactory));
+$application->add(new StateAdd(null, $localAdapterFactory));
+$application->add(new StateDelete(null, $localAdapterFactory));
+$application->add(new StateList(null, $localAdapterFactory));
 $application->run();

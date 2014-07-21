@@ -42,9 +42,9 @@ abstract class AbstractWriter
 {
     /**
      * Adapter to operate with file system
-     * @var Adapter
+     * @var callable
      */
-    protected $_adapter;
+    protected $_adapterFactory;
 
     /**
      * Filesystem object to manipulate file
@@ -67,13 +67,14 @@ abstract class AbstractWriter
     protected function _getFileSystem()
     {
         if (!$this->_fileSystem instanceof Filesystem) {
-            if (!$this->_adapter instanceof Adapter) {
-                throw new Exception\IllegalArgument('Error, the adapter is not valid');
+            if (!is_callable($this->_adapterFactory)) {
+                throw new Exception\IllegalArgument('Error, the adapter factory is not valid');
             }
 
-            $this->_fileSystem = new Filesystem($this->_adapter);
+            $adapter = call_user_func_array($this->_adapterFactory, array($this->_statedClassPath));
+            $this->_fileSystem = new Filesystem($adapter);
 
-            if ($this->_adapter->isDirectory($this->_statedClassPath)) {
+            if (!$adapter->isDirectory('/')) {
                 throw new Exception\UnavailablePath('Error, the path '.$this->_statedClassPath.' is not available');
             }
         }
@@ -83,12 +84,12 @@ abstract class AbstractWriter
 
     /**
      * Path of the current stated class to operate
-     * @param Adapter $adapter
+     * @param callable $adapterFactory
      * @param string $path
      */
-    public function __construct(Adapter $adapter, $path)
+    public function __construct($adapterFactory, $path)
     {
-        $this->_adapter = $adapter;
+        $this->_adapterFactory = $adapterFactory;
         $this->_statedClassPath = $path;
     }
 

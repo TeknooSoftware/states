@@ -58,7 +58,9 @@ class Proxy extends AbstractParser
     public function isStandardProxy()
     {
         return $this->loadFile(FinderInterface::PROXY_FILE_NAME)
-            ->isSubclassOf('\UniAlteri\States\Proxy\Standard');
+            ->isSubclassOf('\UniAlteri\States\Proxy\Standard')
+            && !$this->loadFile(FinderInterface::PROXY_FILE_NAME)
+            ->isSubclassOf('\UniAlteri\States\Proxy\Integrated');
     }
 
     /**

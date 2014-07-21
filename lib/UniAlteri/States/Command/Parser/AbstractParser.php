@@ -41,10 +41,10 @@ use \UniAlteri\States\Command\Parser\Exception;
 abstract class AbstractParser
 {
     /**
-     * Adapter to operate with file system
-     * @var Adapter
+     * Adapter factory to operate with file system
+     * @var callable
      */
-    protected $_adapter;
+    protected $_adapterFactory;
 
     /**
      * Filesystem object to manipulate file
@@ -67,13 +67,14 @@ abstract class AbstractParser
     protected function _getFileSystem()
     {
         if (!$this->_fileSystem instanceof Filesystem) {
-            if (!$this->_adapter instanceof Adapter) {
-                throw new Exception\IllegalArgument('Error, the adapter is not valid');
+            if (!is_callable($this->_adapterFactory)) {
+                throw new Exception\IllegalArgument('Error, the adapter factory is not valid');
             }
 
-            $this->_fileSystem = new Filesystem($this->_adapter);
+            $adapter = call_user_func_array($this->_adapterFactory, array($this->_statedClassPath));
+            $this->_fileSystem = new Filesystem($adapter);
 
-            if ($this->_adapter->isDirectory($this->_statedClassPath)) {
+            if (!$adapter->isDirectory('/')) {
                 throw new Exception\UnavailablePath('Error, the path '.$this->_statedClassPath.' is not available');
             }
         }
@@ -83,12 +84,12 @@ abstract class AbstractParser
 
     /**
      * Path of the current stated class to operate
-     * @param Adapter $adapter
+     * @param callable $adapterFactory
      * @param string $path
      */
-    public function __construct(Adapter $adapter, $path)
+    public function __construct($adapterFactory, $path)
     {
-        $this->_adapter = $adapter;
+        $this->_adapterFactory = $adapterFactory;
         $this->_statedClassPath = $path;
     }
 
@@ -126,14 +127,13 @@ abstract class AbstractParser
      */
     public function loadFile($file)
     {
-        $path = $this->_statedClassPath.DIRECTORY_SEPARATOR.$file;
-        if (!$this->_getFileSystem()->has($path)) {
+        if (!$this->_getFileSystem()->has($file)) {
             throw new Exception\UnReadablePath('Error, the file '.$file.' is not readable');
         }
 
         //Extract class name
-        $className = $this->_extractClassWithNamespace($path);
-        include_once($this->_getFileSystem());
+        $className = $this->_extractClassWithNamespace($file);
+        include_once($this->_statedClassPath.DIRECTORY_SEPARATOR.$file);
 
         if (!class_exists($className, false)) {
             throw new Exception\ClassNotFound('The class '.$className.' was not found');
@@ -168,12 +168,12 @@ abstract class AbstractParser
             } else if ($nameSpaceTokenDetected) {
                 if (T_NS_SEPARATOR == $token[0]) {
                     $nameSpace .= '\\';
-                } elseif (T_STRING) {
-                    $nameSpace .= $token[0];
-                } else {
+                } elseif (T_STRING == $token[0] || T_NS_SEPARATOR == $token[0]) {
+                    $nameSpace .= $token[1];
+                } elseif ('' != trim($token[1])) {
                     $nameSpaceTokenDetected = false;
                 }
-                break;
+                continue;
             }
 
             if (T_CLASS == $token[0]) {
@@ -198,10 +198,10 @@ abstract class AbstractParser
     public function getFile($file)
     {
         $fileSystem = $this->_getFileSystem();
-        if (!$fileSystem->has($this->_statedClassPath.DIRECTORY_SEPARATOR.$file)) {
+        if (!$fileSystem->has($file)) {
             throw new Exception\UnReadablePath('Error, the file '.$file.' is not readable');
         }
 
-        return $fileSystem->read($this->_statedClassPath.DIRECTORY_SEPARATOR.$file);
+        return $fileSystem->read($file);
     }
 }
