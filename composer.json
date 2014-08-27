@@ -4,7 +4,7 @@
     "type": "library",
     "description": "Uni Alteri is a lib to allow developers to write states for their business object with PHP 5.4+",
     "keywords": ["states","class"],
-    "time": "2014-06-18",
+    "time": "2014-08-27",
     "homepage": "http://teknoo.it/states",
     "license": ["MIT","GPL-3.0+"],
     "authors": [
