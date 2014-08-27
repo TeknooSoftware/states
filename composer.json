@@ -1,6 +1,6 @@
 {
     "name": "UniAlteri/states",
-    "version": "0.9.7-beta",
+    "version": "0.9.9-rc",
     "type": "library",
     "description": "Uni Alteri is a lib to allow developers to write states for their business object with PHP 5.4+",
     "keywords": ["states","class"],
