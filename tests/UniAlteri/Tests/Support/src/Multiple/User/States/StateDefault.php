@@ -10,7 +10,6 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @package     States
  * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
  * @link        http://teknoo.it/states Project website
