@@ -17,7 +17,7 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     0.9.2
+ * @version     0.9.9
  *
  * Mock factory file to test loader behavior when the factory class is missing but its initialize method
  * throws an exception

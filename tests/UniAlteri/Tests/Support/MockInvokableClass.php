@@ -17,7 +17,7 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     0.9.2
+ * @version     0.9.9
  */
 
 namespace UniAlteri\Tests\Support;
@@ -33,7 +33,7 @@ namespace UniAlteri\Tests\Support;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     0.9.2
+ * @version     0.9.9
  */
 class MockInvokableClass{
     /**
