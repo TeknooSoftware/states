@@ -20,7 +20,7 @@ A stated class is written following these instructions :
 *   one class by states, into separated file.
 *   the factory, defined in file Factory.php in the root folder of the stated class.
 *   the factory must implement the interface `\UniAlteri\States\Factory\FactoryInterface`
-*   optionally a proxy, defined in the file Proxy.php in the root folder of the stated class, used by all objects of your stated class as "$this".
+*   optionally a proxy, defined in the file <StatedClass Name>.php in the root folder of the stated class, used by all objects of your stated class as "$this".
 
 These elements will be detailed in the following chapters.
 
@@ -58,7 +58,7 @@ stated object, aka the proxy and its states.
 Your proxy can have its own methods and attributes, like all another standard PHP classes, but these methods and attributes
 will be not impacted by the states management and will be always available (according visibility of these methods and attributes).
 
-Proxy must be called as the stated class's name and must be written into the file `Proxy.php`.
+Proxy must be called as the stated class's name and must be written into the file `<StatedClassName>.php`.
 The proxy must implement the interface `\UniAlteri\States\Proxy\ProxyInterface`.
 
 The library provides a default implementation with the trait `\UniAlteri\States\Proxy\TraitProxy`.
@@ -169,7 +169,7 @@ in the constructor of each stated object.
 The proxy is mandatory to use a stated class only if we use the Integrated implementation.
 If there are no defined proxy, the embedded proxy `\UniAlteri\States\Proxy\Standard`  will be used. (the proxy is defined by the factory).
 
-But if you need to add some features to your proxy, you can define it in the file `Proxy.php`. The proxy class must be called
+But if you need to add some features to your proxy, you can define it in the file `<StatedClassName>.php`. The proxy class must be called
  with the same name as the stated class and must implement the interface `\UniAlteri\States\Proxy\ProxyInterface`.
 
 To help you, you can use the trait `\UniAlteri\States\Proxy\TraitProxy` or directly extend one of these implementations :

@@ -54,7 +54,7 @@ interface FinderInterface
     /**
      * PHP File of Proxy into each stated class
      */
-    const PROXY_FILE_NAME = 'Proxy.php';
+    const PROXY_FILE_EXTENSION = '.php';
 
     /**
      * Initialize finder
