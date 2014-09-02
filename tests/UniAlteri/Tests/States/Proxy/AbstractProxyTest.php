@@ -630,17 +630,17 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy();
         $this->_proxy->enableState('state2');
-        $this->_state1->allowMethod();
-        $this->_state2->allowMethod();
+        $this->_state1->disallowMethod();
+        $this->_state2->disallowMethod();
 
         try {
             $this->_proxy->testOfState3();
-        } catch (Exception\UnavailableState $e) {
+        } catch (Exception\MethodNotImplemented $e) {
             return;
         } catch (\Exception $e) {
         }
 
-        $this->fail('Error, the proxy must throw an Exception\UnavailableState when the required state is not enabled');
+        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented when the required state is not enabled');
     }
 
     /**
@@ -661,6 +661,26 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->_state3->methodWasCalled());
         $this->assertEquals(array('bar', 'foo'), $this->_state2->getCalledArguments());
         $this->assertEquals('test', $this->_state2->getMethodNameCalled());
+    }
+
+    /**
+     * Test proxy behavior in a normal calling when the required state is defined in the call
+     */
+    public function testCallMethodOfWithNoState()
+    {
+        $this->_initializeProxy();
+        $this->_proxy->enableState('state2');
+        $this->_proxy->enableState('state3');
+        $this->_state1->disallowMethod();
+        $this->_state2->disallowMethod();
+        $this->_state3->allowMethod();
+        $this->_proxy->testOfHelloWorld('bar', 'foo');
+
+        $this->assertFalse($this->_state1->methodWasCalled());
+        $this->assertFalse($this->_state2->methodWasCalled());
+        $this->assertTrue($this->_state3->methodWasCalled());
+        $this->assertEquals(array('bar', 'foo'), $this->_state3->getCalledArguments());
+        $this->assertEquals('testOfHelloWorld', $this->_state3->getMethodNameCalled());
     }
 
     /**
