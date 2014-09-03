@@ -44,11 +44,7 @@ use \UniAlteri\States\DI;
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 interface ProxyInterface extends
-    States\ObjectInterface,
-    \Serializable,
-    \ArrayAccess,
-    \SeekableIterator,
-    \Countable
+    States\ObjectInterface
 {
     /**
      * Name of the default state to load automatically in the construction

@@ -71,6 +71,7 @@ $diContainer->registerInstance(Loader\LoaderInterface::DI_LOADER_INSTANCE, $load
 //Register autoload function in the spl autoloader stack
 spl_autoload_register(
     array($loader, 'loadClass'),
+    true,
     true
 );
 
