@@ -19,14 +19,19 @@
  * @version     0.9.9
  */
 
-namespace UniAlteri\Tests\States\Proxy;
+namespace UniAlteri\Tests\Support;
 
 use \UniAlteri\States\Proxy;
-use \UniAlteri\Tests\Support;
 
 /**
- * Class StandardTest
- * Implementation of AbstractProxyTest to test the proxy Proxy\Standard
+ * Class StandardProxy
+ * To build an specific instance of the class Proxy\Standard to test this default class.
+ * By default, the class Proxy\Integrated uses '\UniAlteri\States\Factory\StandardStartupFactory' as startup factory.
+ * But, in the test, we will use '\UniAlteri\Tests\Support\MockStartupFactory' to unit testing only the proxy.
+ *
+ * This extends support implements also all supported standard interface to tests implementation provided by the trait Proxy.
+ * To avoid errors in the usage of this lib, these interfaces are not defined with released proxies.
+ * You must implement these interface, according to your needs, in your derived proxies like in this class.
  *
  * @package     States
  * @subpackage  Tests
@@ -35,17 +40,12 @@ use \UniAlteri\Tests\Support;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     0.9.9
  */
-class StandardTest extends AbstractProxyTest
+class StandardProxy extends Proxy\Standard implements
+    \Serializable,
+    \ArrayAccess,
+    \SeekableIterator,
+    \Countable
 {
-    /**
-     * Build a proxy object, into $this->_proxy to test it
-     * @return Proxy\ProxyInterface
-     */
-    protected function _buildProxy()
-    {
-        $this->_proxy = new Support\StandardProxy();
-
-        return $this->_proxy;
-    }
 }
