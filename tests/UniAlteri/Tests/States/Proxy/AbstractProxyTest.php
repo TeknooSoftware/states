@@ -2316,4 +2316,24 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         //unique ids must differ
         $this->assertNotEquals($this->_proxy->getObjectUniqueId(), $clonedProxy->getObjectUniqueId());
     }
+
+    /**
+     * Test the behavior of the proxy when it is cloned :
+     * All states must be cloned
+     * DI Container must be cloned
+     * Registered states must be cloned
+     * Active states must be cloned
+     * The cloned proxy must has a new unique id
+     */
+    public function testCloningNonInitializeProxy()
+    {
+        $this->_initializeProxy('state1', true);
+        $reflectionClassProxyObject = new \ReflectionClass($this->_proxy);
+        $proxyNotInitialized = $reflectionClassProxyObject->newInstanceWithoutConstructor();
+        try {
+            $proxyCloned = clone $proxyNotInitialized;
+        } catch (\Exception $e) {
+            $this->fail('Error, __clone must manage when the proxy was not initialized via the constructor');
+        }
+    }
 }
