@@ -326,20 +326,24 @@ trait TraitProxy
         }
 
         //Clone states stack
-        $clonedStatesArray = new \ArrayObject();
-        foreach ($this->_states as $key=>$state) {
-            //Clone each stated object
-            $clonedState = clone $state;
-            //Update new stack
-            $clonedStatesArray[$key] = $clonedState;
+        if ($this->_states instanceof \ArrayObject) {
+            $clonedStatesArray = new \ArrayObject();
+            foreach ($this->_states as $key=>$state) {
+                //Clone each stated object
+                $clonedState = clone $state;
+                //Update new stack
+                $clonedStatesArray[$key] = $clonedState;
+            }
+            $this->_states = $clonedStatesArray;
         }
-        $this->_states = $clonedStatesArray;
 
         //Enabling states
-        $activesStates = array_keys($this->_activesStates->getArrayCopy());
-        $this->_activesStates = new \ArrayObject();
-        foreach ($activesStates as $stateName) {
-            $this->enableState($stateName);
+        if ($this->_activesStates instanceof \ArrayObject) {
+            $activesStates = array_keys($this->_activesStates->getArrayCopy());
+            $this->_activesStates = new \ArrayObject();
+            foreach ($activesStates as $stateName) {
+                $this->enableState($stateName);
+            }
         }
 
         return $this;
