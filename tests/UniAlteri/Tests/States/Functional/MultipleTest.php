@@ -50,7 +50,7 @@ class MultipleTest extends \PHPUnit_Framework_TestCase
     protected function _getLoader()
     {
         if (null === $this->_loader) {
-            $this->_loader = include('UniAlteri'.DS.'States'.DS.'bootstrap.php');
+            $this->_loader = include 'UniAlteri'.DS.'States'.DS.'bootstrap.php';
         }
 
         return $this->_loader;

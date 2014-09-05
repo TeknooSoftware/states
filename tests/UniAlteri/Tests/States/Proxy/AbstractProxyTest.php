@@ -885,12 +885,12 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
-        $object = new $childClassName;
+        $object = new $childClassName();
         $this->assertInstanceOf('\ReflectionMethod', $object->protectedMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
-        $object = new $childClassName;
+        $object = new $childClassName();
         $this->assertInstanceOf('\ReflectionMethod', $object->publicMethod());
     }
 
@@ -926,7 +926,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class object to get a description of private methods
-        $proxy2 = new $childClassName;
+        $proxy2 = new $childClassName();
         $this->assertInstanceOf('\ReflectionMethod', $proxy2->privateMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1330,7 +1330,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
-        $object = new $childClassName;
+        $object = new $childClassName();
         $object->protectedMethod();
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('protectedTest', $this->_state1->getMethodNameCalled());
@@ -1338,7 +1338,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
-        $object = new $childClassName;
+        $object = new $childClassName();
         $object->publicMethod();
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
@@ -1377,7 +1377,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class object to get a description of private methods
-        $proxy2 = new $childClassName;
+        $proxy2 = new $childClassName();
         $proxy2->privateMethod();
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('privateTest', $this->_state1->getMethodNameCalled());

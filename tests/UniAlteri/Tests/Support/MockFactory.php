@@ -73,7 +73,7 @@ class MockFactory implements Factory\FactoryInterface
 
     /**
      * To register a DI container for this object
-     * @param DI\ContainerInterface $container
+     * @param  DI\ContainerInterface $container
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
@@ -115,8 +115,8 @@ class MockFactory implements Factory\FactoryInterface
      *  Extends the proxy used by this stated class a child called like the stated class.
      *  => To allow developer to build new object with the operator new
      *  => To allow developer to use the operator "instanceof"
-     * @param string $statedClassName the name of the stated class
-     * @param string $path of the stated class
+     * @param  string  $statedClassName the name of the stated class
+     * @param  string  $path            of the stated class
      * @return boolean
      */
     public function initialize($statedClassName, $path)
@@ -138,10 +138,10 @@ class MockFactory implements Factory\FactoryInterface
 
     /**
      * Build a new instance of an object
-     * @param mixed $arguments
-     * @param string $stateName to build an object with a specific class
+     * @param  mixed                       $arguments
+     * @param  string                      $stateName to build an object with a specific class
      * @return Proxy\ProxyInterface
-     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
+     * @throws Exception\StateNotFound     if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
     public function build($arguments = null, $stateName = null)
@@ -151,10 +151,10 @@ class MockFactory implements Factory\FactoryInterface
 
     /**
      * Initialize a proxy object with its container and states
-     * @param Proxy\ProxyInterface $proxyObject
-     * @param string $stateName
+     * @param  Proxy\ProxyInterface        $proxyObject
+     * @param  string                      $stateName
      * @return boolean
-     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
+     * @throws Exception\StateNotFound     if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
     public function startup($proxyObject, $stateName = null)

@@ -30,7 +30,7 @@ defined('UA_STATES_TEST_PATH')
 
 ini_set('memory_limit', '128M');
 
-require_once (dirname(__DIR__).DIRECTORY_SEPARATOR.'autoloader_psr0.php');
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 
 //Update included Path for spl autoload
 set_include_path(

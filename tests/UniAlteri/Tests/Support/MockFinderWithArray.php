@@ -21,10 +21,7 @@
 
 namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\DI;
-use UniAlteri\States\Loader\Exception;
 use UniAlteri\States\Proxy;
-use UniAlteri\States\Loader;
 use UniAlteri\States\States;
 
 /**

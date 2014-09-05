@@ -52,24 +52,24 @@ class StateDefault extends States\AbstractState
 
     /**
      * Define the title of this post
-     * @param string $title
+     * @param  string $title
      * @return $this
      */
     public function setTitle($title)
     {
         $this->_title = $title;
+
         return $this;
     }
 
     /**
      * Define the body of this post
-     * @param string $body
+     * @param  string $body
      * @return $this
      */
     public function setBody($body)
     {
         $this->_body = $body;
     }
-
 
 }

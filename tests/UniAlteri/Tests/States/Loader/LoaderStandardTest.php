@@ -579,6 +579,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->_pharTestsAreAvailable()) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -596,6 +597,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->_pharTestsAreAvailable()) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -613,6 +615,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\Phar', false)) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -630,6 +633,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\Phar', false)) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -647,6 +651,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\Phar', false)) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -664,6 +669,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\Phar', false)) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -681,6 +687,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\Phar', false)) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -698,6 +705,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\Phar', false)) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -715,6 +723,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\Phar', false)) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -732,6 +741,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\Phar', false)) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -749,6 +759,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\Phar', false)) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 
@@ -766,6 +777,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     {
         if (!class_exists('\Phar', false)) {
             $this->markTestSkipped('Phar extension is not available');
+
             return;
         }
 

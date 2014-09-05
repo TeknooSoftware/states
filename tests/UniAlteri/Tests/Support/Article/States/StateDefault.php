@@ -54,6 +54,7 @@ class StateDefault extends States\AbstractState
     public function isPublished()
     {
         $isPublished = $this->_getAttribute('is_published');
+
         return !empty($isPublished);
     }
 }

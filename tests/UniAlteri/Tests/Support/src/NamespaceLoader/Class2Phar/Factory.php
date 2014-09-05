@@ -41,6 +41,6 @@ use \UniAlteri\Tests\Support;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class FactoryClass extends Support\MockFactory
+class Factory extends Support\MockFactory
 {
 }

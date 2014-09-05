@@ -52,7 +52,7 @@ interface LoaderInterface
     /**
      * Class name of the Factory PHP Class of each Stated Class
      */
-    const FACTORY_CLASS_NAME = 'FactoryClass';
+    const FACTORY_CLASS_NAME = 'Factory';
 
     /**
      * Initialize the loader object

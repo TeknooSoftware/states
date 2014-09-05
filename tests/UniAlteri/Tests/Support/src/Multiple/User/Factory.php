@@ -21,7 +21,7 @@
 
 namespace UniAlteri\Tests\Support\Multiple\User;
 
-use UniAlteri\States\Factory;
+use UniAlteri\States\Factory\Integrated;
 
 /**
  * Class FactoryClass
@@ -36,6 +36,6 @@ use UniAlteri\States\Factory;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class FactoryClass extends Factory\Integrated
+class Factory extends Integrated
 {
 }

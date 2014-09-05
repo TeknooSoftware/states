@@ -78,12 +78,13 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
 
     /**
      * Return the closure contained into this
-     * @param \Closure $closure
+     * @param  \Closure $closure
      * @return $this
      */
     public function setClosure($closure)
     {
         $this->_closure = $closure;
+
         return $this;
     }
 
@@ -99,8 +100,8 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     /**
      * To allow the closure to save a static property,
      * to allow developer to not use "static" key word into the closure
-     * @param string $name
-     * @param mixed $value
+     * @param  string $name
+     * @param  mixed  $value
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -108,12 +109,13 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     {
         //Simulate real property management
         $this->_properties[$name] = $value;
+
         return $this;
     }
 
     /**
      * Remove a static property
-     * @param string $name
+     * @param  string $name
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -129,7 +131,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
 
     /**
      * Return to the closure a static property
-     * @param string $name
+     * @param  string $name
      * @return mixed
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -145,7 +147,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
 
     /**
      * Check if a static property is stored
-     * @param string $name
+     * @param  string  $name
      * @return boolean
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */

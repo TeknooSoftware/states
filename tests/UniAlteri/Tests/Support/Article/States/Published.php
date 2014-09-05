@@ -47,6 +47,7 @@ class Published implements States\StateInterface
     public function getFormattedBody()
     {
         $body = $this->_getAttribute('body');
+
         return str_replace(
             array(
                 '[br]',

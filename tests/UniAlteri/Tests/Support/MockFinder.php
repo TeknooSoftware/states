@@ -71,12 +71,13 @@ class MockFinder implements Loader\FinderInterface
 
     /**
      * To register a DI container for this object
-     * @param \UniAlteri\States\DI\ContainerInterface $container
+     * @param  \UniAlteri\States\DI\ContainerInterface $container
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
         $this->_container = $container;
+
         return $this;
     }
 
@@ -84,7 +85,8 @@ class MockFinder implements Loader\FinderInterface
      * To return the DI Container used for this object
      * @return \UniAlteri\States\DI\ContainerInterface
      */
-    public function getDIContainer(){
+    public function getDIContainer()
+    {
         return $this->_container;
     }
 
@@ -113,11 +115,11 @@ class MockFinder implements Loader\FinderInterface
 
     /**
      * Load and build the required state object of the stated class
-     * @param string $stateName
+     * @param  string                     $stateName
      * @return States\StateInterface
-     * @throws Exception\UnReadablePath if the state file is not readable
+     * @throws Exception\UnReadablePath   if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
-     * @throws Exception\IllegalState if the state object does not implement the interface
+     * @throws Exception\IllegalState     if the state object does not implement the interface
      */
     public function buildState($stateName)
     {
@@ -127,7 +129,7 @@ class MockFinder implements Loader\FinderInterface
 
     /**
      * Load the required state object of the stated class
-     * @param string $stateName
+     * @param  string                                  $stateName
      * @return \UniAlteri\States\States\StateInterface
      */
     public function loadState($stateName)
@@ -137,13 +139,14 @@ class MockFinder implements Loader\FinderInterface
 
     /**
      * Load a proxy object for the stated class
-     * @param array $arguments argument for proxy
+     * @param  array                  $arguments argument for proxy
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function loadProxy($arguments = null)
     {
         $this->_proxyLoaded = true;
+
         return true;
     }
 
@@ -159,7 +162,7 @@ class MockFinder implements Loader\FinderInterface
 
     /**
      * Load and build a proxy object of the stated class
-     * @param array $arguments argument for proxy
+     * @param  array                                  $arguments argument for proxy
      * @return \UniAlteri\States\Proxy\ProxyInterface
      */
     public function buildProxy($arguments=null)
