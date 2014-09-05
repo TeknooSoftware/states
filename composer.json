@@ -36,5 +36,10 @@
     },
     "archive": {
         "exclude": ["demo", "vendor", ".idea"]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "0.9-rc"
+        }
     }
 }
