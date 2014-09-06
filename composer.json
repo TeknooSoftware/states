@@ -32,7 +32,7 @@
         "psr-4": { "UniAlteri\\States\\": ["lib/UniAlteri/States/"] }
     },
     "autoload-dev": {
-        "psr-0": { "UniAlteri": ["tests/"] }
+        "psr-4": { "UniAlteri\\Tests\\": ["tests/UniAlteri/Tests/"] }
     },
     "archive": {
         "exclude": ["demo", "vendor", ".idea"]
