@@ -29,10 +29,8 @@
         "phpunit/phpunit-story": "*"
     },
     "autoload": {
-        "psr-4": { "UniAlteri\\States\\": ["lib/UniAlteri/States/"] }
-    },
-    "autoload-dev": {
         "psr-4": {
+            "UniAlteri\\States\\": ["lib/UniAlteri/States/"],
             "UniAlteri\\Tests\\States\\": ["tests/UniAlteri/Tests/States"],
             "UniAlteri\\Tests\\Support\\": ["tests/UniAlteri/Tests/Support"]
         }
