@@ -471,7 +471,11 @@ trait TraitProxy
      */
     public function listAvailableStates()
     {
-        return array_keys($this->_states->getArrayCopy());
+        if ($this->_states instanceof \ArrayObject) {
+            return array_keys($this->_states->getArrayCopy());
+        } else {
+            return array();
+        }
     }
 
     /**
@@ -480,7 +484,11 @@ trait TraitProxy
      */
     public function listEnabledStates()
     {
-        return array_keys($this->_activesStates->getArrayCopy());
+        if ($this->_activesStates instanceof \ArrayObject) {
+            return array_keys($this->_activesStates->getArrayCopy());
+        } else {
+            return array();
+        }
     }
 
     /**

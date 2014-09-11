@@ -402,6 +402,16 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Check the proxy's method listAvailableStates behavior when there are no registered state
+     */
+    public function testListAvailableStatesNotInit()
+    {
+        $proxyReflectionClass = new \ReflectionClass($this->_proxy);
+        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
+        $this->assertEquals(array(), $proxy->listAvailableStates());
+    }
+
+    /**
      * Check the proxy's method listAvailableStates behavior
      */
     public function testListAvailableStates()
@@ -409,6 +419,16 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->_proxy->registerState('state1', $this->_state1);
         $this->_proxy->registerState('state3', $this->_state3);
         $this->assertEquals(array('state1', 'state3'), $this->_proxy->listAvailableStates());
+    }
+
+    /**
+     * Check the proxy's method listEnabledStates behavior when there are no enable state
+     */
+    public function testListEnabledStatesNotInit()
+    {
+        $proxyReflectionClass = new \ReflectionClass($this->_proxy);
+        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
+        $this->assertEquals(array(), $proxy->listEnabledStates());
     }
 
     /**
