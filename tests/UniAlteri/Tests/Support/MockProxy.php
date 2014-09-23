@@ -199,6 +199,17 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
+     * Check if the current entity is in the required state defined by $stateName
+     * @param string $stateName
+     * @return bool
+     * @throws Exception\InvalidArgument when $stateName is not a valid string
+     */
+    public function inState($stateName)
+    {
+        return in_array(strtolower(str_replace('_', '', $stateName)), $this->_actives);
+    }
+
+    /**
      * Return the current injection closure object to access to its static properties
      * @return DI\InjectionClosureInterface
      * @throws Exception\UnavailableClosure

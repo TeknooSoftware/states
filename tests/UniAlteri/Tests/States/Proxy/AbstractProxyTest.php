@@ -451,6 +451,47 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test behavior of the proxy when the state name is not a string
+     */
+    public function testInStateNotString()
+    {
+        $proxy = $this->_buildProxy();
+
+        try {
+            $proxy->inState(new \stdClass());
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->fail('Error, the method must throw an exception when the argument is not valid');
+    }
+
+    /**
+     * Test behavior of the proxy when it was not initialized
+     */
+    public function testInStateNotInitialized()
+    {
+        $proxyReflectionClass = new \ReflectionClass($this->_buildProxy());
+        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
+        $this->assertFalse($proxy->inState('foo'));
+    }
+
+    /**
+     * Test behavior of the proxy method inState
+     */
+    public function testInState()
+    {
+        $proxy = $this->getMock(get_class($this->_buildProxy()), array('listEnabledStates'), array(), '', false);
+        $proxy->expects($this->any())
+            ->method('listEnabledStates')
+            ->withAnyParameters()
+            ->willReturn(array('Foo', 'Bar'));
+
+        $this->assertFalse($proxy->inState('hello'));
+        $this->assertTrue($proxy->inState('fOo'));
+    }
+
+    /**
      * Test proxy behavior when we call the method getStatic() outside of a stated class's methods
      */
     public function testGetStaticWithoutCalling()

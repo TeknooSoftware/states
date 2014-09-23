@@ -123,6 +123,14 @@ interface ProxyInterface extends
     public function listEnabledStates();
 
     /**
+     * Check if the current entity is in the required state defined by $stateName
+     * @param string $stateName
+     * @return bool
+     * @throws Exception\InvalidArgument when $stateName is not a valid string
+     */
+    public function inState($stateName);
+
+    /**
      * To return the current injection closure object to access to its static properties
      * @return DI\InjectionClosureInterface
      * @throws Exception\UnavailableClosure
