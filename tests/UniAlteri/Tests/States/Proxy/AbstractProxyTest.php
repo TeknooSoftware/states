@@ -402,6 +402,16 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Check the proxy's method listAvailableStates behavior when there are no registered state
+     */
+    public function testListAvailableStatesNotInit()
+    {
+        $proxyReflectionClass = new \ReflectionClass($this->_proxy);
+        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
+        $this->assertEquals(array(), $proxy->listAvailableStates());
+    }
+
+    /**
      * Check the proxy's method listAvailableStates behavior
      */
     public function testListAvailableStates()
@@ -409,6 +419,16 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->_proxy->registerState('state1', $this->_state1);
         $this->_proxy->registerState('state3', $this->_state3);
         $this->assertEquals(array('state1', 'state3'), $this->_proxy->listAvailableStates());
+    }
+
+    /**
+     * Check the proxy's method listEnabledStates behavior when there are no enable state
+     */
+    public function testListEnabledStatesNotInit()
+    {
+        $proxyReflectionClass = new \ReflectionClass($this->_proxy);
+        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
+        $this->assertEquals(array(), $proxy->listEnabledStates());
     }
 
     /**
@@ -428,6 +448,47 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy();
         $this->assertEquals(array('state1'), $this->_proxy->listEnabledStates());
+    }
+
+    /**
+     * Test behavior of the proxy when the state name is not a string
+     */
+    public function testInStateNotString()
+    {
+        $proxy = $this->_buildProxy();
+
+        try {
+            $proxy->inState(new \stdClass());
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->fail('Error, the method must throw an exception when the argument is not valid');
+    }
+
+    /**
+     * Test behavior of the proxy when it was not initialized
+     */
+    public function testInStateNotInitialized()
+    {
+        $proxyReflectionClass = new \ReflectionClass($this->_buildProxy());
+        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
+        $this->assertFalse($proxy->inState('foo'));
+    }
+
+    /**
+     * Test behavior of the proxy method inState
+     */
+    public function testInState()
+    {
+        $proxy = $this->getMock(get_class($this->_buildProxy()), array('listEnabledStates'), array(), '', false);
+        $proxy->expects($this->any())
+            ->method('listEnabledStates')
+            ->withAnyParameters()
+            ->willReturn(array('Foo', 'Bar'));
+
+        $this->assertFalse($proxy->inState('hello'));
+        $this->assertTrue($proxy->inState('fOo'));
     }
 
     /**
@@ -630,17 +691,17 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy();
         $this->_proxy->enableState('state2');
-        $this->_state1->allowMethod();
-        $this->_state2->allowMethod();
+        $this->_state1->disallowMethod();
+        $this->_state2->disallowMethod();
 
         try {
             $this->_proxy->testOfState3();
-        } catch (Exception\UnavailableState $e) {
+        } catch (Exception\MethodNotImplemented $e) {
             return;
         } catch (\Exception $e) {
         }
 
-        $this->fail('Error, the proxy must throw an Exception\UnavailableState when the required state is not enabled');
+        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented when the required state is not enabled');
     }
 
     /**
@@ -661,6 +722,26 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($this->_state3->methodWasCalled());
         $this->assertEquals(array('bar', 'foo'), $this->_state2->getCalledArguments());
         $this->assertEquals('test', $this->_state2->getMethodNameCalled());
+    }
+
+    /**
+     * Test proxy behavior in a normal calling when the required state is defined in the call
+     */
+    public function testCallMethodOfWithNoState()
+    {
+        $this->_initializeProxy();
+        $this->_proxy->enableState('state2');
+        $this->_proxy->enableState('state3');
+        $this->_state1->disallowMethod();
+        $this->_state2->disallowMethod();
+        $this->_state3->allowMethod();
+        $this->_proxy->testOfHelloWorld('bar', 'foo');
+
+        $this->assertFalse($this->_state1->methodWasCalled());
+        $this->assertFalse($this->_state2->methodWasCalled());
+        $this->assertTrue($this->_state3->methodWasCalled());
+        $this->assertEquals(array('bar', 'foo'), $this->_state3->getCalledArguments());
+        $this->assertEquals('testOfHelloWorld', $this->_state3->getMethodNameCalled());
     }
 
     /**
@@ -760,7 +841,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a private method
@@ -800,7 +881,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of private methods
@@ -843,7 +924,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', get_class($this->_proxy));
@@ -865,12 +946,12 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
-        $object = new $childClassName;
+        $object = new $childClassName();
         $this->assertInstanceOf('\ReflectionMethod', $object->protectedMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
-        $object = new $childClassName;
+        $object = new $childClassName();
         $this->assertInstanceOf('\ReflectionMethod', $object->publicMethod());
     }
 
@@ -884,7 +965,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy('state1', true);
         //To access to the proxy in the method
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', get_class($this->_proxy));
@@ -906,7 +987,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class object to get a description of private methods
-        $proxy2 = new $childClassName;
+        $proxy2 = new $childClassName();
         $this->assertInstanceOf('\ReflectionMethod', $proxy2->privateMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -928,7 +1009,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy('state1', true);
         //To access to the proxy in the method
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', get_class($this->_proxy));
@@ -974,7 +1055,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of private methods
@@ -1014,7 +1095,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', get_class($this->_proxy));
@@ -1052,7 +1133,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy('state1', true);
         //To access to the proxy in the method
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsDescription.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', get_class($this->_proxy));
@@ -1199,7 +1280,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a private method
@@ -1242,7 +1323,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of private methods
@@ -1288,7 +1369,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', get_class($this->_proxy));
@@ -1310,7 +1391,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
-        $object = new $childClassName;
+        $object = new $childClassName();
         $object->protectedMethod();
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('protectedTest', $this->_state1->getMethodNameCalled());
@@ -1318,7 +1399,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
-        $object = new $childClassName;
+        $object = new $childClassName();
         $object->publicMethod();
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('publicTest', $this->_state1->getMethodNameCalled());
@@ -1335,7 +1416,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy('state1', true);
         //To access to the proxy in the method
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', get_class($this->_proxy));
@@ -1357,7 +1438,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class object to get a description of private methods
-        $proxy2 = new $childClassName;
+        $proxy2 = new $childClassName();
         $proxy2->privateMethod();
         $this->assertTrue($this->_state1->methodWasCalled());
         $this->assertSame('privateTest', $this->_state1->getMethodNameCalled());
@@ -1388,7 +1469,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy('state1', true);
         //To access to the proxy in the method
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', get_class($this->_proxy));
@@ -1443,7 +1524,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of private methods
@@ -1486,7 +1567,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         global $proxy;
         $proxy = $this->_proxy;
 
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', get_class($this->_proxy));
@@ -1530,7 +1611,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->_initializeProxy('state1', true);
         //To access to the proxy in the method
-        include_once 'UniAlteri/Tests/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', get_class($this->_proxy));
@@ -2295,5 +2376,25 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //unique ids must differ
         $this->assertNotEquals($this->_proxy->getObjectUniqueId(), $clonedProxy->getObjectUniqueId());
+    }
+
+    /**
+     * Test the behavior of the proxy when it is cloned :
+     * All states must be cloned
+     * DI Container must be cloned
+     * Registered states must be cloned
+     * Active states must be cloned
+     * The cloned proxy must has a new unique id
+     */
+    public function testCloningNonInitializeProxy()
+    {
+        $this->_initializeProxy('state1', true);
+        $reflectionClassProxyObject = new \ReflectionClass($this->_proxy);
+        $proxyNotInitialized = $reflectionClassProxyObject->newInstanceWithoutConstructor();
+        try {
+            $proxyCloned = clone $proxyNotInitialized;
+        } catch (\Exception $e) {
+            $this->fail('Error, __clone must manage when the proxy was not initialized via the constructor');
+        }
     }
 }

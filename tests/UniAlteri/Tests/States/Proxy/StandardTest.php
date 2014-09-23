@@ -22,6 +22,7 @@
 namespace UniAlteri\Tests\States\Proxy;
 
 use \UniAlteri\States\Proxy;
+use \UniAlteri\Tests\Support;
 
 /**
  * Class StandardTest
@@ -43,7 +44,7 @@ class StandardTest extends AbstractProxyTest
      */
     protected function _buildProxy()
     {
-        $this->_proxy = new Proxy\Standard();
+        $this->_proxy = new Support\StandardProxy();
 
         return $this->_proxy;
     }

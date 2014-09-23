@@ -52,7 +52,7 @@ class MockIncludePathManager implements Loader\IncludePathManagerInterface
 
     /**
      * Sets the include_path configuration option
-     * @param string[] $paths (paths must be split into an array)
+     * @param  string[]                  $paths (paths must be split into an array)
      * @return $this
      * @throws Exception\IllegalArgument if the argument $paths is not an array of string
      */
@@ -66,6 +66,7 @@ class MockIncludePathManager implements Loader\IncludePathManagerInterface
         $old = $this->_paths;
         $this->_paths = $paths;
         $this->_allChangePaths[] = $paths;
+
         return $old;
     }
 

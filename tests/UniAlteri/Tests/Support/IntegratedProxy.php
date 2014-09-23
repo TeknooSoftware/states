@@ -29,6 +29,10 @@ use \UniAlteri\States\Proxy;
  * By default, the class Proxy\Integrated uses '\UniAlteri\States\Factory\StandardStartupFactory' as startup factory.
  * But, in the test, we will use '\UniAlteri\Tests\Support\MockStartupFactory' to unit testing only the proxy.
  *
+ * This extends support implements also all supported standard interface to tests implementation provided by the trait Proxy.
+ * To avoid errors in the usage of this lib, these interfaces are not defined with released proxies.
+ * You must implement these interface, according to your needs, in your derived proxies like in this class.
+ *
  * @package     States
  * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
@@ -38,7 +42,11 @@ use \UniAlteri\States\Proxy;
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.9
  */
-class IntegratedProxy extends Proxy\Integrated
+class IntegratedProxy extends Proxy\Integrated implements
+    \Serializable,
+    \ArrayAccess,
+    \SeekableIterator,
+    \Countable
 {
     /**
      * Class name of the factory to use during set up to initialize this object.

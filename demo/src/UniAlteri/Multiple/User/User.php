@@ -22,7 +22,6 @@
 namespace demo\UniAlteri\Multiple\User;
 
 use UniAlteri\States\Proxy;
-use UniAlteri\States\Proxy\Exception;
 
 /**
  * Proxy User
@@ -59,8 +58,8 @@ class User extends Proxy\Integrated
     /**
      * To initialize this user with some data
      * @param string $username
-     * @param bool $isAdmin
-     * @param bool $isModerator
+     * @param bool   $isAdmin
+     * @param bool   $isModerator
      */
     public function __construct($username, $isAdmin=false, $isModerator=false)
     {

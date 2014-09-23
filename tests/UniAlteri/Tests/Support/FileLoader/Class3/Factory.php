@@ -41,12 +41,12 @@ use \UniAlteri\Tests\Support;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class FactoryClass extends Support\MockFactory
+class Factory extends Support\MockFactory
 {
     /**
      * Throw an exception to test if the loader return false in loading class
-     * @param string $statedClassName
-     * @param string $path
+     * @param  string     $statedClassName
+     * @param  string     $path
      * @return bool|void
      * @throws \Exception
      */

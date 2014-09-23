@@ -86,7 +86,7 @@ class MockState implements States\StateInterface
      */
     public function __construct($closure=null)
     {
-        if($closure instanceof \Closure){
+        if ($closure instanceof \Closure) {
             //Use as testing closure the passed closure
             $this->_closure = $closure;
         } else {
@@ -96,15 +96,15 @@ class MockState implements States\StateInterface
             $this->_closure = $closure = function () use ($state) {
                 $state->setMethodCalled();
                 $state->setCalledArguments(func_get_args());
+
                 return '';
             };
         }
     }
 
-
     /**
      * To register a DI container for this object
-     * @param DI\ContainerInterface $container
+     * @param  DI\ContainerInterface $container
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
@@ -132,7 +132,8 @@ class MockState implements States\StateInterface
     /**
      * To simulate a failure of the getMethodDescription, return an exception method not implemented, but testMethod return true..
      */
-    public function simulateFailureInGetMethodDescription(){
+    public function simulateFailureInGetMethodDescription()
+    {
         $this->_simulateMethodDescriptionFailure = true;
     }
 
@@ -155,8 +156,8 @@ class MockState implements States\StateInterface
 
     /**
      * Test if a method exist for this state
-     * @param string $methodName
-     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param  string                    $methodName
+     * @param  string                    $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean
      * @throws Exception\InvalidArgument when the method name is not a string
      */
@@ -172,17 +173,17 @@ class MockState implements States\StateInterface
                 break;
             case States\StateInterface::VISIBILITY_PROTECTED:
                 //Can not access to private methods
-                if (false !== stripos($methodName, 'private')){
+                if (false !== stripos($methodName, 'private')) {
                     return false;
                 }
                 break;
             case States\StateInterface::VISIBILITY_PUBLIC:
                 //Can not access to protected and private method.
-                if (false !== stripos($methodName, 'private')){
+                if (false !== stripos($methodName, 'private')) {
                     return false;
                 }
 
-                if (false !== stripos($methodName, 'protected')){
+                if (false !== stripos($methodName, 'protected')) {
                     return false;
                 }
                 break;
@@ -191,37 +192,39 @@ class MockState implements States\StateInterface
                 throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
                 break;
         }
+
         return $this->_methodAllowed;
     }
 
     /**
      * Return the description of a method to configure the behavior of the proxy
-     * @param string $methodName
+     * @param  string                         $methodName
      * @return \ReflectionMethod
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
     public function getMethodDescription($methodName)
     {
-        if(false === $this->_methodAllowed || true === $this->_simulateMethodDescriptionFailure){
+        if (false === $this->_methodAllowed || true === $this->_simulateMethodDescriptionFailure) {
             throw new Exception\MethodNotImplemented();
         }
 
         $classReflection = new \ReflectionClass($this);
+
         return $classReflection->getMethod('testMethod');
     }
 
     /**
      * Return a closure of the required method to use in the proxy
-     * @param string $methodName
-     * @param Proxy\ProxyInterface $proxy
-     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param  string                         $methodName
+     * @param  Proxy\ProxyInterface           $proxy
+     * @param  string                         $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return DI\InjectionClosureInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
-     * @throws Exception\InvalidArgument when the method name is not a string
+     * @throws Exception\InvalidArgument      when the method name is not a string
      */
     public function getClosure($methodName, $proxy, $scope=States\StateInterface::VISIBILITY_PUBLIC)
     {
-        if(false === $this->_methodAllowed){
+        if (false === $this->_methodAllowed) {
             throw new Exception\MethodNotImplemented();
         }
 
@@ -235,17 +238,17 @@ class MockState implements States\StateInterface
                 break;
             case States\StateInterface::VISIBILITY_PROTECTED:
                 //Can not access to private methods
-                if (false !== stripos($methodName, 'private')){
+                if (false !== stripos($methodName, 'private')) {
                     throw new Exception\MethodNotImplemented();
                 }
                 break;
             case States\StateInterface::VISIBILITY_PUBLIC:
                 //Can not access to protected and private method.
-                if (false !== stripos($methodName, 'private')){
+                if (false !== stripos($methodName, 'private')) {
                     throw new Exception\MethodNotImplemented();
                 }
 
-                if (false !== stripos($methodName, 'protected')){
+                if (false !== stripos($methodName, 'protected')) {
                     throw new Exception\MethodNotImplemented();
                 }
                 break;
@@ -276,6 +279,7 @@ class MockState implements States\StateInterface
     {
         $value = $this->_methodCalled;
         $this->_methodCalled = false;
+
         return $value;
     }
 
@@ -284,7 +288,8 @@ class MockState implements States\StateInterface
      * Method added for test to check different behavior in calling method
      * @param array $arguments
      */
-    public function setCalledArguments($arguments){
+    public function setCalledArguments($arguments)
+    {
         $this->_calledArguments = $arguments;
     }
 
@@ -293,9 +298,11 @@ class MockState implements States\StateInterface
      * Method added for test to check different behavior in calling method
      * @return array
      */
-    public function getCalledArguments(){
+    public function getCalledArguments()
+    {
         $arguments = $this->_calledArguments;
         $this->_calledArguments = null;
+
         return $arguments;
     }
 
@@ -303,7 +310,8 @@ class MockState implements States\StateInterface
      * Remember that the closure has been called
      * Method added for test to check different behavior in calling method
      */
-    public function setMethodCalled(){
+    public function setMethodCalled()
+    {
         $this->_methodCalled = true;
     }
 
@@ -316,6 +324,7 @@ class MockState implements States\StateInterface
     {
         $methodName = $this->_methodName;
         $this->_methodName = null;
+
         return $methodName;
     }
 }

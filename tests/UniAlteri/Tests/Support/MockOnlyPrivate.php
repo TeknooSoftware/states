@@ -51,7 +51,7 @@ class MockOnlyPrivate extends States\AbstractState
             //Register the service to generate a mock injection closure object
             $this->getDIContainer()->registerService(
                 States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER,
-                function() {
+                function () {
                     return new MockInjectionClosure();
                 }
             );

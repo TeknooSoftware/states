@@ -176,6 +176,11 @@ To help you, you can use the trait `\UniAlteri\States\Proxy\TraitProxy` or direc
 `\UniAlteri\States\Proxy\Standard` or `\UniAlteri\States\Proxy\Integrated`. *Warning, if you use the factory
 `\UniAlteri\States\Factory\Integrated`, you must extend the proxy `Integrated`, else, you must extend the proxy `Standard`.*
 
+The trait proxy is already compliant with standard interfaces `\Serializable`, `\ArrayAccess`, `\SeekableIterator` and
+`\Countable` : methods of these interfaces are already implemented! But to avoid errors in the usage of this lib, these
+interfaces are not defined with released proxies. You must implement these interface, according to your needs, in your
+derived proxies.
+
 ###Enjoy
 Now, you can use your stated class. If you use the integrated proxy, you can directly instantiate your objects with the
 operator `new` like this `$myObject = new \Your\NameSpace\YourStateName();`.

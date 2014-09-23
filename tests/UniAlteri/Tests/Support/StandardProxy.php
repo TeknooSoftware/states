@@ -19,14 +19,19 @@
  * @version     0.9.9
  */
 
-namespace UniAlteri\Tests\Support\Article\States;
+namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\States;
+use \UniAlteri\States\Proxy;
 
 /**
- * State Published
- * State for a published article
- * Copy from Demo for functional tests
+ * Class StandardProxy
+ * To build an specific instance of the class Proxy\Standard to test this default class.
+ * By default, the class Proxy\Integrated uses '\UniAlteri\States\Factory\StandardStartupFactory' as startup factory.
+ * But, in the test, we will use '\UniAlteri\Tests\Support\MockStartupFactory' to unit testing only the proxy.
+ *
+ * This extends support implements also all supported standard interface to tests implementation provided by the trait Proxy.
+ * To avoid errors in the usage of this lib, these interfaces are not defined with released proxies.
+ * You must implement these interface, according to your needs, in your derived proxies like in this class.
  *
  * @package     States
  * @subpackage  Tests
@@ -35,39 +40,12 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     0.9.9
  */
-class Published implements States\StateInterface
+class StandardProxy extends Proxy\Standard implements
+    \Serializable,
+    \ArrayAccess,
+    \SeekableIterator,
+    \Countable
 {
-    use States\TraitState;
-
-    /**
-     * Get the body and transform BBCode to HTML
-     * @return string
-     */
-    public function getFormattedBody()
-    {
-        $body = $this->_getAttribute('body');
-
-        return str_replace(
-            array(
-                '[br]',
-                '[b]',
-                '[/b]'
-            ),
-            array(
-                '<br/>',
-                '<strong>',
-                '</strong>'
-            ),
-            $body
-        );
-    }
-
-    /**
-     * Fake method not callable in public scope
-     */
-    protected function _getDate()
-    {
-
-    }
 }

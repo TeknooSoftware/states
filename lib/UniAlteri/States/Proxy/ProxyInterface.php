@@ -44,11 +44,7 @@ use \UniAlteri\States\DI;
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 interface ProxyInterface extends
-    States\ObjectInterface,
-    \Serializable,
-    \ArrayAccess,
-    \SeekableIterator,
-    \Countable
+    States\ObjectInterface
 {
     /**
      * Name of the default state to load automatically in the construction
@@ -125,6 +121,14 @@ interface ProxyInterface extends
      * @return string[]
      */
     public function listEnabledStates();
+
+    /**
+     * Check if the current entity is in the required state defined by $stateName
+     * @param string $stateName
+     * @return bool
+     * @throws Exception\InvalidArgument when $stateName is not a valid string
+     */
+    public function inState($stateName);
 
     /**
      * To return the current injection closure object to access to its static properties

@@ -48,7 +48,7 @@ class MockOnlyPublic extends States\AbstractState
             $this->setDIContainer(new MockDIContainer());
             $this->getDIContainer()->registerService(
                 States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER,
-                function() {
+                function () {
                     return new MockInjectionClosure();
                 }
             );

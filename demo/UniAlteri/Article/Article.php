@@ -22,7 +22,6 @@
 namespace demo\UniAlteri\Article;
 
 use UniAlteri\States\Proxy;
-use UniAlteri\States\Proxy\Exception;
 
 /**
  * Proxy Article
@@ -46,7 +45,7 @@ class Article extends Proxy\Integrated
 
     /**
      * Get an article's attribute
-     * @param string $name
+     * @param  string $name
      * @return mixed
      */
     protected function _getAttribute($name)
@@ -61,7 +60,7 @@ class Article extends Proxy\Integrated
     /**
      * Update an article's attribute
      * @param string $name
-     * @param mixed $value
+     * @param mixed  $value
      */
     public function _setAttribute($name, $value)
     {

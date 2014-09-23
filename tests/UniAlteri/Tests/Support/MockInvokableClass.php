@@ -34,12 +34,14 @@ namespace UniAlteri\Tests\Support;
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.9
  */
-class MockInvokableClass{
+class MockInvokableClass
+{
     /**
      * Invokable magic method
      * @return \stdClass
      */
-    public function __invoke(){
+    public function __invoke()
+    {
         return new \stdClass();
     }
 }

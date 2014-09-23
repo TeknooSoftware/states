@@ -22,7 +22,6 @@
 namespace UniAlteri\Tests\Support\Multiple\Post;
 
 use UniAlteri\States\Proxy;
-use UniAlteri\States\Proxy\Exception;
 
 /**
  * Proxy Class

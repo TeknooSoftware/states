@@ -32,7 +32,8 @@ if (!function_exists('testCallFromFunctionPrivate')) {
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
-    function testCallFromFunctionPrivate() {
+    function testCallFromFunctionPrivate()
+    {
         global $proxy;
         $proxy->privateTest();
     }
@@ -51,7 +52,8 @@ if (!function_exists('testCallFromFunctionProtected')) {
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
-    function testCallFromFunctionProtected() {
+    function testCallFromFunctionProtected()
+    {
         global $proxy;
         $proxy->protectedTest();
     }
@@ -71,8 +73,10 @@ if (!function_exists('testCallFromFunctionPublic')) {
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      * @return mixed
      */
-    function testCallFromFunctionPublic() {
+    function testCallFromFunctionPublic()
+    {
         global $proxy;
+
         return $proxy->publicTest();
     }
 }
@@ -90,34 +94,47 @@ if (!trait_exists('testCallTrait')) {
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
-    trait testCallTrait{
-        public function privateMethod() {
+    trait testCallTrait
+    {
+        public function privateMethod()
+        {
             global $proxy;
+
             return $proxy->privateTest();
         }
 
-        public function protectedMethod() {
+        public function protectedMethod()
+        {
             global $proxy;
+
             return $proxy->protectedTest();
         }
 
-        public function publicMethod() {
+        public function publicMethod()
+        {
             global $proxy;
+
             return $proxy->publicTest();
         }
 
-        public static function privateMethodStatic() {
+        public static function privateMethodStatic()
+        {
             global $proxy;
+
             return $proxy->privateTest();
         }
 
-        public static function protectedMethodStatic() {
+        public static function protectedMethodStatic()
+        {
             global $proxy;
+
             return $proxy->protectedTest();
         }
 
-        public static function publicMethodStatic() {
+        public static function publicMethodStatic()
+        {
             global $proxy;
+
             return $proxy->publicTest();
         }
     }
@@ -136,7 +153,8 @@ if (!class_exists('testCallFromOtherObject')) {
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
-    class testCallFromOtherObject{
+    class testCallFromOtherObject
+    {
         use testCallTrait;
     }
 }

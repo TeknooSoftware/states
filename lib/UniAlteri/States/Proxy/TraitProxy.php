@@ -96,83 +96,77 @@ trait TraitProxy
         $scopeVisibility = $this->_getVisibilityScope();
 
         $methodsWithStatesArray = explode('Of', $methodName);
-        if (1 === count($methodsWithStatesArray)) {
-            $activeStateFound = null;
-            //No specific state required, browse all enabled state to find the method
-            foreach ($this->_activesStates as $activeStateObject) {
-                if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
-                    if (null === $activeStateFound) {
-                        //Check if there are only one enabled state whom implements this method
-                        $activeStateFound = $activeStateObject;
-                    } else {
-                        //Else, throw an exception
-                        throw new Exception\AvailableSeveralMethodImplementations(
-                            'Method "'.$methodName.'" has several implementations in different states'
-                        );
-                    }
-                }
-            }
-
-            if (null !== $activeStateFound) {
-                //Method found, extract it
-                $callingClosure = $activeStateFound->getClosure($methodName, $this, $scopeVisibility);
-                //Change current injection
-                $previousClosure = $this->_currentInjectionClosure;
-                $this->_currentInjectionClosure = $callingClosure;
-
-                //call it
-                try {
-                    $returnValues = call_user_func_array($callingClosure, $arguments);
-                } catch (\Exception $e) {
-                    //Restore previous closure
-                    $this->_currentInjectionClosure = $previousClosure;
-                    throw $e;
-                }
-
-                //Restore previous closure
-                $this->_currentInjectionClosure = $previousClosure;
-
-                return $returnValues;
-            }
-
-            throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available with actives states');
-        } else {
+        if (1 < count($methodsWithStatesArray)) {
             //A specific state is required for this call
             $statesName = lcfirst(array_pop($methodsWithStatesArray));
-            if (!isset($this->_activesStates[$statesName])) {
-                throw new Exception\UnavailableState('Error, the state "'.$statesName.'" is not currently available');
-            }
+            if (isset($this->_activesStates[$statesName])) {
+                //Get the state name
+                $methodName = implode('Of', $methodsWithStatesArray);
 
-            //Get the state name
-            $methodName = implode('Of', $methodsWithStatesArray);
+                $activeStateObject = $this->_activesStates[$statesName];
+                if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
+                    //Method found, extract it
+                    $callingClosure = $activeStateObject->getClosure($methodName, $this, $scopeVisibility);
+                    //Change current injection
+                    $previousClosure = $this->_currentInjectionClosure;
+                    $this->_currentInjectionClosure = $callingClosure;
 
-            $activeStateObject = $this->_activesStates[$statesName];
-            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
-                //Method found, extract it
-                $callingClosure = $activeStateObject->getClosure($methodName, $this, $scopeVisibility);
-                //Change current injection
-                $previousClosure = $this->_currentInjectionClosure;
-                $this->_currentInjectionClosure = $callingClosure;
+                    //Call it
+                    try {
+                        $returnValues = call_user_func_array($callingClosure, $arguments);
+                    } catch (\Exception $e) {
+                        //Restore previous closure
+                        $this->_currentInjectionClosure = $previousClosure;
+                        throw $e;
+                    }
 
-                //Call it
-                try {
-                    $returnValues = call_user_func_array($callingClosure, $arguments);
-                } catch (\Exception $e) {
                     //Restore previous closure
                     $this->_currentInjectionClosure = $previousClosure;
-                    throw $e;
-                }
 
+                    return $returnValues;
+                }
+            }
+        }
+
+        $activeStateFound = null;
+        //No specific state required, browse all enabled state to find the method
+        foreach ($this->_activesStates as $activeStateObject) {
+            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
+                if (null === $activeStateFound) {
+                    //Check if there are only one enabled state whom implements this method
+                    $activeStateFound = $activeStateObject;
+                } else {
+                    //Else, throw an exception
+                    throw new Exception\AvailableSeveralMethodImplementations(
+                        'Method "'.$methodName.'" has several implementations in different states'
+                    );
+                }
+            }
+        }
+
+        if (null !== $activeStateFound) {
+            //Method found, extract it
+            $callingClosure = $activeStateFound->getClosure($methodName, $this, $scopeVisibility);
+            //Change current injection
+            $previousClosure = $this->_currentInjectionClosure;
+            $this->_currentInjectionClosure = $callingClosure;
+
+            //call it
+            try {
+                $returnValues = call_user_func_array($callingClosure, $arguments);
+            } catch (\Exception $e) {
                 //Restore previous closure
                 $this->_currentInjectionClosure = $previousClosure;
-
-                return $returnValues;
+                throw $e;
             }
 
-            throw new Exception\MethodNotImplemented(
-                'Method "'.$methodName.'" is not available for the state "'.$statesName.'"'
-            );
+            //Restore previous closure
+            $this->_currentInjectionClosure = $previousClosure;
+
+            return $returnValues;
         }
+
+        throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available with actives states');
     }
 
     /**
@@ -332,20 +326,24 @@ trait TraitProxy
         }
 
         //Clone states stack
-        $clonedStatesArray = new \ArrayObject();
-        foreach ($this->_states as $key=>$state) {
-            //Clone each stated object
-            $clonedState = clone $state;
-            //Update new stack
-            $clonedStatesArray[$key] = $clonedState;
+        if ($this->_states instanceof \ArrayObject) {
+            $clonedStatesArray = new \ArrayObject();
+            foreach ($this->_states as $key=>$state) {
+                //Clone each stated object
+                $clonedState = clone $state;
+                //Update new stack
+                $clonedStatesArray[$key] = $clonedState;
+            }
+            $this->_states = $clonedStatesArray;
         }
-        $this->_states = $clonedStatesArray;
 
         //Enabling states
-        $activesStates = array_keys($this->_activesStates->getArrayCopy());
-        $this->_activesStates = new \ArrayObject();
-        foreach ($activesStates as $stateName) {
-            $this->enableState($stateName);
+        if ($this->_activesStates instanceof \ArrayObject) {
+            $activesStates = array_keys($this->_activesStates->getArrayCopy());
+            $this->_activesStates = new \ArrayObject();
+            foreach ($activesStates as $stateName) {
+                $this->enableState($stateName);
+            }
         }
 
         return $this;
@@ -473,7 +471,11 @@ trait TraitProxy
      */
     public function listAvailableStates()
     {
-        return array_keys($this->_states->getArrayCopy());
+        if ($this->_states instanceof \ArrayObject) {
+            return array_keys($this->_states->getArrayCopy());
+        } else {
+            return array();
+        }
     }
 
     /**
@@ -482,7 +484,38 @@ trait TraitProxy
      */
     public function listEnabledStates()
     {
-        return array_keys($this->_activesStates->getArrayCopy());
+        if ($this->_activesStates instanceof \ArrayObject) {
+            return array_keys($this->_activesStates->getArrayCopy());
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Check if the current entity is in the required state defined by $stateName
+     * @param string $stateName
+     * @return bool
+     * @throws Exception\InvalidArgument when $stateName is not a valid string
+     */
+    public function inState($stateName)
+    {
+        if (!is_string($stateName) && (is_object($stateName) && !is_callable(array($stateName, '__toString')))) {
+            throw new Exception\InvalidArgument('Error, $stateName is not valid');
+        }
+
+        $stateName = (string) $stateName;
+        $enabledStatesList = $this->listEnabledStates();
+
+        if (is_array($enabledStatesList) && !empty($enabledStatesList)) {
+            //array_flip + isset is more efficient than in_array
+            $stateName = str_replace('_', '', strtolower($stateName));
+            $enabledStatesList = array_flip(
+                array_map('strtolower', $enabledStatesList)
+            );
+            return isset($enabledStatesList[$stateName]);
+        } else {
+            return false;
+        }
     }
 
     /**
