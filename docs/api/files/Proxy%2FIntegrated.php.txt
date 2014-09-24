@@ -73,7 +73,7 @@ class Integrated extends Standard
     protected function _initializeObjectWithFactory()
     {
         //Check if the startup class exists
-        if (!class_exists(static::$_startupFactoryClassName, false)) {
+        if (!class_exists(static::$_startupFactoryClassName, true)) {
             throw new Exception\UnavailableFactory('Error, the startup factory is not available');
         }
 

@@ -28,7 +28,7 @@ defined('UA_STATES_PATH')
 //This lib respects PSR-0, PSR-1 and PSR-2
 $iniFile = dirname(dirname(dirname(__DIR__))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 if (is_readable($iniFile)) {
-    include_once($iniFile);
+    include_once $iniFile;
 }
 
 //Initial DI Container

@@ -326,20 +326,24 @@ trait TraitProxy
         }
 
         //Clone states stack
-        $clonedStatesArray = new \ArrayObject();
-        foreach ($this->_states as $key=>$state) {
-            //Clone each stated object
-            $clonedState = clone $state;
-            //Update new stack
-            $clonedStatesArray[$key] = $clonedState;
+        if ($this->_states instanceof \ArrayObject) {
+            $clonedStatesArray = new \ArrayObject();
+            foreach ($this->_states as $key=>$state) {
+                //Clone each stated object
+                $clonedState = clone $state;
+                //Update new stack
+                $clonedStatesArray[$key] = $clonedState;
+            }
+            $this->_states = $clonedStatesArray;
         }
-        $this->_states = $clonedStatesArray;
 
         //Enabling states
-        $activesStates = array_keys($this->_activesStates->getArrayCopy());
-        $this->_activesStates = new \ArrayObject();
-        foreach ($activesStates as $stateName) {
-            $this->enableState($stateName);
+        if ($this->_activesStates instanceof \ArrayObject) {
+            $activesStates = array_keys($this->_activesStates->getArrayCopy());
+            $this->_activesStates = new \ArrayObject();
+            foreach ($activesStates as $stateName) {
+                $this->enableState($stateName);
+            }
         }
 
         return $this;
@@ -467,7 +471,11 @@ trait TraitProxy
      */
     public function listAvailableStates()
     {
-        return array_keys($this->_states->getArrayCopy());
+        if ($this->_states instanceof \ArrayObject) {
+            return array_keys($this->_states->getArrayCopy());
+        } else {
+            return array();
+        }
     }
 
     /**
@@ -476,7 +484,38 @@ trait TraitProxy
      */
     public function listEnabledStates()
     {
-        return array_keys($this->_activesStates->getArrayCopy());
+        if ($this->_activesStates instanceof \ArrayObject) {
+            return array_keys($this->_activesStates->getArrayCopy());
+        } else {
+            return array();
+        }
+    }
+
+    /**
+     * Check if the current entity is in the required state defined by $stateName
+     * @param string $stateName
+     * @return bool
+     * @throws Exception\InvalidArgument when $stateName is not a valid string
+     */
+    public function inState($stateName)
+    {
+        if (!is_string($stateName) && (is_object($stateName) && !is_callable(array($stateName, '__toString')))) {
+            throw new Exception\InvalidArgument('Error, $stateName is not valid');
+        }
+
+        $stateName = (string) $stateName;
+        $enabledStatesList = $this->listEnabledStates();
+
+        if (is_array($enabledStatesList) && !empty($enabledStatesList)) {
+            //array_flip + isset is more efficient than in_array
+            $stateName = str_replace('_', '', strtolower($stateName));
+            $enabledStatesList = array_flip(
+                array_map('strtolower', $enabledStatesList)
+            );
+            return isset($enabledStatesList[$stateName]);
+        } else {
+            return false;
+        }
     }
 
     /**

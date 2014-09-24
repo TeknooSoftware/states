@@ -33,7 +33,7 @@ namespace UniAlteri\States\DI;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com> *
  */
-class Container extends \Pimple implements ContainerInterface
+class Container extends \Pimple\Container implements ContainerInterface
 {
     /**
      * Test if the identifier respects the pattern [a-zA-Z_][a-zA-Z0-9_\-]*

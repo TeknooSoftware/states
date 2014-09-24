@@ -20,6 +20,7 @@
  */
 
 namespace UniAlteri\States\Factory;
+
 use UniAlteri\States\DI;
 
 /**
