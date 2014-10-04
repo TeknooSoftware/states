@@ -10,12 +10,12 @@ Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.
 
 Example
 -------
-An example of using this library is available in the folder : [Demo](demo/demo.php).
+An example of using this library is available in the folder : [Demo](demo/demo_article.php).
 
 API Documentation
 -----------------
-Generated documentation from the library with PhpDocumentor : [Open](docs/api/index.html).
+Generated documentation from the library with PhpDocumentor : [Open](https://cdn.rawgit.com/UniAlteri/states/master/docs/api/index.html).
 
 Behavior Documentation
 ----------------------
-Documentation to explain how this library works : [Behavior](Documentation to explain how this library works : [Behavior](Behavior).).
+Documentation to explain how this library works : [Behavior](Documentation to explain how this library works : [Behavior](docs/howto/behavior.md).
