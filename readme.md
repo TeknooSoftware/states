@@ -18,4 +18,4 @@ Generated documentation from the library with PhpDocumentor : [Open](https://cdn
 
 Behavior Documentation
 ----------------------
-Documentation to explain how this library works : [Behavior](Documentation to explain how this library works : [Behavior](docs/howto/behavior.md).
+Documentation to explain how this library works : [Behavior](docs/howto/behavior.md).
