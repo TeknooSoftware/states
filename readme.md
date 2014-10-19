@@ -1,8 +1,8 @@
 Uni Alteri - States library
 ===========================
 
-Welcome and thank you to having downloaded this library. It allows you to write PHP classes more readable and
-more usable thanks by cutting your code according to states of your objects.
+Welcome and thank you to having downloaded this library. It allows you to write more readable and usable PHP classes,
+by cutting your code according to states of your objects.
 
 Quick startup
 -------------

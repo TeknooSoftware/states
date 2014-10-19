@@ -25,7 +25,7 @@ namespace UniAlteri\States\DI;
  * Class InjectionClosure
  * Default Injection Closure container to use to extract and manipulate all methods of a stated class
  * in the proxy. These containers implement also a "static" mechanism to allow developers to use
- * cleanly static var in these functions.
+ * clean static var in these functions.
  *
  * @package     States
  * @subpackage  DI
