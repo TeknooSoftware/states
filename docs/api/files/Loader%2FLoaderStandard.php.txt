@@ -261,7 +261,7 @@ class LoaderStandard implements LoaderInterface
             $factoryFile = $path.DIRECTORY_SEPARATOR.$className.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
             if (is_readable($factoryFile)) {
                 //Factory found, load it
-                include_once($factoryFile);
+                include_once $factoryFile;
 
                 //Compute factory class name with its namespace
                 $factoryClassName = $namespaceString.'\\'.$className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
@@ -329,7 +329,7 @@ class LoaderStandard implements LoaderInterface
                 $factoryClassFile = $path.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
                 if ($this->_testFileExist($factoryClassFile)) {
                     //Factory found, load it
-                    include_once($factoryClassFile);
+                    include_once $factoryClassFile;
 
                     if (class_exists($factoryClassName, false)) {
                         //Class found and loaded
