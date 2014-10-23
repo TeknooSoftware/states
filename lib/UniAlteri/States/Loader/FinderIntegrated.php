@@ -21,9 +21,6 @@
 
 namespace UniAlteri\States\Loader;
 
-use \UniAlteri\States\States;
-use \UniAlteri\States\Proxy;
-
 /**
  * Class FinderIntegrated
  * Implementation of the finder. It is used with this library to find from each stated class all states
