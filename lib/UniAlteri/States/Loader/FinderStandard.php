@@ -112,7 +112,7 @@ class FinderStandard implements FinderInterface
         }
 
         //Checks if the path is available
-        $hD = @opendir($statesPath);
+        $hD = opendir($statesPath);
         if (false === $hD) {
             throw new Exception\UnReadablePath('Error, the path "'.$statesPath.'" is not available');
         }
