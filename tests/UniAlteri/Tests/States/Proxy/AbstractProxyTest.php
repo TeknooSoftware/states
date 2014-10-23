@@ -89,7 +89,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      * @param string $stateToEnable         to enable automatically into proxy
      * @param bool   $allowingMethodCalling : if state must
      */
-    protected function _initializeProxy($stateToEnable = 'state1', $allowingMethodCalling=false)
+    protected function initializeProxy($stateToEnable = 'state1', $allowingMethodCalling=false)
     {
         $this->_proxy->registerState('state1', $this->_state1);
         $this->_proxy->registerState('state2', $this->_state2);
@@ -227,7 +227,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnRegisterState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->unregisterState('state2');
         $this->assertEquals(array('state1', 'state3'), $this->_proxy->listAvailableStates());
     }
@@ -237,7 +237,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnRegisterEnableState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->enableState('state3');
         $this->assertEquals(array('state1', 'state3'), $this->_proxy->listEnabledStates());
         $this->_proxy->unregisterState('state3');
@@ -278,7 +278,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testSwitchState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->switchState('state3');
         $this->assertEquals(array('state3'), $this->_proxy->listEnabledStates());
     }
@@ -288,7 +288,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testSwitchAlreadyLoadedState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->enableState('state2');
         $this->_proxy->switchState('state2');
         $this->assertEquals(array('state2'), $this->_proxy->listEnabledStates());
@@ -327,7 +327,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testEnableState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->disableState('state1');
         $this->_proxy->enableState('state2');
         $this->assertEquals(array('state2'), $this->_proxy->listEnabledStates());
@@ -338,7 +338,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testEnableMultipleState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->enableState('state2');
         $this->assertEquals(array('state1', 'state2'), $this->_proxy->listEnabledStates());
     }
@@ -376,7 +376,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testDisableState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->enableState('state2');
         $this->_proxy->disableState('state1');
         $this->assertEquals(array('state2'), $this->_proxy->listEnabledStates());
@@ -387,7 +387,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testDisableAllStates()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->enableState('state2');
         $this->_proxy->disableAllStates();
         $this->assertEquals(array(), $this->_proxy->listEnabledStates());
@@ -446,7 +446,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testListEnabledStates()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->assertEquals(array('state1'), $this->_proxy->listEnabledStates());
     }
 
@@ -496,7 +496,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStaticWithoutCalling()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         try {
             $this->_proxy->getStatic();
         } catch (Exception\UnavailableClosure $e) {
@@ -640,7 +640,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallNonImplementedWithState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->testOfState1();
         } catch (Exception\MethodNotImplemented $e) {
@@ -656,7 +656,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMultipleImplementation()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->enableState('state2');
         $this->_state1->allowMethod();
         $this->_state2->allowMethod();
@@ -676,7 +676,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCall()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->myCustomMethod('foo', 'bar');
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -689,7 +689,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodOfDisabledState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->enableState('state2');
         $this->_state1->disallowMethod();
         $this->_state2->disallowMethod();
@@ -709,7 +709,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodOfState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->enableState('state2');
         $this->_proxy->enableState('state3');
         $this->_state1->allowMethod();
@@ -729,7 +729,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallMethodOfWithNoState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $this->_proxy->enableState('state2');
         $this->_proxy->enableState('state3');
         $this->_state1->disallowMethod();
@@ -764,7 +764,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionNonExistentName()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->getMethodDescription('NonExistentMethod');
         } catch (Exception\MethodNotImplemented $e) {
@@ -780,7 +780,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionNonExistentNameByState()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_state1->simulateFailureInGetMethodDescription();
         try {
             $this->_proxy->getMethodDescription('NonExistentMethod');
@@ -797,7 +797,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionInvalidStateName()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         try {
             $this->_proxy->getMethodDescription('method1', array());
         } catch (Exception\InvalidArgument $e) {
@@ -813,7 +813,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionInvalidState()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->getMethodDescription('NonExistentMethod', 'NonExistentState');
         } catch (Exception\StateNotFound $e) {
@@ -836,7 +836,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionFromFunction()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         global $proxy;
         $proxy = $this->_proxy;
@@ -876,7 +876,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionFromOtherObject()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         global $proxy;
         $proxy = $this->_proxy;
@@ -919,7 +919,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionFromChildObject()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         global $proxy;
         $proxy = $this->_proxy;
@@ -963,7 +963,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionFromOtherObjectSameClass()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
@@ -1007,7 +1007,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionFromThis()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
@@ -1050,7 +1050,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionFromStaticOtherClass()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         global $proxy;
         $proxy = $this->_proxy;
@@ -1090,7 +1090,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionFromStaticChildClass()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         global $proxy;
         $proxy = $this->_proxy;
@@ -1131,7 +1131,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionFromStaticSameClass()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsDescription.php';
 
@@ -1174,7 +1174,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionFromClosure()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         $proxy = $this->_proxy;
 
@@ -1220,7 +1220,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionFromClosureBound()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         $proxy = $this->_proxy;
 
@@ -1258,7 +1258,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescriptionOfState()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_state2->allowMethod();
         $this->assertInstanceOf('\ReflectionMethod', $this->_proxy->getMethodDescription('test', 'state2'));
     }
@@ -1275,7 +1275,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallFromFunction()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         global $proxy;
         $proxy = $this->_proxy;
@@ -1318,7 +1318,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallFromOtherObject()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         global $proxy;
         $proxy = $this->_proxy;
@@ -1364,7 +1364,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallFromChildObject()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         global $proxy;
         $proxy = $this->_proxy;
@@ -1414,7 +1414,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallFromOtherObjectSameClass()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
@@ -1467,7 +1467,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallFromThis()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
@@ -1519,7 +1519,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallFromStaticOtherClass()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         global $proxy;
         $proxy = $this->_proxy;
@@ -1562,7 +1562,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallFromStaticChildClass()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         global $proxy;
         $proxy = $this->_proxy;
@@ -1609,7 +1609,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallFromStaticSameClass()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
 
@@ -1661,7 +1661,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallFromClosure()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         $proxy = $this->_proxy;
 
@@ -1710,7 +1710,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallFromClosureBound()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         //To access to the proxy in the method
         $proxy = $this->_proxy;
 
@@ -1758,7 +1758,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvokeNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $proxy = $this->_proxy;
             $proxy();
@@ -1775,7 +1775,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvoke()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $proxy = $this->_proxy;
         $proxy('foo', 'bar');
 
@@ -1789,7 +1789,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->property;
         } catch (Exception\MethodNotImplemented $e) {
@@ -1805,7 +1805,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGet()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->property;
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -1818,7 +1818,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testIssetNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $a = isset($this->_proxy->property);
         } catch (Exception\MethodNotImplemented $e) {
@@ -1834,7 +1834,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testIsset()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $a = isset($this->_proxy->property);
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -1847,7 +1847,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->property = 'foo';
         } catch (Exception\MethodNotImplemented $e) {
@@ -1863,7 +1863,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testSet()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->property = 'foo';
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -1876,7 +1876,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnsetNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             unset($this->_proxy->property);
         } catch (Exception\MethodNotImplemented $e) {
@@ -1892,7 +1892,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnset()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         unset($this->_proxy->property);
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -1905,7 +1905,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testToStringNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         $s='error';
         try {
             $s = (string) $this->_proxy;
@@ -1921,7 +1921,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testToString()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $s = (string) $this->_proxy;
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -1934,7 +1934,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCountNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->count();
         } catch (Exception\MethodNotImplemented $e) {
@@ -1950,7 +1950,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCount()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->count();
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -1963,7 +1963,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testOffsetExistNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $a = isset($this->_proxy[2]);
         } catch (Exception\MethodNotImplemented $e) {
@@ -1979,7 +1979,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testOffsetExist()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $a = isset($this->_proxy[2]);
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -1992,7 +1992,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testOffsetGetNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $value = $this->_proxy[2];
         } catch (Exception\MethodNotImplemented $e) {
@@ -2008,7 +2008,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testOffsetGet()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy[2];
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2021,7 +2021,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testOffsetSetNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy[2] = 'foo';
         } catch (Exception\MethodNotImplemented $e) {
@@ -2037,7 +2037,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testOffsetSet()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy[2] = 'foo';
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2050,7 +2050,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testOffsetUnsetNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             unset($this->_proxy[2]);
         } catch (Exception\MethodNotImplemented $e) {
@@ -2066,7 +2066,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testOffsetUnset()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         unset($this->_proxy[2]);
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2079,7 +2079,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCurrentNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->current();
         } catch (Exception\MethodNotImplemented $e) {
@@ -2095,7 +2095,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCurrent()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->current();
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2108,7 +2108,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testKeyNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->key();
         } catch (Exception\MethodNotImplemented $e) {
@@ -2124,7 +2124,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testKey()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->key();
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2137,7 +2137,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testNextNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->next();
         } catch (Exception\MethodNotImplemented $e) {
@@ -2153,7 +2153,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testNext()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->next();
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2166,7 +2166,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testRewindNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->rewind();
         } catch (Exception\MethodNotImplemented $e) {
@@ -2182,7 +2182,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testRewind()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->rewind();
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2195,7 +2195,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testSeekNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->seek(1);
         } catch (Exception\MethodNotImplemented $e) {
@@ -2211,7 +2211,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testSeek()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->seek(2);
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2224,7 +2224,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testValidNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->valid();
         } catch (Exception\MethodNotImplemented $e) {
@@ -2240,7 +2240,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testValid()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->valid();
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2253,7 +2253,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetIteratorNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->getIterator();
         } catch (Exception\MethodNotImplemented $e) {
@@ -2269,7 +2269,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetIterator()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->getIterator();
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2282,7 +2282,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testSerializeNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             serialize($this->_proxy);
         } catch (Exception\MethodNotImplemented $e) {
@@ -2298,7 +2298,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testSerialize()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->serialize();
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2311,7 +2311,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnSerializeNonImplemented()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
         try {
             $this->_proxy->unserialize('');
         } catch (Exception\MethodNotImplemented $e) {
@@ -2327,7 +2327,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testUnSerialize()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->unserialize('foo');
 
         $this->assertTrue($this->_state1->methodWasCalled());
@@ -2345,7 +2345,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCloning()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $this->_proxy->setDIContainer(new Support\MockDIContainer());
         $obj = new \stdClass();
         $obj->foo = 'bar';
@@ -2388,7 +2388,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCloningNonInitializeProxy()
     {
-        $this->_initializeProxy('state1', true);
+        $this->initializeProxy('state1', true);
         $reflectionClassProxyObject = new \ReflectionClass($this->_proxy);
         $proxyNotInitialized = $reflectionClassProxyObject->newInstanceWithoutConstructor();
         try {

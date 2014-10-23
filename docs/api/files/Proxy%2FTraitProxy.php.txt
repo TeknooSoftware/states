@@ -176,7 +176,7 @@ trait TraitProxy
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    protected function _validateName($name)
+    protected function validateName($name)
     {
         if (!is_string($name)) {
             throw new Exception\IllegalArgument('Error, the identifier is not a string');
@@ -363,7 +363,7 @@ trait TraitProxy
      */
     public function registerState($stateName, States\States\StateInterface $stateObject)
     {
-        $this->_validateName($stateName);
+        $this->validateName($stateName);
 
         $this->_states[$stateName] = $stateObject;
 
@@ -380,7 +380,7 @@ trait TraitProxy
      */
     public function unregisterState($stateName)
     {
-        $this->_validateName($stateName);
+        $this->validateName($stateName);
 
         if (isset($this->_states[$stateName])) {
             unset($this->_states[$stateName]);
@@ -404,7 +404,7 @@ trait TraitProxy
      */
     public function switchState($stateName)
     {
-        $this->_validateName($stateName);
+        $this->validateName($stateName);
 
         $this->disableAllStates();
         $this->enableState($stateName);
@@ -422,7 +422,7 @@ trait TraitProxy
      */
     public function enableState($stateName)
     {
-        $this->_validateName($stateName);
+        $this->validateName($stateName);
 
         if (isset($this->_states[$stateName])) {
             $this->_activesStates[$stateName] = $this->_states[$stateName];
@@ -443,7 +443,7 @@ trait TraitProxy
      */
     public function disableState($stateName)
     {
-        $this->_validateName($stateName);
+        $this->validateName($stateName);
 
         if (isset($this->_activesStates[$stateName])) {
             unset($this->_activesStates[$stateName]);

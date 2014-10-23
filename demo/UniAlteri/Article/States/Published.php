@@ -45,7 +45,7 @@ class Published implements States\StateInterface
      */
     public function getFormattedBody()
     {
-        $body = $this->_getAttribute('body');
+        $body = $this->getAttribute('body');
 
         return str_replace(
             array(
@@ -65,7 +65,7 @@ class Published implements States\StateInterface
     /**
      * Fake method not callable in public scope
      */
-    protected function _getDate()
+    protected function getDate()
     {
 
     }

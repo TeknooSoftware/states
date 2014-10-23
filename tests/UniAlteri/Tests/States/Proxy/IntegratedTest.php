@@ -73,7 +73,7 @@ class IntegratedTest extends AbstractProxyTest
             return;
         } catch (\Exception $e) { }
 
-        $this->fail('Error, the method _initializeProxy() of the trait proxy has not been called');
+        $this->fail('Error, the method initializeProxy() of the trait proxy has not been called');
     }
 
     /**

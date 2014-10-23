@@ -41,7 +41,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      * @return bool
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    protected function _validateName($name)
+    protected function validateName($name)
     {
         if (is_string($name) && 1 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_\-]*#iS', $name)) {
             return true;
@@ -70,7 +70,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      */
     public function get($name)
     {
-        $this->_validateName($name);
+        $this->validateName($name);
 
         try {
             return $this[$name];
@@ -90,7 +90,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      */
     public function registerInstance($name, $instance)
     {
-        $this->_validateName($name);
+        $this->validateName($name);
 
         if (\is_string($instance)) {
             //Load the class and build a new object of this class
@@ -120,7 +120,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      */
     public function registerService($name, $instance)
     {
-        $this->_validateName($name);
+        $this->validateName($name);
 
         if (\is_object($instance)) {
             //Add the object as service into container
@@ -154,7 +154,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      */
     public function testEntry($name)
     {
-        $this->_validateName($name);
+        $this->validateName($name);
 
         return isset($this[$name]);
     }
@@ -167,7 +167,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      */
     public function unregister($name)
     {
-        $this->_validateName($name);
+        $this->validateName($name);
         unset($this[$name]);
 
         return $this;

@@ -83,17 +83,17 @@ trait TraitState
      * @var array
      */
     protected $_methodsNamesToIgnoreArray = array(
-        '__construct'                   => '__construct',
-        '__destruct'                    => '__destruct',
-        '_getReflectionClass'           => '_getReflectionClass',
-        '_buildInjectionClosureObject'  => '_buildInjectionClosureObject',
-        '_checkVisibility'              => '_checkVisibility',
-        'setDIContainer'                => 'setDIContainer',
-        'getDIContainer'                => 'getDIContainer',
-        'listMethods'                   => 'listMethods',
-        'testMethod'                    => 'testMethod',
-        'getMethodDescription'          => 'getMethodDescription',
-        'getClosure'                    => 'getClosure'
+        '__construct' => '__construct',
+        '__destruct' => '__destruct',
+        'getReflectionClass' => 'getReflectionClass',
+        'buildInjectionClosureObject' => 'buildInjectionClosureObject',
+        'checkVisibility' => 'checkVisibility',
+        'setDIContainer' => 'setDIContainer',
+        'getDIContainer' => 'getDIContainer',
+        'listMethods' => 'listMethods',
+        'testMethod' => 'testMethod',
+        'getMethodDescription' => 'getMethodDescription',
+        'getClosure' => 'getClosure'
     );
 
     /**
@@ -101,7 +101,7 @@ trait TraitState
      * @api
      * @return \ReflectionClass
      */
-    protected function _getReflectionClass()
+    protected function getReflectionClass()
     {
         if (null === $this->_reflectionClass) {
             $this->_reflectionClass = new \ReflectionClass(\get_class($this));
@@ -139,7 +139,7 @@ trait TraitState
     {
         if (null === $this->_methodsListArray) {
             //Extract methods
-            $thisReflectionClass = $this->_getReflectionClass();
+            $thisReflectionClass = $this->getReflectionClass();
             $flags = \ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED | \ReflectionMethod::IS_PRIVATE;
             $methodsArray = $thisReflectionClass->getMethods($flags);
 
@@ -171,7 +171,7 @@ trait TraitState
      * @return bool
      * @throws Exception\InvalidArgument
      */
-    protected function _checkVisibility($methodName, $scope)
+    protected function checkVisibility($methodName, $scope)
     {
         $visible = false;
         if (isset($this->_reflectionsMethods[$methodName])) {
@@ -221,7 +221,7 @@ trait TraitState
         //Method is already extracted
         if (isset($this->_reflectionsMethods[$methodName])) {
             if ($this->_reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
-                return $this->_checkVisibility($methodName, $scope);
+                return $this->checkVisibility($methodName, $scope);
             } else {
                 return false;
             }
@@ -238,7 +238,7 @@ trait TraitState
         }
 
         //Return the result according with the visibility
-        return $this->_checkVisibility($methodName, $scope);
+        return $this->checkVisibility($methodName, $scope);
     }
 
     /**
@@ -259,7 +259,7 @@ trait TraitState
             throw new Exception\MethodNotImplemented('Error, this method is not implemented by this state');
         }
 
-        $thisReflectionClass = $this->_getReflectionClass();
+        $thisReflectionClass = $this->getReflectionClass();
 
         //Initialize ArrayObject to store Reflection Methods
         if (!($this->_reflectionsMethods instanceof \ArrayObject)) {
@@ -297,7 +297,7 @@ trait TraitState
      * @return DI\InjectionClosureInterface
      * @throws Exception\IllegalService     when there are no DI Container or Injection Closure Container bought
      */
-    protected function _buildInjectionClosureObject()
+    protected function buildInjectionClosureObject()
     {
         $container = $this->getDIContainer();
         if (!$container instanceof DI\ContainerInterface) {
@@ -348,13 +348,13 @@ trait TraitState
             $closure = \Closure::bind($closure, $proxy, get_class($proxy));
 
             //Include the closure into the container
-            $injectionClosure = $this->_buildInjectionClosureObject()->setClosure($closure);
+            $injectionClosure = $this->buildInjectionClosureObject()->setClosure($closure);
             $injectionClosure->setDIContainer($this->getDIContainer());
             $this->_closuresObjects[$methodName] = $injectionClosure;
         }
 
         //Check visibility scope
-        if (false === $this->_checkVisibility($methodName, $scope)) {
+        if (false === $this->checkVisibility($methodName, $scope)) {
             throw new Exception\MethodNotImplemented(
                 'Method "'.$methodName.'" is not available for this state'
             );

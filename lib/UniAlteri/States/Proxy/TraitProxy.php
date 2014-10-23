@@ -84,8 +84,9 @@ trait TraitProxy
      * @param string $scopeVisibility      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Exception
      */
-    protected function _callInState(States\States\StateInterface $state, $methodName, array &$arguments, $scopeVisibility)
+    protected function callInState(States\States\StateInterface $state, $methodName, array &$arguments, $scopeVisibility)
     {
         //Method found, extract it
         $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility);
@@ -118,14 +119,14 @@ trait TraitProxy
      * @throws Exception\IllegalArgument      if the method's name is not a string
      * @throws \Exception
      */
-    protected function _findMethodToCall($methodName, array $arguments)
+    protected function findMethodToCall($methodName, array $arguments)
     {
         if (!is_string($methodName)) {
             throw new Exception\IllegalArgument('Error the methodName is not a string');
         }
 
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
-        $scopeVisibility = $this->_getVisibilityScope();
+        $scopeVisibility = $this->getVisibilityScope();
 
         $methodsWithStatesArray = explode('Of', $methodName);
         if (1 < count($methodsWithStatesArray)) {
@@ -137,7 +138,7 @@ trait TraitProxy
 
                 $activeStateObject = $this->_activesStates[$statesName];
                 if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
-                    return $this->_callInState($activeStateObject, $methodName, $arguments, $scopeVisibility);
+                    return $this->callInState($activeStateObject, $methodName, $arguments, $scopeVisibility);
                 }
             }
         }
@@ -159,7 +160,7 @@ trait TraitProxy
         }
 
         if ($activeStateFound instanceof States\States\StateInterface) {
-            return $this->_callInState($activeStateFound, $methodName, $arguments, $scopeVisibility);
+            return $this->callInState($activeStateFound, $methodName, $arguments, $scopeVisibility);
         }
 
         throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available with actives states');
@@ -172,7 +173,7 @@ trait TraitProxy
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    protected function _validateName($name)
+    protected function validateName($name)
     {
         if (!is_string($name)) {
             throw new Exception\IllegalArgument('Error, the identifier is not a string');
@@ -190,14 +191,14 @@ trait TraitProxy
      */
     public function __construct()
     {
-        $this->_initializeProxy();
+        $this->initializeProxy();
     }
 
     /**
      * Method to call into the constructor to initialize proxy's vars.
      * Externalized from the constructor to allow developers to write their own constructors into theirs classes
      */
-    protected function _initializeProxy()
+    protected function initializeProxy()
     {
         //Initialize internal vars
         $this->_states = new \ArrayObject();
@@ -234,7 +235,7 @@ trait TraitProxy
      *                      States\States\StateInterface::VISIBILITY_PROTECTED
      *                      States\States\StateInterface::VISIBILITY_PRIVATE
      */
-    protected function _getVisibilityScope($limit = 5)
+    protected function getVisibilityScope($limit = 5)
     {
         //Get the calling stack
         $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT|DEBUG_BACKTRACE_IGNORE_ARGS, intval($limit));
@@ -359,7 +360,7 @@ trait TraitProxy
      */
     public function registerState($stateName, States\States\StateInterface $stateObject)
     {
-        $this->_validateName($stateName);
+        $this->validateName($stateName);
 
         $this->_states[$stateName] = $stateObject;
 
@@ -376,7 +377,7 @@ trait TraitProxy
      */
     public function unregisterState($stateName)
     {
-        $this->_validateName($stateName);
+        $this->validateName($stateName);
 
         if (isset($this->_states[$stateName])) {
             unset($this->_states[$stateName]);
@@ -400,7 +401,7 @@ trait TraitProxy
      */
     public function switchState($stateName)
     {
-        $this->_validateName($stateName);
+        $this->validateName($stateName);
 
         $this->disableAllStates();
         $this->enableState($stateName);
@@ -418,7 +419,7 @@ trait TraitProxy
      */
     public function enableState($stateName)
     {
-        $this->_validateName($stateName);
+        $this->validateName($stateName);
 
         if (isset($this->_states[$stateName])) {
             $this->_activesStates[$stateName] = $this->_states[$stateName];
@@ -439,7 +440,7 @@ trait TraitProxy
      */
     public function disableState($stateName)
     {
-        $this->_validateName($stateName);
+        $this->validateName($stateName);
 
         if (isset($this->_activesStates[$stateName])) {
             unset($this->_activesStates[$stateName]);
@@ -544,7 +545,7 @@ trait TraitProxy
      */
     public function __call($name, $arguments)
     {
-        return $this->_findMethodToCall($name, $arguments);
+        return $this->findMethodToCall($name, $arguments);
     }
 
     /**
@@ -569,7 +570,7 @@ trait TraitProxy
         }
 
         //Retrieve the visibility scope
-        $scopeVisibility = $this->_getVisibilityScope(3);
+        $scopeVisibility = $this->getVisibilityScope(3);
         try {
             if (null === $stateName) {
                 //Browse all state to find the method
@@ -612,7 +613,7 @@ trait TraitProxy
      */
     public function __invoke()
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /*******************
@@ -628,7 +629,7 @@ trait TraitProxy
      */
     public function __get($name)
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -640,7 +641,7 @@ trait TraitProxy
      */
     public function __isset($name)
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -653,7 +654,7 @@ trait TraitProxy
      */
     public function __set($name, $value)
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -665,7 +666,7 @@ trait TraitProxy
      */
     public function __unset($name)
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -676,7 +677,7 @@ trait TraitProxy
     public function __toString()
     {
         try {
-            return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+            return $this->findMethodToCall(__FUNCTION__, func_get_args());
         } catch (\Exception $e) {
             return '';
         }
@@ -694,7 +695,7 @@ trait TraitProxy
      */
     public function count()
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -707,7 +708,7 @@ trait TraitProxy
      */
     public function offsetExists($offset)
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -720,7 +721,7 @@ trait TraitProxy
      */
     public function offsetGet($offset)
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -733,7 +734,7 @@ trait TraitProxy
      */
     public function offsetSet($offset, $value)
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -744,7 +745,7 @@ trait TraitProxy
      */
     public function offsetUnset($offset)
     {
-        $this->_findMethodToCall(__FUNCTION__, array($offset));
+        $this->findMethodToCall(__FUNCTION__, array($offset));
     }
 
     /************
@@ -759,7 +760,7 @@ trait TraitProxy
      */
     public function current()
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -770,7 +771,7 @@ trait TraitProxy
      */
     public function key()
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -780,7 +781,7 @@ trait TraitProxy
      */
     public function next()
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -790,7 +791,7 @@ trait TraitProxy
      */
     public function rewind()
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -801,7 +802,7 @@ trait TraitProxy
      */
     public function seek($position)
     {
-        $this->_findMethodToCall(__FUNCTION__, array($position));
+        $this->findMethodToCall(__FUNCTION__, array($position));
     }
 
     /**
@@ -812,7 +813,7 @@ trait TraitProxy
      */
     public function valid()
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -823,7 +824,7 @@ trait TraitProxy
      */
     public function getIterator()
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /*****************
@@ -838,7 +839,7 @@ trait TraitProxy
      */
     public function serialize()
     {
-        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -849,6 +850,6 @@ trait TraitProxy
      */
     public function unserialize($serialized)
     {
-        $this->_findMethodToCall(__FUNCTION__, array($serialized));
+        $this->findMethodToCall(__FUNCTION__, array($serialized));
     }
 }

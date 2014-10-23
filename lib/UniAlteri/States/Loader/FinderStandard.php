@@ -197,7 +197,7 @@ class FinderStandard implements FinderInterface
      * @param  string $statedClassName
      * @return string
      */
-    protected function _getClassedName($statedClassName)
+    protected function getClassedName($statedClassName)
     {
         $parts = explode('\\', $statedClassName);
 
@@ -213,7 +213,7 @@ class FinderStandard implements FinderInterface
     public function loadProxy()
     {
         //Build the class name
-        $classPartName = $this->_getClassedName($this->_statedClassName);
+        $classPartName = $this->getClassedName($this->_statedClassName);
         $proxyClassName = $this->_statedClassName.'\\'.$classPartName;
         if (!class_exists($proxyClassName, false)) {
             //Build the class file path for the proxy (standardized into ProxyInterface)

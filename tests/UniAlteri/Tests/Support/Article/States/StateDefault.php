@@ -44,7 +44,7 @@ class StateDefault extends States\AbstractState
      */
     public function getTitle()
     {
-        return $this->_getAttribute('title');
+        return $this->getAttribute('title');
     }
 
     /**
@@ -53,7 +53,7 @@ class StateDefault extends States\AbstractState
      */
     public function isPublished()
     {
-        $isPublished = $this->_getAttribute('is_published');
+        $isPublished = $this->getAttribute('is_published');
 
         return !empty($isPublished);
     }
