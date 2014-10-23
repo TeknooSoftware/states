@@ -36,15 +36,15 @@ $loader->registerNamespace('\\demo\\UniAlteri\\Multiple', 'phar://'.__DIR__.DS.'
 print 'Uni Alteri - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize user
 print 'user'.PHP_EOL;
-$simpleUser = new UniAlteri\Multiple\User\User('simple 1');
+$simpleUser = new UniAlteri\Multiple\User('simple 1');
 print 'get name : '.$simpleUser->getName().PHP_EOL;
 //Initialize moderator
 print 'moderator'.PHP_EOL;
-$moderator = new UniAlteri\Multiple\User\User('modo', false, true);
+$moderator = new UniAlteri\Multiple\User('modo', false, true);
 print 'get name : '.$moderator->getName().PHP_EOL;
 //Initialize admin
 print 'admin'.PHP_EOL;
-$administrator = new UniAlteri\Multiple\User\User('admin', true, true);
+$administrator = new UniAlteri\Multiple\User('admin', true, true);
 print 'get name : '.$administrator->getName().PHP_EOL.PHP_EOL;
 
 //Method not available, because state Moderator is not enabled
