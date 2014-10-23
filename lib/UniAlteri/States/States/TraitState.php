@@ -147,7 +147,7 @@ trait TraitState
             $methodsFinalArray = new \ArrayObject();
             foreach ($methodsArray as $methodReflection) {
                 //We ignore all static methods, there are incompatible with stated behavior
-                if (false == $methodReflection->isStatic()) {
+                if (false === $methodReflection->isStatic()) {
                     //Store reflection into the local cache
                     $methodNameString = $methodReflection->getName();
                     if (!isset($this->_methodsNamesToIgnoreArray[$methodNameString])) {
@@ -183,14 +183,14 @@ trait TraitState
                     break;
                 case StateInterface::VISIBILITY_PROTECTED:
                     //Can not access to private methods
-                    if (false == $this->_reflectionsMethods[$methodName]->isPrivate()) {
+                    if (false === $this->_reflectionsMethods[$methodName]->isPrivate()) {
                         //It's a private method, do like if there is no method
                         $visible = true;
                     }
                     break;
                 case StateInterface::VISIBILITY_PUBLIC:
                     //Can not access to protect and private method.
-                    if (true == $this->_reflectionsMethods[$methodName]->isPublic()) {
+                    if (true === $this->_reflectionsMethods[$methodName]->isPublic()) {
                         //It's not a public method, do like if there is no method
                         $visible = true;
                     }
@@ -270,7 +270,7 @@ trait TraitState
             //Load Reflection Method if it is not already done
             if (!isset($this->_reflectionsMethods[$methodName])) {
                 $methodDescription = $thisReflectionClass->getMethod($methodName);
-                if (false != $methodDescription->isStatic()) {
+                if (false !== $methodDescription->isStatic()) {
                     //Method static are not available
                     throw new Exception\MethodNotImplemented(
                         'Method "'.$methodName.'" is not available for this state'
