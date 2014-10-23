@@ -111,8 +111,10 @@ class FinderStandard implements FinderInterface
             throw new Exception\UnavailablePath('Error, the path "'.$statesPath.'" was not found');
         }
 
-        //Checks if the path is available
+        //Checks if the path is available, use error_reporting to not use @
+        $oldErrorReporting = error_reporting(E_ALL & ~E_WARNING);
         $hD = opendir($statesPath);
+        error_reporting($oldErrorReporting);
         if (false === $hD) {
             throw new Exception\UnReadablePath('Error, the path "'.$statesPath.'" is not available');
         }
