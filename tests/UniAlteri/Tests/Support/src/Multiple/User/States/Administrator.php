@@ -44,6 +44,6 @@ class Administrator extends States\AbstractState
      */
     public function setModerator(\UniAlteri\Tests\Support\Multiple\User $user)
     {
-        $user->_setModerator(true);
+        $user->setModerator(true);
     }
 }

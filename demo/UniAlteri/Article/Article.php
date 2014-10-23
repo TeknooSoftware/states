@@ -48,7 +48,7 @@ class Article extends Proxy\Integrated
      * @param  string $name
      * @return mixed
      */
-    protected function _getAttribute($name)
+    protected function getAttribute($name)
     {
         if (isset($this->_data[$name])) {
             return $this->_data[$name];
@@ -62,7 +62,7 @@ class Article extends Proxy\Integrated
      * @param string $name
      * @param mixed  $value
      */
-    public function _setAttribute($name, $value)
+    public function setAttribute($name, $value)
     {
         $this->_data[$name] = $value;
     }

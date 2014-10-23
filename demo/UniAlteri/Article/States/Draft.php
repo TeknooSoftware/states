@@ -42,7 +42,7 @@ class Draft extends States\AbstractState
      */
     public function publishing()
     {
-        $this->_setAttribute('is_published', true);
+        $this->setAttribute('is_published', true);
         //Switch to Published State, so this state will be not available for next operations
         $this->disableState('Draft');
         $this->enableState('Published');
@@ -54,7 +54,7 @@ class Draft extends States\AbstractState
      */
     public function setTitle($title)
     {
-        $this->_setAttribute('title', $title);
+        $this->setAttribute('title', $title);
     }
 
     /**
@@ -63,7 +63,7 @@ class Draft extends States\AbstractState
      */
     public function setBody($body)
     {
-        $this->_setAttribute('body', $body);
+        $this->setAttribute('body', $body);
     }
 
     /**
@@ -72,6 +72,6 @@ class Draft extends States\AbstractState
      */
     public function getBodySource()
     {
-        return $this->_getAttribute('body');
+        return $this->getAttribute('body');
     }
 }

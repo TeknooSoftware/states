@@ -51,7 +51,7 @@ class StateDefault extends States\AbstractState
      * Transform this user as moderator
      * @param boolean $value
      */
-    protected function _setModerator($value)
+    protected function setModerator($value)
     {
         $this->_isModerator = $value;
         if (!empty($this->_isModerator)) {

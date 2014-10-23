@@ -130,7 +130,7 @@ class InjectionClosure implements InjectionClosureInterface
      * @return boolean
      * @throws Exception\IllegalName
      */
-    protected function _validatingName($name)
+    protected function validatingName($name)
     {
         if (0 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_]*$#iS', $name)) {
             throw new Exception\IllegalName('Illegal name for static property "'.$name.'"');
@@ -149,7 +149,7 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function saveProperty($name, $value)
     {
-        if (true === $this->_validatingName($name)) {
+        if (true === $this->validatingName($name)) {
             $this->_properties->{$name} = $value;
         }
 
@@ -164,7 +164,7 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function deleteProperty($name)
     {
-        if (true === $this->_validatingName($name) && isset($this->_properties->{$name})) {
+        if (true === $this->validatingName($name) && isset($this->_properties->{$name})) {
             unset($this->_properties->{$name});
         }
 
@@ -179,7 +179,7 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function getProperty($name)
     {
-        if (true === $this->_validatingName($name) && isset($this->_properties->{$name})) {
+        if (true === $this->validatingName($name) && isset($this->_properties->{$name})) {
             return $this->_properties->{$name};
         }
 
@@ -194,7 +194,7 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function testProperty($name)
     {
-        if (true === $this->_validatingName($name) && isset($this->_properties->{$name})) {
+        if (true === $this->validatingName($name) && isset($this->_properties->{$name})) {
             return true;
         }
 
