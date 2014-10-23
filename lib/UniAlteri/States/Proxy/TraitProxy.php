@@ -84,14 +84,9 @@ trait TraitProxy
      * @param string $scopeVisibility      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\IllegalArgument      if the method's name is not a string
      */
     protected function _callInState(States\States\StateInterface $state, $methodName, array &$arguments, $scopeVisibility)
     {
-        if (!is_string($methodName)) {
-            throw new Exception\IllegalArgument('Error the methodName is not a string');
-        }
-
         //Method found, extract it
         $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility);
         //Change current injection
