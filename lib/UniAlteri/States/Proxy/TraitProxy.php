@@ -77,6 +77,43 @@ trait TraitProxy
     protected $_currentInjectionClosure = null;
 
     /**
+     * Execute a method available in a state
+     * @param States\States\StateInterface $state
+     * @param $methodName
+     * @param array $arguments
+     * @param string $scopeVisibility      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @return mixed
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws Exception\IllegalArgument      if the method's name is not a string
+     */
+    protected function _callInState(States\States\StateInterface $state, $methodName, array &$arguments, $scopeVisibility)
+    {
+        if (!is_string($methodName)) {
+            throw new Exception\IllegalArgument('Error the methodName is not a string');
+        }
+
+        //Method found, extract it
+        $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility);
+        //Change current injection
+        $previousClosure = $this->_currentInjectionClosure;
+        $this->_currentInjectionClosure = $callingClosure;
+
+        //Call it
+        try {
+            $returnValues = call_user_func_array($callingClosure, $arguments);
+        } catch (\Exception $e) {
+            //Restore previous closure
+            $this->_currentInjectionClosure = $previousClosure;
+            throw $e;
+        }
+
+        //Restore previous closure
+        $this->_currentInjectionClosure = $previousClosure;
+
+        return $returnValues;
+    }
+
+    /**
      * Internal method to find closure and call it
      * @param  string                         $methodName
      * @param  array                          $arguments  of the call
@@ -105,25 +142,7 @@ trait TraitProxy
 
                 $activeStateObject = $this->_activesStates[$statesName];
                 if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
-                    //Method found, extract it
-                    $callingClosure = $activeStateObject->getClosure($methodName, $this, $scopeVisibility);
-                    //Change current injection
-                    $previousClosure = $this->_currentInjectionClosure;
-                    $this->_currentInjectionClosure = $callingClosure;
-
-                    //Call it
-                    try {
-                        $returnValues = call_user_func_array($callingClosure, $arguments);
-                    } catch (\Exception $e) {
-                        //Restore previous closure
-                        $this->_currentInjectionClosure = $previousClosure;
-                        throw $e;
-                    }
-
-                    //Restore previous closure
-                    $this->_currentInjectionClosure = $previousClosure;
-
-                    return $returnValues;
+                    return $this->_callInState($activeStateObject, $methodName, $arguments, $scopeVisibility);
                 }
             }
         }
@@ -144,26 +163,8 @@ trait TraitProxy
             }
         }
 
-        if (null !== $activeStateFound) {
-            //Method found, extract it
-            $callingClosure = $activeStateFound->getClosure($methodName, $this, $scopeVisibility);
-            //Change current injection
-            $previousClosure = $this->_currentInjectionClosure;
-            $this->_currentInjectionClosure = $callingClosure;
-
-            //call it
-            try {
-                $returnValues = call_user_func_array($callingClosure, $arguments);
-            } catch (\Exception $e) {
-                //Restore previous closure
-                $this->_currentInjectionClosure = $previousClosure;
-                throw $e;
-            }
-
-            //Restore previous closure
-            $this->_currentInjectionClosure = $previousClosure;
-
-            return $returnValues;
+        if ($activeStateFound instanceof States\States\StateInterface) {
+            return $this->_callInState($activeStateFound, $methodName, $arguments, $scopeVisibility);
         }
 
         throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available with actives states');
