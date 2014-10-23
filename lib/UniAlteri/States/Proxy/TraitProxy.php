@@ -77,7 +77,7 @@ trait TraitProxy
     protected $_currentInjectionClosure = null;
 
     /**
-     * Execute a method available in a state
+     * Execute a method available in a state passed in args with the injection closure
      * @param States\States\StateInterface $state
      * @param $methodName
      * @param array $arguments
@@ -114,7 +114,7 @@ trait TraitProxy
     }
 
     /**
-     * Internal method to find closure and call it
+     * Internal method to find closure required by caller to call it
      * @param  string                         $methodName
      * @param  array                          $arguments  of the call
      * @return mixed
@@ -123,7 +123,7 @@ trait TraitProxy
      * @throws Exception\IllegalArgument      if the method's name is not a string
      * @throws \Exception
      */
-    protected function _callThroughState($methodName, array $arguments)
+    protected function _findMethodToCall($methodName, array $arguments)
     {
         if (!is_string($methodName)) {
             throw new Exception\IllegalArgument('Error the methodName is not a string');
@@ -549,7 +549,7 @@ trait TraitProxy
      */
     public function __call($name, $arguments)
     {
-        return $this->_callThroughState($name, $arguments);
+        return $this->_findMethodToCall($name, $arguments);
     }
 
     /**
@@ -617,7 +617,7 @@ trait TraitProxy
      */
     public function __invoke()
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /*******************
@@ -633,7 +633,7 @@ trait TraitProxy
      */
     public function __get($name)
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -645,7 +645,7 @@ trait TraitProxy
      */
     public function __isset($name)
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -658,7 +658,7 @@ trait TraitProxy
      */
     public function __set($name, $value)
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -670,7 +670,7 @@ trait TraitProxy
      */
     public function __unset($name)
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -681,7 +681,7 @@ trait TraitProxy
     public function __toString()
     {
         try {
-            return $this->_callThroughState(__FUNCTION__, func_get_args());
+            return $this->_findMethodToCall(__FUNCTION__, func_get_args());
         } catch (\Exception $e) {
             return '';
         }
@@ -699,7 +699,7 @@ trait TraitProxy
      */
     public function count()
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -712,7 +712,7 @@ trait TraitProxy
      */
     public function offsetExists($offset)
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -725,7 +725,7 @@ trait TraitProxy
      */
     public function offsetGet($offset)
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -738,7 +738,7 @@ trait TraitProxy
      */
     public function offsetSet($offset, $value)
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -749,7 +749,7 @@ trait TraitProxy
      */
     public function offsetUnset($offset)
     {
-        $this->_callThroughState(__FUNCTION__, func_get_args());
+        $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /************
@@ -764,7 +764,7 @@ trait TraitProxy
      */
     public function current()
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -775,7 +775,7 @@ trait TraitProxy
      */
     public function key()
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -785,7 +785,7 @@ trait TraitProxy
      */
     public function next()
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -795,7 +795,7 @@ trait TraitProxy
      */
     public function rewind()
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -806,7 +806,7 @@ trait TraitProxy
      */
     public function seek($position)
     {
-        $this->_callThroughState(__FUNCTION__, func_get_args());
+        $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -817,7 +817,7 @@ trait TraitProxy
      */
     public function valid()
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -828,7 +828,7 @@ trait TraitProxy
      */
     public function getIterator()
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /*****************
@@ -843,7 +843,7 @@ trait TraitProxy
      */
     public function serialize()
     {
-        return $this->_callThroughState(__FUNCTION__, func_get_args());
+        return $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 
     /**
@@ -854,6 +854,6 @@ trait TraitProxy
      */
     public function unserialize($serialized)
     {
-        $this->_callThroughState(__FUNCTION__, func_get_args());
+        $this->_findMethodToCall(__FUNCTION__, func_get_args());
     }
 }
