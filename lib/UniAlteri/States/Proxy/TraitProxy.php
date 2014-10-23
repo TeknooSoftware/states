@@ -744,7 +744,7 @@ trait TraitProxy
      */
     public function offsetUnset($offset)
     {
-        $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        $this->_findMethodToCall(__FUNCTION__, array($offset));
     }
 
     /************
@@ -801,7 +801,7 @@ trait TraitProxy
      */
     public function seek($position)
     {
-        $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        $this->_findMethodToCall(__FUNCTION__, array($position));
     }
 
     /**
@@ -849,6 +849,6 @@ trait TraitProxy
      */
     public function unserialize($serialized)
     {
-        $this->_findMethodToCall(__FUNCTION__, func_get_args());
+        $this->_findMethodToCall(__FUNCTION__, array($serialized));
     }
 }
