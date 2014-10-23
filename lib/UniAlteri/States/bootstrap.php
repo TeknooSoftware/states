@@ -34,13 +34,13 @@ if (is_readable($iniFile)) {
 //Initial DI Container
 $diContainer = new DI\Container();
 
-//Service to generate a finder for Stated class factory
 /**
+ * Service to generate a finder for Stated class factory
  * @param DI\ContainerInterface $container
  * @return Loader\FinderIntegrated
  * @throws Exception\UnavailableFactory if the local factory is not available
  */
-$finderService = function ($container) {
+$finderService = function (DI\ContainerInterface $container) {
     if (false === $container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
         throw new Exception\UnavailableFactory('Error, the factory is not available into container');
     }
