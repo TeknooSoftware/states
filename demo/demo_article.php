@@ -35,7 +35,7 @@ $loader->registerNamespace('\\demo\\UniAlteri', __DIR__.DS.'UniAlteri');
 print 'Uni Alteri - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize new article
 print 'Empty article'.PHP_EOL;
-$article = new UniAlteri\Article();
+$article = new UniAlteri\Article\Article();
 
 //It is a new article, not published, the constructor load the state 'Draft'
 print 'Active states :';
@@ -60,7 +60,7 @@ print $article->getFormattedBody().PHP_EOL;
 
 //Open a published article
 print 'Open article'.PHP_EOL;
-$article = new UniAlteri\Article(
+$article = new UniAlteri\Article\Article(
     array(
         'is_published'  => true,
         'title'         => 'title 2',
