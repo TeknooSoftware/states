@@ -60,7 +60,8 @@ print $article->getFormattedBody().PHP_EOL;
 
 //Open a published article
 print 'Open article'.PHP_EOL;
-$article = new UniAlteri\Article\Article(
+//You call also directly the stated class name and not the proxy
+$article = new UniAlteri\Article(
     array(
         'is_published'  => true,
         'title'         => 'title 2',

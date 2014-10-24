@@ -39,7 +39,8 @@ $simpleUser = new UniAlteri\Multiple\User\User('simple 1');
 print 'get name : '.$simpleUser->getName().PHP_EOL;
 //Initialize moderator
 print 'moderator'.PHP_EOL;
-$moderator = new UniAlteri\Multiple\User\User('modo', false, true);
+//You call also directly the stated class name and not the proxy
+$moderator = new UniAlteri\Multiple\User('modo', false, true);
 print 'get name : '.$moderator->getName().PHP_EOL;
 //Initialize admin
 print 'admin'.PHP_EOL;
