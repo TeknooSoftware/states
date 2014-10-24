@@ -100,7 +100,7 @@ class LoaderStandard implements LoaderInterface
      * Return the current include path manager
      * @return IncludePathManagerInterface
      */
-    protected function _getIncludePathManager()
+    protected function getIncludePathManager()
     {
         return $this->_includePathManager;
     }
@@ -195,13 +195,13 @@ class LoaderStandard implements LoaderInterface
     /**
      * To update included path before loading class
      */
-    protected function _updateIncludedPaths()
+    protected function updateIncludedPaths()
     {
         //Convert paths to string
         //Update path into PHP
-        $oldIncludedPaths = $this->_getIncludePathManager()->setIncludePath(
+        $oldIncludedPaths = $this->getIncludePathManager()->setIncludePath(
             array_merge(
-                $this->_getIncludePathManager()->getIncludePath(),
+                $this->getIncludePathManager()->getIncludePath(),
                 array_values($this->_includedPathsArray->getArrayCopy())
             )
         );
@@ -212,11 +212,11 @@ class LoaderStandard implements LoaderInterface
     /**
      * To restore previous loaded class
      */
-    protected function _restoreIncludedPaths()
+    protected function restoreIncludedPaths()
     {
         if (!$this->_previousIncludedPathStack->isEmpty()) {
             $oldIncludedPaths = $this->_previousIncludedPathStack->pop();
-            $this->_getIncludePathManager()->setIncludePath($oldIncludedPaths);
+            $this->getIncludePathManager()->setIncludePath($oldIncludedPaths);
         }
     }
 
@@ -227,7 +227,7 @@ class LoaderStandard implements LoaderInterface
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      */
-    protected function _loadNamespaceClass($class)
+    protected function loadNamespaceClass($class)
     {
         $namespacePartsArray = explode('\\', $class);
 
@@ -286,9 +286,9 @@ class LoaderStandard implements LoaderInterface
      * @param  string  $pathFile
      * @return boolean
      */
-    protected function _testFileExist($pathFile)
+    protected function testFileExist($pathFile)
     {
-        foreach ($this->_getIncludePathManager()->getIncludePath() as $includedPath) {
+        foreach ($this->getIncludePathManager()->getIncludePath() as $includedPath) {
             if (is_readable($includedPath.DIRECTORY_SEPARATOR.$pathFile)) {
                 return true;
             }
@@ -314,12 +314,12 @@ class LoaderStandard implements LoaderInterface
         }
 
         //Update included path
-        $this->_updateIncludedPaths();
+        $this->updateIncludedPaths();
         $classLoaded = false;
 
         try {
             //If the namespace is configured, check its paths
-            if (false === $this->_loadNamespaceClass($className)) {
+            if (false === $this->loadNamespaceClass($className)) {
                 //Class not found, switch to basic mode, replace \ and _ by a directory separator
                 $path = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $className);
                 if (DIRECTORY_SEPARATOR == $path[0]) {
@@ -327,7 +327,7 @@ class LoaderStandard implements LoaderInterface
                 }
                 //Compute the factory file of the stated class
                 $factoryClassFile = $path.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
-                if ($this->_testFileExist($factoryClassFile)) {
+                if ($this->testFileExist($factoryClassFile)) {
                     //Factory found, load it
                     include_once $factoryClassFile;
 
@@ -346,11 +346,11 @@ class LoaderStandard implements LoaderInterface
                 $classLoaded = true;
             }
         } catch (\Exception $e) {
-            $this->_restoreIncludedPaths();
+            $this->restoreIncludedPaths();
             throw $e;
         }
 
-        $this->_restoreIncludedPaths();
+        $this->restoreIncludedPaths();
 
         return $classLoaded;
     }

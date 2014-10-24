@@ -111,8 +111,10 @@ class FinderStandard implements FinderInterface
             throw new Exception\UnavailablePath('Error, the path "'.$statesPath.'" was not found');
         }
 
-        //Checks if the path is available
-        $hD = @opendir($statesPath);
+        //Checks if the path is available, use error_reporting to not use @
+        $oldErrorReporting = error_reporting(E_ALL & ~E_WARNING);
+        $hD = opendir($statesPath);
+        error_reporting($oldErrorReporting);
         if (false === $hD) {
             throw new Exception\UnReadablePath('Error, the path "'.$statesPath.'" is not available');
         }
@@ -195,7 +197,7 @@ class FinderStandard implements FinderInterface
      * @param  string $statedClassName
      * @return string
      */
-    protected function _getClassedName($statedClassName)
+    protected function getClassedName($statedClassName)
     {
         $parts = explode('\\', $statedClassName);
 
@@ -211,7 +213,7 @@ class FinderStandard implements FinderInterface
     public function loadProxy()
     {
         //Build the class name
-        $classPartName = $this->_getClassedName($this->_statedClassName);
+        $classPartName = $this->getClassedName($this->_statedClassName);
         $proxyClassName = $this->_statedClassName.'\\'.$classPartName;
         if (!class_exists($proxyClassName, false)) {
             //Build the class file path for the proxy (standardized into ProxyInterface)

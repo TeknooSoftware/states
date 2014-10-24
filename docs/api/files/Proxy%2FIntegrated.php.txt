@@ -59,9 +59,9 @@ class Integrated extends Standard
     public function __construct()
     {
         //Call the method of the trait to initialize local attributes of the proxy
-        $this->_initializeProxy();
+        $this->initializeProxy();
         //Call the startup factory to initialize this proxy
-        $this->_initializeObjectWithFactory();
+        $this->initializeObjectWithFactory();
     }
 
     /**
@@ -70,7 +70,7 @@ class Integrated extends Standard
      * @throws Exception\IllegalFactory
      * @throws Exception\UnavailableFactory
      */
-    protected function _initializeObjectWithFactory()
+    protected function initializeObjectWithFactory()
     {
         //Check if the startup class exists
         if (!class_exists(static::$_startupFactoryClassName, true)) {
