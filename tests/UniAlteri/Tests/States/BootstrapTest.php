@@ -54,13 +54,13 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
     /**
      * @var \UniAlteri\States\Loader\LoaderInterface
      */
-    protected $_loader = null;
+    protected $loader = null;
 
     protected function tearDown()
     {
-        if ($this->_loader instanceof \UniAlteri\States\Loader\LoaderInterface) {
+        if ($this->loader instanceof \UniAlteri\States\Loader\LoaderInterface) {
             spl_autoload_unregister(
-                array($this->_loader, 'loadClass')
+                array($this->loader, 'loadClass')
             );
         }
 
@@ -70,13 +70,13 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
     public function testLoaderInitialisation()
     {
         //Call the bootstrap, it returns the loader
-        $this->_loader = include 'UniAlteri/States/bootstrap.php';
+        $this->loader = include 'UniAlteri/States/bootstrap.php';
 
         //Check if the loader implements the good interface
-        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->_loader);
+        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->loader);
 
         //Check if the loader is initialized with a di container
-        $container = $this->_loader->getDIContainer();
+        $container = $this->loader->getDIContainer();
         $this->assertInstanceOf('\\UniAlteri\\States\\DI\\ContainerInterface', $container);
 
         //Check if required services are present into the di container

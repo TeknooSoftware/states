@@ -46,7 +46,7 @@ class IntegratedTest extends AbstractFactoryTest
     {
         $factory = new Factory\Integrated();
         if (true === $populateContainer) {
-            $factory->setDIContainer($this->_container);
+            $factory->setDIContainer($this->container);
         }
 
         return $factory;

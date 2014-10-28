@@ -39,13 +39,13 @@ use \UniAlteri\Tests\Support;
 class StandardTest extends AbstractProxyTest
 {
     /**
-     * Build a proxy object, into $this->_proxy to test it
+     * Build a proxy object, into $this->proxy to test it
      * @return Proxy\ProxyInterface
      */
-    protected function _buildProxy()
+    protected function buildProxy()
     {
-        $this->_proxy = new Support\StandardProxy();
+        $this->proxy = new Support\StandardProxy();
 
-        return $this->_proxy;
+        return $this->proxy;
     }
 }

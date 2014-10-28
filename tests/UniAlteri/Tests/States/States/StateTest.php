@@ -44,7 +44,7 @@ class StateTest extends AbstractStatesTest
      * @param  boolean                $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyPublic
      */
-    protected function _getPublicClassObject($initializeContainer=true)
+    protected function getPublicClassObject($initializeContainer=true)
     {
         return new Support\MockOnlyPublic($initializeContainer);
     }
@@ -54,7 +54,7 @@ class StateTest extends AbstractStatesTest
      * @param  boolean                   $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyProtected
      */
-    protected function _getProtectedClassObject($initializeContainer=true)
+    protected function getProtectedClassObject($initializeContainer=true)
     {
         return new Support\MockOnlyProtected($initializeContainer);
     }
@@ -64,7 +64,7 @@ class StateTest extends AbstractStatesTest
      * @param  boolean                 $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyPrivate
      */
-    protected function _getPrivateClassObject($initializeContainer=true)
+    protected function getPrivateClassObject($initializeContainer=true)
     {
         return new Support\MockOnlyPrivate($initializeContainer);
     }
@@ -73,7 +73,7 @@ class StateTest extends AbstractStatesTest
      * Build a virtual proxy for test
      * @return Proxy\ProxyInterface
      */
-    protected function _getMockProxy()
+    protected function getMockProxy()
     {
         return new Support\MockProxy(array());
     }

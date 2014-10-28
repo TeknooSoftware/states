@@ -41,13 +41,13 @@ class MockDIContainer implements DI\ContainerInterface
      * Registered instance in this container
      * @var array
      */
-    protected $_instance = array();
+    protected $instance = array();
 
     /**
      * Registered service in this container
      * @var array
      */
-    protected $_service = array();
+    protected $service = array();
 
     /**
      * To support object cloning : All registry must be cloning, but not theirs values
@@ -66,14 +66,14 @@ class MockDIContainer implements DI\ContainerInterface
      */
     public function get($name)
     {
-        if (isset($this->_instance[$name])) {
+        if (isset($this->instance[$name])) {
             //It is an instance, return it
-            return $this->_instance[$name];
+            return $this->instance[$name];
         }
 
-        if (isset($this->_service[$name])) {
+        if (isset($this->service[$name])) {
             //It is a service, call it and return the result
-            return $this->_service[$name]($this);
+            return $this->service[$name]($this);
         }
 
         return null;
@@ -89,7 +89,7 @@ class MockDIContainer implements DI\ContainerInterface
      */
     public function registerInstance($name, $instance)
     {
-        $this->_instance[$name] = $instance;
+        $this->instance[$name] = $instance;
     }
 
     /**
@@ -102,7 +102,7 @@ class MockDIContainer implements DI\ContainerInterface
      */
     public function registerService($name, $instance)
     {
-        $this->_service[$name] = $instance;
+        $this->service[$name] = $instance;
     }
 
     /**
@@ -112,7 +112,7 @@ class MockDIContainer implements DI\ContainerInterface
      */
     public function testEntry($name)
     {
-        return isset($this->_instance[$name]) || isset($this->_service[$name]);
+        return isset($this->instance[$name]) || isset($this->service[$name]);
     }
 
     /**
@@ -122,12 +122,12 @@ class MockDIContainer implements DI\ContainerInterface
      */
     public function unregister($name)
     {
-        if (isset($this->_instance[$name])) {
-            unset($this->_instance[$name]);
+        if (isset($this->instance[$name])) {
+            unset($this->instance[$name]);
         }
 
-        if (isset($this->_service[$name])) {
-            unset($this->_service[$name]);
+        if (isset($this->service[$name])) {
+            unset($this->service[$name]);
         }
 
         return $this;

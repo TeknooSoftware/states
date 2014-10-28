@@ -41,12 +41,12 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     /**
      * @var \Closure
      */
-    protected $_closure = null;
+    protected $closure = null;
 
     /**
      * @var array
      */
-    protected $_properties = array();
+    protected $properties = array();
 
     /**
      * To register a DI container for this object
@@ -73,7 +73,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     public function __invoke()
     {
         //Simulate the behavior of a real injection closure class : call the closure with args
-        return \call_user_func_array($this->_closure, \func_get_args());
+        return \call_user_func_array($this->closure, \func_get_args());
     }
 
     /**
@@ -83,7 +83,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
      */
     public function setClosure($closure)
     {
-        $this->_closure = $closure;
+        $this->closure = $closure;
 
         return $this;
     }
@@ -94,7 +94,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
      */
     public function getClosure()
     {
-        return $this->_closure;
+        return $this->closure;
     }
 
     /**
@@ -108,7 +108,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     public function saveProperty($name, $value)
     {
         //Simulate real property management
-        $this->_properties[$name] = $value;
+        $this->properties[$name] = $value;
 
         return $this;
     }
@@ -122,8 +122,8 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     public function deleteProperty($name)
     {
         //Simulate real property management
-        if (isset($this->_properties[$name])) {
-            unset($this->_properties[$name]);
+        if (isset($this->properties[$name])) {
+            unset($this->properties[$name]);
         }
 
         return $this;
@@ -138,8 +138,8 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     public function getProperty($name)
     {
         //Simulate real property management
-        if (isset($this->_properties[$name])) {
-            return $this->_properties[$name];
+        if (isset($this->properties[$name])) {
+            return $this->properties[$name];
         }
 
         return null;
@@ -154,6 +154,6 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     public function testProperty($name)
     {
         //Simulate real property management
-        return isset($this->_properties[$name]);
+        return isset($this->properties[$name]);
     }
 }

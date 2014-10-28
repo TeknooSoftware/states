@@ -50,13 +50,13 @@ class MockProxy implements Proxy\ProxyInterface
      * Local registry of loaded states, to simulate a real proxy
      * @var array
      */
-    protected $_states = array();
+    protected $states = array();
 
     /**
      * Local registry of active states, to simulate a real proxy
      * @var array
      */
-    protected $_actives = array();
+    protected $actives = array();
 
     /**
      * @param mixed $arguments
@@ -116,7 +116,7 @@ class MockProxy implements Proxy\ProxyInterface
     public function registerState($stateName, States\States\StateInterface $stateObject)
     {
         //Simulate real behavior
-        $this->_states[$stateName] = $stateObject;
+        $this->states[$stateName] = $stateObject;
     }
 
     /**
@@ -127,8 +127,8 @@ class MockProxy implements Proxy\ProxyInterface
     public function unregisterState($stateName)
     {
         //Simulate real behavior
-        if (isset($this->_states[$stateName])) {
-            unset($this->_states[$stateName]);
+        if (isset($this->states[$stateName])) {
+            unset($this->states[$stateName]);
         }
     }
 
@@ -140,7 +140,7 @@ class MockProxy implements Proxy\ProxyInterface
     public function switchState($stateName)
     {
         //Simulate real behavior
-        $this->_actives = array($stateName => $stateName);
+        $this->actives = array($stateName => $stateName);
     }
 
     /**
@@ -152,7 +152,7 @@ class MockProxy implements Proxy\ProxyInterface
     public function enableState($stateName)
     {
         //Simulate real behavior
-        $this->_actives[$stateName] = $stateName;
+        $this->actives[$stateName] = $stateName;
     }
 
     /**
@@ -163,8 +163,8 @@ class MockProxy implements Proxy\ProxyInterface
     public function disableState($stateName)
     {
         //Simulate real behavior
-        if (isset($this->_actives[$stateName])) {
-            unset($this->_actives[$stateName]);
+        if (isset($this->actives[$stateName])) {
+            unset($this->actives[$stateName]);
         }
     }
 
@@ -175,7 +175,7 @@ class MockProxy implements Proxy\ProxyInterface
     public function disableAllStates()
     {
         //Simulate real behavior
-        $this->_actives = array();
+        $this->actives = array();
     }
 
     /**
@@ -185,7 +185,7 @@ class MockProxy implements Proxy\ProxyInterface
     public function listAvailableStates()
     {
         //Simulate real behavior
-        return array_keys($this->_states);
+        return array_keys($this->states);
     }
 
     /**
@@ -195,7 +195,7 @@ class MockProxy implements Proxy\ProxyInterface
     public function listEnabledStates()
     {
         //Simulate real behavior
-        return array_keys($this->_actives);
+        return array_keys($this->actives);
     }
 
     /**
@@ -206,7 +206,7 @@ class MockProxy implements Proxy\ProxyInterface
      */
     public function inState($stateName)
     {
-        return in_array(strtolower(str_replace('_', '', $stateName)), $this->_actives);
+        return in_array(strtolower(str_replace('_', '', $stateName)), $this->actives);
     }
 
     /**

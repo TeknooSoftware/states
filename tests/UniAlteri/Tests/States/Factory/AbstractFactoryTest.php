@@ -45,13 +45,13 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      * Mock container used for test
      * @var Support\MockDIContainer
      */
-    protected $_container = null;
+    protected $container = null;
 
     /**
      * Mock finder used for test
      * @var Support\MockFinder
      */
-    protected $_virtualFinder = null;
+    protected $virtualFinder = null;
 
     /**
      * Initialize container used into Factory
@@ -59,16 +59,16 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->_container = new Support\MockDIContainer();
-        $this->_registerMockFinderService();
+        $this->container = new Support\MockDIContainer();
+        $this->registerMockFinderService();
     }
 
     /**
      * Configure container
      */
-    protected function _registerMockFinderService()
+    protected function registerMockFinderService()
     {
-        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
+        $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
             if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
                 $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
 
@@ -82,10 +82,10 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Replace finder service to generate virtual finder whose return ArrayObject instead of php array
      */
-    protected function _registerMockFinderServiceWithArrayObject()
+    protected function registerMockFinderServiceWithArrayObject()
     {
-        $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
+        $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
+        $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
             if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
                 $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
 
@@ -150,7 +150,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testGetFinderExceptionNoFinderServiceGenerator()
     {
         try {
-            $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
+            $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
             $this->getFactoryObject(true)->getFinder();
         } catch (Exception\UnavailableLoader $e) {
             return;
@@ -165,8 +165,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testGetFinderExceptionBadFinderReturnedServiceGenerator()
     {
         try {
-            $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-            $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function () {
+            $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
+            $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function () {
                 return new \stdClass();
             });
             $this->getFactoryObject(true)->getFinder();
@@ -247,8 +247,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testInitialize()
     {
         $virtualFinder = new Support\MockFinder('', '');
-        $this->_container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->_container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function () use ($virtualFinder) {
+        $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
+        $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function () use ($virtualFinder) {
             return $virtualFinder;
         });
 
@@ -346,7 +346,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testListAvailableStateInStartupWithArrayObject()
     {
         $proxy = new Support\MockProxy(null);
-        $this->_registerMockFinderServiceWithArrayObject();
+        $this->registerMockFinderServiceWithArrayObject();
         $this->getFactoryObject()->startup($proxy);
         $this->assertEquals(
             array(
@@ -366,7 +366,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testDefaultStateAutomaticallySelectedInStartupWithArrayObject()
     {
         $proxy = new Support\MockProxy(null);
-        $this->_registerMockFinderServiceWithArrayObject();
+        $this->registerMockFinderServiceWithArrayObject();
         $this->getFactoryObject()->startup($proxy);
         $this->assertEquals($proxy->listEnabledStates(), array('StateDefault'));
     }
@@ -378,7 +378,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testRequiredStateSelectedInStartupWithArrayObject()
     {
         $proxy = new Support\MockProxy(null);
-        $this->_registerMockFinderServiceWithArrayObject();
+        $this->registerMockFinderServiceWithArrayObject();
         $this->getFactoryObject()->startup($proxy, 'MockState1');
         $this->assertEquals($proxy->listEnabledStates(), array('MockState1'));
     }

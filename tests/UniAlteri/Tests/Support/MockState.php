@@ -44,42 +44,42 @@ class MockState implements States\StateInterface
      * To allow always tested method or not
      * @var bool
      */
-    protected $_methodAllowed = false;
+    protected $methodAllowed = false;
 
     /**
      * To simulate a failure of the getMethodDescription, return an exception method not implemented, but testMethod return true..
      * @var bool
      */
-    protected $_simulateMethodDescriptionFailure = false;
+    protected $simulateMethodDescriptionFailure = false;
 
     /**
      * To check if a method has been called or not
      * @var bool
      */
-    protected $_methodCalled = false;
+    protected $methodCalled = false;
 
     /**
      * Fake closure to test method calling
      * @var DI\InjectionClosureInterface
      */
-    protected $_closure = null;
+    protected $closure = null;
 
     /**
      * Argument used in the call of closure
      * @var array
      */
-    protected $_calledArguments = null;
+    protected $calledArguments = null;
 
     /**
      * Return the method name called
      * @var string
      */
-    protected $_methodName = null;
+    protected $methodName = null;
 
     /**
      * @var MockInjectionClosure
      */
-    protected $_virtualInjection = null;
+    protected $virtualInjection = null;
 
     /**
      * Initialize virtual state
@@ -88,12 +88,12 @@ class MockState implements States\StateInterface
     {
         if ($closure instanceof \Closure) {
             //Use as testing closure the passed closure
-            $this->_closure = $closure;
+            $this->closure = $closure;
         } else {
             //No testing closure defined, build a default closure, this closure logs in this state all calls
             //Bind $this in another var because $this is not allowed into use()
             $state = $this;
-            $this->_closure = $closure = function () use ($state) {
+            $this->closure = $closure = function () use ($state) {
                 $state->setMethodCalled();
                 $state->setCalledArguments(func_get_args());
 
@@ -126,7 +126,7 @@ class MockState implements States\StateInterface
      */
     public function allowMethod()
     {
-        $this->_methodAllowed = true;
+        $this->methodAllowed = true;
     }
 
     /**
@@ -134,7 +134,7 @@ class MockState implements States\StateInterface
      */
     public function simulateFailureInGetMethodDescription()
     {
-        $this->_simulateMethodDescriptionFailure = true;
+        $this->simulateMethodDescriptionFailure = true;
     }
 
     /**
@@ -142,7 +142,7 @@ class MockState implements States\StateInterface
      */
     public function disallowMethod()
     {
-        $this->_methodAllowed = false;
+        $this->methodAllowed = false;
     }
 
     /**
@@ -193,7 +193,7 @@ class MockState implements States\StateInterface
                 break;
         }
 
-        return $this->_methodAllowed;
+        return $this->methodAllowed;
     }
 
     /**
@@ -204,7 +204,7 @@ class MockState implements States\StateInterface
      */
     public function getMethodDescription($methodName)
     {
-        if (false === $this->_methodAllowed || true === $this->_simulateMethodDescriptionFailure) {
+        if (false === $this->methodAllowed || true === $this->simulateMethodDescriptionFailure) {
             throw new Exception\MethodNotImplemented();
         }
 
@@ -224,7 +224,7 @@ class MockState implements States\StateInterface
      */
     public function getClosure($methodName, $proxy, $scope=States\StateInterface::VISIBILITY_PUBLIC)
     {
-        if (false === $this->_methodAllowed) {
+        if (false === $this->methodAllowed) {
             throw new Exception\MethodNotImplemented();
         }
 
@@ -258,16 +258,16 @@ class MockState implements States\StateInterface
                 break;
         }
 
-        $this->_methodName = $methodName;
+        $this->methodName = $methodName;
 
-        if (null === $this->_virtualInjection) {
-            $this->_closure = \Closure::bind($this->_closure, $proxy, get_class($proxy));
+        if (null === $this->virtualInjection) {
+            $this->closure = \Closure::bind($this->closure, $proxy, get_class($proxy));
             $injection = new MockInjectionClosure();
-            $injection->setClosure($this->_closure);
-            $this->_virtualInjection = $injection;
+            $injection->setClosure($this->closure);
+            $this->virtualInjection = $injection;
         }
 
-        return $this->_virtualInjection;
+        return $this->virtualInjection;
     }
 
     /**
@@ -277,8 +277,8 @@ class MockState implements States\StateInterface
      */
     public function methodWasCalled()
     {
-        $value = $this->_methodCalled;
-        $this->_methodCalled = false;
+        $value = $this->methodCalled;
+        $this->methodCalled = false;
 
         return $value;
     }
@@ -290,7 +290,7 @@ class MockState implements States\StateInterface
      */
     public function setCalledArguments($arguments)
     {
-        $this->_calledArguments = $arguments;
+        $this->calledArguments = $arguments;
     }
 
     /**
@@ -300,8 +300,8 @@ class MockState implements States\StateInterface
      */
     public function getCalledArguments()
     {
-        $arguments = $this->_calledArguments;
-        $this->_calledArguments = null;
+        $arguments = $this->calledArguments;
+        $this->calledArguments = null;
 
         return $arguments;
     }
@@ -312,7 +312,7 @@ class MockState implements States\StateInterface
      */
     public function setMethodCalled()
     {
-        $this->_methodCalled = true;
+        $this->methodCalled = true;
     }
 
     /**
@@ -322,8 +322,8 @@ class MockState implements States\StateInterface
      */
     public function getMethodNameCalled()
     {
-        $methodName = $this->_methodName;
-        $this->_methodName = null;
+        $methodName = $this->methodName;
+        $this->methodName = null;
 
         return $methodName;
     }

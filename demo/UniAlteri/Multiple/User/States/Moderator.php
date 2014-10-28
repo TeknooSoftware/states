@@ -43,6 +43,6 @@ class Moderator extends States\AbstractState
      */
     public function isModerator()
     {
-        return $this->_isModerator;
+        return $this->isModerator;
     }
 }

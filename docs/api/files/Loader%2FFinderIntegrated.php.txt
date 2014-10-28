@@ -21,9 +21,6 @@
 
 namespace UniAlteri\States\Loader;
 
-use \UniAlteri\States\States;
-use \UniAlteri\States\Proxy;
-
 /**
  * Class FinderIntegrated
  * Implementation of the finder. It is used with this library to find from each stated class all states
@@ -45,6 +42,6 @@ class FinderIntegrated extends FinderStandard
      * Default proxy class to use when there are no proxy class
      * @var string
      */
-    protected $_defaultProxyClassName = '\UniAlteri\States\Proxy\Integrated';
+    protected $defaultProxyClassName = '\UniAlteri\States\Proxy\Integrated';
 }
 

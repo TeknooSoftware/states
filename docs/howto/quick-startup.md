@@ -104,7 +104,7 @@ This library provides also another implementation, called `integrated` to allow 
 
 This new behavior is built on a second factory, defined by the interface `\UniAlteri\States\Factory\StartupFactoryInterface`.
 It is used in a static use, the startup factory will be never instantiated. The startup factory class to use is defined
-in the proxy class in the static attribute `$_startupFactoryClassName`.
+in the proxy class in the static attribute `$startupFactoryClassName`.
 
 By default, the proxy `\UniAlteri\States\Proxy\Integrated` is configured to use `\UniAlteri\States\Factory\StandardStartupFactory`.
 

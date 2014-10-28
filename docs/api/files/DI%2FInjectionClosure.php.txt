@@ -42,19 +42,19 @@ class InjectionClosure implements InjectionClosureInterface
      * DI Container to use with this closure
      * @var ContainerInterface
      */
-    protected $_diContainer = null;
+    protected $diContainer = null;
 
     /**
      * Closure hosted by this object
      * @var \Closure
      */
-    protected $_closure = null;
+    protected $closure = null;
 
     /**
      * All statics properties
      * @var \ArrayObject
      */
-    protected $_properties = null;
+    protected $properties = null;
 
     /**
      * To create a closure for a state with a support of persistent vars. (aka "static")
@@ -62,7 +62,7 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function __construct(\Closure $closure=null)
     {
-        $this->_properties = new \ArrayObject();
+        $this->properties = new \ArrayObject();
         if ($closure instanceof \Closure) {
             $this->setClosure($closure);
         }
@@ -75,7 +75,7 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function setDIContainer(ContainerInterface $container)
     {
-        $this->_diContainer = $container;
+        $this->diContainer = $container;
 
         return $this;
     }
@@ -86,7 +86,7 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function getDIContainer()
     {
-        return $this->_diContainer;
+        return $this->diContainer;
     }
 
     /**
@@ -95,7 +95,7 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function __invoke()
     {
-        return \call_user_func_array($this->_closure, \func_get_args());
+        return \call_user_func_array($this->closure, \func_get_args());
     }
 
     /**
@@ -110,7 +110,7 @@ class InjectionClosure implements InjectionClosureInterface
             throw new Exception\InvalidArgument('Error, $closure is not an instance of \Closure');
         }
 
-        $this->_closure = $closure;
+        $this->closure = $closure;
 
         return $this;
     }
@@ -121,7 +121,7 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function getClosure()
     {
-        return $this->_closure;
+        return $this->closure;
     }
 
     /**
@@ -130,7 +130,7 @@ class InjectionClosure implements InjectionClosureInterface
      * @return boolean
      * @throws Exception\IllegalName
      */
-    protected function _validatingName($name)
+    protected function validatingName($name)
     {
         if (0 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_]*$#iS', $name)) {
             throw new Exception\IllegalName('Illegal name for static property "'.$name.'"');
@@ -149,8 +149,8 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function saveProperty($name, $value)
     {
-        if (true === $this->_validatingName($name)) {
-            $this->_properties->{$name} = $value;
+        if (true === $this->validatingName($name)) {
+            $this->properties->{$name} = $value;
         }
 
         return $this;
@@ -164,8 +164,8 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function deleteProperty($name)
     {
-        if (true === $this->_validatingName($name) && isset($this->_properties->{$name})) {
-            unset($this->_properties->{$name});
+        if (true === $this->validatingName($name) && isset($this->properties->{$name})) {
+            unset($this->properties->{$name});
         }
 
         return $this;
@@ -179,8 +179,8 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function getProperty($name)
     {
-        if (true === $this->_validatingName($name) && isset($this->_properties->{$name})) {
-            return $this->_properties->{$name};
+        if (true === $this->validatingName($name) && isset($this->properties->{$name})) {
+            return $this->properties->{$name};
         }
 
         return null;
@@ -194,7 +194,7 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function testProperty($name)
     {
-        if (true === $this->_validatingName($name) && isset($this->_properties->{$name})) {
+        if (true === $this->validatingName($name) && isset($this->properties->{$name})) {
             return true;
         }
 

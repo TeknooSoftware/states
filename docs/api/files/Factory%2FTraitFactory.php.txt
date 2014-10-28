@@ -46,25 +46,25 @@ trait TraitFactory
      * DI Container to use with this factory object
      * @var DI\ContainerInterface
      */
-    protected $_diContainer = null;
+    protected $diContainer = null;
 
     /**
      * Finder used by this factory to load states and proxy for this stated class
      * @var Loader\FinderInterface
      */
-    protected $_finder = null;
+    protected $finder = null;
 
     /**
      * The stated class name used with this factory
      * @var string
      */
-    protected $_statedClassName = null;
+    protected $statedClassName = null;
 
     /**
      * The path of the stated class
      * @var string
      */
-    protected $_path = null;
+    protected $path = null;
 
     /**
      * To register a DI container for this object
@@ -73,7 +73,7 @@ trait TraitFactory
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
-        $this->_diContainer = $container;
+        $this->diContainer = $container;
 
         return $this;
     }
@@ -84,7 +84,7 @@ trait TraitFactory
      */
     public function getDIContainer()
     {
-        return $this->_diContainer;
+        return $this->diContainer;
     }
 
     /**
@@ -95,24 +95,24 @@ trait TraitFactory
      */
     public function getFinder()
     {
-        if (!$this->_finder instanceof Loader\FinderInterface) {
-            if (!$this->_diContainer instanceof DI\ContainerInterface) {
+        if (!$this->finder instanceof Loader\FinderInterface) {
+            if (!$this->diContainer instanceof DI\ContainerInterface) {
                 throw new Exception\UnavailableDIContainer('Error, there are no available Di Container');
             }
 
-            if (false === $this->_diContainer->testEntry(Loader\FinderInterface::DI_FINDER_SERVICE)) {
+            if (false === $this->diContainer->testEntry(Loader\FinderInterface::DI_FINDER_SERVICE)) {
                 throw new Exception\UnavailableLoader('Error, the finder is not available for this factory');
             }
 
-            $this->_finder = $this->_diContainer->get(Loader\FinderInterface::DI_FINDER_SERVICE);
-            if (!$this->_finder instanceof Loader\FinderInterface) {
+            $this->finder = $this->diContainer->get(Loader\FinderInterface::DI_FINDER_SERVICE);
+            if (!$this->finder instanceof Loader\FinderInterface) {
                 throw new Exception\UnavailableLoader(
                     'Error, the service does not return a finder object for this factory'
                 );
             }
         }
 
-        return $this->_finder;
+        return $this->finder;
     }
 
     /**
@@ -121,7 +121,7 @@ trait TraitFactory
      */
     public function getStatedClassName()
     {
-        return $this->_statedClassName;
+        return $this->statedClassName;
     }
 
     /**
@@ -130,7 +130,7 @@ trait TraitFactory
      */
     public function getPath()
     {
-        return $this->_path;
+        return $this->path;
     }
 
     /**
@@ -147,8 +147,8 @@ trait TraitFactory
     public function initialize($statedClassName, $path)
     {
         //Initialize this factory
-        $this->_statedClassName = $statedClassName;
-        $this->_path = $path;
+        $this->statedClassName = $statedClassName;
+        $this->path = $path;
 
         //Initialize Stated class container
         $diContainer = $this->getDIContainer();

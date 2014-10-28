@@ -43,7 +43,7 @@ class StandardStartupFactory implements StartupFactoryInterface
      * Registry of factory to use to initialize proxy object
      * @var FactoryInterface[]|\ArrayObject
      */
-    protected static $_factoryRegistry = null;
+    protected static $factoryRegistry = null;
 
     /**
      * To find the factory to use for the new proxy object to initialize it with its container and states.
@@ -62,11 +62,11 @@ class StandardStartupFactory implements StartupFactoryInterface
 
         $factoryIdentifier = get_class($proxyObject);
 
-        if (!static::$_factoryRegistry instanceof \ArrayObject || !isset(static::$_factoryRegistry[$factoryIdentifier])) {
+        if (!static::$factoryRegistry instanceof \ArrayObject || !isset(static::$factoryRegistry[$factoryIdentifier])) {
             throw new Exception\UnavailableFactory('Error, the factory "'.$factoryIdentifier.'" is not available');
         }
 
-        return static::$_factoryRegistry[$factoryIdentifier]->startup($proxyObject, $stateName);
+        return static::$factoryRegistry[$factoryIdentifier]->startup($proxyObject, $stateName);
     }
 
     /**
@@ -82,8 +82,8 @@ class StandardStartupFactory implements StartupFactoryInterface
             throw new Exception\InvalidArgument('Error the factory identifier must be a string');
         }
 
-        if (!static::$_factoryRegistry instanceof \ArrayObject) {
-            static::$_factoryRegistry = new \ArrayObject();
+        if (!static::$factoryRegistry instanceof \ArrayObject) {
+            static::$factoryRegistry = new \ArrayObject();
         }
 
         if (!$factoryObject instanceof FactoryInterface) {
@@ -92,7 +92,7 @@ class StandardStartupFactory implements StartupFactoryInterface
             );
         }
 
-        static::$_factoryRegistry[$factoryIdentifier] = $factoryObject;
+        static::$factoryRegistry[$factoryIdentifier] = $factoryObject;
     }
 
     /**
@@ -100,8 +100,8 @@ class StandardStartupFactory implements StartupFactoryInterface
      */
     public static function reset()
     {
-        if (static::$_factoryRegistry instanceof \ArrayObject) {
-            static::$_factoryRegistry = null;
+        if (static::$factoryRegistry instanceof \ArrayObject) {
+            static::$factoryRegistry = null;
         }
     }
 
@@ -111,11 +111,11 @@ class StandardStartupFactory implements StartupFactoryInterface
      */
     public static function listRegisteredFactory()
     {
-        if (!static::$_factoryRegistry instanceof \ArrayObject) {
+        if (!static::$factoryRegistry instanceof \ArrayObject) {
             return array();
         }
 
-        return array_keys(static::$_factoryRegistry->getArrayCopy());
+        return array_keys(static::$factoryRegistry->getArrayCopy());
     }
 }
 

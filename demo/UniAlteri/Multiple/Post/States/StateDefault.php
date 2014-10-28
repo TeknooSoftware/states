@@ -43,8 +43,8 @@ class StateDefault extends States\AbstractState
      */
     public function getTitle()
     {
-        if (!empty($this->_title)) {
-            return $this->_title;
+        if (!empty($this->title)) {
+            return $this->title;
         }
 
         return '';
@@ -57,7 +57,7 @@ class StateDefault extends States\AbstractState
      */
     public function setTitle($title)
     {
-        $this->_title = $title;
+        $this->title = $title;
 
         return $this;
     }
@@ -69,7 +69,7 @@ class StateDefault extends States\AbstractState
      */
     public function setBody($body)
     {
-        $this->_body = $body;
+        $this->body = $body;
     }
 
 }

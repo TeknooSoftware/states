@@ -44,7 +44,7 @@ class StateDefault extends States\AbstractState
      */
     public function getName()
     {
-        return $this->_userName;
+        return $this->userName;
     }
 
     /**
@@ -53,8 +53,8 @@ class StateDefault extends States\AbstractState
      */
     protected function setModerator($value)
     {
-        $this->_isModerator = $value;
-        if (!empty($this->_isModerator)) {
+        $this->isModerator = $value;
+        if (!empty($this->isModerator)) {
             $this->enableState('Moderator');
         }
     }

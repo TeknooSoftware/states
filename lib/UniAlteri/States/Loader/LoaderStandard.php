@@ -44,31 +44,31 @@ class LoaderStandard implements LoaderInterface
      * DI Container to use with this loader
      * @var DI\ContainerInterface
      */
-    protected $_diContainer = null;
+    protected $diContainer = null;
 
     /**
      * List of paths to include for this loader
      * @var \ArrayObject
      */
-    protected $_includedPathsArray = null;
+    protected $includedPathsArray = null;
 
     /**
      * List of paths where namespace are available
      * @var \SplQueue[]
      */
-    protected $_namespacesArray = null;
+    protected $namespacesArray = null;
 
     /**
      * Backup of previous included path configuration
      * @var \SplStack
      */
-    protected $_previousIncludedPathStack = null;
+    protected $previousIncludedPathStack = null;
 
     /**
      * Manager to use by this loader to manipulate include path
      * @var IncludePathManagerInterface
      */
-    protected $_includePathManager = null;
+    protected $includePathManager = null;
 
     /**
      * Initialize the loader object
@@ -84,10 +84,10 @@ class LoaderStandard implements LoaderInterface
         }
 
         //Initialize the object
-        $this->_includedPathsArray = new \ArrayObject();
-        $this->_namespacesArray = new \ArrayObject();
-        $this->_previousIncludedPathStack = new \SplStack();
-        $this->_includePathManager = $includePathManager;
+        $this->includedPathsArray = new \ArrayObject();
+        $this->namespacesArray = new \ArrayObject();
+        $this->previousIncludedPathStack = new \SplStack();
+        $this->includePathManager = $includePathManager;
 
         if (class_exists('\Phar', false)) {
             //instructs phar to intercept fopen, file_get_contents, opendir, and all of the stat-related functions
@@ -102,7 +102,7 @@ class LoaderStandard implements LoaderInterface
      */
     protected function getIncludePathManager()
     {
-        return $this->_includePathManager;
+        return $this->includePathManager;
     }
 
     /**
@@ -112,7 +112,7 @@ class LoaderStandard implements LoaderInterface
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
-        $this->_diContainer = $container;
+        $this->diContainer = $container;
 
         return $this;
     }
@@ -123,7 +123,7 @@ class LoaderStandard implements LoaderInterface
      */
     public function getDIContainer()
     {
-        return $this->_diContainer;
+        return $this->diContainer;
     }
 
     /**
@@ -138,7 +138,7 @@ class LoaderStandard implements LoaderInterface
             throw new Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
         }
 
-        $this->_includedPathsArray[$path] = $path;
+        $this->includedPathsArray[$path] = $path;
 
         return $this;
     }
@@ -149,7 +149,7 @@ class LoaderStandard implements LoaderInterface
      */
     public function getIncludedPaths()
     {
-        return $this->_includedPathsArray;
+        return $this->includedPathsArray;
     }
 
     /**
@@ -172,15 +172,15 @@ class LoaderStandard implements LoaderInterface
         }
 
         //Initialize the stack of paths for this namespace
-        if (!isset($this->_namespacesArray[$namespace])) {
-            $this->_namespacesArray[$namespace] = new \SplQueue();
+        if (!isset($this->namespacesArray[$namespace])) {
+            $this->namespacesArray[$namespace] = new \SplQueue();
         }
 
         if ('/' == $path[strlen($path)-1]) {
             $path = substr($path, 0, strlen($path)-1);
         }
 
-        $this->_namespacesArray[$namespace]->enqueue($path);
+        $this->namespacesArray[$namespace]->enqueue($path);
     }
 
     /**
@@ -189,7 +189,7 @@ class LoaderStandard implements LoaderInterface
      */
     public function listNamespaces()
     {
-        return $this->_namespacesArray;
+        return $this->namespacesArray;
     }
 
     /**
@@ -202,11 +202,11 @@ class LoaderStandard implements LoaderInterface
         $oldIncludedPaths = $this->getIncludePathManager()->setIncludePath(
             array_merge(
                 $this->getIncludePathManager()->getIncludePath(),
-                array_values($this->_includedPathsArray->getArrayCopy())
+                array_values($this->includedPathsArray->getArrayCopy())
             )
         );
         //Store previous path to restore them
-        $this->_previousIncludedPathStack->push($oldIncludedPaths);
+        $this->previousIncludedPathStack->push($oldIncludedPaths);
     }
 
     /**
@@ -214,8 +214,8 @@ class LoaderStandard implements LoaderInterface
      */
     protected function restoreIncludedPaths()
     {
-        if (!$this->_previousIncludedPathStack->isEmpty()) {
-            $oldIncludedPaths = $this->_previousIncludedPathStack->pop();
+        if (!$this->previousIncludedPathStack->isEmpty()) {
+            $oldIncludedPaths = $this->previousIncludedPathStack->pop();
             $this->getIncludePathManager()->setIncludePath($oldIncludedPaths);
         }
     }
@@ -250,13 +250,13 @@ class LoaderStandard implements LoaderInterface
 
         //Rebuild namespace
         $namespaceString = '\\'.implode('\\', $namespacePartsArray);
-        if (!isset($this->_namespacesArray[$namespaceString])) {
+        if (!isset($this->namespacesArray[$namespaceString])) {
             return false;
         }
 
         //Browse each
         $result = false;
-        foreach ($this->_namespacesArray[$namespaceString] as $path) {
+        foreach ($this->namespacesArray[$namespaceString] as $path) {
             //Compute the factory file of the stated class
             $factoryFile = $path.DIRECTORY_SEPARATOR.$className.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
             if (is_readable($factoryFile)) {
@@ -382,8 +382,8 @@ class LoaderStandard implements LoaderInterface
         }
 
         //clone the di container for this stated class, it will has its own di container
-        if ($this->_diContainer instanceof DI\ContainerInterface) {
-            $diContainer = clone $this->_diContainer;
+        if ($this->diContainer instanceof DI\ContainerInterface) {
+            $diContainer = clone $this->diContainer;
             $factoryObject->setDIContainer($diContainer);
         }
 

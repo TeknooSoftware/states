@@ -45,7 +45,7 @@ class MockFinder implements Loader\FinderInterface
      * Mock container used for tests
      * @var DI\ContainerInterface
      */
-    protected $_container = null;
+    protected $container = null;
 
     /**
      * To not return the default state
@@ -57,7 +57,7 @@ class MockFinder implements Loader\FinderInterface
      * To test if the proxy has been loaded by the factory
      * @var bool
      */
-    protected $_proxyLoaded = false;
+    protected $proxyLoaded = false;
 
     /**
      * Initialize finder
@@ -76,7 +76,7 @@ class MockFinder implements Loader\FinderInterface
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
-        $this->_container = $container;
+        $this->container = $container;
 
         return $this;
     }
@@ -87,7 +87,7 @@ class MockFinder implements Loader\FinderInterface
      */
     public function getDIContainer()
     {
-        return $this->_container;
+        return $this->container;
     }
 
     /**
@@ -145,7 +145,7 @@ class MockFinder implements Loader\FinderInterface
      */
     public function loadProxy($arguments = null)
     {
-        $this->_proxyLoaded = true;
+        $this->proxyLoaded = true;
 
         return true;
     }
@@ -157,7 +157,7 @@ class MockFinder implements Loader\FinderInterface
      */
     public function proxyHasBeenLoaded()
     {
-        return $this->_proxyLoaded;
+        return $this->proxyLoaded;
     }
 
     /**

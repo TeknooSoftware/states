@@ -41,19 +41,19 @@ class User extends Proxy\Integrated
      * Username of this user
      * @var string
      */
-    protected $_userName = '';
+    protected $userName = '';
 
     /**
      * To know if this user is an admin
      * @var bool
      */
-    protected $_isAdmin = false;
+    protected $isAdmin = false;
 
     /**
      * To know if this user is a moderator
      * @var bool
      */
-    protected $_isModerator = false;
+    protected $isModerator = false;
 
     /**
      * To initialize this user with some data
@@ -64,18 +64,18 @@ class User extends Proxy\Integrated
     public function __construct($username, $isAdmin=false, $isModerator=false)
     {
         //Register options
-        $this->_userName = $username;
-        $this->_isAdmin = $isAdmin;
-        $this->_isModerator = $isModerator;
+        $this->userName = $username;
+        $this->isAdmin = $isAdmin;
+        $this->isModerator = $isModerator;
         //Initialize user
         parent::__construct();
         //Load states
-        if (!empty($this->_isAdmin)) {
+        if (!empty($this->isAdmin)) {
             $this->enableState('Administrator');
             $this->enableState('Moderator');
         }
 
-        if (!empty($this->_isModerator)) {
+        if (!empty($this->isModerator)) {
             $this->enableState('Moderator');
         }
     }

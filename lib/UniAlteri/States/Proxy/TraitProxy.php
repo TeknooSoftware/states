@@ -50,31 +50,31 @@ trait TraitProxy
      * DI Container to use for this object
      * @var DI\ContainerInterface
      */
-    protected $_diContainer = null;
+    protected $diContainer = null;
 
     /**
      * Unique identifier of this object
      * @var string
      */
-    protected $_uniqueId = null;
+    protected $uniqueId = null;
 
     /**
      * List of currently enabled states
      * @var \ArrayObject|States\States\StateInterface[]
      */
-    protected $_activesStates = null;
+    protected $activesStates = null;
 
     /**
      * List of available states for this stated object
      * @var \ArrayObject|States\States\StateInterface[]
      */
-    protected $_states = null;
+    protected $states = null;
 
     /**
      * Current closure called, if not closure called, return null
      * @var DI\InjectionClosureInterface
      */
-    protected $_currentInjectionClosure = null;
+    protected $currentInjectionClosure = null;
 
     /**
      * Execute a method available in a state passed in args with the injection closure
@@ -91,20 +91,20 @@ trait TraitProxy
         //Method found, extract it
         $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility);
         //Change current injection
-        $previousClosure = $this->_currentInjectionClosure;
-        $this->_currentInjectionClosure = $callingClosure;
+        $previousClosure = $this->currentInjectionClosure;
+        $this->currentInjectionClosure = $callingClosure;
 
         //Call it
         try {
             $returnValues = call_user_func_array($callingClosure, $arguments);
         } catch (\Exception $e) {
             //Restore previous closure
-            $this->_currentInjectionClosure = $previousClosure;
+            $this->currentInjectionClosure = $previousClosure;
             throw $e;
         }
 
         //Restore previous closure
-        $this->_currentInjectionClosure = $previousClosure;
+        $this->currentInjectionClosure = $previousClosure;
 
         return $returnValues;
     }
@@ -132,11 +132,11 @@ trait TraitProxy
         if (1 < count($methodsWithStatesArray)) {
             //A specific state is required for this call
             $statesName = lcfirst(array_pop($methodsWithStatesArray));
-            if (isset($this->_activesStates[$statesName])) {
+            if (isset($this->activesStates[$statesName])) {
                 //Get the state name
                 $methodName = implode('Of', $methodsWithStatesArray);
 
-                $activeStateObject = $this->_activesStates[$statesName];
+                $activeStateObject = $this->activesStates[$statesName];
                 if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
                     return $this->callInState($activeStateObject, $methodName, $arguments, $scopeVisibility);
                 }
@@ -145,7 +145,7 @@ trait TraitProxy
 
         $activeStateFound = null;
         //No specific state required, browse all enabled state to find the method
-        foreach ($this->_activesStates as $activeStateObject) {
+        foreach ($this->activesStates as $activeStateObject) {
             if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
                 if (null === $activeStateFound) {
                     //Check if there are only one enabled state whom implements this method
@@ -201,8 +201,8 @@ trait TraitProxy
     protected function initializeProxy()
     {
         //Initialize internal vars
-        $this->_states = new \ArrayObject();
-        $this->_activesStates = new \ArrayObject();
+        $this->states = new \ArrayObject();
+        $this->activesStates = new \ArrayObject();
     }
 
     /**
@@ -212,7 +212,7 @@ trait TraitProxy
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
-        $this->_diContainer = $container;
+        $this->diContainer = $container;
 
         return $this;
     }
@@ -223,7 +223,7 @@ trait TraitProxy
      */
     public function getDIContainer()
     {
-        return $this->_diContainer;
+        return $this->diContainer;
     }
 
     /**
@@ -302,12 +302,12 @@ trait TraitProxy
      */
     public function getObjectUniqueId()
     {
-        if (null === $this->_uniqueId) {
+        if (null === $this->uniqueId) {
             //Generate the unique Id
-            $this->_uniqueId = uniqid(sha1(microtime(true)), true);
+            $this->uniqueId = uniqid(sha1(microtime(true)), true);
         }
 
-        return $this->_uniqueId;
+        return $this->uniqueId;
     }
 
     /**
@@ -316,28 +316,28 @@ trait TraitProxy
      */
     public function __clone()
     {
-        $this->_uniqueId = null;
+        $this->uniqueId = null;
 
-        if ($this->_diContainer instanceof DI\ContainerInterface) {
-            $this->_diContainer = clone $this->_diContainer;
+        if ($this->diContainer instanceof DI\ContainerInterface) {
+            $this->diContainer = clone $this->diContainer;
         }
 
         //Clone states stack
-        if ($this->_states instanceof \ArrayObject) {
+        if ($this->states instanceof \ArrayObject) {
             $clonedStatesArray = new \ArrayObject();
-            foreach ($this->_states as $key=>$state) {
+            foreach ($this->states as $key=>$state) {
                 //Clone each stated object
                 $clonedState = clone $state;
                 //Update new stack
                 $clonedStatesArray[$key] = $clonedState;
             }
-            $this->_states = $clonedStatesArray;
+            $this->states = $clonedStatesArray;
         }
 
         //Enabling states
-        if ($this->_activesStates instanceof \ArrayObject) {
-            $activesStates = array_keys($this->_activesStates->getArrayCopy());
-            $this->_activesStates = new \ArrayObject();
+        if ($this->activesStates instanceof \ArrayObject) {
+            $activesStates = array_keys($this->activesStates->getArrayCopy());
+            $this->activesStates = new \ArrayObject();
             foreach ($activesStates as $stateName) {
                 $this->enableState($stateName);
             }
@@ -362,7 +362,7 @@ trait TraitProxy
     {
         $this->validateName($stateName);
 
-        $this->_states[$stateName] = $stateObject;
+        $this->states[$stateName] = $stateObject;
 
         return $this;
     }
@@ -379,11 +379,11 @@ trait TraitProxy
     {
         $this->validateName($stateName);
 
-        if (isset($this->_states[$stateName])) {
-            unset($this->_states[$stateName]);
+        if (isset($this->states[$stateName])) {
+            unset($this->states[$stateName]);
 
-            if (isset($this->_activesStates[$stateName])) {
-                unset($this->_activesStates[$stateName]);
+            if (isset($this->activesStates[$stateName])) {
+                unset($this->activesStates[$stateName]);
             }
         } else {
             throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
@@ -421,8 +421,8 @@ trait TraitProxy
     {
         $this->validateName($stateName);
 
-        if (isset($this->_states[$stateName])) {
-            $this->_activesStates[$stateName] = $this->_states[$stateName];
+        if (isset($this->states[$stateName])) {
+            $this->activesStates[$stateName] = $this->states[$stateName];
         } else {
             throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
         }
@@ -442,8 +442,8 @@ trait TraitProxy
     {
         $this->validateName($stateName);
 
-        if (isset($this->_activesStates[$stateName])) {
-            unset($this->_activesStates[$stateName]);
+        if (isset($this->activesStates[$stateName])) {
+            unset($this->activesStates[$stateName]);
         } else {
             throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
         }
@@ -457,7 +457,7 @@ trait TraitProxy
      */
     public function disableAllStates()
     {
-        $this->_activesStates = new \ArrayObject();
+        $this->activesStates = new \ArrayObject();
 
         return $this;
     }
@@ -468,8 +468,8 @@ trait TraitProxy
      */
     public function listAvailableStates()
     {
-        if ($this->_states instanceof \ArrayObject) {
-            return array_keys($this->_states->getArrayCopy());
+        if ($this->states instanceof \ArrayObject) {
+            return array_keys($this->states->getArrayCopy());
         } else {
             return array();
         }
@@ -481,8 +481,8 @@ trait TraitProxy
      */
     public function listEnabledStates()
     {
-        if ($this->_activesStates instanceof \ArrayObject) {
-            return array_keys($this->_activesStates->getArrayCopy());
+        if ($this->activesStates instanceof \ArrayObject) {
+            return array_keys($this->activesStates->getArrayCopy());
         } else {
             return array();
         }
@@ -522,11 +522,11 @@ trait TraitProxy
      */
     public function getStatic()
     {
-        if (!$this->_currentInjectionClosure instanceof DI\InjectionClosureInterface) {
+        if (!$this->currentInjectionClosure instanceof DI\InjectionClosureInterface) {
             throw new Exception\UnavailableClosure('Error, there a no active closure currently into the proxy');
         }
 
-        return $this->_currentInjectionClosure;
+        return $this->currentInjectionClosure;
     }
 
     /*******************
@@ -574,17 +574,17 @@ trait TraitProxy
         try {
             if (null === $stateName) {
                 //Browse all state to find the method
-                foreach ($this->_states as $stateObject) {
+                foreach ($this->states as $stateObject) {
                     if ($stateObject->testMethod($methodName, $scopeVisibility)) {
                         return $stateObject->getMethodDescription($methodName);
                     }
                 }
             }
 
-            if (null !== $stateName && isset($this->_states[$stateName])) {
+            if (null !== $stateName && isset($this->states[$stateName])) {
                 //Retrieve description from the required state
-                if ($this->_states[$stateName]->testMethod($methodName, $scopeVisibility)) {
-                    return $this->_states[$stateName]->getMethodDescription($methodName);
+                if ($this->states[$stateName]->testMethod($methodName, $scopeVisibility)) {
+                    return $this->states[$stateName]->getMethodDescription($methodName);
                 }
             } elseif (null !== $stateName) {
                 throw new Exception\StateNotFound('State "'.$stateName.'" is not available');

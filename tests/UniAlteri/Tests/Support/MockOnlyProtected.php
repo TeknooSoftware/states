@@ -67,7 +67,7 @@ class MockOnlyProtected extends States\AbstractState
      * @param $b
      * @return mixed
      */
-    protected function _standardMethod6($a, $b)
+    protected function standardMethod6($a, $b)
     {
         return $a+$b;
     }
@@ -75,11 +75,11 @@ class MockOnlyProtected extends States\AbstractState
     /**
      * Final Method 7
      */
-    final protected function _finalMethod7()
+    final protected function finalMethod7()
     {
     }
 
-    protected function _standardMethod8()
+    protected function standardMethod8()
     {
     }
 }

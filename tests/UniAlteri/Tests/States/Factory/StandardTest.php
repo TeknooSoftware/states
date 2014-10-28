@@ -46,7 +46,7 @@ class StandardTest extends AbstractFactoryTest
     {
         $factory = new Factory\Standard();
         if (true === $populateContainer) {
-            $factory->setDIContainer($this->_container);
+            $factory->setDIContainer($this->container);
         }
 
         return $factory;
