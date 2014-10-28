@@ -53,14 +53,14 @@ class IntegratedProxy extends Proxy\Integrated implements
      * It is a virtual factory, it does nothing except logs actions
      * @var string
      */
-    protected static $_startupFactoryClassName = '\UniAlteri\Tests\Support\MockStartupFactory';
+    protected static $startupFactoryClassName = '\UniAlteri\Tests\Support\MockStartupFactory';
 
     /**
-     * Method to update static::$_startupFactoryClassName to run some unit tests
+     * Method to update static::$startupFactoryClassName to run some unit tests
      * @param string $className
      */
     public static function defineStartupFactoryClassName($className)
     {
-        static::$_startupFactoryClassName = $className;
+        static::$startupFactoryClassName = $className;
     }
 }

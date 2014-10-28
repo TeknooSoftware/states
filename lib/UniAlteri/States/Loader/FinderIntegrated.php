@@ -42,5 +42,5 @@ class FinderIntegrated extends FinderStandard
      * Default proxy class to use when there are no proxy class
      * @var string
      */
-    protected $_defaultProxyClassName = '\UniAlteri\States\Proxy\Integrated';
+    protected $defaultProxyClassName = '\UniAlteri\States\Proxy\Integrated';
 }

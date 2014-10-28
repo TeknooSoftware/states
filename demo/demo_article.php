@@ -112,7 +112,7 @@ print $article->getTitle().PHP_EOL;
 print $article->getFormattedBody().PHP_EOL;
 
 try {
-    $article->_getDate();
+    $article->getDate();
 } catch (\Exception $e) {
     echo $e->getMessage().PHP_EOL;
 }

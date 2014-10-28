@@ -45,22 +45,22 @@ class MockFactory implements Factory\FactoryInterface
      * To list initialized factory by loader
      * @var string[]
      */
-    protected static $_initializedFactoryNameArray = array();
+    protected static $initializedFactoryNameArray = array();
 
     /**
      * @var Proxy\ProxyInterface
      */
-    protected $_startupProxy;
+    protected $startupProxy;
 
     /**
      * @var string
      */
-    protected $_statedClassName = null;
+    protected $statedClassName = null;
 
     /**
      * @var string
      */
-    protected $_path = null;
+    protected $path = null;
 
     /**
      * To return the DI Container used for this object
@@ -89,7 +89,7 @@ class MockFactory implements Factory\FactoryInterface
     public function getFinder()
     {
         //Build a new mock finder
-        return new MockFinder($this->_statedClassName, $this->_path);
+        return new MockFinder($this->statedClassName, $this->path);
     }
 
     /**
@@ -98,7 +98,7 @@ class MockFactory implements Factory\FactoryInterface
      */
     public function getPath()
     {
-        return $this->_path;
+        return $this->path;
     }
 
     /**
@@ -107,7 +107,7 @@ class MockFactory implements Factory\FactoryInterface
      */
     public function getStatedClassName()
     {
-        return $this->_statedClassName;
+        return $this->statedClassName;
     }
 
     /**
@@ -121,9 +121,9 @@ class MockFactory implements Factory\FactoryInterface
      */
     public function initialize($statedClassName, $path)
     {
-        $this->_statedClassName = $statedClassName;
-        $this->_path = $path;
-        self::$_initializedFactoryNameArray[] = $statedClassName.':'.$path;
+        $this->statedClassName = $statedClassName;
+        $this->path = $path;
+        self::$initializedFactoryNameArray[] = $statedClassName.':'.$path;
     }
 
     /**
@@ -133,7 +133,7 @@ class MockFactory implements Factory\FactoryInterface
      */
     public static function listInitializedFactories()
     {
-        return array_values(self::$_initializedFactoryNameArray);
+        return array_values(self::$initializedFactoryNameArray);
     }
 
     /**
@@ -159,7 +159,7 @@ class MockFactory implements Factory\FactoryInterface
      */
     public function startup($proxyObject, $stateName = null)
     {
-        $this->_startupProxy = $proxyObject;
+        $this->startupProxy = $proxyObject;
     }
 
     /**
@@ -169,6 +169,6 @@ class MockFactory implements Factory\FactoryInterface
      */
     public function getStartupProxy()
     {
-        return $this->_startupProxy;
+        return $this->startupProxy;
     }
 }

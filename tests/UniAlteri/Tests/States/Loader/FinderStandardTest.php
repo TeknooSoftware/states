@@ -44,37 +44,37 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      * Finder to test
      * @var Loader\FinderInterface
      */
-    protected $_finder = null;
+    protected $finder = null;
 
     /**
      * Mock stated class 1
      * @var string
      */
-    protected $_statedClass1Path = null;
+    protected $statedClass1Path = null;
 
     /**
      * Mock stated class 2
      * @var string
      */
-    protected $_statedClass2Path = null;
+    protected $statedClass2Path = null;
 
     /**
      * Mock stated class 3
      * @var string
      */
-    protected $_statedClass3Path = null;
+    protected $statedClass3Path = null;
 
     /**
      * Mock stated class 4
      * @var string
      */
-    protected $_statedClass4Path = null;
+    protected $statedClass4Path = null;
 
     /**
      * Mock stated class 5
      * @var string
      */
-    protected $_statedClass5Path = null;
+    protected $statedClass5Path = null;
 
     /**
      * Prepare environment before test
@@ -84,12 +84,12 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
         //Use mock stated class defined un Support directory
         $path = dirname(dirname(dirname(__FILE__))).'/Support/StatedClass/';
-        $this->_statedClass1Path = $path.'Class1';
-        $this->_statedClass2Path = $path.'Class2';
-        $this->_statedClass3Path = $path.'Class3';
-        $this->_statedClass4Path = $path.'Class4';
-        $this->_statedClass5Path = $path.'Class5';
-        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0755);
+        $this->statedClass1Path = $path.'Class1';
+        $this->statedClass2Path = $path.'Class2';
+        $this->statedClass3Path = $path.'Class3';
+        $this->statedClass4Path = $path.'Class4';
+        $this->statedClass5Path = $path.'Class5';
+        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0755);
     }
 
     /**
@@ -106,13 +106,13 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      * @param  string                $pathString
      * @return Loader\FinderStandard
      */
-    protected function _initializeFinder($statedClassName, $pathString)
+    protected function initializeFinder($statedClassName, $pathString)
     {
         $virtualDIContainer = new Support\MockDIContainer();
-        $this->_finder = new Loader\FinderStandard($statedClassName, $pathString);
-        $this->_finder->setDIContainer($virtualDIContainer);
+        $this->finder = new Loader\FinderStandard($statedClassName, $pathString);
+        $this->finder->setDIContainer($virtualDIContainer);
 
-        return $this->_finder;
+        return $this->finder;
     }
 
     /**
@@ -147,9 +147,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testListStatePathNotFound()
     {
-        $this->_initializeFinder('virtualStatedClass', '/NonExistentPath');
+        $this->initializeFinder('virtualStatedClass', '/NonExistentPath');
         try {
-            $this->_finder->listStates();
+            $this->finder->listStates();
         } catch (Exception\UnavailablePath $e) {
             return ;
         } catch (\Exception $e) {}
@@ -162,9 +162,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testListStatePathNotFoundInPhar()
     {
-        $this->_initializeFinder('virtualStatedClass', 'phar://');
+        $this->initializeFinder('virtualStatedClass', 'phar://');
         try {
-            $this->_finder->listStates();
+            $this->finder->listStates();
         } catch (Exception\UnavailablePath $e) {
             return ;
         } catch (\Exception $e) {}
@@ -177,10 +177,10 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testListStatePathNotReadable()
     {
-        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
-        $this->_initializeFinder('Class1', $this->_statedClass1Path);
+        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
+        $this->initializeFinder('Class1', $this->statedClass1Path);
         try {
-            $this->_finder->listStates();
+            $this->finder->listStates();
         } catch (Exception\UnReadablePath $e) {
             return ;
         } catch (\Exception $e) {}
@@ -193,7 +193,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testListStates()
     {
-        $statesNamesArray = $this->_initializeFinder('Class1', $this->_statedClass1Path)->listStates();
+        $statesNamesArray = $this->initializeFinder('Class1', $this->statedClass1Path)->listStates();
         $this->assertInstanceOf('ArrayObject', $statesNamesArray);
         $states = $statesNamesArray->getArrayCopy();
         sort($states);
@@ -213,10 +213,10 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadStateNotFound()
     {
-        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
-        $this->_initializeFinder('Class1', $this->_statedClass1Path);
+        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
+        $this->initializeFinder('Class1', $this->statedClass1Path);
         try {
-            $this->_finder->loadState('State2');
+            $this->finder->loadState('State2');
         } catch (Exception\UnReadablePath $e) {
             return ;
         } catch (\Exception $e) {}
@@ -229,9 +229,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadStateWithoutClass()
     {
-        $this->_initializeFinder('Class1', $this->_statedClass1Path);
+        $this->initializeFinder('Class1', $this->statedClass1Path);
         try {
-            $this->_finder->loadState('State1');
+            $this->finder->loadState('State1');
         } catch (Exception\UnavailableState $e) {
             return ;
         } catch (\Exception $e) {}
@@ -244,8 +244,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadState()
     {
-        $this->_initializeFinder('Class1', $this->_statedClass1Path);
-        $return = $this->_finder->loadState('State4b');
+        $this->initializeFinder('Class1', $this->statedClass1Path);
+        $return = $this->finder->loadState('State4b');
         $this->assertTrue(class_exists('Class1\States\State4b', false));
         $this->assertEquals('Class1\\States\\State4b', $return);
     }
@@ -255,10 +255,10 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildStateNotFound()
     {
-        chmod($this->_statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
-        $this->_initializeFinder('Class1', $this->_statedClass1Path);
+        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
+        $this->initializeFinder('Class1', $this->statedClass1Path);
         try {
-            $this->_finder->buildState('State2');
+            $this->finder->buildState('State2');
         } catch (Exception\UnReadablePath $e) {
             return ;
         } catch (\Exception $e) {}
@@ -271,9 +271,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildStateWithoutClass()
     {
-        $this->_initializeFinder('Class1', $this->_statedClass1Path);
+        $this->initializeFinder('Class1', $this->statedClass1Path);
         try {
-            $this->_finder->buildState('State1');
+            $this->finder->buildState('State1');
         } catch (Exception\UnavailableState $e) {
             return ;
         } catch (\Exception $e) {}
@@ -286,9 +286,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildStateBadImplementation()
     {
-        $this->_initializeFinder('Class1', $this->_statedClass1Path);
+        $this->initializeFinder('Class1', $this->statedClass1Path);
         try {
-            $this->_finder->buildState('State3');
+            $this->finder->buildState('State3');
         } catch (Exception\IllegalState $e) {
             return ;
         } catch (\Exception $e) {}
@@ -301,8 +301,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildState()
     {
-        $this->_initializeFinder('Class1', $this->_statedClass1Path);
-        $stateObject = $this->_finder->buildState('State4');
+        $this->initializeFinder('Class1', $this->statedClass1Path);
+        $stateObject = $this->finder->buildState('State4');
         $this->assertEquals('Class1\States\State4', get_class($stateObject));
         $this->assertInstanceOf('\UniAlteri\States\States\StateInterface', $stateObject);
     }
@@ -313,8 +313,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadProxyDefault()
     {
-        $this->_initializeFinder('Class2', $this->_statedClass2Path);
-        $proxyClassName = $this->_finder->loadProxy();
+        $this->initializeFinder('Class2', $this->statedClass2Path);
+        $proxyClassName = $this->finder->loadProxy();
         $this->assertEquals('Class2\\Class2', $proxyClassName);
     }
 
@@ -324,8 +324,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildProxyDefault()
     {
-        $this->_initializeFinder('Class2', $this->_statedClass2Path);
-        $proxy = $this->_finder->buildProxy();
+        $this->initializeFinder('Class2', $this->statedClass2Path);
+        $proxy = $this->finder->buildProxy();
         $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
         $this->assertInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
         $this->assertInstanceOf('Class2\\Class2', $proxy);
@@ -336,9 +336,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadProxySpecificBadClass()
     {
-        $this->_initializeFinder('Class3', $this->_statedClass3Path);
+        $this->initializeFinder('Class3', $this->statedClass3Path);
         try {
-            $this->_finder->loadProxy();
+            $this->finder->loadProxy();
         } catch (Exception\IllegalProxy $e) {
             return;
         } catch (\Exception $e) {}
@@ -351,9 +351,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildProxySpecificBadClass()
     {
-        $this->_initializeFinder('Class3', $this->_statedClass3Path);
+        $this->initializeFinder('Class3', $this->statedClass3Path);
         try {
-            $this->_finder->buildProxy();
+            $this->finder->buildProxy();
         } catch (Exception\IllegalProxy $e) {
             return;
         } catch (\Exception $e) {}
@@ -366,9 +366,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildProxySpecificBadInterface()
     {
-        $this->_initializeFinder('Class4', $this->_statedClass4Path);
+        $this->initializeFinder('Class4', $this->statedClass4Path);
         try {
-            $this->_finder->buildProxy();
+            $this->finder->buildProxy();
         } catch (Exception\IllegalProxy $e) {
             return;
         } catch (\Exception $e) {}
@@ -381,9 +381,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadProxySpecific()
     {
-        $this->_initializeFinder('Class5', $this->_statedClass5Path);
-        $this->_finder->setDIContainer(new Support\MockDIContainer());
-        $proxyClassName = $this->_finder->loadProxy();
+        $this->initializeFinder('Class5', $this->statedClass5Path);
+        $this->finder->setDIContainer(new Support\MockDIContainer());
+        $proxyClassName = $this->finder->loadProxy();
         $this->assertEquals('Class5\\Class5', $proxyClassName);
     }
 
@@ -393,9 +393,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildProxySpecific()
     {
-        $this->_initializeFinder('Class5', $this->_statedClass5Path);
-        $this->_finder->setDIContainer(new Support\MockDIContainer());
-        $proxy = $this->_finder->buildProxy();
+        $this->initializeFinder('Class5', $this->statedClass5Path);
+        $this->finder->setDIContainer(new Support\MockDIContainer());
+        $proxy = $this->finder->buildProxy();
         $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
         $this->assertNotInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
         $this->assertInstanceOf('Class5\\Class5', $proxy);

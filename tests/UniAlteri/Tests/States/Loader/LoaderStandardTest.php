@@ -43,40 +43,40 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      * Loader to test
      * @var Loader\LoaderInterface
      */
-    protected $_loader = null;
+    protected $loader = null;
 
     /**
      * @var Support\MockIncludePathManager
      */
-    protected $_includePathManager = null;
+    protected $includePathManager = null;
 
     /**
      * Where files to generate the phar file for test are located
      * @var string
      */
-    protected $_srcPharPath = null;
+    protected $srcPharPath = null;
 
     /**
      * Where the phar file for test is located
      * @var string
      */
-    protected $_pharFileNamespace = null;
+    protected $pharFileNamespace = null;
 
     /**
      * Prepare environment before test
      */
     protected function setUp()
     {
-        $this->_includePathManager = new Support\MockIncludePathManager();
+        $this->includePathManager = new Support\MockIncludePathManager();
 
         //Build phar archives
-        $this->_srcPharPath = dirname(dirname(dirname(__FILE__))).'/Support/src/';
+        $this->srcPharPath = dirname(dirname(dirname(__FILE__))).'/Support/src/';
         //namespace
-        $this->_pharFileNamespace = dirname(dirname(dirname(__FILE__))).'/Support/pharFileNamespace.phar';
+        $this->pharFileNamespace = dirname(dirname(dirname(__FILE__))).'/Support/pharFileNamespace.phar';
 
-        if (0 == ini_get('phar.readonly') && !file_exists($this->_pharFileNamespace)) {
-            $phar = new \Phar($this->_pharFileNamespace, 0, 'pharFileNamespace.phar');
-            $phar->buildFromDirectory($this->_srcPharPath.'/NamespaceLoader/');
+        if (0 == ini_get('phar.readonly') && !file_exists($this->pharFileNamespace)) {
+            $phar = new \Phar($this->pharFileNamespace, 0, 'pharFileNamespace.phar');
+            $phar->buildFromDirectory($this->srcPharPath.'/NamespaceLoader/');
         }
 
         parent::setUp();
@@ -94,9 +94,9 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      * Test if this suit test can run test on Phar
      * @return boolean
      */
-    protected function _pharTestsAreAvailable()
+    protected function pharTestsAreAvailable()
     {
-        return (class_exists('\Phar', false) && file_exists($this->_pharFileNamespace));
+        return (class_exists('\Phar', false) && file_exists($this->pharFileNamespace));
     }
 
     /**
@@ -105,23 +105,23 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      *                                                           the test manager
      * @return Loader\LoaderStandard
      */
-    protected function _initializeLoader($standardIncludePathManager=false)
+    protected function initializeLoader($standardIncludePathManager=false)
     {
         if (false == $standardIncludePathManager) {
-            $this->_loader = new Loader\LoaderStandard($this->_includePathManager);
+            $this->loader = new Loader\LoaderStandard($this->includePathManager);
         } else {
-            $this->_loader = new Loader\LoaderStandard(new Loader\IncludePathManager());
+            $this->loader = new Loader\LoaderStandard(new Loader\IncludePathManager());
         }
 
-        $this->_loader->setDIContainer(new Support\MockDIContainer());
-        $this->_loader->getDIContainer()->registerService(
+        $this->loader->setDIContainer(new Support\MockDIContainer());
+        $this->loader->getDIContainer()->registerService(
             Loader\FinderInterface::DI_FINDER_SERVICE,
             function () {
                 return new Support\MockFinder('', '');
             }
         );
 
-        return $this->_loader;
+        return $this->loader;
     }
 
     /**
@@ -143,7 +143,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetDiContainerBad()
     {
-        $object = new Loader\LoaderStandard($this->_includePathManager);
+        $object = new Loader\LoaderStandard($this->includePathManager);
         try {
             $object->setDIContainer(new \DateTime());
         } catch (\Exception $e) {
@@ -158,7 +158,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetDiContainer()
     {
-        $object = new Loader\LoaderStandard($this->_includePathManager);
+        $object = new Loader\LoaderStandard($this->includePathManager);
         $this->assertNull($object->getDIContainer());
         $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
@@ -171,7 +171,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassNonExistent()
     {
-        $this->assertFalse($this->_initializeLoader()->loadClass('badName'));
+        $this->assertFalse($this->initializeLoader()->loadClass('badName'));
     }
 
     /**
@@ -180,7 +180,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddIncludePathBadDir()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         try {
             $loader->addIncludePath('badPath');
         } catch (Exception\UnavailablePath $e) {
@@ -195,7 +195,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testAddIncludePath()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $loader->addIncludePath(__DIR__);
         $loader->addIncludePath(dirname(__DIR__));
         $this->assertEquals(
@@ -213,7 +213,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterNamespaceBadName()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         try {
             $loader->registerNamespace('badNamespace', array());
         } catch (Exception\IllegalArgument $e) {
@@ -228,7 +228,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterNamespace()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $loader->registerNamespace('namespace1', 'path1');
         $loader->registerNamespace('namespace2', 'path2');
         $this->assertEquals(
@@ -246,7 +246,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterNamespaceMultiplePath()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $loader->registerNamespace('namespace2', 'path2');
         $loader->registerNamespace('namespace1', 'path1');
         $loader->registerNamespace('namespace1', 'path3');
@@ -265,20 +265,20 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassRestoreOldIncludedPathAfterCalling()
     {
-        $this->_includePathManager->resetAllChangePath();
-        $this->_includePathManager->setIncludePath(
+        $this->includePathManager->resetAllChangePath();
+        $this->includePathManager->setIncludePath(
             array(
                 __DIR__
             )
         );
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $loader->addIncludePath(dirname(__DIR__));
         $loader->loadClass('fakeClass');
         $this->assertEquals(
             array(
                 __DIR__
             ),
-            $this->_includePathManager->getIncludePath()
+            $this->includePathManager->getIncludePath()
         );
 
         $this->assertEquals(
@@ -294,7 +294,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
                     __DIR__
                 )
             ),
-            $this->_includePathManager->getAllChangePaths()
+            $this->includePathManager->getAllChangePaths()
         );
     }
 
@@ -304,7 +304,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildFactoryNonExistentFactory()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         try {
             $loader->buildFactory('badFactory', 'statedClassName', 'path');
         } catch (Exception\UnavailableFactory $e) {
@@ -320,7 +320,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildFactoryBadFactory()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         try {
             $loader->buildFactory('stdClass', 'statedClassName', 'path');
         } catch (Exception\IllegalFactory $e) {
@@ -335,7 +335,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildFactory()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $this->assertEquals(array(), Support\MockFactory::listInitializedFactories());
         $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class1', 'path1');
         $this->assertEquals(array('class1:path1'), Support\MockFactory::listInitializedFactories());
@@ -356,7 +356,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceRelativeWithoutFactoryFile()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
@@ -369,7 +369,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceWithProxyRelativeWithoutFactoryFile()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1'));
@@ -382,7 +382,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceRelativeWithEmptyFactoryFile()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1b'));
@@ -395,7 +395,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceWithProxyRelativeWithEmptyFactoryFile()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Class1b'));
@@ -408,7 +408,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceRelative()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
@@ -421,7 +421,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceWithProxyRelative()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2'));
@@ -434,7 +434,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceAbsoluteWithoutFactoryFile()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
@@ -447,7 +447,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceAbsoluteWithProxyWithoutFactoryFile()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1'));
@@ -460,7 +460,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceAbsolute()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
@@ -473,7 +473,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceAbsoluteWithProxy()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2'));
@@ -486,7 +486,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceAbsoluteWithFactoryException()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3'));
@@ -499,7 +499,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaNameSpaceWithProxyAbsoluteWithFactoryException()
     {
-        $loader = $this->_initializeLoader();
+        $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3'));
@@ -512,7 +512,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaFileWithoutFileAbsolute()
     {
-        $loader = $this->_initializeLoader(true);
+        $loader = $this->initializeLoader(true);
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertFalse($loader->loadClass('\\Support\\FileLoader\\Class1'));
@@ -525,7 +525,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaFileAbsolute()
     {
-        $loader = $this->_initializeLoader(true);
+        $loader = $this->initializeLoader(true);
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertTrue($loader->loadClass('\\Support\\FileLoader\\Class2'));
@@ -538,7 +538,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaFileWithoutFile()
     {
-        $loader = $this->_initializeLoader(true);
+        $loader = $this->initializeLoader(true);
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertFalse($loader->loadClass('Support\\FileLoader\\Class1'));
@@ -551,7 +551,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaFile()
     {
-        $loader = $this->_initializeLoader(true);
+        $loader = $this->initializeLoader(true);
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertTrue($loader->loadClass('Support\\FileLoader\\Class2'));
@@ -564,7 +564,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaFileWithFactoryException()
     {
-        $loader = $this->_initializeLoader(true);
+        $loader = $this->initializeLoader(true);
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertFalse($loader->loadClass('Support\\FileLoader\\Class3'));
@@ -577,14 +577,14 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassInPharViaNameSpaceRelativeWithoutFactoryFile()
     {
-        if (!$this->_pharTestsAreAvailable()) {
+        if (!$this->pharTestsAreAvailable()) {
             $this->markTestSkipped('Phar extension is not available');
 
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar'));
     }
 
@@ -595,14 +595,14 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassInPharViaNameSpaceWithProxyRelativeWithoutFactoryFile()
     {
-        if (!$this->_pharTestsAreAvailable()) {
+        if (!$this->pharTestsAreAvailable()) {
             $this->markTestSkipped('Phar extension is not available');
 
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar'));
     }
 
@@ -619,8 +619,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1bOharPhar'));
     }
 
@@ -637,8 +637,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar'));
     }
 
@@ -655,8 +655,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar'));
     }
 
@@ -673,8 +673,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
     }
 
@@ -691,8 +691,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar'));
     }
 
@@ -709,8 +709,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar'));
     }
 
@@ -727,8 +727,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar'));
     }
 
@@ -745,8 +745,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
     }
 
@@ -763,8 +763,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar'));
     }
 
@@ -781,8 +781,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         }
 
-        $loader = $this->_initializeLoader();
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->_pharFileNamespace);
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar'));
     }
 
@@ -793,7 +793,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassBehaviorDuringExceptionMustRestoreIncludedPath()
     {
-        $loader = $this->_initializeLoader(false);
+        $loader = $this->initializeLoader(false);
         $path = dirname(dirname(dirname(dirname(__DIR__))));
         $loader->addIncludePath($path);
 

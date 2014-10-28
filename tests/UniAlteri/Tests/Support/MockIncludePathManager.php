@@ -42,13 +42,13 @@ class MockIncludePathManager implements Loader\IncludePathManagerInterface
      * Current included paths, not use current include path to avoid conflict with the testing environment
      * @var string[]
      */
-    protected $_paths = array();
+    protected $paths = array();
 
     /**
      * History of all change
      * @var array
      */
-    protected $_allChangePaths = array();
+    protected $allChangePaths = array();
 
     /**
      * Sets the include_path configuration option
@@ -63,9 +63,9 @@ class MockIncludePathManager implements Loader\IncludePathManagerInterface
         }
 
         //Simulate the behavior of a real manager
-        $old = $this->_paths;
-        $this->_paths = $paths;
-        $this->_allChangePaths[] = $paths;
+        $old = $this->paths;
+        $this->paths = $paths;
+        $this->allChangePaths[] = $paths;
 
         return $old;
     }
@@ -76,7 +76,7 @@ class MockIncludePathManager implements Loader\IncludePathManagerInterface
      */
     public function getIncludePath()
     {
-        return $this->_paths;
+        return $this->paths;
     }
 
     /**
@@ -85,7 +85,7 @@ class MockIncludePathManager implements Loader\IncludePathManagerInterface
      */
     public function resetAllChangePath()
     {
-        $this->_allChangePaths = array();
+        $this->allChangePaths = array();
     }
 
     /**
@@ -94,6 +94,6 @@ class MockIncludePathManager implements Loader\IncludePathManagerInterface
      */
     public function getAllChangePaths()
     {
-        return $this->_allChangePaths;
+        return $this->allChangePaths;
     }
 }

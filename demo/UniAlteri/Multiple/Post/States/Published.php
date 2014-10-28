@@ -43,8 +43,8 @@ class Published extends States\AbstractState
      */
     public function getMessage()
     {
-        if (!empty($this->_message)) {
-            return $this->_message;
+        if (!empty($this->message)) {
+            return $this->message;
         }
 
         return '';

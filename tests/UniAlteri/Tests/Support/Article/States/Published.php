@@ -66,7 +66,7 @@ class Published implements States\StateInterface
     /**
      * Fake method not callable in public scope
      */
-    protected function _getDate()
+    protected function getDate()
     {
 
     }

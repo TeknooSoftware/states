@@ -41,19 +41,19 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      * Loader of the states library
      * @var \UniAlteri\States\Loader\LoaderInterface
      */
-    protected $_loader = null;
+    protected $loader = null;
 
     /**
      * Load the library State and retrieve its default loader from its bootstrap
      * @return \UniAlteri\States\Loader\LoaderInterface
      */
-    protected function _getLoader()
+    protected function getLoader()
     {
-        if (null === $this->_loader) {
-            $this->_loader = include 'UniAlteri'.DS.'States'.DS.'bootstrap.php';
+        if (null === $this->loader) {
+            $this->loader = include 'UniAlteri'.DS.'States'.DS.'bootstrap.php';
         }
 
-        return $this->_loader;
+        return $this->loader;
     }
 
     /**
@@ -61,9 +61,9 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        if ($this->_loader instanceof Loader\LoaderInterface) {
+        if ($this->loader instanceof Loader\LoaderInterface) {
             spl_autoload_unregister(
-                array($this->_loader, 'loadClass')
+                array($this->loader, 'loadClass')
             );
         }
 
@@ -79,7 +79,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
             || define('DS', DIRECTORY_SEPARATOR);
 
         //Register demo namespace
-        $this->_getLoader()->registerNamespace('\\UniAlteri\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
+        $this->getLoader()->registerNamespace('\\UniAlteri\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
 
         $article = new \UniAlteri\Tests\Support\Article();
 
@@ -169,7 +169,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
 
         $fail = false;
         try {
-            $article->_getDate();
+            $article->getDate();
         } catch (\Exception $e) {
             $fail = true;
         }

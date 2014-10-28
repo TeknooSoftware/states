@@ -54,7 +54,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      * @param  callable            $closure
      * @return DI\InjectionClosure
      */
-    protected function _buildClosure(\Closure $closure=null)
+    protected function buildClosure(\Closure $closure=null)
     {
         if (null === $closure) {
             $closure = function () {
@@ -116,7 +116,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      */
     public function testCreateClosure()
     {
-        $closure = $this->_buildClosure();
+        $closure = $this->buildClosure();
         $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
     }
 
@@ -125,7 +125,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvokeWithArgs()
     {
-        $closure = $this->_buildClosure();
+        $closure = $this->buildClosure();
         $return = $closure('foo', 'boo', 'hello', 'world');
         $this->assertSame(
             array(
@@ -158,7 +158,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     public function testSaveBadStaticProperty()
     {
         try {
-            $this->_buildClosure()->saveProperty('##', 'foo');
+            $this->buildClosure()->saveProperty('##', 'foo');
         } catch (Exception\IllegalName $exception) {
             return;
         } catch (\Exception $e) {}
@@ -171,7 +171,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetSaveStaticProperty()
     {
-        $closure = $this->_buildClosure();
+        $closure = $this->buildClosure();
         $closure->saveProperty('static1', 'foo');
         $closure->saveProperty('static2', new \stdClass());
 
@@ -188,7 +188,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     public function testGetBadStaticProperty()
     {
         try {
-            $this->_buildClosure()->saveProperty('##', 'foo');
+            $this->buildClosure()->saveProperty('##', 'foo');
         } catch (Exception\IllegalName $exception) {
             return;
         } catch (\Exception $e) {}
@@ -201,7 +201,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      */
     public function testPersistenceOfStaticProperty()
     {
-        $closure = $this->_buildClosure();
+        $closure = $this->buildClosure();
         $closure->saveProperty('static1', 'foo');
         $result = $closure(1, 2, 3);
         $this->assertEquals(array(3, 2, 1), $result);
@@ -223,7 +223,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     public function testDeleteBadStaticProperty()
     {
         try {
-            $this->_buildClosure()->deleteProperty('##');
+            $this->buildClosure()->deleteProperty('##');
         } catch (Exception\IllegalName $exception) {
             return;
         } catch (\Exception $e) {}
@@ -236,7 +236,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      */
     public function testDeleteStaticProperty()
     {
-        $closure = $this->_buildClosure();
+        $closure = $this->buildClosure();
         $closure->saveProperty('static1', 'foo');
         $this->assertEquals('foo', $closure->getProperty('static1'));
         $closure->deleteProperty('static1');
@@ -249,7 +249,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     public function testTestBadStaticProperty()
     {
         try {
-            $this->_buildClosure()->testProperty('##');
+            $this->buildClosure()->testProperty('##');
         } catch (Exception\IllegalName $exception) {
             return;
         } catch (\Exception $e) {}
@@ -262,7 +262,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      */
     public function testTestStaticProperty()
     {
-        $closure = $this->_buildClosure();
+        $closure = $this->buildClosure();
         $this->assertFalse($closure->testProperty('static1'));
         $closure->saveProperty('static1', 'foo');
         $this->assertTrue($closure->testProperty('static1'));

@@ -41,7 +41,7 @@ class Article extends Proxy\Integrated
      * Article's data
      * @var array
      */
-    protected $_data = array();
+    protected $data = array();
 
     /**
      * Get an article's attribute
@@ -50,8 +50,8 @@ class Article extends Proxy\Integrated
      */
     protected function getAttribute($name)
     {
-        if (isset($this->_data[$name])) {
-            return $this->_data[$name];
+        if (isset($this->data[$name])) {
+            return $this->data[$name];
         }
 
         return null;
@@ -64,7 +64,7 @@ class Article extends Proxy\Integrated
      */
     public function setAttribute($name, $value)
     {
-        $this->_data[$name] = $value;
+        $this->data[$name] = $value;
     }
 
     /**
@@ -73,7 +73,7 @@ class Article extends Proxy\Integrated
      */
     public function __construct($data=array())
     {
-        $this->_data = $data;
+        $this->data = $data;
         parent::__construct();
         //If the article is published, load the state Published, else load the state Draft
         if (false === $this->isPublished()) {

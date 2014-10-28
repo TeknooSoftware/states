@@ -61,18 +61,18 @@ class MockOnlyPrivate extends States\AbstractState
     /**
      * Final Method 9
      */
-    final private function _finalMethod9()
+    final private function finalMethod9()
     {
     }
 
     /**
      * Standard Method 10
      */
-    private function _standardMethod10()
+    private function standardMethod10()
     {
     }
 
-    final private function _finalMethod11()
+    final private function finalMethod11()
     {
     }
 

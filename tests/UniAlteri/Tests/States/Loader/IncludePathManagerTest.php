@@ -43,14 +43,14 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
      * To restore include path to continue test
      * @var null
      */
-    protected $_backupIncludePath = null;
+    protected $backupIncludePath = null;
 
     /**
      * Prepare environment before test
      */
     protected function setUp()
     {
-        $this->_backupIncludePath = get_include_path();
+        $this->backupIncludePath = get_include_path();
         parent::setUp();
     }
 
@@ -59,7 +59,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        set_include_path($this->_backupIncludePath);
+        set_include_path($this->backupIncludePath);
         parent::tearDown();
     }
 
@@ -67,7 +67,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
      * Return object for test
      * @return Loader\IncludePathManager
      */
-    protected function _getManagementObject()
+    protected function getManagementObject()
     {
         return new Loader\IncludePathManager();
     }
@@ -78,7 +78,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
     public function testSetIncludePathBadPaths()
     {
         try {
-            $this->_getManagementObject()->setIncludePath(new \stdClass());
+            $this->getManagementObject()->setIncludePath(new \stdClass());
         } catch (Exception\IllegalArgument $e) {
             return;
         } catch (\Exception $e) {
@@ -93,7 +93,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetIncludePath()
     {
-        $manager = $this->_getManagementObject();
+        $manager = $this->getManagementObject();
 
         $this->assertEquals(
             explode(PATH_SEPARATOR, get_include_path()),
@@ -113,7 +113,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetIncludePathWithArrayObject()
     {
-        $manager = $this->_getManagementObject();
+        $manager = $this->getManagementObject();
 
         $array = new \ArrayObject(
             array(
@@ -137,7 +137,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
     public function testGetIncludePath()
     {
         $this->assertEquals(
-            $this->_getManagementObject()->getIncludePath(),
+            $this->getManagementObject()->getIncludePath(),
             explode(PATH_SEPARATOR, get_include_path())
         );
     }
