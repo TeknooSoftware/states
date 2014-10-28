@@ -49,7 +49,7 @@ class Integrated extends Standard
      * Class name of the factory to use in set up to initialize this object in this construction
      * @var string
      */
-    protected static $_startupFactoryClassName = '\UniAlteri\States\Factory\StandardStartupFactory';
+    protected static $startupFactoryClassName = '\UniAlteri\States\Factory\StandardStartupFactory';
 
     /**
      * Default constructor used to initialize the stated object with its factory
@@ -73,13 +73,13 @@ class Integrated extends Standard
     protected function initializeObjectWithFactory()
     {
         //Check if the startup class exists
-        if (!class_exists(static::$_startupFactoryClassName, true)) {
+        if (!class_exists(static::$startupFactoryClassName, true)) {
             throw new Exception\UnavailableFactory('Error, the startup factory is not available');
         }
 
         //Check if the startup class implements the interface 'UniAlteri\States\Factory\StartupFactoryInterface'
         $interfacesImplementedArray = array_flip( //Do a flip because isset is more effecient than in_array
-            class_implements(static::$_startupFactoryClassName)
+            class_implements(static::$startupFactoryClassName)
         );
 
         if (!isset($interfacesImplementedArray['UniAlteri\States\Factory\StartupFactoryInterface'])) {
@@ -88,7 +88,7 @@ class Integrated extends Standard
 
         //Call the startup factory
         call_user_func_array(
-            array(static::$_startupFactoryClassName, 'forwardStartup'),
+            array(static::$startupFactoryClassName, 'forwardStartup'),
             array(
                 $this
             )

@@ -45,25 +45,25 @@ class FinderStandard implements FinderInterface
      * Current stated class's name
      * @var string
      */
-    protected $_statedClassName = null;
+    protected $statedClassName = null;
 
     /**
      * Folder/Phar of the stated class
      * @var string
      */
-    protected $_pathString = null;
+    protected $pathString = null;
 
     /**
      * DI Container to use with this finder
      * @var DI\ContainerInterface
      */
-    protected $_diContainer = null;
+    protected $diContainer = null;
 
     /**
      * Default proxy class to use when there are no proxy class
      * @var string
      */
-    protected $_defaultProxyClassName = '\UniAlteri\States\Proxy\Standard';
+    protected $defaultProxyClassName = '\UniAlteri\States\Proxy\Standard';
 
     /**
      * Initialize finder
@@ -72,8 +72,8 @@ class FinderStandard implements FinderInterface
      */
     public function __construct($statedClassName, $pathString)
     {
-        $this->_statedClassName = $statedClassName;
-        $this->_pathString = $pathString;
+        $this->statedClassName = $statedClassName;
+        $this->pathString = $pathString;
     }
 
     /**
@@ -83,7 +83,7 @@ class FinderStandard implements FinderInterface
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
-        $this->_diContainer = $container;
+        $this->diContainer = $container;
 
         return $this;
     }
@@ -94,7 +94,7 @@ class FinderStandard implements FinderInterface
      */
     public function getDIContainer()
     {
-        return $this->_diContainer;
+        return $this->diContainer;
     }
 
     /**
@@ -106,7 +106,7 @@ class FinderStandard implements FinderInterface
     public function listStates()
     {
         //Checks if states are stored into the standardized path
-        $statesPath = $this->_pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH;
+        $statesPath = $this->pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH;
         if (!is_dir($statesPath)) {
             throw new Exception\UnavailablePath('Error, the path "'.$statesPath.'" was not found');
         }
@@ -149,9 +149,9 @@ class FinderStandard implements FinderInterface
      */
     public function loadState($stateName)
     {
-        $stateClassName = $this->_statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
+        $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
         if (!class_exists($stateClassName, false)) {
-            $statePath = $this->_pathString
+            $statePath = $this->pathString
                             .DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH
                             .DIRECTORY_SEPARATOR.$stateName.'.php';
 
@@ -160,7 +160,7 @@ class FinderStandard implements FinderInterface
             }
 
             include_once $statePath;
-            $stateClassName = $this->_statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
+            $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
             if (!class_exists($stateClassName, false)) {
                 throw new Exception\UnavailableState('Error, the state "'.$stateName.'" is not available');
             }
@@ -213,16 +213,16 @@ class FinderStandard implements FinderInterface
     public function loadProxy()
     {
         //Build the class name
-        $classPartName = $this->getClassedName($this->_statedClassName);
-        $proxyClassName = $this->_statedClassName.'\\'.$classPartName;
+        $classPartName = $this->getClassedName($this->statedClassName);
+        $proxyClassName = $this->statedClassName.'\\'.$classPartName;
         if (!class_exists($proxyClassName, false)) {
             //Build the class file path for the proxy (standardized into ProxyInterface)
-            $proxyPath = $this->_pathString.DIRECTORY_SEPARATOR.$classPartName.FinderInterface::PROXY_FILE_EXTENSION;
+            $proxyPath = $this->pathString.DIRECTORY_SEPARATOR.$classPartName.FinderInterface::PROXY_FILE_EXTENSION;
 
             if (!is_readable($proxyPath)) {
                 //The stated class has not its own proxy, reuse the standard proxy, as an alias
-                class_alias($this->_defaultProxyClassName, $proxyClassName, true);
-                class_alias($this->_defaultProxyClassName, $this->_statedClassName, false);
+                class_alias($this->defaultProxyClassName, $proxyClassName, true);
+                class_alias($this->defaultProxyClassName, $this->statedClassName, false);
 
                 return $proxyClassName;
             }
@@ -230,11 +230,11 @@ class FinderStandard implements FinderInterface
             include_once $proxyPath;
             if (!class_exists($proxyClassName, false)) {
                 throw new Exception\IllegalProxy(
-                    'Error, the proxy of "'.$this->_statedClassName.'" must be called <StatedClassName>\''.$classPartName
+                    'Error, the proxy of "'.$this->statedClassName.'" must be called <StatedClassName>\''.$classPartName
                 );
             } else {
                 //To access this class directly without repeat the stated class name
-                class_alias($proxyClassName, $this->_statedClassName, false);
+                class_alias($proxyClassName, $this->statedClassName, false);
             }
         }
 
@@ -260,7 +260,7 @@ class FinderStandard implements FinderInterface
 
         //Throw an error
         throw new Exception\IllegalProxy(
-            'Error, the proxy of "'.$this->_statedClassName.'" does not implement "Proxy\ProxyInterface"'
+            'Error, the proxy of "'.$this->statedClassName.'" does not implement "Proxy\ProxyInterface"'
         );
     }
 }

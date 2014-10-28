@@ -52,37 +52,37 @@ trait TraitState
      * DI Container to use for this object
      * @var DI\ContainerInterface
      */
-    protected $_diContainer = null;
+    protected $diContainer = null;
 
     /**
      * List of methods available for this state
      * @var \ArrayObject
      */
-    protected $_methodsListArray = null;
+    protected $methodsListArray = null;
 
     /**
      * Reflection class object of this state to extract closures and description
      * @var \ReflectionClass
      */
-    protected $_reflectionClass = null;
+    protected $reflectionClass = null;
 
     /**
      * Reflections methods of this state to extract description and closures
      * @var \ReflectionMethod[]
      */
-    protected $_reflectionsMethods = null;
+    protected $reflectionsMethods = null;
 
     /**
      * List of closures already extracted and set into Injection Closure Container
      * @var DI\InjectionClosureInterface[]
      */
-    protected $_closuresObjects = null;
+    protected $closuresObjects = null;
 
     /**
      * Methods to not return into descriptions
      * @var array
      */
-    protected $_methodsNamesToIgnoreArray = array(
+    protected $methodsNamesToIgnoreArray = array(
         '__construct' => '__construct',
         '__destruct' => '__destruct',
         'getReflectionClass' => 'getReflectionClass',
@@ -103,11 +103,11 @@ trait TraitState
      */
     protected function getReflectionClass()
     {
-        if (null === $this->_reflectionClass) {
-            $this->_reflectionClass = new \ReflectionClass(\get_class($this));
+        if (null === $this->reflectionClass) {
+            $this->reflectionClass = new \ReflectionClass(\get_class($this));
         }
 
-        return $this->_reflectionClass;
+        return $this->reflectionClass;
     }
 
     /**
@@ -117,7 +117,7 @@ trait TraitState
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
-        $this->_diContainer = $container;
+        $this->diContainer = $container;
 
         return $this;
     }
@@ -128,7 +128,7 @@ trait TraitState
      */
     public function getDIContainer()
     {
-        return $this->_diContainer;
+        return $this->diContainer;
     }
 
     /**
@@ -137,7 +137,7 @@ trait TraitState
      */
     public function listMethods()
     {
-        if (null === $this->_methodsListArray) {
+        if (null === $this->methodsListArray) {
             //Extract methods
             $thisReflectionClass = $this->getReflectionClass();
             $flags = \ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED | \ReflectionMethod::IS_PRIVATE;
@@ -150,17 +150,17 @@ trait TraitState
                 if (false === $methodReflection->isStatic()) {
                     //Store reflection into the local cache
                     $methodNameString = $methodReflection->getName();
-                    if (!isset($this->_methodsNamesToIgnoreArray[$methodNameString])) {
+                    if (!isset($this->methodsNamesToIgnoreArray[$methodNameString])) {
                         $methodsFinalArray[] = $methodNameString;
-                        $this->_reflectionsMethods[$methodNameString] = $methodReflection;
+                        $this->reflectionsMethods[$methodNameString] = $methodReflection;
                     }
                 }
             }
 
-            $this->_methodsListArray = $methodsFinalArray;
+            $this->methodsListArray = $methodsFinalArray;
         }
 
-        return $this->_methodsListArray;
+        return $this->methodsListArray;
     }
 
     /**
@@ -174,7 +174,7 @@ trait TraitState
     protected function checkVisibility($methodName, $scope)
     {
         $visible = false;
-        if (isset($this->_reflectionsMethods[$methodName])) {
+        if (isset($this->reflectionsMethods[$methodName])) {
             //Check visibility scope
             switch ($scope) {
                 case StateInterface::VISIBILITY_PRIVATE:
@@ -183,14 +183,14 @@ trait TraitState
                     break;
                 case StateInterface::VISIBILITY_PROTECTED:
                     //Can not access to private methods
-                    if (false === $this->_reflectionsMethods[$methodName]->isPrivate()) {
+                    if (false === $this->reflectionsMethods[$methodName]->isPrivate()) {
                         //It's a private method, do like if there is no method
                         $visible = true;
                     }
                     break;
                 case StateInterface::VISIBILITY_PUBLIC:
                     //Can not access to protect and private method.
-                    if (true === $this->_reflectionsMethods[$methodName]->isPublic()) {
+                    if (true === $this->reflectionsMethods[$methodName]->isPublic()) {
                         //It's not a public method, do like if there is no method
                         $visible = true;
                     }
@@ -219,8 +219,8 @@ trait TraitState
         }
 
         //Method is already extracted
-        if (isset($this->_reflectionsMethods[$methodName])) {
-            if ($this->_reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
+        if (isset($this->reflectionsMethods[$methodName])) {
+            if ($this->reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
                 return $this->checkVisibility($methodName, $scope);
             } else {
                 return false;
@@ -232,7 +232,7 @@ trait TraitState
             $this->getMethodDescription($methodName);
         } catch (\Exception $e) {
             //Method not found, store locally the result
-            $this->_reflectionsMethods[$methodName] = false;
+            $this->reflectionsMethods[$methodName] = false;
 
             return false;
         }
@@ -255,20 +255,20 @@ trait TraitState
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
         }
 
-        if (isset($this->_methodsNamesToIgnoreArray[$methodName])) {
+        if (isset($this->methodsNamesToIgnoreArray[$methodName])) {
             throw new Exception\MethodNotImplemented('Error, this method is not implemented by this state');
         }
 
         $thisReflectionClass = $this->getReflectionClass();
 
         //Initialize ArrayObject to store Reflection Methods
-        if (!($this->_reflectionsMethods instanceof \ArrayObject)) {
-            $this->_reflectionsMethods = new \ArrayObject();
+        if (!($this->reflectionsMethods instanceof \ArrayObject)) {
+            $this->reflectionsMethods = new \ArrayObject();
         }
 
         try {
             //Load Reflection Method if it is not already done
-            if (!isset($this->_reflectionsMethods[$methodName])) {
+            if (!isset($this->reflectionsMethods[$methodName])) {
                 $methodDescription = $thisReflectionClass->getMethod($methodName);
                 if (false !== $methodDescription->isStatic()) {
                     //Method static are not available
@@ -277,10 +277,10 @@ trait TraitState
                     );
                 }
 
-                $this->_reflectionsMethods[$methodName] = $methodDescription;
+                $this->reflectionsMethods[$methodName] = $methodDescription;
             }
 
-            return $this->_reflectionsMethods[$methodName];
+            return $this->reflectionsMethods[$methodName];
         } catch (\Exception $e) {
             //Method not found
             throw new Exception\MethodNotImplemented(
@@ -329,16 +329,16 @@ trait TraitState
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
         }
 
-        if (!($this->_closuresObjects instanceof \ArrayObject)) {
+        if (!($this->closuresObjects instanceof \ArrayObject)) {
             //Initialize locale closure cache
-            $this->_closuresObjects = new \ArrayObject();
+            $this->closuresObjects = new \ArrayObject();
         }
 
         if (!$proxy instanceof Proxy\ProxyInterface) {
             throw new Exception\IllegalProxy('Error, the proxy does not implement the required proxy');
         }
 
-        if (!isset($this->_closuresObjects[$methodName])) {
+        if (!isset($this->closuresObjects[$methodName])) {
             //The closure is not already generated
             //Extract them
             $methodReflection = $this->getMethodDescription($methodName);
@@ -350,7 +350,7 @@ trait TraitState
             //Include the closure into the container
             $injectionClosure = $this->buildInjectionClosureObject()->setClosure($closure);
             $injectionClosure->setDIContainer($this->getDIContainer());
-            $this->_closuresObjects[$methodName] = $injectionClosure;
+            $this->closuresObjects[$methodName] = $injectionClosure;
         }
 
         //Check visibility scope
@@ -360,7 +360,7 @@ trait TraitState
             );
         }
 
-        return $this->_closuresObjects[$methodName];
+        return $this->closuresObjects[$methodName];
     }
 }
 
