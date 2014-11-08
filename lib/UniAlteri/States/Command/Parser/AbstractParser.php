@@ -44,19 +44,19 @@ abstract class AbstractParser
      * Adapter factory to operate with file system
      * @var callable
      */
-    protected $_adapterFactory;
+    protected $adapterFactory;
 
     /**
      * Filesystem object to manipulate file
      * @var Filesystem
      */
-    protected $_fileSystem;
+    protected $fileSystem;
 
     /**
      * Path of the current stated class
      * @var string
      */
-    protected $_statedClassPath;
+    protected $statedClassPath;
 
     /**
      * Return the file system object from Gaufrette to
@@ -64,22 +64,22 @@ abstract class AbstractParser
      * @throws Exception\IllegalArgument when the FS adapter is not valid
      * @throws Exception\UnavailablePath when the path is not available
      */
-    protected function _getFileSystem()
+    protected function getFileSystem()
     {
-        if (!$this->_fileSystem instanceof Filesystem) {
-            if (!is_callable($this->_adapterFactory)) {
+        if (!$this->fileSystem instanceof Filesystem) {
+            if (!is_callable($this->adapterFactory)) {
                 throw new Exception\IllegalArgument('Error, the adapter factory is not valid');
             }
 
-            $adapter = call_user_func_array($this->_adapterFactory, array($this->_statedClassPath));
-            $this->_fileSystem = new Filesystem($adapter);
+            $adapter = call_user_func_array($this->adapterFactory, array($this->statedClassPath));
+            $this->fileSystem = new Filesystem($adapter);
 
             if (!$adapter->isDirectory('/')) {
-                throw new Exception\UnavailablePath('Error, the path '.$this->_statedClassPath.' is not available');
+                throw new Exception\UnavailablePath('Error, the path '.$this->statedClassPath.' is not available');
             }
         }
 
-        return $this->_fileSystem;
+        return $this->fileSystem;
     }
 
     /**
@@ -89,8 +89,8 @@ abstract class AbstractParser
      */
     public function __construct($adapterFactory, $path)
     {
-        $this->_adapterFactory = $adapterFactory;
-        $this->_statedClassPath = $path;
+        $this->adapterFactory = $adapterFactory;
+        $this->statedClassPath = $path;
     }
 
     /**
@@ -102,7 +102,7 @@ abstract class AbstractParser
     {
         //Extracts all php files (No check class exists)
         $filesArray = new \ArrayObject();
-        foreach($this->_getFileSystem()->keys() as $file) {
+        foreach($this->getFileSystem()->keys() as $file) {
             switch ($file) {
                 case '.';
                 case '..';
@@ -127,13 +127,13 @@ abstract class AbstractParser
      */
     public function loadFile($file)
     {
-        if (!$this->_getFileSystem()->has($file)) {
+        if (!$this->getFileSystem()->has($file)) {
             throw new Exception\UnReadablePath('Error, the file '.$file.' is not readable');
         }
 
         //Extract class name
-        $className = $this->_extractClassWithNamespace($file);
-        include_once($this->_statedClassPath.DIRECTORY_SEPARATOR.$file);
+        $className = $this->extractClassWithNamespace($file);
+        include_once($this->statedClassPath.DIRECTORY_SEPARATOR.$file);
 
         if (!class_exists($className, false)) {
             throw new Exception\ClassNotFound('The class '.$className.' was not found');
@@ -143,11 +143,21 @@ abstract class AbstractParser
     }
 
     /**
+     * Return the end of the class name (without namespace)
+     * @return string
+     */
+    protected function getClassNameFile()
+    {
+        $explodedPath = explode(DIRECTORY_SEPARATOR, $this->statedClassPath);
+        return end($explodedPath).'.php';
+    }
+
+    /**
      * Return the name space define in a file
      * @param string $file
      * @return string
      */
-    protected function _extractClassWithNamespace($file)
+    protected function extractClassWithNamespace($file)
     {
         $nameSpace = null;
         $className = null;
@@ -197,7 +207,7 @@ abstract class AbstractParser
      */
     public function getFile($file)
     {
-        $fileSystem = $this->_getFileSystem();
+        $fileSystem = $this->getFileSystem();
         if (!$fileSystem->has($file)) {
             throw new Exception\UnReadablePath('Error, the file '.$file.' is not readable');
         }

@@ -58,7 +58,7 @@ class StatedClass extends AbstractParser
     public function hasProxy()
     {
         return in_array(
-            FinderInterface::PROXY_FILE_NAME,
+            $this->getClassNameFile(),
             $this->listFiles()->getArrayCopy()
         );
     }
@@ -81,7 +81,7 @@ class StatedClass extends AbstractParser
      */
     public function getFactoryParser()
     {
-        return new Factory($this->_adapterFactory, $this->_statedClassPath);
+        return new Factory($this->adapterFactory, $this->statedClassPath);
     }
 
     /**
@@ -90,7 +90,7 @@ class StatedClass extends AbstractParser
      */
     public function getProxyParser()
     {
-        return new Proxy($this->_adapterFactory, $this->_statedClassPath);
+        return new Proxy($this->adapterFactory, $this->statedClassPath);
     }
 
     /**
@@ -99,6 +99,6 @@ class StatedClass extends AbstractParser
      */
     public function getStatesParser()
     {
-        return new State($this->_adapterFactory, $this->_statedClassPath.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH);
+        return new State($this->adapterFactory, $this->statedClassPath.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH);
     }
 }

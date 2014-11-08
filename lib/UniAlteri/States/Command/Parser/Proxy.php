@@ -22,7 +22,6 @@
 
 namespace UniAlteri\States\Command\Parser;
 
-use UniAlteri\States\Loader\FinderInterface;
 use \UniAlteri\States\Command;
 
 /**
@@ -42,35 +41,35 @@ class Proxy extends AbstractParser
     /**
      * Test if the proxy implements the good interface defined in the library States
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isValidProxy()
     {
-        return $this->loadFile(FinderInterface::PROXY_FILE_NAME)
+        return $this->loadFile($this->getClassNameFile())
             ->implementsInterface('\UniAlteri\States\Proxy\ProxyInterface');
     }
 
     /**
      * Test if the proxy is a subclass of the standard proxy implemented in the library States
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isStandardProxy()
     {
-        return $this->loadFile(FinderInterface::PROXY_FILE_NAME)
+        return $this->loadFile($this->getClassNameFile())
             ->isSubclassOf('\UniAlteri\States\Proxy\Standard')
-            && !$this->loadFile(FinderInterface::PROXY_FILE_NAME)
+            && !$this->loadFile($this->getClassNameFile())
             ->isSubclassOf('\UniAlteri\States\Proxy\Integrated');
     }
 
     /**
      * Test if the proxy is a subclass of the integrated proxy implemented in the library States
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isIntegratedProxy()
     {
-        return $this->loadFile(FinderInterface::PROXY_FILE_NAME)
+        return $this->loadFile($this->getClassNameFile())
             ->isSubclassOf('\UniAlteri\States\Proxy\Integrated');
     }
 
@@ -78,13 +77,13 @@ class Proxy extends AbstractParser
      * Test if the proxy use of the default implementation of this library States provided by the trait
      * \UniAlteri\States\Proxy\TraitProxy
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function useTraitProxy()
     {
         return in_array(
             '\UniAlteri\States\Proxy\TraitProxy',
-            $this->loadFile(FinderInterface::PROXY_FILE_NAME)->getTraitNames()
+            $this->loadFile($this->getClassNameFile())->getTraitNames()
         );
     }
 }

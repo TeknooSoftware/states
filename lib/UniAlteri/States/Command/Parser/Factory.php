@@ -42,7 +42,7 @@ class Factory extends AbstractParser
     /**
      * Test if the factory implements the good interface defined in the library States
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isValidFactory()
     {
@@ -53,7 +53,7 @@ class Factory extends AbstractParser
     /**
      * Test if the factory is a subclass of the standard factory implemented in the library States
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isStandardFactory()
     {
@@ -64,7 +64,7 @@ class Factory extends AbstractParser
     /**
      * Test if the factory is a subclass of the integrated factory implemented in the library States
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isIntegratedFactory()
     {
@@ -76,7 +76,7 @@ class Factory extends AbstractParser
      * Test if the factory use of the default implementation of this library States provided by the trait
      * \UniAlteri\States\Factory\TraitFactory
      * @return bool
-     * @throws Command\Exception\UnReadablePath when the path is not readable
+     * @throws Exception\UnReadablePath when the path is not readable
      */
     public function useTraitFactory()
     {

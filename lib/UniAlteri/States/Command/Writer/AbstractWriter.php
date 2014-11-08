@@ -44,19 +44,19 @@ abstract class AbstractWriter
      * Adapter to operate with file system
      * @var callable
      */
-    protected $_adapterFactory;
+    protected $adapterFactory;
 
     /**
      * Filesystem object to manipulate file
      * @var Filesystem
      */
-    protected $_fileSystem;
+    protected $fileSystem;
 
     /**
      * Path of the current stated class
      * @var string
      */
-    protected $_statedClassPath;
+    protected $statedClassPath;
 
     /**
      * Return the file system object from Gaufrette to
@@ -64,22 +64,22 @@ abstract class AbstractWriter
      * @throws Exception\IllegalArgument when the FS adapter is not valid
      * @throws Exception\UnavailablePath when the path is not available
      */
-    protected function _getFileSystem()
+    protected function getFileSystem()
     {
-        if (!$this->_fileSystem instanceof Filesystem) {
-            if (!is_callable($this->_adapterFactory)) {
+        if (!$this->fileSystem instanceof Filesystem) {
+            if (!is_callable($this->adapterFactory)) {
                 throw new Exception\IllegalArgument('Error, the adapter factory is not valid');
             }
 
-            $adapter = call_user_func_array($this->_adapterFactory, array($this->_statedClassPath));
-            $this->_fileSystem = new Filesystem($adapter);
+            $adapter = call_user_func_array($this->adapterFactory, array($this->statedClassPath));
+            $this->fileSystem = new Filesystem($adapter);
 
             if (!$adapter->isDirectory('/')) {
-                throw new Exception\UnavailablePath('Error, the path '.$this->_statedClassPath.' is not available');
+                throw new Exception\UnavailablePath('Error, the path '.$this->statedClassPath.' is not available');
             }
         }
 
-        return $this->_fileSystem;
+        return $this->fileSystem;
     }
 
     /**
@@ -89,8 +89,8 @@ abstract class AbstractWriter
      */
     public function __construct($adapterFactory, $path)
     {
-        $this->_adapterFactory = $adapterFactory;
-        $this->_statedClassPath = $path;
+        $this->adapterFactory = $adapterFactory;
+        $this->statedClassPath = $path;
     }
 
     /**
@@ -99,9 +99,9 @@ abstract class AbstractWriter
      * @param string $content
      * @return int
      */
-    protected function _write($file, $content)
+    protected function write($file, $content)
     {
-        return $this->_getFileSystem()->write($file, $content, true);
+        return $this->getFileSystem()->write($file, $content, true);
     }
 
     /**
@@ -111,6 +111,6 @@ abstract class AbstractWriter
      */
     protected function _delete($file)
     {
-        return $this->_getFileSystem()->delete($file);
+        return $this->getFileSystem()->delete($file);
     }
 }

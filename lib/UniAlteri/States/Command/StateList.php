@@ -75,7 +75,7 @@ class StateList extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $parser = new StatedClass($this->_adapter, $input->getOption('path'));
+        $parser = new StatedClass($this->adapter, $input->getOption('path'));
         $stateParser = $parser->getStatesParser();
         $output->write(implode(PHP_EOL, $stateParser->listStates()), true);
     }

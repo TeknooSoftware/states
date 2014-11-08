@@ -43,7 +43,7 @@ class AbstractCommand extends Command
     /**
      * @var Adapter
      */
-    protected $_adapter;
+    protected $adapter;
 
     /**
      * @param string $name
@@ -51,7 +51,7 @@ class AbstractCommand extends Command
      */
     public function __construct($name = null, $adapter = null)
     {
-        $this->_adapter = $adapter;
+        $this->adapter = $adapter;
         parent::__construct($name);
     }
 }
