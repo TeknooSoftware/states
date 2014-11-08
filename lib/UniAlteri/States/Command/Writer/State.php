@@ -36,7 +36,12 @@ namespace UniAlteri\States\Command\Writer;
  */
  class State extends AbstractWriter
  {
-     public function createState($stateName, $className)
+     protected function createSubfolderState()
+     {
+
+     }
+
+     public function createState($stateName)
      {
 
      }

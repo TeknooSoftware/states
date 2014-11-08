@@ -27,6 +27,11 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use UniAlteri\States\Loader\FinderInterface;
+use UniAlteri\States\Loader\LoaderInterface;
+use UniAlteri\States\Proxy\ProxyInterface;
+use UniAlteri\States\States\StateInterface;
+use UniAlteri\Tests\States\Loader\FinderIntegratedTest;
 
 /**
  * Class ClassCreate
@@ -50,7 +55,12 @@ use Symfony\Component\Console\Output\OutputInterface;
          $this->setName('class:create')
             ->setDescription('Create a new empty stated class')
             ->addArgument(
-                'name',
+                'className',
+                 InputArgument::REQUIRED,
+                 'Full qualified name of the new stated class'
+             )
+             ->addArgument(
+                 'namespace',
                  InputArgument::REQUIRED,
                  'Full qualified name of the new stated class'
              )
@@ -80,5 +90,15 @@ use Symfony\Component\Console\Output\OutputInterface;
       */
      protected function execute(InputInterface $input, OutputInterface $output)
      {
+         $className = $input->getArgument('className');
+         $namespace = $input->getArgument('namespace');
+         $destinationPath = $input->getArgument('path');
+
+         $proxyWriter = new Writer\Proxy($this->adapter, $destinationPath);
+         $proxyWriter->createIntegratedProxy($className, $namespace);
+         $factoryWriter = new Writer\Factory($this->adapter, $destinationPath);
+         $factoryWriter->createIntegratedFactory($className, $namespace);
+         $stateWriter = new Writer\State($this->adapter, $destinationPath);
+         $stateWriter->createState(ProxyInterface::DEFAULT_STATE_NAME);
      }
  }

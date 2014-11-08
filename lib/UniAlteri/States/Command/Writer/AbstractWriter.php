@@ -109,7 +109,7 @@ abstract class AbstractWriter
      * @param string $file
      * @return boolean
      */
-    protected function _delete($file)
+    protected function delete($file)
     {
         return $this->getFileSystem()->delete($file);
     }
