@@ -153,7 +153,10 @@ trait TraitProxy
                 } else {
                     //Else, throw an exception
                     throw new Exception\AvailableSeveralMethodImplementations(
-                        'Method "'.$methodName.'" has several implementations in different states'
+                        sprintf(
+                            'Method "%s" has several implementations in different states',
+                            $methodName
+                        )
                     );
                 }
             }
@@ -163,7 +166,9 @@ trait TraitProxy
             return $this->callInState($activeStateFound, $methodName, $arguments, $scopeVisibility);
         }
 
-        throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available with actives states');
+        throw new Exception\MethodNotImplemented(
+            sprintf('Method "%s" is not available with actives states',$methodName)
+        );
     }
 
     /**
@@ -386,7 +391,7 @@ trait TraitProxy
                 unset($this->activesStates[$stateName]);
             }
         } else {
-            throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
@@ -424,7 +429,7 @@ trait TraitProxy
         if (isset($this->states[$stateName])) {
             $this->activesStates[$stateName] = $this->states[$stateName];
         } else {
-            throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
@@ -445,7 +450,7 @@ trait TraitProxy
         if (isset($this->activesStates[$stateName])) {
             unset($this->activesStates[$stateName]);
         } else {
-            throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
@@ -587,7 +592,7 @@ trait TraitProxy
                     return $this->states[$stateName]->getMethodDescription($methodName);
                 }
             } elseif (null !== $stateName) {
-                throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+                throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
             }
         } catch ( States\Exception\MethodNotImplemented $e) {
             throw new Exception\MethodNotImplemented(
@@ -601,7 +606,7 @@ trait TraitProxy
 
         //Method not found
         throw new Exception\MethodNotImplemented(
-            'Method "'.$methodName.'" is not available for this state'
+            sprintf('Method "%s" is not available for this state', $methodName)
         );
     }
 

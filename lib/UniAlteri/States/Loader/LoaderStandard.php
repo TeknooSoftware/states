@@ -135,7 +135,9 @@ class LoaderStandard implements LoaderInterface
     public function addIncludePath($path)
     {
         if (false === is_dir($path)) {
-            throw new Exception\UnavailablePath('Error, the path "'.$path.'" is not available');
+            throw new Exception\UnavailablePath(
+                sprintf('Error, the path "%s" is not available', $path)
+            );
         }
 
         $this->includedPathsArray[$path] = $path;
@@ -369,7 +371,7 @@ class LoaderStandard implements LoaderInterface
         //Check if the factory class is loaded
         if (!class_exists($factoryClassName, false)) {
             throw new Exception\UnavailableFactory(
-                'The factory of '.$statedClassName.' is not available'
+                sprintf('The factory of %s is not available', $statedClassName)
             );
         }
 
@@ -377,7 +379,7 @@ class LoaderStandard implements LoaderInterface
         $factoryObject = new $factoryClassName();
         if (!$factoryObject instanceof Factory\FactoryInterface) {
             throw new Exception\IllegalFactory(
-                'The factory of '.$statedClassName.' does not implement the interface'
+                sprintf('The factory of %s does not implement the interface', $statedClassName)
             );
         }
 
