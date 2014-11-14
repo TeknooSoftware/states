@@ -194,13 +194,15 @@ trait TraitFactory
         $defaultStatedName = Proxy\ProxyInterface::DEFAULT_STATE_NAME;
         if (!isset($statesList[$defaultStatedName])) {
             throw new Exception\StateNotFound(
-                'Error, the state "'.$defaultStatedName.'" was not found in this stated class'
+                sprintf('Error, the state "%s" was not found in this stated class', $defaultStatedName)
             );
         }
 
         //Check if the require state is available
         if (null !== $stateName && !isset($statesList[$stateName])) {
-            throw new Exception\StateNotFound('Error, the state "'.$stateName.'" was not found in this stated class');
+            throw new Exception\StateNotFound(
+                sprintf('Error, the state "%s" was not found in this stated class', $stateName)
+            );
         }
 
         //Load each state into proxy

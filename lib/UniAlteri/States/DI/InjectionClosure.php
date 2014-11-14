@@ -133,7 +133,9 @@ class InjectionClosure implements InjectionClosureInterface
     protected function validatingName($name)
     {
         if (0 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_]*$#iS', $name)) {
-            throw new Exception\IllegalName('Illegal name for static property "'.$name.'"');
+            throw new Exception\IllegalName(
+                sprintf('Illegal name for static property "%s"', $name)
+            );
         }
 
         return true;

@@ -273,7 +273,7 @@ trait TraitState
                 if (false !== $methodDescription->isStatic()) {
                     //Method static are not available
                     throw new Exception\MethodNotImplemented(
-                        'Method "'.$methodName.'" is not available for this state'
+                        sprintf('Method "%s" is not available for this state', $methodName)
                     );
                 }
 
@@ -284,7 +284,7 @@ trait TraitState
         } catch (\Exception $e) {
             //Method not found
             throw new Exception\MethodNotImplemented(
-                'Method "'.$methodName.'" is not available for this state',
+                sprintf('Method "%s" is not available for this state', $methodName),
                 $e->getCode(),
                 $e
             );
@@ -356,7 +356,7 @@ trait TraitState
         //Check visibility scope
         if (false === $this->checkVisibility($methodName, $scope)) {
             throw new Exception\MethodNotImplemented(
-                'Method "'.$methodName.'" is not available for this state'
+                sprintf('Method "%s" is not available for this state', $methodName)
             );
         }
 
