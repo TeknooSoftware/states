@@ -71,11 +71,20 @@ class LoaderStandard implements LoaderInterface
     protected $includePathManager = null;
 
     /**
+     * to enable PSR 0 loader to search required stated class in included paths
+     * disabled by default for performance reasons
+     * @var bool
+     */
+    protected $psr0LoaderEnabled=false;
+
+    /**
      * Initialize the loader object
      * @param  IncludePathManagerInterface $includePathManager
+     * @param  boolean                     $enablePSR0Loader to enable PSR 0 loader to search required stated class in included paths
+     *                                                       disabled by default for performance reasons
      * @throws Exception\IllegalArgument   $includePathManager does not implement the interface IncludePathManagerInterface
      */
-    public function __construct($includePathManager)
+    public function __construct($includePathManager, $enablePSR0Loader=false)
     {
         if (!$includePathManager instanceof IncludePathManagerInterface) {
             throw new Exception\IllegalArgument(
@@ -88,12 +97,35 @@ class LoaderStandard implements LoaderInterface
         $this->namespacesArray = new \ArrayObject();
         $this->previousIncludedPathStack = new \SplStack();
         $this->includePathManager = $includePathManager;
+        $this->psr0LoaderEnabled = $enablePSR0Loader;
 
         if (class_exists('\Phar', false)) {
             //instructs phar to intercept fopen, file_get_contents, opendir, and all of the stat-related functions
             //Needed to support Phar with the loader
             \Phar::interceptFileFuncs();
         }
+    }
+
+    /**
+     * To enable or disable  PSR 0 loader to search required stated class in included paths
+     * disabled by default for performance reasons
+     * @param   bool    $state
+     * @return  $this
+     */
+    public function setPSR0LoaderState($state)
+    {
+        $this->psr0LoaderEnabled = $state;
+
+        return $this;
+    }
+
+    /**
+     * To know the state of the PSR 0 loader to search required stated class in included paths
+     * @return bool
+     */
+    public function getPSR0LoaderState()
+    {
+        return $this->psr0LoaderEnabled;
     }
 
     /**
@@ -322,6 +354,15 @@ class LoaderStandard implements LoaderInterface
         try {
             //If the namespace is configured, check its paths
             if (false === $this->loadNamespaceClass($className)) {
+
+                //Stated class was not found in defined namespace, check included path
+                if (false === $this->psr0LoaderEnabled) {
+                    //PSR 0 is disable for this loaded, skip next operations
+                    $this->restoreIncludedPaths();
+
+                    return $classLoaded;
+                }
+
                 //Class not found, switch to basic mode, replace \ and _ by a directory separator
                 $path = str_replace(array('\\', '_'), DIRECTORY_SEPARATOR, $className);
                 if (DIRECTORY_SEPARATOR == $path[0]) {

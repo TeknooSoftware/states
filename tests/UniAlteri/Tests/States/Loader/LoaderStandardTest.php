@@ -103,14 +103,15 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      * Load object to test it
      * @param  boolean               $standardIncludePathManager to load the standard Include Path Manager from this lib and not
      *                                                           the test manager
+     * @param  boolean               $enablePSR0 to enable psr0 behavior in loader or not
      * @return Loader\LoaderStandard
      */
-    protected function initializeLoader($standardIncludePathManager=false)
+    protected function initializeLoader($standardIncludePathManager=false, $enablePSR0=false)
     {
         if (false == $standardIncludePathManager) {
-            $this->loader = new Loader\LoaderStandard($this->includePathManager);
+            $this->loader = new Loader\LoaderStandard($this->includePathManager, $enablePSR0);
         } else {
-            $this->loader = new Loader\LoaderStandard(new Loader\IncludePathManager());
+            $this->loader = new Loader\LoaderStandard(new Loader\IncludePathManager(), $enablePSR0);
         }
 
         $this->loader->setDIContainer(new Support\MockDIContainer());
@@ -509,10 +510,12 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false
+     *
+     * This method must return false because the internal psr0 loader has been disabled
      */
-    public function testLoadClassViaFileWithoutFileAbsolute()
+    public function testLoadClassViaFileWithoutFileAbsolutePSR0Disable()
     {
-        $loader = $this->initializeLoader(true);
+        $loader = $this->initializeLoader(true, false);
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertFalse($loader->loadClass('\\Support\\FileLoader\\Class1'));
@@ -523,9 +526,52 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false
      */
+    public function testLoadClassViaFileWithoutFileAbsolute()
+    {
+        $loader = $this->initializeLoader(true, true);
+        $path = dirname(dirname(__DIR__));
+        $loader->addIncludePath($path);
+        $this->assertFalse($loader->loadClass('\\Support\\FileLoader\\Class1'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     *
+     * Must return false and load nothing beacuse internal psr0 loader has been disabled
+     */
+    public function testLoadClassViaFileAbsolutePSR0Disable()
+    {
+        $loader = $this->initializeLoader(true, false);
+        $path = dirname(dirname(__DIR__));
+        $loader->addIncludePath($path);
+        $this->assertFalse($loader->loadClass('\\Support\\FileLoader\\Class2'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     *
+     * This method must load nothing because  internal psr0 loader has been disabled
+     */
+    public function testLoadClassViaFilePSR0Disabled()
+    {
+        $loader = $this->initializeLoader(true, false);
+        $path = dirname(dirname(__DIR__));
+        $loader->addIncludePath($path);
+        $this->assertFalse($loader->loadClass('Support\\FileLoader\\Class2'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false
+     */
     public function testLoadClassViaFileAbsolute()
     {
-        $loader = $this->initializeLoader(true);
+        $loader = $this->initializeLoader(true, true);
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertTrue($loader->loadClass('\\Support\\FileLoader\\Class2'));
@@ -538,7 +584,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaFileWithoutFile()
     {
-        $loader = $this->initializeLoader(true);
+        $loader = $this->initializeLoader(true, true);
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertFalse($loader->loadClass('Support\\FileLoader\\Class1'));
@@ -551,7 +597,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaFile()
     {
-        $loader = $this->initializeLoader(true);
+        $loader = $this->initializeLoader(true, true);
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertTrue($loader->loadClass('Support\\FileLoader\\Class2'));
@@ -564,7 +610,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassViaFileWithFactoryException()
     {
-        $loader = $this->initializeLoader(true);
+        $loader = $this->initializeLoader(true, true);
         $path = dirname(dirname(__DIR__));
         $loader->addIncludePath($path);
         $this->assertFalse($loader->loadClass('Support\\FileLoader\\Class3'));
@@ -793,7 +839,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadClassBehaviorDuringExceptionMustRestoreIncludedPath()
     {
-        $loader = $this->initializeLoader(false);
+        $loader = $this->initializeLoader(false, true);
         $path = dirname(dirname(dirname(dirname(__DIR__))));
         $loader->addIncludePath($path);
 
@@ -805,5 +851,43 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->assertTrue($fail, 'Error, the loader must rethrow exception during loading class');
+    }
+
+    /**
+     * Test the beahvior of the method getPSR0LoaderState when the psr0 is enabled
+     */
+    public function testGetPSR0LoaderStateEnabled()
+    {
+        $loader = $this->initializeLoader(false, true);
+        $this->assertTrue($loader->getPSR0LoaderState());
+    }
+
+    /**
+     * Test the beahvior of the method getPSR0LoaderState when the psr0 is disabled
+     */
+    public function testGetPSR0LoaderStateDisabled()
+    {
+        $loader = $this->initializeLoader(false, false);
+        $this->assertFalse($loader->getPSR0LoaderState());
+    }
+
+    /**
+     * Test the beahvior of the method setPSR0LoaderState to disable PSR0
+     */
+    public function testSetPSR0LoaderStateEnabled()
+    {
+        $loader = $this->initializeLoader(false, true);
+        $loader->setPSR0LoaderState(false);
+        $this->assertFalse($loader->getPSR0LoaderState());
+    }
+
+    /**
+     * Test the beahvior of the method setPSR0LoaderState to enable PSR0
+     */
+    public function testSetPSR0LoaderStateDisabled()
+    {
+        $loader = $this->initializeLoader(false, false);
+        $loader->setPSR0LoaderState(true);
+        $this->assertTrue($loader->getPSR0LoaderState());
     }
 }
