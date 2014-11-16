@@ -173,7 +173,7 @@ trait TraitFactory
      * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function startup($proxyObject, $stateName=null)
+    public function startup($proxyObject, $stateName = null)
     {
         if (!$proxyObject instanceof Proxy\ProxyInterface) {
             throw new Exception\IllegalProxy('Error, the Proxy does not implements the Proxy Interface');
@@ -229,7 +229,7 @@ trait TraitFactory
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function build($arguments=null, $stateName=null)
+    public function build($arguments = null, $stateName = null)
     {
         //Get finder loader
         $finderLoader = $this->getFinder();
