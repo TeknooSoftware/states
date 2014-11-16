@@ -262,7 +262,7 @@ class FinderStandard implements FinderInterface
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function buildProxy($arguments=null)
+    public function buildProxy($arguments = null)
     {
         //Load the proxy if it is not already done
         $proxyClassName = $this->loadProxy();

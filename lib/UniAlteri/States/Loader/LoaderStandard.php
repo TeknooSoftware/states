@@ -75,16 +75,16 @@ class LoaderStandard implements LoaderInterface
      * disabled by default for performance reasons
      * @var bool
      */
-    protected $psr0LoaderEnabled=false;
+    protected $psr0LoaderEnabled = false;
 
     /**
      * Initialize the loader object
      * @param  IncludePathManagerInterface $includePathManager
-     * @param  boolean                     $enablePSR0Loader to enable PSR 0 loader to search required stated class in included paths
-     *                                                       disabled by default for performance reasons
+     * @param  boolean                     $enablePSR0Loader   to enable PSR 0 loader to search required stated class in included paths
+     *                                                         disabled by default for performance reasons
      * @throws Exception\IllegalArgument   $includePathManager does not implement the interface IncludePathManagerInterface
      */
-    public function __construct($includePathManager, $enablePSR0Loader=false)
+    public function __construct($includePathManager, $enablePSR0Loader = false)
     {
         if (!$includePathManager instanceof IncludePathManagerInterface) {
             throw new Exception\IllegalArgument(
@@ -109,8 +109,8 @@ class LoaderStandard implements LoaderInterface
     /**
      * To enable or disable  PSR 0 loader to search required stated class in included paths
      * disabled by default for performance reasons
-     * @param   bool    $state
-     * @return  $this
+     * @param  bool  $state
+     * @return $this
      */
     public function setPSR0LoaderState($state)
     {
@@ -354,7 +354,6 @@ class LoaderStandard implements LoaderInterface
         try {
             //If the namespace is configured, check its paths
             if (false === $this->loadNamespaceClass($className)) {
-
                 //Stated class was not found in defined namespace, check included path
                 if (false === $this->psr0LoaderEnabled) {
                     //PSR 0 is disable for this loaded, skip next operations

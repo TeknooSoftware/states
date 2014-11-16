@@ -60,7 +60,7 @@ class InjectionClosure implements InjectionClosureInterface
      * To create a closure for a state with a support of persistent vars. (aka "static")
      * @param \Closure $closure to initialize container with a closure
      */
-    public function __construct(\Closure $closure=null)
+    public function __construct(\Closure $closure = null)
     {
         $this->properties = new \ArrayObject();
         if ($closure instanceof \Closure) {

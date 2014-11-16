@@ -93,7 +93,7 @@ trait TraitState
         'listMethods' => 'listMethods',
         'testMethod' => 'testMethod',
         'getMethodDescription' => 'getMethodDescription',
-        'getClosure' => 'getClosure'
+        'getClosure' => 'getClosure',
     );
 
     /**
@@ -212,7 +212,7 @@ trait TraitState
      * @return boolean
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope=StateInterface::VISIBILITY_PUBLIC)
+    public function testMethod($methodName, $scope = StateInterface::VISIBILITY_PUBLIC)
     {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
@@ -323,7 +323,7 @@ trait TraitState
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought
      */
-    public function getClosure($methodName, $proxy, $scope=StateInterface::VISIBILITY_PUBLIC)
+    public function getClosure($methodName, $proxy, $scope = StateInterface::VISIBILITY_PUBLIC)
     {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');

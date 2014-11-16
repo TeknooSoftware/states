@@ -78,10 +78,10 @@ trait TraitProxy
 
     /**
      * Execute a method available in a state passed in args with the injection closure
-     * @param States\States\StateInterface $state
+     * @param  States\States\StateInterface   $state
      * @param $methodName
-     * @param array $arguments
-     * @param string $scopeVisibility      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param  array                          $arguments
+     * @param  string                         $scopeVisibility self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws \Exception
@@ -167,7 +167,7 @@ trait TraitProxy
         }
 
         throw new Exception\MethodNotImplemented(
-            sprintf('Method "%s" is not available with actives states',$methodName)
+            sprintf('Method "%s" is not available with actives states', $methodName)
         );
     }
 
@@ -330,7 +330,7 @@ trait TraitProxy
         //Clone states stack
         if ($this->states instanceof \ArrayObject) {
             $clonedStatesArray = new \ArrayObject();
-            foreach ($this->states as $key=>$state) {
+            foreach ($this->states as $key => $state) {
                 //Clone each stated object
                 $clonedState = clone $state;
                 //Update new stack
@@ -495,7 +495,7 @@ trait TraitProxy
 
     /**
      * Check if the current entity is in the required state defined by $stateName
-     * @param string $stateName
+     * @param  string                    $stateName
      * @return bool
      * @throws Exception\InvalidArgument when $stateName is not a valid string
      */
@@ -514,6 +514,7 @@ trait TraitProxy
             $enabledStatesList = array_flip(
                 array_map('strtolower', $enabledStatesList)
             );
+
             return isset($enabledStatesList[$stateName]);
         } else {
             return false;
@@ -594,13 +595,13 @@ trait TraitProxy
             } elseif (null !== $stateName) {
                 throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
             }
-        } catch ( States\Exception\MethodNotImplemented $e) {
+        } catch (States\Exception\MethodNotImplemented $e) {
             throw new Exception\MethodNotImplemented(
                 $e->getMessage(),
                 $e->getCode(),
                 $e
             );
-        } catch ( \Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
 
