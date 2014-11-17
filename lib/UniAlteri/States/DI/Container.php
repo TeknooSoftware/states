@@ -97,13 +97,15 @@ class Container extends \Pimple\Container implements ContainerInterface
             if (\class_exists($instance, false)) {
                 $this[$name] = new $instance();
             } else {
-                throw new Exception\ClassNotFound('The class "'.$instance.'" is not available');
+                throw new Exception\ClassNotFound(sprintf('The class "%s" is not available', $instance));
             }
         } elseif (is_object($instance)) {
             //For callables and objects, register them
             $this[$name] = $instance;
         } else {
-            throw new Exception\IllegalService('Error, the instance for "'.$name.'" is illegal');
+            throw new Exception\IllegalService(
+                sprintf('Error, the instance for "%s" is illegal', $name)
+            );
         }
 
         return $this;
@@ -127,7 +129,9 @@ class Container extends \Pimple\Container implements ContainerInterface
             if (\method_exists($instance, '__invoke')) {
                 $this[$name] = $this->factory($instance);
             } else {
-                throw new Exception\IllegalService('Error, the service for "'.$name.'" is not an invokable object');
+                throw new Exception\IllegalService(
+                    sprintf('Error, the service for "%s" is not an invokable object', $name)
+                );
             }
         } elseif (\is_string($instance)) {
             //Class, check if it is loaded
@@ -137,10 +141,14 @@ class Container extends \Pimple\Container implements ContainerInterface
                     return new $instance();
                 });
             } else {
-                throw new Exception\ClassNotFound('The class "'.$instance.'" is not available');
+                throw new Exception\ClassNotFound(
+                    sprintf('The class "%s" is not available', $instance)
+                );
             }
         } else {
-            throw new Exception\IllegalService('Error, the service for "'.$name.'" is illegal');
+            throw new Exception\IllegalService(
+                sprintf('Error, the service for "%s" is illegal', $name)
+            );
         }
 
         return $this;

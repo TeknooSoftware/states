@@ -108,7 +108,9 @@ class FinderStandard implements FinderInterface
         //Checks if states are stored into the standardized path
         $statesPath = $this->pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH;
         if (!is_dir($statesPath)) {
-            throw new Exception\UnavailablePath('Error, the path "'.$statesPath.'" was not found');
+            throw new Exception\UnavailablePath(
+                sprintf('Error, the path "%s" was not found', $statesPath)
+            );
         }
 
         //Checks if the path is available, use error_reporting to not use @
@@ -116,7 +118,9 @@ class FinderStandard implements FinderInterface
         $hD = opendir($statesPath);
         error_reporting($oldErrorReporting);
         if (false === $hD) {
-            throw new Exception\UnReadablePath('Error, the path "'.$statesPath.'" is not available');
+            throw new Exception\UnReadablePath(
+                sprintf('Error, the path "%s" is not available', $statesPath)
+            );
         }
 
         //Extracts all states (No check class exists)
@@ -156,13 +160,17 @@ class FinderStandard implements FinderInterface
                             .DIRECTORY_SEPARATOR.$stateName.'.php';
 
             if (!is_readable($statePath)) {
-                throw new Exception\UnReadablePath('Error, the state "'.$stateName.'" was not found');
+                throw new Exception\UnReadablePath(
+                    sprintf('Error, the state "%s" was not found', $stateName)
+                );
             }
 
             include_once $statePath;
             $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
             if (!class_exists($stateClassName, false)) {
-                throw new Exception\UnavailableState('Error, the state "'.$stateName.'" is not available');
+                throw new Exception\UnavailableState(
+                    sprintf('Error, the state "%s" is not available', $stateName)
+                );
             }
         }
 
@@ -185,7 +193,10 @@ class FinderStandard implements FinderInterface
         $stateObject = new $stateClassName();
         if (!$stateObject instanceof States\StateInterface) {
             throw new Exception\IllegalState(
-                'Error, the state "'.$stateName.'" does not implement the interface "States\StateInterface"'
+                sprintf(
+                    'Error, the state "%s" does not implement the interface "States\StateInterface"',
+                    $stateName
+                )
             );
         }
 
@@ -230,7 +241,11 @@ class FinderStandard implements FinderInterface
             include_once $proxyPath;
             if (!class_exists($proxyClassName, false)) {
                 throw new Exception\IllegalProxy(
-                    'Error, the proxy of "'.$this->statedClassName.'" must be called <StatedClassName>\''.$classPartName
+                    sprintf(
+                        'Error, the proxy of "%s" must be called <StatedClassName>\'%s',
+                        $this->statedClassName,
+                        $classPartName
+                    )
                 );
             } else {
                 //To access this class directly without repeat the stated class name
@@ -247,7 +262,7 @@ class FinderStandard implements FinderInterface
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function buildProxy($arguments=null)
+    public function buildProxy($arguments = null)
     {
         //Load the proxy if it is not already done
         $proxyClassName = $this->loadProxy();
@@ -260,7 +275,7 @@ class FinderStandard implements FinderInterface
 
         //Throw an error
         throw new Exception\IllegalProxy(
-            'Error, the proxy of "'.$this->statedClassName.'" does not implement "Proxy\ProxyInterface"'
+            sprintf('Error, the proxy of "%s" does not implement "Proxy\ProxyInterface"', $this->statedClassName)
         );
     }
 }

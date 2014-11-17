@@ -173,7 +173,7 @@ trait TraitFactory
      * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function startup($proxyObject, $stateName=null)
+    public function startup($proxyObject, $stateName = null)
     {
         if (!$proxyObject instanceof Proxy\ProxyInterface) {
             throw new Exception\IllegalProxy('Error, the Proxy does not implements the Proxy Interface');
@@ -194,13 +194,15 @@ trait TraitFactory
         $defaultStatedName = Proxy\ProxyInterface::DEFAULT_STATE_NAME;
         if (!isset($statesList[$defaultStatedName])) {
             throw new Exception\StateNotFound(
-                'Error, the state "'.$defaultStatedName.'" was not found in this stated class'
+                sprintf('Error, the state "%s" was not found in this stated class', $defaultStatedName)
             );
         }
 
         //Check if the require state is available
         if (null !== $stateName && !isset($statesList[$stateName])) {
-            throw new Exception\StateNotFound('Error, the state "'.$stateName.'" was not found in this stated class');
+            throw new Exception\StateNotFound(
+                sprintf('Error, the state "%s" was not found in this stated class', $stateName)
+            );
         }
 
         //Load each state into proxy
@@ -227,7 +229,7 @@ trait TraitFactory
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function build($arguments=null, $stateName=null)
+    public function build($arguments = null, $stateName = null)
     {
         //Get finder loader
         $finderLoader = $this->getFinder();
