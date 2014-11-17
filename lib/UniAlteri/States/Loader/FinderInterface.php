@@ -116,5 +116,5 @@ interface FinderInterface
      * @return Proxy\ProxyInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function buildProxy($arguments=null);
+    public function buildProxy($arguments = null);
 }

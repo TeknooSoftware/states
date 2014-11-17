@@ -78,10 +78,10 @@ trait TraitProxy
 
     /**
      * Execute a method available in a state passed in args with the injection closure
-     * @param States\States\StateInterface $state
+     * @param  States\States\StateInterface   $state
      * @param $methodName
-     * @param array $arguments
-     * @param string $scopeVisibility      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param  array                          $arguments
+     * @param  string                         $scopeVisibility self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws \Exception
@@ -153,7 +153,10 @@ trait TraitProxy
                 } else {
                     //Else, throw an exception
                     throw new Exception\AvailableSeveralMethodImplementations(
-                        'Method "'.$methodName.'" has several implementations in different states'
+                        sprintf(
+                            'Method "%s" has several implementations in different states',
+                            $methodName
+                        )
                     );
                 }
             }
@@ -163,7 +166,9 @@ trait TraitProxy
             return $this->callInState($activeStateFound, $methodName, $arguments, $scopeVisibility);
         }
 
-        throw new Exception\MethodNotImplemented('Method "'.$methodName.'" is not available with actives states');
+        throw new Exception\MethodNotImplemented(
+            sprintf('Method "%s" is not available with actives states', $methodName)
+        );
     }
 
     /**
@@ -325,7 +330,7 @@ trait TraitProxy
         //Clone states stack
         if ($this->states instanceof \ArrayObject) {
             $clonedStatesArray = new \ArrayObject();
-            foreach ($this->states as $key=>$state) {
+            foreach ($this->states as $key => $state) {
                 //Clone each stated object
                 $clonedState = clone $state;
                 //Update new stack
@@ -386,7 +391,7 @@ trait TraitProxy
                 unset($this->activesStates[$stateName]);
             }
         } else {
-            throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
@@ -424,7 +429,7 @@ trait TraitProxy
         if (isset($this->states[$stateName])) {
             $this->activesStates[$stateName] = $this->states[$stateName];
         } else {
-            throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
@@ -445,7 +450,7 @@ trait TraitProxy
         if (isset($this->activesStates[$stateName])) {
             unset($this->activesStates[$stateName]);
         } else {
-            throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
@@ -490,7 +495,7 @@ trait TraitProxy
 
     /**
      * Check if the current entity is in the required state defined by $stateName
-     * @param string $stateName
+     * @param  string                    $stateName
      * @return bool
      * @throws Exception\InvalidArgument when $stateName is not a valid string
      */
@@ -509,6 +514,7 @@ trait TraitProxy
             $enabledStatesList = array_flip(
                 array_map('strtolower', $enabledStatesList)
             );
+
             return isset($enabledStatesList[$stateName]);
         } else {
             return false;
@@ -587,21 +593,21 @@ trait TraitProxy
                     return $this->states[$stateName]->getMethodDescription($methodName);
                 }
             } elseif (null !== $stateName) {
-                throw new Exception\StateNotFound('State "'.$stateName.'" is not available');
+                throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
             }
-        } catch ( States\Exception\MethodNotImplemented $e) {
+        } catch (States\Exception\MethodNotImplemented $e) {
             throw new Exception\MethodNotImplemented(
                 $e->getMessage(),
                 $e->getCode(),
                 $e
             );
-        } catch ( \Exception $e) {
+        } catch (\Exception $e) {
             throw $e;
         }
 
         //Method not found
         throw new Exception\MethodNotImplemented(
-            'Method "'.$methodName.'" is not available for this state'
+            sprintf('Method "%s" is not available for this state', $methodName)
         );
     }
 

@@ -60,7 +60,7 @@ class InjectionClosure implements InjectionClosureInterface
      * To create a closure for a state with a support of persistent vars. (aka "static")
      * @param \Closure $closure to initialize container with a closure
      */
-    public function __construct(\Closure $closure=null)
+    public function __construct(\Closure $closure = null)
     {
         $this->properties = new \ArrayObject();
         if ($closure instanceof \Closure) {
@@ -133,7 +133,9 @@ class InjectionClosure implements InjectionClosureInterface
     protected function validatingName($name)
     {
         if (0 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_]*$#iS', $name)) {
-            throw new Exception\IllegalName('Illegal name for static property "'.$name.'"');
+            throw new Exception\IllegalName(
+                sprintf('Illegal name for static property "%s"', $name)
+            );
         }
 
         return true;
