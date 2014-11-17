@@ -41,7 +41,7 @@ use Symfony\Component\Console\Input\InputDefinition;
 class AbstractCommand extends Command
 {
     /**
-     * @var Adapter
+     * @var callable
      */
     protected $adapter;
 

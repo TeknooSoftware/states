@@ -22,16 +22,14 @@
 
 namespace UniAlteri\States\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use UniAlteri\States\Command\Parser\StatedClass;
 
 /**
  * Class ClassInformation
- * Command to list class informations
+ * Command to list class datas
  *
  * @package     States
  * @subpackage  Command

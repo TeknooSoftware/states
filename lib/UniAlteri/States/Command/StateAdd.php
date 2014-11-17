@@ -79,9 +79,8 @@ class StateAdd extends AbstractCommand
      * @see    setCode()
      */
     protected function execute(InputInterface $input, OutputInterface $output)
-    {{
+    {
         $stateName = $input->getArgument('name');
-        $namespace = $input->getArgument('namespace');
         $destinationPath = $input->getArgument('path');
 
         $stateWriter = new Writer\State($this->adapter, $destinationPath);

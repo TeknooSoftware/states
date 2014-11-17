@@ -22,16 +22,12 @@
 
 namespace UniAlteri\States\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use UniAlteri\States\Loader\FinderInterface;
-use UniAlteri\States\Loader\LoaderInterface;
 use UniAlteri\States\Proxy\ProxyInterface;
-use UniAlteri\States\States\StateInterface;
-use UniAlteri\Tests\States\Loader\FinderIntegratedTest;
+
 
 /**
  * Class ClassCreate
@@ -56,11 +52,6 @@ use UniAlteri\Tests\States\Loader\FinderIntegratedTest;
             ->setDescription('Create a new empty stated class')
             ->addArgument(
                 'className',
-                 InputArgument::REQUIRED,
-                 'Full qualified name of the new stated class'
-             )
-             ->addArgument(
-                 'namespace',
                  InputArgument::REQUIRED,
                  'Full qualified name of the new stated class'
              )
@@ -90,9 +81,12 @@ use UniAlteri\Tests\States\Loader\FinderIntegratedTest;
       */
      protected function execute(InputInterface $input, OutputInterface $output)
      {
-         $className = $input->getArgument('className');
-         $namespace = $input->getArgument('namespace');
+         $fullClassName = $input->getArgument('className');
          $destinationPath = $input->getArgument('path');
+
+         $fullClassNameExploded = explode('/', $fullClassName);
+         $className = array_pop($fullClassNameExploded);
+         $namespace = implode('/', $fullClassNameExploded);
 
          $proxyWriter = new Writer\Proxy($this->adapter, $destinationPath);
          $proxyWriter->createIntegratedProxy($className, $namespace);
