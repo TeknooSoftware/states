@@ -151,8 +151,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         try {
             $this->finder->listStates();
         } catch (Exception\UnavailablePath $e) {
-            return ;
-        } catch (\Exception $e) {}
+            return;
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if the state path does not exist, the Finder must throw an exception `Exception\UnavailablePath`');
     }
@@ -166,8 +167,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         try {
             $this->finder->listStates();
         } catch (Exception\UnavailablePath $e) {
-            return ;
-        } catch (\Exception $e) {}
+            return;
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if the state path does not exist, the Finder must throw an exception `Exception\UnavailablePath`');
     }
@@ -182,8 +184,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         try {
             $this->finder->listStates();
         } catch (Exception\UnReadablePath $e) {
-            return ;
-        } catch (\Exception $e) {}
+            return;
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if the state path is not readable, the Finder must throw an exception `Exception\UnReadablePath`');
     }
@@ -202,7 +205,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
                 'State1',
                 'State3',
                 'State4',
-                'State4b'
+                'State4b',
             ),
             $states
         );
@@ -218,8 +221,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         try {
             $this->finder->loadState('State2');
         } catch (Exception\UnReadablePath $e) {
-            return ;
-        } catch (\Exception $e) {}
+            return;
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if the state class path does not exist, the Finder must throw an exception `Exception\UnReadablePath`');
     }
@@ -233,8 +237,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         try {
             $this->finder->loadState('State1');
         } catch (Exception\UnavailableState $e) {
-            return ;
-        } catch (\Exception $e) {}
+            return;
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if the state file does not contain the required class, the Finder must throw an exception `Exception\UnavailableState`');
     }
@@ -260,8 +265,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         try {
             $this->finder->buildState('State2');
         } catch (Exception\UnReadablePath $e) {
-            return ;
-        } catch (\Exception $e) {}
+            return;
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if the state class path does not exist, the Finder must throw an exception `Exception\UnReadablePath`');
     }
@@ -275,8 +281,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         try {
             $this->finder->buildState('State1');
         } catch (Exception\UnavailableState $e) {
-            return ;
-        } catch (\Exception $e) {}
+            return;
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if the state file does not contain the required class, the Finder must throw an exception `Exception\UnavailableState`');
     }
@@ -290,8 +297,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         try {
             $this->finder->buildState('State3');
         } catch (Exception\IllegalState $e) {
-            return ;
-        } catch (\Exception $e) {}
+            return;
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if the state file does not implement the interface States\StateInterface, the Finder must throw an exception `Exception\IllegalState`');
     }
@@ -341,7 +349,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
             $this->finder->loadProxy();
         } catch (Exception\IllegalProxy $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the finder must throw an exception Exception\IllegalProxy when the proxy class was not found.');
     }
@@ -356,7 +365,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
             $this->finder->buildProxy();
         } catch (Exception\IllegalProxy $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the finder must throw an exception Exception\IllegalProxy when the proxy class was not found.');
     }
@@ -371,7 +381,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
             $this->finder->buildProxy();
         } catch (Exception\IllegalProxy $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the finder must throw an exception Exception\IllegalProxy when the proxy does not implement the proxy interface.');
     }

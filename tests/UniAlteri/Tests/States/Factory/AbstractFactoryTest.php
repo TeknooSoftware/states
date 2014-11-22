@@ -101,7 +101,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      * @param  boolean                  $populateContainer to populate di container of this factory
      * @return Factory\FactoryInterface
      */
-    abstract public function getFactoryObject($populateContainer=true);
+    abstract public function getFactoryObject($populateContainer = true);
 
     /**
      * Test exception when the Container is not valid when we set a bad object as di container
@@ -139,7 +139,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             $this->getFactoryObject(false)->getFinder();
         } catch (Exception\UnavailableDIContainer $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the factory must throw an exception when there are no di container');
     }
@@ -154,7 +155,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             $this->getFactoryObject(true)->getFinder();
         } catch (Exception\UnavailableLoader $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the factory must throw an exception when there are no finder generator into di container');
     }
@@ -172,7 +174,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             $this->getFactoryObject(true)->getFinder();
         } catch (Exception\UnavailableLoader $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the factory must throw an exception when there are the finder generator into di container return a bad object, not implementing the Finder Interface');
     }
@@ -233,7 +236,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             $factory->initialize('foo', 'bar');
         } catch (Exception\UnavailableDIContainer $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the factory must throw an exception if there are no Di Container');
     }
@@ -313,7 +317,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
                 'MockState1',
                 Proxy\ProxyInterface::DEFAULT_STATE_NAME,
                 'MockState2',
-                'MockState3'
+                'MockState3',
             ),
             $proxy->listAvailableStates()
         );
@@ -353,7 +357,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
                 'MockState1',
                 'MockState2',
                 Proxy\ProxyInterface::DEFAULT_STATE_NAME,
-                'MockState3'
+                'MockState3',
             ),
             $proxy->listAvailableStates()
         );
@@ -424,7 +428,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
                 'MockState1',
                 Proxy\ProxyInterface::DEFAULT_STATE_NAME,
                 'MockState2',
-                'MockState3'
+                'MockState3',
             ),
             $proxy->listAvailableStates()
         );

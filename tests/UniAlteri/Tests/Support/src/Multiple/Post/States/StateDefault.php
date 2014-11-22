@@ -72,5 +72,4 @@ class StateDefault extends States\AbstractState
     {
         $this->body = $body;
     }
-
 }

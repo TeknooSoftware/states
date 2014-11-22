@@ -69,7 +69,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->buildContainer()->registerInstance('##', 'DateTime');
         } catch (DI\Exception\IllegalName $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
@@ -83,7 +84,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->buildContainer()->registerInstance('class', 'NonExistentClass');
         } catch (DI\Exception\ClassNotFound $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the container object must throws an Exception\ClassNotFound exception');
     }
@@ -138,7 +140,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $container->registerInstance('dateObject', array());
         } catch (DI\Exception\IllegalService $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the container object must throws an Exception\IllegalService exception if the instance is invalid');
     }
@@ -152,7 +155,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->buildContainer()->registerService('##', 'DateTime');
         } catch (DI\Exception\IllegalName $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
@@ -166,7 +170,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->buildContainer()->registerService('class', 'NonExistentClass');
         } catch (DI\Exception\ClassNotFound $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the container object must throws an Exception\ClassNotFound exception');
     }
@@ -191,7 +196,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $container->registerService('dateObject', array());
         } catch (DI\Exception\IllegalService $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the container object must throws an Exception\IllegalService exception if the service is invalid');
     }
@@ -206,7 +212,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $container->registerService('dateObject', new \DateTime());
         } catch (DI\Exception\IllegalService $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the container object must throws an Exception\IllegalService exception if the object is not invokable');
     }
@@ -240,7 +247,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->buildContainer()->testEntry('##');
         } catch (DI\Exception\IllegalName $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
@@ -270,7 +278,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->buildContainer()->get('##');
         } catch (DI\Exception\IllegalName $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the container object must throws an Exception\IllegalName exception');
     }
@@ -284,7 +293,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $this->buildContainer()->get('unknown');
         } catch (DI\Exception\InvalidArgument $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the container object must throws an Exception\InvalidArgument exception');
     }
@@ -397,11 +407,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             array(
                 'instances' => array(
                     'instanceClass'  => '\ArrayObject',
-                    'date1'         => function () { return new \DateTime(); }
+                    'date1'         => function () { return new \DateTime(); },
                 ),
                 'services'  => array(
-                    'stdClass'         => function () { return new \stdClass(); }
-                )
+                    'stdClass'         => function () { return new \stdClass(); },
+                ),
             )
         );
 
@@ -420,7 +430,8 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
             $container->unregister('##');
         } catch (DI\Exception\IllegalName $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the identifier must be a valid php var name http://www.php.net/manual/en/language.variables.basics.php');
     }

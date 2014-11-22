@@ -45,21 +45,21 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      * @param  boolean                $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyPublic
      */
-    abstract protected function getPublicClassObject($initializeContainer=true);
+    abstract protected function getPublicClassObject($initializeContainer = true);
 
     /**
      * Build an basic object to provide only protected methods
      * @param  boolean                   $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyProtected
      */
-    abstract protected function getProtectedClassObject($initializeContainer=true);
+    abstract protected function getProtectedClassObject($initializeContainer = true);
 
     /**
      * Build an basic object to provide only private methods
      * @param  boolean                 $initializeContainer initialize virtual di container for state
      * @return Support\MockOnlyPrivate
      */
-    abstract protected function getPrivateClassObject($initializeContainer=true);
+    abstract protected function getPrivateClassObject($initializeContainer = true);
 
     /**
      * Build a virtual proxy for test
@@ -103,7 +103,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             array(
                 'standardMethod1',
                 'finalMethod2',
-                'standardMethod4'
+                'standardMethod4',
             ),
             $this->getPublicClassObject()->listMethods()->getArrayCopy()
         );
@@ -118,7 +118,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             array(
                 'standardMethod6',
                 'finalMethod7',
-                'standardMethod8'
+                'standardMethod8',
             ),
             $this->getProtectedClassObject()->listMethods()->getArrayCopy()
         );
@@ -133,7 +133,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             array(
                 'finalMethod9',
                 'standardMethod10',
-                'finalMethod11'
+                'finalMethod11',
             ),
             $this->getPrivateClassObject()->listMethods()->getArrayCopy()
         );
@@ -400,7 +400,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             $this->getPublicClassObject()->getClosure('standardMethod1', new \DateTime());
         } catch (States\Exception\IllegalProxy $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if the proxy does not implement the interface Proxy\ProxyInterface');
     }
@@ -414,7 +415,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             $this->getPublicClassObject()->getClosure('standardMethod1', $this->getMockProxy(), 'badScope');
         } catch (States\Exception\InvalidArgument $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the state must throws an Exception\InvalidArgument exception if the scope is invalid');
     }
@@ -429,7 +431,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             $object->getClosure('standardMethod1', $this->getMockProxy());
         } catch (States\Exception\IllegalService $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the state must throws an Exception\IllegalService if no DI Container has been defined before getClosure');
     }
@@ -445,7 +448,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             $object->getClosure('standardMethod1', $this->getMockProxy());
         } catch (States\Exception\IllegalService $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the state must throws an Exception\IllegalService if no Injection Container service has been defined before getClosure');
     }
@@ -494,7 +498,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             );
         } catch (States\Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
 
@@ -529,7 +534,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             );
         } catch (States\Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
@@ -542,7 +548,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             );
         } catch (States\Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
@@ -568,7 +575,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             );
         } catch (States\Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
@@ -580,7 +588,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             );
         } catch (States\Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 

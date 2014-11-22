@@ -89,7 +89,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      * @param string $stateToEnable         to enable automatically into proxy
      * @param bool   $allowingMethodCalling : if state must
      */
-    protected function initializeProxy($stateToEnable = 'state1', $allowingMethodCalling=false)
+    protected function initializeProxy($stateToEnable = 'state1', $allowingMethodCalling = false)
     {
         $this->proxy->registerState('state1', $this->state1);
         $this->proxy->registerState('state2', $this->state2);
@@ -138,7 +138,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->registerState(array(), $this->state1);
         } catch (Exception\IllegalArgument $e) {
             return;
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
     }
@@ -152,7 +153,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->registerState('99', $this->state1);
         } catch (Exception\IllegalName $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalName exception when the stateName does not respect the regex [a-zA-Z][a-zA-Z0-9_\\]+');
     }
@@ -203,7 +205,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->unregisterState(array());
         } catch (Exception\IllegalArgument $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
     }
@@ -217,7 +220,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->unregisterState('NonExistentState');
         } catch (Exception\StateNotFound $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the stateName is not register');
     }
@@ -254,7 +258,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->switchState(array());
         } catch (Exception\IllegalArgument $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
     }
@@ -268,7 +273,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->switchState('NonExistentState');
         } catch (Exception\StateNotFound $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the stateName is not register');
     }
@@ -303,7 +309,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->enableState(array());
         } catch (Exception\IllegalArgument $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
     }
@@ -317,7 +324,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->enableState('NonExistentState');
         } catch (Exception\StateNotFound $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the stateName is not register');
     }
@@ -352,7 +360,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->disableState(array());
         } catch (Exception\IllegalArgument $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
     }
@@ -363,10 +372,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testDisableStateNonExistentName()
     {
         try {
-            $this->proxy->disableState( 'NonExistentState');
+            $this->proxy->disableState('NonExistentState');
         } catch (Exception\StateNotFound $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the stateName is not register');
     }
@@ -552,7 +562,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $fail = false;
         try {
             call_user_func(array($this->proxy, '__invoke'));
-        } catch ( \Exception $e) {
+        } catch (\Exception $e) {
             $fail = true;
         }
 
@@ -563,7 +573,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->getStatic();
         } catch (Exception\UnavailableClosure $e) {
             return;
-        } catch ( \Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->fail('Error, the proxy was not restored previous injection closure state during the exception');
     }
 
@@ -590,7 +601,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $fail = false;
         try {
             call_user_func(array($this->proxy, '__invokeOfStatic'));
-        } catch ( \Exception $e) {
+        } catch (\Exception $e) {
             $fail = true;
         }
 
@@ -601,7 +612,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $this->proxy->getStatic();
         } catch (Exception\UnavailableClosure $e) {
             return;
-        } catch ( \Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->fail('Error, the proxy was not restored previous injection closure state during the exception');
     }
 
@@ -850,7 +862,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             testGetMethodDescriptionFromFunctionPrivate();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -860,7 +873,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             testGetMethodDescriptionFromFunctionProtected();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -891,7 +905,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $object->privateMethod();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -902,7 +917,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $object->protectedMethod();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -941,7 +957,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $object->privateMethod();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1064,7 +1081,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             \testGetMethodDescriptionFromOtherObject::privateMethodStatic();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1074,7 +1092,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             \testGetMethodDescriptionFromOtherObject::protectedMethodStatic();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1111,7 +1130,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $childClassName::privateMethodStatic();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1188,7 +1208,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $closure();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1201,7 +1222,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $closure();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1289,7 +1311,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             testCallFromFunctionPrivate();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1299,7 +1322,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             testCallFromFunctionProtected();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1333,7 +1357,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $object->privateMethod();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1344,7 +1369,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $object->protectedMethod();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1386,7 +1412,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $object->privateMethod();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1533,7 +1560,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             \testCallFromOtherObject::privateMethodStatic();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1543,7 +1571,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             \testCallFromOtherObject::protectedMethodStatic();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1583,7 +1612,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $childClassName::privateMethodStatic();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1675,7 +1705,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $closure();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1688,7 +1719,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $closure();
         } catch (Exception\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
         $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1906,7 +1938,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testToStringNonImplemented()
     {
         $this->initializeProxy();
-        $s='error';
+        $s = 'error';
         try {
             $s = (string) $this->proxy;
         } catch (\Exception $e) {

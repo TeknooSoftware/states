@@ -52,12 +52,12 @@ class Published implements States\StateInterface
             array(
                 '[br]',
                 '[b]',
-                '[/b]'
+                '[/b]',
             ),
             array(
                 '<br/>',
                 '<strong>',
-                '</strong>'
+                '</strong>',
             ),
             $body
         );
@@ -68,6 +68,5 @@ class Published implements States\StateInterface
      */
     protected function getDate()
     {
-
     }
 }

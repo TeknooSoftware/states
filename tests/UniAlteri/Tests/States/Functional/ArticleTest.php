@@ -105,7 +105,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
             array(
                 'is_published'  => true,
                 'title'         => 'title 2',
-                'body'          => 'body 2'
+                'body'          => 'body 2',
             )
         );
 
