@@ -200,7 +200,7 @@ class MockProxy implements Proxy\ProxyInterface
 
     /**
      * Check if the current entity is in the required state defined by $stateName
-     * @param string $stateName
+     * @param  string                    $stateName
      * @return bool
      * @throws Exception\InvalidArgument when $stateName is not a valid string
      */

@@ -54,7 +54,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      * @param  callable            $closure
      * @return DI\InjectionClosure
      */
-    protected function buildClosure(\Closure $closure=null)
+    protected function buildClosure(\Closure $closure = null)
     {
         if (null === $closure) {
             $closure = function () {
@@ -106,7 +106,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
             $a->setClosure(new \stdClass());
         } catch (Exception\InvalidArgument $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the Injection closure object must throw an exception if the object is not a closure');
     }
@@ -132,7 +133,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
                 'world',
                 'hello',
                 'boo',
-                'foo'
+                'foo',
             ),
             $return,
             'Error, the closure is not called by the injector '
@@ -161,7 +162,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
             $this->buildClosure()->saveProperty('##', 'foo');
         } catch (Exception\IllegalName $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -191,7 +193,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
             $this->buildClosure()->saveProperty('##', 'foo');
         } catch (Exception\IllegalName $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -226,7 +229,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
             $this->buildClosure()->deleteProperty('##');
         } catch (Exception\IllegalName $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }
@@ -252,7 +256,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
             $this->buildClosure()->testProperty('##');
         } catch (Exception\IllegalName $exception) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
     }

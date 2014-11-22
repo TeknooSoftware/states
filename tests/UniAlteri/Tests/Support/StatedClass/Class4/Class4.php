@@ -39,5 +39,4 @@ namespace Class4;
  */
 class Class4
 {
-
 }

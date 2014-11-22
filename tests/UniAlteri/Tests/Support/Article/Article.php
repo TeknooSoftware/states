@@ -72,7 +72,7 @@ class Article extends Proxy\Integrated
      * To initialize this article with some data
      * @param array $data
      */
-    public function __construct($data=array())
+    public function __construct($data = array())
     {
         $this->data = $data;
         parent::__construct();

@@ -103,10 +103,10 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      * Load object to test it
      * @param  boolean               $standardIncludePathManager to load the standard Include Path Manager from this lib and not
      *                                                           the test manager
-     * @param  boolean               $enablePSR0 to enable psr0 behavior in loader or not
+     * @param  boolean               $enablePSR0                 to enable psr0 behavior in loader or not
      * @return Loader\LoaderStandard
      */
-    protected function initializeLoader($standardIncludePathManager=false, $enablePSR0=false)
+    protected function initializeLoader($standardIncludePathManager = false, $enablePSR0 = false)
     {
         if (false == $standardIncludePathManager) {
             $this->loader = new Loader\LoaderStandard($this->includePathManager, $enablePSR0);
@@ -134,7 +134,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             new Loader\LoaderStandard(new \stdClass());
         } catch (Exception\IllegalArgument $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagerInterface');
     }
@@ -186,7 +187,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             $loader->addIncludePath('badPath');
         } catch (Exception\UnavailablePath $e) {
             return;
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if the path to include is unavailable, the loader must throws the exception Exception\UnavailablePath');
     }
@@ -202,7 +204,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 __DIR__,
-                dirname(__DIR__)
+                dirname(__DIR__),
             ),
             array_values($loader->getIncludedPaths()->getArrayCopy())
         );
@@ -219,7 +221,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             $loader->registerNamespace('badNamespace', array());
         } catch (Exception\IllegalArgument $e) {
             return;
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if the path of namespace to register is not a valid string, the loader must throws the exception Exception\UnavailablePath');
     }
@@ -269,7 +272,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->includePathManager->resetAllChangePath();
         $this->includePathManager->setIncludePath(
             array(
-                __DIR__
+                __DIR__,
             )
         );
         $loader = $this->initializeLoader();
@@ -277,7 +280,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $loader->loadClass('fakeClass');
         $this->assertEquals(
             array(
-                __DIR__
+                __DIR__,
             ),
             $this->includePathManager->getIncludePath()
         );
@@ -285,15 +288,15 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 array(
-                    __DIR__
+                    __DIR__,
                 ),
                 array(
                     __DIR__,
-                    dirname(__DIR__)
+                    dirname(__DIR__),
                 ),
                 array(
-                    __DIR__
-                )
+                    __DIR__,
+                ),
             ),
             $this->includePathManager->getAllChangePaths()
         );
@@ -310,7 +313,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             $loader->buildFactory('badFactory', 'statedClassName', 'path');
         } catch (Exception\UnavailableFactory $e) {
             return;
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if factory\'s class was not found, Loader must throws the exception Exception\UnavailableFactory');
     }
@@ -326,7 +330,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
             $loader->buildFactory('stdClass', 'statedClassName', 'path');
         } catch (Exception\IllegalFactory $e) {
             return;
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, if factory\'s class does not implement the factory interface, Loader must throws the exception Exception\IllegalFactory');
     }

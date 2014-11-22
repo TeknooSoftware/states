@@ -51,7 +51,7 @@ class MockFinderWithArray extends MockFinder
                     'MockState1',
                     'MockState2',
                     Proxy\ProxyInterface::DEFAULT_STATE_NAME,
-                    'MockState3'
+                    'MockState3',
                 )
             );
         } else {
@@ -59,7 +59,7 @@ class MockFinderWithArray extends MockFinder
                 array(
                     'MockState1',
                     'MockState2',
-                    'MockState3'
+                    'MockState3',
                 )
             );
         }

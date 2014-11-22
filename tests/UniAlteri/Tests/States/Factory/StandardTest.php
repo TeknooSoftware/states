@@ -42,7 +42,7 @@ class StandardTest extends AbstractFactoryTest
      * @param  boolean                  $populateContainer to populate di container of this factory
      * @return Factory\FactoryInterface
      */
-    public function getFactoryObject($populateContainer=true)
+    public function getFactoryObject($populateContainer = true)
     {
         $factory = new Factory\Standard();
         if (true === $populateContainer) {

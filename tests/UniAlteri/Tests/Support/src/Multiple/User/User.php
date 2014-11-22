@@ -62,7 +62,7 @@ class User extends Proxy\Integrated
      * @param bool   $isAdmin
      * @param bool   $isModerator
      */
-    public function __construct($username, $isAdmin=false, $isModerator=false)
+    public function __construct($username, $isAdmin = false, $isModerator = false)
     {
         //Register options
         $this->userName = $username;
