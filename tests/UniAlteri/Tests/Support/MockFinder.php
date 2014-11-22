@@ -66,7 +66,6 @@ class MockFinder implements Loader\FinderInterface
      */
     public function __construct($statedClassName, $pathString)
     {
-
     }
 
     /**
@@ -102,13 +101,13 @@ class MockFinder implements Loader\FinderInterface
                 'MockState1',
                 Proxy\ProxyInterface::DEFAULT_STATE_NAME,
                 'MockState2',
-                'MockState3'
+                'MockState3',
             );
         } else {
             return array(
                 'MockState1',
                 'MockState2',
-                'MockState3'
+                'MockState3',
             );
         }
     }
@@ -165,7 +164,7 @@ class MockFinder implements Loader\FinderInterface
      * @param  array                                  $arguments argument for proxy
      * @return \UniAlteri\States\Proxy\ProxyInterface
      */
-    public function buildProxy($arguments=null)
+    public function buildProxy($arguments = null)
     {
         return new MockProxy($arguments);
     }

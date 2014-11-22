@@ -84,7 +84,7 @@ class MockState implements States\StateInterface
     /**
      * Initialize virtual state
      */
-    public function __construct($closure=null)
+    public function __construct($closure = null)
     {
         if ($closure instanceof \Closure) {
             //Use as testing closure the passed closure
@@ -161,7 +161,7 @@ class MockState implements States\StateInterface
      * @return boolean
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope=States\StateInterface::VISIBILITY_PUBLIC)
+    public function testMethod($methodName, $scope = States\StateInterface::VISIBILITY_PUBLIC)
     {
         //Simulate real behavior from the name of the method,
         //if the method name contains private, its a private method
@@ -222,7 +222,7 @@ class MockState implements States\StateInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws Exception\InvalidArgument      when the method name is not a string
      */
-    public function getClosure($methodName, $proxy, $scope=States\StateInterface::VISIBILITY_PUBLIC)
+    public function getClosure($methodName, $proxy, $scope = States\StateInterface::VISIBILITY_PUBLIC)
     {
         if (false === $this->methodAllowed) {
             throw new Exception\MethodNotImplemented();

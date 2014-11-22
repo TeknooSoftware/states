@@ -58,7 +58,8 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
             Factory\StandardStartupFactory::forwardStartup(new \stdClass());
         } catch (Exception\InvalidArgument $e) {
             return;
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the startup factory must throw an exception when the proxy does not implement the proxy interface');
     }
@@ -72,7 +73,8 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
             Factory\StandardStartupFactory::forwardStartup(new Support\MockProxy(null));
         } catch (Exception\UnavailableFactory $e) {
             return;
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the startup factory must throw an exception when the proxy cannot be initialized');
     }
@@ -98,7 +100,8 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
             Factory\StandardStartupFactory::registerFactory(array(), new Support\MockFactory());
         } catch (Exception\InvalidArgument $exception) {
             return;
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the startup factory class must throw an exception when the identifier is not a valid string');
     }
@@ -112,7 +115,8 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
             Factory\StandardStartupFactory::registerFactory('bar', new \stdClass());
         } catch (Exception\IllegalFactory $exception) {
             return;
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the startup factory class must throw an exception when the registering factory does not implement the factory interface');
     }
@@ -130,7 +134,7 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             array(
                 'UniAlteri\Tests\Support\MockProxy2',
-                'UniAlteri\Tests\Support\MockProxy3'
+                'UniAlteri\Tests\Support\MockProxy3',
             ),
             Factory\StandardStartupFactory::listRegisteredFactory()
         );

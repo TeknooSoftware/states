@@ -100,7 +100,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
             $manager->setIncludePath(
                 array(
                     __DIR__,
-                    dirname(__DIR__)
+                    dirname(__DIR__),
                 )
             )
         );
@@ -118,7 +118,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
         $array = new \ArrayObject(
             array(
                 __DIR__,
-                dirname(__DIR__)
+                dirname(__DIR__),
             )
         );
         $this->assertEquals(

@@ -71,7 +71,8 @@ class IntegratedTest extends AbstractProxyTest
             $this->assertSame(array(), $proxy->listAvailableStates());
 
             return;
-        } catch (\Exception $e) { }
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the method initializeProxy() of the trait proxy has not been called');
     }
@@ -86,7 +87,8 @@ class IntegratedTest extends AbstractProxyTest
             new Support\IntegratedProxy();
         } catch (Exception\UnavailableFactory $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the Integrated Proxy must throw the exception UnavailableFactory when the factory class is not available');
     }
@@ -101,7 +103,8 @@ class IntegratedTest extends AbstractProxyTest
             new Support\IntegratedProxy();
         } catch (Exception\IllegalFactory $e) {
             return;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         $this->fail('Error, the Integrated Proxy must throw the exception IllegalFactory when the factory class does not implement the interface StartupFactoryInterface');
     }

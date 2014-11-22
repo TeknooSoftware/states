@@ -39,5 +39,4 @@ use \UniAlteri\Tests\Support;
  */
 class State4b extends Support\MockState
 {
-
 }

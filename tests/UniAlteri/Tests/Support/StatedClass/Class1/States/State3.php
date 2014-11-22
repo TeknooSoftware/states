@@ -39,5 +39,4 @@ namespace Class1\States;
  */
 class State3
 {
-
 }
