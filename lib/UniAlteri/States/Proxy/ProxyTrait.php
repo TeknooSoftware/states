@@ -25,7 +25,7 @@ use \UniAlteri\States\DI;
 use \UniAlteri\States;
 
 /**
- * Trait TraitProxy
+ * Trait ProxyTrait
  * Standard implementation of the "Proxy Object".
  * It is used in this library to create stated object.
  *
@@ -44,7 +44,7 @@ use \UniAlteri\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-trait TraitProxy
+trait ProxyTrait
 {
     /**
      * DI Container to use for this object

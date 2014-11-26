@@ -42,5 +42,5 @@ namespace UniAlteri\States\Proxy;
  */
 class Standard implements ProxyInterface
 {
-    use TraitProxy;
+    use ProxyTrait;
 }

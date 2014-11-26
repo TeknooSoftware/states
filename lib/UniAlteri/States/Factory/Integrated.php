@@ -38,9 +38,9 @@ use UniAlteri\States\DI;
  */
 class Integrated implements FactoryInterface
 {
-    use TraitFactory {
+    use FactoryTrait {
         //Rename the initialize method of the trait to override it into this class.
-        TraitFactory::initialize as traitInitialize;
+        FactoryTrait::initialize as traitInitialize;
     }
 
     /**
