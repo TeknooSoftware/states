@@ -35,5 +35,5 @@ namespace UniAlteri\States\States;
  */
 abstract class AbstractState implements StateInterface
 {
-    use TraitState;
+    use StateTrait;
 }

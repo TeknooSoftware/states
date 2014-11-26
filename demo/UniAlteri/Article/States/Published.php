@@ -37,7 +37,7 @@ use UniAlteri\States\States;
  */
 class Published implements States\StateInterface
 {
-    use States\TraitState;
+    use States\StateTrait;
 
     /**
      * Get the body and transform BBCode to HTML

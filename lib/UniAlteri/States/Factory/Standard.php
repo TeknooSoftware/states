@@ -36,5 +36,5 @@ namespace UniAlteri\States\Factory;
  */
 class Standard implements FactoryInterface
 {
-    use TraitFactory;
+    use FactoryTrait;
 }

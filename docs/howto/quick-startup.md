@@ -41,7 +41,7 @@ your stated class has been detected by the loader and it loads the factory to in
 The method `startup` is called by all new objects of your stated class (in their constructors) to prepare
 the proxy, register all states and the DI container.
 
-This library provides a default implementation of this interface with the trait `\UniAlteri\States\Factory\TraitFactory`.
+This library provides a default implementation of this interface with the trait `\UniAlteri\States\Factory\FactoryTrait`.
 `\UniAlteri\States\Factory\Standard` is the default factory, implementing this interface and uses this trait.
 
 The method `build` can be used to create a new instance of your stated class, like with the operator `new` for standard
@@ -61,7 +61,7 @@ will be not impacted by the states management and will be always available (acco
 Proxy must be called as the stated class's name and must be written into the file `<StatedClassName>.php`.
 The proxy must implement the interface `\UniAlteri\States\Proxy\ProxyInterface`.
 
-The library provides a default implementation with the trait `\UniAlteri\States\Proxy\TraitProxy`.
+The library provides a default implementation with the trait `\UniAlteri\States\Proxy\ProxyTrait`.
 `\UniAlteri\States\Proxy\Standard` is the default proxy class, implementing this interface and uses this trait.
 
 By default, Proxy are not mandatory to create a stated class : if the factory cannot find the proxy, it will use the default proxy
@@ -78,7 +78,7 @@ A state is a logic representation in your business class to segment your code ba
 
 All your states must be stored into the folder `States` of your each stated class folder. They must be only one state by file.
 The name of the file is the name of the state. Each state must implement the interface `\UniAlteri\States\States\StateInterface`.
-A default implementation of this library is available with the trait `\UniAlteri\States\States\TraitStates`. Your state can use
+A default implementation of this library is available with the trait `\UniAlteri\States\States\StateTraits`. Your state can use
 directly this trait or inherit the abstract class `\UniAlteri\States\States\AbstractState`.
 
 In your state, you can use the keyword `$this` to refer to your stated object, like with a standard PHP object, even if the
@@ -159,7 +159,7 @@ To help you, your factory class can extend the embedded factories `\UniAlteri\St
 
 ###Create states and the default state
 The states must be declared in separate files. A state is represented by PHP class and must implement the interface
-`\UniAlteri\States\States\StateInterface`. To help you, you can use the trait `\UniAlteri\States\States\TraitState` or
+`\UniAlteri\States\States\StateInterface`. To help you, you can use the trait `\UniAlteri\States\States\StateTrait` or
 directly extend the class `\UniAlteri\States\States\AbstractState`.
 
 Each stated class must have at least one state and this state must be called `StateDefault`. It is the default state enabled
@@ -172,7 +172,7 @@ If there are no defined proxy, the embedded proxy `\UniAlteri\States\Proxy\Stand
 But if you need to add some features to your proxy, you can define it in the file `<StatedClassName>.php`. The proxy class must be called
  with the same name as the stated class and must implement the interface `\UniAlteri\States\Proxy\ProxyInterface`.
 
-To help you, you can use the trait `\UniAlteri\States\Proxy\TraitProxy` or directly extend one of these implementations :
+To help you, you can use the trait `\UniAlteri\States\Proxy\ProxyTrait` or directly extend one of these implementations :
 `\UniAlteri\States\Proxy\Standard` or `\UniAlteri\States\Proxy\Integrated`. *Warning, if you use the factory
 `\UniAlteri\States\Factory\Integrated`, you must extend the proxy `Integrated`, else, you must extend the proxy `Standard`.*
 
