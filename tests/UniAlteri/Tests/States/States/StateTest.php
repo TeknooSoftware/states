@@ -26,7 +26,7 @@ use \UniAlteri\Tests\Support;
 
 /**
  * Class StateTest
- * Implementation of AbstractStatesTest to test the trait \UniAlteri\States\States\TraitState and
+ * Implementation of AbstractStatesTest to test the trait \UniAlteri\States\States\StateTrait and
  * the abstract class \UniAlteri\States\States\AbstractState
  *
  * @package     States

@@ -34,7 +34,7 @@ use \UniAlteri\States\DI;
 use \UniAlteri\States\Proxy;
 
 /**
- * Class TraitState
+ * Class StateTrait
  * Standard implementation of the state interface for state class.
  * It's a trait to allow developer to implement easily the interface for their state class.
  *
@@ -46,7 +46,7 @@ use \UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-trait TraitState
+trait StateTrait
 {
     /**
      * DI Container to use for this object
@@ -363,3 +363,4 @@ trait TraitState
         return $this->closuresObjects[$methodName];
     }
 }
+

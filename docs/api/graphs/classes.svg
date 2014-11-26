@@ -311,10 +311,10 @@
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M999.73,-1333.81C940.743,-1333.81 843.562,-1333.81 779.356,-1333.81"/>
 <polygon fill="none" stroke="black" points="779.345,-1330.31 769.345,-1333.81 779.345,-1337.31 779.345,-1330.31"/>
 </g>
-<!-- \\UniAlteri\\States\\States\\TraitState -->
-<g id="node22" class="node"><title>\\UniAlteri\\States\\States\\TraitState</title>
+<!-- \\UniAlteri\\States\\States\\StateTrait -->
+<g id="node22" class="node"><title>\\UniAlteri\\States\\States\\StateTrait</title>
 <polygon fill="none" stroke="black" points="1093.76,-1297.81 1009.76,-1297.81 1009.76,-1261.81 1093.76,-1261.81 1093.76,-1297.81"/>
-<text text-anchor="middle" x="1051.76" y="-1277.01" font-family="Courier,monospace" font-size="11.00">TraitState</text>
+<text text-anchor="middle" x="1051.76" y="-1277.01" font-family="Courier,monospace" font-size="11.00">StateTrait</text>
 </g>
 <!-- \\UniAlteri\\States\\Exception\\Standard -->
 <g id="node34" class="node"><title>\\UniAlteri\\States\\Exception\\Standard</title>
@@ -611,10 +611,10 @@
 <path fill="none" stroke="black" d="M344.64,-3213.81C297.664,-3213.81 229.666,-3213.81 179.1,-3213.81"/>
 <polygon fill="none" stroke="black" points="178.909,-3210.31 168.909,-3213.81 178.909,-3217.31 178.909,-3210.31"/>
 </g>
-<!-- \\UniAlteri\\States\\Proxy\\TraitProxy -->
-<g id="node55" class="node"><title>\\UniAlteri\\States\\Proxy\\TraitProxy</title>
+<!-- \\UniAlteri\\States\\Proxy\\ProxyTrait -->
+<g id="node55" class="node"><title>\\UniAlteri\\States\\Proxy\\ProxyTrait</title>
 <polygon fill="none" stroke="black" points="1093.76,-2619.81 1009.76,-2619.81 1009.76,-2583.81 1093.76,-2583.81 1093.76,-2619.81"/>
-<text text-anchor="middle" x="1051.76" y="-2599.01" font-family="Courier,monospace" font-size="11.00">TraitProxy</text>
+<text text-anchor="middle" x="1051.76" y="-2599.01" font-family="Courier,monospace" font-size="11.00">ProxyTrait</text>
 </g>
 <!-- \\UniAlteri\\States\\Factory\\Exception\\IllegalFactory -->
 <g id="node56" class="node"><title>\\UniAlteri\\States\\Factory\\Exception\\IllegalFactory</title>
@@ -726,10 +726,10 @@
 <path fill="none" stroke="black" stroke-dasharray="1,5" d="M1009.56,-689.117C954.056,-693.577 854.404,-701.585 786.468,-707.044"/>
 <polygon fill="none" stroke="black" points="785.954,-703.574 776.267,-707.864 786.515,-710.551 785.954,-703.574"/>
 </g>
-<!-- \\UniAlteri\\States\\Factory\\TraitFactory -->
-<g id="node68" class="node"><title>\\UniAlteri\\States\\Factory\\TraitFactory</title>
+<!-- \\UniAlteri\\States\\Factory\\FactoryTrait -->
+<g id="node68" class="node"><title>\\UniAlteri\\States\\Factory\\FactoryTrait</title>
 <polygon fill="none" stroke="black" points="1100.76,-649.806 1002.76,-649.806 1002.76,-613.806 1100.76,-613.806 1100.76,-649.806"/>
-<text text-anchor="middle" x="1051.76" y="-629.006" font-family="Courier,monospace" font-size="11.00">TraitFactory</text>
+<text text-anchor="middle" x="1051.76" y="-629.006" font-family="Courier,monospace" font-size="11.00">FactoryTrait</text>
 </g>
 <!-- \\UniAlteri\\States\\DI\\Exception\\ClassNotFound -->
 <g id="node69" class="node"><title>\\UniAlteri\\States\\DI\\Exception\\ClassNotFound</title>

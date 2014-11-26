@@ -26,7 +26,7 @@ use \UniAlteri\States\Loader;
 use \UniAlteri\States\Proxy;
 
 /**
- * Trait TraitFactory
+ * Trait FactoryTrait
  * Standard implementation of the "stated object" factory to use with this library to build a new instance
  * of a stated class.
  *
@@ -40,7 +40,7 @@ use \UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-trait TraitFactory
+trait FactoryTrait
 {
     /**
      * DI Container to use with this factory object
@@ -242,3 +242,4 @@ trait TraitFactory
         return $proxyObject;
     }
 }
+
