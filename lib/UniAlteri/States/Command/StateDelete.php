@@ -80,5 +80,10 @@ class StateDelete extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $stateName = $input->getArgument('name');
+        $destinationPath = $input->getArgument('path');
+
+        $stateWriter = new Writer\State($this->adapter, $destinationPath);
+        $stateWriter->deleteState($stateName);
     }
 }
