@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Multiple\User\States;
+namespace demo\Acme\Multiple\User\States;
 
 use UniAlteri\States\States;
 
 /**
- * State StateDefault
- * Default State for an user
+ * State Administrator
+ * State for an user with admin right
  *
  * @package     States
  * @subpackage  Demo
@@ -35,26 +35,14 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateDefault extends States\AbstractState
+class Administrator extends States\AbstractState
 {
     /**
-     * Return the user name of this user
-     * @return string
+     * Transform an user has moderator
+     * @param \demo\Acme\Multiple\User $user
      */
-    public function getName()
+    public function setModerator(\demo\Acme\Multiple\User $user)
     {
-        return $this->userName;
-    }
-
-    /**
-     * Transform this user as moderator
-     * @param boolean $value
-     */
-    protected function setModerator($value)
-    {
-        $this->isModerator = $value;
-        if (!empty($this->isModerator)) {
-            $this->enableState('Moderator');
-        }
+        $user->setModerator(true);
     }
 }

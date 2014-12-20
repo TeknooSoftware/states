@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Article\States;
+namespace demo\Acme\Multiple\User\States;
 
 use UniAlteri\States\States;
 
 /**
- * State Published
- * State for a published article
+ * State Moderator
+ * State for an user with moderator right
  *
  * @package     States
  * @subpackage  Demo
@@ -35,38 +35,14 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Published implements States\StateInterface
+class Moderator extends States\AbstractState
 {
-    use States\StateTrait;
-
     /**
-     * Get the body and transform BBCode to HTML
-     * @return string
+     * To know if this user is a moderator
+     * @return bool
      */
-    public function getFormattedBody()
+    public function isModerator()
     {
-        $body = $this->getAttribute('body');
-
-        return str_replace(
-            array(
-                '[br]',
-                '[b]',
-                '[/b]'
-            ),
-            array(
-                '<br/>',
-                '<strong>',
-                '</strong>'
-            ),
-            $body
-        );
-    }
-
-    /**
-     * Fake method not callable in public scope
-     */
-    protected function getDate()
-    {
-
+        return $this->isModerator;
     }
 }

@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Article\States;
+namespace demo\Acme\Multiple\Post;
 
-use UniAlteri\States\States;
+use UniAlteri\States\Proxy;
 
 /**
- * State Published
- * State for a published article
+ * Proxy Class
+ * Proxy for the stated class "Post"
  *
  * @package     States
  * @subpackage  Demo
@@ -35,25 +35,6 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateDefault extends States\AbstractState
+class Post extends Proxy\Integrated
 {
-    /**
-     * Return the title of this article
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->getAttribute('title');
-    }
-
-    /**
-     * To know if the article is published
-     * @return bool
-     */
-    public function isPublished()
-    {
-        $isPublished = $this->getAttribute('is_published');
-
-        return !empty($isPublished);
-    }
 }

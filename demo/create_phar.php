@@ -27,8 +27,8 @@ defined('DS')
 || define('DS', DIRECTORY_SEPARATOR);
 
 //Compute Path for this Phar
-$multiplePath = __DIR__.DS.'UniAlteri'.DS.'Multiple';
-$multiplePharPath = __DIR__.DS.'UniAlteri'.DS.'multiple.phar';
+$multiplePath = __DIR__.DS.'Acme'.DS.'Multiple';
+$multiplePharPath = __DIR__.DS.'Acme'.DS.'multiple.phar';
 if (file_exists($multiplePharPath)) {
     unlink($multiplePharPath);
 }

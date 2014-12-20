@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Multiple\User;
+namespace demo\Acme\Article\States;
 
-use UniAlteri\States\Factory\Integrated;
+use UniAlteri\States\States;
 
 /**
- * Class FactoryClass
- * Factory to build a new stated object User
+ * State Published
+ * State for a published article
  *
  * @package     States
  * @subpackage  Demo
@@ -35,6 +35,25 @@ use UniAlteri\States\Factory\Integrated;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Factory extends Integrated
+class StateDefault extends States\AbstractState
 {
+    /**
+     * Return the title of this article
+     * @return string
+     */
+    public function getTitle()
+    {
+        return $this->getAttribute('title');
+    }
+
+    /**
+     * To know if the article is published
+     * @return bool
+     */
+    public function isPublished()
+    {
+        $isPublished = $this->getAttribute('is_published');
+
+        return !empty($isPublished);
+    }
 }

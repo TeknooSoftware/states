@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Article;
+namespace demo\Acme\Article\States;
 
-use UniAlteri\States\Proxy;
+use UniAlteri\States\States;
 
 /**
- * Proxy Article
- * Proxy class of the stated class Article
+ * State Draft
+ * State for an article not published
  *
  * @package     States
  * @subpackage  Demo
@@ -35,51 +35,43 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Article extends Proxy\Integrated
+class Draft extends States\AbstractState
 {
     /**
-     * Article's data
-     * @var array
+     * Publish this article
      */
-    protected $data = array();
-
-    /**
-     * Get an article's attribute
-     * @param  string $name
-     * @return mixed
-     */
-    protected function getAttribute($name)
+    public function publishing()
     {
-        if (isset($this->data[$name])) {
-            return $this->data[$name];
-        }
-
-        return null;
+        $this->setAttribute('is_published', true);
+        //Switch to Published State, so this state will be not available for next operations
+        $this->disableState('Draft');
+        $this->enableState('Published');
     }
 
     /**
-     * Update an article's attribute
-     * @param string $name
-     * @param mixed  $value
+     * Define the title of this article
+     * @param string $title
      */
-    public function setAttribute($name, $value)
+    public function setTitle($title)
     {
-        $this->data[$name] = $value;
+        $this->setAttribute('title', $title);
     }
 
     /**
-     * To initialize this article with some data
-     * @param array $data
+     * Define the body of this article
+     * @param string $body
      */
-    public function __construct($data=array())
+    public function setBody($body)
     {
-        $this->data = $data;
-        parent::__construct();
-        //If the article is published, load the state Published, else load the state Draft
-        if (false === $this->isPublished()) {
-            $this->enableState('Draft');
-        } else {
-            $this->enableState('Published');
-        }
+        $this->setAttribute('body', $body);
+    }
+
+    /**
+     * Get the body source
+     * @return string
+     */
+    public function getBodySource()
+    {
+        return $this->getAttribute('body');
     }
 }

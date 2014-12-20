@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Multiple\User\States;
+namespace demo\Acme\Multiple\User;
 
-use UniAlteri\States\States;
+use UniAlteri\States\Factory\Integrated;
 
 /**
- * State Moderator
- * State for an user with moderator right
+ * Class FactoryClass
+ * Factory to build a new stated object User
  *
  * @package     States
  * @subpackage  Demo
@@ -35,14 +35,6 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Moderator extends States\AbstractState
+class Factory extends Integrated
 {
-    /**
-     * To know if this user is a moderator
-     * @return bool
-     */
-    public function isModerator()
-    {
-        return $this->isModerator;
-    }
 }

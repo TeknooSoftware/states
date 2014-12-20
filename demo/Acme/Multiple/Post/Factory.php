@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Multiple\User\States;
+namespace demo\Acme\Multiple\Post;
 
-use UniAlteri\States\States;
+use UniAlteri\States\Factory\Integrated;
 
 /**
- * State Administrator
- * State for an user with admin right
+ * Classe FactoryClass
+ * Class to build a new Post object
  *
  * @package     States
  * @subpackage  Demo
@@ -35,14 +35,6 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Administrator extends States\AbstractState
+class Factory extends Integrated
 {
-    /**
-     * Transform an user has moderator
-     * @param \demo\UniAlteri\Multiple\User $user
-     */
-    public function setModerator(\demo\UniAlteri\Multiple\User $user)
-    {
-        $user->setModerator(true);
-    }
 }
