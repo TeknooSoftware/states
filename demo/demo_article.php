@@ -30,12 +30,12 @@ defined('DS')
 $loader = require_once dirname(__DIR__).DS.'lib'.DS.'UniAlteri'.DS.'States'.DS.'bootstrap.php';
 
 //Register demo namespace
-$loader->registerNamespace('\\demo\\UniAlteri', __DIR__.DS.'UniAlteri');
+$loader->registerNamespace('\\demo\\Acme', __DIR__.DS.'Acme');
 
 print 'Uni Alteri - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize new article
 print 'Empty article'.PHP_EOL;
-$article = new UniAlteri\Article\Article();
+$article = new Acme\Article\Article();
 
 //It is a new article, not published, the constructor load the state 'Draft'
 print 'Active states :';
@@ -61,7 +61,7 @@ print $article->getFormattedBody().PHP_EOL;
 //Open a published article
 print 'Open article'.PHP_EOL;
 //You call also directly the stated class name and not the proxy
-$article = new UniAlteri\Article(
+$article = new Acme\Article(
     array(
         'is_published'  => true,
         'title'         => 'title 2',

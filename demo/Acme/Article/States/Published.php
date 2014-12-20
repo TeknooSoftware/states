@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Article;
+namespace demo\Acme\Article\States;
 
-use UniAlteri\States\Factory\Integrated;
+use UniAlteri\States\States;
 
 /**
- * Class FactoryClass
- * Factory of the stated class Article
+ * State Published
+ * State for a published article
  *
  * @package     States
  * @subpackage  Demo
@@ -35,6 +35,38 @@ use UniAlteri\States\Factory\Integrated;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Factory extends Integrated
+class Published implements States\StateInterface
 {
+    use States\StateTrait;
+
+    /**
+     * Get the body and transform BBCode to HTML
+     * @return string
+     */
+    public function getFormattedBody()
+    {
+        $body = $this->getAttribute('body');
+
+        return str_replace(
+            array(
+                '[br]',
+                '[b]',
+                '[/b]'
+            ),
+            array(
+                '<br/>',
+                '<strong>',
+                '</strong>'
+            ),
+            $body
+        );
+    }
+
+    /**
+     * Fake method not callable in public scope
+     */
+    protected function getDate()
+    {
+
+    }
 }

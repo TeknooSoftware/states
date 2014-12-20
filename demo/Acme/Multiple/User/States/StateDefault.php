@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Multiple\Post;
+namespace demo\Acme\Multiple\User\States;
 
-use UniAlteri\States\Factory\Integrated;
+use UniAlteri\States\States;
 
 /**
- * Classe FactoryClass
- * Class to build a new Post object
+ * State StateDefault
+ * Default State for an user
  *
  * @package     States
  * @subpackage  Demo
@@ -35,6 +35,26 @@ use UniAlteri\States\Factory\Integrated;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Factory extends Integrated
+class StateDefault extends States\AbstractState
 {
+    /**
+     * Return the user name of this user
+     * @return string
+     */
+    public function getName()
+    {
+        return $this->userName;
+    }
+
+    /**
+     * Transform this user as moderator
+     * @param boolean $value
+     */
+    protected function setModerator($value)
+    {
+        $this->isModerator = $value;
+        if (!empty($this->isModerator)) {
+            $this->enableState('Moderator');
+        }
+    }
 }

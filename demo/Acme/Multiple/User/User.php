@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Multiple\Post;
+namespace demo\Acme\Multiple\User;
 
 use UniAlteri\States\Proxy;
 
 /**
- * Proxy Class
- * Proxy for the stated class "Post"
+ * Proxy User
+ * Proxy class of the stated class Proxy
  *
  * @package     States
  * @subpackage  Demo
@@ -35,6 +35,48 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Post extends Proxy\Integrated
+class User extends Proxy\Integrated
 {
+    /**
+     * Username of this user
+     * @var string
+     */
+    protected $userName = '';
+
+    /**
+     * To know if this user is an admin
+     * @var bool
+     */
+    protected $isAdmin = false;
+
+    /**
+     * To know if this user is a moderator
+     * @var bool
+     */
+    protected $isModerator = false;
+
+    /**
+     * To initialize this user with some data
+     * @param string $username
+     * @param bool   $isAdmin
+     * @param bool   $isModerator
+     */
+    public function __construct($username, $isAdmin=false, $isModerator=false)
+    {
+        //Register options
+        $this->userName = $username;
+        $this->isAdmin = $isAdmin;
+        $this->isModerator = $isModerator;
+        //Initialize user
+        parent::__construct();
+        //Load states
+        if (!empty($this->isAdmin)) {
+            $this->enableState('Administrator');
+            $this->enableState('Moderator');
+        }
+
+        if (!empty($this->isModerator)) {
+            $this->enableState('Moderator');
+        }
+    }
 }

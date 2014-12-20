@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Multiple\Post\States;
+namespace demo\Acme\Multiple\Post\States;
 
 use UniAlteri\States\States;
 
 /**
- * State Published
- * State for a post when a message is published
+ * State Deleted
+ * State for a post when a message is deleted
  *
  * @package     States
  * @subpackage  Demo
@@ -35,18 +35,14 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Published extends States\AbstractState
+class Deleted extends States\AbstractState
 {
     /**
-     * Return the body of the post
+     * Return the body of the post. Return always Message deleted
      * @return string
      */
     public function getMessage()
     {
-        if (!empty($this->message)) {
-            return $this->message;
-        }
-
-        return '';
+        return 'Message deleted';
     }
 }

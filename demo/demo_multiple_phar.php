@@ -30,21 +30,21 @@ defined('DS')
 $loader = require_once dirname(__DIR__).DS.'lib'.DS.'UniAlteri'.DS.'States'.DS.'bootstrap.php';
 
 //Register demo namespace
-$loader->registerNamespace('\\demo\\UniAlteri\\Multiple', 'phar://'.__DIR__.DS.'UniAlteri'.DS.'multiple.phar');
+$loader->registerNamespace('\\demo\\Acme\\Multiple', 'phar://'.__DIR__.DS.'Acme'.DS.'multiple.phar');
 
 print 'Uni Alteri - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize user
 print 'user'.PHP_EOL;
-$simpleUser = new UniAlteri\Multiple\User\User('simple 1');
+$simpleUser = new Acme\Multiple\User\User('simple 1');
 print 'get name : '.$simpleUser->getName().PHP_EOL;
 //Initialize moderator
 print 'moderator'.PHP_EOL;
 //You call also directly the stated class name and not the proxy
-$moderator = new UniAlteri\Multiple\User('modo', false, true);
+$moderator = new Acme\Multiple\User('modo', false, true);
 print 'get name : '.$moderator->getName().PHP_EOL;
 //Initialize admin
 print 'admin'.PHP_EOL;
-$administrator = new UniAlteri\Multiple\User\User('admin', true, true);
+$administrator = new Acme\Multiple\User\User('admin', true, true);
 print 'get name : '.$administrator->getName().PHP_EOL.PHP_EOL;
 
 //Method not available, because state Moderator is not enabled
@@ -61,5 +61,5 @@ $administrator->setModerator($simpleUser);
 print 'user is moderator '.$simpleUser->isModerator().PHP_EOL;
 
 //Initialize another stated class of this phar
-$newPost = new UniAlteri\Multiple\Post\Post();
+$newPost = new Acme\Multiple\Post\Post();
 print 'object post created'.PHP_EOL;

@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Article\States;
+namespace demo\Acme\Multiple\Post\States;
 
 use UniAlteri\States\States;
 
 /**
- * State Draft
- * State for an article not published
+ * State Deleted
+ * Default State for a post message
  *
  * @package     States
  * @subpackage  Demo
@@ -35,43 +35,41 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Draft extends States\AbstractState
+class StateDefault extends States\AbstractState
 {
     /**
-     * Publish this article
+     * Return the name of the post, or empty if no body has been defined
+     * @return string
      */
-    public function publishing()
+    public function getTitle()
     {
-        $this->setAttribute('is_published', true);
-        //Switch to Published State, so this state will be not available for next operations
-        $this->disableState('Draft');
-        $this->enableState('Published');
+        if (!empty($this->title)) {
+            return $this->title;
+        }
+
+        return '';
     }
 
     /**
-     * Define the title of this article
-     * @param string $title
+     * Define the title of this post
+     * @param  string $title
+     * @return $this
      */
     public function setTitle($title)
     {
-        $this->setAttribute('title', $title);
+        $this->title = $title;
+
+        return $this;
     }
 
     /**
-     * Define the body of this article
-     * @param string $body
+     * Define the body of this post
+     * @param  string $body
+     * @return $this
      */
     public function setBody($body)
     {
-        $this->setAttribute('body', $body);
+        $this->body = $body;
     }
 
-    /**
-     * Get the body source
-     * @return string
-     */
-    public function getBodySource()
-    {
-        return $this->getAttribute('body');
-    }
 }

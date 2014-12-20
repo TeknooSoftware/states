@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Multiple\Post\States;
+namespace demo\Acme\Article;
 
-use UniAlteri\States\States;
+use UniAlteri\States\Factory\Integrated;
 
 /**
- * State Deleted
- * Default State for a post message
+ * Class FactoryClass
+ * Factory of the stated class Article
  *
  * @package     States
  * @subpackage  Demo
@@ -35,41 +35,6 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateDefault extends States\AbstractState
+class Factory extends Integrated
 {
-    /**
-     * Return the name of the post, or empty if no body has been defined
-     * @return string
-     */
-    public function getTitle()
-    {
-        if (!empty($this->title)) {
-            return $this->title;
-        }
-
-        return '';
-    }
-
-    /**
-     * Define the title of this post
-     * @param  string $title
-     * @return $this
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Define the body of this post
-     * @param  string $body
-     * @return $this
-     */
-    public function setBody($body)
-    {
-        $this->body = $body;
-    }
-
 }

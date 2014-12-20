@@ -19,13 +19,13 @@
  * @version     0.9.9
  */
 
-namespace demo\UniAlteri\Multiple\User;
+namespace demo\Acme\Article;
 
 use UniAlteri\States\Proxy;
 
 /**
- * Proxy User
- * Proxy class of the stated class Proxy
+ * Proxy Article
+ * Proxy class of the stated class Article
  *
  * @package     States
  * @subpackage  Demo
@@ -35,48 +35,51 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class User extends Proxy\Integrated
+class Article extends Proxy\Integrated
 {
     /**
-     * Username of this user
-     * @var string
+     * Article's data
+     * @var array
      */
-    protected $userName = '';
+    protected $data = array();
 
     /**
-     * To know if this user is an admin
-     * @var bool
+     * Get an article's attribute
+     * @param  string $name
+     * @return mixed
      */
-    protected $isAdmin = false;
-
-    /**
-     * To know if this user is a moderator
-     * @var bool
-     */
-    protected $isModerator = false;
-
-    /**
-     * To initialize this user with some data
-     * @param string $username
-     * @param bool   $isAdmin
-     * @param bool   $isModerator
-     */
-    public function __construct($username, $isAdmin=false, $isModerator=false)
+    protected function getAttribute($name)
     {
-        //Register options
-        $this->userName = $username;
-        $this->isAdmin = $isAdmin;
-        $this->isModerator = $isModerator;
-        //Initialize user
-        parent::__construct();
-        //Load states
-        if (!empty($this->isAdmin)) {
-            $this->enableState('Administrator');
-            $this->enableState('Moderator');
+        if (isset($this->data[$name])) {
+            return $this->data[$name];
         }
 
-        if (!empty($this->isModerator)) {
-            $this->enableState('Moderator');
+        return null;
+    }
+
+    /**
+     * Update an article's attribute
+     * @param string $name
+     * @param mixed  $value
+     */
+    public function setAttribute($name, $value)
+    {
+        $this->data[$name] = $value;
+    }
+
+    /**
+     * To initialize this article with some data
+     * @param array $data
+     */
+    public function __construct($data=array())
+    {
+        $this->data = $data;
+        parent::__construct();
+        //If the article is published, load the state Published, else load the state Draft
+        if (false === $this->isPublished()) {
+            $this->enableState('Draft');
+        } else {
+            $this->enableState('Published');
         }
     }
 }
