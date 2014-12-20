@@ -53,7 +53,7 @@ use UniAlteri\States\Proxy\ProxyInterface;
             ->addArgument(
                 'className',
                  InputArgument::REQUIRED,
-                 'Full qualified name of the new stated class'
+                 'Full qualified name of the new stated class, with its namespace'
              )
             ->addOption(
                 'path',
@@ -93,6 +93,6 @@ use UniAlteri\States\Proxy\ProxyInterface;
          $factoryWriter = new Writer\Factory($this->adapter, $destinationPath);
          $factoryWriter->createIntegratedFactory($className, $namespace);
          $stateWriter = new Writer\State($this->adapter, $destinationPath);
-         $stateWriter->createState(ProxyInterface::DEFAULT_STATE_NAME);
+         $stateWriter->createDefaultState();
      }
  }

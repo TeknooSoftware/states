@@ -36,6 +36,5 @@ $application = new Application();
 $application->add(new ClassCreate(null, $localAdapterFactory));
 $application->add(new ClassInformation(null, $localAdapterFactory));
 $application->add(new StateAdd(null, $localAdapterFactory));
-$application->add(new StateDelete(null, $localAdapterFactory));
 $application->add(new StateList(null, $localAdapterFactory));
 $application->run();
