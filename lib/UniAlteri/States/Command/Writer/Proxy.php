@@ -36,13 +36,71 @@ namespace UniAlteri\States\Command\Writer;
  */
  class Proxy extends AbstractWriter
  {
-     public function createStandardProxy($className, $namespace)
+     /**
+      * Protected method to generate the php code for the proxy
+      *
+      * @param string $className
+      * @param string $namespace
+      * @param boolean $isIntegrated
+      * @return string
+      */
+     protected function generateProxy($className, $namespace, $isIntegrated)
      {
+         $proxyClassName = 'Proxy\Standard';
+         if (!empty($isIntegrated)) {
+            $proxyClassName = 'Proxy\Integrated';
+         }
 
+         return <<<EOF
+<?php
+
+namespace $namespace;
+
+use UniAlteri\States\Proxy;
+
+/**
+ * Proxy $className
+ * Proxy class of the stated class $className
+ *
+ * @package     $namespace
+ */
+class $className extends $proxyClassName
+{
+}
+EOF;
      }
 
+     /**
+      * Method to create a new standard proxy for the defined stated class
+      * @param string $className
+      * @param string $namespace
+      * @return boolean
+      */
+     public function createStandardProxy($className, $namespace)
+     {
+         $proxyCode = $this->generateProxy($className, $namespace, false);
+         $proxyFileName = $className.'.php';
+         if (0 < $this->write($proxyFileName, $proxyCode)) {
+             return true;
+         } else {
+             return false;
+         }
+     }
+
+     /**
+      * Method to create a new integrated proxy for the defined stated class
+      * @param string $className
+      * @param string $namespace
+      * @return boolean
+      */
      public function createIntegratedProxy($className, $namespace)
      {
-
+         $proxyCode = $this->generateProxy($className, $namespace, true);
+         $proxyFileName = $className.'.php';
+         if (0 < $this->write($proxyFileName, $proxyCode)) {
+             return true;
+         } else {
+             return false;
+         }
      }
  }

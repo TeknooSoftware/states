@@ -21,6 +21,7 @@
  */
 
 namespace UniAlteri\States\Command\Writer;
+use UniAlteri\States\Loader\LoaderInterface;
 
 /**
  * Class Factory
@@ -36,13 +37,73 @@ namespace UniAlteri\States\Command\Writer;
  */
  class Factory extends AbstractWriter
  {
-     public function createStandardFactory($className, $namespace)
+     /**
+      * Protected method to generate the php code for the factory
+      *
+      * @param string $className
+      * @param string $namespace
+      * @param boolean $isIntegrated
+      * @return string
+      */
+     protected function generateFactory($className, $namespace, $isIntegrated)
      {
+         $factoryExtendsClassName = 'Factory\Standard';
+         if (!empty($isIntegrated)) {
+             $factoryExtendsClassName = 'Factory\Integrated';
+         }
 
+         $factoryClassName = LoaderInterface::FACTORY_CLASS_NAME;
+
+         return <<<EOF
+<?php
+
+namespace $namespace
+
+use UniAlteri\States\Factory;
+
+/**
+ * Class Factory
+ * Factory of the stated class $className
+
+ * @package     $namespace
+ */
+class $factoryClassName extends $factoryExtendsClassName
+{
+}
+EOF;
      }
 
+     /**
+      * Method to create a new standard factory for the defined stated class
+      * @param string $className
+      * @param string $namespace
+      * @return bool
+      */
+     public function createStandardFactory($className, $namespace)
+     {
+         $factoryCode = $this->generateFactory($className, $namespace, false);
+         $factoryFileName = LoaderInterface::FACTORY_FILE_NAME;
+         if (0 < $this->write($factoryFileName, $factoryCode)) {
+             return true;
+         } else {
+             return false;
+         }
+     }
+
+     /**
+      * Method to create a new integrated factory for the defined stated class
+      * @param string $className
+      * @param string $namespace
+      * @return bool
+      */
      public function createIntegratedFactory($className, $namespace)
      {
-
+         $factoryCode = $this->generateFactory($className, $namespace, true);
+         $factoryFileName = LoaderInterface::FACTORY_FILE_NAME;
+         if (0 < $this->write($factoryFileName, $factoryCode)) {
+             return true;
+         } else {
+             return false;
+         }
      }
  }

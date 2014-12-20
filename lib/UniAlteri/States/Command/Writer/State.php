@@ -21,6 +21,8 @@
  */
 
 namespace UniAlteri\States\Command\Writer;
+use UniAlteri\States\Loader\FinderInterface;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Class State
@@ -36,18 +38,63 @@ namespace UniAlteri\States\Command\Writer;
  */
  class State extends AbstractWriter
  {
-     protected function createSubfolderState()
+     /**
+      * Generator to build the php code for the new state of the stated class
+      *
+      * @param string $className
+      * @param string $namespace
+      * @param string $stateName
+      * @return string
+      */
+     protected function generateState($className, $namespace, $stateName)
      {
+         return <<<EOF
+<?php
 
+namespace $namespace\States;
+
+use UniAlteri\States\States;
+
+/**
+ * State $stateName
+ * State for the stated class $className
+ *
+ * @package     $namespace
+ * @subpackage  States
+ */
+class $stateName extends States\AbstractState
+{
+}
+EOF;
      }
 
-     public function createState($stateName)
+     /**
+      * Method to create the default and mandatory state for the defined stated class
+      * @param string $className
+      * @param string $namespace
+      * @return bool
+      */
+     public function createDefaultState($className, $namespace)
      {
-
+        return $this->createState($className, $namespace, ProxyInterface::DEFAULT_STATE_NAME);
      }
 
-     public function deleteState($stateName)
+     /**
+      * Method to create a new state for the defined stated class
+      * @param string $className
+      * @param string $namespace
+      * @param string $stateName
+      * @return bool
+      */
+     public function createState($className, $namespace, $stateName)
      {
+         $stateCode = $this->generateState($className, $namespace, $stateName);
+         $stateFileName = FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$className.'.php';
 
+         if (0 < $this->write($stateFileName, $stateCode)) {
+             return true;
+         } else {
+             return false;
+         }
      }
  }
