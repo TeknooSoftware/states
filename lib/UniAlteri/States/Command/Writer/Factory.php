@@ -47,9 +47,11 @@ use UniAlteri\States\Loader\LoaderInterface;
       */
      protected function generateFactory($className, $namespace, $isIntegrated)
      {
-         $factoryExtendsClassName = 'Factory\Standard';
+         $factoryExtendsNamespace = 'UniAlteri\States\Factory\Standard';
+         $factoryExtendsClassName = 'Standard';
          if (!empty($isIntegrated)) {
-             $factoryExtendsClassName = 'Factory\Integrated';
+             $factoryExtendsNamespace = 'UniAlteri\States\Factory\Integrated';
+             $factoryExtendsClassName = 'Integrated';
          }
 
          $factoryClassName = LoaderInterface::FACTORY_CLASS_NAME;
@@ -57,14 +59,14 @@ use UniAlteri\States\Loader\LoaderInterface;
          return <<<EOF
 <?php
 
-namespace $namespace
+namespace $namespace;
 
-use UniAlteri\States\Factory;
+use $factoryExtendsNamespace;
 
 /**
  * Class Factory
  * Factory of the stated class $className
-
+ *
  * @package     $namespace
  */
 class $factoryClassName extends $factoryExtendsClassName
@@ -82,7 +84,7 @@ EOF;
      public function createStandardFactory($className, $namespace)
      {
          $factoryCode = $this->generateFactory($className, $namespace, false);
-         $factoryFileName = LoaderInterface::FACTORY_FILE_NAME;
+         $factoryFileName = $className.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
          if (0 < $this->write($factoryFileName, $factoryCode)) {
              return true;
          } else {
@@ -99,7 +101,7 @@ EOF;
      public function createIntegratedFactory($className, $namespace)
      {
          $factoryCode = $this->generateFactory($className, $namespace, true);
-         $factoryFileName = LoaderInterface::FACTORY_FILE_NAME;
+         $factoryFileName = $className.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
          if (0 < $this->write($factoryFileName, $factoryCode)) {
              return true;
          } else {

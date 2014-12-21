@@ -79,7 +79,7 @@ EOF;
      public function createStandardProxy($className, $namespace)
      {
          $proxyCode = $this->generateProxy($className, $namespace, false);
-         $proxyFileName = $className.'.php';
+         $proxyFileName = $className.DIRECTORY_SEPARATOR.$className.'.php';
          if (0 < $this->write($proxyFileName, $proxyCode)) {
              return true;
          } else {
@@ -96,7 +96,7 @@ EOF;
      public function createIntegratedProxy($className, $namespace)
      {
          $proxyCode = $this->generateProxy($className, $namespace, true);
-         $proxyFileName = $className.'.php';
+         $proxyFileName = $className.DIRECTORY_SEPARATOR.$className.'.php';
          if (0 < $this->write($proxyFileName, $proxyCode)) {
              return true;
          } else {

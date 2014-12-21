@@ -50,6 +50,11 @@ class StateAdd extends AbstractCommand
         $this->setName('state:add')
             ->setDescription('Add a new state on a stated class')
             ->addArgument(
+                'className',
+                InputArgument::REQUIRED,
+                'Full qualified name of the new stated class, with its namespace'
+            )
+            ->addArgument(
                 'name',
                 InputArgument::REQUIRED,
                 'name of the new state'
@@ -57,7 +62,7 @@ class StateAdd extends AbstractCommand
             ->addOption(
                 'path',
                 'p',
-                InputOption::VALUE_NONE,
+                InputOption::VALUE_REQUIRED,
                 'Path of the stated class to update'
             );
     }
@@ -80,10 +85,15 @@ class StateAdd extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $fullClassName = $input->getArgument('className');
         $stateName = $input->getArgument('name');
-        $destinationPath = $input->getArgument('path');
+        $destinationPath = rtrim($input->getOption('path'), ' /');
+
+        $fullClassNameExploded = explode('\\', $fullClassName);
+        $className = array_pop($fullClassNameExploded);
+        $namespace = implode('\\', $fullClassNameExploded);
 
         $stateWriter = new Writer\State($this->adapter, $destinationPath);
-        $stateWriter->createState($stateName);
+        $stateWriter->createState($className, $namespace, $stateName);
     }
 }

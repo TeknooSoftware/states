@@ -49,10 +49,9 @@ class StateList extends AbstractCommand
     {
         $this->setName('state:list')
             ->setDescription('List states of a stated class')
-            ->addOption(
+            ->addArgument(
                 'path',
-                'p',
-                InputOption::VALUE_NONE,
+                InputOption::VALUE_REQUIRED,
                 'Path of the stated class'
             );
     }
@@ -75,8 +74,8 @@ class StateList extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $parser = new StatedClass($this->adapter, $input->getOption('path'));
+        $parser = new StatedClass($this->adapter, rtrim($input->getArgument('path'), ' /'));
         $stateParser = $parser->getStatesParser();
-        $output->write(implode(PHP_EOL, $stateParser->listStates()), true);
+        $output->write(implode(PHP_EOL, $stateParser->listStates()->getArrayCopy()), true);
     }
 }

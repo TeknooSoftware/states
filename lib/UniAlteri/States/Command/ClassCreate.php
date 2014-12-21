@@ -58,9 +58,16 @@ use UniAlteri\States\Proxy\ProxyInterface;
             ->addOption(
                 'path',
                  'p',
-                 InputOption::VALUE_NONE,
+                 InputOption::VALUE_REQUIRED,
                  'Path where localise the new stated class'
-             );
+             )
+            ->addOption(
+                'mode',
+                'm',
+                InputOption::VALUE_OPTIONAL,
+                'Proxy mode (integrated or standard)',
+                'integrated'
+            );
      }
 
      /**
@@ -82,17 +89,33 @@ use UniAlteri\States\Proxy\ProxyInterface;
      protected function execute(InputInterface $input, OutputInterface $output)
      {
          $fullClassName = $input->getArgument('className');
-         $destinationPath = $input->getArgument('path');
+         $destinationPath = rtrim($input->getOption('path'), ' /');
 
-         $fullClassNameExploded = explode('/', $fullClassName);
+         $mode = $input->getOption('mode');
+         $integrated = true;
+         if ('standard' == $mode) {
+             $integrated = false;
+         }
+
+         $fullClassNameExploded = explode('\\', $fullClassName);
          $className = array_pop($fullClassNameExploded);
-         $namespace = implode('/', $fullClassNameExploded);
+         $namespace = implode('\\', $fullClassNameExploded);
 
          $proxyWriter = new Writer\Proxy($this->adapter, $destinationPath);
-         $proxyWriter->createIntegratedProxy($className, $namespace);
+         if (true === $integrated) {
+             $proxyWriter->createIntegratedProxy($className, $namespace);
+         } else {
+             $proxyWriter->createStandardProxy($className, $namespace);
+         }
+
          $factoryWriter = new Writer\Factory($this->adapter, $destinationPath);
-         $factoryWriter->createIntegratedFactory($className, $namespace);
+         if (true === $integrated) {
+             $factoryWriter->createIntegratedFactory($className, $namespace);
+         } else {
+             $factoryWriter->createStandardFactory($className, $namespace);
+         }
+
          $stateWriter = new Writer\State($this->adapter, $destinationPath);
-         $stateWriter->createDefaultState();
+         $stateWriter->createDefaultState($className, $namespace);
      }
  }
