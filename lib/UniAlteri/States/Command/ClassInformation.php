@@ -74,7 +74,7 @@ use UniAlteri\States\Command\Parser\StatedClass;
      protected function execute(InputInterface $input, OutputInterface $output)
      {
          $path = rtrim($input->getArgument('path'), ' /');
-         $parser = new StatedClass($this->adapter, $path);
+         $parser = $this->getParserOrWriter('StatedClass', $this->adapter, $path);
 
          $boolToStr = function ($value) {
              if (!empty($value)) {

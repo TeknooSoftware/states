@@ -28,13 +28,40 @@ use Symfony\Component\Console\Application;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 
+/**
+ * @param string $directory
+ * @return Local
+ */
 $localAdapterFactory = function ($directory) {
     return new Local(realpath($directory));
 };
 
+/**
+ * @param string $service
+ * @param callable $adapter
+ * @param string $destinationPath
+ * @return AbstractWriter|AbstractParser
+ */
+$readerAndWriterFactory = function ($service, $adapter, $destinationPath) {
+    switch ($service) {
+        case 'WriterProxy':
+            return Writer\Proxy($adapter, $destinationPath);
+            break;
+        case 'WriterFactory':
+            return Writer\Factory($adapter, $destinationPath);
+            break;
+        case 'WriterState':
+            return Writer\State($adapter, $destinationPath);
+            break;
+        case 'StatedClass':
+            return StatedClass($adapter, $destinationPath);
+            break;
+    }
+}
+
 $application = new Application();
-$application->add(new ClassCreate(null, $localAdapterFactory));
-$application->add(new ClassInformation(null, $localAdapterFactory));
-$application->add(new StateAdd(null, $localAdapterFactory));
-$application->add(new StateList(null, $localAdapterFactory));
+$application->add(new ClassCreate(null, $localAdapterFactory, $readerAndWriterFactory));
+$application->add(new ClassInformation(null, $localAdapterFactory, $readerAndWriterFactory));
+$application->add(new StateAdd(null, $localAdapterFactory, $readerAndWriterFactory));
+$application->add(new StateList(null, $localAdapterFactory, $readerAndWriterFactory));
 $application->run();

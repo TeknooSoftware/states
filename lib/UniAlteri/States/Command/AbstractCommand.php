@@ -25,6 +25,8 @@ namespace UniAlteri\States\Command;
 use spec\Gaufrette\Adapter;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputDefinition;
+use UniAlteri\States\Command\Parser\AbstractParser;
+use UniAlteri\States\Command\Writer\AbstractWriter;
 
 /**
  * Class ClassCreate
@@ -46,12 +48,31 @@ class AbstractCommand extends Command
     protected $adapter;
 
     /**
-     * @param string $name
-     * @param null $adapter
+     * @var callable
      */
-    public function __construct($name = null, $adapter = null)
+    protected $factory;
+
+    /**
+     * @param string $name
+     * @param callable $adapter
+     * @param callable $factory
+     */
+    public function __construct($name = null, $adapter = null, $factory = null)
     {
         $this->adapter = $adapter;
+        $this->factory = $factory;
         parent::__construct($name);
+    }
+
+    /**
+     * @param string $name
+     * @param callable $adapter
+     * @param string $destinationPath
+     * @return AbstractWriter|AbstractParser
+     */
+    protected function getParserOrWriter($name, $adapter, $destinationPath)
+    {
+        $factory = $this->factory;
+        return $factory($name, $adapter, $destinationPath);
     }
 }

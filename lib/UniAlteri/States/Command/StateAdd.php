@@ -93,7 +93,7 @@ class StateAdd extends AbstractCommand
         $className = array_pop($fullClassNameExploded);
         $namespace = implode('\\', $fullClassNameExploded);
 
-        $stateWriter = new Writer\State($this->adapter, $destinationPath);
+        $stateWriter = $this->getParserOrWriter('WriterState', $this->adapter, $destinationPath);
         $stateWriter->createState($className, $namespace, $stateName);
     }
 }

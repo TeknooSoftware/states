@@ -101,21 +101,21 @@ use UniAlteri\States\Proxy\ProxyInterface;
          $className = array_pop($fullClassNameExploded);
          $namespace = implode('\\', $fullClassNameExploded);
 
-         $proxyWriter = new Writer\Proxy($this->adapter, $destinationPath);
+         $proxyWriter = $this->getParserOrWriter('WriterProxy', $this->adapter, $destinationPath);
          if (true === $integrated) {
              $proxyWriter->createIntegratedProxy($className, $namespace);
          } else {
              $proxyWriter->createStandardProxy($className, $namespace);
          }
 
-         $factoryWriter = new Writer\Factory($this->adapter, $destinationPath);
+         $factoryWriter = $this->getParserOrWriter('WriterFactory', $this->adapter, $destinationPath);
          if (true === $integrated) {
              $factoryWriter->createIntegratedFactory($className, $namespace);
          } else {
              $factoryWriter->createStandardFactory($className, $namespace);
          }
 
-         $stateWriter = new Writer\State($this->adapter, $destinationPath);
+         $stateWriter = $this->getParserOrWriter('WriterState', $this->adapter, $destinationPath);
          $stateWriter->createDefaultState($className, $namespace);
      }
  }
