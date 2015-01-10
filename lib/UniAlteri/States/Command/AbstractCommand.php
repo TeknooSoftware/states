@@ -24,9 +24,6 @@ namespace UniAlteri\States\Command;
 
 use spec\Gaufrette\Adapter;
 use Symfony\Component\Console\Command\Command;
-use Symfony\Component\Console\Input\InputDefinition;
-use UniAlteri\States\Command\Parser\AbstractParser;
-use UniAlteri\States\Command\Writer\AbstractWriter;
 
 /**
  * Class ClassCreate
@@ -45,34 +42,39 @@ class AbstractCommand extends Command
     /**
      * @var callable
      */
-    protected $adapter;
-
-    /**
-     * @var callable
-     */
     protected $factory;
 
     /**
      * @param string $name
-     * @param callable $adapter
      * @param callable $factory
      */
-    public function __construct($name = null, $adapter = null, $factory = null)
+    public function __construct($name = null, $factory = null)
     {
-        $this->adapter = $adapter;
         $this->factory = $factory;
         parent::__construct($name);
     }
 
     /**
+     * Create a parser from the factory
      * @param string $name
-     * @param callable $adapter
      * @param string $destinationPath
-     * @return AbstractWriter|AbstractParser
+     * @return Parser\Factory|Parser\Proxy|Parser\State|Parser\StatedClass
      */
-    protected function getParserOrWriter($name, $adapter, $destinationPath)
+    public function createParser($name, $destinationPath)
     {
         $factory = $this->factory;
-        return $factory($name, $adapter, $destinationPath);
+        return $factory($name, $destinationPath);
+    }
+
+    /**
+     * Create a writer from the factory
+     * @param string $name
+     * @param string $destinationPath
+     * @return Writer\Factory|Writer\Proxy|Writer\State
+     */
+    public function createWriter($name, $destinationPath)
+    {
+        $factory = $this->factory;
+        return $factory($name, $destinationPath);
     }
 }

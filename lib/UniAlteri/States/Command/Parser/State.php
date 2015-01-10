@@ -42,7 +42,6 @@ class State extends AbstractParser
     /**
      * List all defined states for this class
      * @return \string[]|\ArrayObject
-     * @throws Exception\UnavailablePath when the path is not available
      */
     public function listStates()
     {

@@ -41,12 +41,6 @@ use \UniAlteri\States\Command\Parser\Exception;
 abstract class AbstractParser
 {
     /**
-     * Adapter factory to operate with file system
-     * @var callable
-     */
-    protected $adapterFactory;
-
-    /**
      * Filesystem object to manipulate file
      * @var Filesystem
      */
@@ -61,35 +55,20 @@ abstract class AbstractParser
     /**
      * Return the file system object from Gaufrette to
      * @return Filesystem
-     * @throws Exception\IllegalArgument when the FS adapter is not valid
-     * @throws Exception\UnavailablePath when the path is not available
      */
     protected function getFileSystem()
     {
-        if (!$this->fileSystem instanceof Filesystem) {
-            if (!is_callable($this->adapterFactory)) {
-                throw new Exception\IllegalArgument('Error, the adapter factory is not valid');
-            }
-
-            $adapter = call_user_func_array($this->adapterFactory, array($this->statedClassPath));
-            $this->fileSystem = new Filesystem($adapter);
-
-            if (!$adapter->isDirectory('/')) {
-                throw new Exception\UnavailablePath('Error, the path '.$this->statedClassPath.' is not available');
-            }
-        }
-
         return $this->fileSystem;
     }
 
     /**
      * Path of the current stated class to operate
-     * @param callable $adapterFactory
+     * @param Filesystem $fileSystem
      * @param string $path
      */
-    public function __construct($adapterFactory, $path)
+    public function __construct($fileSystem, $path)
     {
-        $this->adapterFactory = $adapterFactory;
+        $this->fileSystem = $fileSystem;
         $this->statedClassPath = $path;
     }
 

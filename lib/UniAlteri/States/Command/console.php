@@ -1,3 +1,4 @@
+#!/usr/bin/php
 <?php
 /**
  * States
@@ -23,45 +24,70 @@
 namespace UniAlteri\States\Command;
 
 use Gaufrette\Adapter\Local;
-use Gaufrette\Adapter\SafeLocal;
+use Gaufrette\Filesystem;
 use Symfony\Component\Console\Application;
+use UniAlteri\States\Command\Parser\AbstractParser;
+use UniAlteri\States\Command\Writer\AbstractWriter;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 
 /**
  * @param string $directory
- * @return Local
+ * @return Filesystem
  */
-$localAdapterFactory = function ($directory) {
-    return new Local(realpath($directory));
+$fileSystemFactory = function ($directory) {
+    return new Filesystem(
+        new Local(
+            realpath($directory)
+        )
+    );
 };
 
 /**
  * @param string $service
- * @param callable $adapter
  * @param string $destinationPath
  * @return AbstractWriter|AbstractParser
+ * @throws \Exception when $service is bad
  */
-$readerAndWriterFactory = function ($service, $adapter, $destinationPath) {
+$factory = function ($service, $destinationPath) use ($fileSystemFactory) {
+    $fileSystem = $fileSystemFactory($destinationPath);
     switch ($service) {
-        case 'WriterProxy':
-            return Writer\Proxy($adapter, $destinationPath);
+        case 'Parser\Factory':
+            return new Parser\Factory($fileSystem, $destinationPath);
             break;
-        case 'WriterFactory':
-            return Writer\Factory($adapter, $destinationPath);
+        case 'Parser\Proxy':
+            return new Parser\Proxy($fileSystem, $destinationPath);
             break;
-        case 'WriterState':
-            return Writer\State($adapter, $destinationPath);
+        case 'Parser\State':
+            return new Parser\State($fileSystem, $destinationPath);
             break;
-        case 'StatedClass':
-            return StatedClass($adapter, $destinationPath);
+        case 'Parser\StatedClass':
+            return new Parser\StatedClass(
+                $fileSystem,
+                $destinationPath,
+                new Parser\Factory($fileSystem, $destinationPath),
+                new Parser\Proxy($fileSystem, $destinationPath),
+                new Parser\State($fileSystem, $destinationPath)
+            );
+            break;
+        case 'Writer\Factory':
+            return new Writer\Factory($fileSystem, $destinationPath);
+            break;
+        case 'Writer\Proxy':
+            return new Writer\Proxy($fileSystem, $destinationPath);
+            break;
+        case 'Writer\State':
+            return new Writer\State($fileSystem, $destinationPath);
+            break;
+        default:
+            throw new \Exception('Bad required service');
             break;
     }
-}
+};
 
 $application = new Application();
-$application->add(new ClassCreate(null, $localAdapterFactory, $readerAndWriterFactory));
-$application->add(new ClassInformation(null, $localAdapterFactory, $readerAndWriterFactory));
-$application->add(new StateAdd(null, $localAdapterFactory, $readerAndWriterFactory));
-$application->add(new StateList(null, $localAdapterFactory, $readerAndWriterFactory));
+$application->add(new ClassCreate(null, $factory));
+$application->add(new ClassInformation(null, $factory));
+$application->add(new StateAdd(null, $factory));
+$application->add(new StateList(null, $factory));
 $application->run();

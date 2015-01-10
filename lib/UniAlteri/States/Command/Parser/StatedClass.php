@@ -22,6 +22,7 @@
 
 namespace UniAlteri\States\Command\Parser;
 
+use Gaufrette\Filesystem;
 use UniAlteri\States\Loader\FinderInterface;
 use UniAlteri\States\Loader\LoaderInterface;
 
@@ -39,6 +40,36 @@ use UniAlteri\States\Loader\LoaderInterface;
  */
 class StatedClass extends AbstractParser
 {
+    /**
+     * @var Factory
+     */
+    protected $factoryParser;
+
+    /**
+     * @var Proxy
+     */
+    protected $proxyParser;
+
+    /**
+     * @var State
+     */
+    protected $statesParser;
+
+    /**
+     * @param Filesystem $fileSystem
+     * @param string $path
+     * @param Factory $factoryParser
+     * @param Proxy $proxyParser
+     * @param State $statesParser
+     */
+    public function __construct($fileSystem, $path, $factoryParser, $proxyParser, $statesParser)
+    {
+        parent::__construct($fileSystem, $path);
+        $this->factoryParser = $factoryParser;
+        $this->proxyParser = $proxyParser;
+        $this->statesParser = $statesParser;
+    }
+
     /**
      * Check if this class has its own states folders
      * @return boolean
@@ -81,7 +112,7 @@ class StatedClass extends AbstractParser
      */
     public function getFactoryParser()
     {
-        return new Factory($this->adapterFactory, $this->statedClassPath);
+        return $this->factoryParser;
     }
 
     /**
@@ -90,7 +121,7 @@ class StatedClass extends AbstractParser
      */
     public function getProxyParser()
     {
-        return new Proxy($this->adapterFactory, $this->statedClassPath);
+        return $this->proxyParser;
     }
 
     /**
@@ -99,6 +130,6 @@ class StatedClass extends AbstractParser
      */
     public function getStatesParser()
     {
-        return new State($this->adapterFactory, $this->statedClassPath.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH);
+        return $this->statesParser;
     }
 }

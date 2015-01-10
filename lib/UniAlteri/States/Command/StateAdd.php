@@ -22,7 +22,6 @@
 
 namespace UniAlteri\States\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -93,7 +92,7 @@ class StateAdd extends AbstractCommand
         $className = array_pop($fullClassNameExploded);
         $namespace = implode('\\', $fullClassNameExploded);
 
-        $stateWriter = $this->getParserOrWriter('WriterState', $this->adapter, $destinationPath);
+        $stateWriter = $this->createWriter('Writer\State', $destinationPath);
         $stateWriter->createState($className, $namespace, $stateName);
     }
 }

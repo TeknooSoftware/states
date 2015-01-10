@@ -21,6 +21,7 @@
  */
 
 namespace UniAlteri\States\Command\Writer;
+
 use UniAlteri\States\Loader\LoaderInterface;
 
 /**

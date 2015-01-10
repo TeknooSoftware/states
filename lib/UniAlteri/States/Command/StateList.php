@@ -22,11 +22,9 @@
 
 namespace UniAlteri\States\Command;
 
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use UniAlteri\States\Command\Parser\StatedClass;
 
 /**
  * Class StateList
@@ -74,7 +72,7 @@ class StateList extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $parser = $this->getParserOrWriter('StatedClass', $this->adapter, rtrim($input->getArgument('path'), ' /'));
+        $parser = $this->createParser('Parser\StatedClass', rtrim($input->getArgument('path'), ' /'));
         $stateParser = $parser->getStatesParser();
         $output->write(implode(PHP_EOL, $stateParser->listStates()->getArrayCopy()), true);
     }

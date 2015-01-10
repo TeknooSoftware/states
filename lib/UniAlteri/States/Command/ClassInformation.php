@@ -25,7 +25,6 @@ namespace UniAlteri\States\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use UniAlteri\States\Command\Parser\StatedClass;
 
 /**
  * Class ClassInformation
@@ -74,7 +73,7 @@ use UniAlteri\States\Command\Parser\StatedClass;
      protected function execute(InputInterface $input, OutputInterface $output)
      {
          $path = rtrim($input->getArgument('path'), ' /');
-         $parser = $this->getParserOrWriter('StatedClass', $this->adapter, $path);
+         $parser = $this->createParser('Parser\StatedClass', $path);
 
          $boolToStr = function ($value) {
              if (!empty($value)) {
