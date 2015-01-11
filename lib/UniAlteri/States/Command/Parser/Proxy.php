@@ -82,7 +82,7 @@ class Proxy extends AbstractParser
     public function useTraitProxy()
     {
         return in_array(
-            '\UniAlteri\States\Proxy\TraitProxy',
+            'UniAlteri\States\Proxy\ProxyTrait',
             $this->loadFile($this->getClassNameFile())->getTraitNames()
         );
     }
