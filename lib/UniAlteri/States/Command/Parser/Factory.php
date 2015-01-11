@@ -81,7 +81,7 @@ class Factory extends AbstractParser
     public function useTraitFactory()
     {
         return in_array(
-            '\UniAlteri\States\Factory\TraitFactory',
+            'UniAlteri\States\Factory\FactoryTrait',
             $this->loadFile(LoaderInterface::FACTORY_FILE_NAME)->getTraitNames()
         );
     }
