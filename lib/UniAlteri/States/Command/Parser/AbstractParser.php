@@ -87,9 +87,7 @@ abstract class AbstractParser
                 case '..';
                     break;
                 default:
-                    if (strlen($file) - 4 == strrpos($file, '.php')) {
-                        $filesArray[] = $file;
-                    }
+                    $filesArray[] = $file;
                     break;
             }
         }
