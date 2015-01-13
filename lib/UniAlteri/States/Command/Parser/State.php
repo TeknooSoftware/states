@@ -61,8 +61,8 @@ class State extends AbstractParser
      */
     public function isValidState($stateName)
     {
-        return $this->loadFile(FinderInterface::STATES_PATH.$stateName.'.php')
-            ->implementsInterface('\UniAlteri\States\States\StateInterface');
+        return $this->loadFile(FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php')
+            ->implementsInterface('UniAlteri\States\States\StateInterface');
     }
 
     /**
@@ -73,8 +73,8 @@ class State extends AbstractParser
      */
     public function isStandardState($stateName)
     {
-        return $this->loadFile(FinderInterface::STATES_PATH.$stateName.'.php')
-            ->isSubclassOf('\UniAlteri\States\State\AbstractState');
+        return $this->loadFile(FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php')
+            ->isSubclassOf('UniAlteri\States\States\AbstractState');
     }
 
     /**
@@ -87,8 +87,8 @@ class State extends AbstractParser
     public function useTraitState($stateName)
     {
         return in_array(
-            '\UniAlteri\States\States\TraitState',
-            $this->loadFile(FinderInterface::STATES_PATH.$stateName.'.php')->getTraitNames()
+            'UniAlteri\States\States\StateTrait',
+            $this->loadFile(FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php')->getTraitNames()
         );
     }
 }
