@@ -169,4 +169,93 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
         $command = $this->buildCommand();
         $command->run($input, $output);
     }
+
+    public function testExecuteTrue()
+    {
+        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input->expects($this->any())
+            ->method('getArgument')
+            ->willReturnMap(
+                [
+                    ['path', 'path/to/stated/class']
+                ]
+            );
+
+        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+
+        $output->expects($this->any())
+            ->method('write')
+            ->withConsecutive(
+                ['Proxy defined: true', true, 0],
+                ['Proxy is valid: true', true, 0],
+                ['Proxy is standard: true', true, 0],
+                ['Proxy is integrated: true', true, 0],
+                ['Factory defined: true', true, 0],
+                ['Factory is valid: true', true, 0],
+                ['Factory is standard: true', true, 0],
+                ['Factory is integrated: true', true, 0],
+                ['States: State1, State2, State3', true, 0]
+            );
+
+        $this->buildStatedClassMock()
+            ->expects($this->once())
+            ->method('hasProxy')
+            ->willReturn(true);
+
+        $parserParser = $this->getMock('UniAlteri\States\Command\Parser\Proxy', [], [], '', false);
+
+        $this->buildStatedClassMock()
+            ->expects($this->once())
+            ->method('getProxyParser')
+            ->willReturn($parserParser);
+
+        $parserParser->expects($this->once())
+            ->method('isValidProxy')
+            ->willReturn(true);
+
+        $parserParser->expects($this->once())
+            ->method('isStandardProxy')
+            ->willReturn(true);
+
+        $parserParser->expects($this->once())
+            ->method('isIntegratedProxy')
+            ->willReturn(true);
+
+        $this->buildStatedClassMock()
+            ->expects($this->once())
+            ->method('hasFactory')
+            ->willReturn(true);
+
+        $factoryParser = $this->getMock('UniAlteri\States\Command\Parser\Factory', [], [], '', false);
+
+        $this->buildStatedClassMock()
+            ->expects($this->once())
+            ->method('getFactoryParser')
+            ->willReturn($factoryParser);
+
+        $factoryParser->expects($this->once())
+            ->method('isValidFactory')
+            ->willReturn(true);
+
+        $factoryParser->expects($this->once())
+            ->method('isStandardFactory')
+            ->willReturn(true);
+
+        $factoryParser->expects($this->once())
+            ->method('isIntegratedFactory')
+            ->willReturn(true);
+
+        $stateParser = $this->getMock('UniAlteri\States\Command\Parser\State', [], [], '', false);
+        $stateParser->expects($this->any())
+            ->method('listStates')
+            ->willReturn(new \ArrayObject(['State1', 'State2', 'State3']));
+
+        $this->buildStatedClassMock()
+            ->expects($this->once())
+            ->method('getStatesParser')
+            ->willReturn($stateParser);
+
+        $command = $this->buildCommand();
+        $command->run($input, $output);
+    }
 }

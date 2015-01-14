@@ -429,6 +429,35 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the parser must throw an exception when the proxy class is not readable');
     }
 
+    public function testUseTraitProxyBadFile2()
+    {
+        $counter = 0;
+        $this->buildFileSystemMock()
+            ->expects($this->atLeastOnce())
+            ->method('has')
+            ->with($this->equalTo('BadProxy.php'))
+            ->willReturnCallback(
+                function () use (&$counter) {
+                    if (0 == $counter++) {
+                        return true;
+                    } else {
+                        return false;
+                    }
+                }
+            );
+
+        $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/Proxy/Acme/BadProxy';
+
+        try {
+            $this->buildProxyParser($path)
+                ->useTraitProxy();
+        } catch (UnReadablePath $e) {
+            return;
+        }
+
+        $this->fail('Error, the parser must throw an exception when the proxy class is not readable');
+    }
+
     public function testUseTraitProxyBadFileContent()
     {
         $this->buildFileSystemMock()

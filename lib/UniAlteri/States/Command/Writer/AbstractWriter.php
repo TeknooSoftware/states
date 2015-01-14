@@ -27,7 +27,7 @@ use spec\Gaufrette\Adapter;
 
 /**
  * Class Writer
- * Abstract class Writer to create, update or delete a file
+ * Abstract class Writer to create, update a file
  *
  * @package     States
  * @subpackage  Command
@@ -86,15 +86,5 @@ abstract class AbstractWriter
     protected function write($file, $content)
     {
         return $this->getFileSystem()->write($file, $content, true);
-    }
-
-    /**
-     * Method to delete a file
-     * @param string $file
-     * @return boolean
-     */
-    protected function delete($file)
-    {
-        return $this->getFileSystem()->delete($file);
     }
 }
