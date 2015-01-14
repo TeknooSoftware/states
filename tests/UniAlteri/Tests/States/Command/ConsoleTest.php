@@ -51,4 +51,35 @@ class ConsoleTest extends \PHPUnit_Framework_TestCase
             array_keys($application->all())
         );
     }
+
+    public function testFileSystemFactory()
+    {
+        include 'UniAlteri/States/Command/console.php';
+        global $fileSystemFactory;
+
+        $this->assertEquals('Closure', get_class($fileSystemFactory));
+        $this->assertInstanceOf('Gaufrette\Filesystem', $fileSystemFactory('path'));
+    }
+
+    public function testFactory()
+    {
+        include 'UniAlteri/States/Command/console.php';
+        global $factory;
+
+        $this->assertEquals('Closure', get_class($factory));
+        $this->assertInstanceOf('UniAlteri\States\Command\Parser\Factory', $factory('Parser\Factory','path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Parser\Proxy', $factory('Parser\Proxy','path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Parser\State', $factory('Parser\State','path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Parser\StatedClass', $factory('Parser\StatedClass','path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Writer\Factory', $factory('Writer\Factory','path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Writer\Proxy', $factory('Writer\Proxy','path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Writer\State', $factory('Writer\State','path'));
+        try {
+            $factory('BadService','path');
+        } catch (\Exception $e) {
+            return;
+        }
+
+        $this->fail('Error the parser and writer factory must throw an exception when the service is not valid');
+    }
 }

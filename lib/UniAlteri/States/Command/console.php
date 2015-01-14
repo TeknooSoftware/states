@@ -30,6 +30,7 @@ use UniAlteri\States\Command\Writer\AbstractWriter;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 
+global $fileSystemFactory;
 /**
  * @param string $directory
  * @return Filesystem
@@ -42,6 +43,7 @@ $fileSystemFactory = function ($directory) {
     );
 };
 
+global $factory;
 /**
  * @param string $service
  * @param string $destinationPath
