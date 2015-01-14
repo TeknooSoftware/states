@@ -1,4 +1,3 @@
-#!/usr/bin/php
 <?php
 /**
  * States
@@ -90,4 +89,5 @@ $application->add(new ClassCreate(null, $factory));
 $application->add(new ClassInformation(null, $factory));
 $application->add(new StateAdd(null, $factory));
 $application->add(new StateList(null, $factory));
-$application->run();
+
+return $application;
