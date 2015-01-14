@@ -94,6 +94,6 @@ use Symfony\Component\Console\Output\OutputInterface;
          $output->write('Factory is valid: '.$boolToStr($factoryParser->isValidFactory()), true);
          $output->write('Factory is standard: '.$boolToStr($factoryParser->isStandardFactory()), true);
          $output->write('Factory is integrated: '.$boolToStr($factoryParser->isIntegratedFactory()), true);
-         $output->write('States: '.implode(',', $parser->getStatesParser()->listStates()->getArrayCopy()), true);
+         $output->write('States: '.implode(', ', $parser->getStatesParser()->listStates()->getArrayCopy()), true);
      }
  }

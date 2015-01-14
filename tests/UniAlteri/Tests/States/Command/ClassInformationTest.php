@@ -21,6 +21,10 @@
 
 namespace UniAlteri\Tests\States\Command;
 
+use UniAlteri\States\Command\ClassCreate;
+use UniAlteri\States\Command\ClassInformation;
+use UniAlteri\States\Command\Parser\StatedClass;
+
 /**
  * Class ClassInformationTest
  *
@@ -34,5 +38,135 @@ namespace UniAlteri\Tests\States\Command;
  */
 class ClassInformationTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var StatedClass
+     */
+    protected $parser;
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|StatedClass
+     */
+    protected function buildStatedClassMock()
+    {
+        if (!$this->parser instanceof \PHPUnit_Framework_MockObject_MockObject) {
+            $this->parser = $this->getMock(
+                'UniAlteri\States\Command\Parser\StatedClass',
+                array(),
+                array(),
+                '',
+                false
+            );
+        }
+
+        return $this->parser;
+    }
+
+    /**
+     * @return ClassCreate
+     */
+    protected function buildCommand()
+    {
+        return new ClassInformation(
+            null,
+            function($service, $destinationPath) {
+                switch ($service) {
+                    case 'Parser\StatedClass':
+                        return $this->buildStatedClassMock();
+                        break;
+                    default:
+                        $this->fail('Error, bad service called');
+                        break;
+                }
+            }
+        );
+    }
+
+    public function testExecuteFalse()
+    {
+        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input->expects($this->any())
+            ->method('getArgument')
+            ->willReturnMap(
+                [
+                    ['path', 'path/to/stated/class']
+                ]
+            );
+
+        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+
+        $output->expects($this->any())
+            ->method('write')
+            ->withConsecutive(
+                ['Proxy defined: false', true, 0],
+                ['Proxy is valid: false', true, 0],
+                ['Proxy is standard: false', true, 0],
+                ['Proxy is integrated: false', true, 0],
+                ['Factory defined: false', true, 0],
+                ['Factory is valid: false', true, 0],
+                ['Factory is standard: false', true, 0],
+                ['Factory is integrated: false', true, 0],
+                ['States: State1, State2, State3', true, 0]
+            );
+
+        $this->buildStatedClassMock()
+            ->expects($this->once())
+            ->method('hasProxy')
+            ->willReturn(false);
+
+        $parserParser = $this->getMock('UniAlteri\States\Command\Parser\Proxy', [], [], '', false);
+
+        $this->buildStatedClassMock()
+            ->expects($this->once())
+            ->method('getProxyParser')
+            ->willReturn($parserParser);
+
+        $parserParser->expects($this->once())
+            ->method('isValidProxy')
+            ->willReturn(false);
+
+        $parserParser->expects($this->once())
+            ->method('isStandardProxy')
+            ->willReturn(false);
+
+        $parserParser->expects($this->once())
+            ->method('isIntegratedProxy')
+            ->willReturn(false);
+
+        $this->buildStatedClassMock()
+            ->expects($this->once())
+            ->method('hasFactory')
+            ->willReturn(false);
+
+        $factoryParser = $this->getMock('UniAlteri\States\Command\Parser\Factory', [], [], '', false);
+
+        $this->buildStatedClassMock()
+            ->expects($this->once())
+            ->method('getFactoryParser')
+            ->willReturn($factoryParser);
+
+        $factoryParser->expects($this->once())
+            ->method('isValidFactory')
+            ->willReturn(false);
+
+        $factoryParser->expects($this->once())
+            ->method('isStandardFactory')
+            ->willReturn(false);
+
+        $factoryParser->expects($this->once())
+            ->method('isIntegratedFactory')
+            ->willReturn(false);
+
+        $stateParser = $this->getMock('UniAlteri\States\Command\Parser\State', [], [], '', false);
+        $stateParser->expects($this->any())
+            ->method('listStates')
+            ->willReturn(new \ArrayObject(['State1', 'State2', 'State3']));
+
+        $this->buildStatedClassMock()
+            ->expects($this->once())
+            ->method('getStatesParser')
+            ->willReturn($stateParser);
+
+        $command = $this->buildCommand();
+        $command->run($input, $output);
+    }
 }
