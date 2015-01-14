@@ -28,7 +28,7 @@ defined('PHPUNIT')
 defined('UA_STATES_TEST_PATH')
     || define('UA_STATES_TEST_PATH', __DIR__.DIRECTORY_SEPARATOR.'UniAlteri'.DIRECTORY_SEPARATOR.'Tests');
 
-ini_set('memory_limit', '24M');
+ini_set('memory_limit', '32M');
 
 require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 
