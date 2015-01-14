@@ -1,9 +1,24 @@
 <?php
 /**
- * Created by PhpStorm.
- * Author : Richard Déloge, richard@uni-alteri.fr, www.uni-alteri.fr
- * Date: 11/01/15
- * Time: 13:27
+ * States
+ *
+ * LICENSE
+ *
+ * This source file is subject to the MIT license and the version 3 of the GPL3
+ * license that are bundled with this package in the folder licences
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to contact@uni-alteri.com so we can send you a copy immediately.
+ *
+ * @subpackage  Tests
+ * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @link        http://teknoo.it/states Project website
+ * @license     http://teknoo.it/states/license/mit         MIT License
+ * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @version     0.9.9
+ *
+ * Mock factory file to test command for cli helper
  */
 
 namespace Acme\GoodProxy;
@@ -21,7 +36,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function __clone()
     {
-        // TODO: Implement __clone() method.
     }
 
     /**
@@ -36,7 +50,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function __call($name, $arguments)
     {
-        // TODO: Implement __call() method.
     }
 
     /**
@@ -47,7 +60,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function __invoke()
     {
-        // TODO: Implement __invoke() method.
     }
 
     /**
@@ -59,7 +71,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function __get($name)
     {
-        // TODO: Implement __get() method.
     }
 
     /**
@@ -71,7 +82,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function __isset($name)
     {
-        // TODO: Implement __isset() method.
     }
 
     /**
@@ -84,7 +94,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function __set($name, $value)
     {
-        // TODO: Implement __set() method.
     }
 
     /**
@@ -96,7 +105,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function __unset($name)
     {
-        // TODO: Implement __unset() method.
     }
 
     /**
@@ -106,7 +114,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function __toString()
     {
-        // TODO: Implement __toString() method.
     }
 
     /**
@@ -116,7 +123,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function setDIContainer(DI\ContainerInterface $container)
     {
-        // TODO: Implement setDIContainer() method.
     }
 
     /**
@@ -125,7 +131,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function getDIContainer()
     {
-        // TODO: Implement getDIContainer() method.
     }
 
     /**
@@ -134,7 +139,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function getObjectUniqueId()
     {
-        // TODO: Implement getObjectUniqueId() method.
     }
 
     /**
@@ -147,7 +151,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function registerState($stateName, States\States\StateInterface $stateObject)
     {
-        // TODO: Implement registerState() method.
     }
 
     /**
@@ -160,7 +163,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function unregisterState($stateName)
     {
-        // TODO: Implement unregisterState() method.
     }
 
     /**
@@ -172,7 +174,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function switchState($stateName)
     {
-        // TODO: Implement switchState() method.
     }
 
     /**
@@ -185,7 +186,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function enableState($stateName)
     {
-        // TODO: Implement enableState() method.
     }
 
     /**
@@ -198,7 +198,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function disableState($stateName)
     {
-        // TODO: Implement disableState() method.
     }
 
     /**
@@ -207,7 +206,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function disableAllStates()
     {
-        // TODO: Implement disableAllStates() method.
     }
 
     /**
@@ -216,7 +214,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function listAvailableStates()
     {
-        // TODO: Implement listAvailableStates() method.
     }
 
     /**
@@ -225,7 +222,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function listEnabledStates()
     {
-        // TODO: Implement listEnabledStates() method.
     }
 
     /**
@@ -236,7 +232,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function inState($stateName)
     {
-        // TODO: Implement inState() method.
     }
 
     /**
@@ -246,7 +241,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function getStatic()
     {
-        // TODO: Implement getStatic() method.
     }
 
     /**
@@ -262,7 +256,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function getMethodDescription($methodName, $stateName = null)
     {
-        // TODO: Implement getMethodDescription() method.
     }
 
     /**
@@ -273,7 +266,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function count()
     {
-        // TODO: Implement count() method.
     }
 
     /**
@@ -286,7 +278,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function offsetExists($offset)
     {
-        // TODO: Implement offsetExists() method.
     }
 
     /**
@@ -299,7 +290,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function offsetGet($offset)
     {
-        // TODO: Implement offsetGet() method.
     }
 
     /**
@@ -312,7 +302,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function offsetSet($offset, $value)
     {
-        // TODO: Implement offsetSet() method.
     }
 
     /**
@@ -323,7 +312,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function offsetUnset($offset)
     {
-        // TODO: Implement offsetUnset() method.
     }
 
     /**
@@ -334,7 +322,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function current()
     {
-        // TODO: Implement current() method.
     }
 
     /**
@@ -345,7 +332,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function key()
     {
-        // TODO: Implement key() method.
     }
 
     /**
@@ -355,7 +341,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function next()
     {
-        // TODO: Implement next() method.
     }
 
     /**
@@ -365,7 +350,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function rewind()
     {
-        // TODO: Implement rewind() method.
     }
 
     /**
@@ -376,7 +360,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function seek($position)
     {
-        // TODO: Implement seek() method.
     }
 
     /**
@@ -387,7 +370,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function valid()
     {
-        // TODO: Implement valid() method.
     }
 
     /**
@@ -398,7 +380,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function getIterator()
     {
-        // TODO: Implement getIterator() method.
     }
 
     /**
@@ -409,7 +390,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function serialize()
     {
-        // TODO: Implement serialize() method.
     }
 
     /**
@@ -420,7 +400,6 @@ class WithoutImpl implements ProxyInterface
      */
     public function unserialize($serialized)
     {
-        // TODO: Implement unserialize() method.
     }
 
 }
