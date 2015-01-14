@@ -45,12 +45,15 @@ class State extends AbstractParser
      */
     public function listStates()
     {
-        $statesArray = $this->listFiles(FinderInterface::STATES_PATH);
-        for ($i=0; $i<$statesArray->count(); $i++) {
-            $statesArray[$i] = substr($statesArray[$i], 0, -4);
+        $filesList = $this->listFiles();
+        $final = new \ArrayObject();
+        foreach ($filesList as $file) {
+            if (0 === strpos($file, FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR)) {
+                $final[] = substr(substr($file, 0, -4), 7);
+            }
         }
 
-        return $statesArray;
+        return $final;
     }
 
     /**

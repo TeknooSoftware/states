@@ -24,6 +24,7 @@ use Gaufrette\Filesystem;
 use UniAlteri\States\Command\Parser\Exception\ClassNotFound;
 use UniAlteri\States\Command\Parser\State;
 use UniAlteri\States\Exception\UnReadablePath;
+use UniAlteri\States\Loader\FinderInterface;
 
 /**
  * Class StateTest
@@ -66,7 +67,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
      * @param string $path
      * @return State
      */
-    protected function buildProxyParser($path)
+    protected function buildStateParser($path)
     {
         return new State(
             $this->buildFileSystemMock(),
@@ -85,7 +86,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/BadState/Acme/BadState';
 
         try {
-            $this->buildProxyParser($path)
+            $this->buildStateParser($path)
                 ->isValidState('BadState');
         } catch (UnReadablePath $e) {
             return;
@@ -105,7 +106,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/State/Acme/BadState';
 
         try {
-            $this->buildProxyParser($path)
+            $this->buildStateParser($path)
                 ->isValidState('BadState');
         } catch (ClassNotFound $e) {
             return;
@@ -125,7 +126,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/State/Acme/WithoutImpl';
 
         try {
-            $this->buildProxyParser($path)
+            $this->buildStateParser($path)
                 ->isValidState('WithoutImpl');
         } catch (ClassNotFound $e) {
             return;
@@ -153,7 +154,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 }
             );
 
-        $this->assertTrue($this->buildProxyParser($path)->isValidState('StateNormal'));
+        $this->assertTrue($this->buildStateParser($path)->isValidState('StateNormal'));
     }
 
     public function testIsStandardStateBadFile()
@@ -167,7 +168,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/State/Acme/BadState';
 
         try {
-            $this->buildProxyParser($path)
+            $this->buildStateParser($path)
                 ->isStandardState('BadState');
         } catch (UnReadablePath $e) {
             return;
@@ -187,7 +188,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/State/Acme/BadState';
 
         try {
-            $this->buildProxyParser($path)
+            $this->buildStateParser($path)
                 ->isStandardState('BadState');
         } catch (ClassNotFound $e) {
             return;
@@ -207,7 +208,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/State/Acme/WithoutImpl';
 
         try {
-            $this->buildProxyParser($path)
+            $this->buildStateParser($path)
                 ->isStandardState('WithoutImpl');
         } catch (ClassNotFound $e) {
             return;
@@ -235,7 +236,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 }
             );
 
-        $this->assertFalse($this->buildProxyParser($path)->isStandardState('StateNormal'));
+        $this->assertFalse($this->buildStateParser($path)->isStandardState('StateNormal'));
     }
 
     public function testIsStandardStateStd()
@@ -257,7 +258,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 }
             );
 
-        $this->assertTrue($this->buildProxyParser($path)->isStandardState('StateStd'));
+        $this->assertTrue($this->buildStateParser($path)->isStandardState('StateStd'));
     }
 
     public function testUseTraitStateBadFile()
@@ -271,7 +272,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/State/Acme/BadState';
 
         try {
-            $this->buildProxyParser($path)
+            $this->buildStateParser($path)
                 ->useTraitState('BadState');
         } catch (UnReadablePath $e) {
             return;
@@ -291,7 +292,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/State/Acme/BadState';
 
         try {
-            $this->buildProxyParser($path)
+            $this->buildStateParser($path)
                 ->useTraitState('BadState');
         } catch (ClassNotFound $e) {
             return;
@@ -311,7 +312,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
         $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/State/Acme/WithoutImpl';
 
         try {
-            $this->buildProxyParser($path)
+            $this->buildStateParser($path)
                 ->useTraitState('WithoutImpl');
         } catch (ClassNotFound $e) {
             return;
@@ -339,7 +340,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 }
             );
 
-        $this->assertFalse($this->buildProxyParser($path)->useTraitState('StateNormal'));
+        $this->assertFalse($this->buildStateParser($path)->useTraitState('StateNormal'));
     }
 
     public function testUseTraitStateStd()
@@ -361,7 +362,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 }
             );
 
-        $this->assertFalse($this->buildProxyParser($path)->useTraitState('StateStd'));
+        $this->assertFalse($this->buildStateParser($path)->useTraitState('StateStd'));
     }
 
     public function testUseTraitStateTrait()
@@ -383,6 +384,31 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 }
             );
 
-        $this->assertTrue($this->buildProxyParser($path)->useTraitState('StateWithTrait'));
+        $this->assertTrue($this->buildStateParser($path)->useTraitState('StateWithTrait'));
+    }
+
+    public function testListStates()
+    {
+        $this->buildFileSystemMock()
+            ->expects($this->atLeastOnce())
+            ->method('keys')
+            ->willReturn(
+                [
+                    'className.php',
+                    'Factory.php',
+                    FinderInterface::STATES_PATH,
+                    FinderInterface::STATES_PATH,
+                    FinderInterface::STATES_PATH,
+                    FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.'State1.php',
+                    FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.'State2.php',
+                    FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.'State3.php'
+                ]
+            );
+
+        $path = dirname(dirname(dirname(dirname(__FILE__)))).'/Support/Command/Parser/State/Acme/GoodState';
+
+        $states = $this->buildStateParser($path)->listStates();
+        $this->assertInstanceOf('\ArrayObject', $states);
+        $this->assertEquals(['State1', 'State2', 'State3'], $states->getArrayCopy());
     }
 }
