@@ -48,10 +48,10 @@ use UniAlteri\States\Loader\LoaderInterface;
       */
      protected function generateFactory($className, $namespace, $isIntegrated)
      {
-         $factoryExtendsNamespace = 'UniAlteri\States\Factory\Standard';
+         $factoryExtendsNamespace = 'UniAlteri\\States\\Factory\\Standard';
          $factoryExtendsClassName = 'Standard';
          if (!empty($isIntegrated)) {
-             $factoryExtendsNamespace = 'UniAlteri\States\Factory\Integrated';
+             $factoryExtendsNamespace = 'UniAlteri\\States\\Factory\\Integrated';
              $factoryExtendsClassName = 'Integrated';
          }
 

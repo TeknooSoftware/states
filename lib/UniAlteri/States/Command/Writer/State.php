@@ -52,9 +52,9 @@ use UniAlteri\States\Proxy\ProxyInterface;
          return <<<EOF
 <?php
 
-namespace $namespace\States;
+namespace $namespace\\States;
 
-use UniAlteri\States\States;
+use UniAlteri\\States\\States;
 
 /**
  * State $stateName
@@ -63,7 +63,7 @@ use UniAlteri\States\States;
  * @package     $namespace
  * @subpackage  States
  */
-class $stateName extends States\AbstractState
+class $stateName extends States\\AbstractState
 {
 }
 EOF;

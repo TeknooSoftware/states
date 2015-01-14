@@ -21,6 +21,9 @@
 
 namespace UniAlteri\Tests\States\Command\Writer;
 
+use Gaufrette\Filesystem;
+use UniAlteri\States\Command\Writer\Proxy;
+
 /**
  * Class ProxyTest
  *
@@ -34,5 +37,113 @@ namespace UniAlteri\Tests\States\Command\Writer;
  */
 class ProxyTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Filesystem
+     */
+    protected $fileSystem;
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Filesystem
+     */
+    protected function buildFileSystemMock()
+    {
+        if (!$this->fileSystem instanceof \PHPUnit_Framework_MockObject_MockObject) {
+            $this->fileSystem = $this->getMock(
+                '\Gaufrette\Filesystem',
+                array(),
+                array(),
+                '',
+                false
+            );
+        }
+
+        return $this->fileSystem;
+    }
+
+    /**
+     * @return Proxy
+     */
+    public function createWriter()
+    {
+        return new Proxy(
+            $this->buildFileSystemMock(),
+            'foo/bar'
+        );
+    }
+
+    public function testCreateStandardProxyFailure()
+    {
+        $this->buildFileSystemMock()
+            ->expects($this->once())
+            ->method('write')
+            ->withAnyParameters()
+            ->willReturnCallback(
+                function ($file, $code) {
+                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'fooBar.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
+                    $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Standard'));
+                    return 0;
+                }
+            );
+
+        $this->assertFalse($this->createWriter()->createStandardProxy('fooBar', 'Acme\\NameProduct'));
+    }
+
+    public function testCreateIntegratedProxyFailure()
+    {
+        $this->buildFileSystemMock()
+            ->expects($this->once())
+            ->method('write')
+            ->withAnyParameters()
+            ->willReturnCallback(
+                function ($file, $code) {
+                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'fooBar.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
+                    $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Standard'));
+                    return 10;
+                }
+            );
+
+        $this->assertTrue($this->createWriter()->createStandardProxy('fooBar', 'Acme\\NameProduct'));
+    }
+
+    public function testCreateStandardProxy()
+    {
+        $this->buildFileSystemMock()
+            ->expects($this->once())
+            ->method('write')
+            ->withAnyParameters()
+            ->willReturnCallback(
+                function ($file, $code) {
+                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'fooBar.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
+                    $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Integrated'));
+                    return 0;
+                }
+            );
+
+        $this->assertFalse($this->createWriter()->createIntegratedProxy('fooBar', 'Acme\\NameProduct'));
+    }
+
+    public function testCreateIntegratedProxy()
+    {
+        $this->buildFileSystemMock()
+            ->expects($this->once())
+            ->method('write')
+            ->withAnyParameters()
+            ->willReturnCallback(
+                function ($file, $code) {
+                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'fooBar.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
+                    $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Integrated'));
+                    return 10;
+                }
+            );
+
+        $this->assertTrue($this->createWriter()->createIntegratedProxy('fooBar', 'Acme\\NameProduct'));
+    }
 }

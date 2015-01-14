@@ -46,9 +46,9 @@ namespace UniAlteri\States\Command\Writer;
       */
      protected function generateProxy($className, $namespace, $isIntegrated)
      {
-         $proxyClassName = 'Proxy\Standard';
+         $proxyClassName = 'Proxy\\Standard';
          if (!empty($isIntegrated)) {
-            $proxyClassName = 'Proxy\Integrated';
+            $proxyClassName = 'Proxy\\Integrated';
          }
 
          return <<<EOF
@@ -56,7 +56,7 @@ namespace UniAlteri\States\Command\Writer;
 
 namespace $namespace;
 
-use UniAlteri\States\Proxy;
+use UniAlteri\\States\\Proxy;
 
 /**
  * Proxy $className

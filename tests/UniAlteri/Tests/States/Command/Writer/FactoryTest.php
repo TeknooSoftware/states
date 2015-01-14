@@ -21,6 +21,10 @@
 
 namespace UniAlteri\Tests\States\Command\Writer;
 
+use Gaufrette\Filesystem;
+use UniAlteri\States\Command\Writer\Factory;
+use UniAlteri\States\Loader\LoaderInterface;
+
 /**
  * Class FactoryTest
  *
@@ -34,5 +38,113 @@ namespace UniAlteri\Tests\States\Command\Writer;
  */
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {
+    /**
+     * @var Filesystem
+     */
+    protected $fileSystem;
 
+    /**
+     * @return \PHPUnit_Framework_MockObject_MockObject|Filesystem
+     */
+    protected function buildFileSystemMock()
+    {
+        if (!$this->fileSystem instanceof \PHPUnit_Framework_MockObject_MockObject) {
+            $this->fileSystem = $this->getMock(
+                '\Gaufrette\Filesystem',
+                array(),
+                array(),
+                '',
+                false
+            );
+        }
+
+        return $this->fileSystem;
+    }
+
+    /**
+     * @return Factory
+     */
+    public function createWriter()
+    {
+        return new Factory(
+            $this->buildFileSystemMock(),
+            'foo/bar'
+        );
+    }
+
+    public function testCreateStandardFactoryFailure()
+    {
+        $this->buildFileSystemMock()
+            ->expects($this->once())
+            ->method('write')
+            ->withAnyParameters()
+            ->willReturnCallback(
+                function ($file, $code) {
+                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME, $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Standard;'));
+                    $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Standard'));
+                    return 0;
+                }
+            );
+
+        $this->assertFalse($this->createWriter()->createStandardFactory('fooBar', 'Acme\\NameProduct'));
+    }
+
+    public function testCreateIntegratedFactoryFailure()
+    {
+        $this->buildFileSystemMock()
+            ->expects($this->once())
+            ->method('write')
+            ->withAnyParameters()
+            ->willReturnCallback(
+                function ($file, $code) {
+                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME, $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Standard;'));
+                    $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Standard'));
+                    return 10;
+                }
+            );
+
+        $this->assertTrue($this->createWriter()->createStandardFactory('fooBar', 'Acme\\NameProduct'));
+    }
+
+    public function testCreateStandardFactory()
+    {
+        $this->buildFileSystemMock()
+            ->expects($this->once())
+            ->method('write')
+            ->withAnyParameters()
+            ->willReturnCallback(
+                function ($file, $code) {
+                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME, $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Integrated;'));
+                    $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Integrated'));
+                    return 0;
+                }
+            );
+
+        $this->assertFalse($this->createWriter()->createIntegratedFactory('fooBar', 'Acme\\NameProduct'));
+    }
+
+    public function testCreateIntegratedFactory()
+    {
+        $this->buildFileSystemMock()
+            ->expects($this->once())
+            ->method('write')
+            ->withAnyParameters()
+            ->willReturnCallback(
+                function ($file, $code) {
+                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME, $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Integrated;'));
+                    $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Integrated'));
+                    return 10;
+                }
+            );
+
+        $this->assertTrue($this->createWriter()->createIntegratedFactory('fooBar', 'Acme\\NameProduct'));
+    }
 }
