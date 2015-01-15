@@ -21,8 +21,8 @@
 
 namespace UniAlteri\States\Proxy;
 
-use \UniAlteri\States;
-use \UniAlteri\States\DI;
+use UniAlteri\States;
+use UniAlteri\States\DI;
 
 /**
  * Interface ProxyInterface
@@ -227,7 +227,7 @@ interface ProxyInterface extends
      ****************/
 
     /**
-    This method is executed when using the count() function on an object implementing Countable.
+     This method is executed when using the count() function on an object implementing Countable.
      * @return int
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available

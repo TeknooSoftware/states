@@ -22,7 +22,7 @@
 
 namespace UniAlteri\States\DI\Exception;
 
-use \UniAlteri\States\Exception;
+use UniAlteri\States\Exception;
 
 /**
  * Class InvalidArgument

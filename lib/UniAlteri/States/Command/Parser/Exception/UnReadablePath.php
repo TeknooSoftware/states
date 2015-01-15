@@ -22,7 +22,7 @@
 
 namespace UniAlteri\States\Command\Parser\Exception;
 
-use \UniAlteri\States\Loader\Exception;
+use UniAlteri\States\Loader\Exception;
 
 /**
  * Class UnReadablePath

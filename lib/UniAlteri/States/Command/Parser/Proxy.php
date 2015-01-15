@@ -22,7 +22,7 @@
 
 namespace UniAlteri\States\Command\Parser;
 
-use \UniAlteri\States\Command;
+use UniAlteri\States\Command;
 
 /**
  * Class Proxy

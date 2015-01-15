@@ -57,10 +57,10 @@ class StatedClass extends AbstractParser
 
     /**
      * @param Filesystem $fileSystem
-     * @param string $path
-     * @param Factory $factoryParser
-     * @param Proxy $proxyParser
-     * @param State $statesParser
+     * @param string     $path
+     * @param Factory    $factoryParser
+     * @param Proxy      $proxyParser
+     * @param State      $statesParser
      */
     public function __construct($fileSystem, $path, $factoryParser, $proxyParser, $statesParser)
     {

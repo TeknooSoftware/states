@@ -22,7 +22,7 @@
 
 namespace UniAlteri\States\Command\Parser;
 
-use \UniAlteri\States\Command;
+use UniAlteri\States\Command;
 use UniAlteri\States\Loader\FinderInterface;
 
 /**
@@ -58,7 +58,7 @@ class State extends AbstractParser
 
     /**
      * Test if the state implements the good interface defined in the library States
-     * @param string $stateName to test
+     * @param  string                   $stateName to test
      * @return bool
      * @throws Exception\UnReadablePath when the path is not readable
      */
@@ -70,7 +70,7 @@ class State extends AbstractParser
 
     /**
      * Test if the state is a subclass of the standard state implemented in the library States
-     * @param string $stateName to test
+     * @param  string                   $stateName to test
      * @return bool
      * @throws Exception\UnReadablePath when the path is not readable
      */
@@ -82,8 +82,8 @@ class State extends AbstractParser
 
     /**
      * Test if the state use of the default implementation of this library States provided by the trait
-     * @param string $stateName to test
-     * \UniAlteri\States\States\TraitStates
+     * @param  string                   $stateName to test
+     *                                             \UniAlteri\States\States\TraitStates
      * @return bool
      * @throws Exception\UnReadablePath when the path is not readable
      */

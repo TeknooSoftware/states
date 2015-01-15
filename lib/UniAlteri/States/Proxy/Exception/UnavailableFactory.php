@@ -22,7 +22,7 @@
 
 namespace UniAlteri\States\Proxy\Exception;
 
-use \UniAlteri\States\Exception;
+use UniAlteri\States\Exception;
 
 /**
  * Class UnavailableFactory

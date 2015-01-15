@@ -22,7 +22,6 @@
 
 namespace UniAlteri\States\Command;
 
-use spec\Gaufrette\Adapter;
 use Symfony\Component\Console\Command\Command;
 
 /**
@@ -45,7 +44,7 @@ class AbstractCommand extends Command
     protected $factory;
 
     /**
-     * @param string $name
+     * @param string   $name
      * @param callable $factory
      */
     public function __construct($name = null, $factory = null)
@@ -56,25 +55,27 @@ class AbstractCommand extends Command
 
     /**
      * Create a parser from the factory
-     * @param string $name
-     * @param string $destinationPath
+     * @param  string                                                      $name
+     * @param  string                                                      $destinationPath
      * @return Parser\Factory|Parser\Proxy|Parser\State|Parser\StatedClass
      */
     public function createParser($name, $destinationPath)
     {
         $factory = $this->factory;
+
         return $factory($name, $destinationPath);
     }
 
     /**
      * Create a writer from the factory
-     * @param string $name
-     * @param string $destinationPath
+     * @param  string                                   $name
+     * @param  string                                   $destinationPath
      * @return Writer\Factory|Writer\Proxy|Writer\State
      */
     public function createWriter($name, $destinationPath)
     {
         $factory = $this->factory;
+
         return $factory($name, $destinationPath);
     }
 }

@@ -22,7 +22,7 @@
 
 namespace UniAlteri\States\Command\Parser\Exception;
 
-use \UniAlteri\States\Exception;
+use UniAlteri\States\Exception;
 
 /**
  * Class ClassNotFound

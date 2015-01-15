@@ -27,18 +27,18 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * Class ClassCreate
- * Command to create a new empty stated class
- *
- * @package     States
- * @subpackage  Command
- * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
- * @link        http://teknoo.it/states Project website
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
- */
+ /**
+  * Class ClassCreate
+  * Command to create a new empty stated class
+  *
+  * @package     States
+  * @subpackage  Command
+  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+  * @link        http://teknoo.it/states Project website
+  * @license     http://teknoo.it/states/license/mit         MIT License
+  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+  */
  class ClassCreate extends AbstractCommand
  {
      /**

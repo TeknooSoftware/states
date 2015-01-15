@@ -21,9 +21,9 @@
 
 namespace UniAlteri\States\Loader;
 
-use \UniAlteri\States\DI;
-use \UniAlteri\States\States;
-use \UniAlteri\States\Proxy;
+use UniAlteri\States\DI;
+use UniAlteri\States\States;
+use UniAlteri\States\Proxy;
 
 /**
  * Interface FinderInterface

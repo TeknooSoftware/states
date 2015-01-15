@@ -24,18 +24,18 @@ namespace UniAlteri\States\Command\Writer;
 
 use UniAlteri\States\Loader\LoaderInterface;
 
-/**
- * Class Factory
- * Writer to create or update a factory
- *
- * @package     States
- * @subpackage  Command
- * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
- * @link        http://teknoo.it/states Project website
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
- */
+ /**
+  * Class Factory
+  * Writer to create or update a factory
+  *
+  * @package     States
+  * @subpackage  Command
+  * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+  * @link        http://teknoo.it/states Project website
+  * @license     http://teknoo.it/states/license/mit         MIT License
+  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+  */
  class Factory extends AbstractWriter
  {
      /**

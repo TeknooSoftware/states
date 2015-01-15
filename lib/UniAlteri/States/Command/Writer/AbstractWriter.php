@@ -69,7 +69,7 @@ abstract class AbstractWriter
     /**
      * Path of the current stated class to operate
      * @param FileSystem $fileSystem
-     * @param string $path
+     * @param string     $path
      */
     public function __construct($fileSystem, $path)
     {
@@ -79,8 +79,8 @@ abstract class AbstractWriter
 
     /**
      * Create or replace a file with a content
-     * @param string $file
-     * @param string $content
+     * @param  string $file
+     * @param  string $content
      * @return int
      */
     protected function write($file, $content)

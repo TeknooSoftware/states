@@ -22,7 +22,7 @@
 
 namespace UniAlteri\States\Factory\Exception;
 
-use \UniAlteri\States\Exception;
+use UniAlteri\States\Exception;
 
 /**
  * Class UnavailableDIContainerException threw when the proxy requires a closure from a state (to use static behavior)

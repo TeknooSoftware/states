@@ -22,7 +22,7 @@
 
 namespace UniAlteri\States\Loader\Exception;
 
-use \UniAlteri\States\Exception;
+use UniAlteri\States\Exception;
 
 /**
  * Class IllegalFactory

@@ -22,9 +22,8 @@
 
 namespace UniAlteri\States\Command\Parser;
 
-use \Gaufrette\Adapter;
-use \Gaufrette\Filesystem;
-use \UniAlteri\States\Command\Parser\Exception;
+use Gaufrette\Filesystem;
+use UniAlteri\States\Command\Parser\Exception;
 
 /**
  * Class AbstractParser
@@ -64,7 +63,7 @@ abstract class AbstractParser
     /**
      * Path of the current stated class to operate
      * @param Filesystem $fileSystem
-     * @param string $path
+     * @param string     $path
      */
     public function __construct($fileSystem, $path)
     {
@@ -81,7 +80,7 @@ abstract class AbstractParser
     {
         //Extracts all php files (No check class exists)
         $filesArray = new \ArrayObject();
-        foreach($this->getFileSystem()->keys() as $file) {
+        foreach ($this->getFileSystem()->keys() as $file) {
             switch ($file) {
                 case '.';
                 case '..';
@@ -97,7 +96,7 @@ abstract class AbstractParser
 
     /**
      * Load a file, and return the reflection class of this file
-     * @param string $file
+     * @param  string                   $file
      * @return \ReflectionClass
      * @throws Exception\UnReadablePath when the path is not readable
      * @throws Exception\ClassNotFound
@@ -110,7 +109,7 @@ abstract class AbstractParser
 
         //Extract class name
         $className = $this->extractClassWithNamespace($file);
-        include_once($this->statedClassPath.DIRECTORY_SEPARATOR.$file);
+        include_once $this->statedClassPath.DIRECTORY_SEPARATOR.$file;
 
         if (!class_exists($className, false)) {
             throw new Exception\ClassNotFound('The class '.$className.' was not found');
@@ -126,12 +125,13 @@ abstract class AbstractParser
     protected function getClassNameFile()
     {
         $explodedPath = explode(DIRECTORY_SEPARATOR, $this->statedClassPath);
+
         return end($explodedPath).'.php';
     }
 
     /**
      * Return the name space define in a file
-     * @param string $file
+     * @param  string $file
      * @return string
      */
     protected function extractClassWithNamespace($file)
@@ -152,7 +152,7 @@ abstract class AbstractParser
             if (T_NAMESPACE == $token[0]) {
                 //next token is about the name of the class
                 $nameSpaceTokenDetected = true;
-            } else if ($nameSpaceTokenDetected) {
+            } elseif ($nameSpaceTokenDetected) {
                 if (T_NS_SEPARATOR == $token[0]) {
                     $nameSpace .= '\\';
                 } elseif (T_STRING == $token[0] || T_NS_SEPARATOR == $token[0]) {
@@ -166,7 +166,7 @@ abstract class AbstractParser
             if (T_CLASS == $token[0]) {
                 //next token is about the name of the class
                 $classTokenDetected = true;
-            } else if ($classTokenDetected && T_STRING == $token[0]) {
+            } elseif ($classTokenDetected && T_STRING == $token[0]) {
                 //Class name found
                 $className = $token[1];
                 break;
@@ -178,7 +178,7 @@ abstract class AbstractParser
 
     /**
      * Load a file and return its content
-     * @param string $file
+     * @param  string                   $file
      * @return string
      * @throws Exception\UnReadablePath when the path is not readable
      */
