@@ -30,7 +30,6 @@ use UniAlteri\States\Command\Writer\AbstractWriter;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 
-global $fileSystemFactory;
 /**
  * @param string $directory
  * @return Filesystem
@@ -43,7 +42,6 @@ $fileSystemFactory = function ($directory) {
     );
 };
 
-global $factory;
 /**
  * @param string $service
  * @param string $destinationPath
@@ -87,9 +85,9 @@ $factory = function ($service, $destinationPath) use ($fileSystemFactory) {
 };
 
 $application = new Application();
-$application->add(new ClassCreate(null, $factory));
-$application->add(new ClassInformation(null, $factory));
-$application->add(new StateAdd(null, $factory));
-$application->add(new StateList(null, $factory));
+$application->add(new ClassCreate(null, $factory, $fileSystemFactory));
+$application->add(new ClassInformation(null, $factory, $fileSystemFactory));
+$application->add(new StateAdd(null, $factory, $fileSystemFactory));
+$application->add(new StateList(null, $factory, $fileSystemFactory));
 
 return $application;

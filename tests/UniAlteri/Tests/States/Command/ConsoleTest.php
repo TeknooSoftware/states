@@ -54,8 +54,9 @@ class ConsoleTest extends \PHPUnit_Framework_TestCase
 
     public function testFileSystemFactory()
     {
-        include 'UniAlteri/States/Command/console.php';
-        global $fileSystemFactory;
+        $application = include 'UniAlteri/States/Command/console.php';
+        $command = $application->get('class:create');
+        $fileSystemFactory = $command->getFileSystemFactory();
 
         $this->assertEquals('Closure', get_class($fileSystemFactory));
         $this->assertInstanceOf('Gaufrette\Filesystem', $fileSystemFactory('path'));
@@ -63,8 +64,9 @@ class ConsoleTest extends \PHPUnit_Framework_TestCase
 
     public function testFactory()
     {
-        include 'UniAlteri/States/Command/console.php';
-        global $factory;
+        $application = include 'UniAlteri/States/Command/console.php';
+        $command = $application->get('class:create');
+        $factory = $command->getFactory();
 
         $this->assertEquals('Closure', get_class($factory));
         $this->assertInstanceOf('UniAlteri\States\Command\Parser\Factory', $factory('Parser\Factory','path'));

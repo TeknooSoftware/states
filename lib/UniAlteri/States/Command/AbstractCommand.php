@@ -44,13 +44,38 @@ class AbstractCommand extends Command
     protected $factory;
 
     /**
+     * @var callable
+     */
+    protected $fileSystemFactory;
+
+    /**
      * @param string   $name
      * @param callable $factory
+     * @param callable $fileSystemFactory
      */
-    public function __construct($name = null, $factory = null)
+    public function __construct($name = null, $factory = null, $fileSystemFactory = null)
     {
         $this->factory = $factory;
+        $this->fileSystemFactory = $fileSystemFactory;
         parent::__construct($name);
+    }
+
+    /**
+     * Return parser/writer factory user by this command
+     * @return callable|null
+     */
+    public function getFactory()
+    {
+        return $this->factory;
+    }
+
+    /**
+     * Return the file system factory used by this command
+     * @return callable|null
+     */
+    public function getFileSystemFactory()
+    {
+        return $this->fileSystemFactory;
     }
 
     /**
