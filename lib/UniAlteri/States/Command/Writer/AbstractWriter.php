@@ -23,7 +23,6 @@
 namespace UniAlteri\States\Command\Writer;
 
 use Gaufrette\Filesystem;
-use spec\Gaufrette\Adapter;
 
 /**
  * Class Writer
