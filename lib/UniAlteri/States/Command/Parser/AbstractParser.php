@@ -23,7 +23,6 @@
 namespace UniAlteri\States\Command\Parser;
 
 use Gaufrette\Filesystem;
-use UniAlteri\States\Command\Parser\Exception;
 
 /**
  * Class AbstractParser
