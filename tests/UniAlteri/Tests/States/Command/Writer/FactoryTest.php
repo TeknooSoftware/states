@@ -80,8 +80,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME, $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertEquals(LoaderInterface::FACTORY_FILE_NAME, $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Standard;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Standard'));
                     return 0;
@@ -99,8 +99,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME, $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertEquals(LoaderInterface::FACTORY_FILE_NAME, $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Standard;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Standard'));
                     return 10;
@@ -118,8 +118,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME, $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertEquals(LoaderInterface::FACTORY_FILE_NAME, $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Integrated;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Integrated'));
                     return 0;
@@ -137,8 +137,8 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME, $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertEquals(LoaderInterface::FACTORY_FILE_NAME, $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Integrated;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Integrated'));
                     return 10;

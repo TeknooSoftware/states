@@ -54,7 +54,7 @@ namespace UniAlteri\States\Command\Writer;
          return <<<EOF
 <?php
 
-namespace $namespace;
+namespace $namespace\\$className;
 
 use UniAlteri\\States\\Proxy;
 
@@ -79,7 +79,7 @@ EOF;
      public function createStandardProxy($className, $namespace)
      {
          $proxyCode = $this->generateProxy($className, $namespace, false);
-         $proxyFileName = $className.DIRECTORY_SEPARATOR.$className.'.php';
+         $proxyFileName = $className.'.php';
          if (0 < $this->write($proxyFileName, $proxyCode)) {
              return true;
          } else {
@@ -96,7 +96,7 @@ EOF;
      public function createIntegratedProxy($className, $namespace)
      {
          $proxyCode = $this->generateProxy($className, $namespace, true);
-         $proxyFileName = $className.DIRECTORY_SEPARATOR.$className.'.php';
+         $proxyFileName = $className.'.php';
          if (0 < $this->write($proxyFileName, $proxyCode)) {
              return true;
          } else {

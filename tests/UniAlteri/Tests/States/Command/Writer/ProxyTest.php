@@ -79,8 +79,8 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'fooBar.php', $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertEquals('fooBar.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
                     $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Standard'));
                     return 0;
@@ -98,8 +98,8 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'fooBar.php', $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertEquals('fooBar.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
                     $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Standard'));
                     return 10;
@@ -117,8 +117,8 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'fooBar.php', $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertEquals('fooBar.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
                     $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Integrated'));
                     return 0;
@@ -136,8 +136,8 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'fooBar.php', $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct;'));
+                    $this->assertEquals('fooBar.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
                     $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Integrated'));
                     return 10;

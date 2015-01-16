@@ -52,7 +52,7 @@ use UniAlteri\States\Proxy\ProxyInterface;
          return <<<EOF
 <?php
 
-namespace $namespace\\States;
+namespace $namespace\\$className\\States;
 
 use UniAlteri\\States\\States;
 
@@ -90,7 +90,7 @@ EOF;
      public function createState($className, $namespace, $stateName)
      {
          $stateCode = $this->generateState($className, $namespace, $stateName);
-         $stateFileName = $className.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php';
+         $stateFileName = FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php';
 
          if (0 < $this->write($stateFileName, $stateCode)) {
              return true;

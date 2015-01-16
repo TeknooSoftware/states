@@ -60,7 +60,7 @@ use UniAlteri\States\Loader\LoaderInterface;
          return <<<EOF
 <?php
 
-namespace $namespace;
+namespace $namespace\\$className;
 
 use $factoryExtendsNamespace;
 
@@ -85,7 +85,7 @@ EOF;
      public function createStandardFactory($className, $namespace)
      {
          $factoryCode = $this->generateFactory($className, $namespace, false);
-         $factoryFileName = $className.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
+         $factoryFileName = LoaderInterface::FACTORY_FILE_NAME;
          if (0 < $this->write($factoryFileName, $factoryCode)) {
              return true;
          } else {
@@ -102,7 +102,7 @@ EOF;
      public function createIntegratedFactory($className, $namespace)
      {
          $factoryCode = $this->generateFactory($className, $namespace, true);
-         $factoryFileName = $className.DIRECTORY_SEPARATOR.LoaderInterface::FACTORY_FILE_NAME;
+         $factoryFileName = LoaderInterface::FACTORY_FILE_NAME;
          if (0 < $this->write($factoryFileName, $factoryCode)) {
              return true;
          } else {

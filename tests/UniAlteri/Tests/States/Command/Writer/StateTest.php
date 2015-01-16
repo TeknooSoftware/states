@@ -80,8 +80,8 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'States/StateDefault.php', $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\States;'));
+                    $this->assertEquals('States/StateDefault.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\States;'));
                     $this->assertNotFalse(strpos($code, 'class '.ProxyInterface::DEFAULT_STATE_NAME.' extends States\\AbstractState'));
                     return 0;
@@ -99,8 +99,8 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'States/StateDefault.php', $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\States;'));
+                    $this->assertEquals('States/StateDefault.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\States;'));
                     $this->assertNotFalse(strpos($code, 'class '.ProxyInterface::DEFAULT_STATE_NAME.' extends States\\AbstractState'));
                     return 10;
@@ -118,8 +118,8 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'States/helloWorld.php', $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\States;'));
+                    $this->assertEquals('States/helloWorld.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\States;'));
                     $this->assertNotFalse(strpos($code, 'class helloWorld extends States\\AbstractState'));
                     return 0;
@@ -137,8 +137,8 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('fooBar'.DIRECTORY_SEPARATOR.'States/helloWorld.php', $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\States;'));
+                    $this->assertEquals('States/helloWorld.php', $file);
+                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\States;'));
                     $this->assertNotFalse(strpos($code, 'class helloWorld extends States\\AbstractState'));
                     return 10;
