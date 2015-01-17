@@ -35,6 +35,8 @@ set_include_path(
 //Use autoloader of composer is it is available
 if (file_exists(__DIR__.'/vendor/autoload.php')) {
     require_once __DIR__.'/vendor/autoload.php';
+} elseif(file_exists(__DIR__ . '/../../autoload.php')) {
+    require_once __DIR__ . '/../../autoload.php';
 } else {
     //Use  spl autoloader, UA States lib uses PSR-0 standards
     spl_autoload_register(
