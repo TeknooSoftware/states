@@ -39,5 +39,5 @@
     "archive": {
         "exclude": ["demo", "vendor", ".idea"]
     },
-    "bin": ["bin"]
+    "bin": ["bin/states.php"]
 }
