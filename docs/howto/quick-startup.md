@@ -188,3 +188,7 @@ operator `new` like this `$myObject = new \Your\NameSpace\YourStateName();`.
 It is not needed to call the directly the proxy class like this `$myObject = new \Your\NameSpace\YourStateName\YourStateName();`,
 you can directly use the stated class name. The factory has created an alias from `\Your\NameSpace\YourStateName`
 to `\Your\NameSpace\YourStateName\Your\NameSpace\YourStateName`
+
+###CLI Helper
+A CLI helper is available at /bin/console.php to create easily new stated class (standard or integrated), 
+create new state, and extract state information from your stated class.
