@@ -16,7 +16,7 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     0.9.9
+ * @version     1.0.0
  *
  * Mock factory file to test loader behavior when the factory class is valid and stated class loaded by loader
  * with PSR-0 recommendations (file computed from namespace) and not from namespace definitions)

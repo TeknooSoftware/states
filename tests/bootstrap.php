@@ -16,7 +16,7 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     0.9.9
+ * @version     1.0.0
  */
 
 defined('RUN_CLI_MODE')
@@ -39,6 +39,6 @@ set_include_path(
     .get_include_path()
 );
 
-date_default_timezone_set('Europe/Paris');
+date_default_timezone_set('UTC');
 
 error_reporting(E_ALL | E_STRICT);
