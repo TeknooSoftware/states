@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\Support\Article;
 
 use UniAlteri\States\Proxy;
@@ -55,7 +54,7 @@ class Article extends Proxy\Integrated
             return $this->data[$name];
         }
 
-        return null;
+        return;
     }
 
     /**

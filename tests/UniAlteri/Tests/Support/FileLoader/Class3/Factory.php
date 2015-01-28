@@ -22,10 +22,9 @@
  * exception and stated class loaded by loader with PSR-0 recommendations (file computed from namespace)
  * and not from namespace definitions)
  */
-
 namespace Support\FileLoader\Class3;
 
-use \UniAlteri\Tests\Support;
+use UniAlteri\Tests\Support;
 
 /**
  * Class FactoryClass

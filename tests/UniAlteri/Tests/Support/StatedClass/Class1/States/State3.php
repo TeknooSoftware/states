@@ -21,7 +21,6 @@
  * Mock state file to test finder behavior when the state class does not implement the Sates interface
  * \UniAlteri\States\States\StateInterface
  */
-
 namespace Class1\States;
 
 /**

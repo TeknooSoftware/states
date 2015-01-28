@@ -20,7 +20,6 @@
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\GoodProxy;
 
 use UniAlteri\States;
@@ -28,7 +27,7 @@ use UniAlteri\States\DI;
 use UniAlteri\States\Proxy\Exception;
 use UniAlteri\States\Proxy\ProxyInterface;
 
-class WithoutImpl implements ProxyInterface
+class GoodProxy implements ProxyInterface
 {
     /**
      * Called to clone an Object
@@ -40,8 +39,8 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To call a method of the Object.
-     * @param  string $name
-     * @param  array $arguments
+     * @param  string                         $name
+     * @param  array                          $arguments
      * @return mixed
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -64,7 +63,7 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To get a property of the object
-     * @param  string $name
+     * @param  string                         $name
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
@@ -75,7 +74,7 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To test if a property is set for the object.
-     * @param  string $name
+     * @param  string                         $name
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
@@ -86,8 +85,8 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To update a property of the object.
-     * @param  string $name
-     * @param  string $value
+     * @param  string                         $name
+     * @param  string                         $value
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
@@ -98,7 +97,7 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To remove a property of the object.
-     * @param  string $name
+     * @param  string                         $name
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
@@ -143,7 +142,7 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To register dynamically a new state for this object
-     * @param  string $stateName
+     * @param  string                       $stateName
      * @param  States\States\StateInterface $stateObject
      * @return $this
      * @throws Exception\IllegalArgument    when the identifier is not a string
@@ -155,7 +154,7 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To remove dynamically a state from this object
-     * @param  string $stateName
+     * @param  string                    $stateName
      * @return $this
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\StateNotFound   when the state was not found
@@ -167,7 +166,7 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To disable all actives states and enable the required states
-     * @param  string $stateName
+     * @param  string                    $stateName
      * @return $this
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
@@ -190,7 +189,7 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To disable an active state (not available for calling, but always loaded)
-     * @param  string $stateName
+     * @param  string                    $stateName
      * @return $this
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\StateNotFound   when the state was not found
@@ -226,7 +225,7 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * Check if the current entity is in the required state defined by $stateName
-     * @param  string $stateName
+     * @param  string                    $stateName
      * @return bool
      * @throws Exception\InvalidArgument when $stateName is not a valid string
      */
@@ -245,8 +244,8 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To return the description of the method
-     * @param  string $methodName
-     * @param  string $stateName : Return the description for a specific state of the object,
+     * @param  string                         $methodName
+     * @param  string                         $stateName  : Return the description for a specific state of the object,
      *                                                    if null, use the current state
      * @return \ReflectionMethod
      * @throws Exception\StateNotFound        is the state required is not available
@@ -271,7 +270,7 @@ class WithoutImpl implements ProxyInterface
     /**
      * Whether or not an offset exists.
      * This method is executed when using isset() or empty() on states implementing ArrayAccess.
-     * @param  string|int $offset
+     * @param  string|int                     $offset
      * @return bool
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
@@ -283,7 +282,7 @@ class WithoutImpl implements ProxyInterface
     /**
      * Returns the value at specified offset.
      * This method is executed when checking if offset is empty().
-     * @param  string|int $offset
+     * @param  string|int                     $offset
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
@@ -294,8 +293,8 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * Assigns a value to the specified offset.
-     * @param  string|int $offset
-     * @param  mixed $value
+     * @param  string|int                     $offset
+     * @param  mixed                          $value
      * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
@@ -306,7 +305,7 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * Unset an offset.
-     * @param  string|int $offset
+     * @param  string|int                     $offset
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
@@ -354,7 +353,7 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * Seeks to a given position in the iterator.
-     * @param  int $position
+     * @param  int                            $position
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
@@ -394,12 +393,11 @@ class WithoutImpl implements ProxyInterface
 
     /**
      * To wake up the object
-     * @param  string $serialized
+     * @param  string                         $serialized
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
     public function unserialize($serialized)
     {
     }
-
 }

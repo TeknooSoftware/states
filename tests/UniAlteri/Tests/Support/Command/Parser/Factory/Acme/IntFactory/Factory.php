@@ -20,12 +20,10 @@
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\IntFactory;
 
 use UniAlteri\States\Factory\Integrated;
 
 class Factory extends Integrated
 {
-
 }

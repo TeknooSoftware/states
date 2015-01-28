@@ -20,7 +20,6 @@
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\GoodState\States;
 
 use UniAlteri\States\DI;
@@ -59,8 +58,8 @@ class StateNormal implements StateInterface
 
     /**
      * To test if a method exists for this state in the current visibility scope.
-     * @param  string $methodName
-     * @param  string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param  string                    $methodName
+     * @param  string                    $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return boolean
      * @throws Exception\InvalidArgument when the method name is not a string
      */
@@ -72,7 +71,7 @@ class StateNormal implements StateInterface
     /**
      * To return the description of a method to configure the behavior of the proxy. Return also description of private
      * methods
-     * @param  string $methodName
+     * @param  string                         $methodName
      * @return \ReflectionMethod
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws Exception\InvalidArgument      when the method name is not a string
@@ -84,9 +83,9 @@ class StateNormal implements StateInterface
 
     /**
      * To return a closure of the required method to use in the proxy, according with the current visibility scope
-     * @param  string $methodName
-     * @param  Proxy\ProxyInterface $proxy
-     * @param  string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param  string                         $methodName
+     * @param  Proxy\ProxyInterface           $proxy
+     * @param  string                         $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @return DI\InjectionClosureInterface
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
      * @throws Exception\InvalidArgument      when the method name is not a string
@@ -97,5 +96,4 @@ class StateNormal implements StateInterface
     {
         // TODO: Implement getClosure() method.
     }
-
 }

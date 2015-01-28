@@ -20,7 +20,6 @@
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\TraitFactory;
 
 use UniAlteri\States\Factory\FactoryInterface;

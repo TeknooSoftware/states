@@ -20,12 +20,10 @@
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\StdProxy;
 
 use UniAlteri\States\Proxy\Standard;
 
 class StdProxy extends Standard
 {
-
 }

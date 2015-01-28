@@ -20,7 +20,6 @@
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\GoodState\States;
 
 use UniAlteri\States\States\StateInterface;

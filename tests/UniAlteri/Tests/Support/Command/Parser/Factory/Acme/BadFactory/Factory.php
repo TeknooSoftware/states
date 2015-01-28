@@ -20,10 +20,8 @@
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\BadFactory;
 
-class badClass
+class Factory
 {
-
 }

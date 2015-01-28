@@ -20,12 +20,10 @@
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\IntProxy;
 
 use UniAlteri\States\Proxy\Integrated;
 
 class IntProxy extends Integrated
 {
-
 }

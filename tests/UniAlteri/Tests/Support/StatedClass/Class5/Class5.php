@@ -20,10 +20,9 @@
  *
  * Mock proxy file to test finder behavior when the proxy class is valid
  */
-
 namespace Class5;
 
-use \UniAlteri\Tests\Support\MockProxy;
+use UniAlteri\Tests\Support\MockProxy;
 
 /**
  * Class Class5

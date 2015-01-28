@@ -20,7 +20,6 @@
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\GoodFactory;
 
 use UniAlteri\States\DI;
@@ -79,8 +78,8 @@ class Factory implements FactoryInterface
      * It registers the class name and its path, retrieves the DI Container,
      * register the factory in the DI Container, it retrieves the finder object and load the proxy
      * from the finder.
-     * @param  string $statedClassName the name of the stated class
-     * @param  string $path of the stated class
+     * @param  string                           $statedClassName the name of the stated class
+     * @param  string                           $path            of the stated class
      * @return boolean
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
@@ -91,8 +90,8 @@ class Factory implements FactoryInterface
 
     /**
      * To initialize a proxy object with its container and states. States are fetched by the finder of this stated class.
-     * @param  Proxy\ProxyInterface $proxyObject
-     * @param  string $stateName
+     * @param  Proxy\ProxyInterface             $proxyObject
+     * @param  string                           $stateName
      * @return boolean
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
@@ -105,8 +104,8 @@ class Factory implements FactoryInterface
 
     /**
      * Build a new instance of an object
-     * @param  mixed $arguments
-     * @param  string $stateName to build an object with a specific class
+     * @param  mixed                            $arguments
+     * @param  string                           $stateName to build an object with a specific class
      * @return Proxy\ProxyInterface
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
