@@ -16,7 +16,7 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     1.0.0
+ * @version     1.0.1
  */
 
 defined('RUN_CLI_MODE')
@@ -42,3 +42,13 @@ set_include_path(
 date_default_timezone_set('UTC');
 
 error_reporting(E_ALL | E_STRICT);
+
+//Prevent error
+$iterator = new RecursiveIteratorIterator(
+    new RecursiveDirectoryIterator(__DIR__.'/UniAlteri/Tests/Support'),
+    RecursiveIteratorIterator::SELF_FIRST
+);
+
+foreach($iterator as $item) {
+    chmod($item, 0755);
+}

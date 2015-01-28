@@ -16,7 +16,7 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @version     1.0.0
+ * @version     1.0.1
  */
 
 namespace UniAlteri\Tests\Support\Multiple\User\States;
