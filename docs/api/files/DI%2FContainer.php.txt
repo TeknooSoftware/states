@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\States\DI;
 
 /**
@@ -56,8 +55,8 @@ class Container extends \Pimple\Container implements ContainerInterface
     public function __clone()
     {
         /**
-         * Do nothing, Pimple uses standard arrays, they are automatically cloned by php (but not theirs values)
-         */
+     * Do nothing, Pimple uses standard arrays, they are automatically cloned by php (but not theirs values)
+     */
     }
 
     /**

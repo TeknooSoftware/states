@@ -27,11 +27,10 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  */
-
 namespace UniAlteri\States\States;
 
-use \UniAlteri\States\DI;
-use \UniAlteri\States\Proxy;
+use UniAlteri\States\DI;
+use UniAlteri\States\Proxy;
 
 /**
  * Class StateTrait

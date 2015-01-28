@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\States\DI;
 
 /**
@@ -185,7 +184,7 @@ class InjectionClosure implements InjectionClosureInterface
             return $this->properties->{$name};
         }
 
-        return null;
+        return;
     }
 
     /**
