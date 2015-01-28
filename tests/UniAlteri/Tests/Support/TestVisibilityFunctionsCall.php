@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 if (!function_exists('testCallFromFunctionPrivate')) {
     /**
      * Build temp functions to test proxy behavior with different scope visibility
@@ -29,7 +28,7 @@ if (!function_exists('testCallFromFunctionPrivate')) {
      * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
      * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+     * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testCallFromFunctionPrivate()
@@ -49,7 +48,7 @@ if (!function_exists('testCallFromFunctionProtected')) {
      * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
      * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+     * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testCallFromFunctionProtected()
@@ -69,7 +68,7 @@ if (!function_exists('testCallFromFunctionPublic')) {
      * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
      * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+     * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      * @return mixed
      */
@@ -91,7 +90,7 @@ if (!trait_exists('testCallTrait')) {
      * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
      * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+     * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     trait testCallTrait
@@ -150,7 +149,7 @@ if (!class_exists('testCallFromOtherObject')) {
      * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
      * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+     * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     class testCallFromOtherObject

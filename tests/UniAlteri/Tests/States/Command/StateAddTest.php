@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command;
 
 use UniAlteri\States\Command\StateAdd;
@@ -67,7 +66,7 @@ class StateAddTest extends \PHPUnit_Framework_TestCase
     {
         return new StateAdd(
             null,
-            function($service, $destinationPath) {
+            function ($service, $destinationPath) {
                 switch ($service) {
                     case 'Writer\State':
                         return $this->buildStateMock();
@@ -88,7 +87,7 @@ class StateAddTest extends \PHPUnit_Framework_TestCase
             ->willReturnMap(
                 [
                     ['className', '\\vendor\\project\\package\\fooBar'],
-                    ['name', 'newStateClass']
+                    ['name', 'newStateClass'],
                 ]
             );
 
@@ -96,7 +95,7 @@ class StateAddTest extends \PHPUnit_Framework_TestCase
             ->method('getOption')
             ->willReturnMap(
                 [
-                    ['path', 'path/to/class']
+                    ['path', 'path/to/class'],
                 ]
             );
 

@@ -18,13 +18,12 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\Support;
 
-use \UniAlteri\States\DI;
-use \UniAlteri\States\Proxy;
-use \UniAlteri\States\States;
-use \UniAlteri\States\States\Exception;
+use UniAlteri\States\DI;
+use UniAlteri\States\Proxy;
+use UniAlteri\States\States;
+use UniAlteri\States\States\Exception;
 
 /**
  * Class MockState

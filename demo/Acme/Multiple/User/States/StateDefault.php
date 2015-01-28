@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace demo\Acme\Multiple\User\States;
 
 use UniAlteri\States\States;

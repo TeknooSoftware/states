@@ -18,8 +18,8 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command\Parser;
+
 use Gaufrette\Filesystem;
 use UniAlteri\States\Command\Parser\Exception\ClassNotFound;
 use UniAlteri\States\Command\Parser\State;
@@ -64,7 +64,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Prepare and build a proxy parser to test
-     * @param string $path
+     * @param  string $path
      * @return State
      */
     protected function buildStateParser($path)
@@ -149,7 +149,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -231,7 +231,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -253,7 +253,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -335,7 +335,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -357,7 +357,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -379,7 +379,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -401,7 +401,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
                     FinderInterface::STATES_PATH,
                     FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.'State1.php',
                     FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.'State2.php',
-                    FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.'State3.php'
+                    FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.'State3.php',
                 ]
             );
 

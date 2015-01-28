@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command\Parser;
 
 use Gaufrette\Filesystem;
@@ -65,7 +64,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Prepare and build a factory parser to test
-     * @param string $path
+     * @param  string  $path
      * @return Factory
      */
     protected function buildFactoryParser($path)
@@ -150,7 +149,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -232,7 +231,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -254,7 +253,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -276,7 +275,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -358,7 +357,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -380,7 +379,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -402,7 +401,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -484,7 +483,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -506,7 +505,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -528,7 +527,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -550,7 +549,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );

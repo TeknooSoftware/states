@@ -18,15 +18,14 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Factory;
 
-use \UniAlteri\States\DI;
-use \UniAlteri\States\Loader;
-use \UniAlteri\States\Proxy;
-use \UniAlteri\States\Factory;
-use \UniAlteri\States\Factory\Exception;
-use \UniAlteri\Tests\Support;
+use UniAlteri\States\DI;
+use UniAlteri\States\Loader;
+use UniAlteri\States\Proxy;
+use UniAlteri\States\Factory;
+use UniAlteri\States\Factory\Exception;
+use UniAlteri\Tests\Support;
 
 /**
  * Class AbstractFactoryTest

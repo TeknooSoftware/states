@@ -18,10 +18,9 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\Support;
 
-use \UniAlteri\States\Proxy;
+use UniAlteri\States\Proxy;
 
 /**
  * Class IntegratedProxy

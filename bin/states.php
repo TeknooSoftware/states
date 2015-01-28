@@ -20,6 +20,5 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
  */
-
-$application = require(__DIR__.'/../lib/UniAlteri/States/Command/console.php');
+$application = require __DIR__.'/../lib/UniAlteri/States/Command/console.php';
 $application->run();

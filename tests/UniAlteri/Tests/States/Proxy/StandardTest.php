@@ -18,11 +18,10 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Proxy;
 
-use \UniAlteri\States\Proxy;
-use \UniAlteri\Tests\Support;
+use UniAlteri\States\Proxy;
+use UniAlteri\Tests\Support;
 
 /**
  * Class StandardTest

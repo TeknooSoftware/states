@@ -18,11 +18,10 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command\Parser;
+
 use UniAlteri\States\Command\Parser\Proxy;
 use Gaufrette\Filesystem;
-use UniAlteri\States\Loader\LoaderInterface;
 use UniAlteri\States\Exception\UnReadablePath;
 use UniAlteri\States\Exception\ClassNotFound;
 
@@ -64,7 +63,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Prepare and build a proxy parser to test
-     * @param string $path
+     * @param  string $path
      * @return Proxy
      */
     protected function buildProxyParser($path)
@@ -149,7 +148,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -231,7 +230,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -253,7 +252,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -275,7 +274,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -357,7 +356,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -379,7 +378,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -401,7 +400,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -512,7 +511,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -534,7 +533,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -556,7 +555,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );
@@ -578,7 +577,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
             ->expects($this->atLeastOnce())
             ->method('read')
             ->willReturnCallback(
-                function($fileName) use ($path) {
+                function ($fileName) use ($path) {
                     return file_get_contents($path.DIRECTORY_SEPARATOR.$fileName);
                 }
             );

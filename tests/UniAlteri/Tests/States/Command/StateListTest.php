@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command;
 
 use UniAlteri\States\Command\Parser\State;
@@ -67,7 +66,7 @@ class StateListTest extends \PHPUnit_Framework_TestCase
     {
         return new StateList(
             null,
-            function($service, $destinationPath) {
+            function ($service, $destinationPath) {
                 switch ($service) {
                     case 'Parser\State':
                         return $this->buildStateClassMock();
@@ -87,7 +86,7 @@ class StateListTest extends \PHPUnit_Framework_TestCase
             ->method('getArgument')
             ->willReturnMap(
                 [
-                    ['path', 'path/to/stated/class']
+                    ['path', 'path/to/stated/class'],
                 ]
             );
 

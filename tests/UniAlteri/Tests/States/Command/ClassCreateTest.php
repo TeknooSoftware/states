@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command;
 
 use UniAlteri\States\Command\ClassCreate;
@@ -115,7 +114,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
     {
         return new ClassCreate(
             null,
-            function($service, $destinationPath) {
+            function ($service, $destinationPath) {
                 switch ($service) {
                     case 'Writer\Factory':
                         return $this->buildFactoryMock();
@@ -141,7 +140,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
             ->method('getArgument')
             ->willReturnMap(
                 [
-                    ['className', '\\vendor\\project\\package\\fooBar']
+                    ['className', '\\vendor\\project\\package\\fooBar'],
                 ]
             );
 
@@ -150,7 +149,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
             ->willReturnMap(
                 [
                     ['mode', 'standard'],
-                    ['path', 'path/to/class']
+                    ['path', 'path/to/class'],
                 ]
             );
 
@@ -191,7 +190,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
             ->method('getArgument')
             ->willReturnMap(
                 [
-                    ['className', '\\vendor\\project\\package\\fooBar']
+                    ['className', '\\vendor\\project\\package\\fooBar'],
                 ]
             );
 
@@ -200,7 +199,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
             ->willReturnMap(
                 [
                     ['mode', 'integrated'],
-                    ['path', 'path/to/class']
+                    ['path', 'path/to/class'],
                 ]
             );
 

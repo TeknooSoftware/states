@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command\Writer;
 
 use Gaufrette\Filesystem;
@@ -83,6 +82,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
                     $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Standard'));
+
                     return 0;
                 }
             );
@@ -102,6 +102,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
                     $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Standard'));
+
                     return 10;
                 }
             );
@@ -121,6 +122,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
                     $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Integrated'));
+
                     return 0;
                 }
             );
@@ -140,6 +142,7 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Proxy;'));
                     $this->assertNotFalse(strpos($code, 'class fooBar extends Proxy\\Integrated'));
+
                     return 10;
                 }
             );

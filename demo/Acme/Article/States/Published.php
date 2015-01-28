@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace demo\Acme\Article\States;
 
 use UniAlteri\States\States;
@@ -51,12 +50,12 @@ class Published implements States\StateInterface
             array(
                 '[br]',
                 '[b]',
-                '[/b]'
+                '[/b]',
             ),
             array(
                 '<br/>',
                 '<strong>',
-                '</strong>'
+                '</strong>',
             ),
             $body
         );
@@ -67,6 +66,5 @@ class Published implements States\StateInterface
      */
     protected function getDate()
     {
-
     }
 }

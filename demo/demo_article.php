@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace demo;
 
 error_reporting(E_ALL | E_STRICT);
@@ -65,7 +64,7 @@ $article = new Acme\Article(
     array(
         'is_published'  => true,
         'title'         => 'title 2',
-        'body'          => 'body 2'
+        'body'          => 'body 2',
     )
 );
 

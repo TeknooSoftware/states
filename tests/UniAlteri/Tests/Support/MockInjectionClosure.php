@@ -18,11 +18,10 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\Support;
 
-use \UniAlteri\States\DI;
-use \UniAlteri\States\DI\Exception;
+use UniAlteri\States\DI;
+use UniAlteri\States\DI\Exception;
 
 /**
  * Class MockInjectionClosure
@@ -142,7 +141,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
             return $this->properties[$name];
         }
 
-        return null;
+        return;
     }
 
     /**

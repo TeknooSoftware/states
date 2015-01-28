@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 defined('RUN_CLI_MODE')
     || define('RUN_CLI_MODE', true);
 
@@ -49,6 +48,6 @@ $iterator = new RecursiveIteratorIterator(
     RecursiveIteratorIterator::SELF_FIRST
 );
 
-foreach($iterator as $item) {
+foreach ($iterator as $item) {
     chmod($item, 0755);
 }

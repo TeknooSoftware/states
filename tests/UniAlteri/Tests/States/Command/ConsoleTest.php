@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command;
 
 /**
@@ -46,7 +45,7 @@ class ConsoleTest extends \PHPUnit_Framework_TestCase
                 'class:create',
                 'class:info',
                 'state:add',
-                'state:list'
+                'state:list',
             ],
             array_keys($application->all())
         );
@@ -69,15 +68,15 @@ class ConsoleTest extends \PHPUnit_Framework_TestCase
         $factory = $command->getFactory();
 
         $this->assertEquals('Closure', get_class($factory));
-        $this->assertInstanceOf('UniAlteri\States\Command\Parser\Factory', $factory('Parser\Factory','path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Parser\Proxy', $factory('Parser\Proxy','path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Parser\State', $factory('Parser\State','path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Parser\StatedClass', $factory('Parser\StatedClass','path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Writer\Factory', $factory('Writer\Factory','path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Writer\Proxy', $factory('Writer\Proxy','path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Writer\State', $factory('Writer\State','path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Parser\Factory', $factory('Parser\Factory', 'path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Parser\Proxy', $factory('Parser\Proxy', 'path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Parser\State', $factory('Parser\State', 'path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Parser\StatedClass', $factory('Parser\StatedClass', 'path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Writer\Factory', $factory('Writer\Factory', 'path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Writer\Proxy', $factory('Writer\Proxy', 'path'));
+        $this->assertInstanceOf('UniAlteri\States\Command\Writer\State', $factory('Writer\State', 'path'));
         try {
-            $factory('BadService','path');
+            $factory('BadService', 'path');
         } catch (\Exception $e) {
             return;
         }

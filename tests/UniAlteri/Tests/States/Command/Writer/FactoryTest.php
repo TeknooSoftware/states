@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command\Writer;
 
 use Gaufrette\Filesystem;
@@ -84,6 +83,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Standard;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Standard'));
+
                     return 0;
                 }
             );
@@ -103,6 +103,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Standard;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Standard'));
+
                     return 10;
                 }
             );
@@ -122,6 +123,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Integrated;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Integrated'));
+
                     return 0;
                 }
             );
@@ -141,6 +143,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Integrated;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Integrated'));
+
                     return 10;
                 }
             );

@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace demo\Acme\Multiple\Post\States;
 
 use UniAlteri\States\States;
@@ -71,5 +70,4 @@ class StateDefault extends States\AbstractState
     {
         $this->body = $body;
     }
-
 }

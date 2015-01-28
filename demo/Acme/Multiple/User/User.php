@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace demo\Acme\Multiple\User;
 
 use UniAlteri\States\Proxy;
@@ -61,7 +60,7 @@ class User extends Proxy\Integrated
      * @param bool   $isAdmin
      * @param bool   $isModerator
      */
-    public function __construct($username, $isAdmin=false, $isModerator=false)
+    public function __construct($username, $isAdmin = false, $isModerator = false)
     {
         //Register options
         $this->userName = $username;

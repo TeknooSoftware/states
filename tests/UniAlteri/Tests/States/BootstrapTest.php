@@ -24,7 +24,6 @@
  * * Register the service to build new finders for each stated class
  * * Register the service to build new injection closure for each stated classes' methods
  */
-
 namespace UniAlteri\Tests\States;
 
 use UniAlteri\States;

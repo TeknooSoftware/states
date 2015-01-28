@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command\Parser;
 
 use Gaufrette\Filesystem;
@@ -158,7 +157,7 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
                     '..',
                     'file1.php',
                     'file2.txt',
-                    'file3.php'
+                    'file3.php',
                 ]
             );
 
@@ -177,7 +176,7 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
                     'file1.php',
                     FinderInterface::STATES_PATH,
                     'file2.txt',
-                    'file3.php'
+                    'file3.php',
                 ]
             );
 
@@ -195,7 +194,7 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
                     '..',
                     'file1.php',
                     'file2.txt',
-                    'file3.php'
+                    'file3.php',
                 ]
             );
 
@@ -214,7 +213,7 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
                     'file1.php',
                     'file2.txt',
                     'ClassNameBar.php',
-                    'file3.php'
+                    'file3.php',
                 ]
             );
 
@@ -233,7 +232,7 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
                     'file1.php',
                     'file2.txt',
                     'ClassNameBar.php',
-                    'file3.php'
+                    'file3.php',
                 ]
             );
 
@@ -252,7 +251,7 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
                     'file1.php',
                     'file2.txt',
                     'Factory.php',
-                    'file3.php'
+                    'file3.php',
                 ]
             );
 

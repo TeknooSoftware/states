@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\Tests\States\Command;
 
 use UniAlteri\States\Command\ClassCreate;
@@ -68,7 +67,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
     {
         return new ClassInformation(
             null,
-            function($service, $destinationPath) {
+            function ($service, $destinationPath) {
                 switch ($service) {
                     case 'Parser\StatedClass':
                         return $this->buildStatedClassMock();
@@ -88,7 +87,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('getArgument')
             ->willReturnMap(
                 [
-                    ['path', 'path/to/stated/class']
+                    ['path', 'path/to/stated/class'],
                 ]
             );
 
@@ -177,7 +176,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('getArgument')
             ->willReturnMap(
                 [
-                    ['path', 'path/to/stated/class']
+                    ['path', 'path/to/stated/class'],
                 ]
             );
 

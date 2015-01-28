@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace demo\Acme\Article;
 
 use UniAlteri\States\Proxy;
@@ -54,7 +53,7 @@ class Article extends Proxy\Integrated
             return $this->data[$name];
         }
 
-        return null;
+        return;
     }
 
     /**
@@ -71,7 +70,7 @@ class Article extends Proxy\Integrated
      * To initialize this article with some data
      * @param array $data
      */
-    public function __construct($data=array())
+    public function __construct($data = array())
     {
         $this->data = $data;
         parent::__construct();
