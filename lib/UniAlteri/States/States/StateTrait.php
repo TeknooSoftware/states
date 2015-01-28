@@ -27,7 +27,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  */
-
 namespace UniAlteri\States\States;
 
 use UniAlteri\States\DI;

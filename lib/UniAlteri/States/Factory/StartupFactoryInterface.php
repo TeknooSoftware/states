@@ -18,7 +18,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     1.0.1
  */
-
 namespace UniAlteri\States\Factory;
 
 use UniAlteri\States\Proxy;

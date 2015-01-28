@@ -19,7 +19,6 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  * @version     0.9.2
  */
-
 namespace UniAlteri\States\Command\Writer;
 
 use UniAlteri\States\Loader\LoaderInterface;
