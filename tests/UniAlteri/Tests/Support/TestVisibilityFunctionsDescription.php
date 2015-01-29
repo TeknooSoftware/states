@@ -11,7 +11,7 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @subpackage  Tests
- * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
@@ -25,7 +25,7 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPrivate')) {
      *
      * @package     States
      * @subpackage  Tests
-     * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
      * @license     http://teknoo.it/states/license/mit         MIT License
      * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
@@ -45,7 +45,7 @@ if (!function_exists('testGetMethodDescriptionFromFunctionProtected')) {
      *
      * @package     States
      * @subpackage  Tests
-     * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
      * @license     http://teknoo.it/states/license/mit         MIT License
      * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
@@ -65,7 +65,7 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPublic')) {
      *
      * @package     States
      * @subpackage  Tests
-     * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
      * @license     http://teknoo.it/states/license/mit         MIT License
      * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
@@ -87,7 +87,7 @@ if (!trait_exists('testGetMethodDescriptionTrait')) {
      *
      * @package     States
      * @subpackage  Tests
-     * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
      * @license     http://teknoo.it/states/license/mit         MIT License
      * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
@@ -146,7 +146,7 @@ if (!class_exists('testGetMethodDescriptionFromOtherObject')) {
      *
      * @package     States
      * @subpackage  Tests
-     * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
      * @link        http://teknoo.it/states Project website
      * @license     http://teknoo.it/states/license/mit         MIT License
      * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License

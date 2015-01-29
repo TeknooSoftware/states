@@ -11,7 +11,7 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @subpackage  Tests
- * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
@@ -29,7 +29,7 @@ use UniAlteri\States\DI\Exception;
  *
  * @package     States
  * @subpackage  Tests
- * @copyright   Copyright (c) 2009-2014 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  * @link        http://teknoo.it/states Project website
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
