@@ -29,7 +29,7 @@ The PHPUnit version to be used is the one installed as a dev- dependency via com
 $ ./vendor/bin/phpunit
 ```
 
-Accepted coverage for new contributions is 90%. Any contribution not satisfying this requirement 
+Accepted coverage for new contributions is 90%. Any contribution not satisfying this requirement
 won't be merged.
 
 For any questions, contact me : [r.deloge@uni-alteri.com](r.deloge@uni-alteri.com) :)
