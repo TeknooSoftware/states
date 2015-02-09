@@ -3,7 +3,6 @@
     "type": "library",
     "description": "States is a lib to allow developers to write states for their business object with PHP 5.4+",
     "keywords": ["states","class"],
-    "time": "2015-01-17",
     "homepage": "http://teknoo.it/states",
     "license": ["MIT","GPL-3.0+"],
     "authors": [
