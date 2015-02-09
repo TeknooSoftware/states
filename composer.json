@@ -30,7 +30,7 @@
     },
     "autoload": {
         "psr-4": {
-            "UniAlteri\\States\\": ["lib/UniAlteri/States/"],
+            "UniAlteri\\States\\": ["src/UniAlteri/States/"],
             "UniAlteri\\Tests\\States\\": ["tests/UniAlteri/Tests/States"],
             "UniAlteri\\Tests\\Support\\": ["tests/UniAlteri/Tests/Support"]
         }

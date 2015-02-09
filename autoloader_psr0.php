@@ -27,7 +27,7 @@ defined('DS')
 
 //Update included path to load files of the lib States
 set_include_path(
-    __DIR__.DS.'lib'
+    __DIR__.DS.'src'
     .PATH_SEPARATOR
     .get_include_path()
 );
