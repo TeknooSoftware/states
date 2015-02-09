@@ -25,4 +25,4 @@ Documentation to explain how this library works : [Behavior](docs/howto/behavior
 Contribute :)
 -------------
 
-You are welcome to contribute to this project. [Fork it on Github](https://github.com/UniAlteri/states) or contact me : [r.deloge@uni-alteri.com](r.deloge@uni-alteri.com)
+You are welcome to contribute to this project. [Fork it on Github](CONTRIBUTING.md)
