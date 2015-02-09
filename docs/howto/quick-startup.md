@@ -130,9 +130,10 @@ It does it :
 *   Instantiates a new loader instance. (object called by spl_autoload to detect stated class).
 *   Registers the loader in the stack __autoload.
 
-*Warning : the library require also a `autoloader PSR-0` (http://www.php-fig.org/psr/psr-0/). An implementation is available
-in the root of this project (file called `autoloader_psr0.php`), if it has been detected, it is automatically loaded by
-the file `bootstrap.php`. Else you can use another implementation.*
+*Warning : the library require also a `autoloader PSR-0` or `PSR-4` (http://www.php-fig.org/psr/psr-0/). By default, this lib use the 
+PSR-4 autoloader of Composer, but an implementation is available in the root of this project (file called `autoloader_psr0.php`), 
+if it has been detected, it is automatically loaded by the file `bootstrap.php` if composer is unavailable. 
+Else you can use another implementation.*
 
 ###Configure autoloader
 The library is now loaded but it is not known where yours stated classes are localized. By default, the loader instantiated

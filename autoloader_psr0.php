@@ -34,8 +34,10 @@ set_include_path(
 
 //Use autoloader of composer is it is available
 if (file_exists(__DIR__.'/vendor/autoload.php')) {
+    //Use composer has default auto loader
     require_once __DIR__.'/vendor/autoload.php';
 } elseif (file_exists(__DIR__.'/../../autoload.php')) {
+    //Use autoloader of the project (this lib has been installer with composer
     require_once __DIR__.'/../../autoload.php';
 } else {
     //Use  spl autoloader, UA States lib uses PSR-0 standards
