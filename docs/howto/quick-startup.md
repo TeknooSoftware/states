@@ -120,7 +120,7 @@ implementation `\UniAlteri\States\Proxy\Integrated` without complete it.*
 **All following instructions are illustrated in the demo available in the folder `demo` at the root of this library.**
 
 ###Load the library
-To load the library, you can include the file `bootstrap.php` located in the folder `/lib/UniAlteri/States` of this library.
+To load the library, you can include the file `bootstrap.php` located in the folder `/src/UniAlteri/States` of this library.
 It does it :
 
 *   This bootstrap file instantiate a new DI Container from the implementation of the library.
