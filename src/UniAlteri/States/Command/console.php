@@ -26,8 +26,6 @@ namespace UniAlteri\States\Command;
 use Gaufrette\Adapter\Local;
 use Gaufrette\Filesystem;
 use Symfony\Component\Console\Application;
-use UniAlteri\States\Command\Parser\AbstractParser;
-use UniAlteri\States\Command\Writer\AbstractWriter;
 
 require_once dirname(dirname(dirname(dirname(__DIR__)))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 
