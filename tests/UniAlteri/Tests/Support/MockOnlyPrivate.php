@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\States;
@@ -27,19 +30,21 @@ use UniAlteri\States\States;
  * Mock class to test the default trait State behavior with private methods.
  * All methods have not a description to check the state's behavior with these methods.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
 class MockOnlyPrivate extends States\AbstractState
 {
     /**
-     * To simulate a real state behavior
+     * To simulate a real state behavior.
+     *
      * @param boolean $initializeContainer initialize virtual di container for state
      */
     public function __construct($initializeContainer = true)
@@ -58,14 +63,14 @@ class MockOnlyPrivate extends States\AbstractState
     }
 
     /**
-     * Final Method 9
+     * Final Method 9.
      */
     final private function finalMethod9()
     {
     }
 
     /**
-     * Standard Method 10
+     * Standard Method 10.
      */
     private function standardMethod10()
     {

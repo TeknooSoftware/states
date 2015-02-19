@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,29 +10,31 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     0.9.2
  */
+
 namespace UniAlteri\States\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
- /**
+/**
   * Class ClassInformation
-  * Command to list class datas
+  * Command to list class datas.
   *
-  * @package     States
-  * @subpackage  Command
   * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+  *
   * @link        http://teknoo.it/states Project website
+  *
   * @license     http://teknoo.it/states/license/mit         MIT License
   * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
   * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -67,6 +69,7 @@ use Symfony\Component\Console\Output\OutputInterface;
       * @return null|int     null or 0 if everything went fine, or an error code
       *
       * @throws \LogicException When this abstract method is not implemented
+      *
       * @see    setCode()
       */
      protected function execute(InputInterface $input, OutputInterface $output)

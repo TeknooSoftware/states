@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,26 +10,29 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Demo
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace demo\Acme\Article\States;
 
 use UniAlteri\States\States;
 
 /**
  * State Draft
- * State for an article not published
+ * State for an article not published.
  *
- * @package     States
- * @subpackage  Demo
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -37,7 +40,7 @@ use UniAlteri\States\States;
 class Draft extends States\AbstractState
 {
     /**
-     * Publish this article
+     * Publish this article.
      */
     public function publishing()
     {
@@ -48,7 +51,8 @@ class Draft extends States\AbstractState
     }
 
     /**
-     * Define the title of this article
+     * Define the title of this article.
+     *
      * @param string $title
      */
     public function setTitle($title)
@@ -57,7 +61,8 @@ class Draft extends States\AbstractState
     }
 
     /**
-     * Define the body of this article
+     * Define the body of this article.
+     *
      * @param string $body
      */
     public function setBody($body)
@@ -66,7 +71,8 @@ class Draft extends States\AbstractState
     }
 
     /**
-     * Get the body source
+     * Get the body source.
+     *
      * @return string
      */
     public function getBodySource()

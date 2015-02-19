@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\DI;
@@ -27,12 +30,12 @@ use UniAlteri\States\States\Exception;
 
 /**
  * Class MockState
- * Mock state to check behavior of factory, finder and proxy
+ * Mock state to check behavior of factory, finder and proxy.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -40,37 +43,43 @@ use UniAlteri\States\States\Exception;
 class MockState implements States\StateInterface
 {
     /**
-     * To allow always tested method or not
+     * To allow always tested method or not.
+     *
      * @var bool
      */
     protected $methodAllowed = false;
 
     /**
      * To simulate a failure of the getMethodDescription, return an exception method not implemented, but testMethod return true..
+     *
      * @var bool
      */
     protected $simulateMethodDescriptionFailure = false;
 
     /**
-     * To check if a method has been called or not
+     * To check if a method has been called or not.
+     *
      * @var bool
      */
     protected $methodCalled = false;
 
     /**
-     * Fake closure to test method calling
+     * Fake closure to test method calling.
+     *
      * @var DI\InjectionClosureInterface
      */
     protected $closure = null;
 
     /**
-     * Argument used in the call of closure
+     * Argument used in the call of closure.
+     *
      * @var array
      */
     protected $calledArguments = null;
 
     /**
-     * Return the method name called
+     * Return the method name called.
+     *
      * @var string
      */
     protected $methodName = null;
@@ -81,7 +90,7 @@ class MockState implements States\StateInterface
     protected $virtualInjection = null;
 
     /**
-     * Initialize virtual state
+     * Initialize virtual state.
      */
     public function __construct($closure = null)
     {
@@ -102,8 +111,10 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * To register a DI container for this object
-     * @param  DI\ContainerInterface $container
+     * To register a DI container for this object.
+     *
+     * @param DI\ContainerInterface $container
+     *
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
@@ -112,7 +123,8 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * To return the DI Container used for this object
+     * To return the DI Container used for this object.
+     *
      * @return DI\ContainerInterface
      */
     public function getDIContainer()
@@ -121,7 +133,7 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * To allow all call of testMethod and getClosure and return a fake closure
+     * To allow all call of testMethod and getClosure and return a fake closure.
      */
     public function allowMethod()
     {
@@ -137,7 +149,7 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * To forbid all call of testMethod and getClosure and return a fake closure
+     * To forbid all call of testMethod and getClosure and return a fake closure.
      */
     public function disallowMethod()
     {
@@ -145,7 +157,8 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * Return an array of string listing all methods available in the state
+     * Return an array of string listing all methods available in the state.
+     *
      * @return string[]
      */
     public function listMethods()
@@ -154,10 +167,13 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * Test if a method exist for this state
-     * @param  string                    $methodName
-     * @param  string                    $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * Test if a method exist for this state.
+     *
+     * @param string $methodName
+     * @param string $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     *
      * @return boolean
+     *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
     public function testMethod($methodName, $scope = States\StateInterface::VISIBILITY_PUBLIC)
@@ -196,9 +212,12 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * Return the description of a method to configure the behavior of the proxy
-     * @param  string                         $methodName
+     * Return the description of a method to configure the behavior of the proxy.
+     *
+     * @param string $methodName
+     *
      * @return \ReflectionMethod
+     *
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
     public function getMethodDescription($methodName)
@@ -213,11 +232,14 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * Return a closure of the required method to use in the proxy
-     * @param  string                         $methodName
-     * @param  Proxy\ProxyInterface           $proxy
-     * @param  string                         $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * Return a closure of the required method to use in the proxy.
+     *
+     * @param string               $methodName
+     * @param Proxy\ProxyInterface $proxy
+     * @param string               $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     *
      * @return DI\InjectionClosureInterface
+     *
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws Exception\InvalidArgument      when the method name is not a string
      */
@@ -271,7 +293,8 @@ class MockState implements States\StateInterface
 
     /**
      * Check if a method has been called
-     * Method added for test to check different behavior in calling method
+     * Method added for test to check different behavior in calling method.
+     *
      * @return boolean
      */
     public function methodWasCalled()
@@ -284,7 +307,8 @@ class MockState implements States\StateInterface
 
     /**
      * Register into the state the argument used for the closure
-     * Method added for test to check different behavior in calling method
+     * Method added for test to check different behavior in calling method.
+     *
      * @param array $arguments
      */
     public function setCalledArguments($arguments)
@@ -294,7 +318,8 @@ class MockState implements States\StateInterface
 
     /**
      * Return arguments used for the closure
-     * Method added for test to check different behavior in calling method
+     * Method added for test to check different behavior in calling method.
+     *
      * @return array
      */
     public function getCalledArguments()
@@ -307,7 +332,7 @@ class MockState implements States\StateInterface
 
     /**
      * Remember that the closure has been called
-     * Method added for test to check different behavior in calling method
+     * Method added for test to check different behavior in calling method.
      */
     public function setMethodCalled()
     {
@@ -316,7 +341,8 @@ class MockState implements States\StateInterface
 
     /**
      * Return the called method name
-     * Method added for test to check different behavior in calling method
+     * Method added for test to check different behavior in calling method.
+     *
      * @return string
      */
     public function getMethodNameCalled()

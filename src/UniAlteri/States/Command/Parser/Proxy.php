@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,27 +10,27 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     0.9.2
  */
-namespace UniAlteri\States\Command\Parser;
 
-use UniAlteri\States\Command;
+namespace UniAlteri\States\Command\Parser;
 
 /**
  * Class Proxy
- * Parser to analyze proxy
+ * Parser to analyze proxy.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -38,8 +38,10 @@ use UniAlteri\States\Command;
 class Proxy extends AbstractParser
 {
     /**
-     * Test if the proxy implements the good interface defined in the library States
+     * Test if the proxy implements the good interface defined in the library States.
+     *
      * @return bool
+     *
      * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isValidProxy()
@@ -49,8 +51,10 @@ class Proxy extends AbstractParser
     }
 
     /**
-     * Test if the proxy is a subclass of the standard proxy implemented in the library States
+     * Test if the proxy is a subclass of the standard proxy implemented in the library States.
+     *
      * @return bool
+     *
      * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isStandardProxy()
@@ -62,8 +66,10 @@ class Proxy extends AbstractParser
     }
 
     /**
-     * Test if the proxy is a subclass of the integrated proxy implemented in the library States
+     * Test if the proxy is a subclass of the integrated proxy implemented in the library States.
+     *
      * @return bool
+     *
      * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isIntegratedProxy()
@@ -74,8 +80,10 @@ class Proxy extends AbstractParser
 
     /**
      * Test if the proxy use of the default implementation of this library States provided by the trait
-     * \UniAlteri\States\Proxy\TraitProxy
+     * \UniAlteri\States\Proxy\TraitProxy.
+     *
      * @return bool
+     *
      * @throws Exception\UnReadablePath when the path is not readable
      */
     public function useTraitProxy()

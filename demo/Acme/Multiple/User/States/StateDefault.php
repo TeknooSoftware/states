@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,26 +10,29 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Demo
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace demo\Acme\Multiple\User\States;
 
 use UniAlteri\States\States;
 
 /**
  * State StateDefault
- * Default State for an user
+ * Default State for an user.
  *
- * @package     States
- * @subpackage  Demo
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -37,7 +40,8 @@ use UniAlteri\States\States;
 class StateDefault extends States\AbstractState
 {
     /**
-     * Return the user name of this user
+     * Return the user name of this user.
+     *
      * @return string
      */
     public function getName()
@@ -46,7 +50,8 @@ class StateDefault extends States\AbstractState
     }
 
     /**
-     * Transform this user as moderator
+     * Transform this user as moderator.
+     *
      * @param boolean $value
      */
     protected function setModerator($value)

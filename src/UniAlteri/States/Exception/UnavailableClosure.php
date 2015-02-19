@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -11,13 +11,18 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @category    Exception
+ *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\States\Exception;
 
 /**
@@ -25,10 +30,12 @@ namespace UniAlteri\States\Exception;
  * Exception threw when the proxy requires a closure from a state (to use static behavior)
  * but there are no available state.
  *
- * @package     States
  * @category    Exception
+ *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>

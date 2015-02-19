@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\DI;
@@ -25,11 +28,12 @@ use UniAlteri\States\DI\Exception;
 
 /**
  * Class MockDIContainer
- * Mock DI Container to unit testing different elements of this libs
- * @package     States
- * @subpackage  Tests
+ * Mock DI Container to unit testing different elements of this libs.
+ *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -37,19 +41,21 @@ use UniAlteri\States\DI\Exception;
 class MockDIContainer implements DI\ContainerInterface
 {
     /**
-     * Registered instance in this container
+     * Registered instance in this container.
+     *
      * @var array
      */
     protected $instance = array();
 
     /**
-     * Registered service in this container
+     * Registered service in this container.
+     *
      * @var array
      */
     protected $service = array();
 
     /**
-     * To support object cloning : All registry must be cloning, but not theirs values
+     * To support object cloning : All registry must be cloning, but not theirs values.
      */
     public function __clone()
     {
@@ -57,10 +63,12 @@ class MockDIContainer implements DI\ContainerInterface
     }
 
     /**
-     * Call an entry of the container to retrieve an instance or a service
+     * Call an entry of the container to retrieve an instance or a service.
      *
-     * @param  string                    $name : identifier of the instance
+     * @param string $name : identifier of the instance
+     *
      * @return mixed
+     *
      * @throws Exception\InvalidArgument if the identifier is not defined
      */
     public function get($name)
@@ -79,10 +87,13 @@ class MockDIContainer implements DI\ContainerInterface
     }
 
     /**
-     * Register a new shared object into container (the same object is returned at each call)
-     * @param  string                   $name
-     * @param  object|callable|string   $instance
+     * Register a new shared object into container (the same object is returned at each call).
+     *
+     * @param string                 $name
+     * @param object|callable|string $instance
+     *
      * @return $this
+     *
      * @throws Exception\ClassNotFound  if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      */
@@ -92,10 +103,13 @@ class MockDIContainer implements DI\ContainerInterface
     }
 
     /**
-     * Register a new service into container (a new instance is returned at each call)
-     * @param  string                   $name     : interface name, class name, alias
-     * @param  object|callable|string   $instance
-     * @return string                   unique identifier of the object
+     * Register a new service into container (a new instance is returned at each call).
+     *
+     * @param string                 $name     : interface name, class name, alias
+     * @param object|callable|string $instance
+     *
+     * @return string unique identifier of the object
+     *
      * @throws Exception\ClassNotFound  if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      */
@@ -105,8 +119,10 @@ class MockDIContainer implements DI\ContainerInterface
     }
 
     /**
-     * Test if an entry is already registered
-     * @param  string  $name
+     * Test if an entry is already registered.
+     *
+     * @param string $name
+     *
      * @return boolean
      */
     public function testEntry($name)
@@ -115,8 +131,10 @@ class MockDIContainer implements DI\ContainerInterface
     }
 
     /**
-     * Remove an entry from the container
-     * @param  string $name
+     * Remove an entry from the container.
+     *
+     * @param string $name
+     *
      * @return $this
      */
     public function unregister($name)
@@ -133,8 +151,10 @@ class MockDIContainer implements DI\ContainerInterface
     }
 
     /**
-     * Configure the container from an array (provided by an INI file or other)
-     * @param  array|\ArrayObject $params
+     * Configure the container from an array (provided by an INI file or other).
+     *
+     * @param array|\ArrayObject $params
+     *
      * @return mixed
      */
     public function configure($params)
@@ -143,7 +163,8 @@ class MockDIContainer implements DI\ContainerInterface
     }
 
     /**
-     * List all entries of this container
+     * List all entries of this container.
+     *
      * @return string[]
      */
     public function listDefinitions()

@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\DI;
 
 use UniAlteri\States\DI;
@@ -25,12 +28,12 @@ use UniAlteri\Tests\Support;
 
 /**
  * Class ContainerTest
- * Check if the DI Container has the excepted behavior defined by the interface DI\ContainerInterface
+ * Check if the DI Container has the excepted behavior defined by the interface DI\ContainerInterface.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -38,7 +41,8 @@ use UniAlteri\Tests\Support;
 class ContainerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Return a valid container for tests
+     * Return a valid container for tests.
+     *
      * @return DI\ContainerInterface
      */
     protected function buildContainer()
@@ -60,7 +64,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
+     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*.
      */
     public function testRegisterInstanceBadIdentifier()
     {
@@ -75,7 +79,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The container must throws an exception if the class of the instance does not exist
+     * The container must throws an exception if the class of the instance does not exist.
      */
     public function testRegisterInstanceBadClass()
     {
@@ -90,7 +94,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test return of registerInstance
+     * Test return of registerInstance.
      */
     public function testRegisterInstanceClass()
     {
@@ -100,7 +104,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Non invokable object are allowed for instance, but not for service
+     * Non invokable object are allowed for instance, but not for service.
      */
     public function testRegisterInstanceNonInvokableObject()
     {
@@ -110,7 +114,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test return of registerInstance
+     * Test return of registerInstance.
      */
     public function testRegisterInstanceInvokableObject()
     {
@@ -120,7 +124,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test return of registerInstance
+     * Test return of registerInstance.
      */
     public function testRegisterInstanceFunction()
     {
@@ -130,7 +134,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test return of registerInstance
+     * Test return of registerInstance.
      */
     public function testRegisterInstanceArray()
     {
@@ -146,7 +150,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
+     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*.
      */
     public function testRegisterServiceBadIdentifier()
     {
@@ -161,7 +165,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The container must throws an exception if the class of the service does not exist
+     * The container must throws an exception if the class of the service does not exist.
      */
     public function testRegisterServiceBadClass()
     {
@@ -176,7 +180,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test return of registerService
+     * Test return of registerService.
      */
     public function testRegisterServiceClass()
     {
@@ -186,7 +190,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test return of registerService
+     * Test return of registerService.
      */
     public function testRegisterServiceArray()
     {
@@ -202,7 +206,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test return of registerService with non invokable object
+     * Test return of registerService with non invokable object.
      */
     public function testRegisterServiceNonInvokableObject()
     {
@@ -218,7 +222,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test return of registerService
+     * Test return of registerService.
      */
     public function testRegisterServiceInvokableObject()
     {
@@ -228,7 +232,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test return of registerService
+     * Test return of registerService.
      */
     public function testRegisterServiceFunction()
     {
@@ -238,7 +242,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
+     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*.
      */
     public function testTestInstanceBadIdentifier()
     {
@@ -253,7 +257,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * test behavior of testInstance(), return true if an instance of service exist
+     * test behavior of testInstance(), return true if an instance of service exist.
      */
     public function testTestInstance()
     {
@@ -269,7 +273,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*
+     * The container must accepts only identifier as [a-zA-Z_][a-zA-Z0-9_/]*.
      */
     public function testGetBadIdentifier()
     {
@@ -284,7 +288,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The container must throw the exception Exception\InvalidArgument when the element is not registered
+     * The container must throw the exception Exception\InvalidArgument when the element is not registered.
      */
     public function testGetNotRegistered()
     {
@@ -299,7 +303,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test to get an instance
+     * Test to get an instance.
      */
     public function testGetInstanceClass()
     {
@@ -313,7 +317,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test to get an instance
+     * Test to get an instance.
      */
     public function testGetInstanceObject()
     {
@@ -327,7 +331,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test to get an instance
+     * Test to get an instance.
      */
     public function testGetInstanceFunction()
     {
@@ -342,7 +346,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test to get a service behavior
+     * Test to get a service behavior.
      */
     public function testGetServiceClass()
     {
@@ -357,7 +361,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test to get a service behavior for invokable
+     * Test to get a service behavior for invokable.
      */
     public function testGetServiceObject()
     {
@@ -369,7 +373,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test to get a service behavior for anonymous function
+     * Test to get a service behavior for anonymous function.
      */
     public function testGetServiceFunction()
     {
@@ -381,7 +385,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if the params passed to configure is not an array, the container throw an exception
+     * Test if the params passed to configure is not an array, the container throw an exception.
      */
     public function testConfigureBadArray()
     {
@@ -397,7 +401,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test configuration of the container with an array
+     * Test configuration of the container with an array.
      */
     public function testConfigure()
     {
@@ -420,7 +424,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if the id to unregister is not valid, the container throw an exception
+     * Test if the id to unregister is not valid, the container throw an exception.
      */
     public function testUnregisterBadId()
     {
@@ -436,7 +440,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test unregister an instance from the DI
+     * Test unregister an instance from the DI.
      */
     public function testUnregister()
     {
@@ -449,7 +453,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if the container return all instances with the ids
+     * Test if the container return all instances with the ids.
      */
     public function testListDefinitions()
     {
@@ -466,7 +470,7 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test cloning behavior : Previous service/instance are shared between two cloned instance
-     * But, each container progresses independently (can update, add or remove instance or service)
+     * But, each container progresses independently (can update, add or remove instance or service).
      */
     public function testCloning()
     {

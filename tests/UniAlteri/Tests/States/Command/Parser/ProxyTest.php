@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\Command\Parser;
 
 use UniAlteri\States\Command\Parser\Proxy;
@@ -26,12 +29,12 @@ use UniAlteri\States\Exception\UnReadablePath;
 use UniAlteri\States\Exception\ClassNotFound;
 
 /**
- * Class ProxyTest
+ * Class ProxyTest.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -62,8 +65,10 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Prepare and build a proxy parser to test
-     * @param  string $path
+     * Prepare and build a proxy parser to test.
+     *
+     * @param string $path
+     *
      * @return Proxy
      */
     protected function buildProxyParser($path)

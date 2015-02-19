@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\States;
 
 use UniAlteri\States\Proxy;
@@ -26,12 +29,12 @@ use UniAlteri\Tests\Support;
 /**
  * Class StateTest
  * Implementation of AbstractStatesTest to test the trait \UniAlteri\States\States\StateTrait and
- * the abstract class \UniAlteri\States\States\AbstractState
+ * the abstract class \UniAlteri\States\States\AbstractState.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -39,8 +42,10 @@ use UniAlteri\Tests\Support;
 class StateTest extends AbstractStatesTest
 {
     /**
-     * Build a basic object to provide only public methods
-     * @param  boolean                $initializeContainer initialize virtual di container for state
+     * Build a basic object to provide only public methods.
+     *
+     * @param boolean $initializeContainer initialize virtual di container for state
+     *
      * @return Support\MockOnlyPublic
      */
     protected function getPublicClassObject($initializeContainer = true)
@@ -49,8 +54,10 @@ class StateTest extends AbstractStatesTest
     }
 
     /**
-     * Build a basic object to provide only protected methods
-     * @param  boolean                   $initializeContainer initialize virtual di container for state
+     * Build a basic object to provide only protected methods.
+     *
+     * @param boolean $initializeContainer initialize virtual di container for state
+     *
      * @return Support\MockOnlyProtected
      */
     protected function getProtectedClassObject($initializeContainer = true)
@@ -59,8 +66,10 @@ class StateTest extends AbstractStatesTest
     }
 
     /**
-     * Build a basic object to provide only private methods
-     * @param  boolean                 $initializeContainer initialize virtual di container for state
+     * Build a basic object to provide only private methods.
+     *
+     * @param boolean $initializeContainer initialize virtual di container for state
+     *
      * @return Support\MockOnlyPrivate
      */
     protected function getPrivateClassObject($initializeContainer = true)
@@ -69,7 +78,8 @@ class StateTest extends AbstractStatesTest
     }
 
     /**
-     * Build a virtual proxy for test
+     * Build a virtual proxy for test.
+     *
      * @return Proxy\ProxyInterface
      */
     protected function getMockProxy()

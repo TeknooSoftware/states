@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\Proxy;
 
 use UniAlteri\States\Proxy;
@@ -25,12 +28,12 @@ use UniAlteri\Tests\Support;
 
 /**
  * Class StandardTest
- * Implementation of AbstractProxyTest to test the proxy Proxy\Standard
+ * Implementation of AbstractProxyTest to test the proxy Proxy\Standard.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -38,7 +41,8 @@ use UniAlteri\Tests\Support;
 class StandardTest extends AbstractProxyTest
 {
     /**
-     * Build a proxy object, into $this->proxy to test it
+     * Build a proxy object, into $this->proxy to test it.
+     *
      * @return Proxy\ProxyInterface
      */
     protected function buildProxy()

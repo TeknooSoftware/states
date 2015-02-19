@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\DI;
@@ -25,12 +28,12 @@ use UniAlteri\States\DI\Exception;
 
 /**
  * Class MockInjectionClosure
- * Mock injection closure to tests the trait state and proxies behaviors
+ * Mock injection closure to tests the trait state and proxies behaviors.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -48,7 +51,8 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     protected $properties = array();
 
     /**
-     * To register a DI container for this object
+     * To register a DI container for this object.
+     *
      * @param DI\ContainerInterface $container
      */
     public function setDIContainer(DI\ContainerInterface $container)
@@ -57,7 +61,8 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     }
 
     /**
-     * To return the DI Container used for this object
+     * To return the DI Container used for this object.
+     *
      * @return DI\ContainerInterface
      */
     public function getDIContainer()
@@ -66,7 +71,8 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     }
 
     /**
-     * Execute the closure
+     * Execute the closure.
+     *
      * @return mixed
      */
     public function __invoke()
@@ -76,8 +82,10 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     }
 
     /**
-     * Return the closure contained into this
-     * @param  \Closure $closure
+     * Return the closure contained into this.
+     *
+     * @param \Closure $closure
+     *
      * @return $this
      */
     public function setClosure($closure)
@@ -88,7 +96,8 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     }
 
     /**
-     * Return the closure contained into this
+     * Return the closure contained into this.
+     *
      * @return \Closure
      */
     public function getClosure()
@@ -98,9 +107,11 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
 
     /**
      * To allow the closure to save a static property,
-     * to allow developer to not use "static" key word into the closure
-     * @param  string $name
-     * @param  mixed  $value
+     * to allow developer to not use "static" key word into the closure.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -113,8 +124,10 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     }
 
     /**
-     * Remove a static property
-     * @param  string $name
+     * Remove a static property.
+     *
+     * @param string $name
+     *
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -129,8 +142,10 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     }
 
     /**
-     * Return to the closure a static property
-     * @param  string $name
+     * Return to the closure a static property.
+     *
+     * @param string $name
+     *
      * @return mixed
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -145,8 +160,10 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     }
 
     /**
-     * Check if a static property is stored
-     * @param  string  $name
+     * Check if a static property is stored.
+     *
+     * @param string $name
+     *
      * @return boolean
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */

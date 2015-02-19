@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Loader
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\States\Loader;
 
 use UniAlteri\States\DI;
@@ -27,45 +30,51 @@ use UniAlteri\States\Proxy;
 /**
  * Class FinderStandard
  * Default implementation of the finder. It is used with this library to find from each stated class
- * all states and the proxy
+ * all states and the proxy.
  *
- * @package     States
- * @subpackage  Loader
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @api
  */
 class FinderStandard implements FinderInterface
 {
     /**
-     * Current stated class's name
+     * Current stated class's name.
+     *
      * @var string
      */
     protected $statedClassName = null;
 
     /**
-     * Folder/Phar of the stated class
+     * Folder/Phar of the stated class.
+     *
      * @var string
      */
     protected $pathString = null;
 
     /**
-     * DI Container to use with this finder
+     * DI Container to use with this finder.
+     *
      * @var DI\ContainerInterface
      */
     protected $diContainer = null;
 
     /**
-     * Default proxy class to use when there are no proxy class
+     * Default proxy class to use when there are no proxy class.
+     *
      * @var string
      */
     protected $defaultProxyClassName = '\UniAlteri\States\Proxy\Standard';
 
     /**
-     * Initialize finder
+     * Initialize finder.
+     *
      * @param string $statedClassName
      * @param string $pathString
      */
@@ -76,8 +85,10 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To register a DI container for this object
-     * @param  DI\ContainerInterface $container
+     * To register a DI container for this object.
+     *
+     * @param DI\ContainerInterface $container
+     *
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
@@ -88,7 +99,8 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To return the DI Container used for this object
+     * To return the DI Container used for this object.
+     *
      * @return DI\ContainerInterface
      */
     public function getDIContainer()
@@ -97,8 +109,10 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To list all available states of the stated class
+     * To list all available states of the stated class.
+     *
      * @return string[]
+     *
      * @throws Exception\UnavailablePath if the states' folder is not available
      * @throws Exception\UnReadablePath  if the states' folder is not readable
      */
@@ -144,9 +158,12 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To load the required state object of the stated class
-     * @param  string                     $stateName
+     * To load the required state object of the stated class.
+     *
+     * @param string $stateName
+     *
      * @return string
+     *
      * @throws Exception\UnReadablePath   if the stated file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
@@ -177,9 +194,12 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To load and build the required state object of the stated class
-     * @param  string                     $stateName
+     * To load and build the required state object of the stated class.
+     *
+     * @param string $stateName
+     *
      * @return States\StateInterface
+     *
      * @throws Exception\UnReadablePath   if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
@@ -203,8 +223,10 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To extract the class name from the stated class name with namespace
-     * @param  string $statedClassName
+     * To extract the class name from the stated class name with namespace.
+     *
+     * @param string $statedClassName
+     *
      * @return string
      */
     protected function getClassedName($statedClassName)
@@ -216,8 +238,10 @@ class FinderStandard implements FinderInterface
 
     /**
      * To search and load the proxy class for this stated class.
-     * If the class has not proxy, load the default proxy for this stated class
+     * If the class has not proxy, load the default proxy for this stated class.
+     *
      * @return string
+     *
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function loadProxy()
@@ -256,9 +280,12 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To load and build a proxy object for the stated class
-     * @param  array                  $arguments argument for proxy
+     * To load and build a proxy object for the stated class.
+     *
+     * @param array $arguments argument for proxy
+     *
      * @return Proxy\ProxyInterface
+     *
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function buildProxy($arguments = null)

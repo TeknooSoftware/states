@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,12 +10,14 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  *
  * Test behavior of the bootstrap file. It initialize the library :
@@ -24,6 +26,7 @@
  * * Register the service to build new finders for each stated class
  * * Register the service to build new injection closure for each stated classes' methods
  */
+
 namespace UniAlteri\Tests\States;
 
 use UniAlteri\States;
@@ -38,12 +41,12 @@ use UniAlteri\Tests\Support;
  * * Create an instance of the loader
  * * Create a new instance of the DI Container
  * * Register the service to build new finders for each stated class
- * * Register the service to build new injection closure for each stated classes' methods
+ * * Register the service to build new injection closure for each stated classes' methods.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>

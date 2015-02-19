@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\Loader;
@@ -25,12 +28,12 @@ use UniAlteri\States\Loader\Exception;
 
 /**
  * Class MockIncludePathManager
- * Mock Include Path manager to unit test Loader behavior
+ * Mock Include Path manager to unit test Loader behavior.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -38,21 +41,26 @@ use UniAlteri\States\Loader\Exception;
 class MockIncludePathManager implements Loader\IncludePathManagerInterface
 {
     /**
-     * Current included paths, not use current include path to avoid conflict with the testing environment
+     * Current included paths, not use current include path to avoid conflict with the testing environment.
+     *
      * @var string[]
      */
     protected $paths = array();
 
     /**
-     * History of all change
+     * History of all change.
+     *
      * @var array
      */
     protected $allChangePaths = array();
 
     /**
-     * Sets the include_path configuration option
-     * @param  string[]                  $paths (paths must be split into an array)
+     * Sets the include_path configuration option.
+     *
+     * @param string[] $paths (paths must be split into an array)
+     *
      * @return $this
+     *
      * @throws Exception\IllegalArgument if the argument $paths is not an array of string
      */
     public function setIncludePath($paths)
@@ -70,7 +78,8 @@ class MockIncludePathManager implements Loader\IncludePathManagerInterface
     }
 
     /**
-     * Gets the current include_path configuration option
+     * Gets the current include_path configuration option.
+     *
      * @return string[] (paths must be split into an array)
      */
     public function getIncludePath()
@@ -80,7 +89,7 @@ class MockIncludePathManager implements Loader\IncludePathManagerInterface
 
     /**
      * To reset history of changes
-     * Method added, called by Unit TestCase to reinitialize the manager before each tests
+     * Method added, called by Unit TestCase to reinitialize the manager before each tests.
      */
     public function resetAllChangePath()
     {
@@ -88,7 +97,8 @@ class MockIncludePathManager implements Loader\IncludePathManagerInterface
     }
 
     /**
-     * Get all change path
+     * Get all change path.
+     *
      * @return array
      */
     public function getAllChangePaths()

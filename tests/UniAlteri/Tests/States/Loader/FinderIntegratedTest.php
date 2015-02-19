@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\Loader;
 
 use UniAlteri\States\Loader;
@@ -28,12 +31,12 @@ use UniAlteri\Tests\Support;
 
 /**
  * Class FinderIntegratedTest
- * Tests the excepted behavior of integrated finder implementing the interface \UniAlteri\States\Loader\FinderInterface
+ * Tests the excepted behavior of integrated finder implementing the interface \UniAlteri\States\Loader\FinderInterface.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -41,9 +44,11 @@ use UniAlteri\Tests\Support;
 class FinderIntegratedTest extends FinderStandardTest
 {
     /**
-     * Initialize the integrated finder for test with mock objects
-     * @param  string                $statedClassName
-     * @param  string                $pathString
+     * Initialize the integrated finder for test with mock objects.
+     *
+     * @param string $statedClassName
+     * @param string $pathString
+     *
      * @return Loader\FinderStandard
      */
     protected function initializeFinder($statedClassName, $pathString)
@@ -56,7 +61,7 @@ class FinderIntegratedTest extends FinderStandardTest
     }
 
     /**
-     * Test exception when the Container is not valid when we set a bad object as di container
+     * Test exception when the Container is not valid when we set a bad object as di container.
      */
     public function testSetDiContainerBad()
     {
@@ -71,7 +76,7 @@ class FinderIntegratedTest extends FinderStandardTest
     }
 
     /**
-     * Test behavior for methods Set And GetDiContainer
+     * Test behavior for methods Set And GetDiContainer.
      */
     public function testSetAndGetDiContainer()
     {
@@ -83,7 +88,7 @@ class FinderIntegratedTest extends FinderStandardTest
     }
 
     /**
-     * Initialize the startup factory to run this tests with the integrated finder (use the integrated proxy)
+     * Initialize the startup factory to run this tests with the integrated finder (use the integrated proxy).
      */
     public function testBuildProxyDefault()
     {

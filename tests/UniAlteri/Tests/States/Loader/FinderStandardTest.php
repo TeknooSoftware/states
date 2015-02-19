@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\Loader;
 
 use UniAlteri\States\Loader;
@@ -27,12 +30,12 @@ use UniAlteri\Tests\Support;
 
 /**
  * Class FinderStandardTest
- * Tests the excepted behavior of standard finder implementing the interface \UniAlteri\States\Loader\FinderInterface
+ * Tests the excepted behavior of standard finder implementing the interface \UniAlteri\States\Loader\FinderInterface.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -40,43 +43,49 @@ use UniAlteri\Tests\Support;
 class FinderStandardTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Finder to test
+     * Finder to test.
+     *
      * @var Loader\FinderInterface
      */
     protected $finder = null;
 
     /**
-     * Mock stated class 1
+     * Mock stated class 1.
+     *
      * @var string
      */
     protected $statedClass1Path = null;
 
     /**
-     * Mock stated class 2
+     * Mock stated class 2.
+     *
      * @var string
      */
     protected $statedClass2Path = null;
 
     /**
-     * Mock stated class 3
+     * Mock stated class 3.
+     *
      * @var string
      */
     protected $statedClass3Path = null;
 
     /**
-     * Mock stated class 4
+     * Mock stated class 4.
+     *
      * @var string
      */
     protected $statedClass4Path = null;
 
     /**
-     * Mock stated class 5
+     * Mock stated class 5.
+     *
      * @var string
      */
     protected $statedClass5Path = null;
 
     /**
-     * Prepare environment before test
+     * Prepare environment before test.
      */
     protected function setUp()
     {
@@ -92,7 +101,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Clean environment after test
+     * Clean environment after test.
      */
     protected function tearDown()
     {
@@ -100,9 +109,11 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Initialize the finder for test
-     * @param  string                $statedClassName
-     * @param  string                $pathString
+     * Initialize the finder for test.
+     *
+     * @param string $statedClassName
+     * @param string $pathString
+     *
      * @return Loader\FinderStandard
      */
     protected function initializeFinder($statedClassName, $pathString)
@@ -115,7 +126,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exception when the Container is not valid when we set a bad object as di container
+     * Test exception when the Container is not valid when we set a bad object as di container.
      */
     public function testSetDiContainerBad()
     {
@@ -130,7 +141,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior for methods Set And GetDiContainer
+     * Test behavior for methods Set And GetDiContainer.
      */
     public function testSetAndGetDiContainer()
     {
@@ -142,7 +153,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the sub directory where states files are stored does not exist
+     * Test the behavior of the finder when the sub directory where states files are stored does not exist.
      */
     public function testListStatePathNotFound()
     {
@@ -158,7 +169,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Phar are not currently supported
+     * Phar are not currently supported.
      */
     public function testListStatePathNotFoundInPhar()
     {
@@ -174,7 +185,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the sub directory where states files are stored is not readable
+     * Test the behavior of the finder when the sub directory where states files are stored is not readable.
      */
     public function testListStatePathNotReadable()
     {
@@ -191,7 +202,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the sub directory is browsed
+     * Test the behavior of the finder when the sub directory is browsed.
      */
     public function testListStates()
     {
@@ -211,7 +222,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the file of the loading state is not readable
+     * Test the behavior of the finder when the file of the loading state is not readable.
      */
     public function testLoadStateNotFound()
     {
@@ -228,7 +239,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the state class has not been loaded after including
+     * Test the behavior of the finder when the state class has not been loaded after including.
      */
     public function testLoadStateWithoutClass()
     {
@@ -244,7 +255,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test normal behavior of the finder to load state
+     * Test normal behavior of the finder to load state.
      */
     public function testLoadState()
     {
@@ -255,7 +266,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the file of the building state is not readable
+     * Test the behavior of the finder when the file of the building state is not readable.
      */
     public function testBuildStateNotFound()
     {
@@ -272,7 +283,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the state class has not been loaded after including
+     * Test the behavior of the finder when the state class has not been loaded after including.
      */
     public function testBuildStateWithoutClass()
     {
@@ -288,7 +299,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the building state does not implement the interface States\StateInterface
+     * Test the behavior of the finder when the building state does not implement the interface States\StateInterface.
      */
     public function testBuildStateBadImplementation()
     {
@@ -304,7 +315,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test normal behavior of the finder to load (if needed) and build state
+     * Test normal behavior of the finder to load (if needed) and build state.
      */
     public function testBuildState()
     {
@@ -316,7 +327,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test normal behavior of the finder to create an alias of the Standard Proxy with the stated class name
-     * when developers are not defined a proxy for the current stated class
+     * when developers are not defined a proxy for the current stated class.
      */
     public function testLoadProxyDefault()
     {
@@ -327,7 +338,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test normal behavior of the finder to create an alias of the Standard Proxy with the stated class name
-     * when developers are not defined a proxy for the current stated class and create a new instance of this proxy
+     * when developers are not defined a proxy for the current stated class and create a new instance of this proxy.
      */
     public function testBuildProxyDefault()
     {
@@ -339,7 +350,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the building proxy has not been found into the proxy file
+     * Test the behavior of the finder when the building proxy has not been found into the proxy file.
      */
     public function testLoadProxySpecificBadClass()
     {
@@ -355,7 +366,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the building proxy has not been found into the proxy file
+     * Test the behavior of the finder when the building proxy has not been found into the proxy file.
      */
     public function testBuildProxySpecificBadClass()
     {
@@ -371,7 +382,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the building proxy does not implement the interface Proxy\ProxyInterface
+     * Test the behavior of the finder when the building proxy does not implement the interface Proxy\ProxyInterface.
      */
     public function testBuildProxySpecificBadInterface()
     {
@@ -387,7 +398,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test normal behavior of the finder load the developer defined proxy into the proxy file in the stated class path
+     * Test normal behavior of the finder load the developer defined proxy into the proxy file in the stated class path.
      */
     public function testLoadProxySpecific()
     {
@@ -399,7 +410,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test normal behavior of the finder load if needed and build the developer defined proxy into
-     * the proxy file in the stated class path
+     * the proxy file in the stated class path.
      */
     public function testBuildProxySpecific()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,26 +10,29 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\Functional;
 
 use UniAlteri\States\Loader;
 
 /**
  * Class MultipleTest
- * Functional test number 1, from demo article
+ * Functional test number 1, from demo article.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -37,13 +40,15 @@ use UniAlteri\States\Loader;
 class MultipleTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Loader of the states library
+     * Loader of the states library.
+     *
      * @var \UniAlteri\States\Loader\LoaderInterface
      */
     protected $loader = null;
 
     /**
-     * Load the library State and retrieve its default loader from its bootstrap
+     * Load the library State and retrieve its default loader from its bootstrap.
+     *
      * @return \UniAlteri\States\Loader\LoaderInterface
      */
     protected function getLoader()
@@ -56,7 +61,7 @@ class MultipleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Create the PHAR multiple.phar for the test if this file does not exist
+     * Create the PHAR multiple.phar for the test if this file does not exist.
      */
     protected function setUp()
     {
@@ -78,7 +83,7 @@ class MultipleTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Unload the loader from SPL Autoload to not interfere with others tests
+     * Unload the loader from SPL Autoload to not interfere with others tests.
      */
     protected function tearDown()
     {

@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Factory
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\States\Factory;
 
 use UniAlteri\States\DI;
@@ -27,10 +30,10 @@ use UniAlteri\States\DI;
  * Embedded "stated object" factory to use with this library to build a new instance of a stated class.
  * It is an alternative of Standard factory to allow developers to use the operator `new` with the stated class.
  *
- * @package     States
- * @subpackage  Factory
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -47,9 +50,12 @@ class Integrated implements FactoryInterface
      * It registers the class name and its path, retrieves the DI Container,
      * register the factory in the DI Container, it retrieves the finder object and load the proxy
      * from the finder.
-     * @param  string                           $statedClassName the name of the stated class
-     * @param  string                           $path            of the stated class
+     *
+     * @param string $statedClassName the name of the stated class
+     * @param string $path            of the stated class
+     *
      * @return boolean
+     *
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */

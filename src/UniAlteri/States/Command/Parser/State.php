@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,28 +10,29 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     0.9.2
  */
+
 namespace UniAlteri\States\Command\Parser;
 
-use UniAlteri\States\Command;
 use UniAlteri\States\Loader\FinderInterface;
 
 /**
  * Class State
- * Parser to analyze states
+ * Parser to analyze states.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -39,7 +40,8 @@ use UniAlteri\States\Loader\FinderInterface;
 class State extends AbstractParser
 {
     /**
-     * List all defined states for this class
+     * List all defined states for this class.
+     *
      * @return \string[]|\ArrayObject
      */
     public function listStates()
@@ -56,9 +58,12 @@ class State extends AbstractParser
     }
 
     /**
-     * Test if the state implements the good interface defined in the library States
-     * @param  string                   $stateName to test
+     * Test if the state implements the good interface defined in the library States.
+     *
+     * @param string $stateName to test
+     *
      * @return bool
+     *
      * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isValidState($stateName)
@@ -68,9 +73,12 @@ class State extends AbstractParser
     }
 
     /**
-     * Test if the state is a subclass of the standard state implemented in the library States
-     * @param  string                   $stateName to test
+     * Test if the state is a subclass of the standard state implemented in the library States.
+     *
+     * @param string $stateName to test
+     *
      * @return bool
+     *
      * @throws Exception\UnReadablePath when the path is not readable
      */
     public function isStandardState($stateName)
@@ -80,10 +88,13 @@ class State extends AbstractParser
     }
 
     /**
-     * Test if the state use of the default implementation of this library States provided by the trait
-     * @param  string                   $stateName to test
-     *                                             \UniAlteri\States\States\TraitStates
+     * Test if the state use of the default implementation of this library States provided by the trait.
+     *
+     * @param string $stateName to test
+     *                          \UniAlteri\States\States\TraitStates
+     *
      * @return bool
+     *
      * @throws Exception\UnReadablePath when the path is not readable
      */
     public function useTraitState($stateName)

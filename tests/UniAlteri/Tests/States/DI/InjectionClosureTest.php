@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\DI;
 
 use UniAlteri\States\DI;
@@ -26,12 +29,12 @@ use UniAlteri\Tests\Support;
 
 /**
  * Class InjectionClosureTest
- * Check if the Injection Closure class has the excepted behavior defined by the DI\InjectionClosureInterface
+ * Check if the Injection Closure class has the excepted behavior defined by the DI\InjectionClosureInterface.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -49,8 +52,10 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Return a valid InjectionClosureInterface object
-     * @param  callable            $closure
+     * Return a valid InjectionClosureInterface object.
+     *
+     * @param callable $closure
+     *
      * @return DI\InjectionClosure
      */
     protected function buildClosure(\Closure $closure = null)
@@ -68,7 +73,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exception when the Container is not valid when we set a bad object as di container
+     * Test exception when the Container is not valid when we set a bad object as di container.
      */
     public function testSetDiContainerBad()
     {
@@ -83,7 +88,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior for methods Set And GetDiContainer
+     * Test behavior for methods Set And GetDiContainer.
      */
     public function testSetAndGetDiContainer()
     {
@@ -95,7 +100,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The Injection Closure object must not accept object who not implement \Closure
+     * The Injection Closure object must not accept object who not implement \Closure.
+     *
      * @return bool
      */
     public function testBadClosureConstruct()
@@ -112,7 +118,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test Injection closure creation
+     * Test Injection closure creation.
      */
     public function testCreateClosure()
     {
@@ -121,7 +127,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test invoking from injection with the closure, execute the closure (the closure test returns arguments order
+     * Test invoking from injection with the closure, execute the closure (the closure test returns arguments order.
      */
     public function testInvokeWithArgs()
     {
@@ -140,7 +146,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if the injector car return the original closure
+     * Test if the injector car return the original closure.
      */
     public function testGetClosure()
     {
@@ -153,7 +159,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Storage must throw an exception if the attribute name is not valid
+     * Storage must throw an exception if the attribute name is not valid.
      */
     public function testSaveBadStaticProperty()
     {
@@ -168,7 +174,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of injector with static properties
+     * Test behavior of injector with static properties.
      */
     public function testGetSaveStaticProperty()
     {
@@ -184,7 +190,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Storage must throw an exception if the attribute name is not valid
+     * Storage must throw an exception if the attribute name is not valid.
      */
     public function testGetBadStaticProperty()
     {
@@ -199,7 +205,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if statics properties are persistent on all call of the closure
+     * Test if statics properties are persistent on all call of the closure.
      */
     public function testPersistenceOfStaticProperty()
     {
@@ -220,7 +226,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Storage must throw an exception if the attribute name is not valid
+     * Storage must throw an exception if the attribute name is not valid.
      */
     public function testDeleteBadStaticProperty()
     {
@@ -235,7 +241,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test deletion
+     * Test deletion.
      */
     public function testDeleteStaticProperty()
     {
@@ -247,7 +253,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Storage must throw an exception if the attribute name is not valid
+     * Storage must throw an exception if the attribute name is not valid.
      */
     public function testTestBadStaticProperty()
     {
@@ -262,7 +268,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test "test" to check if a static property exists
+     * Test "test" to check if a static property exists.
      */
     public function testTestStaticProperty()
     {

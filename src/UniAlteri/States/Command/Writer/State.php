@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,28 +10,30 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     0.9.2
  */
+
 namespace UniAlteri\States\Command\Writer;
 
 use UniAlteri\States\Loader\FinderInterface;
 use UniAlteri\States\Proxy\ProxyInterface;
 
- /**
+/**
   * Class State
-  * Writer to create or update a state
+  * Writer to create or update a state.
   *
-  * @package     States
-  * @subpackage  Command
   * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+  *
   * @link        http://teknoo.it/states Project website
+  *
   * @license     http://teknoo.it/states/license/mit         MIT License
   * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
   * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -39,11 +41,12 @@ use UniAlteri\States\Proxy\ProxyInterface;
  class State extends AbstractWriter
  {
      /**
-      * Generator to build the php code for the new state of the stated class
+      * Generator to build the php code for the new state of the stated class.
       *
       * @param string $className
       * @param string $namespace
       * @param string $stateName
+      *
       * @return string
       */
      protected function generateState($className, $namespace, $stateName)
@@ -69,9 +72,11 @@ EOF;
      }
 
      /**
-      * Method to create the default and mandatory state for the defined stated class
+      * Method to create the default and mandatory state for the defined stated class.
+      *
       * @param string $className
       * @param string $namespace
+      *
       * @return bool
       */
      public function createDefaultState($className, $namespace)
@@ -80,10 +85,12 @@ EOF;
      }
 
      /**
-      * Method to create a new state for the defined stated class
+      * Method to create a new state for the defined stated class.
+      *
       * @param string $className
       * @param string $namespace
       * @param string $stateName
+      *
       * @return bool
       */
      public function createState($className, $namespace, $stateName)

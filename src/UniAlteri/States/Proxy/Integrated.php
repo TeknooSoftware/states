@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Proxy
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\States\Proxy;
 
 /**
@@ -34,10 +37,10 @@ namespace UniAlteri\States\Proxy;
  * This proxy is a variant of the default proxy to allow developer to create an instance a stated class
  * like another class with the operator new.
  *
- * @package     States
- * @subpackage  Proxy
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -45,13 +48,15 @@ namespace UniAlteri\States\Proxy;
 class Integrated extends Standard
 {
     /**
-     * Class name of the factory to use in set up to initialize this object in this construction
+     * Class name of the factory to use in set up to initialize this object in this construction.
+     *
      * @var string
      */
     protected static $startupFactoryClassName = '\UniAlteri\States\Factory\StandardStartupFactory';
 
     /**
-     * Default constructor used to initialize the stated object with its factory
+     * Default constructor used to initialize the stated object with its factory.
+     *
      * @throws Exception\IllegalFactory
      * @throws Exception\UnavailableFactory
      */
@@ -64,8 +69,10 @@ class Integrated extends Standard
     }
 
     /**
-     * Method called by constructor to initialize this object from the stated class's factory
+     * Method called by constructor to initialize this object from the stated class's factory.
+     *
      * @api
+     *
      * @throws Exception\IllegalFactory
      * @throws Exception\UnavailableFactory
      */

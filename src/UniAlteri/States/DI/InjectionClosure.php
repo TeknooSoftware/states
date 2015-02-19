@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  DI
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\States\DI;
 
 /**
@@ -26,37 +29,42 @@ namespace UniAlteri\States\DI;
  * in the proxy. These containers implement also a "static" mechanism to allow developers to use
  * clean static var in these functions.
  *
- * @package     States
- * @subpackage  DI
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com> *
+ *
  * @api
  */
 class InjectionClosure implements InjectionClosureInterface
 {
     /**
-     * DI Container to use with this closure
+     * DI Container to use with this closure.
+     *
      * @var ContainerInterface
      */
     protected $diContainer = null;
 
     /**
-     * Closure hosted by this object
+     * Closure hosted by this object.
+     *
      * @var \Closure
      */
     protected $closure = null;
 
     /**
-     * All statics properties
+     * All statics properties.
+     *
      * @var \ArrayObject
      */
     protected $properties = null;
 
     /**
-     * To create a closure for a state with a support of persistent vars. (aka "static")
+     * To create a closure for a state with a support of persistent vars. (aka "static").
+     *
      * @param \Closure $closure to initialize container with a closure
      */
     public function __construct(\Closure $closure = null)
@@ -68,8 +76,10 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * To To register a DI container for this object
-     * @param  ContainerInterface $container
+     * To To register a DI container for this object.
+     *
+     * @param ContainerInterface $container
+     *
      * @return $this
      */
     public function setDIContainer(ContainerInterface $container)
@@ -80,7 +90,8 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * To return the DI Container used for this object
+     * To return the DI Container used for this object.
+     *
      * @return ContainerInterface
      */
     public function getDIContainer()
@@ -89,7 +100,8 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * Execute the closure
+     * Execute the closure.
+     *
      * @return mixed
      */
     public function __invoke()
@@ -98,9 +110,12 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * To define the closure contained into $this
-     * @param  \Closure                  $closure
+     * To define the closure contained into $this.
+     *
+     * @param \Closure $closure
+     *
      * @return $this
+     *
      * @throws Exception\InvalidArgument when $closure is not an instance of \Closure
      */
     public function setClosure($closure)
@@ -115,7 +130,8 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * To return the closure contained into $this
+     * To return the closure contained into $this.
+     *
      * @return \Closure
      */
     public function getClosure()
@@ -124,9 +140,12 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * To test if the name of the static property is valid
-     * @param  string                $name
+     * To test if the name of the static property is valid.
+     *
+     * @param string $name
+     *
      * @return boolean
+     *
      * @throws Exception\IllegalName
      */
     protected function validatingName($name)
@@ -142,9 +161,11 @@ class InjectionClosure implements InjectionClosureInterface
 
     /**
      * To allow the closure to save a static property,
-     * to allow developer to not use "static" key word into the closure
-     * @param  string $name
-     * @param  mixed  $value
+     * to allow developer to not use "static" key word into the closure.
+     *
+     * @param string $name
+     * @param mixed  $value
+     *
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -158,8 +179,10 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * To remove a static property
-     * @param  string $name
+     * To remove a static property.
+     *
+     * @param string $name
+     *
      * @return $this
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -173,8 +196,10 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * To return to the closure a static property
-     * @param  string $name
+     * To return to the closure a static property.
+     *
+     * @param string $name
+     *
      * @return mixed
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
@@ -188,8 +213,10 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * To check if a static property is stored
-     * @param  string  $name
+     * To check if a static property is stored.
+     *
+     * @param string $name
+     *
      * @return boolean
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */

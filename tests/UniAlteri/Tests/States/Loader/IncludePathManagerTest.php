@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\Loader;
 
 use UniAlteri\States\Loader;
@@ -26,12 +29,12 @@ use UniAlteri\States\Loader\Exception;
 /**
  * Class IncludePathManagerTest
  * Tests the excepted behavior of standard include path manager implementing
- * the interface \UniAlteri\States\Loader\IncludePathManagerInterface
+ * the interface \UniAlteri\States\Loader\IncludePathManagerInterface.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -39,13 +42,14 @@ use UniAlteri\States\Loader\Exception;
 class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * To restore include path to continue test
+     * To restore include path to continue test.
+     *
      * @var null
      */
     protected $backupIncludePath = null;
 
     /**
-     * Prepare environment before test
+     * Prepare environment before test.
      */
     protected function setUp()
     {
@@ -54,7 +58,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Clean environment after test
+     * Clean environment after test.
      */
     protected function tearDown()
     {
@@ -63,7 +67,8 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Return object for test
+     * Return object for test.
+     *
      * @return Loader\IncludePathManager
      */
     protected function getManagementObject()
@@ -72,7 +77,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exception of the object
+     * Test exception of the object.
      */
     public function testSetIncludePathBadPaths()
     {
@@ -88,7 +93,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test set include path
+     * Test set include path.
      */
     public function testSetIncludePath()
     {
@@ -108,7 +113,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test set include path
+     * Test set include path.
      */
     public function testSetIncludePathWithArrayObject()
     {
@@ -131,7 +136,7 @@ class IncludePathManagerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test get include path
+     * Test get include path.
      */
     public function testGetIncludePath()
     {

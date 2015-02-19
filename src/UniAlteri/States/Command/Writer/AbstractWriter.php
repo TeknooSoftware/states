@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,27 +10,29 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     0.9.2
  */
+
 namespace UniAlteri\States\Command\Writer;
 
 use Gaufrette\Filesystem;
 
 /**
  * Class Writer
- * Abstract class Writer to create, update a file
+ * Abstract class Writer to create, update a file.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -38,25 +40,29 @@ use Gaufrette\Filesystem;
 abstract class AbstractWriter
 {
     /**
-     * Adapter to operate with file system
+     * Adapter to operate with file system.
+     *
      * @var callable
      */
     protected $adapterFactory;
 
     /**
-     * Filesystem object to manipulate file
+     * Filesystem object to manipulate file.
+     *
      * @var Filesystem
      */
     protected $fileSystem;
 
     /**
-     * Path of the current stated class
+     * Path of the current stated class.
+     *
      * @var string
      */
     protected $statedClassPath;
 
     /**
-     * Return the file system object from Gaufrette to
+     * Return the file system object from Gaufrette to.
+     *
      * @return Filesystem
      */
     protected function getFileSystem()
@@ -65,7 +71,8 @@ abstract class AbstractWriter
     }
 
     /**
-     * Path of the current stated class to operate
+     * Path of the current stated class to operate.
+     *
      * @param FileSystem $fileSystem
      * @param string     $path
      */
@@ -76,9 +83,11 @@ abstract class AbstractWriter
     }
 
     /**
-     * Create or replace a file with a content
-     * @param  string $file
-     * @param  string $content
+     * Create or replace a file with a content.
+     *
+     * @param string $file
+     * @param string $content
+     *
      * @return int
      */
     protected function write($file, $content)

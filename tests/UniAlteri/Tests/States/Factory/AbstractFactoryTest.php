@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\Factory;
 
 use UniAlteri\States\DI;
@@ -28,12 +31,12 @@ use UniAlteri\States\Factory\Exception;
 use UniAlteri\Tests\Support;
 
 /**
- * Class AbstractFactoryTest
+ * Class AbstractFactoryTest.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -41,19 +44,21 @@ use UniAlteri\Tests\Support;
 abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Mock container used for test
+     * Mock container used for test.
+     *
      * @var Support\MockDIContainer
      */
     protected $container = null;
 
     /**
-     * Mock finder used for test
+     * Mock finder used for test.
+     *
      * @var Support\MockFinder
      */
     protected $virtualFinder = null;
 
     /**
-     * Initialize container used into Factory
+     * Initialize container used into Factory.
      */
     protected function setUp()
     {
@@ -63,7 +68,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Configure container
+     * Configure container.
      */
     protected function registerMockFinderService()
     {
@@ -79,7 +84,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Replace finder service to generate virtual finder whose return ArrayObject instead of php array
+     * Replace finder service to generate virtual finder whose return ArrayObject instead of php array.
      */
     protected function registerMockFinderServiceWithArrayObject()
     {
@@ -96,14 +101,16 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Return the Factory Object Interface
-     * @param  boolean                  $populateContainer to populate di container of this factory
+     * Return the Factory Object Interface.
+     *
+     * @param boolean $populateContainer to populate di container of this factory
+     *
      * @return Factory\FactoryInterface
      */
     abstract public function getFactoryObject($populateContainer = true);
 
     /**
-     * Test exception when the Container is not valid when we set a bad object as di container
+     * Test exception when the Container is not valid when we set a bad object as di container.
      */
     public function testSetDiContainerBad()
     {
@@ -118,7 +125,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior for methods Set And GetDiContainer
+     * Test behavior for methods Set And GetDiContainer.
      */
     public function testSetAndGetDiContainer()
     {
@@ -130,7 +137,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The method getFinder of the factory requires the di container to get the finder generator, else throw exception
+     * The method getFinder of the factory requires the di container to get the finder generator, else throw exception.
      */
     public function testGetFinderExceptionNoContainer()
     {
@@ -145,7 +152,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The method getFinder of the factory requires the finder generator, else throw exception
+     * The method getFinder of the factory requires the finder generator, else throw exception.
      */
     public function testGetFinderExceptionNoFinderServiceGenerator()
     {
@@ -161,7 +168,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The method getFinder of the factory requires the finder generator, else throw exception
+     * The method getFinder of the factory requires the finder generator, else throw exception.
      */
     public function testGetFinderExceptionBadFinderReturnedServiceGenerator()
     {
@@ -180,7 +187,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the factory behavior to build a new finder object from the service registered into its DI
+     * Test the factory behavior to build a new finder object from the service registered into its DI.
      */
     public function testGetFinder()
     {
@@ -188,7 +195,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the method getStatedClassName() when the factory is not goodly initialized
+     * Test the behavior of the method getStatedClassName() when the factory is not goodly initialized.
      */
     public function testGetStatedClassNameNotInitialized()
     {
@@ -196,7 +203,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the method getPath() when the factory is not goodly initialized
+     * Test the behavior of the method getPath() when the factory is not goodly initialized.
      */
     public function testGetPathNotInitialized()
     {
@@ -205,7 +212,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the behavior of the method getStatedClassName() with values (stated class name and path) defined
-     * by the loading during factory initialization
+     * by the loading during factory initialization.
      */
     public function testGetStatedClassName()
     {
@@ -216,7 +223,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the behavior of the method getPath() with values (stated class name and path) defined
-     * by the loading during factory initialization
+     * by the loading during factory initialization.
      */
     public function testGetPath()
     {
@@ -226,7 +233,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The factory must throw an exception if there are no Di Container
+     * The factory must throw an exception if there are no Di Container.
      */
     public function testInitializeWithoutDiContainer()
     {
@@ -245,7 +252,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      * Test the behavior of the method initialize() called by the loading during factory initialization
      * - Prerequisite : Finder service (to create new Finder instance dedicated for its stated class)
      * The factory must find and load the proxy class (but not create an instance) :
-     * If the proxy class is not defined for the stated class, it must create an alias from the standard or integrated proxy
+     * If the proxy class is not defined for the stated class, it must create an alias from the standard or integrated proxy.
      */
     public function testInitialize()
     {
@@ -261,7 +268,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the exception of the library when the proxy object doest not implement the exception
+     * Test the exception of the library when the proxy object doest not implement the exception.
      */
     public function testExceptionBadProxyStartup()
     {
@@ -275,7 +282,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exceptions thrown when the stated class has no default state
+     * Test exceptions thrown when the stated class has no default state.
      */
     public function testExceptionDefaultStateNotAvailableInStartup()
     {
@@ -290,7 +297,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exceptions thrown when the stated class has not the required starting state
+     * Test exceptions thrown when the stated class has not the required starting state.
      */
     public function testExceptionRequiredStateNotAvailableInStartup()
     {
@@ -305,7 +312,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if the factory can retrieve from the finder the list of available states for the stated class
+     * Test if the factory can retrieve from the finder the list of available states for the stated class.
      */
     public function testListAvailableStateInStartup()
     {
@@ -323,7 +330,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if the factory, when it initialize a new proxy, enable the default state if there is no defined startup state
+     * Check if the factory, when it initialize a new proxy, enable the default state if there is no defined startup state.
      */
     public function testDefaultStateAutomaticallySelectedInStartup()
     {
@@ -333,7 +340,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if the factory, when it initialize a new proxy, enable the required state if there is defined startup state
+     * Check if the factory, when it initialize a new proxy, enable the required state if there is defined startup state.
      */
     public function testRequiredStateSelectedInStartup()
     {
@@ -344,7 +351,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Check if the factory register all available states of the stated class in the new proxy
-     * (Finder use ArrayObject instead of array to return the list of states)
+     * (Finder use ArrayObject instead of array to return the list of states).
      */
     public function testListAvailableStateInStartupWithArrayObject()
     {
@@ -364,7 +371,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Check if the factory, when it initialize a new proxy, enable the default state if there is no defined startup state
-     * (Finder use ArrayObject instead of array to return the list of states)
+     * (Finder use ArrayObject instead of array to return the list of states).
      */
     public function testDefaultStateAutomaticallySelectedInStartupWithArrayObject()
     {
@@ -376,7 +383,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Check if the factory, when it initialize a new proxy, enable the required state if there is defined startup state
-     * (Finder use ArrayObject instead of array to return the list of states)
+     * (Finder use ArrayObject instead of array to return the list of states).
      */
     public function testRequiredStateSelectedInStartupWithArrayObject()
     {
@@ -387,7 +394,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exceptions thrown when the stated class has no default state
+     * Test exceptions thrown when the stated class has no default state.
      */
     public function testExceptionDefaultStateNotAvailable()
     {
@@ -402,7 +409,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exceptions thrown when the stated class has not the required starting state
+     * Test exceptions thrown when the stated class has not the required starting state.
      */
     public function testExceptionRequiredStateNotAvailable()
     {
@@ -417,7 +424,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if the factory register all available states of the stated class in the new proxy
+     * Check if the factory register all available states of the stated class in the new proxy.
      */
     public function testListAvailableState()
     {
@@ -434,7 +441,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if the factory, when it initialize a new proxy, enable the default state if there is no defined startup state
+     * Check if the factory, when it initialize a new proxy, enable the default state if there is no defined startup state.
      */
     public function testDefaultStateAutomaticallySelected()
     {
@@ -443,7 +450,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if the factory, when it initialize a new proxy, enable the required state if there is defined startup state
+     * Check if the factory, when it initialize a new proxy, enable the required state if there is defined startup state.
      */
     public function testRequiredStateSelected()
     {
@@ -452,7 +459,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if the factory pass arguments to the
+     * Check if the factory pass arguments to the.
      */
     public function testPassedArguments()
     {

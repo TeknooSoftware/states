@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\DI;
@@ -28,12 +31,12 @@ use UniAlteri\States\States;
 
 /**
  * Class MockFinder
- * Mock finder to test behavior of proxies and factories
+ * Mock finder to test behavior of proxies and factories.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -41,25 +44,29 @@ use UniAlteri\States\States;
 class MockFinder implements Loader\FinderInterface
 {
     /**
-     * Mock container used for tests
+     * Mock container used for tests.
+     *
      * @var DI\ContainerInterface
      */
     protected $container = null;
 
     /**
-     * To not return the default state
+     * To not return the default state.
+     *
      * @var bool
      */
     public static $ignoreDefaultState = false;
 
     /**
-     * To test if the proxy has been loaded by the factory
+     * To test if the proxy has been loaded by the factory.
+     *
      * @var bool
      */
     protected $proxyLoaded = false;
 
     /**
-     * Initialize finder
+     * Initialize finder.
+     *
      * @param string $statedClassName
      * @param string $pathString
      */
@@ -68,8 +75,10 @@ class MockFinder implements Loader\FinderInterface
     }
 
     /**
-     * To register a DI container for this object
-     * @param  \UniAlteri\States\DI\ContainerInterface $container
+     * To register a DI container for this object.
+     *
+     * @param \UniAlteri\States\DI\ContainerInterface $container
+     *
      * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container)
@@ -80,7 +89,8 @@ class MockFinder implements Loader\FinderInterface
     }
 
     /**
-     * To return the DI Container used for this object
+     * To return the DI Container used for this object.
+     *
      * @return \UniAlteri\States\DI\ContainerInterface
      */
     public function getDIContainer()
@@ -89,7 +99,8 @@ class MockFinder implements Loader\FinderInterface
     }
 
     /**
-     * List all available state object of the stated class
+     * List all available state object of the stated class.
+     *
      * @return string[]
      */
     public function listStates()
@@ -112,9 +123,12 @@ class MockFinder implements Loader\FinderInterface
     }
 
     /**
-     * Load and build the required state object of the stated class
-     * @param  string                     $stateName
+     * Load and build the required state object of the stated class.
+     *
+     * @param string $stateName
+     *
      * @return States\StateInterface
+     *
      * @throws Exception\UnReadablePath   if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
@@ -126,8 +140,10 @@ class MockFinder implements Loader\FinderInterface
     }
 
     /**
-     * Load the required state object of the stated class
-     * @param  string                                  $stateName
+     * Load the required state object of the stated class.
+     *
+     * @param string $stateName
+     *
      * @return \UniAlteri\States\States\StateInterface
      */
     public function loadState($stateName)
@@ -136,9 +152,12 @@ class MockFinder implements Loader\FinderInterface
     }
 
     /**
-     * Load a proxy object for the stated class
-     * @param  array                  $arguments argument for proxy
+     * Load a proxy object for the stated class.
+     *
+     * @param array $arguments argument for proxy
+     *
      * @return Proxy\ProxyInterface
+     *
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function loadProxy($arguments = null)
@@ -150,7 +169,8 @@ class MockFinder implements Loader\FinderInterface
 
     /**
      * To test if the proxy has been loaded by the proxy
-     * Method added for tests to check factory behavior
+     * Method added for tests to check factory behavior.
+     *
      * @return boolean
      */
     public function proxyHasBeenLoaded()
@@ -159,8 +179,10 @@ class MockFinder implements Loader\FinderInterface
     }
 
     /**
-     * Load and build a proxy object of the stated class
-     * @param  array                                  $arguments argument for proxy
+     * Load and build a proxy object of the stated class.
+     *
+     * @param array $arguments argument for proxy
+     *
      * @return \UniAlteri\States\Proxy\ProxyInterface
      */
     public function buildProxy($arguments = null)

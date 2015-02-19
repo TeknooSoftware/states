@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\Loader;
 
 use UniAlteri\States\Loader;
@@ -26,12 +29,12 @@ use UniAlteri\Tests\Support;
 
 /**
  * Class LoaderStandardTest
- * Tests the excepted behavior of standard loader implementing the interface \UniAlteri\States\Loader\LoaderInterface
+ * Tests the excepted behavior of standard loader implementing the interface \UniAlteri\States\Loader\LoaderInterface.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -39,7 +42,8 @@ use UniAlteri\Tests\Support;
 class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Loader to test
+     * Loader to test.
+     *
      * @var Loader\LoaderInterface
      */
     protected $loader = null;
@@ -50,19 +54,21 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     protected $includePathManager = null;
 
     /**
-     * Where files to generate the phar file for test are located
+     * Where files to generate the phar file for test are located.
+     *
      * @var string
      */
     protected $srcPharPath = null;
 
     /**
-     * Where the phar file for test is located
+     * Where the phar file for test is located.
+     *
      * @var string
      */
     protected $pharFileNamespace = null;
 
     /**
-     * Prepare environment before test
+     * Prepare environment before test.
      */
     protected function setUp()
     {
@@ -82,7 +88,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Clean environment after test
+     * Clean environment after test.
      */
     protected function tearDown()
     {
@@ -90,7 +96,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if this suit test can run test on Phar
+     * Test if this suit test can run test on Phar.
+     *
      * @return boolean
      */
     protected function pharTestsAreAvailable()
@@ -99,10 +106,12 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Load object to test it
-     * @param  boolean               $standardIncludePathManager to load the standard Include Path Manager from this lib and not
-     *                                                           the test manager
-     * @param  boolean               $enablePSR0                 to enable psr0 behavior in loader or not
+     * Load object to test it.
+     *
+     * @param boolean $standardIncludePathManager to load the standard Include Path Manager from this lib and not
+     *                                            the test manager
+     * @param boolean $enablePSR0                 to enable psr0 behavior in loader or not
+     *
      * @return Loader\LoaderStandard
      */
     protected function initializeLoader($standardIncludePathManager = false, $enablePSR0 = false)
@@ -125,7 +134,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagerInterface
+     * the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagerInterface.
      */
     public function testConstructWithBadManager()
     {
@@ -140,7 +149,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exception when the Container is not valid when we set a bad object as di container
+     * Test exception when the Container is not valid when we set a bad object as di container.
      */
     public function testSetDiContainerBad()
     {
@@ -155,7 +164,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior for methods Set And GetDiContainer
+     * Test behavior for methods Set And GetDiContainer.
      */
     public function testSetAndGetDiContainer()
     {
@@ -168,7 +177,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test behavior of the loader when it cannot found and load the required class : it must return false
-     * and give the hand to another loader
+     * and give the hand to another loader.
      */
     public function testLoadClassNonExistent()
     {
@@ -177,7 +186,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Loader can accept additional include path during loading process.
-     * It must throw an exception if the required directory is not available
+     * It must throw an exception if the required directory is not available.
      */
     public function testAddIncludePathBadDir()
     {
@@ -211,7 +220,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Developers can register several namespace with several locations into the loader to accelerate the loading process
-     * If the location is invalid, loader must throws exception
+     * If the location is invalid, loader must throws exception.
      */
     public function testRegisterNamespaceBadName()
     {
@@ -227,7 +236,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Developers can register several namespace with several locations into the loader to accelerate the loading process
+     * Developers can register several namespace with several locations into the loader to accelerate the loading process.
      */
     public function testRegisterNamespace()
     {
@@ -245,7 +254,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Developers can register several namespace with several locations into the loader to accelerate the loading process
-     * A same namespace can accept several locations
+     * A same namespace can accept several locations.
      */
     public function testRegisterNamespaceMultiplePath()
     {
@@ -264,7 +273,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Loader can accept additional include path during loading process.
-     * It can overload include path before loading, but, after the loading process, it must restore them
+     * It can overload include path before loading, but, after the loading process, it must restore them.
      */
     public function testLoadClassRestoreOldIncludedPathAfterCalling()
     {
@@ -303,7 +312,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
-     * If the factory was not found, the loader must throw an exception
+     * If the factory was not found, the loader must throw an exception.
      */
     public function testBuildFactoryNonExistentFactory()
     {
@@ -357,7 +366,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceRelativeWithoutFactoryFile()
     {
@@ -370,7 +379,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceWithProxyRelativeWithoutFactoryFile()
     {
@@ -383,7 +392,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceRelativeWithEmptyFactoryFile()
     {
@@ -396,7 +405,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceWithProxyRelativeWithEmptyFactoryFile()
     {
@@ -409,7 +418,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceRelative()
     {
@@ -422,7 +431,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceWithProxyRelative()
     {
@@ -435,7 +444,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceAbsoluteWithoutFactoryFile()
     {
@@ -448,7 +457,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceAbsoluteWithProxyWithoutFactoryFile()
     {
@@ -461,7 +470,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceAbsolute()
     {
@@ -474,7 +483,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceAbsoluteWithProxy()
     {
@@ -487,7 +496,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceAbsoluteWithFactoryException()
     {
@@ -500,7 +509,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaNameSpaceWithProxyAbsoluteWithFactoryException()
     {
@@ -513,7 +522,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      *
      * This method must return false because the internal psr0 loader has been disabled
      */
@@ -528,7 +537,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaFileWithoutFileAbsolute()
     {
@@ -541,7 +550,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      *
      * Must return false and load nothing beacuse internal psr0 loader has been disabled
      */
@@ -556,7 +565,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      *
      * This method must load nothing because  internal psr0 loader has been disabled
      */
@@ -571,7 +580,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaFileAbsolute()
     {
@@ -584,7 +593,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaFileWithoutFile()
     {
@@ -597,7 +606,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaFile()
     {
@@ -610,7 +619,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassViaFileWithFactoryException()
     {
@@ -623,7 +632,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceRelativeWithoutFactoryFile()
     {
@@ -641,7 +650,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceWithProxyRelativeWithoutFactoryFile()
     {
@@ -659,7 +668,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceRelativeWithEmptyFactoryFile()
     {
@@ -677,7 +686,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceWithProxyRelativeWithEmptyFactoryFile()
     {
@@ -695,7 +704,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceRelative()
     {
@@ -713,7 +722,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceWithProxyRelative()
     {
@@ -731,7 +740,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceAbsoluteWithoutFactoryFile()
     {
@@ -749,7 +758,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceAbsoluteWithProxyWithoutFactoryFile()
     {
@@ -767,7 +776,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceAbsolute()
     {
@@ -785,7 +794,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceAbsoluteWithProxy()
     {
@@ -803,7 +812,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceAbsoluteWithFactoryException()
     {
@@ -821,7 +830,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
-     * the loader must ignore the stated class and return false
+     * the loader must ignore the stated class and return false.
      */
     public function testLoadClassInPharViaNameSpaceWithProxyAbsoluteWithFactoryException()
     {
@@ -839,7 +848,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory throws an exception during its initialization, the loader must restore include path and throw the
-     * exception
+     * exception.
      */
     public function testLoadClassBehaviorDuringExceptionMustRestoreIncludedPath()
     {
@@ -858,7 +867,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the beahvior of the method getPSR0LoaderState when the psr0 is enabled
+     * Test the beahvior of the method getPSR0LoaderState when the psr0 is enabled.
      */
     public function testGetPSR0LoaderStateEnabled()
     {
@@ -867,7 +876,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the beahvior of the method getPSR0LoaderState when the psr0 is disabled
+     * Test the beahvior of the method getPSR0LoaderState when the psr0 is disabled.
      */
     public function testGetPSR0LoaderStateDisabled()
     {
@@ -876,7 +885,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the beahvior of the method setPSR0LoaderState to disable PSR0
+     * Test the beahvior of the method setPSR0LoaderState to disable PSR0.
      */
     public function testSetPSR0LoaderStateEnabled()
     {
@@ -886,7 +895,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the beahvior of the method setPSR0LoaderState to enable PSR0
+     * Test the beahvior of the method setPSR0LoaderState to enable PSR0.
      */
     public function testSetPSR0LoaderStateDisabled()
     {

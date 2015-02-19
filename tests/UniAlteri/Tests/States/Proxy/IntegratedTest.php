@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.0.2
  */
+
 namespace UniAlteri\Tests\States\Proxy;
 
 use UniAlteri\States\Proxy;
@@ -26,12 +29,12 @@ use UniAlteri\Tests\Support;
 
 /**
  * Class IntegratedTest
- * Implementation of AbstractProxyTest to test the proxy Proxy\Integrated
+ * Implementation of AbstractProxyTest to test the proxy Proxy\Integrated.
  *
- * @package     States
- * @subpackage  Tests
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -40,7 +43,7 @@ class IntegratedTest extends AbstractProxyTest
 {
     /**
      * For these tests, we use Support\IntegratedProxy instead of Proxy\Integrated to use the
-     * Support\MockStartupFactory instead of Factory\StandardStartupFactory
+     * Support\MockStartupFactory instead of Factory\StandardStartupFactory.
      */
     protected function setUp()
     {
@@ -50,7 +53,8 @@ class IntegratedTest extends AbstractProxyTest
     }
 
     /**
-     * Build a proxy object, into $this->proxy to test it
+     * Build a proxy object, into $this->proxy to test it.
+     *
      * @return Proxy\ProxyInterface
      */
     protected function buildProxy()
@@ -61,7 +65,7 @@ class IntegratedTest extends AbstractProxyTest
     }
 
     /**
-     * Test if the class initialize its vars from the trait constructor
+     * Test if the class initialize its vars from the trait constructor.
      */
     public function testInitializationProxyVar()
     {
@@ -77,7 +81,7 @@ class IntegratedTest extends AbstractProxyTest
     }
 
     /**
-     * Test if the factory to use to initialize the proxy does not exist, proxy throws an exception
+     * Test if the factory to use to initialize the proxy does not exist, proxy throws an exception.
      */
     public function testInitializationProxyVByFactoryFactoryDoestNotExist()
     {
@@ -93,7 +97,7 @@ class IntegratedTest extends AbstractProxyTest
     }
 
     /**
-     * Test if the factory to use to initialize the proxy does not implement the method, proxy throws an exception
+     * Test if the factory to use to initialize the proxy does not implement the method, proxy throws an exception.
      */
     public function testInitializationProxyVByFactoryFactoryInvalid()
     {
