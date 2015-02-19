@@ -1,7 +1,7 @@
 {
     "name": "unialteri/states",
     "type": "library",
-    "description": "States is a lib to allow developers to write states for their business object with PHP 5.4+",
+    "description": "Library to create easily and cleanly classes with several states, writed in distinct codes blocks, but never used \"if conditions\" with PHP 5.4+.",
     "keywords": ["states","class"],
     "homepage": "http://teknoo.it/states",
     "license": ["MIT","GPL-3.0+"],
@@ -22,11 +22,11 @@
     },
     "require-dev": {
         "phpunit/phpunit": "~4.0",
-        "phpunit/phpunit-mock-objects": "*",
-        "phpunit/phpunit-selenium": "*",
-        "phpunit/phpunit-story": "*",
+        "phpunit/phpunit-mock-objects": "~2.3",
+        "phpunit/phpunit-selenium": "~1.4",
+        "phpunit/phpunit-story": "~1.0",
         "symfony/console": "~2.0",
-        "knplabs/gaufrette": "*"
+        "knplabs/gaufrette": "<2.0"
     },
     "autoload": {
         "psr-4": {
@@ -38,5 +38,9 @@
     "archive": {
         "exclude": ["demo", "vendor", ".idea"]
     },
-    "bin": ["bin/states.php"]
+    "bin": ["bin/states.php"],
+    "scripts": {
+      "test":"phpunit",
+      "states":"bin/states.php"
+    }
 }
