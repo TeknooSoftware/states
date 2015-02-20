@@ -378,8 +378,10 @@ trait StateTrait
             $closure = \Closure::bind($closure, $proxy, get_class($proxy));
 
             //Include the closure into the container
-            $injectionClosure = $this->buildInjectionClosureObject()->setClosure($closure);
-            $injectionClosure->setDIContainer($this->getDIContainer());
+            $injectionClosure = $this->buildInjectionClosureObject()
+                ->setClosure($closure)
+                ->setProxy($proxy)
+                ->setDIContainer($this->getDIContainer());
             $this->closuresObjects[$methodName] = $injectionClosure;
         }
 

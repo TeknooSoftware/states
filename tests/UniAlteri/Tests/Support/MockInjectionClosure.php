@@ -25,6 +25,8 @@ namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\DI;
 use UniAlteri\States\DI\Exception;
+use UniAlteri\States\DI\InjectionClosureInterface;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Class MockInjectionClosure
@@ -46,6 +48,11 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     protected $closure = null;
 
     /**
+     * @var ProxyInterface
+     */
+    protected $proxy = null;
+
+    /**
      * @var array
      */
     protected $properties = array();
@@ -58,6 +65,8 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     public function setDIContainer(DI\ContainerInterface $container)
     {
         //Not used in tests
+
+        return $this;
     }
 
     /**
@@ -73,13 +82,16 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     /**
      * Execute the closure.
      *
+     * @param array $args
+     *
      * @return mixed
      */
-    public function __invoke()
+    public function invoke(array &$args)
     {
         //Simulate the behavior of a real injection closure class : call the closure with args
-        return \call_user_func_array($this->closure, \func_get_args());
+        return \call_user_func_array($this->closure, $args);
     }
+
 
     /**
      * Return the closure contained into this.
@@ -103,6 +115,30 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     public function getClosure()
     {
         return $this->closure;
+    }
+
+    /**
+     * To define the proxy linked with this closure
+     *
+     * @param ProxyInterface $proxy
+     *
+     * @return $this
+     */
+    public function setProxy(ProxyInterface $proxy)
+    {
+        $this->proxy = $proxy;
+
+        return $this;
+    }
+
+    /**
+     * To return the proxy used into $this.
+     *
+     * @return \Closure
+     */
+    public function getProxy()
+    {
+        return $this->proxy;
     }
 
     /**

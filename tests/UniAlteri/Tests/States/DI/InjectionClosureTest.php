@@ -132,7 +132,8 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     public function testInvokeWithArgs()
     {
         $closure = $this->buildClosure();
-        $return = $closure('foo', 'boo', 'hello', 'world');
+        $args = ['foo', 'boo', 'hello', 'world'];
+        $return = $closure->invoke($args);
         $this->assertSame(
             array(
                 'world',
@@ -211,16 +212,19 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     {
         $closure = $this->buildClosure();
         $closure->saveProperty('static1', 'foo');
-        $result = $closure(1, 2, 3);
+        $args = [1, 2, 3];
+        $result = $closure->invoke($args);
         $this->assertEquals(array(3, 2, 1), $result);
         $this->assertEquals('foo', $closure->getProperty('static1'));
 
-        $result = $closure(4, 5, 6);
+        $args = [4, 5, 6];
+        $result = $closure->invoke($args);
         $this->assertEquals(array(6, 5, 4), $result);
         $this->assertEquals('foo', $closure->getProperty('static1'));
 
         $closure->saveProperty('static1', 'boo');
-        $result = $closure(7, 8, 9);
+        $args = [7, 8, 9];
+        $result = $closure->invoke($args);
         $this->assertEquals(array(9, 8, 7), $result);
         $this->assertEquals('boo', $closure->getProperty('static1'));
     }

@@ -22,6 +22,7 @@
  */
 
 namespace UniAlteri\States\DI;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Class InjectionClosure
@@ -54,6 +55,13 @@ class InjectionClosure implements InjectionClosureInterface
      * @var \Closure
      */
     protected $closure = null;
+
+    /**
+     * Proxy linked with the closure
+     *
+     * @var ProxyInterface
+     */
+    protected $proxy = null;
 
     /**
      * All statics properties.
@@ -102,11 +110,13 @@ class InjectionClosure implements InjectionClosureInterface
     /**
      * Execute the closure.
      *
+     * @param array $args
+     *
      * @return mixed
      */
-    public function __invoke()
+    public function invoke(array &$args)
     {
-        return \call_user_func_array($this->closure, \func_get_args());
+        return \call_user_func_array($this->closure, $args);
     }
 
     /**
@@ -137,6 +147,30 @@ class InjectionClosure implements InjectionClosureInterface
     public function getClosure()
     {
         return $this->closure;
+    }
+
+    /**
+     * To define the proxy linked with this closure
+     *
+     * @param ProxyInterface $proxy
+     *
+     * @return $this
+     */
+    public function setProxy(ProxyInterface $proxy)
+    {
+        $this->proxy = $proxy;
+
+        return $this;
+    }
+
+    /**
+     * To return the proxy used into $this.
+     *
+     * @return \Closure
+     */
+    public function getProxy()
+    {
+        return $this->proxy;
     }
 
     /**
@@ -209,7 +243,7 @@ class InjectionClosure implements InjectionClosureInterface
             return $this->properties->{$name};
         }
 
-        return;
+        return null;
     }
 
     /**

@@ -22,6 +22,7 @@
  */
 
 namespace UniAlteri\States\DI;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Interface InjectionClosureInterface
@@ -46,6 +47,8 @@ interface InjectionClosureInterface
      * To To register a DI container for this object.
      *
      * @param ContainerInterface $container
+     *
+     * @return $this
      */
     public function setDIContainer(ContainerInterface $container);
 
@@ -53,16 +56,17 @@ interface InjectionClosureInterface
      * To return the DI Container used for this object.
      *
      * @return ContainerInterface
-     * @return $this
      */
     public function getDIContainer();
 
     /**
      * Execute the closure.
      *
+     * @param array $args
+     *
      * @return mixed
      */
-    public function __invoke();
+    public function invoke(array &$args);
 
     /**
      * To define the closure contained into $this.
@@ -81,6 +85,22 @@ interface InjectionClosureInterface
      * @return \Closure
      */
     public function getClosure();
+
+    /**
+     * To define the proxy linked with this closure
+     *
+     * @param ProxyInterface $proxy
+     *
+     * @return $this
+     */
+    public function setProxy(ProxyInterface $proxy);
+
+    /**
+     * To return the proxy used into $this.
+     *
+     * @return \Closure
+     */
+    public function getProxy();
 
     /**
      * To allow the closure to save a static property,

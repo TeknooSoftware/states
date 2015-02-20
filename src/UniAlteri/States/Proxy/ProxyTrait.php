@@ -106,7 +106,7 @@ trait ProxyTrait
 
         //Call it
         try {
-            $returnValues = call_user_func_array($callingClosure, $arguments);
+            $returnValues = $callingClosure->invoke($arguments);
         } catch (\Exception $e) {
             //Restore previous closure
             $this->currentInjectionClosure = $previousClosure;
