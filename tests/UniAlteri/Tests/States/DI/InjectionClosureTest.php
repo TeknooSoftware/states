@@ -129,6 +129,25 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     /**
      * Test invoking from injection with the closure, execute the closure (the closure test returns arguments order.
      */
+    public function testInvokeWithArgsInvokeMagic()
+    {
+        $closure = $this->buildClosure();
+        $return = $closure('foo', 'boo', 'hello', 'world');
+        $this->assertSame(
+            array(
+                'world',
+                'hello',
+                'boo',
+                'foo',
+            ),
+            $return,
+            'Error, the closure is not called by the injector '
+        );
+    }
+
+    /**
+     * Test invoking from injection with the closure, execute the closure (the closure test returns arguments order.
+     */
     public function testInvokeWithArgs()
     {
         $closure = $this->buildClosure();
@@ -147,6 +166,45 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test invoke behavior with different number of arguments
+     */
+    public function testInvokeCallSeveralArgs()
+    {
+        $closure = $this->buildClosure();
+        $args = [];
+        $result = $closure->invoke($args);
+        $this->assertEquals(array(), $result);
+
+        $args = [1];
+        $result = $closure->invoke($args);
+        $this->assertEquals(array(1), $result);
+
+        $args = [1, 2];
+        $result = $closure->invoke($args);
+        $this->assertEquals(array(2, 1), $result);
+
+        $args = [1, 2, 3];
+        $result = $closure->invoke($args);
+        $this->assertEquals(array(3, 2, 1), $result);
+
+        $args = [1, 2, 3, 4];
+        $result = $closure->invoke($args);
+        $this->assertEquals(array(4, 3, 2, 1), $result);
+
+        $args = [1, 2, 3, 4, 5];
+        $result = $closure->invoke($args);
+        $this->assertEquals(array(5, 4, 3, 2, 1), $result);
+
+        $args = [1, 2, 3, 4, 5, 6];
+        $result = $closure->invoke($args);
+        $this->assertEquals(array(6, 5, 4, 3, 2, 1), $result);
+
+        $args = [1, 2, 3, 4, 5, 6, 7];
+        $result = $closure->invoke($args);
+        $this->assertEquals(array(7, 6, 5, 4, 3, 2, 1), $result);
+    }
+
+    /**
      * Test if the injector car return the original closure.
      */
     public function testGetClosure()
@@ -157,6 +215,23 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
 
         $injectionClosure = new DI\InjectionClosure($myClosure);
         $this->assertSame($myClosure, $injectionClosure->getClosure());
+    }
+
+    /**
+     * Test if the injector car return the linked proxy.
+     */
+    public function testSetProxy()
+    {
+        $myClosure = function ($i) {
+            return $i+1;
+        };
+
+        $proxy = $this->getMock('UniAlteri\States\Proxy\ProxyInterface');
+
+        $injectionClosure = new DI\InjectionClosure($myClosure);
+        $this->assertSame($injectionClosure, $injectionClosure->setProxy($proxy));
+        $this->assertSame($myClosure, $injectionClosure->getClosure());
+        $this->assertSame($proxy, $injectionClosure->getProxy());
     }
 
     /**
@@ -203,6 +278,27 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->fail('Error, the storage adapter must throw an exception if the attribute name is not valid : http://www.php.net/manual/en/language.variables.basics.php');
+    }
+
+    /**
+     * Test if statics properties are persistent on all call of the closure.
+     */
+    public function testPersistenceOfStaticPropertyInvokeMagik()
+    {
+        $closure = $this->buildClosure();
+        $closure->saveProperty('static1', 'foo');
+        $result = $closure(1, 2, 3);
+        $this->assertEquals(array(3, 2, 1), $result);
+        $this->assertEquals('foo', $closure->getProperty('static1'));
+
+        $result = $closure(4, 5, 6);
+        $this->assertEquals(array(6, 5, 4), $result);
+        $this->assertEquals('foo', $closure->getProperty('static1'));
+
+        $closure->saveProperty('static1', 'boo');
+        $result = $closure(7, 8, 9);
+        $this->assertEquals(array(9, 8, 7), $result);
+        $this->assertEquals('boo', $closure->getProperty('static1'));
     }
 
     /**
