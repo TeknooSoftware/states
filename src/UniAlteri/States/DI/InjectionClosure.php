@@ -128,7 +128,41 @@ class InjectionClosure implements InjectionClosureInterface
      */
     public function invoke(array &$args)
     {
-        return \call_user_func_array($this->closure, $args);
+        $closure = $this->closure;
+        /*
+         * This code is not very elegant, but call_user_func_array() is very slow,
+         * it is much faster to call the closure directly.
+         * So to minimize impact of \call_user_func_array, when the number of arguments is limited,
+         * we call directly the closure.
+         * \ReflectionMethod::invokeArgs is not available because the proxy has not the method, the Reflection api
+         * will throw an Exception. \ReflectionFunction is not available in Object context ($this is not allowed)
+         */
+        switch(count($args)) {
+            case 0: //no args
+                return $closure();
+                break;
+            case 1:
+                return $closure($args[0]);
+                break;
+            case 2:
+                return $closure($args[0], $args[1]);
+                break;
+            case 3:
+                return $closure($args[0], $args[1], $args[2]);
+                break;
+            case 4:
+                return $closure($args[0], $args[1], $args[2], $args[3]);
+                break;
+            case 5:
+                return $closure($args[0], $args[1], $args[2], $args[3], $args[4]);
+                break;
+            case 6:
+                return $closure($args[0], $args[1], $args[2], $args[3], $args[4], $args[5]);
+                break;
+            default:
+                //More than 6 arguments
+                return \call_user_func_array($this->closure, $args);  break;
+        }
     }
 
     /**
