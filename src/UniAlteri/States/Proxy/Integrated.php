@@ -93,11 +93,7 @@ class Integrated extends Standard
         }
 
         //Call the startup factory
-        call_user_func_array(
-            array(static::$startupFactoryClassName, 'forwardStartup'),
-            array(
-                $this,
-            )
-        );
+        $reflectionMethod = new \ReflectionMethod(static::$startupFactoryClassName, 'forwardStartup');
+        $reflectionMethod->invoke(null, $this);
     }
 }
