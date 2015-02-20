@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,27 +10,29 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.1.0
  */
+
 namespace UniAlteri\States\Command;
 
 use Symfony\Component\Console\Command\Command;
 
 /**
  * Class ClassCreate
- * Command to create a new empty stated class
+ * Command to create a new empty stated class.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -60,7 +62,8 @@ class AbstractCommand extends Command
     }
 
     /**
-     * Return parser/writer factory user by this command
+     * Return parser/writer factory user by this command.
+     *
      * @return callable|null
      */
     public function getFactory()
@@ -69,7 +72,8 @@ class AbstractCommand extends Command
     }
 
     /**
-     * Return the file system factory used by this command
+     * Return the file system factory used by this command.
+     *
      * @return callable|null
      */
     public function getFileSystemFactory()
@@ -78,9 +82,11 @@ class AbstractCommand extends Command
     }
 
     /**
-     * Create a parser from the factory
-     * @param  string                                                      $name
-     * @param  string                                                      $destinationPath
+     * Create a parser from the factory.
+     *
+     * @param string $name
+     * @param string $destinationPath
+     *
      * @return Parser\Factory|Parser\Proxy|Parser\State|Parser\StatedClass
      */
     public function createParser($name, $destinationPath)
@@ -91,9 +97,11 @@ class AbstractCommand extends Command
     }
 
     /**
-     * Create a writer from the factory
-     * @param  string                                   $name
-     * @param  string                                   $destinationPath
+     * Create a writer from the factory.
+     *
+     * @param string $name
+     * @param string $destinationPath
+     *
      * @return Writer\Factory|Writer\Proxy|Writer\State
      */
     public function createWriter($name, $destinationPath)

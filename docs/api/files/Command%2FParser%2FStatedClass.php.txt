@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,15 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.1.0
  */
+
 namespace UniAlteri\States\Command\Parser;
 
 use Gaufrette\Filesystem;
@@ -27,12 +29,12 @@ use UniAlteri\States\Loader\LoaderInterface;
 
 /**
  * Class StatedClass
- * Parser to analyze the structure of a stated class
+ * Parser to analyze the structure of a stated class.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -70,7 +72,8 @@ class StatedClass extends AbstractParser
     }
 
     /**
-     * Check if this class has its own states folders
+     * Check if this class has its own states folders.
+     *
      * @return boolean
      */
     public function hasStatesFolder()
@@ -82,7 +85,8 @@ class StatedClass extends AbstractParser
     }
 
     /**
-     * Check if this class has its own proxy (not mandatory by specifications of the library)
+     * Check if this class has its own proxy (not mandatory by specifications of the library).
+     *
      * @return boolean
      */
     public function hasProxy()
@@ -94,7 +98,8 @@ class StatedClass extends AbstractParser
     }
 
     /**
-     * Check if this class has its own factory
+     * Check if this class has its own factory.
+     *
      * @return boolean
      */
     public function hasFactory()
@@ -106,7 +111,8 @@ class StatedClass extends AbstractParser
     }
 
     /**
-     * Return the parser to analyze the factory of this class
+     * Return the parser to analyze the factory of this class.
+     *
      * @return Factory
      */
     public function getFactoryParser()
@@ -115,7 +121,8 @@ class StatedClass extends AbstractParser
     }
 
     /**
-     * Return the parser to analyze the proxy of this class
+     * Return the parser to analyze the proxy of this class.
+     *
      * @return Proxy
      */
     public function getProxyParser()
@@ -124,7 +131,8 @@ class StatedClass extends AbstractParser
     }
 
     /**
-     * Return the parser to analyze states of this class
+     * Return the parser to analyze states of this class.
+     *
      * @return State
      */
     public function getStatesParser()

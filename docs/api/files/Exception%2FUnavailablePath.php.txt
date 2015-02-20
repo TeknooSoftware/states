@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -11,23 +11,30 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @category    Exception
+ *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.1.0
  */
+
 namespace UniAlteri\States\Exception;
 
 /**
  * Class UnavailablePath
- * Exception threw when the path is not available (not exist or not readable)
+ * Exception threw when the path is not available (not exist or not readable).
  *
- * @package     States
  * @category    Exception
+ *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>

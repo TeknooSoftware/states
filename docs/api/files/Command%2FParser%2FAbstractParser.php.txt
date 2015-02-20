@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,27 +10,29 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.1.0
  */
+
 namespace UniAlteri\States\Command\Parser;
 
 use Gaufrette\Filesystem;
 
 /**
  * Class AbstractParser
- * Abstract class Parser to parse a class
+ * Abstract class Parser to parse a class.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -38,19 +40,22 @@ use Gaufrette\Filesystem;
 abstract class AbstractParser
 {
     /**
-     * Filesystem object to manipulate file
+     * Filesystem object to manipulate file.
+     *
      * @var Filesystem
      */
     protected $fileSystem;
 
     /**
-     * Path of the current stated class
+     * Path of the current stated class.
+     *
      * @var string
      */
     protected $statedClassPath;
 
     /**
-     * Return the file system object from Gaufrette to
+     * Return the file system object from Gaufrette to.
+     *
      * @return Filesystem
      */
     protected function getFileSystem()
@@ -59,7 +64,8 @@ abstract class AbstractParser
     }
 
     /**
-     * Path of the current stated class to operate
+     * Path of the current stated class to operate.
+     *
      * @param Filesystem $fileSystem
      * @param string     $path
      */
@@ -70,8 +76,10 @@ abstract class AbstractParser
     }
 
     /**
-     * Browse all available files in the current path
+     * Browse all available files in the current path.
+     *
      * @return \ArrayObject
+     *
      * @throws Exception\UnReadablePath when the path is not readable
      */
     public function listFiles()
@@ -93,9 +101,12 @@ abstract class AbstractParser
     }
 
     /**
-     * Load a file, and return the reflection class of this file
-     * @param  string                   $file
+     * Load a file, and return the reflection class of this file.
+     *
+     * @param string $file
+     *
      * @return \ReflectionClass
+     *
      * @throws Exception\UnReadablePath when the path is not readable
      * @throws Exception\ClassNotFound
      */
@@ -117,7 +128,8 @@ abstract class AbstractParser
     }
 
     /**
-     * Return the end of the class name (without namespace)
+     * Return the end of the class name (without namespace).
+     *
      * @return string
      */
     protected function getClassNameFile()
@@ -128,8 +140,10 @@ abstract class AbstractParser
     }
 
     /**
-     * Return the name space define in a file
-     * @param  string $file
+     * Return the name space define in a file.
+     *
+     * @param string $file
+     *
      * @return string
      */
     protected function extractClassWithNamespace($file)
@@ -175,9 +189,12 @@ abstract class AbstractParser
     }
 
     /**
-     * Load a file and return its content
-     * @param  string                   $file
+     * Load a file and return its content.
+     *
+     * @param string $file
+     *
      * @return string
+     *
      * @throws Exception\UnReadablePath when the path is not readable
      */
     public function getFile($file)

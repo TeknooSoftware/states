@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,14 +10,17 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @subpackage  Factory
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.1.0
  */
+
 namespace UniAlteri\States\Factory;
 
 use UniAlteri\States\Proxy;
@@ -27,29 +30,34 @@ use UniAlteri\States\Proxy;
  * Default implementation of the startup factory to define a factory used to initialize a stated object during
  * in constructor. This factory will only find the object's factory to forward to it the call.
  *
- * @package     States
- * @subpackage  Factory
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @api
  */
 class StandardStartupFactory implements StartupFactoryInterface
 {
     /**
-     * Registry of factory to use to initialize proxy object
+     * Registry of factory to use to initialize proxy object.
+     *
      * @var FactoryInterface[]|\ArrayObject
      */
     protected static $factoryRegistry = null;
 
     /**
      * To find the factory to use for the new proxy object to initialize it with its container and states.
-     * This method is called by the constructor of the stated object
-     * @param  Proxy\ProxyInterface         $proxyObject
-     * @param  string                       $stateName
+     * This method is called by the constructor of the stated object.
+     *
+     * @param Proxy\ProxyInterface $proxyObject
+     * @param string               $stateName
+     *
      * @return boolean
+     *
      * @throws Exception\InvalidArgument    when $factoryIdentifier is not an object
      * @throws Exception\UnavailableFactory when the required factory was not found
      */
@@ -71,9 +79,11 @@ class StandardStartupFactory implements StartupFactoryInterface
     }
 
     /**
-     * To register a new factory object to initialize proxy objects
-     * @param  string                    $factoryIdentifier
-     * @param  FactoryInterface          $factoryObject
+     * To register a new factory object to initialize proxy objects.
+     *
+     * @param string           $factoryIdentifier
+     * @param FactoryInterface $factoryObject
+     *
      * @throws Exception\InvalidArgument when $factoryIdentifier is not a string
      * @throws Exception\IllegalFactory  when $factoryObject doest not implement the interface FactoryInterface
      */
@@ -97,7 +107,7 @@ class StandardStartupFactory implements StartupFactoryInterface
     }
 
     /**
-     * To reset startup registry
+     * To reset startup registry.
      */
     public static function reset()
     {
@@ -107,7 +117,8 @@ class StandardStartupFactory implements StartupFactoryInterface
     }
 
     /**
-     * To return all registered factories
+     * To return all registered factories.
+     *
      * @return string[]|array
      */
     public static function listRegisteredFactory()

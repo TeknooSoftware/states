@@ -1,6 +1,6 @@
 <?php
 /**
- * States
+ * States.
  *
  * LICENSE
  *
@@ -10,27 +10,29 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @package     States
- * @subpackage  Command
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ *
  * @link        http://teknoo.it/states Project website
+ *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @version     1.1.0
  */
+
 namespace UniAlteri\States\Command\Writer;
 
 use UniAlteri\States\Loader\LoaderInterface;
 
- /**
+/**
   * Class Factory
-  * Writer to create or update a factory
+  * Writer to create or update a factory.
   *
-  * @package     States
-  * @subpackage  Command
   * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+  *
   * @link        http://teknoo.it/states Project website
+  *
   * @license     http://teknoo.it/states/license/mit         MIT License
   * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
   * @author      Richard Déloge <r.deloge@uni-alteri.com>
@@ -38,11 +40,12 @@ use UniAlteri\States\Loader\LoaderInterface;
  class Factory extends AbstractWriter
  {
      /**
-      * Protected method to generate the php code for the factory
+      * Protected method to generate the php code for the factory.
       *
       * @param string $className
       * @param string $namespace
       * @param boolean $isIntegrated
+      *
       * @return string
       */
      protected function generateFactory($className, $namespace, $isIntegrated)
@@ -76,9 +79,11 @@ EOF;
      }
 
      /**
-      * Method to create a new standard factory for the defined stated class
+      * Method to create a new standard factory for the defined stated class.
+      *
       * @param string $className
       * @param string $namespace
+      *
       * @return bool
       */
      public function createStandardFactory($className, $namespace)
@@ -93,9 +98,11 @@ EOF;
      }
 
      /**
-      * Method to create a new integrated factory for the defined stated class
+      * Method to create a new integrated factory for the defined stated class.
+      *
       * @param string $className
       * @param string $namespace
+      *
       * @return bool
       */
      public function createIntegratedFactory($className, $namespace)
