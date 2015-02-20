@@ -60,6 +60,14 @@ interface InjectionClosureInterface
     public function getDIContainer();
 
     /**
+     * Execute the closure as a function.
+     * Keep to not perform a BC Break
+     *
+     * @return mixed
+     */
+    public function __invoke();
+
+    /**
      * Execute the closure.
      *
      * @param array $args

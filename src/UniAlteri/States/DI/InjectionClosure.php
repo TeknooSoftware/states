@@ -108,6 +108,18 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
+     * Execute the closure as a function.
+     * Keep to not perform a BC Break
+     *
+     * @return mixed
+     */
+    public function __invoke()
+    {
+        $args = func_get_args();
+        return $this->invoke($args);
+    }
+
+    /**
      * Execute the closure.
      *
      * @param array $args
