@@ -22,6 +22,7 @@
  */
 
 namespace UniAlteri\States\DI;
+
 use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
@@ -61,7 +62,7 @@ interface InjectionClosureInterface
 
     /**
      * Execute the closure as a function.
-     * Keep to not perform a BC Break
+     * Keep to not perform a BC Break.
      *
      * @return mixed
      */
@@ -95,7 +96,7 @@ interface InjectionClosureInterface
     public function getClosure();
 
     /**
-     * To define the proxy linked with this closure
+     * To define the proxy linked with this closure.
      *
      * @param ProxyInterface $proxy
      *

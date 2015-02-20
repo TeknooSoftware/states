@@ -81,13 +81,14 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
 
     /**
      * Execute the closure as a function.
-     * Keep to not perform a BC Break
+     * Keep to not perform a BC Break.
      *
      * @return mixed
      */
     public function __invoke()
     {
         $args = func_get_args();
+
         return $this->invoke($args);
     }
 
@@ -103,7 +104,6 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
         //Simulate the behavior of a real injection closure class : call the closure with args
         return \call_user_func_array($this->closure, $args);
     }
-
 
     /**
      * Return the closure contained into this.
@@ -130,7 +130,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
     }
 
     /**
-     * To define the proxy linked with this closure
+     * To define the proxy linked with this closure.
      *
      * @param ProxyInterface $proxy
      *

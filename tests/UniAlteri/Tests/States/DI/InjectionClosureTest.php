@@ -166,7 +166,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test invoke behavior with different number of arguments
+     * Test invoke behavior with different number of arguments.
      */
     public function testInvokeCallSeveralArgs()
     {

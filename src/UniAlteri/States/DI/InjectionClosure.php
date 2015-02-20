@@ -22,6 +22,7 @@
  */
 
 namespace UniAlteri\States\DI;
+
 use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
@@ -57,7 +58,7 @@ class InjectionClosure implements InjectionClosureInterface
     protected $closure = null;
 
     /**
-     * Proxy linked with the closure
+     * Proxy linked with the closure.
      *
      * @var ProxyInterface
      */
@@ -109,13 +110,14 @@ class InjectionClosure implements InjectionClosureInterface
 
     /**
      * Execute the closure as a function.
-     * Keep to not perform a BC Break
+     * Keep to not perform a BC Break.
      *
      * @return mixed
      */
     public function __invoke()
     {
         $args = func_get_args();
+
         return $this->invoke($args);
     }
 
@@ -137,7 +139,7 @@ class InjectionClosure implements InjectionClosureInterface
          * \ReflectionMethod::invokeArgs is not available because the proxy has not the method, the Reflection api
          * will throw an Exception. \ReflectionFunction is not available in Object context ($this is not allowed)
          */
-        switch(count($args)) {
+        switch (count($args)) {
             case 0: //no args
                 return $closure();
                 break;
@@ -196,7 +198,7 @@ class InjectionClosure implements InjectionClosureInterface
     }
 
     /**
-     * To define the proxy linked with this closure
+     * To define the proxy linked with this closure.
      *
      * @param ProxyInterface $proxy
      *
@@ -289,7 +291,7 @@ class InjectionClosure implements InjectionClosureInterface
             return $this->properties->{$name};
         }
 
-        return null;
+        return;
     }
 
     /**
