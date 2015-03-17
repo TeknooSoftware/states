@@ -54,7 +54,7 @@ class AbstractCommand extends Command
      * @param callable $factory
      * @param callable $fileSystemFactory
      */
-    public function __construct($name = null, $factory = null, $fileSystemFactory = null)
+    public function __construct($name = null, callable $factory = null, callable $fileSystemFactory = null)
     {
         $this->factory = $factory;
         $this->fileSystemFactory = $fileSystemFactory;
