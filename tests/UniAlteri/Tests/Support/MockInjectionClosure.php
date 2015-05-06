@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -25,7 +26,6 @@ namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\DI;
 use UniAlteri\States\DI\Exception;
-use UniAlteri\States\DI\InjectionClosureInterface;
 use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
@@ -212,7 +212,7 @@ class MockInjectionClosure implements DI\InjectionClosureInterface
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
     public function testProperty($name)

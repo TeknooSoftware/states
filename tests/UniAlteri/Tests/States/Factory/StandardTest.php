@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -42,7 +43,7 @@ class StandardTest extends AbstractFactoryTest
     /**
      * Return the Factory Object Interface.
      *
-     * @param boolean $populateContainer to populate di container of this factory
+     * @param bool $populateContainer to populate di container of this factory
      *
      * @return Factory\FactoryInterface
      */

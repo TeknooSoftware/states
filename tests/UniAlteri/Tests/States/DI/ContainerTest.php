@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -409,11 +410,11 @@ class ContainerTest extends \PHPUnit_Framework_TestCase
         $container->configure(
             array(
                 'instances' => array(
-                    'instanceClass'  => '\ArrayObject',
-                    'date1'         => function () { return new \DateTime(); },
+                    'instanceClass' => '\ArrayObject',
+                    'date1' => function () { return new \DateTime(); },
                 ),
-                'services'  => array(
-                    'stdClass'         => function () { return new \stdClass(); },
+                'services' => array(
+                    'stdClass' => function () { return new \stdClass(); },
                 ),
             )
         );

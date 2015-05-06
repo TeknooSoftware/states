@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -53,7 +54,7 @@ class StateDefault extends States\AbstractState
     /**
      * Transform this user as moderator.
      *
-     * @param boolean $value
+     * @param bool $value
      */
     protected function setModerator($value)
     {

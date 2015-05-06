@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -89,11 +90,11 @@ interface StateInterface
      * @param string $methodName
      * @param string $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope = StateInterface::VISIBILITY_PUBLIC);
+    public function testMethod($methodName, $scope = self::VISIBILITY_PUBLIC);
 
     /**
      * To return the description of a method to configure the behavior of the proxy. Return also description of private
@@ -122,5 +123,5 @@ interface StateInterface
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought
      */
-    public function getClosure($methodName, $proxy, $scope = StateInterface::VISIBILITY_PUBLIC);
+    public function getClosure($methodName, $proxy, $scope = self::VISIBILITY_PUBLIC);
 }

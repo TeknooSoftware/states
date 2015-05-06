@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -171,7 +172,7 @@ class MockFinder implements Loader\FinderInterface
      * To test if the proxy has been loaded by the proxy
      * Method added for tests to check factory behavior.
      *
-     * @return boolean
+     * @return bool
      */
     public function proxyHasBeenLoaded()
     {

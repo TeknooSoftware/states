@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -44,7 +45,7 @@ use UniAlteri\States\Loader\LoaderInterface;
       *
       * @param string $className
       * @param string $namespace
-      * @param boolean $isIntegrated
+      * @param bool $isIntegrated
       *
       * @return string
       */

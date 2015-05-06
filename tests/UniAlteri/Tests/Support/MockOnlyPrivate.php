@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -45,7 +46,7 @@ class MockOnlyPrivate extends States\AbstractState
     /**
      * To simulate a real state behavior.
      *
-     * @param boolean $initializeContainer initialize virtual di container for state
+     * @param bool $initializeContainer initialize virtual di container for state
      */
     public function __construct($initializeContainer = true)
     {

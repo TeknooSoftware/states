@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -96,7 +97,7 @@ interface FactoryInterface
      * @param string $statedClassName the name of the stated class
      * @param string $path            of the stated class
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
@@ -109,7 +110,7 @@ interface FactoryInterface
      * @param Proxy\ProxyInterface $proxyObject
      * @param string               $stateName
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class

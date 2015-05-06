@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -123,7 +124,7 @@ class MockDIContainer implements DI\ContainerInterface
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      */
     public function testEntry($name)
     {

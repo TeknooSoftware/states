@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -172,7 +173,7 @@ class MockState implements States\StateInterface
      * @param string $methodName
      * @param string $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
@@ -295,7 +296,7 @@ class MockState implements States\StateInterface
      * Check if a method has been called
      * Method added for test to check different behavior in calling method.
      *
-     * @return boolean
+     * @return bool
      */
     public function methodWasCalled()
     {

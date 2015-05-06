@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -103,7 +104,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Return the Factory Object Interface.
      *
-     * @param boolean $populateContainer to populate di container of this factory
+     * @param bool $populateContainer to populate di container of this factory
      *
      * @return Factory\FactoryInterface
      */

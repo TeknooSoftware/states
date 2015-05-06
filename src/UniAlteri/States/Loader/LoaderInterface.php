@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -125,7 +126,7 @@ interface LoaderInterface
      *
      * @param string $className class name, support namespace prefixes
      *
-     * @return boolean
+     * @return bool
      *
      * @throws \Exception
      * @throws Exception\UnavailableFactory if the required factory is not available

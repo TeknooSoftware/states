@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -45,7 +46,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     /**
      * Build an basic object to provide only public methods.
      *
-     * @param boolean $initializeContainer initialize virtual di container for state
+     * @param bool $initializeContainer initialize virtual di container for state
      *
      * @return Support\MockOnlyPublic
      */
@@ -54,7 +55,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     /**
      * Build an basic object to provide only protected methods.
      *
-     * @param boolean $initializeContainer initialize virtual di container for state
+     * @param bool $initializeContainer initialize virtual di container for state
      *
      * @return Support\MockOnlyProtected
      */
@@ -63,7 +64,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     /**
      * Build an basic object to provide only private methods.
      *
-     * @param boolean $initializeContainer initialize virtual di container for state
+     * @param bool $initializeContainer initialize virtual di container for state
      *
      * @return Support\MockOnlyPrivate
      */

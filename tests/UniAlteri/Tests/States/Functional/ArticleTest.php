@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -107,9 +108,9 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         //Open a published article
         $article = new \UniAlteri\Tests\Support\Article(
             array(
-                'is_published'  => true,
-                'title'         => 'title 2',
-                'body'          => 'body 2',
+                'is_published' => true,
+                'title' => 'title 2',
+                'body' => 'body 2',
             )
         );
 

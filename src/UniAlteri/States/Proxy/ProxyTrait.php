@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -264,7 +265,7 @@ trait ProxyTrait
     protected function getVisibilityScope($limit = 5)
     {
         //Get the calling stack
-        $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT|DEBUG_BACKTRACE_IGNORE_ARGS, (int) $limit);
+        $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, (int) $limit);
 
         if (isset($callingStack[2]['function']) && '__call' !== $callingStack[2]['function']) {
             //Magic method __call adds a line into calling stack, but not other magic method

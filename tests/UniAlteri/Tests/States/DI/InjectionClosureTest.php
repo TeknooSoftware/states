@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -210,7 +211,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     public function testGetClosure()
     {
         $myClosure = function ($i) {
-            return $i+1;
+            return $i + 1;
         };
 
         $injectionClosure = new DI\InjectionClosure($myClosure);
@@ -223,7 +224,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     public function testSetProxy()
     {
         $myClosure = function ($i) {
-            return $i+1;
+            return $i + 1;
         };
 
         $proxy = $this->getMock('UniAlteri\States\Proxy\ProxyInterface');

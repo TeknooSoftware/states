@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -65,9 +66,9 @@ print 'Open article'.PHP_EOL;
 //You call also directly the stated class name and not the proxy
 $article = new Acme\Article(
     array(
-        'is_published'  => true,
-        'title'         => 'title 2',
-        'body'          => 'body 2',
+        'is_published' => true,
+        'title' => 'title 2',
+        'body' => 'body 2',
     )
 );
 

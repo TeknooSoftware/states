@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -69,7 +70,7 @@ class StateNormal implements StateInterface
      * @param string $methodName
      * @param string $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */

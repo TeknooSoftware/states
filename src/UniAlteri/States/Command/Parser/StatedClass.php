@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -74,7 +75,7 @@ class StatedClass extends AbstractParser
     /**
      * Check if this class has its own states folders.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasStatesFolder()
     {
@@ -87,7 +88,7 @@ class StatedClass extends AbstractParser
     /**
      * Check if this class has its own proxy (not mandatory by specifications of the library).
      *
-     * @return boolean
+     * @return bool
      */
     public function hasProxy()
     {
@@ -100,7 +101,7 @@ class StatedClass extends AbstractParser
     /**
      * Check if this class has its own factory.
      *
-     * @return boolean
+     * @return bool
      */
     public function hasFactory()
     {

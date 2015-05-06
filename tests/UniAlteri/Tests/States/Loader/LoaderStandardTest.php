@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -98,7 +99,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * Test if this suit test can run test on Phar.
      *
-     * @return boolean
+     * @return bool
      */
     protected function pharTestsAreAvailable()
     {
@@ -108,9 +109,9 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
     /**
      * Load object to test it.
      *
-     * @param boolean $standardIncludePathManager to load the standard Include Path Manager from this lib and not
-     *                                            the test manager
-     * @param boolean $enablePSR0                 to enable psr0 behavior in loader or not
+     * @param bool $standardIncludePathManager to load the standard Include Path Manager from this lib and not
+     *                                         the test manager
+     * @param bool $enablePSR0                 to enable psr0 behavior in loader or not
      *
      * @return Loader\LoaderStandard
      */
@@ -245,8 +246,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $loader->registerNamespace('namespace2', 'path2');
         $this->assertEquals(
             array(
-                '\\namespace1'    => new \SplQueue(array('path1')),
-                '\\namespace2'    => new \SplQueue(array('path2')),
+                '\\namespace1' => new \SplQueue(array('path1')),
+                '\\namespace2' => new \SplQueue(array('path2')),
             ),
             $loader->listNamespaces()->getArrayCopy()
         );
@@ -264,8 +265,8 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $loader->registerNamespace('namespace1', 'path3');
         $this->assertEquals(
             array(
-                '\\namespace1'    => new \SplQueue(array('path1', 'path3')),
-                '\\namespace2'    => new \SplQueue(array('path2')),
+                '\\namespace1' => new \SplQueue(array('path1', 'path3')),
+                '\\namespace2' => new \SplQueue(array('path2')),
             ),
             $loader->listNamespaces()->getArrayCopy()
         );
