@@ -269,7 +269,7 @@ trait ProxyTrait
 
         if (isset($callingStack[2]['function']) && '__call' !== $callingStack[2]['function']) {
             //Magic method __call adds a line into calling stack, but not other magic method
-            $limit--;
+            --$limit;
         }
 
         if (count($callingStack) >= $limit) {
