@@ -1,16 +1,18 @@
 #Uni Alteri - States library - Change Log
 
 ##[1.1.1] - 2015-05-06
-###Changed
+###Fixed
 - Code style fix
 - Use callable type
 - Use (int) cast instead of intval()
 - Fix version 
 
 ##[1.1.0] - 2015-02-15
-###Changed 
+###Fixed 
 - Code style fix
 - Fix version
+
+###Changed
 - Minimize using of call_user_function_array, use direct calling.
  
 ###Added
