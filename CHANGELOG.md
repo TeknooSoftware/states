@@ -1,6 +1,6 @@
 #Uni Alteri - States library - Change Log
 
-##[1.1.1]
+##[1.1.1] - 2015-05-06
 ###Changed
 - Code style fix
 - Use callable type
