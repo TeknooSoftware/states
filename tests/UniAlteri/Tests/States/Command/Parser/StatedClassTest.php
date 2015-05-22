@@ -19,7 +19,7 @@
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @version     1.1.0
+ * @version     1.1.1
  */
 
 namespace UniAlteri\Tests\States\Command\Parser;
