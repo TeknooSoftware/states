@@ -7,7 +7,12 @@
 - Use (int) cast instead of intval()
 - Fix version 
 
-##[1.1.0]
+##[1.1.0] - 2015-02-15
+###Changed 
+- Code style fix
+- Fix version
+- Minimize using of call_user_function_array, use direct calling.
+ 
 ###Added
 - Add method in InjectionClosure to allow proxy to invoke directly the closure without used
 call_user_func_* 
