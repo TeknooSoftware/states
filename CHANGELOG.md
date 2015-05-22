@@ -1,5 +1,12 @@
 #Uni Alteri - States library - Change Log
 
+##[1.1.1]
+###Changed
+- Code style fix
+- Use callable type
+- Use (int) cast instead of intval()
+- Fix version 
+
 ##[1.1.0]
 ###Added
 - Add method in InjectionClosure to allow proxy to invoke directly the closure without used
