@@ -149,20 +149,6 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
         $this->fail('Error, the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagerInterface');
     }
 
-    /**
-     * Test exception when the Container is not valid when we set a bad object as di container.
-     */
-    public function testSetDiContainerBad()
-    {
-        $object = new Loader\LoaderStandard($this->includePathManager);
-        try {
-            $object->setDIContainer(new \DateTime());
-        } catch (\Exception $e) {
-            return;
-        }
-
-        $this->fail('Error, the object must throw an exception when the DI Container is not valid');
-    }
 
     /**
      * Test behavior for methods Set And GetDiContainer.
