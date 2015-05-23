@@ -154,20 +154,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Proxy must throw an exception if the registering state name is not a valid string.
-     */
-    public function testRegisterInvalidState()
-    {
-        try {
-            $this->proxy->registerState('state1', array());
-        } catch (\Exception $e) {
-            return;
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalState exception when the state is not an object');
-    }
-
-    /**
      * Proxy must throw an exception if the registering state object does not implement the interface State\StateInterface.
      */
     public function testRegisterNonImplementedState()
