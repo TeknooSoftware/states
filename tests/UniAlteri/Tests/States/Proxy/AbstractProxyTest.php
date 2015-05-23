@@ -154,20 +154,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Proxy must throw an exception if the registering state object does not implement the interface State\StateInterface.
-     */
-    public function testRegisterNonImplementedState()
-    {
-        try {
-            $this->proxy->registerState('state1', new \DateTime());
-        } catch (\Exception $e) {
-            return;
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalState exception when the state does not implement State\StateInterface');
-    }
-
-    /**
      * Check behavior of the proxy when we add a new state.
      */
     public function testRegisterState()
