@@ -140,7 +140,14 @@ trait ProxyTrait
         }
 
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
-        $scopeVisibility = $this->getVisibilityScope();
+        $limit=4;
+        if (PHP_MAJOR_VERSION < 7) {
+            //Support for PHP5, in PHP7, the method debug_backtrace() returns one line in less than with PHP5
+            //So we increase the limit with PHP5 to retrieve and check the good object
+            $limit=5;
+        }
+
+        $scopeVisibility = $this->getVisibilityScope($limit);
 
         $methodsWithStatesArray = explode('Of', $methodName);
         if (1 < count($methodsWithStatesArray)) {
@@ -262,7 +269,7 @@ trait ProxyTrait
      *                States\States\StateInterface::VISIBILITY_PROTECTED
      *                States\States\StateInterface::VISIBILITY_PRIVATE
      */
-    protected function getVisibilityScope($limit = 5)
+    protected function getVisibilityScope($limit)
     {
         //Get the calling stack
         $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, (int) $limit);
