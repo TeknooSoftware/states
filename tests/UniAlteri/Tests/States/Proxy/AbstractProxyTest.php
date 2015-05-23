@@ -112,21 +112,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exception when the Container is not valid when we set a bad object as di container.
-     */
-    public function testSetDiContainerBad()
-    {
-        $object = $this->buildProxy();
-        try {
-            $object->setDIContainer(new \DateTime());
-        } catch (\Exception $e) {
-            return;
-        }
-
-        $this->fail('Error, the object must throw an exception when the DI Container is not valid');
-    }
-
-    /**
      * Test behavior for methods Set And GetDiContainer.
      */
     public function testSetAndGetDiContainer()
