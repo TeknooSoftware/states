@@ -1,5 +1,13 @@
 #Uni Alteri - States library - Change Log
 
+##[1.1.2] - 2015-05-24
+###Chanced
+- Remove useless tests units about PHP's behavior.
+ 
+###Added
+- Support of PHP7 (States is 7x faster than with PHP5.5)
+- Add travis file to support IC outside Uni Alteri's server
+
 ##[1.1.1] - 2015-05-06
 ###Fixed
 - Code style fix
