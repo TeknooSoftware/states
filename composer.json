@@ -2,7 +2,7 @@
     "name": "unialteri/states",
     "type": "library",
     "description": "Library to create easily and cleanly classes with several states, writed in distinct codes blocks, but never used \"if conditions\" with PHP 5.4+.",
-    "keywords": ["states","class"],
+    "keywords": ["states","class","state pattern","pattern","behavioral software design pattern"],
     "homepage": "http://teknoo.it/states",
     "license": ["MIT","GPL-3.0+"],
     "authors": [
