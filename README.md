@@ -3,8 +3,10 @@ Uni Alteri - States library
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/417986ff-17b4-4772-a3d8-9885d6304786/mini.png)](https://insight.sensiolabs.com/projects/417986ff-17b4-4772-a3d8-9885d6304786) [![Build Status](https://travis-ci.org/UniAlteri/states.svg?branch=master)](https://travis-ci.org/UniAlteri/states)
 
-Welcome and thank you to having downloaded this library. It allows you to create easily and cleanly classes with 
-several states, writed in distinct codes blocks, but never used "if conditions" with PHP 5.4+.
+Welcome and thank you to having downloaded this library. It allows you to follow and implement the 
+ [State Pattern](http://en.wikipedia.org/wiki/State_pattern)
+ and to create easily and cleanly classes with several states, writed in distinct codes blocks, 
+ but never used "if conditions" with PHP 5.4+.
 
 Quick startup
 -------------
