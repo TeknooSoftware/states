@@ -133,7 +133,7 @@ trait ProxyTrait
      * @throws Exception\IllegalArgument      if the method's name is not a string
      * @throws \Exception
      */
-    protected function findMethodToCall($methodName, array $arguments)
+    protected function findMethodToCall($methodName, array &$arguments)
     {
         if (!is_string($methodName)) {
             throw new Exception\IllegalArgument('Error the methodName is not a string');
@@ -674,14 +674,15 @@ trait ProxyTrait
     /**
      * To invoke an object as a function.
      *
+     * @param mixed ...$args
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __invoke()
+    public function __invoke(...$args)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /*******************
@@ -700,7 +701,8 @@ trait ProxyTrait
      */
     public function __get($name)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$name];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -715,7 +717,8 @@ trait ProxyTrait
      */
     public function __isset($name)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$name];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -731,7 +734,8 @@ trait ProxyTrait
      */
     public function __set($name, $value)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$name, $value];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -746,7 +750,8 @@ trait ProxyTrait
      */
     public function __unset($name)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$name];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -758,7 +763,8 @@ trait ProxyTrait
     public function __toString()
     {
         try {
-            return $this->findMethodToCall(__FUNCTION__, func_get_args());
+            $args = [];
+            return $this->findMethodToCall(__FUNCTION__, $args);
         } catch (\Exception $e) {
             return '';
         }
@@ -778,7 +784,8 @@ trait ProxyTrait
      */
     public function count()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -794,7 +801,8 @@ trait ProxyTrait
      */
     public function offsetExists($offset)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$offset];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -810,7 +818,8 @@ trait ProxyTrait
      */
     public function offsetGet($offset)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$offset];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -826,7 +835,8 @@ trait ProxyTrait
      */
     public function offsetSet($offset, $value)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$offset, $value];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -839,7 +849,8 @@ trait ProxyTrait
      */
     public function offsetUnset($offset)
     {
-        $this->findMethodToCall(__FUNCTION__, array($offset));
+        $args = [$offset];
+        $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /************
@@ -856,7 +867,8 @@ trait ProxyTrait
      */
     public function current()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -869,7 +881,8 @@ trait ProxyTrait
      */
     public function key()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -880,7 +893,8 @@ trait ProxyTrait
      */
     public function next()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -891,7 +905,8 @@ trait ProxyTrait
      */
     public function rewind()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -904,7 +919,8 @@ trait ProxyTrait
      */
     public function seek($position)
     {
-        $this->findMethodToCall(__FUNCTION__, array($position));
+        $args = [$position];
+        $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -917,7 +933,8 @@ trait ProxyTrait
      */
     public function valid()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -930,7 +947,8 @@ trait ProxyTrait
      */
     public function getIterator()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /*****************
@@ -947,7 +965,8 @@ trait ProxyTrait
      */
     public function serialize()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -960,6 +979,7 @@ trait ProxyTrait
      */
     public function unserialize($serialized)
     {
-        $this->findMethodToCall(__FUNCTION__, array($serialized));
+        $args = [$serialized];
+        $this->findMethodToCall(__FUNCTION__, $args);
     }
 }

@@ -201,12 +201,13 @@ interface ProxyInterface extends
     /**
      * To invoke an object as a function.
      *
+     * @param mixed ...$args
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __invoke();
+    public function __invoke(...$args);
 
     /*******************
      * Data Management *
