@@ -139,7 +139,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
         $closure = $this->buildClosure();
         $args = ['foo', 'boo', 'hello', 'world'];
         $return = $closure->invoke($args);
-        $this->assertSame(
+        $this->assertEquals(
             array(
                 'world',
                 'hello',
