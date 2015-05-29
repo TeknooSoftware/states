@@ -1,5 +1,19 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta] - 2015-05-30 - Available on the branch "next"
+###Removed
+- Support of PHP 5.4 (End of life).
+- Support of PHP 5.5 ("..." operator needed, availabel since 5.6).
+
+###Changed
+- Use splat operator ("...") instead of the "switch" solution to avoid "call_user_func_array" in injected closures.
+- Use "..." operator instead of func_get_args().
+
+###Notes
+- Support of PHP 5.4 and PHP 5.5 are always available with 1.x versions. 
+- EOL of the branch 1.x scheduled for 20 Jun 2017. (One later after 5.5).
+- No new features planned for 2.0 compared to 1.x versions, only best performances and use last PHP's features. 
+
 ##[1.1.2] - 2015-05-24
 ###Chanced
 - Remove useless tests units about PHP's behavior.
