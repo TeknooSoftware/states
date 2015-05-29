@@ -1778,8 +1778,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $proxy('foo', 'bar');
 
         $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('__invoke', $this->state1->getMethodNameCalled());
-        $this->assertSame(array('foo', 'bar'), $this->state1->getCalledArguments());
+        $this->assertEquals('__invoke', $this->state1->getMethodNameCalled());
+        $this->assertEquals(array('foo', 'bar'), $this->state1->getCalledArguments());
     }
 
     /**
