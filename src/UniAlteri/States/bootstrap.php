@@ -24,6 +24,8 @@
 
 namespace UniAlteri\States;
 
+use UniAlteri\States\Factory\FactoryInterface;
+
 defined('UA_STATES_PATH')
     || define('UA_STATES_PATH', __DIR__);
 
@@ -36,6 +38,9 @@ if (is_readable($iniFile)) {
 
 //Initial DI Container
 $diContainer = new DI\Container();
+
+//Initialize the Factory Repository
+$diContainer->registerInstance(FactoryInterface::DI_FACTORY_REPOSITORY, new DI\Container());
 
 /*
  * Service to generate a finder for Stated class factory
