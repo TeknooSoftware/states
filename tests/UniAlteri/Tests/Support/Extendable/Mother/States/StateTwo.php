@@ -22,12 +22,13 @@
  * @version     1.1.1
  */
 
-namespace demo\Acme\Article\States;
+namespace UniAlteri\Tests\Support\Extendable\Mother\States;
 
 use UniAlteri\States\States;
 
 /**
- * State StateDefault
+ * State StateTwo
+ * Copy from Demo for functional tests.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -37,27 +38,29 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateDefault extends States\AbstractState
+class StateTwo extends States\AbstractState
 {
     /**
-     * Return the title of this article.
-     *
-     * @return string
+     * @return int
      */
-    public function getTitle()
+    public function methodPublic()
     {
-        return $this->getAttribute('title');
+        return 123;
     }
 
     /**
-     * To know if the article is published.
-     *
-     * @return bool
+     * @return int
      */
-    public function isPublished()
+    protected function methodProtected()
     {
-        $isPublished = $this->getAttribute('is_published');
+        return 456;
+    }
 
-        return !empty($isPublished);
+    /**
+     * @return int
+     */
+    private function methodPrivate()
+    {
+        return 789;
     }
 }

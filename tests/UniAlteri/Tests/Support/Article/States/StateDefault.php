@@ -27,8 +27,7 @@ namespace UniAlteri\Tests\Support\Article\States;
 use UniAlteri\States\States;
 
 /**
- * State Published
- * State for a published article
+ * State StateDefault
  * Copy from Demo for functional tests.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
