@@ -28,6 +28,7 @@ use UniAlteri\States\DI;
 use UniAlteri\States\Proxy;
 use UniAlteri\States\States;
 use UniAlteri\States\States\Exception;
+use UniAlteri\States\States\StateInterface;
 
 /**
  * Class MockState
@@ -89,6 +90,11 @@ class MockState implements States\StateInterface
      * @var MockInjectionClosure
      */
     protected $virtualInjection = null;
+
+    /**
+     * @var bool
+     */
+    protected $privateModeEnable = false;
 
     /**
      * Initialize virtual state.
@@ -172,12 +178,13 @@ class MockState implements States\StateInterface
      *
      * @param string $methodName
      * @param string $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null $statedClassOriginName
      *
      * @return bool
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope = States\StateInterface::VISIBILITY_PUBLIC)
+    public function testMethod($methodName, $scope = States\StateInterface::VISIBILITY_PUBLIC, $statedClassOriginName = null)
     {
         //Simulate real behavior from the name of the method,
         //if the method name contains private, its a private method
@@ -238,13 +245,14 @@ class MockState implements States\StateInterface
      * @param string               $methodName
      * @param Proxy\ProxyInterface $proxy
      * @param string               $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null $statedClassOriginName
      *
      * @return DI\InjectionClosureInterface
      *
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws Exception\InvalidArgument      when the method name is not a string
      */
-    public function getClosure($methodName, $proxy, $scope = States\StateInterface::VISIBILITY_PUBLIC)
+    public function getClosure($methodName, $proxy, $scope = States\StateInterface::VISIBILITY_PUBLIC, $statedClassOriginName = null)
     {
         if (false === $this->methodAllowed) {
             throw new Exception\MethodNotImplemented();
@@ -282,14 +290,26 @@ class MockState implements States\StateInterface
 
         $this->methodName = $methodName;
 
-        if (null === $this->virtualInjection) {
-            $this->closure = \Closure::bind($this->closure, $proxy, get_class($proxy));
-            $injection = new MockInjectionClosure();
-            $injection->setClosure($this->closure);
-            $this->virtualInjection = $injection;
-        }
+        if (method_exists($this, $methodName)) {
+            $reflectionObject = new \ReflectionObject($this);
+            $reflectionMethod = $reflectionObject->getMethod($methodName);
+            $closure = \Closure::bind($reflectionMethod->getClosure($this), $proxy, get_class($proxy));
 
-        return $this->virtualInjection;
+            $injection = new MockInjectionClosure();
+            $injection->setClosure($closure);
+
+            return $injection;
+        } else {
+            if (null === $this->virtualInjection) {
+                $this->closure = \Closure::bind($this->closure, $proxy, get_class($proxy));
+
+                $injection = new MockInjectionClosure();
+                $injection->setClosure($this->closure);
+                $this->virtualInjection = $injection;
+            }
+
+            return $this->virtualInjection;
+        }
     }
 
     /**
@@ -352,5 +372,64 @@ class MockState implements States\StateInterface
         $this->methodName = null;
 
         return $methodName;
+    }
+
+    /**
+     * To get the canonical stated class name associated to this state
+     *
+     * @return $this
+     */
+    public function getStatedClassName()
+    {
+    }
+
+    /**
+     * To set the canonical stated class name associated to this state
+     *
+     * @param string $statedClassName
+     *
+     * @return StateInterface
+     */
+    public function setStatedClassName($statedClassName)
+    {
+        return $this;
+    }
+
+    /**
+     * To know if the mode Private is enabled : private method are only accessible from
+     * method present in the same stated class and not from methods of children of this class.
+     * By default this mode is disable
+     * @return boolean
+     */
+    public function isPrivateMode()
+    {
+        return $this->privateModeEnable;
+    }
+
+    /**
+     * To enable or disable the private mode of this state :
+     * If the mode Private is enable, private method are only accessible from
+     * method present in the same stated class and not from methods of children of this class.
+     * By default this mode is disable
+     *
+     * @param boolean $enable
+     *
+     * @return StateInterface
+     */
+    public function setPrivateMode($enable)
+    {
+        $this->privateModeEnable = !empty($enable);
+
+        return $this;
+    }
+
+    /**
+     * Method to use in test to perform internal recall via a method in state
+     * @param string $methodName
+     * @return mixed
+     */
+    public function recallMethod($methodName)
+    {
+        return $this->{$methodName}();
     }
 }

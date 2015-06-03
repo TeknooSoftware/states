@@ -22,12 +22,16 @@
  * @version     1.1.1
  */
 
-namespace demo\Acme\Article\States;
+namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\States;
+use UniAlteri\States\Proxy\Exception;
+use UniAlteri\States\Proxy;
+use UniAlteri\States\DI;
+use UniAlteri\States;
 
 /**
- * State StateDefault
+ * Class MockProxyChild
+ * Mock proxy to tests factories behavior and trait state behavior.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -37,27 +41,6 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateDefault extends States\AbstractState
+class MockProxyChild extends MockProxy
 {
-    /**
-     * Return the title of this article.
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->getAttribute('title');
-    }
-
-    /**
-     * To know if the article is published.
-     *
-     * @return bool
-     */
-    public function isPublished()
-    {
-        $isPublished = $this->getAttribute('is_published');
-
-        return !empty($isPublished);
-    }
 }

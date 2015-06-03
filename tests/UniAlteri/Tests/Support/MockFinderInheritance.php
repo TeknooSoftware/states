@@ -43,7 +43,7 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class MockFinder implements Loader\FinderInterface
+class MockFinderInheritance implements Loader\FinderInterface
 {
     /**
      * Mock container used for tests.
@@ -112,14 +112,12 @@ class MockFinder implements Loader\FinderInterface
             return array(
                 'MockState1',
                 Proxy\ProxyInterface::DEFAULT_STATE_NAME,
-                'MockState2',
-                'MockState3',
+                'MockState4',
             );
         } else {
             return array(
                 'MockState1',
-                'MockState2',
-                'MockState3',
+                'MockState4',
             );
         }
     }
@@ -202,7 +200,7 @@ class MockFinder implements Loader\FinderInterface
      */
     public function listParentsClassesNames()
     {
-        return new \ArrayObject();
+        return new \ArrayObject(['UniAlteri\Tests\Support\MockProxy']);
     }
 
     /**

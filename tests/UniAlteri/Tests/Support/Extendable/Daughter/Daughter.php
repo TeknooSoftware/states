@@ -22,12 +22,14 @@
  * @version     1.1.1
  */
 
-namespace demo\Acme\Article\States;
+namespace UniAlteri\Tests\Support\Extendable\Daughter;
 
-use UniAlteri\States\States;
+use UniAlteri\Tests\Support\Extendable\Mother\Mother;
 
 /**
- * State StateDefault
+ * Proxy Daughter
+ * Proxy class of the stated class Daughter
+ * Copy from Demo for functional tests.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -37,27 +39,20 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateDefault extends States\AbstractState
+class Daughter extends Mother
 {
     /**
-     * Return the title of this article.
-     *
-     * @return string
+     * Return the list of availabel state in this class
+     * @return array
      */
-    public function getTitle()
+    public function listMethodsByStates()
     {
-        return $this->getAttribute('title');
-    }
+        $methodsList = array();
+        foreach ($this->states as $stateName=>$stateContainer) {
+            $methodsList[$stateName] = $stateContainer->listMethods()->getArrayCopy();
+        }
 
-    /**
-     * To know if the article is published.
-     *
-     * @return bool
-     */
-    public function isPublished()
-    {
-        $isPublished = $this->getAttribute('is_published');
-
-        return !empty($isPublished);
+        ksort($methodsList);
+        return $methodsList;
     }
 }

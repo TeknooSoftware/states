@@ -85,6 +85,57 @@ trait ProxyTrait
     protected $currentInjectionClosure = null;
 
     /**
+     * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
+     * private method access
+     *
+     * @var string[]|\SplStack
+     */
+    protected $callerStatedClassesStack = null;
+
+    /**
+     * To get the class name of the caller according to scope visibility
+     *
+     * @return string
+     */
+    protected function getCallerStatedClassName()
+    {
+        if (true !== $this->callerStatedClassesStack->isEmpty()) {
+            return $this->callerStatedClassesStack->top();
+        }
+
+        return '';
+    }
+
+    /**
+     * To push in the caller stated classes name stack
+     * the class of the current object.
+     * @param States\States\StateInterface $state
+     * @param $scopeVisibility
+     *
+     * @return $this
+     */
+    protected function pushCallerStatedClassName(States\States\StateInterface $state, $scopeVisibility)
+    {
+        $this->callerStatedClassesStack->push($state->getStatedClassName());
+
+        return $this;
+    }
+
+    /**
+     * To pop the current caller in the stated class name stack
+     *
+     * @return $this
+     */
+    protected function popCallerStatedClassName()
+    {
+        if (false === $this->callerStatedClassesStack->isEmpty()) {
+            $this->callerStatedClassesStack->pop();
+        }
+
+        return $this;
+    }
+
+    /**
      * Execute a method available in a state passed in args with the injection closure.
      *
      * @param States\States\StateInterface $state
@@ -99,8 +150,11 @@ trait ProxyTrait
      */
     protected function callInState(States\States\StateInterface $state, $methodName, array &$arguments, $scopeVisibility)
     {
+        $callerStatedClassName = $this->getCallerStatedClassName();
+        $this->pushCallerStatedClassName($state, $scopeVisibility);
+
         //Method found, extract it
-        $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility);
+        $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility, $callerStatedClassName);
         //Change current injection
         $previousClosure = $this->currentInjectionClosure;
         $this->currentInjectionClosure = $callingClosure;
@@ -111,11 +165,16 @@ trait ProxyTrait
         } catch (\Exception $e) {
             //Restore previous closure
             $this->currentInjectionClosure = $previousClosure;
+            //Restore stated class name stack
+            $this->popCallerStatedClassName();
             throw $e;
         }
 
         //Restore previous closure
         $this->currentInjectionClosure = $previousClosure;
+
+        //Restore stated class name stack
+        $this->popCallerStatedClassName();
 
         return $returnValues;
     }
@@ -149,6 +208,8 @@ trait ProxyTrait
 
         $scopeVisibility = $this->getVisibilityScope($limit);
 
+        $callerStatedClassName = $this->getCallerStatedClassName();
+
         $methodsWithStatesArray = explode('Of', $methodName);
         if (1 < count($methodsWithStatesArray)) {
             //A specific state is required for this call
@@ -158,7 +219,7 @@ trait ProxyTrait
                 $methodName = implode('Of', $methodsWithStatesArray);
 
                 $activeStateObject = $this->activesStates[$statesName];
-                if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
+                if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
                     return $this->callInState($activeStateObject, $methodName, $arguments, $scopeVisibility);
                 }
             }
@@ -167,7 +228,7 @@ trait ProxyTrait
         $activeStateFound = null;
         //No specific state required, browse all enabled state to find the method
         foreach ($this->activesStates as $activeStateObject) {
-            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
+            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
                 if (null === $activeStateFound) {
                     //Check if there are only one enabled state whom implements this method
                     $activeStateFound = $activeStateObject;
@@ -232,6 +293,7 @@ trait ProxyTrait
         //Initialize internal vars
         $this->states = new \ArrayObject();
         $this->activesStates = new \ArrayObject();
+        $this->callerStatedClassesStack = new \SplStack();
     }
 
     /**
@@ -637,11 +699,12 @@ trait ProxyTrait
 
         //Retrieve the visibility scope
         $scopeVisibility = $this->getVisibilityScope(3);
+        $callerStatedClassName = $this->getCallerStatedClassName();
         try {
             if (null === $stateName) {
                 //Browse all state to find the method
                 foreach ($this->states as $stateObject) {
-                    if ($stateObject->testMethod($methodName, $scopeVisibility)) {
+                    if ($stateObject->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
                         return $stateObject->getMethodDescription($methodName);
                     }
                 }
@@ -649,7 +712,7 @@ trait ProxyTrait
 
             if (null !== $stateName && isset($this->states[$stateName])) {
                 //Retrieve description from the required state
-                if ($this->states[$stateName]->testMethod($methodName, $scopeVisibility)) {
+                if ($this->states[$stateName]->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
                     return $this->states[$stateName]->getMethodDescription($methodName);
                 }
             } elseif (null !== $stateName) {

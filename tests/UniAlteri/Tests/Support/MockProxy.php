@@ -574,4 +574,16 @@ class MockProxy implements Proxy\ProxyInterface
     {
         //Not used in tests
     }
+
+    /**
+     * o return the state identified in param for tests
+     *
+     * @param $stateName
+     *
+     * @return States\States\StateInterface
+     */
+    public function getState($stateName)
+    {
+        return $this->states[$stateName];
+    }
 }

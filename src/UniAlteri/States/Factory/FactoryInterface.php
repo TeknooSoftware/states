@@ -49,6 +49,11 @@ interface FactoryInterface
     const DI_FACTORY_NAME = 'Factory';
 
     /**
+     * Name of the repository in the DI Container, shared with all DI, to register all loaded factory
+     */
+    const DI_FACTORY_REPOSITORY = 'FactoryRepository';
+
+    /**
      * To register a DI container for this object.
      *
      * @param DI\ContainerInterface $container

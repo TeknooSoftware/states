@@ -82,6 +82,10 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $container = $this->loader->getDIContainer();
         $this->assertInstanceOf('\\UniAlteri\\States\\DI\\ContainerInterface', $container);
 
+        //Check if the factory repository has been created
+        $this->assertTrue($container->testEntry(Factory\FactoryInterface::DI_FACTORY_REPOSITORY));
+        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\ContainerInterface', $container->get(Factory\FactoryInterface::DI_FACTORY_REPOSITORY));
+
         //Check if required services are present into the di container
         $this->assertTrue($container->testEntry(Loader\FinderInterface::DI_FINDER_SERVICE));
         $this->assertTrue($container->testEntry(States\States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER));

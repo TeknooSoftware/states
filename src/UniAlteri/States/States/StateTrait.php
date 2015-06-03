@@ -103,7 +103,23 @@ trait StateTrait
         'testMethod' => 'testMethod',
         'getMethodDescription' => 'getMethodDescription',
         'getClosure' => 'getClosure',
+        'setPrivateMode' => 'setPrivateMode',
+        'isPrivateMode' => 'isPrivateMode',
+        'getStatedClassName' => 'getStatedClassName',
+        'setStatedClassName' => 'setStatedClassName'
     );
+
+    /**
+     * To know if the private mode is enable or not for this state (see isPrivateMode())
+     * @var bool
+     */
+    protected $privateModeStatus = false;
+
+    /**
+     * To know the canonical stated class name of the object owning this state container
+     * @var string
+     */
+    protected $statedClassName;
 
     /**
      * To build the ReflectionClass for the current object.
@@ -146,6 +162,58 @@ trait StateTrait
     }
 
     /**
+     * To get the canonical stated class name associated to this state
+     *
+     * @return $this
+     */
+    public function getStatedClassName()
+    {
+        return $this->statedClassName;
+    }
+
+    /**
+     * To set the canonical stated class name associated to this state
+     *
+     * @param string $statedClassName
+     *
+     * @return $this
+     */
+    public function setStatedClassName($statedClassName)
+    {
+        $this->statedClassName = $statedClassName;
+
+        return $this;
+    }
+
+    /**
+     * To know if the mode Private is enabled : private method are only accessible from
+     * method present in the same stated class and not from methods of children of this class.
+     * By default this mode is disable
+     * @return boolean
+     */
+    public function isPrivateMode()
+    {
+        return $this->privateModeStatus;
+    }
+
+    /**
+     * To enable or disable the private mode of this state :
+     * If the mode Private is enable, private method are only accessible from
+     * method present in the same stated class and not from methods of children of this class.
+     * By default this mode is disable
+     *
+     * @param boolean $enable
+     *
+     * @return $this
+     */
+    public function setPrivateMode($enable)
+    {
+        $this->privateModeStatus = !empty($enable);
+
+        return $this;
+    }
+
+    /**
      * To return an array of string listing all methods available in the state.
      *
      * @return string[]
@@ -162,7 +230,8 @@ trait StateTrait
             $methodsFinalArray = new \ArrayObject();
             foreach ($methodsArray as $methodReflection) {
                 //We ignore all static methods, there are incompatible with stated behavior
-                if (false === $methodReflection->isStatic()) {
+                if (false === $methodReflection->isStatic()
+                    && (false === $this->privateModeStatus || false === $methodReflection->isPrivate())) {
                     //Store reflection into the local cache
                     $methodNameString = $methodReflection->getName();
                     if (!isset($this->methodsNamesToIgnoreArray[$methodNameString])) {
@@ -185,20 +254,33 @@ trait StateTrait
      *
      * @param string $methodName
      * @param string $scope
+     * @param string|null $statedClassOriginName
      *
      * @return bool
      *
      * @throws Exception\InvalidArgument
      */
-    protected function checkVisibility($methodName, $scope)
+    protected function checkVisibility($methodName, $scope, $statedClassOriginName=null)
     {
         $visible = false;
         if (isset($this->reflectionsMethods[$methodName])) {
             //Check visibility scope
             switch ($scope) {
                 case StateInterface::VISIBILITY_PRIVATE:
-                    //Private, can access all
-                    $visible = true;
+                    //To check if the caller method can be accessible by the method caller :
+                    //The called method is protected or public (skip to next test)
+                    //The private mode is disable for this state (state is not defined is a parent class)
+                    //The caller method is in the same stated class that the called method
+                    $privateMethodIsAvailable = true;
+                    if (true === $this->privateModeStatus) {
+                        if ($statedClassOriginName !== $this->statedClassName) {
+                            if (true === $this->reflectionsMethods[$methodName]->isPrivate()) {
+                                $privateMethodIsAvailable = false;
+                            }
+                        }
+                    }
+
+                    $visible = $privateMethodIsAvailable;
                     break;
                 case StateInterface::VISIBILITY_PROTECTED:
                     //Can not access to private methods
@@ -229,12 +311,13 @@ trait StateTrait
      *
      * @param string $methodName
      * @param string $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null $statedClassOriginName
      *
      * @return bool
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope = StateInterface::VISIBILITY_PUBLIC)
+    public function testMethod($methodName, $scope = StateInterface::VISIBILITY_PUBLIC, $statedClassOriginName = null)
     {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
@@ -243,7 +326,7 @@ trait StateTrait
         //Method is already extracted
         if (isset($this->reflectionsMethods[$methodName])) {
             if ($this->reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
-                return $this->checkVisibility($methodName, $scope);
+                return $this->checkVisibility($methodName, $scope, $statedClassOriginName);
             } else {
                 return false;
             }
@@ -260,7 +343,7 @@ trait StateTrait
         }
 
         //Return the result according with the visibility
-        return $this->checkVisibility($methodName, $scope);
+        return $this->checkVisibility($methodName, $scope, $statedClassOriginName);
     }
 
     /**
@@ -346,6 +429,7 @@ trait StateTrait
      * @param string               $methodName
      * @param Proxy\ProxyInterface $proxy
      * @param string               $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null $statedClassOriginName
      *
      * @return DI\InjectionClosureInterface
      *
@@ -354,7 +438,7 @@ trait StateTrait
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought
      */
-    public function getClosure($methodName, $proxy, $scope = StateInterface::VISIBILITY_PUBLIC)
+    public function getClosure($methodName, $proxy, $scope = StateInterface::VISIBILITY_PUBLIC, $statedClassOriginName = null)
     {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
@@ -387,7 +471,7 @@ trait StateTrait
         }
 
         //Check visibility scope
-        if (false === $this->checkVisibility($methodName, $scope)) {
+        if (false === $this->checkVisibility($methodName, $scope, $statedClassOriginName)) {
             throw new Exception\MethodNotImplemented(
                 sprintf('Method "%s" is not available for this state', $methodName)
             );

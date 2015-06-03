@@ -343,6 +343,149 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->getPublicClassObject()->testMethod('standardMethod4'));
     }
 
+
+
+    /**
+     * Test if the method exist into the state into the defined scope (private) when the private mode enable and caller
+     * can be another class (its forbidden), a child class (its forbidden) and the same class (it's granted)
+     */
+    public function testTestMethodPrivateScopeWithPrivateMode()
+    {
+        $private = $this->getPrivateClassObject();
+        $private->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
+        $this->assertTrue($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertTrue($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertTrue($private->testMethod('standardMethod10', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertTrue($private->testMethod('finalMethod11', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+
+        $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('standardMethod10', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('finalMethod11', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+
+        $protected = $this->getProtectedClassObject();
+        $protected->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
+        $this->assertFalse($protected->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertTrue($protected->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertTrue($protected->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertTrue($protected->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+
+        $this->assertFalse($protected->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($protected->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($protected->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($protected->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+
+        $public = $this->getPublicClassObject();
+        $public->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
+        $this->assertTrue($public->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertTrue($public->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertFalse($public->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+        $this->assertTrue($public->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
+
+        $this->assertTrue($public->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($public->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($public->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($public->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
+    }
+
+    /**
+     * Test if the method exist into the state into the defined scope (protected). when the private mode enable and caller
+     * can be another class (its granted), a child class (its granted) and the same class (it's granted)
+     */
+    public function testTestMethodProtectedScopeWithPrivateMode()
+    {
+        $private = $this->getPrivateClassObject();
+        $private->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
+        $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('standardMethod10', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('finalMethod11', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+
+        $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('standardMethod10', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('finalMethod11', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+
+        $protected = $this->getProtectedClassObject();
+        $protected->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
+        $this->assertFalse($protected->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertTrue($protected->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertTrue($protected->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertTrue($protected->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+
+        $this->assertFalse($protected->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($protected->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($protected->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($protected->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+
+        $public = $this->getPublicClassObject();
+        $public->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
+        $this->assertTrue($public->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertTrue($public->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertFalse($public->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+        $this->assertTrue($public->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
+
+        $this->assertTrue($public->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($public->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($public->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($public->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
+    }
+
+    /**
+     * Test if the method exist into the state into the defined scope (public).when the private mode enable and caller
+     * can be another class (its granted), a child class (its granted) and the same class (it's granted)
+     */
+    public function testTestMethodPublicScopeWithPrivateMode()
+    {
+        $private = $this->getPrivateClassObject();
+        $private->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
+        $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('standardMethod10', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('finalMethod11', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+
+        $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('standardMethod10', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('finalMethod11', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+
+        $protected = $this->getProtectedClassObject();
+        $protected->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
+        $this->assertFalse($protected->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertFalse($protected->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertFalse($protected->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertFalse($protected->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+
+        $this->assertFalse($protected->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($protected->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($protected->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($protected->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+
+        $public = $this->getPublicClassObject();
+        $public->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
+        $this->assertTrue($public->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertTrue($public->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertFalse($public->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+        $this->assertTrue($public->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
+
+        $this->assertTrue($public->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($public->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertFalse($public->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+        $this->assertTrue($public->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
+    }
+
     /**
      * Test exception through by state if the name is invalid.
      */
@@ -559,6 +702,304 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
     }
 
+
+
+    /**
+     * Test if the closure can be get into the state into the defined scope (private).
+     */
+    public function testGetClosureWithPrivateScopeWithPrivateModeSameClass()
+    {
+        $closure = $this->getPrivateClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod10',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PRIVATE,
+                'It\A\Stated\Class'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+
+        $closure = $this->getProtectedClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod6',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PRIVATE,
+                'It\A\Stated\Class'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+
+        $closure = $this->getPublicClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod1',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PRIVATE,
+                'It\A\Stated\Class'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+    }
+
+    /**
+     * Test if the closure can be get into the state into the defined scope (protected, so privates methods are not available).
+     */
+    public function testGetClosureWithProtectedScopeWithPrivateModeSameClass()
+    {
+        $fail = false;
+        try {
+            $this->getPrivateClassObject()
+                ->setPrivateMode(true)
+                ->setStatedClassName('It\A\Stated\Class')
+                ->getClosure(
+                    'standardMethod10',
+                    $this->getMockProxy(),
+                    States\StateInterface::VISIBILITY_PROTECTED,
+                    'It\A\Stated\Class'
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {
+        }
+
+        $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
+
+        $closure = $this->getProtectedClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod6',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PROTECTED,
+                'It\A\Stated\Class'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+
+        $closure = $this->getPublicClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod1',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PROTECTED,
+                'It\A\Stated\Class'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+    }
+
+    /**
+     * Test if the closure can be get into the state into the defined scope (public).
+     */
+    public function testGetClosureWithPublicScopeWithPrivateModeSameClass()
+    {
+        $fail = false;
+        try {
+            $this->getPrivateClassObject()
+                ->setPrivateMode(true)
+                ->setStatedClassName('It\A\Stated\Class')
+                ->getClosure(
+                    'standardMethod10',
+                    $this->getMockProxy(),
+                    States\StateInterface::VISIBILITY_PUBLIC,
+                    'It\A\Stated\Class'
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {
+        }
+
+        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
+
+        $fail = false;
+        try {
+            $this->getProtectedClassObject()
+                ->setPrivateMode(true)
+                ->setStatedClassName('It\A\Stated\Class')
+                ->getClosure(
+                    'standardMethod6',
+                    $this->getMockProxy(),
+                    States\StateInterface::VISIBILITY_PUBLIC,
+                    'It\A\Stated\Class'
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {
+        }
+
+        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
+
+        $closure = $this->getPublicClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod1',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PUBLIC,
+                'It\A\Stated\Class'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+    }
+
+
+
+    /**
+     * Test if the closure can be get into the state into the defined scope (private).
+     */
+    public function testGetClosureWithPrivateScopeWithPrivateModeAnotherClass()
+    {
+        $fail = false;
+        try {
+            $this->getPrivateClassObject()
+                ->setPrivateMode(true)
+                ->setStatedClassName('It\A\Stated\Class')
+                ->getClosure(
+                    'standardMethod10',
+                    $this->getMockProxy(),
+                    States\StateInterface::VISIBILITY_PRIVATE,
+                    'It\A\Stated\AnotherClass'
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {
+        }
+
+        $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
+
+        $closure = $this->getProtectedClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod6',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PRIVATE,
+                'It\A\Stated\AnotherClass'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+
+        $closure = $this->getPublicClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod1',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PRIVATE,
+                'It\A\Stated\AnotherClass'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+    }
+
+    /**
+     * Test if the closure can be get into the state into the defined scope (protected, so privates methods are not available).
+     */
+    public function testGetClosureWithProtectedScopeWithPrivateModeAnotherClass()
+    {
+        $fail = false;
+        try {
+            $this->getPrivateClassObject()
+                ->setPrivateMode(true)
+                ->setStatedClassName('It\A\Stated\Class')
+                ->getClosure(
+                    'standardMethod10',
+                    $this->getMockProxy(),
+                    States\StateInterface::VISIBILITY_PROTECTED,
+                    'It\A\Stated\AnotherClass'
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {
+        }
+
+        $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
+
+        $closure = $this->getProtectedClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod6',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PROTECTED,
+                'It\A\Stated\AnotherClass'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+
+        $closure = $this->getPublicClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod1',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PROTECTED,
+                'It\A\Stated\AnotherClass'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+    }
+
+    /**
+     * Test if the closure can be get into the state into the defined scope (public).
+     */
+    public function testGetClosureWithPublicScopeWithPrivateModeAnotherClass()
+    {
+        $fail = false;
+        try {
+            $this->getPrivateClassObject()
+                ->setPrivateMode(true)
+                ->setStatedClassName('It\A\Stated\Class')
+                ->getClosure(
+                    'standardMethod10',
+                    $this->getMockProxy(),
+                    States\StateInterface::VISIBILITY_PUBLIC,
+                    'It\A\Stated\AnotherClass'
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {
+        }
+
+        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
+
+        $fail = false;
+        try {
+            $this->getProtectedClassObject()
+                ->setPrivateMode(true)
+                ->setStatedClassName('It\A\Stated\Class')
+                ->getClosure(
+                    'standardMethod6',
+                    $this->getMockProxy(),
+                    States\StateInterface::VISIBILITY_PUBLIC,
+                    'It\A\Stated\AnotherClass'
+            );
+        } catch (States\Exception\MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {
+        }
+
+        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
+
+        $closure = $this->getPublicClassObject()
+            ->setPrivateMode(true)
+            ->setStatedClassName('It\A\Stated\Class')
+            ->getClosure(
+                'standardMethod1',
+                $this->getMockProxy(),
+                States\StateInterface::VISIBILITY_PUBLIC,
+                'It\A\Stated\AnotherClass'
+        );
+
+        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+    }
+
     /**
      * Test if the closure can be get into the state into the default scope (public).
      */
@@ -671,5 +1112,72 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertNotSame($closure1->getClosure(), $closure3->getClosure());
         $this->assertNotSame($closure1, $closure2);
         $this->assertNotSame($closure1->getClosure(), $closure2->getClosure());
+    }
+
+    /**
+     * To check if the mode is by default disable to keep the original behavior
+     */
+    public function testPrivateModeIsDisableByDefault()
+    {
+        $this->assertFalse($this->getPublicClassObject()->isPrivateMode());
+        $this->assertFalse($this->getProtectedClassObject()->isPrivateMode());
+        $this->assertFalse($this->getPrivateClassObject()->isPrivateMode());
+    }
+
+    /**
+     * To check behavior of method setPrivateMode() and isPrivateMode()
+     */
+    public function testPrivateModeEnable()
+    {
+        $statePublicMock = $this->getPublicClassObject();
+        $stateProtectedMock = $this->getProtectedClassObject();
+        $statePrivateMock = $this->getPrivateClassObject();
+
+        $statePublicMock->setPrivateMode(true);
+        $this->assertTrue($statePublicMock->isPrivateMode());
+
+        $stateProtectedMock->setPrivateMode(true);
+        $this->assertTrue($stateProtectedMock->isPrivateMode());
+
+        $statePrivateMock->setPrivateMode(true);
+        $this->assertTrue($statePrivateMock->isPrivateMode());
+    }
+
+    /**
+     * To check behavior of method setPrivateMode() and isPrivateMode()
+     */
+    public function testPrivateModeDisable()
+    {
+        $statePublicMock = $this->getPublicClassObject();
+        $stateProtectedMock = $this->getProtectedClassObject();
+        $statePrivateMock = $this->getPrivateClassObject();
+
+        $statePublicMock->setPrivateMode(false);
+        $this->assertFalse($statePublicMock->isPrivateMode());
+
+        $stateProtectedMock->setPrivateMode(false);
+        $this->assertFalse($stateProtectedMock->isPrivateMode());
+
+        $statePrivateMock->setPrivateMode(false);
+        $this->assertFalse($statePrivateMock->isPrivateMode());
+    }
+
+    /**
+     * To check behavior of methods getStatedClassName() and setStatedClassName()
+     */
+    public function testSetAndGetStatedClassName()
+    {
+        $statePublicMock = $this->getPublicClassObject();
+        $stateProtectedMock = $this->getProtectedClassObject();
+        $statePrivateMock = $this->getPrivateClassObject();
+
+        $statePublicMock->setStatedClassName('Its\A\Stated\ClassNamePublic');
+        $this->assertEquals('Its\A\Stated\ClassNamePublic', $statePublicMock->getStatedClassName());
+
+        $stateProtectedMock->setStatedClassName('Its\A\Stated\ClassNameProtected');
+        $this->assertEquals('Its\A\Stated\ClassNameProtected', $stateProtectedMock->getStatedClassName());
+
+        $statePrivateMock->setStatedClassName('Its\A\Stated\ClassNamePrivate');
+        $this->assertEquals('Its\A\Stated\ClassNamePrivate', $statePrivateMock->getStatedClassName());
     }
 }
