@@ -129,6 +129,16 @@ interface FinderInterface
     public function loadProxy();
 
     /**
+     * To return the list of parents stated classes of this stated classes, library classes (Integrated proxy and
+     * standard proxy are excluded)
+     *
+     * @return string[]
+     *
+     * @throws Exception\IllegalProxy If the proxy class is not valid
+     */
+    public function listParentsClassesNames();
+
+    /**
      * To load and build a proxy object for the stated class.
      *
      * @param array $arguments argument for proxy

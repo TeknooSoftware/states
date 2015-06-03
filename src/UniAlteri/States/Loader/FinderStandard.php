@@ -107,7 +107,11 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To return the DI Container used for this object.
+     * To return the DI Containe
+     *
+     * @throws Exception\IllegalProxy If the proxy class is not valid
+     *
+     * @throws Exception\IllegalProxy If the proxy class is not validr used for this object.
      *
      * @return DI\ContainerInterface
      */
@@ -289,6 +293,36 @@ class FinderStandard implements FinderInterface
         }
 
         return $proxyClassName;
+    }
+
+    /**
+     * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
+     * standard proxy are excluded)
+     *
+     * @return string[]
+     *
+     * @throws Exception\IllegalProxy If the proxy class is not valid
+     */
+    public function listParentsClassesNames()
+    {
+        //Build the class name
+        $classPartName = $this->getClassedName($this->statedClassName);
+        $proxyClassName = $this->statedClassName.'\\'.$classPartName;
+
+        //Fetch parents classes and extract library classes
+        if (class_exists($proxyClassName, false)) {
+            $finalParentsClassesList = new \ArrayObject();
+
+            $parentClassName = get_parent_class($proxyClassName);
+            while (false !== $parentClassName && false !== strpos($parentClassName, 'UniAlteri\\States')) {
+                $finalParentsClassesList[] = $parentClassName;
+                $parentClassName = get_parent_class($parentClassName);
+            }
+
+            return $finalParentsClassesList;
+        }
+
+        throw new Exception\IllegalProxy('Proxy class was not found');
     }
 
     /**
