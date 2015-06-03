@@ -190,4 +190,17 @@ class MockFinder implements Loader\FinderInterface
     {
         return new MockProxy($arguments);
     }
+
+    /**
+     * To return the list of parents stated classes of this stated classes, library classes (Integrated proxy and
+     * standard proxy are excluded)
+     *
+     * @return string[]
+     *
+     * @throws Exception\IllegalProxy If the proxy class is not valid
+     */
+    public function listParentsClassesNames()
+    {
+        return new \ArrayObject();
+    }
 }
