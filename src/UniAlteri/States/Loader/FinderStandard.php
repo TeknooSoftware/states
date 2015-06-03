@@ -74,6 +74,13 @@ class FinderStandard implements FinderInterface
     protected $defaultProxyClassName = '\UniAlteri\States\Proxy\Standard';
 
     /**
+     * List of states already fetched by this finder
+     *
+     * @var \ArrayObject
+     */
+    protected $statesNamesList = null;
+
+    /**
      * Initialize finder.
      *
      * @param string $statedClassName
@@ -119,43 +126,47 @@ class FinderStandard implements FinderInterface
      */
     public function listStates()
     {
-        //Checks if states are stored into the standardized path
-        $statesPath = $this->pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH;
-        if (!is_dir($statesPath)) {
-            throw new Exception\UnavailablePath(
-                sprintf('Error, the path "%s" was not found', $statesPath)
-            );
-        }
-
-        //Checks if the path is available, use error_reporting to not use @
-        $oldErrorReporting = error_reporting(E_ALL & ~E_WARNING);
-        $hD = opendir($statesPath);
-        error_reporting($oldErrorReporting);
-        if (false === $hD) {
-            throw new Exception\UnReadablePath(
-                sprintf('Error, the path "%s" is not available', $statesPath)
-            );
-        }
-
-        //Extracts all states (No check class exists)
-        $statesNameArray = new \ArrayObject();
-        while (false !== ($file = readdir($hD))) {
-            switch ($file) {
-                case '.';
-                case '..';
-                    break;
-                default:
-                    if (strlen($file) - 4 == strrpos($file, '.php')) {
-                        $stateName = substr($file, 0, -4);
-                        $statesNameArray[] = $stateName;
-                    }
-                    break;
+        if (!$this->statesNamesList instanceof \ArrayObject) {
+            //Checks if states are stored into the standardized path
+            $statesPath = $this->pathString . DIRECTORY_SEPARATOR . FinderInterface::STATES_PATH;
+            if (!is_dir($statesPath)) {
+                throw new Exception\UnavailablePath(
+                    sprintf('Error, the path "%s" was not found', $statesPath)
+                );
             }
+
+            //Checks if the path is available, use error_reporting to not use @
+            $oldErrorReporting = error_reporting(E_ALL & ~E_WARNING);
+            $hD = opendir($statesPath);
+            error_reporting($oldErrorReporting);
+            if (false === $hD) {
+                throw new Exception\UnReadablePath(
+                    sprintf('Error, the path "%s" is not available', $statesPath)
+                );
+            }
+
+            //Extracts all states (No check class exists)
+            $statesNameArray = new \ArrayObject();
+            while (false !== ($file = readdir($hD))) {
+                switch ($file) {
+                    case '.';
+                    case '..';
+                        break;
+                    default:
+                        if (strlen($file) - 4 == strrpos($file, '.php')) {
+                            $stateName = substr($file, 0, -4);
+                            $statesNameArray[] = $stateName;
+                        }
+                        break;
+                }
+            }
+
+            closedir($hD);
+
+            $this->statesNamesList = $statesNameArray;
         }
 
-        closedir($hD);
-
-        return $statesNameArray;
+        return $this->statesNamesList;
     }
 
     /**
