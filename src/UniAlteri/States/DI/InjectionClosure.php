@@ -259,7 +259,7 @@ class InjectionClosure implements InjectionClosureInterface
             return $this->properties->{$name};
         }
 
-        return;
+        return null;
     }
 
     /**
