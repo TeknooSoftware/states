@@ -90,7 +90,6 @@ trait FactoryTrait
     public function setDIContainer(DI\ContainerInterface $container)
     {
         $this->diContainer = $container;
-        $this->registerFactoryInRepository();
 
         return $this;
     }

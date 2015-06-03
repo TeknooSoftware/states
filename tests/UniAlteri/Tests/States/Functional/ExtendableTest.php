@@ -115,7 +115,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $statesList = $daughterInstance->listAvailableStates();
         sort($statesList);
         $this->assertEquals(
-            ['StateDefault', 'StateOne', 'StateTwo', 'StateThree'],
+            ['StateDefault', 'StateOne', 'StateThree', 'StateTwo'],
             $statesList
         );
     }
@@ -126,8 +126,8 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testListAvailableStatesGrandDaughter()
     {
         $grandDaughterInstance = new GrandDaughter();
-        $statsList = $grandDaughterInstance->listAvailableStates();
-        sort($statsList);
+        $statesList = $grandDaughterInstance->listAvailableStates();
+        sort($statesList);
         $this->assertEquals(
             ['StateDefault', 'StateOne', 'StateTwo', 'StateThree'],
             $statesList

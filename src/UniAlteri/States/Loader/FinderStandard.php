@@ -314,8 +314,11 @@ class FinderStandard implements FinderInterface
             $finalParentsClassesList = new \ArrayObject();
 
             $parentClassName = get_parent_class($proxyClassName);
-            while (false !== $parentClassName && false !== strpos($parentClassName, 'UniAlteri\\States')) {
-                $finalParentsClassesList[] = $parentClassName;
+            while (false !== $parentClassName && false === strpos($parentClassName, 'UniAlteri\\States')) {
+                if (class_exists($parentClassName, false)) {
+                    $parentClassName = substr($parentClassName, 0, strrpos($parentClassName, '\\'));
+                    $finalParentsClassesList[] = $parentClassName;
+                }
                 $parentClassName = get_parent_class($parentClassName);
             }
 
