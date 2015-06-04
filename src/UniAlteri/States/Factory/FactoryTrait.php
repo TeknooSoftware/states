@@ -304,10 +304,14 @@ trait FactoryTrait
             );
         }
 
+        //Get the main finder of this stated class, to compare it with finders of parents classes
+        $mainFinder = $this->getFinder();
+
         //Load each state into proxy
         foreach ($statesList as $loadingStateName=>$finderLoader) {
             $stateObject = $finderLoader->buildState($loadingStateName);
             $stateObject->setDIContainer($diContainerObject);
+            $stateObject->setPrivateMode($finderLoader !== $mainFinder);
             $proxyObject->registerState($loadingStateName, $stateObject);
         }
 

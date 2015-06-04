@@ -103,6 +103,8 @@ trait StateTrait
         'testMethod' => 'testMethod',
         'getMethodDescription' => 'getMethodDescription',
         'getClosure' => 'getClosure',
+        'setPrivateMode' => 'setPrivateMode',
+        'isPrivateMode' => 'isPrivateMode'
     );
 
     /**
