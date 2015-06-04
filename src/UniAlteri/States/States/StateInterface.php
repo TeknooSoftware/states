@@ -78,6 +78,26 @@ interface StateInterface
     public function getDIContainer();
 
     /**
+     * To know if the mode Private is enabled : private method are only accessible from
+     * method present in the same stated class and not from methods of children of this class.
+     * By default this mode is disable
+     * @return boolean
+     */
+    public function isPrivateMode();
+
+    /**
+     * To enable or disable the private mode of this state :
+     * If the mode Private is enable, private method are only accessible from
+     * method present in the same stated class and not from methods of children of this class.
+     * By default this mode is disable
+     *
+     * @param boolean $enable
+     *
+     * @return $this
+     */
+    public function setPrivateMode($enable);
+
+    /**
      * To return an array of string listing all methods available in the state.
      *
      * @return string[]

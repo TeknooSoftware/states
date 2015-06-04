@@ -106,6 +106,12 @@ trait StateTrait
     );
 
     /**
+     * To know if the private mode is enable or not for this state (see isPrivateMode())
+     * @var bool
+     */
+    protected $privateModeStatus = false;
+
+    /**
      * To build the ReflectionClass for the current object.
      *
      * @api
@@ -146,6 +152,34 @@ trait StateTrait
     }
 
     /**
+     * To know if the mode Private is enabled : private method are only accessible from
+     * method present in the same stated class and not from methods of children of this class.
+     * By default this mode is disable
+     * @return boolean
+     */
+    public function isPrivateMode()
+    {
+        return $this->privateModeStatus;
+    }
+
+    /**
+     * To enable or disable the private mode of this state :
+     * If the mode Private is enable, private method are only accessible from
+     * method present in the same stated class and not from methods of children of this class.
+     * By default this mode is disable
+     *
+     * @param boolean $enable
+     *
+     * @return $this
+     */
+    public function setPrivateMode($enable)
+    {
+        return $this->privateModeStatus = !empty($enable);
+
+        return $this;
+    }
+
+    /**
      * To return an array of string listing all methods available in the state.
      *
      * @return string[]
@@ -162,7 +196,8 @@ trait StateTrait
             $methodsFinalArray = new \ArrayObject();
             foreach ($methodsArray as $methodReflection) {
                 //We ignore all static methods, there are incompatible with stated behavior
-                if (false === $methodReflection->isStatic()) {
+                if (false === $methodReflection->isStatic()
+                    && (false === $this->privateModeStatus || false === $methodReflection->isPrivate())) {
                     //Store reflection into the local cache
                     $methodNameString = $methodReflection->getName();
                     if (!isset($this->methodsNamesToIgnoreArray[$methodNameString])) {
