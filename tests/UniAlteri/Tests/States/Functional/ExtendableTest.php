@@ -159,7 +159,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
             [
                 'StateDefault' => [],
                 'StateOne' => ['method1', 'method2'],
-                'StateTwo' => ['methodPublic', 'methodProtected', 'methodPrivate']
+                'StateTwo' => ['methodPublic', 'methodProtected', 'methodPrivate', 'methodRecallPrivate']
             ],
             $motherInstance->listMethodsByStates()
         );

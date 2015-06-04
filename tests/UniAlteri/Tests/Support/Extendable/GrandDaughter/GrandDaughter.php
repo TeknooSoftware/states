@@ -41,4 +41,18 @@ use UniAlteri\Tests\Support\Extendable\Daughter\Daughter;
  */
 class GrandDaughter extends Daughter
 {
+    /**
+     * Return the list of availabel state in this class
+     * @return array
+     */
+    public function listMethodsByStates()
+    {
+        $methodsList = array();
+        foreach ($this->states as $stateName=>$stateContainer) {
+            $methodsList[$stateName] = $stateContainer->listMethods()->getArrayCopy();
+        }
+
+        ksort($methodsList);
+        return $methodsList;
+    }
 }

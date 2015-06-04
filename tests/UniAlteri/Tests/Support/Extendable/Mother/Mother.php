@@ -52,6 +52,7 @@ class Mother extends Proxy\Integrated
             $methodsList[$stateName] = $stateContainer->listMethods()->getArrayCopy();
         }
 
+        ksort($methodsList);
         return $methodsList;
     }
 }
