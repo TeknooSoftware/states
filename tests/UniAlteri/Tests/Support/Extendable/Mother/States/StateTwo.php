@@ -63,4 +63,12 @@ class StateTwo extends States\AbstractState
     {
         return 789;
     }
+
+    /**
+     * @return int
+     */
+    public function methodRecallPrivate()
+    {
+        return $this->methodPrivate() * 2;
+    }
 }

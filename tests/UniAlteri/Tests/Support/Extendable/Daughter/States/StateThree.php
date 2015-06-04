@@ -47,4 +47,20 @@ class StateThree extends States\AbstractState
     {
         return 666;
     }
+
+    /**
+     * @return int
+     */
+    public function methodRecallMotherPrivate()
+    {
+        return $this->methodProtected() * 3;
+    }
+
+    /**
+     * @return int
+     */
+    public function methodRecallMotherProtected()
+    {
+        return $this->methodPrivate() * 3;
+    }
 }

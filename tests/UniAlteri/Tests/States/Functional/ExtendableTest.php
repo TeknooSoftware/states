@@ -24,12 +24,13 @@
 
 namespace UniAlteri\Tests\States\Functional;
 
+use UniAlteri\States\Di;
 use UniAlteri\States\Exception\MethodNotImplemented;
+use UniAlteri\States\Factory\FactoryInterface;
 use UniAlteri\States\Loader;
 use UniAlteri\Tests\Support\Extendable\Daughter\Daughter;
 use UniAlteri\Tests\Support\Extendable\GrandDaughter\GrandDaughter;
 use UniAlteri\Tests\Support\Extendable\Mother\Mother;
-use UniAlteri\Tests\Support\Loader\Class2Phar\Factory;
 
 /**
  * Class ArticleTest
@@ -53,6 +54,12 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     protected $loader = null;
 
     /**
+     * Factory registry
+     * @var Di\Container
+     */
+    protected $factoryRegistery = null;
+
+    /**
      * Load the library State and retrieve its default loader from its bootstrap.
      *
      * @return \UniAlteri\States\Loader\LoaderInterface
@@ -61,6 +68,14 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     {
         if (null === $this->loader) {
             $this->loader = include 'UniAlteri'.DS.'States'.DS.'bootstrap.php';
+        }
+
+        //To share the Factory interface in all context for each test
+        $diContainer = $this->loader->getDiContainer();
+        if (!$diContainer->testEntry(FactoryInterface::DI_FACTORY_REPOSITORY)) {
+            $this->factoryRegistery = $diContainer->get(FactoryInterface::DI_FACTORY_REPOSITORY);
+        } else {
+            $diContainer->registerInstance(FactoryInterface::DI_FACTORY_REPOSITORY, $this->factoryRegistery);
         }
 
         return $this->loader;
@@ -224,5 +239,47 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $grandDaughterInstace->enableState('StateOne');
         $this->assertEquals(666, $grandDaughterInstace->method6());
         $this->assertEquals(777, $grandDaughterInstace->method7());
+    }
+
+    /**
+     * Test if the php behavior on private method is keeped with stated class
+     */
+    public function testMotherCanCallPrivate()
+    {
+        $motherInstance = new Mother();
+        $motherInstance->enableState('StateTwo');
+        $this->assertEquals(2*789, $motherInstance->methodRecallPrivate());
+    }
+
+    /**
+     * Test if the php behavior on protected method in parent class
+     * is keeped with an extending stated class (can call)
+     */
+    public function testDaughterCanCallMotherProtected()
+    {
+        $daughterInstance = new Daughter();
+        $daughterInstance->enableState('StateTwo')
+            ->enableState('StateThree');
+        $this->assertEquals(3*456, $daughterInstance->methodRecallMotherProtected());
+    }
+
+    /**
+     * Test if the php behavior on private method in parent class
+     * is keeped with an extending stated class (can not call)
+     */
+    public function testDaughterCanNotCallMotherPrivate()
+    {
+        $daughterInstance = new Daughter();
+        $daughterInstance->enableState('StateTwo')
+            ->enableState('StateThree');
+
+        try {
+            $daughterInstance->methodRecallMotherProtected();
+        } catch (MethodNotImplemented $e) {
+            //Good behavior
+            return;
+        } catch (\Exception $e) {
+            $this->fail('Error privates methods must not be available for daughter methods');
+        }
     }
 }
