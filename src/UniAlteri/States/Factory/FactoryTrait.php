@@ -74,11 +74,11 @@ trait FactoryTrait
     protected $path = null;
 
     /**
-     * To list states by parent classes
+     * To list states by stated classes (this class and its parents)
      *
      * @var \ArrayObject
      */
-    protected $statesByParentsFinderList = null;
+    protected $statesByClassesList = null;
 
     /**
      * To register a DI container for this object.
@@ -211,6 +211,8 @@ trait FactoryTrait
      * @param string $className
      *
      * @return FactoryInterface
+     *
+     * @throws Exception\UnavailableFactory when the required factory is not available
      */
     protected function getFactoryFromStatedClassName($className)
     {
@@ -220,6 +222,8 @@ trait FactoryTrait
                 return $repositoryContainer->get($className);
             }
         }
+
+        throw new Exception\UnavailableFactory('Error, the factory for '.$className.' is not available in repository');
     }
 
     /**
@@ -229,37 +233,35 @@ trait FactoryTrait
      *
      * @throws Exception\UnavailableLoader
      */
-    protected function listStatesByParents()
+    protected function listStatesByClasses()
     {
-        if (!$this->statesByParentsFinderList instanceof \ArrayObject) {
-            $statesByParentsFinderList = new \ArrayObject();
+        if (!$this->statesByClassesList instanceof \ArrayObject) {
+            $statesByClassesList = new \ArrayObject();
 
             //Get all states directly available for this class
             $finderLoader = $this->getFinder();
             foreach ($finderLoader->listStates() as $stateName) {
-                $statesByParentsFinderList[$stateName] = $finderLoader;
+                $statesByClassesList[$stateName] = $finderLoader;
             }
 
             //Get all available parent for this class
             foreach ($finderLoader->listParentsClassesNames() as $parentClassName) {
                 $factoryInstance = $this->getFactoryFromStatedClassName($parentClassName);
-                if ($factoryInstance instanceof FactoryInterface) {
-                    //Browse directly available state for this parent class
-                    //If there are not already overloaded in the current state, put it in the list
-                    $parentFinder = $factoryInstance->getFinder();
-                    foreach ($parentFinder->listStates() as $stateName) {
-                        if (!isset($statesByParentsFinderList[$stateName])) {
-                            //Register parent finder to be able to load it with the good finder
-                            $statesByParentsFinderList[$stateName] = $parentFinder;
-                        }
+                //Browse directly available state for this parent class
+                //If there are not already overloaded in the current state, put it in the list
+                $parentFinder = $factoryInstance->getFinder();
+                foreach ($parentFinder->listStates() as $stateName) {
+                    if (!isset($statesByClassesList[$stateName])) {
+                        //Register parent finder to be able to load it with the good finder
+                        $statesByClassesList[$stateName] = $parentFinder;
                     }
                 }
             }
 
-            $this->statesByParentsFinderList = $statesByParentsFinderList;
+            $this->statesByClassesList = $statesByClassesList;
         }
 
-        return $this->statesByParentsFinderList;
+        return $this->statesByClassesList;
     }
 
     /**
@@ -285,7 +287,7 @@ trait FactoryTrait
         $proxyObject->setDIContainer($diContainerObject);
 
         //Get all states available
-        $statesList = $this->listStatesByParents();
+        $statesList = $this->listStatesByClasses();
 
         //Check if the default state is available
         $defaultStatedName = Proxy\ProxyInterface::DEFAULT_STATE_NAME;
