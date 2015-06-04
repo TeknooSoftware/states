@@ -108,7 +108,7 @@ trait ProxyTrait
     protected function callInState(States\States\StateInterface $state, $methodName, array &$arguments, $scopeVisibility)
     {
         //Method found, extract it
-        $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility);
+        $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility, $this->callerStatedClassName);
         //Change current injection
         $previousClosure = $this->currentInjectionClosure;
         $this->currentInjectionClosure = $callingClosure;
@@ -166,7 +166,7 @@ trait ProxyTrait
                 $methodName = implode('Of', $methodsWithStatesArray);
 
                 $activeStateObject = $this->activesStates[$statesName];
-                if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
+                if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $this->callerStatedClassName)) {
                     return $this->callInState($activeStateObject, $methodName, $arguments, $scopeVisibility);
                 }
             }
@@ -175,7 +175,7 @@ trait ProxyTrait
         $activeStateFound = null;
         //No specific state required, browse all enabled state to find the method
         foreach ($this->activesStates as $activeStateObject) {
-            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
+            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $this->callerStatedClassName)) {
                 if (null === $activeStateFound) {
                     //Check if there are only one enabled state whom implements this method
                     $activeStateFound = $activeStateObject;
@@ -658,7 +658,7 @@ trait ProxyTrait
             if (null === $stateName) {
                 //Browse all state to find the method
                 foreach ($this->states as $stateObject) {
-                    if ($stateObject->testMethod($methodName, $scopeVisibility)) {
+                    if ($stateObject->testMethod($methodName, $scopeVisibility, $this->callerStatedClassName)) {
                         return $stateObject->getMethodDescription($methodName);
                     }
                 }
@@ -666,7 +666,7 @@ trait ProxyTrait
 
             if (null !== $stateName && isset($this->states[$stateName])) {
                 //Retrieve description from the required state
-                if ($this->states[$stateName]->testMethod($methodName, $scopeVisibility)) {
+                if ($this->states[$stateName]->testMethod($methodName, $scopeVisibility, $this->callerStatedClassName)) {
                     return $this->states[$stateName]->getMethodDescription($methodName);
                 }
             } elseif (null !== $stateName) {

@@ -264,24 +264,23 @@ trait StateTrait
     {
         $visible = false;
         if (isset($this->reflectionsMethods[$methodName])) {
-            //To check if the caller method can be accessible by the method caller :
-            //The called method is protected or public (skip to next test)
-            //The private mode is disable for this state (state is not defined is a parent class)
-            //The caller method is in the same stated class that the called method
-            $privateMethodIsAvailable = true;
-            if (true === $this->privateModeStatus) {
-                if ($statedClassOriginName !== $this->statedClassName) {
-                    if (true === $this->reflectionsMethods[$methodName]->isPrivate()) {
-                        $privateMethodIsAvailable = false;
-                    }
-                }
-            }
-
             //Check visibility scope
             switch ($scope) {
                 case StateInterface::VISIBILITY_PRIVATE:
-                    //Private, can access all
-                    $visible = true;
+                    //To check if the caller method can be accessible by the method caller :
+                    //The called method is protected or public (skip to next test)
+                    //The private mode is disable for this state (state is not defined is a parent class)
+                    //The caller method is in the same stated class that the called method
+                    $privateMethodIsAvailable = true;
+                    if (true === $this->privateModeStatus) {
+                        if ($statedClassOriginName !== $this->statedClassName) {
+                            if (true === $this->reflectionsMethods[$methodName]->isPrivate()) {
+                                $privateMethodIsAvailable = false;
+                            }
+                        }
+                    }
+
+                    $visible = $privateMethodIsAvailable;
                     break;
                 case StateInterface::VISIBILITY_PROTECTED:
                     //Can not access to private methods
