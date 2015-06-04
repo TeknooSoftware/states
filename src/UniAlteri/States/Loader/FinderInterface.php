@@ -84,6 +84,13 @@ interface FinderInterface
     public function getDIContainer();
 
     /**
+     * To get the canonical stated class name associated to this state
+     *
+     * @return $this
+     */
+    public function getStatedClassName();
+
+    /**
      * To list all available states of the stated class.
      *
      * @return string[]
