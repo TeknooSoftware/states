@@ -57,7 +57,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
      * Factory registry
      * @var Di\Container
      */
-    protected $factoryRegistery = null;
+    protected static $factoryRegistry = null;
 
     /**
      * Load the library State and retrieve its default loader from its bootstrap.
@@ -72,10 +72,10 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
 
         //To share the Factory interface in all context for each test
         $diContainer = $this->loader->getDiContainer();
-        if ($diContainer->testEntry(FactoryInterface::DI_FACTORY_REPOSITORY)) {
-            $this->factoryRegistery = $diContainer->get(FactoryInterface::DI_FACTORY_REPOSITORY);
+        if (!self::$factoryRegistry instanceof Di\Container) {
+            self::$factoryRegistry = $diContainer->get(FactoryInterface::DI_FACTORY_REPOSITORY);
         } else {
-            $diContainer->registerInstance(FactoryInterface::DI_FACTORY_REPOSITORY, $this->factoryRegistery);
+            $diContainer->registerInstance(FactoryInterface::DI_FACTORY_REPOSITORY, self::$factoryRegistry);
         }
 
         return $this->loader;
@@ -144,7 +144,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $statesList = $grandDaughterInstance->listAvailableStates();
         sort($statesList);
         $this->assertEquals(
-            ['StateDefault', 'StateOne', 'StateTwo', 'StateThree'],
+            ['StateDefault', 'StateOne', 'StateThree', 'StateTwo'],
             $statesList
         );
     }

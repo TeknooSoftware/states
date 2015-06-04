@@ -22,7 +22,7 @@
  * @version     1.1.1
  */
 
-namespace UniAlteri\Tests\Support\GrandDaughter\Extendable\States;
+namespace UniAlteri\Tests\Support\Extendable\GrandDaughter\States;
 
 use \UniAlteri\Tests\Support\Extendable\Daughter\States as Daughter;
 
