@@ -78,6 +78,22 @@ interface StateInterface
     public function getDIContainer();
 
     /**
+     * To get the canonical stated class name associated to this state
+     *
+     * @return $this
+     */
+    public function getStatedClassName();
+
+    /**
+     * To set the canonical stated class name associated to this state
+     *
+     * @param string $statedClassName
+     *
+     * @return $this
+     */
+    public function setStatedClassName($statedClassName);
+
+    /**
      * To know if the mode Private is enabled : private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable
@@ -109,12 +125,13 @@ interface StateInterface
      *
      * @param string $methodName
      * @param string $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null $statedClassOriginName
      *
      * @return bool
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope = self::VISIBILITY_PUBLIC);
+    public function testMethod($methodName, $scope = self::VISIBILITY_PUBLICn, $statedClassOriginName = null);
 
     /**
      * To return the description of a method to configure the behavior of the proxy. Return also description of private
@@ -135,6 +152,7 @@ interface StateInterface
      * @param string               $methodName
      * @param Proxy\ProxyInterface $proxy
      * @param string               $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null $statedClassOriginName
      *
      * @return DI\InjectionClosureInterface
      *
@@ -143,5 +161,5 @@ interface StateInterface
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought
      */
-    public function getClosure($methodName, $proxy, $scope = self::VISIBILITY_PUBLIC);
+    public function getClosure($methodName, $proxy, $scope = self::VISIBILITY_PUBLIC, $statedClassOriginName = null);
 }
