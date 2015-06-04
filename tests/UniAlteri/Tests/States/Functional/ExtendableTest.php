@@ -252,6 +252,17 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test if the php behavior on private method in parent class
+     * is keeped with an extending stated class (can call if the method is in mother scope)
+     */
+    public function testDaughterCanCallPrivateViaMotherMethod()
+    {
+        $daughterInstance = new Daughter();
+        $daughterInstance->enableState('StateTwo');
+        $this->assertEquals(2*789, $daughterInstance->methodRecallPrivate());
+    }
+
+    /**
      * Test if the php behavior on protected method in parent class
      * is keeped with an extending stated class (can call)
      */
