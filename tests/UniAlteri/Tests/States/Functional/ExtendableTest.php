@@ -189,15 +189,15 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
      */
     public function testListMethodsByStatesGrandDaughter()
     {
-        $daughterInstance = new Daughter();
+        $grandDaughterInstance = new GrandDaughter();
         $this->assertEquals(
             [
                 'StateDefault' => [],
                 'StateOne' => ['method3', 'method4'],
-                'StateThree' => ['method6', 'method7', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
+                'StateThree' => ['method7', 'method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
                 'StateTwo' => ['methodPublic', 'methodProtected', 'methodRecallPrivate']
             ],
-            $daughterInstance->listMethodsByStates()
+            $grandDaughterInstance->listMethodsByStates()
         );
     }
 
