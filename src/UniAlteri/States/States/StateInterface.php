@@ -89,7 +89,7 @@ interface StateInterface
      *
      * @param string $statedClassName
      *
-     * @return $this
+     * @return StateInterface
      */
     public function setStatedClassName($statedClassName);
 
@@ -109,7 +109,7 @@ interface StateInterface
      *
      * @param boolean $enable
      *
-     * @return $this
+     * @return StateInterface
      */
     public function setPrivateMode($enable);
 
@@ -131,7 +131,7 @@ interface StateInterface
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope = self::VISIBILITY_PUBLICn, $statedClassOriginName = null);
+    public function testMethod($methodName, $scope = self::VISIBILITY_PUBLIC, $statedClassOriginName = null);
 
     /**
      * To return the description of a method to configure the behavior of the proxy. Return also description of private

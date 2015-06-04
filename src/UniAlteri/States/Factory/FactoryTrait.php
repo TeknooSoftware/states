@@ -312,7 +312,7 @@ trait FactoryTrait
             $stateObject = $finderLoader->buildState($loadingStateName);
             $stateObject->setDIContainer($diContainerObject)
                 ->setPrivateMode($finderLoader !== $mainFinder)
-                ->setStatedClassName($finderLoader->getStatedClassName())
+                ->setStatedClassName($finderLoader->getStatedClassName());
             $proxyObject->registerState($loadingStateName, $stateObject);
         }
 

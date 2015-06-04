@@ -208,7 +208,7 @@ trait StateTrait
      */
     public function setPrivateMode($enable)
     {
-        return $this->privateModeStatus = !empty($enable);
+        $this->privateModeStatus = !empty($enable);
 
         return $this;
     }

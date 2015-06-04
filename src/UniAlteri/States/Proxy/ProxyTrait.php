@@ -85,6 +85,14 @@ trait ProxyTrait
     protected $currentInjectionClosure = null;
 
     /**
+     * To know the caller canonical stated class when an internal method call a parent method to forbid
+     * private method access
+     *
+     * @var string|null
+     */
+    protected $callerStatedClassName = null;
+
+    /**
      * Execute a method available in a state passed in args with the injection closure.
      *
      * @param States\States\StateInterface $state
@@ -271,6 +279,9 @@ trait ProxyTrait
      */
     protected function getVisibilityScope($limit)
     {
+        //Restore caller stated class var for next call
+        $this->callerStatedClassName = null;
+
         //Get the calling stack
         $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, (int) $limit);
 
@@ -287,6 +298,9 @@ trait ProxyTrait
             if (!empty($callerLine['object']) && is_object($callerLine['object'])) {
                 //It is an object
                 $callerObject = $callerLine['object'];
+
+                //Register caller stated class to check availability in state container
+                $this->callerStatedClassName = get_class($callerObject);
 
                 if ($this === $callerObject) {
                     //It's me ! Mario ! Private
@@ -311,6 +325,9 @@ trait ProxyTrait
                 //It is a class
                 $callerName = $callerLine['class'];
                 $thisClassName = \get_class($this);
+
+                //Register caller stated class to check availability in state container
+                $this->callerStatedClassName = $callerName;
 
                 if (is_subclass_of($callerName, $thisClassName, true)) {
                     //It's a child class, Protected
