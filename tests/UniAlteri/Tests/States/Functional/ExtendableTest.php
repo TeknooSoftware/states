@@ -72,7 +72,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
 
         //To share the Factory interface in all context for each test
         $diContainer = $this->loader->getDiContainer();
-        if (!$diContainer->testEntry(FactoryInterface::DI_FACTORY_REPOSITORY)) {
+        if ($diContainer->testEntry(FactoryInterface::DI_FACTORY_REPOSITORY)) {
             $this->factoryRegistery = $diContainer->get(FactoryInterface::DI_FACTORY_REPOSITORY);
         } else {
             $diContainer->registerInstance(FactoryInterface::DI_FACTORY_REPOSITORY, $this->factoryRegistery);
