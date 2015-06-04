@@ -310,8 +310,9 @@ trait FactoryTrait
         //Load each state into proxy
         foreach ($statesList as $loadingStateName=>$finderLoader) {
             $stateObject = $finderLoader->buildState($loadingStateName);
-            $stateObject->setDIContainer($diContainerObject);
-            $stateObject->setPrivateMode($finderLoader !== $mainFinder);
+            $stateObject->setDIContainer($diContainerObject)
+                ->setPrivateMode($finderLoader !== $mainFinder)
+                ->setStatedClassName($finderLoader->getStatedClassName())
             $proxyObject->registerState($loadingStateName, $stateObject);
         }
 
