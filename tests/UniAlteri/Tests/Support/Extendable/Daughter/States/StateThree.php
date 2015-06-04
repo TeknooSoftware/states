@@ -53,7 +53,7 @@ class StateThree extends States\AbstractState
      */
     public function methodRecallMotherPrivate()
     {
-        return $this->methodProtected() * 3;
+        return $this->methodPrivate() * 3;
     }
 
     /**
@@ -61,6 +61,6 @@ class StateThree extends States\AbstractState
      */
     public function methodRecallMotherProtected()
     {
-        return $this->methodPrivate() * 3;
+        return $this->methodProtected() * 3;
     }
 }

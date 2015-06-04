@@ -176,8 +176,8 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
             [
                 'StateDefault' => [],
                 'StateOne' => ['method3', 'method4'],
-                'StateTwo' => ['methodPublic', 'methodProtected'],
-                'StateThree' => ['method6']
+                'StateThree' => ['method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
+                'StateTwo' => ['methodPublic', 'methodProtected', 'methodRecallPrivate']
             ],
             $daughterInstance->listMethodsByStates()
         );
@@ -194,8 +194,8 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
             [
                 'StateDefault' => [],
                 'StateOne' => ['method3', 'method4'],
-                'StateTwo' => ['methodPublic', 'methodProtected'],
-                'StateThree' => ['method6', 'method7']
+                'StateThree' => ['method6', 'method7', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
+                'StateTwo' => ['methodPublic', 'methodProtected', 'methodRecallPrivate']
             ],
             $daughterInstance->listMethodsByStates()
         );
@@ -232,11 +232,11 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testExtendedState()
     {
         $daughterInstance = new Daughter();
-        $daughterInstance->enableState('StateOne');
+        $daughterInstance->enableState('StateThree');
         $this->assertEquals(666, $daughterInstance->method6());
 
         $grandDaughterInstace = new GrandDaughter();
-        $grandDaughterInstace->enableState('StateOne');
+        $grandDaughterInstace->enableState('StateThree');
         $this->assertEquals(666, $grandDaughterInstace->method6());
         $this->assertEquals(777, $grandDaughterInstace->method7());
     }
@@ -274,12 +274,15 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
             ->enableState('StateThree');
 
         try {
-            $daughterInstance->methodRecallMotherProtected();
+            $daughterInstance->methodRecallMotherPrivate();
         } catch (MethodNotImplemented $e) {
             //Good behavior
             return;
         } catch (\Exception $e) {
-            $this->fail('Error privates methods must not be available for daughter methods');
+            $this->fail($e->getMessage());
+            return;
         }
+
+        $this->fail('Error privates methods must not be available for daughter methods');
     }
 }
