@@ -299,9 +299,6 @@ trait ProxyTrait
                 //It is an object
                 $callerObject = $callerLine['object'];
 
-                //Register caller stated class to check availability in state container
-                $this->callerStatedClassName = get_class($callerObject);
-
                 if ($this === $callerObject) {
                     //It's me ! Mario ! Private
                     return States\States\StateInterface::VISIBILITY_PRIVATE;
@@ -325,9 +322,6 @@ trait ProxyTrait
                 //It is a class
                 $callerName = $callerLine['class'];
                 $thisClassName = \get_class($this);
-
-                //Register caller stated class to check availability in state container
-                $this->callerStatedClassName = $callerName;
 
                 if (is_subclass_of($callerName, $thisClassName, true)) {
                     //It's a child class, Protected
