@@ -86,6 +86,27 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     protected $statedClass5Path = null;
 
     /**
+     * Mock stated class 6.
+     *
+     * @var string
+     */
+    protected $statedClass6Path = null;
+
+    /**
+     * Mock stated class 7.
+     *
+     * @var string
+     */
+    protected $statedClass7Path = null;
+
+    /**
+     * Mock stated class 8.
+     *
+     * @var string
+     */
+    protected $statedClass8Path = null;
+
+    /**
      * Prepare environment before test.
      */
     protected function setUp()
@@ -98,6 +119,9 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->statedClass3Path = $path.'Class3';
         $this->statedClass4Path = $path.'Class4';
         $this->statedClass5Path = $path.'Class5';
+        $this->statedClass6Path = $path.'Class6';
+        $this->statedClass7Path = $path.'Class7';
+        $this->statedClass8Path = $path.'Class8';
         chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0755);
     }
 
@@ -406,5 +430,71 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
         $this->assertNotInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
         $this->assertInstanceOf('Class5\\Class5', $proxy);
+    }
+
+    /**
+     * Test if the finder is able to return the stated class name where it's user
+     */
+    public function testGetStatedClassName()
+    {
+        $this->initializeFinder('It\A\Stated\Class', $this->statedClass5Path);
+        $this->assertEquals('It\A\Stated\Class', $this->finder->getStatedClassName());
+    }
+
+
+    /**
+     * Test behavior of finder method listParentsClassesNames when proxy is not loaded
+     */
+    public function testListParentsClassesNamesNotFound()
+    {
+        $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\ClassMissed', $this->statedClass6Path);
+        try {
+            $this->finder->listParentsClassesNames();
+        } catch (Exception\IllegalProxy $e) {
+            return;
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
+
+        $this->fail('Error, if the proxy has not been initialized, the finder must  thrown an exception');
+    }
+
+    /**
+     * Test behavior of finder method listParentsClassesNames when the stated class has a no parent
+     */
+    public function testListParentsClassesNamesNoParent()
+    {
+        $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\Class6', $this->statedClass6Path);
+        $this->finder->loadProxy();
+        $this->assertEmpty($this->finder->listParentsClassesNames());
+    }
+
+    /**
+     * Test behavior of finder method listParentsClassesNames when the stated class is a child of another stated class
+     */
+    public function testListParentsClassesNamesOneParent()
+    {
+        $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\Class7', $this->statedClass7Path);
+        $this->finder->loadProxy();
+        $this->assertEquals(
+            ['UniAlteri\Tests\Support\StatedClass\Class6'],
+            $this->finder->listParentsClassesNames()->getArrayCopy()
+        );
+    }
+
+    /**
+     * Test behavior of finder method listParentsClassesNames when the stated class is a grand child class
+     */
+    public function testListParentsClassesNamesMultiParent()
+    {
+        $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\Class8', $this->statedClass8Path);
+        $this->finder->loadProxy();
+        $this->assertEquals(
+            [
+                'UniAlteri\Tests\Support\StatedClass\Class7',
+                'UniAlteri\Tests\Support\StatedClass\Class6'
+            ],
+            $this->finder->listParentsClassesNames()->getArrayCopy()
+        );
     }
 }
