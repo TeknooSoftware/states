@@ -100,6 +100,22 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             }
         });
     }
+    /**
+     * Replace finder service to generate virtual finder mock to use to test inheritance
+     */
+    protected function registerMockFinderServiceForInheritance()
+    {
+        $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
+        $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
+            if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
+                $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
+
+                return new Support\MockFinderInheritance($factory->getStatedClassName(), $factory->getPath());
+            } else {
+                return new Support\MockFinderInheritance('', '');
+            }
+        });
+    }
 
     /**
      * Return the Factory Object Interface.
@@ -249,8 +265,14 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         });
 
         $factory = $this->getFactoryObject(true);
+
+        //Register Di Container
+        $repository = new Support\MockDIContainer();
+        $this->container->registerInstance(Factory\FactoryInterface::DI_FACTORY_REPOSITORY, $repository);
+
         $factory->initialize('foo', 'bar');
         $this->assertTrue($virtualFinder->proxyHasBeenLoaded());
+        $this->assertSame($factory, $repository->get($factory->getStatedClassName()));
     }
 
     /**
@@ -313,6 +335,74 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             ),
             $proxy->listAvailableStates()
         );
+    }
+
+    /**
+     * Test if the factory can retrieve from the finder the list of available states for the stated class.
+     */
+    public function testListAvailableStateInStartupWithInheritanceMotherNotFound()
+    {
+        $factoryMother = $this->getFactoryObject();
+        $factoryMother->getFinder();
+
+        //Register Di Container
+        $repository = new Support\MockDIContainer();
+        $this->container->registerInstance(Factory\FactoryInterface::DI_FACTORY_REPOSITORY, $repository);
+
+        //Finder
+        $factoryDaughter = $this->getFactoryObject();
+        $this->registerMockFinderServiceForInheritance();
+        $factoryDaughter->getFinder();
+
+        $proxy = new Support\MockProxyChild(null);
+        try {
+            $factoryDaughter->startup($proxy);
+        } catch (Exception\UnavailableFactory $e) {
+            return;
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+            return;
+        }
+
+        $this->fail('Error, the factory must throw an exception if it can not found parent factory in registry');
+    }
+
+    /**
+     * Test if the factory can retrieve from the finder the list of available states for the stated class.
+     */
+    public function testListAvailableStateInStartupWithInheritance()
+    {
+        $factoryMother = $this->getFactoryObject();
+        $factoryMother->getFinder();
+
+        //Register Di Container
+        $repository = new Support\MockDIContainer();
+        $repository->registerInstance('UniAlteri\Tests\Support\MockProxy', $factoryMother);
+        $this->container->registerInstance(Factory\FactoryInterface::DI_FACTORY_REPOSITORY, $repository);
+
+        //Finder
+        $factoryDaughter = $this->getFactoryObject();
+        $this->registerMockFinderServiceForInheritance();
+        $factoryDaughter->getFinder();
+
+        $proxy = new Support\MockProxyChild(null);
+        $factoryDaughter->startup($proxy);
+        $this->assertEquals(
+            array(
+                'MockState1',
+                Proxy\ProxyInterface::DEFAULT_STATE_NAME,
+                'MockState4',
+                'MockState2',
+                'MockState3',
+            ),
+            $proxy->listAvailableStates()
+        );
+
+        $this->assertFalse($proxy->getState('MockState1')->isPrivateMode());
+        $this->assertFalse($proxy->getState(Proxy\ProxyInterface::DEFAULT_STATE_NAME)->isPrivateMode());
+        $this->assertFalse($proxy->getState('MockState4')->isPrivateMode());
+        $this->assertTrue($proxy->getState('MockState2')->isPrivateMode());
+        $this->assertTrue($proxy->getState('MockState3')->isPrivateMode());
     }
 
     /**

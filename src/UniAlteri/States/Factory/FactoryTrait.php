@@ -218,7 +218,7 @@ trait FactoryTrait
     {
         if ($this->diContainer->testEntry(FactoryInterface::DI_FACTORY_REPOSITORY)) {
             $repositoryContainer = $this->diContainer->get(FactoryInterface::DI_FACTORY_REPOSITORY);
-            if ($repositoryContainer instanceof DI\Container && $repositoryContainer->testEntry($className)) {
+            if ($repositoryContainer instanceof DI\ContainerInterface && $repositoryContainer->testEntry($className)) {
                 return $repositoryContainer->get($className);
             }
         }

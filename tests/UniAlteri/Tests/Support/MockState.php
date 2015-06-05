@@ -92,6 +92,11 @@ class MockState implements States\StateInterface
     protected $virtualInjection = null;
 
     /**
+     * @var bool
+     */
+    protected $privateModeEnable = false;
+
+    /**
      * Initialize virtual state.
      */
     public function __construct($closure = null)
@@ -386,6 +391,7 @@ class MockState implements States\StateInterface
      */
     public function isPrivateMode()
     {
+        return $this->privateModeEnable;
     }
 
     /**
@@ -400,6 +406,8 @@ class MockState implements States\StateInterface
      */
     public function setPrivateMode($enable)
     {
+        $this->privateModeEnable = !empty($enable);
+
         return $this;
     }
 }
