@@ -86,14 +86,14 @@ trait ProxyTrait
 
     /**
      * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
-     * private method access
+     * private method access.
      *
      * @var string[]|\SplStack
      */
     protected $callerStatedClassesStack = null;
 
     /**
-     * To get the class name of the caller according to scope visibility
+     * To get the class name of the caller according to scope visibility.
      *
      * @return string
      */
@@ -109,12 +109,12 @@ trait ProxyTrait
     /**
      * To push in the caller stated classes name stack
      * the class of the current object.
+     *
      * @param States\States\StateInterface $state
-     * @param $scopeVisibility
      *
      * @return $this
      */
-    protected function pushCallerStatedClassName(States\States\StateInterface $state, $scopeVisibility)
+    protected function pushCallerStatedClassName(States\States\StateInterface $state)
     {
         $this->callerStatedClassesStack->push($state->getStatedClassName());
 
@@ -122,7 +122,7 @@ trait ProxyTrait
     }
 
     /**
-     * To pop the current caller in the stated class name stack
+     * To pop the current caller in the stated class name stack.
      *
      * @return $this
      */
@@ -140,8 +140,8 @@ trait ProxyTrait
      *
      * @param States\States\StateInterface $state
      * @param $methodName
-     * @param array                        $arguments
-     * @param string                       $scopeVisibility self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param array  $arguments
+     * @param string $scopeVisibility self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      *
      * @return mixed
      *
@@ -199,11 +199,11 @@ trait ProxyTrait
         }
 
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
-        $limit=4;
+        $limit = 4;
         if (PHP_MAJOR_VERSION < 7) {
             //Support for PHP5, in PHP7, the method debug_backtrace() returns one line in less than with PHP5
             //So we increase the limit with PHP5 to retrieve and check the good object
-            $limit=5;
+            $limit = 5;
         }
 
         $scopeVisibility = $this->getVisibilityScope($limit);

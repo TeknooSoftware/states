@@ -74,7 +74,7 @@ trait FactoryTrait
     protected $path = null;
 
     /**
-     * To list states by stated classes (this class and its parents)
+     * To list states by stated classes (this class and its parents).
      *
      * @var \ArrayObject
      */
@@ -159,7 +159,8 @@ trait FactoryTrait
      * It registers the class name and its path, retrieves the DI Container,
      * register the factory in the DI Container, it retrieves the finder object and load the proxy
      * from the finder.
-     *}
+     *}.
+     *
      * @param string $statedClassName the name of the stated class
      * @param string $path            of the stated class
      *
@@ -191,7 +192,7 @@ trait FactoryTrait
     }
 
     /**
-     * To register this factory in the factory repository to be able to retrieve it from another children factories
+     * To register this factory in the factory repository to be able to retrieve it from another children factories.
      *
      * @return $this
      */
@@ -206,7 +207,7 @@ trait FactoryTrait
     }
 
     /**
-     * To search and return, from the factory repository, the factory for the passed class name
+     * To search and return, from the factory repository, the factory for the passed class name.
      *
      * @param string $className
      *
@@ -227,7 +228,7 @@ trait FactoryTrait
     }
 
     /**
-     * To return the list of available states (directly defined states and inherited states) for this class
+     * To return the list of available states (directly defined states and inherited states) for this class.
      *
      * @return string[]|Loader\FinderInterface[]
      *
@@ -308,7 +309,7 @@ trait FactoryTrait
         $mainFinder = $this->getFinder();
 
         //Load each state into proxy
-        foreach ($statesList as $loadingStateName=>$finderLoader) {
+        foreach ($statesList as $loadingStateName => $finderLoader) {
             $stateObject = $finderLoader->buildState($loadingStateName);
             $stateObject->setDIContainer($diContainerObject)
                 ->setPrivateMode($finderLoader !== $mainFinder)

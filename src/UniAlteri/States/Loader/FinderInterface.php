@@ -84,7 +84,7 @@ interface FinderInterface
     public function getDIContainer();
 
     /**
-     * To get the canonical stated class name associated to this state
+     * To get the canonical stated class name associated to this state.
      *
      * @return $this
      */
@@ -137,7 +137,7 @@ interface FinderInterface
 
     /**
      * To return the list of parents stated classes of this stated classes, library classes (Integrated proxy and
-     * standard proxy are excluded)
+     * standard proxy are excluded).
      *
      * @return string[]
      *
