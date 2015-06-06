@@ -132,6 +132,7 @@ class InjectionClosure implements InjectionClosureInterface
     public function invoke(array &$args)
     {
         $closure = $this->closure;
+
         return $closure(...$args);
     }
 
@@ -250,7 +251,7 @@ class InjectionClosure implements InjectionClosureInterface
      *
      * @param string $name
      *
-     * @return mixed
+     * @return mixed|null
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
     public function getProperty($name)

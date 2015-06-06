@@ -106,17 +106,19 @@ trait StateTrait
         'setPrivateMode' => 'setPrivateMode',
         'isPrivateMode' => 'isPrivateMode',
         'getStatedClassName' => 'getStatedClassName',
-        'setStatedClassName' => 'setStatedClassName'
+        'setStatedClassName' => 'setStatedClassName',
     );
 
     /**
-     * To know if the private mode is enable or not for this state (see isPrivateMode())
+     * To know if the private mode is enable or not for this state (see isPrivateMode()).
+     *
      * @var bool
      */
     protected $privateModeStatus = false;
 
     /**
-     * To know the canonical stated class name of the object owning this state container
+     * To know the canonical stated class name of the object owning this state container.
+     *
      * @var string
      */
     protected $statedClassName;
@@ -162,7 +164,7 @@ trait StateTrait
     }
 
     /**
-     * To get the canonical stated class name associated to this state
+     * To get the canonical stated class name associated to this state.
      *
      * @return $this
      */
@@ -172,7 +174,7 @@ trait StateTrait
     }
 
     /**
-     * To set the canonical stated class name associated to this state
+     * To set the canonical stated class name associated to this state.
      *
      * @param string $statedClassName
      *
@@ -188,8 +190,9 @@ trait StateTrait
     /**
      * To know if the mode Private is enabled : private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable
-     * @return boolean
+     * By default this mode is disable.
+     *
+     * @return bool
      */
     public function isPrivateMode()
     {
@@ -200,9 +203,9 @@ trait StateTrait
      * To enable or disable the private mode of this state :
      * If the mode Private is enable, private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable
+     * By default this mode is disable.
      *
-     * @param boolean $enable
+     * @param bool $enable
      *
      * @return $this
      */
@@ -252,15 +255,15 @@ trait StateTrait
      *
      * @api
      *
-     * @param string $methodName
-     * @param string $scope
+     * @param string      $methodName
+     * @param string      $scope
      * @param string|null $statedClassOriginName
      *
      * @return bool
      *
      * @throws Exception\InvalidArgument
      */
-    protected function checkVisibility($methodName, $scope, $statedClassOriginName=null)
+    protected function checkVisibility($methodName, $scope, $statedClassOriginName = null)
     {
         $visible = false;
         if (isset($this->reflectionsMethods[$methodName])) {
@@ -309,8 +312,8 @@ trait StateTrait
     /**
      * To test if a method exists for this state in the current visibility scope.
      *
-     * @param string $methodName
-     * @param string $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string      $methodName
+     * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null $statedClassOriginName
      *
      * @return bool
@@ -428,8 +431,8 @@ trait StateTrait
      *
      * @param string               $methodName
      * @param Proxy\ProxyInterface $proxy
-     * @param string               $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null $statedClassOriginName
+     * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null          $statedClassOriginName
      *
      * @return DI\InjectionClosureInterface
      *

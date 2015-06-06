@@ -30,7 +30,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
   * Class ClassInformation
-  * Command to list class datas.
+  * Command to list class data.
   *
   * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
   *

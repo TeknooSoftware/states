@@ -74,7 +74,7 @@ class FinderStandard implements FinderInterface
     protected $defaultProxyClassName = '\UniAlteri\States\Proxy\Standard';
 
     /**
-     * List of states already fetched by this finder
+     * List of states already fetched by this finder.
      *
      * @var \ArrayObject
      */
@@ -107,11 +107,10 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To return the DI Containe
+     * To return the DI Container.
      *
      * @throws Exception\IllegalProxy If the proxy class is not valid
-     *
-     * @throws Exception\IllegalProxy If the proxy class is not validr used for this object.
+     * @throws Exception\IllegalProxy If the proxy class is not valid used for this object.
      *
      * @return DI\ContainerInterface
      */
@@ -121,7 +120,7 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To get the canonical stated class name associated to this state
+     * To get the canonical stated class name associated to this state.
      *
      * @return $this
      */
@@ -142,7 +141,7 @@ class FinderStandard implements FinderInterface
     {
         if (!$this->statesNamesList instanceof \ArrayObject) {
             //Checks if states are stored into the standardized path
-            $statesPath = $this->pathString . DIRECTORY_SEPARATOR . FinderInterface::STATES_PATH;
+            $statesPath = $this->pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH;
             if (!is_dir($statesPath)) {
                 throw new Exception\UnavailablePath(
                     sprintf('Error, the path "%s" was not found', $statesPath)
@@ -291,7 +290,7 @@ class FinderStandard implements FinderInterface
             if (!class_exists($proxyClassName, false)) {
                 throw new Exception\IllegalProxy(
                     sprintf(
-                        'Error, the proxy of "%s" must be called <StatedClassName>\'%s',
+                        'Error, the proxy of "%s" must be called "StatedClassName"\'%s',
                         $this->statedClassName,
                         $classPartName
                     )
@@ -307,7 +306,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
-     * standard proxy are excluded)
+     * standard proxy are excluded).
      *
      * @return string[]
      *

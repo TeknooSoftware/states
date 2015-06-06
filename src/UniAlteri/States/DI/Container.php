@@ -111,7 +111,7 @@ class Container extends \Pimple\Container implements ContainerInterface
                 throw new Exception\ClassNotFound(sprintf('The class "%s" is not available', $instance));
             }
         } elseif (is_object($instance)) {
-            //For callables and objects, register them
+            //For callable and objects, register them
             $this[$name] = $instance;
         } else {
             throw new Exception\IllegalService(

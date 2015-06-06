@@ -85,7 +85,7 @@ class Integrated extends Standard
         }
 
         //Check if the startup class implements the interface 'UniAlteri\States\Factory\StartupFactoryInterface'
-        $interfacesImplementedArray = array_flip(//Do a flip because isset is more effecient than in_array
+        $interfacesImplementedArray = array_flip(//Do a flip because isset is more efficient than in_array
             class_implements(static::$startupFactoryClassName)
         );
 
