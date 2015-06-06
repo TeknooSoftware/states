@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -172,7 +173,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */

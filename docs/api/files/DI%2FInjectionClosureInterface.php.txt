@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -148,7 +149,7 @@ interface InjectionClosureInterface
      *
      * @param string $name
      *
-     * @return boolean
+     * @return bool
      * @throw Exception\IllegalName if the name does not respect the pattern [a-zA-Z_][a-zA-Z0-9_]*
      */
     public function testProperty($name);
