@@ -1,5 +1,23 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta2] - 2015-06-06 - Available on the branch "next"
+###Added
+- Support of inheritance of stated class like all standard PHP classes.
+- Add demo to illustrate inheritance feature.
+- Complete units tests and functional tests about inheritance feature.
+  
+###Changed
+- Optimize finder behavior to save list of states
+  
+##[1.2.0-beta1] - 2015-06-06
+###Added
+- Support of inheritance of stated class like all standard PHP classes.
+- Add demo to illustrate inheritance feature.
+- Complete units tests and functional tests about inheritance feature.
+  
+###Changed
+- Optimize finder behavior to save list of states  
+
 ##[2.0.0-beta] - 2015-05-30 - Available on the branch "next"
 ###Removed
 - Support of PHP 5.4 (End of life).
