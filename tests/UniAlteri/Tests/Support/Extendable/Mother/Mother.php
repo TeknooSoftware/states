@@ -42,7 +42,7 @@ use UniAlteri\States\Proxy;
 class Mother extends Proxy\Integrated
 {
     /**
-     * Return the list of availabel state in this class
+     * Return the list of available state in this class
      * @return array
      */
     public function listMethodsByStates()

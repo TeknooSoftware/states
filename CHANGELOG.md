@@ -21,7 +21,7 @@
 ##[2.0.0-beta] - 2015-05-30 - Available on the branch "next"
 ###Removed
 - Support of PHP 5.4 (End of life).
-- Support of PHP 5.5 ("..." operator needed, availabel since 5.6).
+- Support of PHP 5.5 ("..." operator needed, available since 5.6).
 
 ###Changed
 - Use splat operator ("...") instead of the "switch" solution to avoid "call_user_func_array" in injected closures.

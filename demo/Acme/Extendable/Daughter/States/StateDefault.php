@@ -22,7 +22,7 @@
  * @version     1.1.1
  */
 
-namespace demo\Acme\Article\States;
+namespace Acme\Extendable\Daughter\States;
 
 use UniAlteri\States\States;
 
@@ -39,25 +39,4 @@ use UniAlteri\States\States;
  */
 class StateDefault extends States\AbstractState
 {
-    /**
-     * Return the title of this article.
-     *
-     * @return string
-     */
-    public function getTitle()
-    {
-        return $this->getAttribute('title');
-    }
-
-    /**
-     * To know if the article is published.
-     *
-     * @return bool
-     */
-    public function isPublished()
-    {
-        $isPublished = $this->getAttribute('is_published');
-
-        return !empty($isPublished);
-    }
 }

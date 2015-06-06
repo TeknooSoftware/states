@@ -22,12 +22,12 @@
  * @version     1.1.1
  */
 
-namespace demo\Acme\Article\States;
+namespace Acme\Extendable\Daughter\States;
 
 use UniAlteri\States\States;
 
 /**
- * State StateDefault.
+ * State StateOne.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -37,27 +37,21 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateDefault extends States\AbstractState
+class StateOne extends States\AbstractState
 {
     /**
-     * Return the title of this article.
-     *
-     * @return string
+     * @return int
      */
-    public function getTitle()
+    public function method3()
     {
-        return $this->getAttribute('title');
+        return 321;
     }
 
     /**
-     * To know if the article is published.
-     *
-     * @return bool
+     * @return int
      */
-    public function isPublished()
+    public function method4()
     {
-        $isPublished = $this->getAttribute('is_published');
-
-        return !empty($isPublished);
+        return 654;
     }
 }

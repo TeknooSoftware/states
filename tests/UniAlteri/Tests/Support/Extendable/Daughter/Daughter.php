@@ -42,7 +42,7 @@ use UniAlteri\Tests\Support\Extendable\Mother\Mother;
 class Daughter extends Mother
 {
     /**
-     * Return the list of availabel state in this class
+     * Return the list of available state in this class
      * @return array
      */
     public function listMethodsByStates()
