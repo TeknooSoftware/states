@@ -26,7 +26,6 @@ namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\DI;
 use UniAlteri\States\Loader\Exception;
-use UniAlteri\States\Loader\FinderInterface;
 use UniAlteri\States\Proxy;
 use UniAlteri\States\Loader;
 use UniAlteri\States\States;
@@ -194,7 +193,7 @@ class MockFinder implements Loader\FinderInterface
 
     /**
      * To return the list of parents stated classes of this stated classes, library classes (Integrated proxy and
-     * standard proxy are excluded)
+     * standard proxy are excluded).
      *
      * @return string[]
      *
@@ -206,7 +205,7 @@ class MockFinder implements Loader\FinderInterface
     }
 
     /**
-     * To get the canonical stated class name associated to this state
+     * To get the canonical stated class name associated to this state.
      *
      * @return $this
      */

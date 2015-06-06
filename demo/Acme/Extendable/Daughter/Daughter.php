@@ -22,14 +22,13 @@
  * @version     1.1.1
  */
 
-namespace UniAlteri\Tests\Support;
+namespace Acme\Extendable\Daughter;
 
-use UniAlteri\States\Proxy;
-use UniAlteri\States;
+use Acme\Extendable\Mother\Mother;
 
 /**
- * Class MockProxyChild
- * Mock proxy to tests factories behavior and trait state behavior.
+ * Proxy Daughter
+ * Proxy class of the stated class Daughter.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -39,6 +38,22 @@ use UniAlteri\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class MockProxyChild extends MockProxy
+class Daughter extends Mother
 {
+    /**
+     * Return the list of available state in this class.
+     *
+     * @return array
+     */
+    public function listMethodsByStates()
+    {
+        $methodsList = array();
+        foreach ($this->states as $stateName => $stateContainer) {
+            $methodsList[$stateName] = $stateContainer->listMethods()->getArrayCopy();
+        }
+
+        ksort($methodsList);
+
+        return $methodsList;
+    }
 }

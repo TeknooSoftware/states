@@ -34,7 +34,7 @@ use UniAlteri\States\States\StateInterface;
 class StateNormal implements StateInterface
 {
     /**
-     * To get the canonical stated class name associated to this state
+     * To get the canonical stated class name associated to this state.
      *
      * @return $this
      */
@@ -43,7 +43,7 @@ class StateNormal implements StateInterface
     }
 
     /**
-     * To set the canonical stated class name associated to this state
+     * To set the canonical stated class name associated to this state.
      *
      * @param string $statedClassName
      *
@@ -56,8 +56,9 @@ class StateNormal implements StateInterface
     /**
      * To know if the mode Private is enabled : private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable
-     * @return boolean
+     * By default this mode is disable.
+     *
+     * @return bool
      */
     public function isPrivateMode()
     {
@@ -67,9 +68,9 @@ class StateNormal implements StateInterface
      * To enable or disable the private mode of this state :
      * If the mode Private is enable, private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable
+     * By default this mode is disable.
      *
-     * @param boolean $enable
+     * @param bool $enable
      *
      * @return StateInterface
      */
@@ -109,8 +110,8 @@ class StateNormal implements StateInterface
     /**
      * To test if a method exists for this state in the current visibility scope.
      *
-     * @param string $methodName
-     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string      $methodName
+     * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null $statedClassOriginName
      *
      * @return bool
@@ -139,10 +140,10 @@ class StateNormal implements StateInterface
     /**
      * To return a closure of the required method to use in the proxy, according with the current visibility scope.
      *
-     * @param string $methodName
+     * @param string               $methodName
      * @param Proxy\ProxyInterface $proxy
-     * @param string $scope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null $statedClassOriginName
+     * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null          $statedClassOriginName
      *
      * @return DI\InjectionClosureInterface
      *

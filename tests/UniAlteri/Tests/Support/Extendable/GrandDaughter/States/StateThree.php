@@ -24,7 +24,7 @@
 
 namespace UniAlteri\Tests\Support\Extendable\GrandDaughter\States;
 
-use \UniAlteri\Tests\Support\Extendable\Daughter\States as Daughter;
+use UniAlteri\Tests\Support\Extendable\Daughter\States as Daughter;
 
 /**
  * State StateThree

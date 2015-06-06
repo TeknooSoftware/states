@@ -22,14 +22,12 @@
  * @version     1.1.1
  */
 
-namespace UniAlteri\Tests\Support;
+namespace Acme\Extendable\Mother\States;
 
-use UniAlteri\States\Proxy;
-use UniAlteri\States;
+use UniAlteri\States\States;
 
 /**
- * Class MockProxyChild
- * Mock proxy to tests factories behavior and trait state behavior.
+ * State StateTwo.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -39,6 +37,37 @@ use UniAlteri\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class MockProxyChild extends MockProxy
+class StateTwo extends States\AbstractState
 {
+    /**
+     * @return int
+     */
+    public function methodPublic()
+    {
+        return 123;
+    }
+
+    /**
+     * @return int
+     */
+    protected function methodProtected()
+    {
+        return 456;
+    }
+
+    /**
+     * @return int
+     */
+    private function methodPrivate()
+    {
+        return 789;
+    }
+
+    /**
+     * @return int
+     */
+    public function methodRecallPrivate()
+    {
+        return $this->methodPrivate() * 2;
+    }
 }

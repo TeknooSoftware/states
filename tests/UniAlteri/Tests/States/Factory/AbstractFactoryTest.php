@@ -101,7 +101,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         });
     }
     /**
-     * Replace finder service to generate virtual finder mock to use to test inheritance
+     * Replace finder service to generate virtual finder mock to use to test inheritance.
      */
     protected function registerMockFinderServiceForInheritance()
     {
@@ -361,6 +361,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             return;
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
+
             return;
         }
 

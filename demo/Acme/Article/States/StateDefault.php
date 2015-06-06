@@ -27,7 +27,7 @@ namespace demo\Acme\Article\States;
 use UniAlteri\States\States;
 
 /**
- * State StateDefault
+ * State StateDefault.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *

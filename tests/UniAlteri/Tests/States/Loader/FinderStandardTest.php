@@ -433,7 +433,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if the finder is able to return the stated class name where it's user
+     * Test if the finder is able to return the stated class name where it's user.
      */
     public function testGetStatedClassName()
     {
@@ -441,9 +441,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('It\A\Stated\Class', $this->finder->getStatedClassName());
     }
 
-
     /**
-     * Test behavior of finder method listParentsClassesNames when proxy is not loaded
+     * Test behavior of finder method listParentsClassesNames when proxy is not loaded.
      */
     public function testListParentsClassesNamesNotFound()
     {
@@ -460,7 +459,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of finder method listParentsClassesNames when the stated class has a no parent
+     * Test behavior of finder method listParentsClassesNames when the stated class has a no parent.
      */
     public function testListParentsClassesNamesNoParent()
     {
@@ -470,7 +469,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of finder method listParentsClassesNames when the stated class is a child of another stated class
+     * Test behavior of finder method listParentsClassesNames when the stated class is a child of another stated class.
      */
     public function testListParentsClassesNamesOneParent()
     {
@@ -483,7 +482,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of finder method listParentsClassesNames when the stated class is a grand child class
+     * Test behavior of finder method listParentsClassesNames when the stated class is a grand child class.
      */
     public function testListParentsClassesNamesMultiParent()
     {
@@ -492,7 +491,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(
             [
                 'UniAlteri\Tests\Support\StatedClass\Class7',
-                'UniAlteri\Tests\Support\StatedClass\Class6'
+                'UniAlteri\Tests\Support\StatedClass\Class6',
             ],
             $this->finder->listParentsClassesNames()->getArrayCopy()
         );

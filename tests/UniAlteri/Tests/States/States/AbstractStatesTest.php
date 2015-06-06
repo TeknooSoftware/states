@@ -343,11 +343,9 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->getPublicClassObject()->testMethod('standardMethod4'));
     }
 
-
-
     /**
      * Test if the method exist into the state into the defined scope (private) when the private mode enable and caller
-     * can be another class (its forbidden), a child class (its forbidden) and the same class (it's granted)
+     * can be another class (its forbidden), a child class (its forbidden) and the same class (it's granted).
      */
     public function testTestMethodPrivateScopeWithPrivateMode()
     {
@@ -394,7 +392,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test if the method exist into the state into the defined scope (protected). when the private mode enable and caller
-     * can be another class (its granted), a child class (its granted) and the same class (it's granted)
+     * can be another class (its granted), a child class (its granted) and the same class (it's granted).
      */
     public function testTestMethodProtectedScopeWithPrivateMode()
     {
@@ -441,7 +439,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test if the method exist into the state into the defined scope (public).when the private mode enable and caller
-     * can be another class (its granted), a child class (its granted) and the same class (it's granted)
+     * can be another class (its granted), a child class (its granted) and the same class (it's granted).
      */
     public function testTestMethodPublicScopeWithPrivateMode()
     {
@@ -702,8 +700,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
     }
 
-
-
     /**
      * Test if the closure can be get into the state into the defined scope (private).
      */
@@ -847,8 +843,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
     }
-
-
 
     /**
      * Test if the closure can be get into the state into the defined scope (private).
@@ -1115,7 +1109,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * To check if the mode is by default disable to keep the original behavior
+     * To check if the mode is by default disable to keep the original behavior.
      */
     public function testPrivateModeIsDisableByDefault()
     {
@@ -1125,7 +1119,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * To check behavior of method setPrivateMode() and isPrivateMode()
+     * To check behavior of method setPrivateMode() and isPrivateMode().
      */
     public function testPrivateModeEnable()
     {
@@ -1144,7 +1138,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * To check behavior of method setPrivateMode() and isPrivateMode()
+     * To check behavior of method setPrivateMode() and isPrivateMode().
      */
     public function testPrivateModeDisable()
     {
@@ -1163,7 +1157,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * To check behavior of methods getStatedClassName() and setStatedClassName()
+     * To check behavior of methods getStatedClassName() and setStatedClassName().
      */
     public function testSetAndGetStatedClassName()
     {

@@ -289,6 +289,7 @@ class MockProxy implements Proxy\ProxyInterface
      * To invoke an object as a function.
      *
      * @param mixed ...$args
+     *
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
@@ -577,7 +578,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * o return the state identified in param for tests
+     * o return the state identified in param for tests.
      *
      * @param $stateName
      *
