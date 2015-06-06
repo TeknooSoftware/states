@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -84,12 +85,63 @@ trait ProxyTrait
     protected $currentInjectionClosure = null;
 
     /**
+     * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
+     * private method access.
+     *
+     * @var string[]|\SplStack
+     */
+    protected $callerStatedClassesStack = null;
+
+    /**
+     * To get the class name of the caller according to scope visibility.
+     *
+     * @return string
+     */
+    protected function getCallerStatedClassName()
+    {
+        if (true !== $this->callerStatedClassesStack->isEmpty()) {
+            return $this->callerStatedClassesStack->top();
+        }
+
+        return '';
+    }
+
+    /**
+     * To push in the caller stated classes name stack
+     * the class of the current object.
+     *
+     * @param States\States\StateInterface $state
+     *
+     * @return $this
+     */
+    protected function pushCallerStatedClassName(States\States\StateInterface $state)
+    {
+        $this->callerStatedClassesStack->push($state->getStatedClassName());
+
+        return $this;
+    }
+
+    /**
+     * To pop the current caller in the stated class name stack.
+     *
+     * @return $this
+     */
+    protected function popCallerStatedClassName()
+    {
+        if (false === $this->callerStatedClassesStack->isEmpty()) {
+            $this->callerStatedClassesStack->pop();
+        }
+
+        return $this;
+    }
+
+    /**
      * Execute a method available in a state passed in args with the injection closure.
      *
      * @param States\States\StateInterface $state
      * @param $methodName
-     * @param array                        $arguments
-     * @param string                       $scopeVisibility self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param array  $arguments
+     * @param string $scopeVisibility self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      *
      * @return mixed
      *
@@ -98,8 +150,11 @@ trait ProxyTrait
      */
     protected function callInState(States\States\StateInterface $state, $methodName, array &$arguments, $scopeVisibility)
     {
+        $callerStatedClassName = $this->getCallerStatedClassName();
+        $this->pushCallerStatedClassName($state, $scopeVisibility);
+
         //Method found, extract it
-        $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility);
+        $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility, $callerStatedClassName);
         //Change current injection
         $previousClosure = $this->currentInjectionClosure;
         $this->currentInjectionClosure = $callingClosure;
@@ -110,11 +165,16 @@ trait ProxyTrait
         } catch (\Exception $e) {
             //Restore previous closure
             $this->currentInjectionClosure = $previousClosure;
+            //Restore stated class name stack
+            $this->popCallerStatedClassName();
             throw $e;
         }
 
         //Restore previous closure
         $this->currentInjectionClosure = $previousClosure;
+
+        //Restore stated class name stack
+        $this->popCallerStatedClassName();
 
         return $returnValues;
     }
@@ -132,14 +192,23 @@ trait ProxyTrait
      * @throws Exception\IllegalArgument      if the method's name is not a string
      * @throws \Exception
      */
-    protected function findMethodToCall($methodName, array $arguments)
+    protected function findMethodToCall($methodName, array &$arguments)
     {
         if (!is_string($methodName)) {
             throw new Exception\IllegalArgument('Error the methodName is not a string');
         }
 
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
-        $scopeVisibility = $this->getVisibilityScope();
+        $limit = 4;
+        if (PHP_MAJOR_VERSION < 7) {
+            //Support for PHP5, in PHP7, the method debug_backtrace() returns one line in less than with PHP5
+            //So we increase the limit with PHP5 to retrieve and check the good object
+            $limit = 5;
+        }
+
+        $scopeVisibility = $this->getVisibilityScope($limit);
+
+        $callerStatedClassName = $this->getCallerStatedClassName();
 
         $methodsWithStatesArray = explode('Of', $methodName);
         if (1 < count($methodsWithStatesArray)) {
@@ -150,7 +219,7 @@ trait ProxyTrait
                 $methodName = implode('Of', $methodsWithStatesArray);
 
                 $activeStateObject = $this->activesStates[$statesName];
-                if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
+                if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
                     return $this->callInState($activeStateObject, $methodName, $arguments, $scopeVisibility);
                 }
             }
@@ -159,7 +228,7 @@ trait ProxyTrait
         $activeStateFound = null;
         //No specific state required, browse all enabled state to find the method
         foreach ($this->activesStates as $activeStateObject) {
-            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility)) {
+            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
                 if (null === $activeStateFound) {
                     //Check if there are only one enabled state whom implements this method
                     $activeStateFound = $activeStateObject;
@@ -224,6 +293,7 @@ trait ProxyTrait
         //Initialize internal vars
         $this->states = new \ArrayObject();
         $this->activesStates = new \ArrayObject();
+        $this->callerStatedClassesStack = new \SplStack();
     }
 
     /**
@@ -261,14 +331,14 @@ trait ProxyTrait
      *                States\States\StateInterface::VISIBILITY_PROTECTED
      *                States\States\StateInterface::VISIBILITY_PRIVATE
      */
-    protected function getVisibilityScope($limit = 5)
+    protected function getVisibilityScope($limit)
     {
         //Get the calling stack
-        $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT|DEBUG_BACKTRACE_IGNORE_ARGS, (int) $limit);
+        $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, (int) $limit);
 
         if (isset($callingStack[2]['function']) && '__call' !== $callingStack[2]['function']) {
             //Magic method __call adds a line into calling stack, but not other magic method
-            $limit--;
+            --$limit;
         }
 
         if (count($callingStack) >= $limit) {
@@ -629,11 +699,12 @@ trait ProxyTrait
 
         //Retrieve the visibility scope
         $scopeVisibility = $this->getVisibilityScope(3);
+        $callerStatedClassName = $this->getCallerStatedClassName();
         try {
             if (null === $stateName) {
                 //Browse all state to find the method
                 foreach ($this->states as $stateObject) {
-                    if ($stateObject->testMethod($methodName, $scopeVisibility)) {
+                    if ($stateObject->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
                         return $stateObject->getMethodDescription($methodName);
                     }
                 }
@@ -641,7 +712,7 @@ trait ProxyTrait
 
             if (null !== $stateName && isset($this->states[$stateName])) {
                 //Retrieve description from the required state
-                if ($this->states[$stateName]->testMethod($methodName, $scopeVisibility)) {
+                if ($this->states[$stateName]->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
                     return $this->states[$stateName]->getMethodDescription($methodName);
                 }
             } elseif (null !== $stateName) {
@@ -666,14 +737,16 @@ trait ProxyTrait
     /**
      * To invoke an object as a function.
      *
+     * @param mixed ...$args
+     *
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __invoke()
+    public function __invoke(...$args)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /*******************
@@ -692,7 +765,9 @@ trait ProxyTrait
      */
     public function __get($name)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$name];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -707,7 +782,9 @@ trait ProxyTrait
      */
     public function __isset($name)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$name];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -723,7 +800,9 @@ trait ProxyTrait
      */
     public function __set($name, $value)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$name, $value];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -738,7 +817,9 @@ trait ProxyTrait
      */
     public function __unset($name)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$name];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -750,7 +831,9 @@ trait ProxyTrait
     public function __toString()
     {
         try {
-            return $this->findMethodToCall(__FUNCTION__, func_get_args());
+            $args = [];
+
+            return $this->findMethodToCall(__FUNCTION__, $args);
         } catch (\Exception $e) {
             return '';
         }
@@ -770,7 +853,9 @@ trait ProxyTrait
      */
     public function count()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -786,7 +871,9 @@ trait ProxyTrait
      */
     public function offsetExists($offset)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$offset];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -802,7 +889,9 @@ trait ProxyTrait
      */
     public function offsetGet($offset)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$offset];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -818,7 +907,9 @@ trait ProxyTrait
      */
     public function offsetSet($offset, $value)
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [$offset, $value];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -831,7 +922,8 @@ trait ProxyTrait
      */
     public function offsetUnset($offset)
     {
-        $this->findMethodToCall(__FUNCTION__, array($offset));
+        $args = [$offset];
+        $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /************
@@ -848,7 +940,9 @@ trait ProxyTrait
      */
     public function current()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -861,7 +955,9 @@ trait ProxyTrait
      */
     public function key()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -872,7 +968,9 @@ trait ProxyTrait
      */
     public function next()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -883,7 +981,9 @@ trait ProxyTrait
      */
     public function rewind()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -896,7 +996,8 @@ trait ProxyTrait
      */
     public function seek($position)
     {
-        $this->findMethodToCall(__FUNCTION__, array($position));
+        $args = [$position];
+        $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -909,7 +1010,9 @@ trait ProxyTrait
      */
     public function valid()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -922,7 +1025,9 @@ trait ProxyTrait
      */
     public function getIterator()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /*****************
@@ -939,7 +1044,9 @@ trait ProxyTrait
      */
     public function serialize()
     {
-        return $this->findMethodToCall(__FUNCTION__, func_get_args());
+        $args = [];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -952,7 +1059,8 @@ trait ProxyTrait
      */
     public function unserialize($serialized)
     {
-        $this->findMethodToCall(__FUNCTION__, array($serialized));
+        $args = [$serialized];
+        $this->findMethodToCall(__FUNCTION__, $args);
     }
 }
 

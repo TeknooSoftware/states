@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -83,6 +84,13 @@ interface FinderInterface
     public function getDIContainer();
 
     /**
+     * To get the canonical stated class name associated to this state.
+     *
+     * @return $this
+     */
+    public function getStatedClassName();
+
+    /**
      * To list all available states of the stated class.
      *
      * @return string[]
@@ -126,6 +134,16 @@ interface FinderInterface
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function loadProxy();
+
+    /**
+     * To return the list of parents stated classes of this stated classes, library classes (Integrated proxy and
+     * standard proxy are excluded).
+     *
+     * @return string[]
+     *
+     * @throws Exception\IllegalProxy If the proxy class is not valid
+     */
+    public function listParentsClassesNames();
 
     /**
      * To load and build a proxy object for the stated class.

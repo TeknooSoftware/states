@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -90,7 +91,7 @@ class LoaderStandard implements LoaderInterface
      * Initialize the loader object.
      *
      * @param IncludePathManagerInterface $includePathManager
-     * @param boolean                     $enablePSR0Loader   to enable PSR 0 loader to search required stated class in included paths
+     * @param bool                        $enablePSR0Loader   to enable PSR 0 loader to search required stated class in included paths
      *                                                        disabled by default for performance reasons
      *
      * @throws Exception\IllegalArgument $includePathManager does not implement the interface IncludePathManagerInterface
@@ -235,8 +236,8 @@ class LoaderStandard implements LoaderInterface
             $this->namespacesArray[$namespace] = new \SplQueue();
         }
 
-        if ('/' == $path[strlen($path)-1]) {
-            $path = substr($path, 0, strlen($path)-1);
+        if ('/' == $path[strlen($path) - 1]) {
+            $path = substr($path, 0, strlen($path) - 1);
         }
 
         $this->namespacesArray[$namespace]->enqueue($path);
@@ -349,7 +350,7 @@ class LoaderStandard implements LoaderInterface
      *
      * @param string $pathFile
      *
-     * @return boolean
+     * @return bool
      */
     protected function testFileExist($pathFile)
     {
@@ -367,7 +368,7 @@ class LoaderStandard implements LoaderInterface
      *
      * @param string $className class name, support namespace prefixes
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -49,7 +50,7 @@ interface StartupFactoryInterface
      * @param Proxy\ProxyInterface $proxyObject
      * @param string               $stateName
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\InvalidArgument    when $factoryIdentifier is not an object
      * @throws Exception\UnavailableFactory when the required factory was not found

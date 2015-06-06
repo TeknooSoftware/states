@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -42,7 +43,7 @@ namespace UniAlteri\States\Command\Writer;
       *
       * @param string $className
       * @param string $namespace
-      * @param boolean $isIntegrated
+      * @param bool $isIntegrated
       *
       * @return string
       */
@@ -78,7 +79,7 @@ EOF;
       * @param string $className
       * @param string $namespace
       *
-      * @return boolean
+      * @return bool
       */
      public function createStandardProxy($className, $namespace)
      {
@@ -97,7 +98,7 @@ EOF;
       * @param string $className
       * @param string $namespace
       *
-      * @return boolean
+      * @return bool
       */
      public function createIntegratedProxy($className, $namespace)
      {

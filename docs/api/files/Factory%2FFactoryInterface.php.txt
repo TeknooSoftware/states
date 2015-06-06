@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -46,6 +47,11 @@ interface FactoryInterface
      * Name of this factory into the DI Container available for each stated class.
      */
     const DI_FACTORY_NAME = 'Factory';
+
+    /**
+     * Name of the repository in the DI Container, shared with all DI, to register all loaded factory.
+     */
+    const DI_FACTORY_REPOSITORY = 'FactoryRepository';
 
     /**
      * To register a DI container for this object.
@@ -96,7 +102,7 @@ interface FactoryInterface
      * @param string $statedClassName the name of the stated class
      * @param string $path            of the stated class
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
@@ -109,7 +115,7 @@ interface FactoryInterface
      * @param Proxy\ProxyInterface $proxyObject
      * @param string               $stateName
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class

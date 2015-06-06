@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -65,7 +66,7 @@ interface StateInterface
      *
      * @param DI\ContainerInterface $container
      *
-     * @return $this
+     * @return StateInterface|$this
      */
     public function setDIContainer(DI\ContainerInterface $container);
 
@@ -77,6 +78,43 @@ interface StateInterface
     public function getDIContainer();
 
     /**
+     * To get the canonical stated class name associated to this state.
+     *
+     * @return StateInterface|$this
+     */
+    public function getStatedClassName();
+
+    /**
+     * To set the canonical stated class name associated to this state.
+     *
+     * @param string $statedClassName
+     *
+     * @return StateInterface
+     */
+    public function setStatedClassName($statedClassName);
+
+    /**
+     * To know if the mode Private is enabled : private method are only accessible from
+     * method present in the same stated class and not from methods of children of this class.
+     * By default this mode is disable.
+     *
+     * @return bool
+     */
+    public function isPrivateMode();
+
+    /**
+     * To enable or disable the private mode of this state :
+     * If the mode Private is enable, private method are only accessible from
+     * method present in the same stated class and not from methods of children of this class.
+     * By default this mode is disable.
+     *
+     * @param bool $enable
+     *
+     * @return StateInterface
+     */
+    public function setPrivateMode($enable);
+
+    /**
      * To return an array of string listing all methods available in the state.
      *
      * @return string[]
@@ -86,14 +124,15 @@ interface StateInterface
     /**
      * To test if a method exists for this state in the current visibility scope.
      *
-     * @param string $methodName
-     * @param string $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string      $methodName
+     * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null $statedClassOriginName
      *
-     * @return boolean
+     * @return bool
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope = StateInterface::VISIBILITY_PUBLIC);
+    public function testMethod($methodName, $scope = self::VISIBILITY_PUBLIC, $statedClassOriginName = null);
 
     /**
      * To return the description of a method to configure the behavior of the proxy. Return also description of private
@@ -111,9 +150,10 @@ interface StateInterface
     /**
      * To return a closure of the required method to use in the proxy, according with the current visibility scope.
      *
-     * @param string               $methodName
-     * @param Proxy\ProxyInterface $proxy
-     * @param string               $scope      self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string                                $methodName
+     * @param Proxy\ProxyInterface|Proxy\ProxyTrait $proxy
+     * @param string                                $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null                           $statedClassOriginName
      *
      * @return DI\InjectionClosureInterface
      *
@@ -122,6 +162,6 @@ interface StateInterface
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought
      */
-    public function getClosure($methodName, $proxy, $scope = StateInterface::VISIBILITY_PUBLIC);
+    public function getClosure($methodName, $proxy, $scope = self::VISIBILITY_PUBLIC, $statedClassOriginName = null);
 }
 
