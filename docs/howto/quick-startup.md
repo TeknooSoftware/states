@@ -182,6 +182,20 @@ The trait proxy is already compliant with standard interfaces `\Serializable`, `
 interfaces are not defined with released proxies. You must implement these interface, according to your needs, in your
 derived proxies.
 
+###Inheritance
+Since versions 1.2 and 2.0, the library States supports inheritance of stated classes. The behavior is inspired by 
+the PHP behavior with traditional classes :
+    - All publics and privates methods defined in the parent class are available in descendant classes
+    - Privates methods defined in the parent class are only available by other methods also defined in the parent class.
+    - The list of available methods is the set of defined method in parents classes and in the child class.
+    - A child class can redefine or overload a parent's method : Redefined methods must only have a compatible interface 
+    with the original method : Additional arguments must be optional.
+        
+But, the behavior is completed for states :
+    - The list of available states is the set of defined state in parents classes and in the child class.
+    - A child class can overload a state defined in the parent class : The list of methods can be different.
+    - A child class can extend a state defined in the parent class : The state PHP class must extend the original PHP state class.
+
 ###Enjoy
 Now, you can use your stated class. If you use the integrated proxy, you can directly instantiate your objects with the
 operator `new` like this `$myObject = new \Your\NameSpace\YourStateName();`.
