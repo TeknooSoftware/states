@@ -290,14 +290,26 @@ class MockState implements States\StateInterface
 
         $this->methodName = $methodName;
 
-        if (null === $this->virtualInjection) {
-            $this->closure = \Closure::bind($this->closure, $proxy, get_class($proxy));
-            $injection = new MockInjectionClosure();
-            $injection->setClosure($this->closure);
-            $this->virtualInjection = $injection;
-        }
+        if (method_exists($this, $methodName)) {
+            $reflectionObject = new \ReflectionObject($this);
+            $reflectionMethod = $reflectionObject->getMethod($methodName);
+            $closure = \Closure::bind($reflectionMethod->getClosure($this), $proxy, get_class($proxy));
 
-        return $this->virtualInjection;
+            $injection = new MockInjectionClosure();
+            $injection->setClosure($closure);
+
+            return $injection;
+        } else {
+            if (null === $this->virtualInjection) {
+                $this->closure = \Closure::bind($this->closure, $proxy, get_class($proxy));
+
+                $injection = new MockInjectionClosure();
+                $injection->setClosure($this->closure);
+                $this->virtualInjection = $injection;
+            }
+
+            return $this->virtualInjection;
+        }
     }
 
     /**
@@ -409,5 +421,15 @@ class MockState implements States\StateInterface
         $this->privateModeEnable = !empty($enable);
 
         return $this;
+    }
+
+    /**
+     * Method to use in test to perform internal recall via a method in state
+     * @param string $methodName
+     * @return mixed
+     */
+    public function recallMethod($methodName)
+    {
+        return $this->{$methodName}();
     }
 }

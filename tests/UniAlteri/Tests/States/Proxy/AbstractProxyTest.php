@@ -1505,6 +1505,58 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Check proxy respects visibility restriction on methods from this object (called from one of its methods) for :
+     * - a private method : return description if the method exists
+     * - a protected method : return description if the method exists
+     * - a public method : return description if the method exists.
+     */
+    public function testCallFromThisRecall()
+    {
+        $this->initializeProxy('state1', true);
+        //To access to the proxy in the method
+        include_once dirname(dirname(__DIR__)).'/Support/TestVisibilityFunctionsCall.php';
+
+        //Create a temp child class to test
+        $classNamePartArray = explode('\\', get_class($this->proxy));
+        $childClassName = array_pop($classNamePartArray);
+        $childClassName = $childClassName.'ChildClass';
+        $code = 'if (class_exists("'.$childClassName.'")) {return;}'.PHP_EOL.'class '.$childClassName.' extends '.get_class($this->proxy).'{ use testCallTrait; }';
+        eval($code);
+
+        /*
+         * In this test, use a child proxy and not directly the proxy because we can not add on the fly
+         * method into the proxy to run the test
+         */
+        global $proxy;
+        $proxy = new $childClassName();
+        $proxy->registerState('state1', $this->state1);
+        $proxy->registerState('state2', $this->state2);
+        $proxy->registerState('state3', $this->state3);
+        $proxy->enableState('state1');
+
+        //Build temp functions to test proxy behavior with different scope visibility
+        //from $this to get a description of private methods
+        $proxy->recallMethod('privateMethod');
+        $this->assertTrue($this->state1->methodWasCalled());
+        $this->assertSame('privateTest', $this->state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->state1->getCalledArguments());
+
+        //Build temp functions to test proxy behavior with different scope visibility
+        //from $this to get a description of protected methods
+        $proxy->recallMethod('protectedMethod');
+        $this->assertTrue($this->state1->methodWasCalled());
+        $this->assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->state1->getCalledArguments());
+
+        //Build temp functions to test proxy behavior with different scope visibility
+        //from $this to get a description of public methods
+        $proxy->recallMethod('publicMethod');
+        $this->assertTrue($this->state1->methodWasCalled());
+        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
+        $this->assertSame(array(), $this->state1->getCalledArguments());
+    }
+
+    /**
      * Check proxy respects visibility restriction on methods from a static method of another class for :
      * - a private method : throw exception non implemented
      * - a protected method : throw exception non implemented
