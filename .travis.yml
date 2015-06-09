@@ -4,6 +4,7 @@ sudo: false
 
 php:
   - 7
+  - hhvm
 
 install:
   - composer self-update
