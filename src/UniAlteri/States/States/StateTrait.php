@@ -82,7 +82,7 @@ trait StateTrait
     /**
      * List of closures already extracted and set into Injection Closure Container.
      *
-     * @var DI\InjectionClosureInterface[]
+     * @var \Closure[]
      */
     protected $closuresObjects = null;
 
@@ -95,7 +95,6 @@ trait StateTrait
         '__construct' => '__construct',
         '__destruct' => '__destruct',
         'getReflectionClass' => 'getReflectionClass',
-        'buildInjectionClosureObject' => 'buildInjectionClosureObject',
         'checkVisibility' => 'checkVisibility',
         'setDIContainer' => 'setDIContainer',
         'getDIContainer' => 'getDIContainer',
@@ -403,30 +402,6 @@ trait StateTrait
     }
 
     /**
-     * To build a new Injection Closure object from the service defined in the DI Container.
-     *
-     * @api
-     *
-     * @return DI\InjectionClosureInterface
-     *
-     * @throws Exception\IllegalService when there are no DI Container or Injection Closure Container bought
-     */
-    protected function buildInjectionClosureObject()
-    {
-        $container = $this->getDIContainer();
-        if (!$container instanceof DI\ContainerInterface) {
-            throw new Exception\IllegalService('Error, no DI Container has been defined');
-        }
-
-        $diContainer = $container->get(StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER);
-        if (!$diContainer instanceof DI\InjectionClosureInterface) {
-            throw new Exception\IllegalService('Error, no Injection Container has been defined');
-        }
-
-        return $diContainer;
-    }
-
-    /**
      * To return a closure of the required method to use in the proxy, according with the current visibility scope.
      *
      * @param string               $methodName
@@ -434,12 +409,11 @@ trait StateTrait
      * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null          $statedClassOriginName
      *
-     * @return DI\InjectionClosureInterface
+     * @return \Closure
      *
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
      * @throws Exception\InvalidArgument      when the method name is not a string
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
-     * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought
      */
     public function getClosure($methodName, $proxy, $scope = StateInterface::VISIBILITY_PUBLIC, $statedClassOriginName = null)
     {
@@ -460,17 +434,8 @@ trait StateTrait
             //The closure is not already generated
             //Extract them
             $methodReflection = $this->getMethodDescription($methodName);
-            $closure = $methodReflection->getClosure($this);
 
-            //Bind $this with proxy
-            $closure = \Closure::bind($closure, $proxy, get_class($proxy));
-
-            //Include the closure into the container
-            $injectionClosure = $this->buildInjectionClosureObject()
-                ->setClosure($closure)
-                ->setProxy($proxy)
-                ->setDIContainer($this->getDIContainer());
-            $this->closuresObjects[$methodName] = $injectionClosure;
+            $this->closuresObjects[$methodName] = $methodReflection->getClosure($this);;
         }
 
         //Check visibility scope

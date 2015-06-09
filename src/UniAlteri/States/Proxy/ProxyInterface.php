@@ -154,15 +154,6 @@ interface ProxyInterface extends
      */
     public function inState($stateName);
 
-    /**
-     * To return the current injection closure object to access to its static properties.
-     *
-     * @return DI\InjectionClosureInterface
-     *
-     * @throws Exception\UnavailableClosure
-     */
-    public function getStatic();
-
     /*******************
      * Methods Calling *
      *******************/

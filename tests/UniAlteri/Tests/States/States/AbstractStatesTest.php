@@ -180,21 +180,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if exception when we get a description of a static method.
-     */
-    public function testGetStaticMethodDescription()
-    {
-        try {
-            $this->getPublicClassObject()->getMethodDescription('staticMethod3');
-        } catch (States\Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of a static method');
-    }
-
-    /**
      * Clean description text to simplify tests.
      *
      * @param \ReflectionMethod $text
@@ -560,39 +545,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exception through by state if the closure method is static.
-     */
-    public function testGetClosureWithInvalidDiContainer()
-    {
-        try {
-            $object = $this->getPublicClassObject(false);
-            $object->getClosure('standardMethod1', $this->getMockProxy());
-        } catch (States\Exception\IllegalService $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the state must throws an Exception\IllegalService if no DI Container has been defined before getClosure');
-    }
-
-    /**
-     * Test exception through by state if the closure method is static.
-     */
-    public function testGetClosureWithInvalidInjectContainer()
-    {
-        try {
-            $object = $this->getPublicClassObject();
-            $object->getDIContainer()->registerService(States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER, null);
-            $object->getClosure('standardMethod1', $this->getMockProxy());
-        } catch (States\Exception\IllegalService $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the state must throws an Exception\IllegalService if no Injection Container service has been defined before getClosure');
-    }
-
-    /**
      * Test if the closure can be get into the state into the defined scope (private).
      */
     public function testGetClosureWithPrivateScope()
@@ -603,7 +555,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             States\StateInterface::VISIBILITY_PRIVATE
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
 
         $closure = $this->getProtectedClassObject()->getClosure(
             'standardMethod6',
@@ -611,7 +563,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             States\StateInterface::VISIBILITY_PRIVATE
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
 
         $closure = $this->getPublicClassObject()->getClosure(
             'standardMethod1',
@@ -619,7 +571,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             States\StateInterface::VISIBILITY_PRIVATE
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
     }
 
     /**
@@ -647,7 +599,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
 
         $closure = $this->getPublicClassObject()->getClosure(
             'standardMethod1',
@@ -655,7 +607,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
     }
 
     /**
@@ -697,7 +649,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             States\StateInterface::VISIBILITY_PUBLIC
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
     }
 
     /**
@@ -715,7 +667,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\Class'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
 
         $closure = $this->getProtectedClassObject()
             ->setPrivateMode(true)
@@ -727,7 +679,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\Class'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
 
         $closure = $this->getPublicClassObject()
             ->setPrivateMode(true)
@@ -739,7 +691,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\Class'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
     }
 
     /**
@@ -775,7 +727,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\Class'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
 
         $closure = $this->getPublicClassObject()
             ->setPrivateMode(true)
@@ -787,7 +739,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\Class'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
     }
 
     /**
@@ -841,7 +793,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\Class'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
     }
 
     /**
@@ -877,7 +829,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\AnotherClass'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
 
         $closure = $this->getPublicClassObject()
             ->setPrivateMode(true)
@@ -889,7 +841,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\AnotherClass'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
     }
 
     /**
@@ -925,7 +877,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\AnotherClass'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
 
         $closure = $this->getPublicClassObject()
             ->setPrivateMode(true)
@@ -937,7 +889,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\AnotherClass'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
     }
 
     /**
@@ -991,7 +943,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'It\A\Stated\AnotherClass'
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
     }
 
     /**
@@ -1030,7 +982,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             $this->getMockProxy()
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
+        $this->assertInstanceOf('\Closure', $closure);
     }
 
     /**
@@ -1044,9 +996,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
-        $this->assertInstanceOf('\UniAlteri\States\DI\InjectionClosureInterface', $closure);
-        $this->assertInstanceOf('\Closure', $closure->getClosure());
-        $this->assertEquals(3, call_user_func_array($closure->getClosure(), array(1, 2)));
+        $this->assertInstanceOf('\Closure', $closure);
+        $this->assertEquals(4, $closure(1,3));
     }
 
     /**
@@ -1074,9 +1025,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertSame($closure1, $closure3);
-        $this->assertSame($closure1->getClosure(), $closure3->getClosure());
         $this->assertNotSame($closure1, $closure2);
-        $this->assertNotSame($closure1->getClosure(), $closure2->getClosure());
     }
 
     /**
@@ -1103,9 +1052,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertNotSame($closure1, $closure3);
-        $this->assertNotSame($closure1->getClosure(), $closure3->getClosure());
         $this->assertNotSame($closure1, $closure2);
-        $this->assertNotSame($closure1->getClosure(), $closure2->getClosure());
     }
 
     /**

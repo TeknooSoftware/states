@@ -42,11 +42,6 @@ use UniAlteri\States\Proxy;
 interface StateInterface
 {
     /**
-     * Identifier into DI Container to generate a new Injection Closure Container.
-     */
-    const INJECTION_CLOSURE_SERVICE_IDENTIFIER = 'injectionClosureService';
-
-    /**
      * Const to get a closure into a public scope.
      */
     const VISIBILITY_PUBLIC = 'public';
@@ -155,12 +150,11 @@ interface StateInterface
      * @param string                                $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null                           $statedClassOriginName
      *
-     * @return DI\InjectionClosureInterface
+     * @return \Closure
      *
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
      * @throws Exception\InvalidArgument      when the method name is not a string
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
-     * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought
      */
     public function getClosure($methodName, $proxy, $scope = self::VISIBILITY_PUBLIC, $statedClassOriginName = null);
 }

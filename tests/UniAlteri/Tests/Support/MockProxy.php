@@ -237,18 +237,6 @@ class MockProxy implements Proxy\ProxyInterface
         return in_array(strtolower(str_replace('_', '', $stateName)), $this->actives);
     }
 
-    /**
-     * Return the current injection closure object to access to its static properties.
-     *
-     * @return DI\InjectionClosureInterface
-     *
-     * @throws Exception\UnavailableClosure
-     */
-    public function getStatic()
-    {
-        //Not used in tests
-    }
-
     /*******************
      * Methods Calling *
      *******************/

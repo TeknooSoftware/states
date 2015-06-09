@@ -284,17 +284,6 @@ class GoodProxy implements ProxyInterface
     }
 
     /**
-     * To return the current injection closure object to access to its static properties.
-     *
-     * @return DI\InjectionClosureInterface
-     *
-     * @throws Exception\UnavailableClosure
-     */
-    public function getStatic()
-    {
-    }
-
-    /**
      * To return the description of the method.
      *
      * @param string $methodName

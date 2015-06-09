@@ -68,7 +68,7 @@ class MockState implements States\StateInterface
     /**
      * Fake closure to test method calling.
      *
-     * @var DI\InjectionClosureInterface
+     * @var \Closure
      */
     protected $closure = null;
 
@@ -87,7 +87,7 @@ class MockState implements States\StateInterface
     protected $methodName = null;
 
     /**
-     * @var MockInjectionClosure
+     * @var \Closure
      */
     protected $virtualInjection = null;
 
@@ -247,7 +247,7 @@ class MockState implements States\StateInterface
      * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null          $statedClassOriginName
      *
-     * @return DI\InjectionClosureInterface
+     * @return \Closure
      *
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws Exception\InvalidArgument      when the method name is not a string
@@ -293,22 +293,11 @@ class MockState implements States\StateInterface
         if (method_exists($this, $methodName)) {
             $reflectionObject = new \ReflectionObject($this);
             $reflectionMethod = $reflectionObject->getMethod($methodName);
-            $closure = \Closure::bind($reflectionMethod->getClosure($this), $proxy, get_class($proxy));
 
-            $injection = new MockInjectionClosure();
-            $injection->setClosure($closure);
-
-            return $injection;
+            return $reflectionMethod->getClosure($this);
         } else {
-            if (null === $this->virtualInjection) {
-                $this->closure = \Closure::bind($this->closure, $proxy, get_class($proxy));
 
-                $injection = new MockInjectionClosure();
-                $injection->setClosure($this->closure);
-                $this->virtualInjection = $injection;
-            }
-
-            return $this->virtualInjection;
+            return $this->closure;
         }
     }
 

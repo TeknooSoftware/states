@@ -88,7 +88,6 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
 
         //Check if required services are present into the di container
         $this->assertTrue($container->testEntry(Loader\FinderInterface::DI_FINDER_SERVICE));
-        $this->assertTrue($container->testEntry(States\States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER));
 
         $fail = false;
         try {
@@ -104,9 +103,5 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $container->registerInstance(Factory\FactoryInterface::DI_FACTORY_NAME, new Support\MockFactory());
         $finder = $container->get(Loader\FinderInterface::DI_FINDER_SERVICE);
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderInterface', $finder);
-
-        //Test behavior of the service to create injection closure
-        $injectionClosure = $container->get(States\States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER);
-        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\InjectionClosureInterface', $injectionClosure);
     }
 }

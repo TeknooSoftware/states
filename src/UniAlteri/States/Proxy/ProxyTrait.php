@@ -78,13 +78,6 @@ trait ProxyTrait
     protected $states = null;
 
     /**
-     * Current closure called, if not closure called, return null.
-     *
-     * @var DI\InjectionClosureInterface
-     */
-    protected $currentInjectionClosure = null;
-
-    /**
      * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
      * private method access.
      *
@@ -136,7 +129,7 @@ trait ProxyTrait
     }
 
     /**
-     * Execute a method available in a state passed in args with the injection closure.
+     * Execute a method available in a state passed in args with the closure.
      *
      * @param States\States\StateInterface $state
      * @param $methodName
@@ -155,23 +148,15 @@ trait ProxyTrait
 
         //Method found, extract it
         $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility, $callerStatedClassName);
-        //Change current injection
-        $previousClosure = $this->currentInjectionClosure;
-        $this->currentInjectionClosure = $callingClosure;
 
         //Call it
         try {
-            $returnValues = $callingClosure->invoke($arguments);
+            $returnValues = $callingClosure->call($this, ...$arguments);
         } catch (\Exception $e) {
-            //Restore previous closure
-            $this->currentInjectionClosure = $previousClosure;
             //Restore stated class name stack
             $this->popCallerStatedClassName();
             throw $e;
         }
-
-        //Restore previous closure
-        $this->currentInjectionClosure = $previousClosure;
 
         //Restore stated class name stack
         $this->popCallerStatedClassName();
@@ -633,22 +618,6 @@ trait ProxyTrait
         } else {
             return false;
         }
-    }
-
-    /**
-     * To return the current injection closure object to access to its static properties.
-     *
-     * @return DI\InjectionClosureInterface
-     *
-     * @throws Exception\UnavailableClosure
-     */
-    public function getStatic()
-    {
-        if (!$this->currentInjectionClosure instanceof DI\InjectionClosureInterface) {
-            throw new Exception\UnavailableClosure('Error, there a no active closure currently into the proxy');
-        }
-
-        return $this->currentInjectionClosure;
     }
 
     /*******************

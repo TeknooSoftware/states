@@ -53,13 +53,6 @@ class MockOnlyPrivate extends States\AbstractState
         if (true === $initializeContainer) {
             //Mock DI Container
             $this->setDIContainer(new MockDIContainer());
-            //Register the service to generate a mock injection closure object
-            $this->getDIContainer()->registerService(
-                States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER,
-                function () {
-                    return new MockInjectionClosure();
-                }
-            );
         }
     }
 
