@@ -27,9 +27,9 @@ namespace UniAlteri\States\DI;
 use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
- * Class InjectionClosure
- * Default Injection Closure container to use to extract and manipulate all methods of a stated class
- * in the proxy. These containers implement also a "static" mechanism to allow developers to use
+ * Class InjectionClosurePHP56
+ * Injection Closure container used with PHP 5.6 (with Floc operator) to extract and manipulate all
+ * methods of a stated class * in the proxy. These containers implement also a "static" mechanism to allow developers to use
  * clean static var in these functions.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
