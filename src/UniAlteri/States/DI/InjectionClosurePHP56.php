@@ -24,8 +24,6 @@
 
 namespace UniAlteri\States\DI;
 
-use UniAlteri\States\Proxy\ProxyInterface;
-
 /**
  * Class InjectionClosurePHP56
  * Injection Closure container used with PHP 5.6 (with Floc operator) to extract and manipulate all
