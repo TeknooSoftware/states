@@ -18,8 +18,6 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- *
- * @version     1.1.1
  */
 
 namespace UniAlteri\States\DI;
@@ -38,7 +36,9 @@ use UniAlteri\States\Proxy\ProxyInterface;
  *
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
- * @author      Richard Déloge <r.deloge@uni-alteri.com> *
+ * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
+ * @deprecated  Removed in version v2.0, useless with PHP7+ and \Closure::call
  *
  * @api
  */
@@ -132,6 +132,7 @@ class InjectionClosure implements InjectionClosureInterface
     public function invoke(array &$args)
     {
         $closure = $this->closure;
+
         /*
          * This code is not very elegant, but call_user_func_array() is very slow,
          * it is much faster to call the closure directly.
@@ -164,7 +165,8 @@ class InjectionClosure implements InjectionClosureInterface
                 break;
             default:
                 //More than 6 arguments
-                return \call_user_func_array($this->closure, $args);  break;
+                return \call_user_func_array($this->closure, $args);
+                break;
         }
     }
 
