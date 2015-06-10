@@ -40,8 +40,21 @@ use UniAlteri\Tests\Support;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class InjectionClosureTest extends \PHPUnit_Framework_TestCase
+class InjectionClosure56Test extends \PHPUnit_Framework_TestCase
 {
+    protected function setUp()
+    {
+        if ('5.6' > PHP_VERSION) {
+            $this->markTestSkipped('Version of PHP is not supported for this injection closure');
+        }
+        parent::setUp();
+    }
+
+    protected function tearDown()
+    {
+        parent::tearDown();
+    }
+
     /**
      * Return a valid InjectionClosureInterface object.
      *
@@ -57,7 +70,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
             };
         }
 
-        $injectionClosureObject = new DI\InjectionClosure();
+        $injectionClosureObject = new DI\InjectionClosurePHP56();
         $injectionClosureObject->setClosure($closure);
 
         return $injectionClosureObject;
@@ -68,7 +81,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetDiContainer()
     {
-        $object = new DI\InjectionClosure();
+        $object = new DI\InjectionClosurePHP56();
         $this->assertNull($object->getDIContainer());
         $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
@@ -83,7 +96,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
     public function testBadClosureConstruct()
     {
         try {
-            $a = new DI\InjectionClosure();
+            $a = new DI\InjectionClosurePHP56();
             $a->setClosure(new \stdClass());
         } catch (Exception\InvalidArgument $e) {
             return;
@@ -189,7 +202,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
             return $i + 1;
         };
 
-        $injectionClosure = new DI\InjectionClosure($myClosure);
+        $injectionClosure = new DI\InjectionClosurePHP56($myClosure);
         $this->assertSame($myClosure, $injectionClosure->getClosure());
     }
 
@@ -204,7 +217,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
 
         $proxy = $this->getMock('UniAlteri\States\Proxy\ProxyInterface');
 
-        $injectionClosure = new DI\InjectionClosure($myClosure);
+        $injectionClosure = new DI\InjectionClosurePHP56($myClosure);
         $this->assertSame($injectionClosure, $injectionClosure->setProxy($proxy));
         $this->assertSame($myClosure, $injectionClosure->getClosure());
         $this->assertSame($proxy, $injectionClosure->getProxy());

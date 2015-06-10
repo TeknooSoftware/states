@@ -108,5 +108,58 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         //Test behavior of the service to create injection closure
         $injectionClosure = $container->get(States\States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER);
         $this->assertInstanceOf('\\UniAlteri\\States\\DI\\InjectionClosureInterface', $injectionClosure);
+        if ('5.6' > PHP_VERSION) {
+            $this->assertInstanceOf('\\UniAlteri\\States\\DI\\InjectionClosure', $injectionClosure);
+        } else {
+            $this->assertInstanceOf('\\UniAlteri\\States\\DI\\InjectionClosurePHP56', $injectionClosure);
+        }
+    }
+
+    public function testLoaderInitialisationBefore56()
+    {
+        if ('5.6' > PHP_VERSION) {
+            $this->markTestSkipped('Version of PHP is not supported for this injection closure');
+            return;
+        }
+
+        define('DISABLE_PHP_FLOC_OPERATOR', true);
+
+        //Call the bootstrap, it returns the loader
+        $this->loader = include 'UniAlteri/States/bootstrap.php';
+
+        //Check if the loader implements the good interface
+        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->loader);
+
+        //Check if the loader is initialized with a di container
+        $container = $this->loader->getDIContainer();
+        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\ContainerInterface', $container);
+
+        //Check if the factory repository has been created
+        $this->assertTrue($container->testEntry(Factory\FactoryInterface::DI_FACTORY_REPOSITORY));
+        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\ContainerInterface', $container->get(Factory\FactoryInterface::DI_FACTORY_REPOSITORY));
+
+        //Check if required services are present into the di container
+        $this->assertTrue($container->testEntry(Loader\FinderInterface::DI_FINDER_SERVICE));
+        $this->assertTrue($container->testEntry(States\States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER));
+
+        $fail = false;
+        try {
+            $container->get(Loader\FinderInterface::DI_FINDER_SERVICE);
+        } catch (Exception\UnavailableFactory $e) {
+            $fail = true;
+        } catch (\Exception $e) {
+        }
+
+        $this->assertTrue($fail, 'Error, the service to create finder must throw exception if the DI Container for the class has not registered factory object');
+
+        //Test behavior of the service to create finder for a stated class
+        $container->registerInstance(Factory\FactoryInterface::DI_FACTORY_NAME, new Support\MockFactory());
+        $finder = $container->get(Loader\FinderInterface::DI_FINDER_SERVICE);
+        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderInterface', $finder);
+
+        //Test behavior of the service to create injection closure
+        $injectionClosure = $container->get(States\States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER);
+        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\InjectionClosureInterface', $injectionClosure);
+        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\InjectionClosure', $injectionClosure);
     }
 }

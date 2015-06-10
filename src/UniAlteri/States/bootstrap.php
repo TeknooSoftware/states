@@ -63,7 +63,11 @@ $diContainer->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, $finder
 
 //Register injection closure generator
 $injectionClosureService = function () {
-    return new DI\InjectionClosure();
+    if (!defined('DISABLE_PHP_FLOC_OPERATOR') && '5.6' <= PHP_VERSION) {
+        return new DI\InjectionClosurePHP56();
+    } else {
+        return new DI\InjectionClosure();
+    }
 };
 
 $diContainer->registerService(States\StateInterface::INJECTION_CLOSURE_SERVICE_IDENTIFIER, $injectionClosureService);
