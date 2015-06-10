@@ -156,6 +156,7 @@ class InjectionClosureTest extends \PHPUnit_Framework_TestCase
      */
     public function testInvokeCallSeveralArgs()
     {
+        define('DISABLE_PHP_FLOC_OPERATOR', true);
         $closure = $this->buildClosure();
         $args = [];
         $result = $closure->invoke($args);
