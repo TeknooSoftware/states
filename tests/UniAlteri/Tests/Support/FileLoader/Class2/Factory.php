@@ -19,8 +19,6 @@
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @version     1.1.1
- *
  * Mock factory file to test loader behavior when the factory class is valid and stated class loaded by loader
  * with PSR-0 recommendations (file computed from namespace) and not from namespace definitions)
  */

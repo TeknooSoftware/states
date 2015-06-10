@@ -18,14 +18,11 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- *
- * @version     1.1.1
  */
 
 namespace UniAlteri\States\Proxy;
 
 use UniAlteri\States;
-use UniAlteri\States\DI;
 
 /**
  * Interface ProxyInterface
@@ -153,15 +150,6 @@ interface ProxyInterface extends
      * @throws Exception\InvalidArgument when $stateName is not a valid string
      */
     public function inState($stateName);
-
-    /**
-     * To return the current injection closure object to access to its static properties.
-     *
-     * @return DI\InjectionClosureInterface
-     *
-     * @throws Exception\UnavailableClosure
-     */
-    public function getStatic();
 
     /*******************
      * Methods Calling *

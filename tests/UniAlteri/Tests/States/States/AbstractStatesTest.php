@@ -18,8 +18,6 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- *
- * @version     1.1.1
  */
 
 namespace UniAlteri\Tests\States\States;
@@ -997,7 +995,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         );
 
         $this->assertInstanceOf('\Closure', $closure);
-        $this->assertEquals(4, $closure(1,3));
+        $this->assertEquals(4, $closure(1, 3));
     }
 
     /**
