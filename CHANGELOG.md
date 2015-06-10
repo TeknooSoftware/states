@@ -1,5 +1,17 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta3] - 2015-06-10 - Available on the branch "next"
+###Removed
+- Support of PHP 5.6. PHP 7 provides several new tools about closures to improve performance.
+- Remove Injection Closure, not needed with Closure::call(). The code is simpler
+
+###Changed
+- Use Close::call instead of Closure::bind
+
+##[1.2.0-beta2] - 2015-06-10
+###Added
+- Add a new Injection Closure class designed for PHP5.6 and PHP7 to use floc operator instead of tip to avoid call_user_func.
+
 ##[2.0.0-beta2] - 2015-06-06 - Available on the branch "next"
 ###Added
 - Support of inheritance of stated class like all standard PHP classes.
