@@ -19,8 +19,6 @@
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @version     1.1.1
- *
  * Mock proxy file to test finder behavior when the proxy class does not implement the good interface :
  * \UniAlteri\States\Proxy\ProxyInterface
  */

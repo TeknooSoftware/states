@@ -18,15 +18,12 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- *
- * @version     1.1.1
  */
 
 namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\DI;
 use UniAlteri\States\Loader\Exception;
-use UniAlteri\States\Loader\FinderInterface;
 use UniAlteri\States\Proxy;
 use UniAlteri\States\Loader;
 use UniAlteri\States\States;
@@ -192,7 +189,7 @@ class MockFinderInheritance implements Loader\FinderInterface
 
     /**
      * To return the list of parents stated classes of this stated classes, library classes (Integrated proxy and
-     * standard proxy are excluded)
+     * standard proxy are excluded).
      *
      * @return string[]
      *
@@ -204,7 +201,7 @@ class MockFinderInheritance implements Loader\FinderInterface
     }
 
     /**
-     * To get the canonical stated class name associated to this state
+     * To get the canonical stated class name associated to this state.
      *
      * @return $this
      */

@@ -18,8 +18,6 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- *
- * @version     1.1.1
  */
 
 namespace UniAlteri\States\DI;
@@ -37,6 +35,7 @@ namespace UniAlteri\States\DI;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @deprecated  Removed in version v2.0, useless with PHP7+ and \Closure::call
  *
  * @api

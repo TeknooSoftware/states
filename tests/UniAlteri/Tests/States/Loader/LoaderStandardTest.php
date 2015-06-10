@@ -18,8 +18,6 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- *
- * @version     1.1.1
  */
 
 namespace UniAlteri\Tests\States\Loader;
@@ -148,7 +146,6 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
 
         $this->fail('Error, the loader must throw an exception Exception\IllegalArgument if the IncludePathManager does not implement the interface IncludePathManagerInterface');
     }
-
 
     /**
      * Test behavior for methods Set And GetDiContainer.

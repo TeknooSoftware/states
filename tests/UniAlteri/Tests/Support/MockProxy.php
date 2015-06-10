@@ -18,8 +18,6 @@
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- *
- * @version     1.1.1
  */
 
 namespace UniAlteri\Tests\Support;
@@ -576,7 +574,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * o return the state identified in param for tests
+     * o return the state identified in param for tests.
      *
      * @param $stateName
      *
