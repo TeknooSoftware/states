@@ -323,8 +323,11 @@ class FinderStandard implements FinderInterface
             $parentClassName = get_parent_class($proxyClassName);
             while (false !== $parentClassName && false === strpos($parentClassName, 'UniAlteri\\States')) {
                 if (class_exists($parentClassName, false)) {
-                    $parentClassName = substr($parentClassName, 0, strrpos($parentClassName, '\\'));
-                    $finalParentsClassesList[] = $parentClassName;
+                    $reflectionClassInstance = new \ReflectionClass($parentClassName);
+                    if ($reflectionClassInstance->implementsInterface('UniAlteri\\States\\Proxy\\ProxyInterface')) {
+                        $parentClassName = substr($parentClassName, 0, strrpos($parentClassName, '\\'));
+                        $finalParentsClassesList[] = $parentClassName;
+                    }
                 }
                 $parentClassName = get_parent_class($parentClassName);
             }
