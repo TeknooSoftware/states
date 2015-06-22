@@ -49,6 +49,13 @@ class Integrated extends Standard implements IntegratedInterface
     use IntegratedTrait;
 
     /**
+     * Class name of the factory to use in set up to initialize this object in this construction.
+     *
+     * @var string
+     */
+    protected static $startupFactoryClassName = '\UniAlteri\States\Factory\StandardStartupFactory';
+
+    /**
      * Default constructor used to initialize the stated object with its factory.
      *
      * @throws Exception\IllegalFactory
