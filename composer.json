@@ -1,7 +1,7 @@
 {
     "name": "unialteri/states",
     "type": "library",
-    "description": "Library to create easily and cleanly classes with several states, writed in distinct codes blocks, but never used \"if conditions\" with PHP 5.4+.",
+    "description": "Library to create PHP classes following the State pattern and to create easily and cleanly classes with several states, written in distinct codes blocks with PHP 7+.",
     "keywords": ["states","class","state pattern","pattern","behavioral software design pattern"],
     "homepage": "http://teknoo.it/states",
     "license": ["MIT","GPL-3.0+"],
@@ -17,7 +17,7 @@
         "source": "https://github.com/UniAlteri/states"
     },
     "require":{
-        "php": ">5.6",
+        "php": ">=7",
         "pimple/pimple": "~3.0",
         "symfony/console": "~2.0",
         "knplabs/gaufrette": "<2.0"
@@ -38,9 +38,9 @@
     "archive": {
         "exclude": ["demo", "vendor", ".idea"]
     },
-    "bin": ["bin/states.php"],
+    "bin": ["bin/states"],
     "scripts": {
       "test":"phpunit",
-      "states":"bin/states.php"
+      "states":"bin/states"
     }
 }
