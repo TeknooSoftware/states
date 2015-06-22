@@ -44,14 +44,9 @@ namespace UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Integrated extends Standard
+class Integrated extends Standard implements IntegratedInterface
 {
-    /**
-     * Class name of the factory to use in set up to initialize this object in this construction.
-     *
-     * @var string
-     */
-    protected static $startupFactoryClassName = '\UniAlteri\States\Factory\StandardStartupFactory';
+    use IntegratedTrait;
 
     /**
      * Default constructor used to initialize the stated object with its factory.
@@ -65,34 +60,5 @@ class Integrated extends Standard
         $this->initializeProxy();
         //Call the startup factory to initialize this proxy
         $this->initializeObjectWithFactory();
-    }
-
-    /**
-     * Method called by constructor to initialize this object from the stated class's factory.
-     *
-     * @api
-     *
-     * @throws Exception\IllegalFactory
-     * @throws Exception\UnavailableFactory
-     */
-    protected function initializeObjectWithFactory()
-    {
-        //Check if the startup class exists
-        if (!class_exists(static::$startupFactoryClassName, true)) {
-            throw new Exception\UnavailableFactory('Error, the startup factory is not available');
-        }
-
-        //Check if the startup class implements the interface 'UniAlteri\States\Factory\StartupFactoryInterface'
-        $interfacesImplementedArray = array_flip(//Do a flip because isset is more efficient than in_array
-            class_implements(static::$startupFactoryClassName)
-        );
-
-        if (!isset($interfacesImplementedArray['UniAlteri\States\Factory\StartupFactoryInterface'])) {
-            throw new Exception\IllegalFactory('Error, the startup factory does not implement the startup interface');
-        }
-
-        //Call the startup factory
-        $reflectionMethod = new \ReflectionMethod(static::$startupFactoryClassName, 'forwardStartup');
-        $reflectionMethod->invoke(null, $this);
     }
 }
