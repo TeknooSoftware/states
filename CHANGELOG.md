@@ -1,6 +1,6 @@
 #Uni Alteri - States library - Change Log
 
-##[2.0.0-beta3] - 2015-06-22 - Available on the branch "next"
+##[2.0.0-beta4] - 2015-06-22 - Available on the branch "next"
 ###Changed
 - Define a new interface UniAlteri\States\Proxy\IntegratedInterface to define integrated proxies
 
