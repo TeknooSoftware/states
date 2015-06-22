@@ -38,13 +38,6 @@ namespace UniAlteri\States\Proxy;
 trait IntegratedTrait
 {
     /**
-     * Class name of the factory to use in set up to initialize this object in this construction.
-     *
-     * @var string
-     */
-    protected static $startupFactoryClassName = '\UniAlteri\States\Factory\StandardStartupFactory';
-
-    /**
      * Method called by constructor to initialize this object from the stated class's factory.
      *
      * @api
