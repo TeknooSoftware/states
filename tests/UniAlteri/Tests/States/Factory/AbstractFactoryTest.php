@@ -130,7 +130,6 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetDiContainer()
     {
         $object = $this->getFactoryObject(false);
-        $this->assertNull($object->getDIContainer());
         $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
@@ -192,22 +191,6 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testGetFinder()
     {
         $this->assertInstanceOf('UniAlteri\States\Loader\FinderInterface', $this->getFactoryObject(true)->getFinder());
-    }
-
-    /**
-     * Test the behavior of the method getStatedClassName() when the factory is not goodly initialized.
-     */
-    public function testGetStatedClassNameNotInitialized()
-    {
-        $this->assertNull($this->getFactoryObject()->getStatedClassName());
-    }
-
-    /**
-     * Test the behavior of the method getPath() when the factory is not goodly initialized.
-     */
-    public function testGetPathNotInitialized()
-    {
-        $this->assertNull($this->getFactoryObject()->getPath());
     }
 
     /**

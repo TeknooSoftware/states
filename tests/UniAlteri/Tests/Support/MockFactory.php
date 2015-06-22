@@ -69,7 +69,7 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
+    public function getDIContainer(): DI\ContainerInterface
     {
         //Not used in tests
     }
@@ -81,7 +81,7 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): Factory\FactoryInterface
     {
         //Not used in tests
     }
@@ -93,7 +93,7 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @throws Exception\UnavailableLoader if any finder are available for this stated class
      */
-    public function getFinder()
+    public function getFinder(): Loader\FinderInterface
     {
         //Build a new mock finder
         return new MockFinder($this->statedClassName, $this->path);
@@ -104,7 +104,7 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -114,7 +114,7 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return string
      */
-    public function getStatedClassName()
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }
@@ -130,11 +130,12 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return bool
      */
-    public function initialize($statedClassName, $path)
+    public function initialize(string $statedClassName, string $path): bool
     {
         $this->statedClassName = $statedClassName;
         $this->path = $path;
         self::$initializedFactoryNameArray[] = $statedClassName.':'.$path;
+        return true;
     }
 
     /**
@@ -159,7 +160,7 @@ class MockFactory implements Factory\FactoryInterface
      * @throws Exception\StateNotFound     if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
-    public function build($arguments = null, $stateName = null)
+    public function build($arguments = null, string $stateName = null): Proxy\ProxyInterface
     {
         //Not used in tests
     }
@@ -175,7 +176,7 @@ class MockFactory implements Factory\FactoryInterface
      * @throws Exception\StateNotFound     if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
-    public function startup($proxyObject, $stateName = null)
+    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): bool
     {
         $this->startupProxy = $proxyObject;
     }
@@ -186,7 +187,7 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return Proxy\ProxyInterface
      */
-    public function getStartupProxy()
+    public function getStartupProxy(): Proxy\ProxyInterface
     {
         return $this->startupProxy;
     }

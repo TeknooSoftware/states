@@ -21,6 +21,7 @@
  */
 
 namespace UniAlteri\States\DI;
+use UniAlteri\Tests\States\DI\ContainerTest;
 
 /**
  * Class Container
@@ -45,7 +46,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      *
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    protected function validateName($name)
+    protected function validateName(string $name): bool
     {
         if (is_string($name) && 1 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_\-]*#iS', $name)) {
             return true;
@@ -74,7 +75,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      * @throws Exception\InvalidArgument if the identifier is not defined
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function get($name)
+    public function get(string $name)
     {
         $this->validateName($name);
 
@@ -97,7 +98,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      * @throws Exception\IllegalName    when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function registerInstance($name, $instance)
+    public function registerInstance(string $name, $instance): ContainerInterface
     {
         $this->validateName($name);
 
@@ -132,7 +133,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      * @throws Exception\IllegalName    when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function registerService($name, $instance)
+    public function registerService(string $name, $instance): ContainerInterface
     {
         $this->validateName($name);
 
@@ -175,7 +176,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      *
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function testEntry($name)
+    public function testEntry(string $name): bool
     {
         $this->validateName($name);
 
@@ -191,7 +192,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      *
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function unregister($name)
+    public function unregister(string $name): ContainerInterface
     {
         $this->validateName($name);
         unset($this[$name]);
@@ -204,11 +205,11 @@ class Container extends \Pimple\Container implements ContainerInterface
      *
      * @param array|\ArrayObject $params
      *
-     * @return mixed
+     * @return $this
      *
      * @throws Exception\InvalidArgument when $params is not an array or an ArrayAccess object
      */
-    public function configure($params)
+    public function configure($params): ContainerInterface
     {
         if (!is_array($params) && !$params instanceof \ArrayAccess) {
             throw new Exception\InvalidArgument('Error, $params must be an array or an ArrayAccess');
@@ -225,6 +226,8 @@ class Container extends \Pimple\Container implements ContainerInterface
                 $this->registerInstance($name, $instance);
             }
         }
+
+        return $this;
     }
 
     /**

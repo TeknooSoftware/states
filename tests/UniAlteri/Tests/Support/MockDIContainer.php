@@ -70,7 +70,7 @@ class MockDIContainer implements DI\ContainerInterface
      *
      * @throws Exception\InvalidArgument if the identifier is not defined
      */
-    public function get($name)
+    public function get(string $name)
     {
         if (isset($this->instance[$name])) {
             //It is an instance, return it
@@ -96,9 +96,11 @@ class MockDIContainer implements DI\ContainerInterface
      * @throws Exception\ClassNotFound  if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      */
-    public function registerInstance($name, $instance)
+    public function registerInstance(string $name, $instance): DI\ContainerInterface
     {
         $this->instance[$name] = $instance;
+
+        return $this;
     }
 
     /**
@@ -112,9 +114,11 @@ class MockDIContainer implements DI\ContainerInterface
      * @throws Exception\ClassNotFound  if $instance is a non-existent class name
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      */
-    public function registerService($name, $instance)
+    public function registerService(string $name, $instance): DI\ContainerInterface
     {
         $this->service[$name] = $instance;
+
+        return $this;
     }
 
     /**
@@ -124,7 +128,7 @@ class MockDIContainer implements DI\ContainerInterface
      *
      * @return bool
      */
-    public function testEntry($name)
+    public function testEntry(string $name): bool
     {
         return isset($this->instance[$name]) || isset($this->service[$name]);
     }
@@ -136,7 +140,7 @@ class MockDIContainer implements DI\ContainerInterface
      *
      * @return $this
      */
-    public function unregister($name)
+    public function unregister(string $name): DI\ContainerInterface
     {
         if (isset($this->instance[$name])) {
             unset($this->instance[$name]);
@@ -156,7 +160,7 @@ class MockDIContainer implements DI\ContainerInterface
      *
      * @return mixed
      */
-    public function configure($params)
+    public function configure($params): DI\ContainerInterface
     {
         //Not used to test others elements
     }

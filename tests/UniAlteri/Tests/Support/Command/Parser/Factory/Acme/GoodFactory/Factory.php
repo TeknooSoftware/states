@@ -39,7 +39,7 @@ class Factory implements FactoryInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): FactoryInterface
     {
     }
 
@@ -48,7 +48,7 @@ class Factory implements FactoryInterface
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
+    public function getDIContainer(): DI\ContainerInterface
     {
     }
 
@@ -60,7 +60,7 @@ class Factory implements FactoryInterface
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function getFinder()
+    public function getFinder(): Loader\FinderInterface
     {
     }
 
@@ -69,7 +69,7 @@ class Factory implements FactoryInterface
      *
      * @return string
      */
-    public function getStatedClassName()
+    public function getStatedClassName(): string
     {
     }
 
@@ -78,7 +78,7 @@ class Factory implements FactoryInterface
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
     }
 
@@ -96,8 +96,9 @@ class Factory implements FactoryInterface
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function initialize($statedClassName, $path)
+    public function initialize(string $statedClassName, string $path): bool
     {
+        return true;
     }
 
     /**
@@ -113,8 +114,9 @@ class Factory implements FactoryInterface
      * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function startup($proxyObject, $stateName = null)
+    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): bool
     {
+        return true;
     }
 
     /**
@@ -129,7 +131,7 @@ class Factory implements FactoryInterface
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function build($arguments = null, $stateName = null)
+    public function build($arguments = null, string $stateName = null): Proxy\ProxyInterface
     {
     }
 }

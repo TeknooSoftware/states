@@ -58,7 +58,7 @@ class Integrated implements FactoryInterface
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function initialize($statedClassName, $path)
+    public function initialize(string $statedClassName, string $path): bool
     {
         //Call trait's method to initialize this stated class
         $this->traitInitialize($statedClassName, $path);
@@ -67,5 +67,7 @@ class Integrated implements FactoryInterface
         $statedClassName .= '\\'.array_pop($parts);
         //Register this factory into the startup factory
         StandardStartupFactory::registerFactory($statedClassName, $this);
+
+        return true;
     }
 }

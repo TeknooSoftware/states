@@ -41,7 +41,7 @@ class State extends AbstractParser
     /**
      * List all defined states for this class.
      *
-     * @return \string[]|\ArrayObject
+     * @return string[]|\ArrayObject
      */
     public function listStates()
     {

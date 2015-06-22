@@ -98,7 +98,9 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($fail, 'Error, the service to create finder must throw exception if the DI Container for the class has not registered factory object');
 
         //Test behavior of the service to create finder for a stated class
-        $container->registerInstance(Factory\FactoryInterface::DI_FACTORY_NAME, new Support\MockFactory());
+        $factory = new Support\MockFactory();
+        $factory->initialize('className', 'path1');
+        $container->registerInstance(Factory\FactoryInterface::DI_FACTORY_NAME, $factory);
         $finder = $container->get(Loader\FinderInterface::DI_FINDER_SERVICE);
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderInterface', $finder);
     }
