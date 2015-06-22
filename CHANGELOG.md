@@ -1,5 +1,19 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta3] - 2015-06-22 - Available on the branch "next"
+###Changed
+- Define a new interface UniAlteri\States\Proxy\IntegratedInterface to define integrated proxies
+
+###Added
+- Define a new complementary trait to write easier new integrated proxies. 
+
+##[1.2.0-beta3] - 2015-06-22
+###Changed
+- Define a new interface UniAlteri\States\Proxy\IntegratedInterface to define integrated proxies
+
+###Added
+- Define a new complementary trait to write easier new integrated proxies. 
+
 ##[2.0.0-beta3] - 2015-06-10 - Available on the branch "next"
 ###Removed
 - Support of PHP 5.6. PHP 7 provides several new tools about closures to improve performance.
