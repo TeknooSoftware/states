@@ -41,6 +41,6 @@
     "bin": ["bin/states"],
     "scripts": {
       "test":"phpunit",
-      "states":"bin/states.php"
+      "states":"bin/states"
     }
 }
