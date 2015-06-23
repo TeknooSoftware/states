@@ -142,7 +142,7 @@ trait ProxyTrait
     protected function callInState(States\States\StateInterface $state, $methodName, array &$arguments, $scopeVisibility)
     {
         $callerStatedClassName = $this->getCallerStatedClassName();
-        $this->pushCallerStatedClassName($state, $scopeVisibility);
+        $this->pushCallerStatedClassName($state);
 
         //Method found, extract it
         $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility, $callerStatedClassName);
