@@ -53,7 +53,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\UnavailableState     if the required state is not available
      * @throws Exception\IllegalArgument      if the method's name is not a string
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
     }
 
@@ -81,7 +81,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __get($name)
+    public function __get(string $name)
     {
     }
 
@@ -95,7 +95,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __isset($name)
+    public function __isset(string $name)
     {
     }
 
@@ -110,7 +110,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
     }
 
@@ -124,7 +124,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __unset($name)
+    public function __unset(string $name)
     {
     }
 
@@ -134,7 +134,7 @@ class GoodProxy implements ProxyInterface
      *
      * @return mixed
      */
-    public function __toString()
+    public function __toString(): string
     {
     }
 
@@ -145,7 +145,7 @@ class GoodProxy implements ProxyInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): ProxyInterface
     {
     }
 
@@ -154,16 +154,7 @@ class GoodProxy implements ProxyInterface
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
-    {
-    }
-
-    /**
-     * To return a unique stable id of the current object. It must identify.
-     *
-     * @return string
-     */
-    public function getObjectUniqueId()
+    public function getDIContainer(): DI\ContainerInterface
     {
     }
 
@@ -178,7 +169,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function registerState($stateName, States\States\StateInterface $stateObject)
+    public function registerState(string $stateName, States\States\StateInterface $stateObject): ProxyInterface
     {
     }
 
@@ -193,7 +184,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function unregisterState($stateName)
+    public function unregisterState(string $stateName): ProxyInterface
     {
     }
 
@@ -207,7 +198,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function switchState($stateName)
+    public function switchState(string $stateName): ProxyInterface
     {
     }
 
@@ -222,7 +213,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function enableState($stateName)
+    public function enableState(string $stateName): ProxyInterface
     {
     }
 
@@ -237,7 +228,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function disableState($stateName)
+    public function disableState(string $stateName): ProxyInterface
     {
     }
 
@@ -246,7 +237,7 @@ class GoodProxy implements ProxyInterface
      *
      * @return $this
      */
-    public function disableAllStates()
+    public function disableAllStates(): ProxyInterface
     {
     }
 
@@ -277,7 +268,7 @@ class GoodProxy implements ProxyInterface
      *
      * @throws Exception\InvalidArgument when $stateName is not a valid string
      */
-    public function inState($stateName)
+    public function inState(string $stateName): bool
     {
     }
 
@@ -295,7 +286,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\MethodNotImplemented when the method is not currently available
      * @throws \Exception                     to rethrows unknown exceptions
      */
-    public function getMethodDescription($methodName, $stateName = null)
+    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {
     }
 
@@ -307,7 +298,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function count()
+    public function count(): int
     {
     }
 
@@ -444,7 +435,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
     }
 
@@ -456,7 +447,7 @@ class GoodProxy implements ProxyInterface
      *
      * @return string
      */
-    public function serialize()
+    public function serialize(): string
     {
     }
 
@@ -468,7 +459,7 @@ class GoodProxy implements ProxyInterface
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function unserialize($serialized)
+    public function unserialize(string $serialized)
     {
     }
 }

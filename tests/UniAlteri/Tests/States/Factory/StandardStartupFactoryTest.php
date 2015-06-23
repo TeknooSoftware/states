@@ -51,21 +51,6 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The startup factory must throw an exception when the proxy does not implement the proxy interface.
-     */
-    public function testForwardStartupInvalidProxy()
-    {
-        try {
-            Factory\StandardStartupFactory::forwardStartup(new \stdClass());
-        } catch (Exception\InvalidArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the startup factory must throw an exception when the proxy does not implement the proxy interface');
-    }
-
-    /**
      * The startup factory must throw an exception when the proxy cannot be initialized.
      */
     public function testForwardStartupProxyNotInitialized()
@@ -90,36 +75,6 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
         $proxy = new Support\MockProxy(null);
         Factory\StandardStartupFactory::forwardStartup($proxy);
         $this->assertSame($factory->getStartupProxy(), $proxy);
-    }
-
-    /**
-     * The startup factory class must throw an exception when the identifier is not a valid string.
-     */
-    public function testRegisterFactoryInvalidIdentifier()
-    {
-        try {
-            Factory\StandardStartupFactory::registerFactory(array(), new Support\MockFactory());
-        } catch (Exception\InvalidArgument $exception) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the startup factory class must throw an exception when the identifier is not a valid string');
-    }
-
-    /**
-     * The startup factory class must throw an exception when the registering factory does not implement the factory interface.
-     */
-    public function testRegisterFactoryInvalidFactory()
-    {
-        try {
-            Factory\StandardStartupFactory::registerFactory('bar', new \stdClass());
-        } catch (Exception\IllegalFactory $exception) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the startup factory class must throw an exception when the registering factory does not implement the factory interface');
     }
 
     /**

@@ -65,13 +65,18 @@ class MockFactory implements Factory\FactoryInterface
     protected $path = null;
 
     /**
+     * @var DI\ContainerInterface
+     */
+    protected $diConainter = null;
+
+    /**
      * To return the DI Container used for this object.
      *
      * @return DI\ContainerInterface
      */
     public function getDIContainer(): DI\ContainerInterface
     {
-        //Not used in tests
+        return $this->diConainter;
     }
 
     /**
@@ -83,7 +88,9 @@ class MockFactory implements Factory\FactoryInterface
      */
     public function setDIContainer(DI\ContainerInterface $container): Factory\FactoryInterface
     {
-        //Not used in tests
+        $this->diConainter = $container;
+
+        return $this;
     }
 
     /**
@@ -128,14 +135,25 @@ class MockFactory implements Factory\FactoryInterface
      * @param string $statedClassName the name of the stated class
      * @param string $path            of the stated class
      *
-     * @return bool
+     * @return $this
      */
-    public function initialize(string $statedClassName, string $path): bool
+    public function initialize(string $statedClassName, string $path): Factory\FactoryInterface
     {
         $this->statedClassName = $statedClassName;
         $this->path = $path;
         self::$initializedFactoryNameArray[] = $statedClassName.':'.$path;
-        return true;
+        return $this;
+    }
+
+    /**
+     * Method added for tests to get action logs
+     * Return the list of initialized factories by the loader.
+     *
+     * @return string[]
+     */
+    public static function resetInitializedFactories()
+    {
+        self::$initializedFactoryNameArray = array();
     }
 
     /**
@@ -162,7 +180,7 @@ class MockFactory implements Factory\FactoryInterface
      */
     public function build($arguments = null, string $stateName = null): Proxy\ProxyInterface
     {
-        //Not used in tests
+        return new MockProxy(array());
     }
 
     /**
@@ -171,14 +189,16 @@ class MockFactory implements Factory\FactoryInterface
      * @param Proxy\ProxyInterface $proxyObject
      * @param string               $stateName
      *
-     * @return bool
+     * @return $this
      *
      * @throws Exception\StateNotFound     if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
-    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): bool
+    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): Factory\FactoryInterface
     {
         $this->startupProxy = $proxyObject;
+
+        return $this;
     }
 
     /**

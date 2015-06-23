@@ -127,7 +127,7 @@ trait StateTrait
      *
      * @return \ReflectionClass
      */
-    protected function getReflectionClass()
+    protected function getReflectionClass(): \ReflectionClass
     {
         if (null === $this->reflectionClass) {
             $this->reflectionClass = new \ReflectionClass(\get_class($this));
@@ -143,7 +143,7 @@ trait StateTrait
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): StateInterface
     {
         $this->diContainer = $container;
 
@@ -155,7 +155,7 @@ trait StateTrait
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
+    public function getDIContainer(): DI\ContainerInterface
     {
         return $this->diContainer;
     }
@@ -163,9 +163,9 @@ trait StateTrait
     /**
      * To get the canonical stated class name associated to this state.
      *
-     * @return $this
+     * @return string
      */
-    public function getStatedClassName()
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }
@@ -177,7 +177,7 @@ trait StateTrait
      *
      * @return $this
      */
-    public function setStatedClassName($statedClassName)
+    public function setStatedClassName(string $statedClassName): StateInterface
     {
         $this->statedClassName = $statedClassName;
 
@@ -191,7 +191,7 @@ trait StateTrait
      *
      * @return bool
      */
-    public function isPrivateMode()
+    public function isPrivateMode(): bool
     {
         return $this->privateModeStatus;
     }
@@ -206,7 +206,7 @@ trait StateTrait
      *
      * @return $this
      */
-    public function setPrivateMode($enable)
+    public function setPrivateMode(bool $enable): StateInterface
     {
         $this->privateModeStatus = !empty($enable);
 
@@ -260,8 +260,11 @@ trait StateTrait
      *
      * @throws Exception\InvalidArgument
      */
-    protected function checkVisibility($methodName, $scope, $statedClassOriginName = null)
-    {
+    protected function checkVisibility(
+        string $methodName,
+        string $scope,
+        string $statedClassOriginName = null
+    ): bool {
         $visible = false;
         if (isset($this->reflectionsMethods[$methodName])) {
             //Check visibility scope
@@ -317,8 +320,11 @@ trait StateTrait
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope = StateInterface::VISIBILITY_PUBLIC, $statedClassOriginName = null)
-    {
+    public function testMethod(
+        string $methodName,
+        string $scope = StateInterface::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
+    ): bool {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
         }
@@ -357,7 +363,7 @@ trait StateTrait
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws Exception\InvalidArgument      when the method name is not a string
      */
-    public function getMethodDescription($methodName)
+    public function getMethodDescription(string $methodName): \ReflectionMethod
     {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
@@ -413,8 +419,12 @@ trait StateTrait
      * @throws Exception\InvalidArgument      when the method name is not a string
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      */
-    public function getClosure($methodName, $proxy, $scope = StateInterface::VISIBILITY_PUBLIC, $statedClassOriginName = null)
-    {
+    public function getClosure(
+        string $methodName,
+        Proxy\ProxyInterface $proxy,
+        string $scope = StateInterface::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
+    ): \Closure {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
         }

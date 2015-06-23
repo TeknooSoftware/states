@@ -122,7 +122,7 @@ class MockState implements States\StateInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): StateInterface
     {
         return $this;
     }
@@ -132,7 +132,7 @@ class MockState implements States\StateInterface
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
+    public function getDIContainer(): DI\ContainerInterface
     {
         //Not used in tests
     }
@@ -182,8 +182,11 @@ class MockState implements States\StateInterface
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope = States\StateInterface::VISIBILITY_PUBLIC, $statedClassOriginName = null)
-    {
+    public function testMethod(
+        string $methodName,
+        string $scope = States\StateInterface::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
+    ): bool {
         //Simulate real behavior from the name of the method,
         //if the method name contains private, its a private method
         //if the method name contains protected, its a protected method
@@ -226,7 +229,7 @@ class MockState implements States\StateInterface
      *
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    public function getMethodDescription($methodName)
+    public function getMethodDescription(string $methodName): \ReflectionMethod
     {
         if (false === $this->methodAllowed || true === $this->simulateMethodDescriptionFailure) {
             throw new Exception\MethodNotImplemented();
@@ -250,8 +253,12 @@ class MockState implements States\StateInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws Exception\InvalidArgument      when the method name is not a string
      */
-    public function getClosure($methodName, $proxy, $scope = States\StateInterface::VISIBILITY_PUBLIC, $statedClassOriginName = null)
-    {
+    public function getClosure(
+        string $methodName,
+        Proxy\ProxyInterface $proxy,
+        string $scope = States\StateInterface::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
+    ): \Closure {
         if (false === $this->methodAllowed) {
             throw new Exception\MethodNotImplemented();
         }
@@ -363,9 +370,9 @@ class MockState implements States\StateInterface
     /**
      * To get the canonical stated class name associated to this state.
      *
-     * @return $this
+     * @return string
      */
-    public function getStatedClassName()
+    public function getStatedClassName(): string
     {
     }
 
@@ -376,7 +383,7 @@ class MockState implements States\StateInterface
      *
      * @return StateInterface
      */
-    public function setStatedClassName($statedClassName)
+    public function setStatedClassName(string $statedClassName): StateInterface
     {
         return $this;
     }
@@ -388,7 +395,7 @@ class MockState implements States\StateInterface
      *
      * @return bool
      */
-    public function isPrivateMode()
+    public function isPrivateMode(): bool
     {
         return $this->privateModeEnable;
     }
@@ -403,7 +410,7 @@ class MockState implements States\StateInterface
      *
      * @return StateInterface
      */
-    public function setPrivateMode($enable)
+    public function setPrivateMode(bool $enable): StateInterface
     {
         $this->privateModeEnable = !empty($enable);
 

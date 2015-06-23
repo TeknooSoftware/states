@@ -53,13 +53,6 @@ interface ObjectInterface
     public function getDIContainer();
 
     /**
-     * To return a unique stable id of the current object. It must identify.
-     *
-     * @return string
-     */
-    public function getObjectUniqueId();
-
-    /**
      * Called to clone an Object.
      *
      * @return $this

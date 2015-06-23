@@ -101,12 +101,12 @@ interface FactoryInterface
      * @param string $statedClassName the name of the stated class
      * @param string $path            of the stated class
      *
-     * @return bool
+     * @return $this
      *
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function initialize(string $statedClassName, string $path): bool;
+    public function initialize(string $statedClassName, string $path): FactoryInterface;
 
     /**
      * To initialize a proxy object with its container and states. States are fetched by the finder of this stated class.
@@ -114,14 +114,14 @@ interface FactoryInterface
      * @param Proxy\ProxyInterface $proxyObject
      * @param string               $stateName
      *
-     * @return bool
+     * @return $this
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      * @throws Exception\UnavailableDIContainer if there are no di container
      */
-    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): bool;
+    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): FactoryInterface;
 
     /**
      * Build a new instance of an object.

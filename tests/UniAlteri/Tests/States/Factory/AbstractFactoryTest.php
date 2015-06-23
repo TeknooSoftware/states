@@ -71,6 +71,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function registerMockFinderService()
     {
+        $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
         $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
             if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
                 $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
@@ -98,6 +99,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             }
         });
     }
+
     /**
      * Replace finder service to generate virtual finder mock to use to test inheritance.
      */
@@ -216,22 +218,6 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The factory must throw an exception if there are no Di Container.
-     */
-    public function testInitializeWithoutDiContainer()
-    {
-        try {
-            $factory = $this->getFactoryObject(false);
-            $factory->initialize('foo', 'bar');
-        } catch (Exception\UnavailableDIContainer $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the factory must throw an exception if there are no Di Container');
-    }
-
-    /**
      * Test the behavior of the method initialize() called by the loading during factory initialization
      * - Prerequisite : Finder service (to create new Finder instance dedicated for its stated class)
      * The factory must find and load the proxy class (but not create an instance) :
@@ -254,20 +240,6 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $factory->initialize('foo', 'bar');
         $this->assertTrue($virtualFinder->proxyHasBeenLoaded());
         $this->assertSame($factory, $repository->get($factory->getStatedClassName()));
-    }
-
-    /**
-     * Test the exception of the library when the proxy object doest not implement the exception.
-     */
-    public function testExceptionBadProxyStartup()
-    {
-        try {
-            $this->getFactoryObject()->startup(array());
-        } catch (Exception\IllegalProxy $exception) {
-            return;
-        }
-
-        $this->fail('Error, if the proxy does not implement the proxy object, the factory must throw an exception');
     }
 
     /**
@@ -306,7 +278,9 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testListAvailableStateInStartup()
     {
         $proxy = new Support\MockProxy(null);
-        $this->getFactoryObject()->startup($proxy);
+        $this->registerMockFinderService();
+        $this->getFactoryObject(true)
+            ->startup($proxy);
         $this->assertEquals(
             array(
                 'MockState1',

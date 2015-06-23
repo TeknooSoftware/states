@@ -61,21 +61,21 @@ interface StateInterface
      *
      * @return StateInterface|$this
      */
-    public function setDIContainer(DI\ContainerInterface $container);
+    public function setDIContainer(DI\ContainerInterface $container): StateInterface;
 
     /**
      * To return the DI Container used for this object.
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer();
+    public function getDIContainer(): DI\ContainerInterface;
 
     /**
      * To get the canonical stated class name associated to this state.
      *
-     * @return StateInterface|$this
+     * @return string
      */
-    public function getStatedClassName();
+    public function getStatedClassName(): string;
 
     /**
      * To set the canonical stated class name associated to this state.
@@ -84,7 +84,7 @@ interface StateInterface
      *
      * @return StateInterface
      */
-    public function setStatedClassName($statedClassName);
+    public function setStatedClassName(string $statedClassName): StateInterface;
 
     /**
      * To know if the mode Private is enabled : private method are only accessible from
@@ -93,7 +93,7 @@ interface StateInterface
      *
      * @return bool
      */
-    public function isPrivateMode();
+    public function isPrivateMode(): bool;
 
     /**
      * To enable or disable the private mode of this state :
@@ -105,7 +105,7 @@ interface StateInterface
      *
      * @return StateInterface
      */
-    public function setPrivateMode($enable);
+    public function setPrivateMode(bool $enable): StateInterface;
 
     /**
      * To return an array of string listing all methods available in the state.
@@ -125,7 +125,11 @@ interface StateInterface
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope = self::VISIBILITY_PUBLIC, $statedClassOriginName = null);
+    public function testMethod(
+        string $methodName,
+        string $scope = self::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
+    ): bool;
 
     /**
      * To return the description of a method to configure the behavior of the proxy. Return also description of private
@@ -138,7 +142,7 @@ interface StateInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws Exception\InvalidArgument      when the method name is not a string
      */
-    public function getMethodDescription($methodName);
+    public function getMethodDescription(string $methodName): \ReflectionMethod;
 
     /**
      * To return a closure of the required method to use in the proxy, according with the current visibility scope.
@@ -154,5 +158,10 @@ interface StateInterface
      * @throws Exception\InvalidArgument      when the method name is not a string
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      */
-    public function getClosure($methodName, $proxy, $scope = self::VISIBILITY_PUBLIC, $statedClassOriginName = null);
+    public function getClosure(
+        string $methodName,
+        Proxy\ProxyInterface $proxy,
+        string $scope = self::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
+    ): \Closure;
 }

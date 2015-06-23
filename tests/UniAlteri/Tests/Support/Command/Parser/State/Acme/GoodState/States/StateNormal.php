@@ -36,7 +36,7 @@ class StateNormal implements StateInterface
      *
      * @return $this
      */
-    public function getStatedClassName()
+    public function getStatedClassName(): string
     {
     }
 
@@ -47,7 +47,7 @@ class StateNormal implements StateInterface
      *
      * @return StateInterface
      */
-    public function setStatedClassName($statedClassName)
+    public function setStatedClassName(string $statedClassName): StateInterface
     {
     }
 
@@ -58,7 +58,7 @@ class StateNormal implements StateInterface
      *
      * @return bool
      */
-    public function isPrivateMode()
+    public function isPrivateMode(): bool
     {
     }
 
@@ -72,7 +72,7 @@ class StateNormal implements StateInterface
      *
      * @return StateInterface
      */
-    public function setPrivateMode($enable)
+    public function setPrivateMode(bool $enable): StateInterface
     {
     }
 
@@ -83,7 +83,7 @@ class StateNormal implements StateInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): StateInterface
     {
     }
 
@@ -92,7 +92,7 @@ class StateNormal implements StateInterface
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
+    public function getDIContainer(): DI\ContainerInterface
     {
     }
 
@@ -116,8 +116,11 @@ class StateNormal implements StateInterface
      *
      * @throws Exception\InvalidArgument when the method name is not a string
      */
-    public function testMethod($methodName, $scope = self::VISIBILITY_PUBLIC, $statedClassOriginName = null)
-    {
+    public function testMethod(
+        string $methodName,
+        string $scope = self::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
+    ): bool {
     }
 
     /**
@@ -131,7 +134,7 @@ class StateNormal implements StateInterface
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws Exception\InvalidArgument      when the method name is not a string
      */
-    public function getMethodDescription($methodName)
+    public function getMethodDescription(string $methodName): \ReflectionMethod
     {
     }
 
@@ -150,7 +153,11 @@ class StateNormal implements StateInterface
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought
      */
-    public function getClosure($methodName, $proxy, $scope = self::VISIBILITY_PUBLIC, $statedClassOriginName = null)
-    {
+    public function getClosure(
+        string $methodName,
+        Proxy\ProxyInterface $proxy,
+        string $scope = self::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
+    ): \Closure {
     }
 }
