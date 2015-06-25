@@ -118,6 +118,8 @@ class MockProxy implements Proxy\ProxyInterface
     {
         //Simulate real behavior
         $this->states[$stateName] = $stateObject;
+
+        return $this;
     }
 
     /**
@@ -133,6 +135,8 @@ class MockProxy implements Proxy\ProxyInterface
         if (isset($this->states[$stateName])) {
             unset($this->states[$stateName]);
         }
+
+        return $this;
     }
 
     /**
@@ -146,6 +150,8 @@ class MockProxy implements Proxy\ProxyInterface
     {
         //Simulate real behavior
         $this->actives = array($stateName => $stateName);
+
+        return $this;
     }
 
     /**
@@ -161,6 +167,8 @@ class MockProxy implements Proxy\ProxyInterface
     {
         //Simulate real behavior
         $this->actives[$stateName] = $stateName;
+
+        return $this;
     }
 
     /**
@@ -176,6 +184,8 @@ class MockProxy implements Proxy\ProxyInterface
         if (isset($this->actives[$stateName])) {
             unset($this->actives[$stateName]);
         }
+
+        return $this;
     }
 
     /**
@@ -550,7 +560,7 @@ class MockProxy implements Proxy\ProxyInterface
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function unserialize(string $serialized)
+    public function unserialize($serialized)
     {
         //Not used in tests
     }

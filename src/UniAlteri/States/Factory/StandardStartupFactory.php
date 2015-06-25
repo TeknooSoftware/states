@@ -60,7 +60,7 @@ class StandardStartupFactory implements StartupFactoryInterface
      * @throws Exception\InvalidArgument    when $factoryIdentifier is not an object
      * @throws Exception\UnavailableFactory when the required factory was not found
      */
-    public static function forwardStartup(Proxy\ProxyInterface $proxyObject, string $stateName = null): bool
+    public static function forwardStartup(Proxy\ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
     {
         if (!$proxyObject instanceof Proxy\ProxyInterface) {
             throw new Exception\InvalidArgument('Error the proxy does not implement the Proxy\ProxyInterface');

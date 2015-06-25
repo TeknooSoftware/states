@@ -64,6 +64,16 @@ class MockFinder implements Loader\FinderInterface
     protected $proxyLoaded = false;
 
     /**
+     * @var string
+     */
+    protected $statedClassName;
+
+    /**
+     * @var string
+     */
+    protected $pathString;
+
+    /**
      * Initialize finder.
      *
      * @param string $statedClassName
@@ -71,6 +81,8 @@ class MockFinder implements Loader\FinderInterface
      */
     public function __construct($statedClassName, $pathString)
     {
+        $this->statedClassName = $statedClassName;
+        $this->pathString = $pathString;
     }
 
     /**
@@ -209,5 +221,6 @@ class MockFinder implements Loader\FinderInterface
      */
     public function getStatedClassName()
     {
+        return $this->statedClassName;
     }
 }

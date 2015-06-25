@@ -328,7 +328,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testListAvailableStateInStartupWithInheritance()
     {
-        $factoryMother = $this->getFactoryObject();
+        $this->registerMockFinderService();
+        $factoryMother = $this->getFactoryObject(true);
         $factoryMother->getFinder();
 
         //Register Di Container
@@ -337,7 +338,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->container->registerInstance(Factory\FactoryInterface::DI_FACTORY_REPOSITORY, $repository);
 
         //Finder
-        $factoryDaughter = $this->getFactoryObject();
+        $this->registerMockFinderService();
+        $factoryDaughter = $this->getFactoryObject(true);
         $this->registerMockFinderServiceForInheritance();
         $factoryDaughter->getFinder();
 
