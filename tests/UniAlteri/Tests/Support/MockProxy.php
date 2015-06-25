@@ -77,7 +77,7 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): Proxy\ProxyInterface
     {
         return $this;
     }
@@ -87,17 +87,7 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
-    {
-        //Not used in tests
-    }
-
-    /**
-     * Return a stable unique id of the current object. It must identify.
-     *
-     * @return string
-     */
-    public function getObjectUniqueId()
+    public function getDIContainer(): DI\ContainerInterface
     {
         //Not used in tests
     }
@@ -124,10 +114,12 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @return $this
      */
-    public function registerState($stateName, States\States\StateInterface $stateObject)
+    public function registerState(string $stateName, States\States\StateInterface $stateObject): Proxy\ProxyInterface
     {
         //Simulate real behavior
         $this->states[$stateName] = $stateObject;
+
+        return $this;
     }
 
     /**
@@ -137,12 +129,14 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @return $this
      */
-    public function unregisterState($stateName)
+    public function unregisterState(string $stateName): Proxy\ProxyInterface
     {
         //Simulate real behavior
         if (isset($this->states[$stateName])) {
             unset($this->states[$stateName]);
         }
+
+        return $this;
     }
 
     /**
@@ -152,10 +146,12 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @return $this
      */
-    public function switchState($stateName)
+    public function switchState(string $stateName): Proxy\ProxyInterface
     {
         //Simulate real behavior
         $this->actives = array($stateName => $stateName);
+
+        return $this;
     }
 
     /**
@@ -167,10 +163,12 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @throws Exception\StateNotFound if $stateName does not exist
      */
-    public function enableState($stateName)
+    public function enableState(string $stateName): Proxy\ProxyInterface
     {
         //Simulate real behavior
         $this->actives[$stateName] = $stateName;
+
+        return $this;
     }
 
     /**
@@ -180,12 +178,14 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @return $this
      */
-    public function disableState($stateName)
+    public function disableState(string $stateName): Proxy\ProxyInterface
     {
         //Simulate real behavior
         if (isset($this->actives[$stateName])) {
             unset($this->actives[$stateName]);
         }
+
+        return $this;
     }
 
     /**
@@ -193,10 +193,12 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @return $this
      */
-    public function disableAllStates()
+    public function disableAllStates(): Proxy\ProxyInterface
     {
         //Simulate real behavior
         $this->actives = array();
+
+        return $this;
     }
 
     /**
@@ -230,7 +232,7 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @throws Exception\InvalidArgument when $stateName is not a valid string
      */
-    public function inState($stateName)
+    public function inState(string $stateName): bool
     {
         return in_array(strtolower(str_replace('_', '', $stateName)), $this->actives);
     }
@@ -251,7 +253,7 @@ class MockProxy implements Proxy\ProxyInterface
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         //Not used in tests
     }
@@ -266,7 +268,7 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @throws Exception\StateNotFound is the state required is not available
      */
-    public function getMethodDescription($methodName, $stateName = null)
+    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {
         //Not used in tests
     }
@@ -300,7 +302,7 @@ class MockProxy implements Proxy\ProxyInterface
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         //Not used in tests
     }
@@ -315,7 +317,7 @@ class MockProxy implements Proxy\ProxyInterface
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __isset($name)
+    public function __isset(string $name)
     {
         //Not used in tests
     }
@@ -331,7 +333,7 @@ class MockProxy implements Proxy\ProxyInterface
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         //Not used in tests
     }
@@ -346,7 +348,7 @@ class MockProxy implements Proxy\ProxyInterface
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __unset($name)
+    public function __unset(string $name)
     {
         //Not used in tests
     }
@@ -359,7 +361,7 @@ class MockProxy implements Proxy\ProxyInterface
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __toString()
+    public function __toString(): string
     {
         //Not used in tests
     }
@@ -376,7 +378,7 @@ class MockProxy implements Proxy\ProxyInterface
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function count()
+    public function count(): int
     {
         //Not used in tests
     }
@@ -528,7 +530,7 @@ class MockProxy implements Proxy\ProxyInterface
      * @throws Exception\MethodNotImplemented if any enable state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         //Not used in tests
     }
@@ -545,7 +547,7 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @return string
      */
-    public function serialize()
+    public function serialize(): string
     {
         //Not used in tests
     }

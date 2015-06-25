@@ -26,6 +26,7 @@
 
 namespace Support\FileLoader\Class3;
 
+use UniAlteri\States\Factory\FactoryInterface;
 use UniAlteri\Tests\Support;
 
 /**
@@ -54,7 +55,7 @@ class Factory extends Support\MockFactory
      *
      * @throws \Exception
      */
-    public function initialize($statedClassName, $path)
+    public function initialize(string $statedClassName, string $path): FactoryInterface
     {
         throw new \Exception('test');
     }

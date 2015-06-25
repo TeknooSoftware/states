@@ -71,6 +71,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     protected function registerMockFinderService()
     {
+        $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
         $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
             if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
                 $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
@@ -98,6 +99,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             }
         });
     }
+
     /**
      * Replace finder service to generate virtual finder mock to use to test inheritance.
      */
@@ -130,7 +132,6 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetDiContainer()
     {
         $object = $this->getFactoryObject(false);
-        $this->assertNull($object->getDIContainer());
         $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
@@ -195,22 +196,6 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the method getStatedClassName() when the factory is not goodly initialized.
-     */
-    public function testGetStatedClassNameNotInitialized()
-    {
-        $this->assertNull($this->getFactoryObject()->getStatedClassName());
-    }
-
-    /**
-     * Test the behavior of the method getPath() when the factory is not goodly initialized.
-     */
-    public function testGetPathNotInitialized()
-    {
-        $this->assertNull($this->getFactoryObject()->getPath());
-    }
-
-    /**
      * Test the behavior of the method getStatedClassName() with values (stated class name and path) defined
      * by the loading during factory initialization.
      */
@@ -230,22 +215,6 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $factory = $this->getFactoryObject(true);
         $factory->initialize('foo', 'bar');
         $this->assertEquals('bar', $factory->getPath());
-    }
-
-    /**
-     * The factory must throw an exception if there are no Di Container.
-     */
-    public function testInitializeWithoutDiContainer()
-    {
-        try {
-            $factory = $this->getFactoryObject(false);
-            $factory->initialize('foo', 'bar');
-        } catch (Exception\UnavailableDIContainer $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the factory must throw an exception if there are no Di Container');
     }
 
     /**
@@ -271,20 +240,6 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $factory->initialize('foo', 'bar');
         $this->assertTrue($virtualFinder->proxyHasBeenLoaded());
         $this->assertSame($factory, $repository->get($factory->getStatedClassName()));
-    }
-
-    /**
-     * Test the exception of the library when the proxy object doest not implement the exception.
-     */
-    public function testExceptionBadProxyStartup()
-    {
-        try {
-            $this->getFactoryObject()->startup(array());
-        } catch (Exception\IllegalProxy $exception) {
-            return;
-        }
-
-        $this->fail('Error, if the proxy does not implement the proxy object, the factory must throw an exception');
     }
 
     /**
@@ -323,7 +278,9 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testListAvailableStateInStartup()
     {
         $proxy = new Support\MockProxy(null);
-        $this->getFactoryObject()->startup($proxy);
+        $this->registerMockFinderService();
+        $this->getFactoryObject(true)
+            ->startup($proxy);
         $this->assertEquals(
             array(
                 'MockState1',
@@ -371,7 +328,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testListAvailableStateInStartupWithInheritance()
     {
-        $factoryMother = $this->getFactoryObject();
+        $this->registerMockFinderService();
+        $factoryMother = $this->getFactoryObject(true);
         $factoryMother->getFinder();
 
         //Register Di Container
@@ -380,7 +338,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $this->container->registerInstance(Factory\FactoryInterface::DI_FACTORY_REPOSITORY, $repository);
 
         //Finder
-        $factoryDaughter = $this->getFactoryObject();
+        $this->registerMockFinderService();
+        $factoryDaughter = $this->getFactoryObject(true);
         $this->registerMockFinderServiceForInheritance();
         $factoryDaughter->getFinder();
 

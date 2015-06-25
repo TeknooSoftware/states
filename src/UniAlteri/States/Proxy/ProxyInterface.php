@@ -23,6 +23,7 @@
 namespace UniAlteri\States\Proxy;
 
 use UniAlteri\States;
+use UniAlteri\States\DI;
 
 /**
  * Interface ProxyInterface
@@ -43,13 +44,39 @@ use UniAlteri\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-interface ProxyInterface extends
-    States\ObjectInterface
+interface ProxyInterface
 {
     /**
      * Name of the default state to load automatically in the construction.
      */
     const DEFAULT_STATE_NAME = 'StateDefault';
+
+    /**************************
+     *** Container Management *
+     **************************/
+
+    /**
+     * To register a DI container for this object.
+     *
+     * @param DI\ContainerInterface $container
+     *
+     * @return $this
+     */
+    public function setDIContainer(DI\ContainerInterface $container): ProxyInterface;
+
+    /**
+     * To return the DI Container used for this object.
+     *
+     * @return DI\ContainerInterface
+     */
+    public function getDIContainer(): DI\ContainerInterface;
+
+    /**
+     * Called to clone an Object.
+     *
+     * @return $this
+     */
+    public function __clone();
 
     /***********************
      *** States Management *
@@ -66,7 +93,7 @@ interface ProxyInterface extends
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function registerState($stateName, States\States\StateInterface $stateObject);
+    public function registerState(string $stateName, States\States\StateInterface $stateObject): ProxyInterface;
 
     /**
      * To remove dynamically a state from this object.
@@ -79,7 +106,7 @@ interface ProxyInterface extends
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function unregisterState($stateName);
+    public function unregisterState(string $stateName): ProxyInterface;
 
     /**
      * To disable all actives states and enable the required states.
@@ -91,7 +118,7 @@ interface ProxyInterface extends
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function switchState($stateName);
+    public function switchState(string $stateName): ProxyInterface;
 
     /**
      * To enable a loaded states.
@@ -104,7 +131,7 @@ interface ProxyInterface extends
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function enableState($stateName);
+    public function enableState(string $stateName): ProxyInterface;
 
     /**
      * To disable an active state (not available for calling, but always loaded).
@@ -117,14 +144,14 @@ interface ProxyInterface extends
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function disableState($stateName);
+    public function disableState(string $stateName): ProxyInterface;
 
     /**
      * To disable all actives states.
      *
      * @return $this
      */
-    public function disableAllStates();
+    public function disableAllStates(): ProxyInterface;
 
     /**
      * To list all currently available states for this object.
@@ -149,7 +176,7 @@ interface ProxyInterface extends
      *
      * @throws Exception\InvalidArgument when $stateName is not a valid string
      */
-    public function inState($stateName);
+    public function inState(string $stateName): bool;
 
     /*******************
      * Methods Calling *
@@ -168,7 +195,7 @@ interface ProxyInterface extends
      * @throws Exception\UnavailableState     if the required state is not available
      * @throws Exception\IllegalArgument      if the method's name is not a string
      */
-    public function __call($name, $arguments);
+    public function __call(string $name, array $arguments);
 
     /**
      * To return the description of the method.
@@ -184,7 +211,7 @@ interface ProxyInterface extends
      * @throws Exception\MethodNotImplemented when the method is not currently available
      * @throws \Exception                     to rethrows unknown exceptions
      */
-    public function getMethodDescription($methodName, $stateName = null);
+    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod;
 
     /**
      * To invoke an object as a function.
@@ -212,7 +239,7 @@ interface ProxyInterface extends
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __get($name);
+    public function __get(string $name);
 
     /**
      * To test if a property is set for the object.
@@ -224,7 +251,7 @@ interface ProxyInterface extends
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __isset($name);
+    public function __isset(string $name);
 
     /**
      * To update a property of the object.
@@ -237,7 +264,7 @@ interface ProxyInterface extends
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __set($name, $value);
+    public function __set(string $name, $value);
 
     /**
      * To remove a property of the object.
@@ -249,7 +276,7 @@ interface ProxyInterface extends
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __unset($name);
+    public function __unset(string $name);
 
     /**
      * To transform the object to a string
@@ -269,7 +296,7 @@ interface ProxyInterface extends
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function count();
+    public function count(): int;
 
     /**
      * Whether or not an offset exists.
@@ -388,7 +415,7 @@ interface ProxyInterface extends
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function getIterator();
+    public function getIterator(): \Traversable;
 
     /*****************
      * Serialization *
@@ -402,7 +429,7 @@ interface ProxyInterface extends
      *
      * @return string
      */
-    public function serialize();
+    public function serialize(): string;
 
     /**
      * To wake up the object.

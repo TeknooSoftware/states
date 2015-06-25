@@ -51,7 +51,7 @@ interface ContainerInterface
      * @throws Exception\InvalidArgument if the identifier is not defined
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function get($name);
+    public function get(string $name);
 
     /**
      * Register a new shared object into container (the same object is returned at each call).
@@ -65,7 +65,7 @@ interface ContainerInterface
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      * @throws Exception\IllegalName    when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function registerInstance($name, $instance);
+    public function registerInstance(string $name, $instance): ContainerInterface;
 
     /**
      * Register a new service into container (a new instance is returned at each call).
@@ -79,7 +79,7 @@ interface ContainerInterface
      * @throws Exception\IllegalService if the $instance is not an invokable object, or a function, or an existent class
      * @throws Exception\IllegalName    when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function registerService($name, $instance);
+    public function registerService(string $name, $instance): ContainerInterface;
 
     /**
      * Test if an entry is already registered.
@@ -90,7 +90,7 @@ interface ContainerInterface
      *
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function testEntry($name);
+    public function testEntry(string $name): bool;
 
     /**
      * Remove an entry from the container.
@@ -101,18 +101,18 @@ interface ContainerInterface
      *
      * @throws Exception\IllegalName when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function unregister($name);
+    public function unregister(string $name): ContainerInterface;
 
     /**
      * Configure the container from an array (provided by an INI file or other).
      *
      * @param array|\ArrayObject $params
      *
-     * @return mixed
+     * @return $this
      *
      * @throws Exception\InvalidArgument when $params is not an array or an ArrayAccess object
      */
-    public function configure($params);
+    public function configure($params): ContainerInterface;
 
     /**
      * List all entries of this container.

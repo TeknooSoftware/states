@@ -65,13 +65,18 @@ class MockFactory implements Factory\FactoryInterface
     protected $path = null;
 
     /**
+     * @var DI\ContainerInterface
+     */
+    protected $diConainter = null;
+
+    /**
      * To return the DI Container used for this object.
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
+    public function getDIContainer(): DI\ContainerInterface
     {
-        //Not used in tests
+        return $this->diConainter;
     }
 
     /**
@@ -81,9 +86,11 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): Factory\FactoryInterface
     {
-        //Not used in tests
+        $this->diConainter = $container;
+
+        return $this;
     }
 
     /**
@@ -93,7 +100,7 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @throws Exception\UnavailableLoader if any finder are available for this stated class
      */
-    public function getFinder()
+    public function getFinder(): Loader\FinderInterface
     {
         //Build a new mock finder
         return new MockFinder($this->statedClassName, $this->path);
@@ -104,7 +111,7 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return string
      */
-    public function getPath()
+    public function getPath(): string
     {
         return $this->path;
     }
@@ -114,7 +121,7 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return string
      */
-    public function getStatedClassName()
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }
@@ -128,13 +135,25 @@ class MockFactory implements Factory\FactoryInterface
      * @param string $statedClassName the name of the stated class
      * @param string $path            of the stated class
      *
-     * @return bool
+     * @return $this
      */
-    public function initialize($statedClassName, $path)
+    public function initialize(string $statedClassName, string $path): Factory\FactoryInterface
     {
         $this->statedClassName = $statedClassName;
         $this->path = $path;
         self::$initializedFactoryNameArray[] = $statedClassName.':'.$path;
+        return $this;
+    }
+
+    /**
+     * Method added for tests to get action logs
+     * Return the list of initialized factories by the loader.
+     *
+     * @return string[]
+     */
+    public static function resetInitializedFactories()
+    {
+        self::$initializedFactoryNameArray = array();
     }
 
     /**
@@ -159,9 +178,9 @@ class MockFactory implements Factory\FactoryInterface
      * @throws Exception\StateNotFound     if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
-    public function build($arguments = null, $stateName = null)
+    public function build($arguments = null, string $stateName = null): Proxy\ProxyInterface
     {
-        //Not used in tests
+        return new MockProxy(array());
     }
 
     /**
@@ -170,14 +189,16 @@ class MockFactory implements Factory\FactoryInterface
      * @param Proxy\ProxyInterface $proxyObject
      * @param string               $stateName
      *
-     * @return bool
+     * @return $this
      *
      * @throws Exception\StateNotFound     if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader if any loader are available for this stated class
      */
-    public function startup($proxyObject, $stateName = null)
+    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): Factory\FactoryInterface
     {
         $this->startupProxy = $proxyObject;
+
+        return $this;
     }
 
     /**
@@ -186,7 +207,7 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return Proxy\ProxyInterface
      */
-    public function getStartupProxy()
+    public function getStartupProxy(): Proxy\ProxyInterface
     {
         return $this->startupProxy;
     }

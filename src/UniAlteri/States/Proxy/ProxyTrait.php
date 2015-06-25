@@ -88,7 +88,7 @@ trait ProxyTrait
      *
      * @return string
      */
-    protected function getCallerStatedClassName()
+    protected function getCallerStatedClassName(): string
     {
         if (true !== $this->callerStatedClassesStack->isEmpty()) {
             return $this->callerStatedClassesStack->top();
@@ -105,7 +105,7 @@ trait ProxyTrait
      *
      * @return $this
      */
-    protected function pushCallerStatedClassName(States\States\StateInterface $state)
+    protected function pushCallerStatedClassName(States\States\StateInterface $state): ProxyInterface
     {
         $this->callerStatedClassesStack->push($state->getStatedClassName());
 
@@ -117,7 +117,7 @@ trait ProxyTrait
      *
      * @return $this
      */
-    protected function popCallerStatedClassName()
+    protected function popCallerStatedClassName(): ProxyInterface
     {
         if (false === $this->callerStatedClassesStack->isEmpty()) {
             $this->callerStatedClassesStack->pop();
@@ -139,8 +139,12 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws \Exception
      */
-    protected function callInState(States\States\StateInterface $state, $methodName, array &$arguments, $scopeVisibility)
-    {
+    protected function callInState(
+        States\States\StateInterface $state,
+        string $methodName,
+        array &$arguments,
+        string $scopeVisibility
+    ) {
         $callerStatedClassName = $this->getCallerStatedClassName();
         $this->pushCallerStatedClassName($state);
 
@@ -175,7 +179,7 @@ trait ProxyTrait
      * @throws Exception\IllegalArgument      if the method's name is not a string
      * @throws \Exception
      */
-    protected function findMethodToCall($methodName, array &$arguments)
+    protected function findMethodToCall(string $methodName, array &$arguments)
     {
         if (!is_string($methodName)) {
             throw new Exception\IllegalArgument('Error the methodName is not a string');
@@ -246,7 +250,7 @@ trait ProxyTrait
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    protected function validateName($name)
+    protected function validateName(string $name): bool
     {
         if (!is_string($name)) {
             throw new Exception\IllegalArgument('Error, the identifier is not a string');
@@ -286,7 +290,7 @@ trait ProxyTrait
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): ProxyInterface
     {
         $this->diContainer = $container;
 
@@ -298,7 +302,7 @@ trait ProxyTrait
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
+    public function getDIContainer(): DI\ContainerInterface
     {
         return $this->diContainer;
     }
@@ -314,7 +318,7 @@ trait ProxyTrait
      *                States\States\StateInterface::VISIBILITY_PROTECTED
      *                States\States\StateInterface::VISIBILITY_PRIVATE
      */
-    protected function getVisibilityScope($limit)
+    protected function getVisibilityScope(int $limit): string
     {
         //Get the calling stack
         $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, (int) $limit);
@@ -376,29 +380,12 @@ trait ProxyTrait
     }
 
     /**
-     * To return a unique stable id of the current object. It must identify.
-     *
-     * @return string
-     */
-    public function getObjectUniqueId()
-    {
-        if (null === $this->uniqueId) {
-            //Generate the unique Id
-            $this->uniqueId = uniqid(sha1(microtime(true)), true);
-        }
-
-        return $this->uniqueId;
-    }
-
-    /**
      * Called to clone an Object.
      *
      * @return $this
      */
     public function __clone()
     {
-        $this->uniqueId = null;
-
         if ($this->diContainer instanceof DI\ContainerInterface) {
             $this->diContainer = clone $this->diContainer;
         }
@@ -442,7 +429,7 @@ trait ProxyTrait
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function registerState($stateName, States\States\StateInterface $stateObject)
+    public function registerState(string $stateName, States\States\StateInterface $stateObject): ProxyInterface
     {
         $this->validateName($stateName);
 
@@ -462,7 +449,7 @@ trait ProxyTrait
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function unregisterState($stateName)
+    public function unregisterState(string $stateName): ProxyInterface
     {
         $this->validateName($stateName);
 
@@ -489,7 +476,7 @@ trait ProxyTrait
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function switchState($stateName)
+    public function switchState(string $stateName): ProxyInterface
     {
         $this->validateName($stateName);
 
@@ -510,7 +497,7 @@ trait ProxyTrait
      * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function enableState($stateName)
+    public function enableState(string $stateName): ProxyInterface
     {
         $this->validateName($stateName);
 
@@ -534,7 +521,7 @@ trait ProxyTrait
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function disableState($stateName)
+    public function disableState(string $stateName): ProxyInterface
     {
         $this->validateName($stateName);
 
@@ -552,7 +539,7 @@ trait ProxyTrait
      *
      * @return $this
      */
-    public function disableAllStates()
+    public function disableAllStates(): ProxyInterface
     {
         $this->activesStates = new \ArrayObject();
 
@@ -596,7 +583,7 @@ trait ProxyTrait
      *
      * @throws Exception\InvalidArgument when $stateName is not a valid string
      */
-    public function inState($stateName)
+    public function inState(string $stateName): bool
     {
         if (!is_string($stateName) && (is_object($stateName) && !is_callable(array($stateName, '__toString')))) {
             throw new Exception\InvalidArgument('Error, $stateName is not valid');
@@ -635,7 +622,7 @@ trait ProxyTrait
      * @throws Exception\UnavailableState     if the required state is not available
      * @throws Exception\IllegalArgument      if the method's name is not a string
      */
-    public function __call($name, $arguments)
+    public function __call(string $name, array $arguments)
     {
         return $this->findMethodToCall($name, $arguments);
     }
@@ -654,7 +641,7 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented when the method is not currently available
      * @throws \Exception                     to rethrows unknown exceptions
      */
-    public function getMethodDescription($methodName, $stateName = null)
+    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {
         if (!is_string($methodName)) {
             throw new Exception\InvalidArgument('Error, the method name is not a valid string');
@@ -730,7 +717,7 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __get($name)
+    public function __get(string $name)
     {
         $args = [$name];
 
@@ -747,7 +734,7 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __isset($name)
+    public function __isset(string $name)
     {
         $args = [$name];
 
@@ -765,7 +752,7 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __set($name, $value)
+    public function __set(string $name, $value)
     {
         $args = [$name, $value];
 
@@ -782,7 +769,7 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function __unset($name)
+    public function __unset(string $name)
     {
         $args = [$name];
 
@@ -795,7 +782,7 @@ trait ProxyTrait
      *
      * @return mixed
      */
-    public function __toString()
+    public function __toString(): string
     {
         try {
             $args = [];
@@ -818,11 +805,11 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function count()
+    public function count(): int
     {
         $args = [];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return (int) $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**
@@ -990,7 +977,7 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Exception\UnavailableState     if the required state is not available
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         $args = [];
 
@@ -1009,7 +996,7 @@ trait ProxyTrait
      *
      * @return string
      */
-    public function serialize()
+    public function serialize(): string
     {
         $args = [];
 
