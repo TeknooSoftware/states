@@ -61,8 +61,8 @@ class Container extends \Pimple\Container implements ContainerInterface
     public function __clone()
     {
         /*
-     * Do nothing, Pimple uses standard arrays, they are automatically cloned by php (but not theirs values)
-     */
+         * Do nothing, Pimple uses standard arrays, they are automatically cloned by php (but not theirs values)
+         */
     }
 
     /**

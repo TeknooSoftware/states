@@ -31,7 +31,7 @@ defined('DS')
 $loader = require_once dirname(__DIR__).DS.'src'.DS.'UniAlteri'.DS.'States'.DS.'bootstrap.php';
 
 //Register demo namespace
-$loader->registerNamespace('\\demo\\Acme', __DIR__.DS.'Acme');
+$loader->registerNamespace('\\demo\\Acme\\Article', __DIR__.DS.'Acme'.DS.'Article');
 
 print 'Uni Alteri - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize new article

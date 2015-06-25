@@ -22,6 +22,7 @@
 
 namespace UniAlteri\States\Loader;
 
+use Symfony\Component\Finder\Finder;
 use UniAlteri\States\DI;
 use UniAlteri\States\States;
 use UniAlteri\States\Proxy;
@@ -48,21 +49,21 @@ class FinderStandard implements FinderInterface
      *
      * @var string
      */
-    protected $statedClassName = null;
+    protected $statedClassName;
 
     /**
      * Folder/Phar of the stated class.
      *
      * @var string
      */
-    protected $pathString = null;
+    protected $pathString;
 
     /**
      * DI Container to use with this finder.
      *
      * @var DI\ContainerInterface
      */
-    protected $diContainer = null;
+    protected $diContainer;
 
     /**
      * Default proxy class to use when there are no proxy class.
@@ -76,7 +77,7 @@ class FinderStandard implements FinderInterface
      *
      * @var \ArrayObject
      */
-    protected $statesNamesList = null;
+    protected $statesNamesList;
 
     /**
      * Initialize finder.
@@ -84,7 +85,7 @@ class FinderStandard implements FinderInterface
      * @param string $statedClassName
      * @param string $pathString
      */
-    public function __construct($statedClassName, $pathString)
+    public function __construct(string $statedClassName, string $pathString)
     {
         $this->statedClassName = $statedClassName;
         $this->pathString = $pathString;
@@ -97,7 +98,7 @@ class FinderStandard implements FinderInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): FinderInterface
     {
         $this->diContainer = $container;
 
@@ -112,7 +113,7 @@ class FinderStandard implements FinderInterface
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
+    public function getDIContainer(): DI\ContainerInterface
     {
         return $this->diContainer;
     }
@@ -120,9 +121,9 @@ class FinderStandard implements FinderInterface
     /**
      * To get the canonical stated class name associated to this state.
      *
-     * @return $this
+     * @return string
      */
-    public function getStatedClassName()
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }
@@ -190,27 +191,13 @@ class FinderStandard implements FinderInterface
      * @throws Exception\UnReadablePath   if the stated file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
-    public function loadState($stateName)
+    public function loadState(string $stateName): string
     {
         $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
-        if (!class_exists($stateClassName, false)) {
-            $statePath = $this->pathString
-                            .DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH
-                            .DIRECTORY_SEPARATOR.$stateName.'.php';
-
-            if (!is_readable($statePath)) {
-                throw new Exception\UnReadablePath(
-                    sprintf('Error, the state "%s" was not found', $stateName)
-                );
-            }
-
-            include_once $statePath;
-            $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
-            if (!class_exists($stateClassName, false)) {
-                throw new Exception\UnavailableState(
-                    sprintf('Error, the state "%s" is not available', $stateName)
-                );
-            }
+        if (!class_exists($stateClassName)) {
+            throw new Exception\UnavailableState(
+                sprintf('Error, the state "%s" is not available', $stateName)
+            );
         }
 
         return $stateClassName;
@@ -227,7 +214,7 @@ class FinderStandard implements FinderInterface
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState($stateName)
+    public function buildState(string $stateName): States\StateInterface
     {
         //Load the state class if it is not already done
         $stateClassName = $this->loadState($stateName);
@@ -252,7 +239,7 @@ class FinderStandard implements FinderInterface
      *
      * @return string
      */
-    protected function getClassedName($statedClassName)
+    protected function getClassedName(string $statedClassName): string
     {
         $parts = explode('\\', $statedClassName);
 
@@ -267,36 +254,18 @@ class FinderStandard implements FinderInterface
      *
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function loadProxy()
+    public function loadProxy(): string
     {
         //Build the class name
         $classPartName = $this->getClassedName($this->statedClassName);
         $proxyClassName = $this->statedClassName.'\\'.$classPartName;
-        if (!class_exists($proxyClassName, false)) {
-            //Build the class file path for the proxy (standardized into ProxyInterface)
-            $proxyPath = $this->pathString.DIRECTORY_SEPARATOR.$classPartName.FinderInterface::PROXY_FILE_EXTENSION;
-
-            if (!is_readable($proxyPath)) {
-                //The stated class has not its own proxy, reuse the standard proxy, as an alias
-                class_alias($this->defaultProxyClassName, $proxyClassName, true);
-                class_alias($this->defaultProxyClassName, $this->statedClassName, false);
-
-                return $proxyClassName;
-            }
-
-            include_once $proxyPath;
-            if (!class_exists($proxyClassName, false)) {
-                throw new Exception\IllegalProxy(
-                    sprintf(
-                        'Error, the proxy of "%s" must be called "StatedClassName"\'%s',
-                        $this->statedClassName,
-                        $classPartName
-                    )
-                );
-            } else {
-                //To access this class directly without repeat the stated class name
-                class_alias($proxyClassName, $this->statedClassName, false);
-            }
+        if (!class_exists($proxyClassName)) {
+            //The stated class has not its own proxy, reuse the standard proxy, as an alias
+            class_alias($this->defaultProxyClassName, $proxyClassName, true);
+            class_alias($this->defaultProxyClassName, $this->statedClassName, false);
+        } else {
+            //To access this class directly without repeat the stated class name
+            class_alias($proxyClassName, $this->statedClassName, false);
         }
 
         return $proxyClassName;
@@ -347,7 +316,7 @@ class FinderStandard implements FinderInterface
      *
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function buildProxy($arguments = null)
+    public function buildProxy($arguments = null): Proxy\ProxyInterface
     {
         //Load the proxy if it is not already done
         $proxyClassName = $this->loadProxy();

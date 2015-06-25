@@ -48,35 +48,35 @@ trait FactoryTrait
      *
      * @var DI\ContainerInterface
      */
-    protected $diContainer = null;
+    protected $diContainer;
 
     /**
      * Finder used by this factory to load states and proxy for this stated class.
      *
      * @var Loader\FinderInterface
      */
-    protected $finder = null;
+    protected $finder;
 
     /**
      * The stated class name used with this factory.
      *
      * @var string
      */
-    protected $statedClassName = null;
+    protected $statedClassName;
 
     /**
      * The path of the stated class.
      *
      * @var string
      */
-    protected $path = null;
+    protected $path;
 
     /**
      * To list states by stated classes (this class and its parents).
      *
      * @var \ArrayObject
      */
-    protected $statesByClassesList = null;
+    protected $statesByClassesList;
 
     /**
      * To register a DI container for this object.

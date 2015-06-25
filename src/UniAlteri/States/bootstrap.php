@@ -27,12 +27,12 @@ use UniAlteri\States\Factory\FactoryInterface;
 defined('UA_STATES_PATH')
     || define('UA_STATES_PATH', __DIR__);
 
-//Needed for test, but we can use your own autoloader to load file of this lib.
-//This lib respects PSR-0, PSR-1 and PSR-2
-$iniFile = dirname(dirname(dirname(__DIR__))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
-if (is_readable($iniFile)) {
-    include_once $iniFile;
-}
+//Shortcut for DIRECTORY_SEPARATOR
+defined('DS')
+    || define('DS', DIRECTORY_SEPARATOR);
+
+//Use composer has default auto loader
+$composerInstance = require_once __DIR__.'/../../../vendor/autoload.php';
 
 //Initial DI Container
 $diContainer = new DI\Container();
@@ -59,9 +59,7 @@ $finderService = function (DI\ContainerInterface $container) {
 //Register finder generator
 $diContainer->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, $finderService);
 
-//Stated class loader, initialize
-$includePathManager = new Loader\IncludePathManager();
-$loader = new Loader\LoaderStandard($includePathManager);
+$loader = new Loader\LoaderComposer($composerInstance);
 $loader->setDIContainer($diContainer);
 
 //Register loader into container

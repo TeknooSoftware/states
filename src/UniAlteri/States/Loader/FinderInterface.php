@@ -58,35 +58,27 @@ interface FinderInterface
     const PROXY_FILE_EXTENSION = '.php';
 
     /**
-     * Initialize finder.
-     *
-     * @param string $statedClassName
-     * @param string $pathString
-     */
-    public function __construct($statedClassName, $pathString);
-
-    /**
      * To register a DI container for this object.
      *
      * @param DI\ContainerInterface $container
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container);
+    public function setDIContainer(DI\ContainerInterface $container): FinderInterface;
 
     /**
      * To return the DI Container used for this object.
      *
      * @return DI\ContainerInterface
      */
-    public function getDIContainer();
+    public function getDIContainer(): DI\ContainerInterface;
 
     /**
      * To get the canonical stated class name associated to this state.
      *
      * @return $this
      */
-    public function getStatedClassName();
+    public function getStatedClassName(): string;
 
     /**
      * To list all available states of the stated class.
@@ -108,7 +100,7 @@ interface FinderInterface
      * @throws Exception\UnReadablePath   if the stated file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
-    public function loadState($stateName);
+    public function loadState(string $stateName): string;
 
     /**
      * To load and build the required state object of the stated class.
@@ -121,7 +113,7 @@ interface FinderInterface
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState($stateName);
+    public function buildState(string $stateName): States\StateInterface;
 
     /**
      * To search and load the proxy class for this stated class.
@@ -131,7 +123,7 @@ interface FinderInterface
      *
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function loadProxy();
+    public function loadProxy(): string;
 
     /**
      * To return the list of parents stated classes of this stated classes, library classes (Integrated proxy and
@@ -152,5 +144,5 @@ interface FinderInterface
      *
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function buildProxy($arguments = null);
+    public function buildProxy($arguments = null): Proxy\ProxyInterface;
 }

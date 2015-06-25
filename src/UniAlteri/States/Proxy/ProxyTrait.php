@@ -52,28 +52,21 @@ trait ProxyTrait
      *
      * @var DI\ContainerInterface
      */
-    protected $diContainer = null;
-
-    /**
-     * Unique identifier of this object.
-     *
-     * @var string
-     */
-    protected $uniqueId = null;
+    protected $diContainer;
 
     /**
      * List of currently enabled states.
      *
      * @var \ArrayObject|States\States\StateInterface[]
      */
-    protected $activesStates = null;
+    protected $activesStates;
 
     /**
      * List of available states for this stated object.
      *
      * @var \ArrayObject|States\States\StateInterface[]
      */
-    protected $states = null;
+    protected $states;
 
     /**
      * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
@@ -81,7 +74,7 @@ trait ProxyTrait
      *
      * @var string[]|\SplStack
      */
-    protected $callerStatedClassesStack = null;
+    protected $callerStatedClassesStack;
 
     /**
      * To get the class name of the caller according to scope visibility.

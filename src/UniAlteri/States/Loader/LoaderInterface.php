@@ -57,15 +57,6 @@ interface LoaderInterface
     const FACTORY_CLASS_NAME = 'Factory';
 
     /**
-     * Initialize the loader object.
-     *
-     * @param IncludePathManagerInterface $includePathManager
-     *
-     * @throws Exception\IllegalArgument $includePathManager does not implement the interface IncludePathManagerInterface
-     */
-    public function __construct($includePathManager);
-
-    /**
      * To register a DI container for this object.
      *
      * @param DI\ContainerInterface $container
@@ -82,24 +73,6 @@ interface LoaderInterface
     public function getDIContainer();
 
     /**
-     * Method to add a path on the list of location where find class.
-     *
-     * @param string $path
-     *
-     * @return $this
-     *
-     * @throws Exception\UnavailablePath if the path is not readable
-     */
-    public function addIncludePath($path);
-
-    /**
-     * To list all active included path for this loaded.
-     *
-     * @return string[]
-     */
-    public function getIncludedPaths();
-
-    /**
      * To register a location to find some classes of a namespace.
      * A namespace can has several locations.
      *
@@ -110,27 +83,20 @@ interface LoaderInterface
      *
      * @throws Exception\IllegalArgument if the path is not a valid string
      */
-    public function registerNamespace($namespace, $path);
-
-    /**
-     * To list all registered namespace.
-     *
-     * @return \ArrayObject
-     */
-    public function listNamespaces();
+    public function registerNamespace(string $namespace, string $path): LoaderInterface;
 
     /**
      * Method called to load a class by __autoload of PHP Engine.
      *
      * @param string $className class name, support namespace prefixes
      *
-     * @return bool
+     * @return $this
      *
      * @throws \Exception
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      */
-    public function loadClass($className);
+    public function loadClass(string $className): LoaderInterface;
 
     /**
      * Build the factory and initialize the loading stated class.
@@ -144,5 +110,5 @@ interface LoaderInterface
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      */
-    public function buildFactory($factoryClassName, $statedClassName, $path);
+    public function buildFactory(string $factoryClassName, string $statedClassName, string $path): Factory\FactoryInterface;
 }

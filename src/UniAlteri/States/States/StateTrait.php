@@ -54,35 +54,35 @@ trait StateTrait
      *
      * @var DI\ContainerInterface
      */
-    protected $diContainer = null;
+    protected $diContainer;
 
     /**
      * List of methods available for this state.
      *
      * @var \ArrayObject
      */
-    protected $methodsListArray = null;
+    protected $methodsListArray;
 
     /**
      * Reflection class object of this state to extract closures and description.
      *
      * @var \ReflectionClass
      */
-    protected $reflectionClass = null;
+    protected $reflectionClass;
 
     /**
      * Reflections methods of this state to extract description and closures.
      *
      * @var \ReflectionMethod[]
      */
-    protected $reflectionsMethods = null;
+    protected $reflectionsMethods;
 
     /**
      * List of closures already extracted and set into Injection Closure Container.
      *
      * @var \Closure[]
      */
-    protected $closuresObjects = null;
+    protected $closuresObjects;
 
     /**
      * Methods to not return into descriptions.
