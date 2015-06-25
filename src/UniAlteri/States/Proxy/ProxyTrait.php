@@ -809,7 +809,7 @@ trait ProxyTrait
     {
         $args = [];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return (int) $this->findMethodToCall(__FUNCTION__, $args);
     }
 
     /**

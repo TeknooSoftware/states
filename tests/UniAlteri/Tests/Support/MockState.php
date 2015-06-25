@@ -95,6 +95,11 @@ class MockState implements States\StateInterface
     protected $privateModeEnable = false;
 
     /**
+     * @var string
+     */
+    protected $statedClassName = '';
+
+    /**
      * Initialize virtual state.
      */
     public function __construct($closure = null)
@@ -169,6 +174,19 @@ class MockState implements States\StateInterface
     public function listMethods()
     {
         return array();
+    }
+
+    /**
+     * To update the closure to use in this mock
+     *
+     * @param \Closure $closure
+     * @return $this
+     */
+    public function setClosure(\Closure $closure)
+    {
+        $this->closure = $closure;
+
+        return $this;
     }
 
     /**
@@ -374,6 +392,7 @@ class MockState implements States\StateInterface
      */
     public function getStatedClassName(): string
     {
+        return $this->statedClassName;
     }
 
     /**
@@ -385,6 +404,8 @@ class MockState implements States\StateInterface
      */
     public function setStatedClassName(string $statedClassName): StateInterface
     {
+        $this->statedClassName = $statedClassName;
+
         return $this;
     }
 

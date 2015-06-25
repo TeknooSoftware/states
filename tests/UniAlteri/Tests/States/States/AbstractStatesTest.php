@@ -81,7 +81,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetDiContainer()
     {
         $object = $this->getPublicClassObject(false);
-        $this->assertNull($object->getDIContainer());
         $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
@@ -130,21 +129,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ),
             $this->getPrivateClassObject()->listMethods()->getArrayCopy()
         );
-    }
-
-    /**
-     * Test if exception when the name is not a valid string.
-     */
-    public function testGetBadNameMethodDescription()
-    {
-        try {
-            $this->getPublicClassObject()->getMethodDescription(array());
-        } catch (States\Exception\InvalidArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if we require a description with an invalid string');
     }
 
     /**
@@ -204,18 +188,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('Standard Method 1.', $this->formatDescription($this->getPublicClassObject()->getMethodDescription('standardMethod1')));
         $this->assertSame('Final Method 2.', $this->formatDescription($this->getPublicClassObject()->getMethodDescription('finalMethod2')));
-    }
-
-    public function testTestMethodExceptionWithInvalidName()
-    {
-        try {
-            $this->getPublicClassObject()->testMethod(array());
-        } catch (States\Exception\InvalidArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if we require a description with an invalid string');
     }
 
     public function testTestMethodExceptionWithInvalidScope()
@@ -468,21 +440,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exception through by state if the name is invalid.
-     */
-    public function testGetClosureWithInvalidName()
-    {
-        try {
-            $this->getPublicClassObject()->getClosure(array(), $this->getMockProxy());
-        } catch (States\Exception\InvalidArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if the method name is not a string');
-    }
-
-    /**
      * Test exception through by state if the closure method does not exist.
      */
     public function testGetBadClosure()
@@ -510,21 +467,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if the method is static');
-    }
-
-    /**
-     *
-     */
-    public function testGetClosureWithInvalidProxy()
-    {
-        try {
-            $this->getPublicClassObject()->getClosure('standardMethod1', new \DateTime());
-        } catch (States\Exception\IllegalProxy $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if the proxy does not implement the interface Proxy\ProxyInterface');
     }
 
     /**

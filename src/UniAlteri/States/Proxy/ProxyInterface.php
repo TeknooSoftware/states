@@ -23,6 +23,7 @@
 namespace UniAlteri\States\Proxy;
 
 use UniAlteri\States;
+use UniAlteri\States\DI;
 
 /**
  * Interface ProxyInterface
@@ -43,13 +44,39 @@ use UniAlteri\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-interface ProxyInterface extends
-    States\ObjectInterface
+interface ProxyInterface
 {
     /**
      * Name of the default state to load automatically in the construction.
      */
     const DEFAULT_STATE_NAME = 'StateDefault';
+
+    /**************************
+     *** Container Management *
+     **************************/
+
+    /**
+     * To register a DI container for this object.
+     *
+     * @param DI\ContainerInterface $container
+     *
+     * @return $this
+     */
+    public function setDIContainer(DI\ContainerInterface $container): ProxyInterface;
+
+    /**
+     * To return the DI Container used for this object.
+     *
+     * @return DI\ContainerInterface
+     */
+    public function getDIContainer(): DI\ContainerInterface;
+
+    /**
+     * Called to clone an Object.
+     *
+     * @return $this
+     */
+    public function __clone();
 
     /***********************
      *** States Management *

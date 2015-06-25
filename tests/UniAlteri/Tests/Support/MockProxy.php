@@ -77,7 +77,7 @@ class MockProxy implements Proxy\ProxyInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): Proxy\ProxyInterface
     {
         return $this;
     }

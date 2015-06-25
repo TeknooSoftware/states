@@ -498,21 +498,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the proxy behavior when the method name is not a valid string when we want its description.
-     */
-    public function testGetMethodDescriptionInvalidName()
-    {
-        try {
-            $this->proxy->getMethodDescription(array());
-        } catch (Exception\InvalidArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\InvalidArgument exception when the method name is not a string');
-    }
-
-    /**
      * Test the proxy behavior when hen we want a description of a non existent method.
      */
     public function testGetMethodDescriptionNonExistentName()
@@ -543,22 +528,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when the method was not found');
-    }
-
-    /**
-     * Test the proxy behavior when hen we want a description of a method and the required state name is not a string.
-     */
-    public function testGetMethodDescriptionInvalidStateName()
-    {
-        $this->initializeProxy('state1', true);
-        try {
-            $this->proxy->getMethodDescription('method1', array());
-        } catch (Exception\InvalidArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\InvalidArgument exception when the stateName is not a string');
     }
 
     /**
@@ -2095,11 +2064,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testGetIterator()
     {
         $this->initializeProxy('state1', true);
-        $this->proxy->getIterator();
-
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('getIterator', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        $iterator = new \ArrayIterator([1,2,3]);
+        $this->state1->setClosure(function () use ($iterator) {
+           return $iterator;
+        });
+        $this->assertSame($iterator, $this->proxy->getIterator());
     }
 
     /**
@@ -2198,9 +2167,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(get_class($diContainer), get_class($clonedDiContainer));
         $this->assertNotSame($diContainer, $clonedDiContainer);
         $this->assertEquals('bar', $clonedDiContainer->get('obj')->foo);
-
-        //unique ids must differ
-        $this->assertNotEquals($this->proxy->getObjectUniqueId(), $clonedProxy->getObjectUniqueId());
     }
 
     /**
