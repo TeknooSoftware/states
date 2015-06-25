@@ -115,25 +115,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testSetAndGetDiContainer()
     {
         $object = $this->buildProxy();
-        $this->assertNull($object->getDIContainer());
         $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
-    }
-
-    /**
-     * Proxy must throw an exception if the registering state name is not a valid string.
-     */
-    public function testRegisterStateInvalidName()
-    {
-        try {
-            $this->proxy->registerState(array(), $this->state1);
-        } catch (Exception\IllegalArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
     }
 
     /**
@@ -158,21 +142,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->registerState('state1', $this->state1);
         $this->assertEquals(array('state1'), $this->proxy->listAvailableStates());
-    }
-
-    /**
-     * Proxy must throw an exception if the state name is not a valid string.
-     */
-    public function testUnRegisterStateInvalidName()
-    {
-        try {
-            $this->proxy->unregisterState(array());
-        } catch (Exception\IllegalArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
     }
 
     /**
@@ -214,21 +183,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Proxy must throw an exception if the state name is not a valid string in switch state method.
-     */
-    public function testSwitchStateInvalidName()
-    {
-        try {
-            $this->proxy->switchState(array());
-        } catch (Exception\IllegalArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
-    }
-
-    /**
      * Proxy must throw an exception if the state does not exist in switch state method.
      */
     public function testSwitchStateNonExistentName()
@@ -265,21 +219,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Proxy must throw an exception if the state name is not a valid string when we want enable a state.
-     */
-    public function testEnableStateInvalidName()
-    {
-        try {
-            $this->proxy->enableState(array());
-        } catch (Exception\IllegalArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
-    }
-
-    /**
      * Proxy must throw an exception if the state is not available when we want enable a state.
      */
     public function testEnableStateNonExistentName()
@@ -313,21 +252,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy();
         $this->proxy->enableState('state2');
         $this->assertEquals(array('state1', 'state2'), $this->proxy->listEnabledStates());
-    }
-
-    /**
-     * Proxy must throw an exception if the state name is not a valid string when we want disable a state.
-     */
-    public function testDisableStateInvalidName()
-    {
-        try {
-            $this->proxy->disableState(array());
-        } catch (Exception\IllegalArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the stateName is not a string');
     }
 
     /**
@@ -425,22 +349,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of the proxy when the state name is not a string.
-     */
-    public function testInStateNotString()
-    {
-        $proxy = $this->buildProxy();
-
-        try {
-            $proxy->inState(new \stdClass());
-        } catch (\Exception $e) {
-            return;
-        }
-
-        $this->fail('Error, the method must throw an exception when the argument is not valid');
-    }
-
-    /**
      * Test behavior of the proxy when it was not initialized.
      */
     public function testInStateNotInitialized()
@@ -463,21 +371,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($proxy->inState('hello'));
         $this->assertTrue($proxy->inState('fOo'));
-    }
-
-    /**
-     * Test proxy behavior when the called method name is not a string.
-     */
-    public function testCallInvalidName()
-    {
-        try {
-            $this->proxy->__call(array(), array());
-        } catch (Exception\IllegalArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalArgument exception when the method name is not a string');
     }
 
     /**
