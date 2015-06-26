@@ -210,23 +210,6 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the sub directory where states files are stored is not readable.
-     */
-    public function testListStatePathNotReadable()
-    {
-        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
-        $this->initializeFinder('Class1', $this->statedClass1Path);
-        try {
-            $this->finder->listStates();
-        } catch (Exception\UnReadablePath $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, if the state path is not readable, the Finder must throw an exception `Exception\UnReadablePath`');
-    }
-
-    /**
      * Test the behavior of the finder when the sub directory is browsed.
      */
     public function testListStates()
@@ -244,23 +227,6 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
             ),
             $states
         );
-    }
-
-    /**
-     * Test the behavior of the finder when the file of the loading state is not readable.
-     */
-    public function testLoadStateNotFound()
-    {
-        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
-        $this->initializeFinder('Class1', $this->statedClass1Path);
-        try {
-            $this->finder->loadState('State2');
-        } catch (Exception\UnReadablePath $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, if the state class path does not exist, the Finder must throw an exception `Exception\UnReadablePath`');
     }
 
     /**
@@ -288,23 +254,6 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $return = $this->finder->loadState('State4b');
         $this->assertTrue(class_exists('Class1\States\State4b', false));
         $this->assertEquals('Class1\\States\\State4b', $return);
-    }
-
-    /**
-     * Test the behavior of the finder when the file of the building state is not readable.
-     */
-    public function testBuildStateNotFound()
-    {
-        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
-        $this->initializeFinder('Class1', $this->statedClass1Path);
-        try {
-            $this->finder->buildState('State2');
-        } catch (Exception\UnReadablePath $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, if the state class path does not exist, the Finder must throw an exception `Exception\UnReadablePath`');
     }
 
     /**
