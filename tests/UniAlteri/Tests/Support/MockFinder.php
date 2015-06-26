@@ -92,7 +92,7 @@ class MockFinder implements Loader\FinderInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): Loader\FinderInterface
     {
         $this->container = $container;
 
@@ -104,7 +104,7 @@ class MockFinder implements Loader\FinderInterface
      *
      * @return \UniAlteri\States\DI\ContainerInterface
      */
-    public function getDIContainer()
+    public function getDIContainer(): DI\ContainerInterface
     {
         return $this->container;
     }
@@ -144,7 +144,7 @@ class MockFinder implements Loader\FinderInterface
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState($stateName)
+    public function buildState(string $stateName): States\StateInterface
     {
         //Return a new mock state object for tests
         return new MockState();
@@ -157,7 +157,7 @@ class MockFinder implements Loader\FinderInterface
      *
      * @return \UniAlteri\States\States\StateInterface
      */
-    public function loadState($stateName)
+    public function loadState(string $stateName): string
     {
         return true;
     }
@@ -171,7 +171,7 @@ class MockFinder implements Loader\FinderInterface
      *
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function loadProxy($arguments = null)
+    public function loadProxy($arguments = null): string
     {
         $this->proxyLoaded = true;
 
@@ -196,7 +196,7 @@ class MockFinder implements Loader\FinderInterface
      *
      * @return \UniAlteri\States\Proxy\ProxyInterface
      */
-    public function buildProxy($arguments = null)
+    public function buildProxy($arguments = null): Proxy\ProxyInterface
     {
         return new MockProxy($arguments);
     }
@@ -219,7 +219,7 @@ class MockFinder implements Loader\FinderInterface
      *
      * @return $this
      */
-    public function getStatedClassName()
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }

@@ -52,7 +52,7 @@ class FinderIntegratedTest extends FinderStandardTest
     protected function initializeFinder($statedClassName, $pathString)
     {
         $virtualDIContainer = new Support\MockDIContainer();
-        $this->finder = new Loader\FinderIntegrated($statedClassName, $pathString);
+        $this->finder = new Loader\FinderIntegrated($statedClassName, $pathString, $this->getClassLoaderMock());
         $this->finder->setDIContainer($virtualDIContainer);
 
         return $this->finder;
@@ -63,8 +63,7 @@ class FinderIntegratedTest extends FinderStandardTest
      */
     public function testSetAndGetDiContainer()
     {
-        $object = new Loader\FinderIntegrated('', '');
-        $this->assertNull($object->getDIContainer());
+        $object = new Loader\FinderIntegrated('', '', $this->getClassLoaderMock());
         $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());

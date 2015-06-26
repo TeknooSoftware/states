@@ -53,24 +53,10 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     protected function getLoader()
     {
         if (null === $this->loader) {
-            $this->loader = include 'UniAlteri'.DS.'States'.DS.'bootstrap.php';
+            $this->loader = include __DIR__.'/../../../../../src/UniAlteri/States/bootstrap.php';
         }
 
         return $this->loader;
-    }
-
-    /**
-     * Unload the loader from SPL Autoload to not interfere with others tests.
-     */
-    protected function tearDown()
-    {
-        if ($this->loader instanceof Loader\LoaderInterface) {
-            spl_autoload_unregister(
-                array($this->loader, 'loadClass')
-            );
-        }
-
-        parent::tearDown();
     }
 
     /**

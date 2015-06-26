@@ -66,7 +66,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     protected function getLoader()
     {
         if (null === $this->loader) {
-            $this->loader = include 'UniAlteri'.DS.'States'.DS.'bootstrap.php';
+            $this->loader = include __DIR__.'/../../../../../src/UniAlteri/States/bootstrap.php';
         }
 
         //To share the Factory interface in all context for each test
@@ -78,31 +78,6 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         }
 
         return $this->loader;
-    }
-
-    protected function setUp()
-    {
-        //Register demo namespace
-        $this->getLoader()->registerNamespace(
-            '\\UniAlteri\\Tests\\Support\\Extendable',
-            UA_STATES_TEST_PATH.DS.'Support'.DS.'Extendable'
-        );
-
-        parent::setUp();
-    }
-
-    /**
-     * Unload the loader from SPL Autoload to not interfere with others tests.
-     */
-    protected function tearDown()
-    {
-        if ($this->loader instanceof Loader\LoaderInterface) {
-            spl_autoload_unregister(
-                array($this->loader, 'loadClass')
-            );
-        }
-
-        parent::tearDown();
     }
 
     /**
@@ -117,6 +92,20 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
             ['StateDefault', 'StateOne', 'StateTwo'],
             $statesList
         );
+    }
+
+    /**
+     * Unload the loader from SPL Autoload to not interfere with others tests.
+     */
+    protected function tearDown()
+    {
+        if ($this->loader instanceof Loader\LoaderInterface) {
+            spl_autoload_unregister(
+                array($this->loader, 'loadClass')
+            );
+        }
+
+        parent::tearDown();
     }
 
     /**

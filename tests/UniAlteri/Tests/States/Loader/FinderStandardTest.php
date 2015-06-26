@@ -22,6 +22,7 @@
 
 namespace UniAlteri\Tests\States\Loader;
 
+use Composer\Autoload\ClassLoader;
 use UniAlteri\States\Loader;
 use UniAlteri\States\States;
 use UniAlteri\States\Loader\Exception;
@@ -105,6 +106,11 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     protected $statedClass8Path = null;
 
     /**
+     * @var ClassLoader;
+     */
+    protected $classLoaderMock;
+
+    /**
      * Prepare environment before test.
      */
     protected function setUp()
@@ -121,6 +127,18 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->statedClass7Path = $path.'Class7';
         $this->statedClass8Path = $path.'Class8';
         chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0755);
+    }
+
+    /**
+     * @return ClassLoader|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getClassLoaderMock()
+    {
+        if (!$this->classLoaderMock instanceof ClassLoader) {
+            $this->classLoaderMock = $this->getMock('Composer\Autoload\ClassLoader', [], [], '', false);
+        }
+
+        return $this->classLoaderMock;
     }
 
     /**
@@ -142,7 +160,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     protected function initializeFinder($statedClassName, $pathString)
     {
         $virtualDIContainer = new Support\MockDIContainer();
-        $this->finder = new Loader\FinderStandard($statedClassName, $pathString);
+        $this->finder = new Loader\FinderStandard($statedClassName, $pathString, $this->getClassLoaderMock());
         $this->finder->setDIContainer($virtualDIContainer);
 
         return $this->finder;
@@ -153,8 +171,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetDiContainer()
     {
-        $object = new Loader\FinderStandard('', '');
-        $this->assertNull($object->getDIContainer());
+        $object = new Loader\FinderStandard('', '', $this->getClassLoaderMock());
         $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
