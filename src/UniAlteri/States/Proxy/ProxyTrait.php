@@ -587,7 +587,7 @@ trait ProxyTrait
 
         if (is_array($enabledStatesList) && !empty($enabledStatesList)) {
             //array_flip + isset is more efficient than in_array
-            $stateName = str_replace('_', '', strtolower($stateName));
+            $stateName = strtr(strtolower($stateName), '_', '');
             $enabledStatesList = array_flip(
                 array_map('strtolower', $enabledStatesList)
             );

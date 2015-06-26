@@ -114,7 +114,7 @@ class LoaderComposer implements LoaderInterface
     public function registerNamespace(string $namespace, string $path): LoaderInterface
     {
         if ('\\' !== $namespace[strlen($namespace)-1]) {
-            $namespace .= '\\';
+            $namespace = ltrim($namespace, '\\').'\\';
         }
 
         $this->composerInstance->addPsr4($namespace, $path);
@@ -153,7 +153,8 @@ class LoaderComposer implements LoaderInterface
      */
     public function loadClass(string $className): LoaderInterface
     {
-        if (isset($this->loadingFactoriesClassNameArray[$className])) {
+        if (isset($this->loadingFactoriesClassNameArray[$className])
+            || 0 === strpos($className, 'UniAlteri\\States')) {
             return $this;
         }
 

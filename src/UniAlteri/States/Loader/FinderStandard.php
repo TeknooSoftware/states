@@ -22,7 +22,7 @@
 
 namespace UniAlteri\States\Loader;
 
-use Symfony\Component\Finder\Finder;
+use Composer\Autoload\ClassLoader;
 use UniAlteri\States\DI;
 use UniAlteri\States\States;
 use UniAlteri\States\Proxy;
@@ -80,15 +80,39 @@ class FinderStandard implements FinderInterface
     protected $statesNamesList;
 
     /**
+     * @var ClassLoader
+     */
+    protected $composerInstance;
+
+    /**
      * Initialize finder.
      *
      * @param string $statedClassName
      * @param string $pathString
+     * @param ClassLoader $composerInstance
      */
-    public function __construct(string $statedClassName, string $pathString)
+    public function __construct(string $statedClassName, string $pathString, ClassLoader $composerInstance)
     {
         $this->statedClassName = $statedClassName;
         $this->pathString = $pathString;
+        $this->composerInstance = $composerInstance;
+    }
+
+    /**
+     * Check if a required class exists, and if not, try to load it via composer and recheck.
+     * Can not use directly autoloader with class_exists. Sometimes it's behavior is non consistent
+     * with spl_autoload_register.
+     *
+     * @param string $className
+     * @return bool
+     */
+    protected function testClassExists($className)
+    {
+        if (class_exists($className, false)) {
+            return true;
+        }
+
+        return $this->composerInstance->loadClass($className) && class_exists($className, false);
     }
 
     /**
@@ -194,7 +218,7 @@ class FinderStandard implements FinderInterface
     public function loadState(string $stateName): string
     {
         $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
-        if (!class_exists($stateClassName)) {
+        if (!$this->testClassExists($stateClassName)) {
             throw new Exception\UnavailableState(
                 sprintf('Error, the state "%s" is not available', $stateName)
             );
@@ -259,7 +283,8 @@ class FinderStandard implements FinderInterface
         //Build the class name
         $classPartName = $this->getClassedName($this->statedClassName);
         $proxyClassName = $this->statedClassName.'\\'.$classPartName;
-        if (!class_exists($proxyClassName)) {
+
+        if (!$this->testClassExists($proxyClassName)) {
             //The stated class has not its own proxy, reuse the standard proxy, as an alias
             class_alias($this->defaultProxyClassName, $proxyClassName, true);
             class_alias($this->defaultProxyClassName, $this->statedClassName, false);
