@@ -189,6 +189,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         } catch (Exception\UnavailablePath $e) {
             return;
         } catch (\Exception $e) {
+            $this->fail($e->getMessage());
         }
 
         $this->fail('Error, if the state path does not exist, the Finder must throw an exception `Exception\UnavailablePath`');
@@ -205,6 +206,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         } catch (Exception\UnavailablePath $e) {
             return;
         } catch (\Exception $e) {
+            $this->fail($e->getMessage());
         }
 
         $this->fail('Error, if the state path does not exist, the Finder must throw an exception `Exception\UnavailablePath`');
@@ -241,6 +243,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         } catch (Exception\UnavailableState $e) {
             return;
         } catch (\Exception $e) {
+            $this->fail($e->getMessage());
         }
 
         $this->fail('Error, if the state file does not contain the required class, the Finder must throw an exception `Exception\UnavailableState`');
@@ -277,6 +280,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         } catch (Exception\UnavailableState $e) {
             return;
         } catch (\Exception $e) {
+            $this->fail($e->getMessage());
         }
 
         $this->fail('Error, if the state file does not contain the required class, the Finder must throw an exception `Exception\UnavailableState`');
@@ -289,7 +293,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeFinder('Class1', $this->statedClass1Path);
 
-        $this->getClassLoaderMock()->expects($this->once())
+        $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
             ->with($this->equalTo('Class1\States\State3'))
             ->willReturnCallback(function () {
@@ -303,6 +307,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         } catch (Exception\IllegalState $e) {
             return;
         } catch (\Exception $e) {
+            $this->fail($e->getMessage());
         }
 
         $this->fail('Error, if the state file does not implement the interface States\StateInterface, the Finder must throw an exception `Exception\IllegalState`');
@@ -315,7 +320,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeFinder('Class1', $this->statedClass1Path);
 
-        $this->getClassLoaderMock()->expects($this->once())
+        $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
             ->with($this->equalTo('Class1\States\State4'))
             ->willReturnCallback(function () {
@@ -337,7 +342,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeFinder('Class2', $this->statedClass2Path);
 
-        $this->getClassLoaderMock()->expects($this->once())
+        $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
             ->with($this->equalTo('Class2\\Class2'))
             ->willReturnCallback(function () {
@@ -362,19 +367,19 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test the behavior of the finder when the building proxy has not been found into the proxy file.
+     * Test the behavior of the finder when the building proxy does not implement the interface Proxy\ProxyInterface.
      */
-    public function testBuildProxySpecificBadClass()
+    public function testBuildProxySpecificBadInterface()
     {
-        $this->initializeFinder('Class3', $this->statedClass3Path);
+        $this->initializeFinder('Class4', $this->statedClass4Path);
 
-        $this->getClassLoaderMock()->expects($this->once())
+        $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
-            ->with($this->equalTo('Class3\\Class3'))
+            ->with($this->equalTo('Class4\Class4'))
             ->willReturnCallback(function () {
-                include_once $this->statedClass3Path.'/Class3.php';
+                include_once $this->statedClass4Path.'/Class4.php';
 
-                return false;
+                return true;
             });
 
         try {
@@ -383,22 +388,6 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
             return;
         } catch (\Exception $e) {
             $this->fail($e->getMessage());
-        }
-
-        $this->fail('Error, the finder must throw an exception Exception\IllegalProxy when the proxy class was not found.');
-    }
-
-    /**
-     * Test the behavior of the finder when the building proxy does not implement the interface Proxy\ProxyInterface.
-     */
-    public function testBuildProxySpecificBadInterface()
-    {
-        $this->initializeFinder('Class4', $this->statedClass4Path);
-        try {
-            $this->finder->buildProxy();
-        } catch (Exception\IllegalProxy $e) {
-            return;
-        } catch (\Exception $e) {
         }
 
         $this->fail('Error, the finder must throw an exception Exception\IllegalProxy when the proxy does not implement the proxy interface.');
@@ -410,6 +399,16 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     public function testLoadProxySpecific()
     {
         $this->initializeFinder('Class5', $this->statedClass5Path);
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->with($this->equalTo('Class5\Class5'))
+            ->willReturnCallback(function () {
+                include_once $this->statedClass5Path.'/Class5.php';
+
+                return true;
+            });
+
         $this->finder->setDIContainer(new Support\MockDIContainer());
         $proxyClassName = $this->finder->loadProxy();
         $this->assertEquals('Class5\\Class5', $proxyClassName);
@@ -422,6 +421,16 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     public function testBuildProxySpecific()
     {
         $this->initializeFinder('Class5', $this->statedClass5Path);
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->with($this->equalTo('Class5\Class5'))
+            ->willReturnCallback(function () {
+                include_once $this->statedClass5Path.'/Class5.php';
+
+                return true;
+            });
+
         $this->finder->setDIContainer(new Support\MockDIContainer());
         $proxy = $this->finder->buildProxy();
         $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
@@ -461,6 +470,15 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     public function testListParentsClassesNamesNoParent()
     {
         $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\Class6', $this->statedClass6Path);
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) {
+                include_once $this->statedClass6Path . '/Class6.php';
+
+                return true;
+            });
+
         $this->finder->loadProxy();
         $this->assertEmpty($this->finder->listParentsClassesNames());
     }
@@ -472,10 +490,10 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\Class7', $this->statedClass7Path);
 
-        $this->getClassLoaderMock()->expects($this->once())
+        $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
             ->willReturnCallback(function ($className) {
-                print $className;
+                include_once $this->statedClass6Path . '/Class6.php';
                 include_once $this->statedClass7Path.'/Class7.php';
 
                 return true;
@@ -495,10 +513,12 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\Class8', $this->statedClass8Path);
 
-        $this->getClassLoaderMock()->expects($this->once())
+        $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
             ->with($this->equalTo('UniAlteri\Tests\Support\StatedClass\Class8\Class8'))
             ->willReturnCallback(function () {
+                include_once $this->statedClass6Path . '/Class6.php';
+                include_once $this->statedClass7Path . '/Class7.php';
                 include_once $this->statedClass8Path.'/Class8.php';
 
                 return true;
