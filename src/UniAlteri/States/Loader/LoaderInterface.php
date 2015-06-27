@@ -90,13 +90,13 @@ interface LoaderInterface
      *
      * @param string $className class name, support namespace prefixes
      *
-     * @return $this
+     * @return bool
      *
      * @throws \Exception
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      */
-    public function loadClass(string $className): LoaderInterface;
+    public function loadClass(string $className): bool;
 
     /**
      * Build the factory and initialize the loading stated class.

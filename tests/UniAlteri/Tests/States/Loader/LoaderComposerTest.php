@@ -22,6 +22,7 @@
 
 namespace UniAlteri\Tests\States\Loader;
 
+use Composer\Autoload\ClassLoader;
 use UniAlteri\States\Loader;
 use UniAlteri\States\Loader\Exception;
 use UniAlteri\Tests\Support;
@@ -62,6 +63,11 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     protected $pharFileNamespace = null;
 
     /**
+     * @var ClassLoader;
+     */
+    protected $classLoaderMock;
+
+    /**
      * Prepare environment before test.
      */
     protected function setUp()
@@ -98,21 +104,25 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * @return ClassLoader|\PHPUnit_Framework_MockObject_MockObject
+     */
+    protected function getClassLoaderMock()
+    {
+        if (!$this->classLoaderMock instanceof ClassLoader) {
+            $this->classLoaderMock = $this->getMock('Composer\Autoload\ClassLoader', [], [], '', false);
+        }
+
+        return $this->classLoaderMock;
+    }
+
+    /**
      * Load object to test it.
-     *
-     * @param bool $standardIncludePathManager to load the standard Include Path Manager from this lib and not
-     *                                         the test manager
-     * @param bool $enablePSR0                 to enable psr0 behavior in loader or not
      *
      * @return Loader\LoaderComposer
      */
-    protected function initializeLoader($standardIncludePathManager = false, $enablePSR0 = false)
+    protected function initializeLoader()
     {
-        if (false == $standardIncludePathManager) {
-            $this->loader = new Loader\LoaderComposer($this->includePathManager, $enablePSR0);
-        } else {
-            $this->loader = new Loader\LoaderComposer(new Loader\IncludePathManager(), $enablePSR0);
-        }
+        $this->loader = new Loader\LoaderComposer($this->getClassLoaderMock());
 
         $this->loader->setDIContainer(new Support\MockDIContainer());
         $this->loader->getDIContainer()->registerService(
@@ -130,7 +140,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetDiContainer()
     {
-        $object = new Loader\LoaderComposer($this->includePathManager);
+        $object = new Loader\LoaderComposer($this->getClassLoaderMock());
         $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());
@@ -143,42 +153,6 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     public function testLoadClassNonExistent()
     {
         $this->assertFalse($this->initializeLoader()->loadClass('badName'));
-    }
-
-    /**
-     * Developers can register several namespace with several locations into the loader to accelerate the loading process.
-     */
-    public function testRegisterNamespace()
-    {
-        $loader = $this->initializeLoader();
-        $loader->registerNamespace('namespace1', 'path1');
-        $loader->registerNamespace('namespace2', 'path2');
-        $this->assertEquals(
-            array(
-                '\\namespace1' => new \SplQueue(array('path1')),
-                '\\namespace2' => new \SplQueue(array('path2')),
-            ),
-            $loader->listNamespaces()->getArrayCopy()
-        );
-    }
-
-    /**
-     * Developers can register several namespace with several locations into the loader to accelerate the loading process
-     * A same namespace can accept several locations.
-     */
-    public function testRegisterNamespaceMultiplePath()
-    {
-        $loader = $this->initializeLoader();
-        $loader->registerNamespace('namespace2', 'path2');
-        $loader->registerNamespace('namespace1', 'path1');
-        $loader->registerNamespace('namespace1', 'path3');
-        $this->assertEquals(
-            array(
-                '\\namespace1' => new \SplQueue(array('path1', 'path3')),
-                '\\namespace2' => new \SplQueue(array('path2')),
-            ),
-            $loader->listNamespaces()->getArrayCopy()
-        );
     }
 
     /**

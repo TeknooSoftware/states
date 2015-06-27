@@ -290,7 +290,9 @@ class FinderStandard implements FinderInterface
             class_alias($this->defaultProxyClassName, $this->statedClassName, false);
         } else {
             //To access this class directly without repeat the stated class name
-            class_alias($proxyClassName, $this->statedClassName, false);
+            if (!class_exists($this->statedClassName, false)) {
+                class_alias($proxyClassName, $this->statedClassName, false);
+            }
         }
 
         return $proxyClassName;

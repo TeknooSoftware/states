@@ -145,17 +145,17 @@ class LoaderComposer implements LoaderInterface
      *
      * @param string $className class name, support namespace prefixes
      *
-     * @return $this
+     * @return bool
      *
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      * @throws \Exception
      */
-    public function loadClass(string $className): LoaderInterface
+    public function loadClass(string $className): bool
     {
         if (isset($this->loadingFactoriesClassNameArray[$className])
             || 0 === strpos($className, 'UniAlteri\\States')) {
-            return $this;
+            return false;
         }
 
         $factoryClassName = $className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
@@ -181,9 +181,11 @@ class LoaderComposer implements LoaderInterface
                 $statedClassName,
                 dirname($this->composerInstance->findFile($factoryClassName))
             );
+
+            return true;
         }
 
-        return $this;
+        return false;
     }
 
     /**
