@@ -218,6 +218,35 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return false;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
     }
@@ -231,6 +260,35 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1'));
     }
@@ -244,6 +302,35 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Class1b':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1b'));
     }
@@ -257,6 +344,35 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Class1b\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Class1b':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Class1b'));
     }
@@ -270,6 +386,35 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                        include_once $path.'/Class2/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                        include_once $path.'/Class2/Class2.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
     }
@@ -283,6 +428,35 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                        include_once $path.'/Class2/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                        include_once $path.'/Class2/Class2.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2'));
     }
@@ -296,6 +470,35 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
     }
@@ -309,6 +512,35 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1'));
     }
@@ -322,6 +554,35 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                        include_once $path.'/Class2/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                        include_once $path.'/Class2/Class2.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
     }
@@ -335,6 +596,37 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                        include_once $path.'/Class2/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                        include_once $path.'/Class2/Class2.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2'));
     }
@@ -343,11 +635,41 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
+     * @expectedException \Exception
      */
     public function testLoadClassViaNameSpaceAbsoluteWithFactoryException()
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Factory':
+                        include_once $path.'/Class3/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3':
+                        include_once $path.'/Class3/Class3.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3'));
     }
@@ -356,11 +678,41 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
+     * @expectedException \Exception
      */
     public function testLoadClassViaNameSpaceWithProxyAbsoluteWithFactoryException()
     {
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Factory':
+                        include_once $path.'/Class3/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3':
+                        include_once $path.'/Class3/Class3.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3'));
     }
@@ -379,6 +731,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar'));
     }
@@ -397,6 +779,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar'));
     }
@@ -415,8 +827,38 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1bOharPhar'));
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar'));
     }
 
     /**
@@ -433,6 +875,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar'));
     }
@@ -451,6 +923,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Factory':
+                        include_once $path.'/Class2Phar/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
+                        include_once $path.'/Class2Phar/Class2.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar'));
     }
@@ -469,6 +971,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Factory':
+                        include_once $path.'/Class2Phar/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
+                        include_once $path.'/Class2Phar/Class2.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
     }
@@ -487,6 +1019,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class2Phar':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar'));
     }
@@ -505,6 +1067,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar'));
     }
@@ -523,6 +1115,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Factory':
+                        include_once $path.'/Class2Phar/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
+                        include_once $path.'/Class2Phar/Class2Phar.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar'));
     }
@@ -541,6 +1163,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Factory':
+                        include_once $path.'/Class2Phar/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
+                        include_once $path.'/Class2Phar/Class2Phar.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
     }
@@ -549,6 +1201,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
+     * @expectedException \Exception
      */
     public function testLoadClassInPharViaNameSpaceAbsoluteWithFactoryException()
     {
@@ -559,6 +1212,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Factory':
+                        include_once $path.'/Class3Phar/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar':
+                        include_once $path.'/Class3Phar/Class3Phar.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar'));
     }
@@ -567,6 +1250,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
+     * @expectedException \Exception
      */
     public function testLoadClassInPharViaNameSpaceWithProxyAbsoluteWithFactoryException()
     {
@@ -577,6 +1261,36 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $loader = $this->initializeLoader();
+        $path = 'phar://'.$this->pharFileNamespace;
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Factory':
+                        include_once $path.'/Class3Phar/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar':
+                        include_once $path.'/Class3Phar/Class3Phar.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar'));
     }
