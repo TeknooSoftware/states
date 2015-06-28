@@ -48,7 +48,7 @@ class Container extends \Pimple\Container implements ContainerInterface
      */
     protected function validateName(string $name): bool
     {
-        if (is_string($name) && 1 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_\-]*#iS', $name)) {
+        if (1 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_\-]*#iS', $name)) {
             return true;
         }
 

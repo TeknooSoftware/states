@@ -325,10 +325,6 @@ trait StateTrait
         string $scope = StateInterface::VISIBILITY_PUBLIC,
         string $statedClassOriginName = null
     ): bool {
-        if (!is_string($methodName)) {
-            throw new Exception\InvalidArgument('Error, the method name is not a valid string');
-        }
-
         //Method is already extracted
         if (isset($this->reflectionsMethods[$methodName])) {
             if ($this->reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
@@ -365,10 +361,6 @@ trait StateTrait
      */
     public function getMethodDescription(string $methodName): \ReflectionMethod
     {
-        if (!is_string($methodName)) {
-            throw new Exception\InvalidArgument('Error, the method name is not a valid string');
-        }
-
         if (isset($this->methodsNamesToIgnoreArray[$methodName])) {
             throw new Exception\MethodNotImplemented('Error, this method is not implemented by this state');
         }
@@ -425,17 +417,9 @@ trait StateTrait
         string $scope = StateInterface::VISIBILITY_PUBLIC,
         string $statedClassOriginName = null
     ): \Closure {
-        if (!is_string($methodName)) {
-            throw new Exception\InvalidArgument('Error, the method name is not a valid string');
-        }
-
         if (!($this->closuresObjects instanceof \ArrayObject)) {
             //Initialize locale closure cache
             $this->closuresObjects = new \ArrayObject();
-        }
-
-        if (!$proxy instanceof Proxy\ProxyInterface) {
-            throw new Exception\IllegalProxy('Error, the proxy does not implement the required proxy');
         }
 
         if (!isset($this->closuresObjects[$methodName])) {

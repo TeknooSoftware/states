@@ -174,19 +174,8 @@ trait ProxyTrait
      */
     protected function findMethodToCall(string $methodName, array &$arguments)
     {
-        if (!is_string($methodName)) {
-            throw new Exception\IllegalArgument('Error the methodName is not a string');
-        }
-
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
-        $limit = 4;
-        if (PHP_MAJOR_VERSION < 7) {
-            //Support for PHP5, in PHP7, the method debug_backtrace() returns one line in less than with PHP5
-            //So we increase the limit with PHP5 to retrieve and check the good object
-            $limit = 5;
-        }
-
-        $scopeVisibility = $this->getVisibilityScope($limit);
+        $scopeVisibility = $this->getVisibilityScope(4);
 
         $callerStatedClassName = $this->getCallerStatedClassName();
 
@@ -245,10 +234,6 @@ trait ProxyTrait
      */
     protected function validateName(string $name): bool
     {
-        if (!is_string($name)) {
-            throw new Exception\IllegalArgument('Error, the identifier is not a string');
-        }
-
         if (1 == preg_match('#^[a-zA-Z_][a-zA-Z0-9_\-]*#iS', $name)) {
             return true;
         }
@@ -578,10 +563,6 @@ trait ProxyTrait
      */
     public function inState(string $stateName): bool
     {
-        if (!is_string($stateName) && (is_object($stateName) && !is_callable(array($stateName, '__toString')))) {
-            throw new Exception\InvalidArgument('Error, $stateName is not valid');
-        }
-
         $stateName = (string) $stateName;
         $enabledStatesList = $this->listEnabledStates();
 
@@ -636,15 +617,7 @@ trait ProxyTrait
      */
     public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {
-        if (!is_string($methodName)) {
-            throw new Exception\InvalidArgument('Error, the method name is not a valid string');
-        }
-
-        if (null !== $stateName && !is_string($stateName)) {
-            throw new Exception\InvalidArgument('Error, the state name is not a valid string');
-        }
-
-        //Retrieve the visibility scope
+       //Retrieve the visibility scope
         $scopeVisibility = $this->getVisibilityScope(3);
         $callerStatedClassName = $this->getCallerStatedClassName();
         try {
