@@ -174,11 +174,7 @@ trait FactoryTrait
 
         //Initialize Stated class container
         $diContainer = $this->getDIContainer();
-        if ($diContainer instanceof DI\ContainerInterface) {
-            $diContainer->registerInstance(FactoryInterface::DI_FACTORY_NAME, $this);
-        } else {
-            throw new Exception\UnavailableDIContainer('Error, the Di Container is not available');
-        }
+        $diContainer->registerInstance(FactoryInterface::DI_FACTORY_NAME, $this);
 
         //Initialize proxy
         $finder = $this->getFinder();
@@ -289,14 +285,6 @@ trait FactoryTrait
         //Get all states available
         $statesList = $this->listStatesByClasses();
 
-        //Check if the default state is available
-        $defaultStatedName = Proxy\ProxyInterface::DEFAULT_STATE_NAME;
-        if (!isset($statesList[$defaultStatedName])) {
-            throw new Exception\StateNotFound(
-                sprintf('Error, the state "%s" was not found in this stated class', $defaultStatedName)
-            );
-        }
-
         //Check if the require state is available
         if (null !== $stateName && !isset($statesList[$stateName])) {
             throw new Exception\StateNotFound(
@@ -319,8 +307,9 @@ trait FactoryTrait
         //Switch to required state
         if (null !== $stateName) {
             $proxyObject->switchState($stateName);
-        } else {
-            $proxyObject->switchState($defaultStatedName);
+        } elseif (isset($statesList[Proxy\ProxyInterface::DEFAULT_STATE_NAME])) {
+            //No requiried stated name, check if the default state is available and load it
+            $proxyObject->switchState(Proxy\ProxyInterface::DEFAULT_STATE_NAME);
         }
 
         return $this;

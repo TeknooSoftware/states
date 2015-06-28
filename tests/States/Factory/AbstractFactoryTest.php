@@ -245,16 +245,12 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Test exceptions thrown when the stated class has no default state.
      */
-    public function testExceptionDefaultStateNotAvailableInStartup()
+    public function testBehaviorDefaultStateNotAvailableInStartup()
     {
-        try {
-            Support\MockFinder::$ignoreDefaultState = true;
-            $this->getFactoryObject()->startup(new Support\MockProxy(null));
-        } catch (Exception\StateNotFound $exception) {
-            return;
-        }
-
-        $this->fail('Error, if the stated class has not a default state, the factory must throw an exception StateNotFound');
+        Support\MockFinder::$ignoreDefaultState = true;
+        $proxy = new Support\MockProxy(null);
+        $this->getFactoryObject()->startup($proxy);
+        $this->assertEmpty($proxy->listEnabledStates());
     }
 
     /**
@@ -430,16 +426,11 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     /**
      * Test exceptions thrown when the stated class has no default state.
      */
-    public function testExceptionDefaultStateNotAvailable()
+    public function testBehaviorDefaultStateNotAvailable()
     {
-        try {
-            Support\MockFinder::$ignoreDefaultState = true;
-            $this->getFactoryObject()->build();
-        } catch (Exception\StateNotFound $exception) {
-            return;
-        }
-
-        $this->fail('Error, if the stated class has not a default state, the factory must throw an exception StateNotFound');
+        Support\MockFinder::$ignoreDefaultState = true;
+        $proxy = $this->getFactoryObject()->build();
+        $this->assertEmpty($proxy->listEnabledStates());
     }
 
     /**
