@@ -26,7 +26,7 @@ use Gaufrette\Adapter\Local;
 use Gaufrette\Filesystem;
 use Symfony\Component\Console\Application;
 
-require_once dirname(dirname(dirname(dirname(__DIR__)))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
+require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'bootstrap.php';
 
 /*
  * @param string $directory
