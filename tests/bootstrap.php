@@ -26,7 +26,7 @@ defined('PHPUNIT')
     || define('PHPUNIT', true);
 
 defined('UA_STATES_TEST_PATH')
-    || define('UA_STATES_TEST_PATH', __DIR__.DIRECTORY_SEPARATOR.'UniAlteri'.DIRECTORY_SEPARATOR.'Tests');
+    || define('UA_STATES_TEST_PATH', __DIR__);
 
 ini_set('memory_limit', '64M');
 
@@ -43,7 +43,7 @@ error_reporting(E_ALL | E_STRICT);
 
 //Prevent error
 $iterator = new RecursiveIteratorIterator(
-    new RecursiveDirectoryIterator(__DIR__.'/UniAlteri/Tests/Support'),
+    new RecursiveDirectoryIterator(__DIR__.'/Support'),
     RecursiveIteratorIterator::SELF_FIRST
 );
 

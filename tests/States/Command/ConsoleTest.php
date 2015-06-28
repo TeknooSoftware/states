@@ -37,7 +37,7 @@ class ConsoleTest extends \PHPUnit_Framework_TestCase
 {
     public function testConsole()
     {
-        $application = include __DIR__.'/../../../../../src/UniAlteri/States/Command/console.php';
+        $application = include __DIR__.'/../../../src/Command/console.php';
         $this->assertInstanceOf('Symfony\Component\Console\Application', $application);
 
         $this->assertEquals(
@@ -55,7 +55,7 @@ class ConsoleTest extends \PHPUnit_Framework_TestCase
 
     public function testFileSystemFactory()
     {
-        $application = include __DIR__.'/../../../../../src/UniAlteri/States/Command/console.php';
+        $application = include __DIR__.'/../../../src/Command/console.php';
         $command = $application->get('class:create');
         $fileSystemFactory = $command->getFileSystemFactory();
 
@@ -65,7 +65,7 @@ class ConsoleTest extends \PHPUnit_Framework_TestCase
 
     public function testFactory()
     {
-        $application = include __DIR__.'/../../../../../src/UniAlteri/States/Command/console.php';
+        $application = include __DIR__.'/../../../src/Command/console.php';
         $command = $application->get('class:create');
         $factory = $command->getFactory();
 

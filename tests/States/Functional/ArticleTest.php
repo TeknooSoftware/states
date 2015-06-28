@@ -53,7 +53,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     protected function getLoader()
     {
         if (null === $this->loader) {
-            $this->loader = include __DIR__.'/../../../../../src/UniAlteri/States/bootstrap.php';
+            $this->loader = include __DIR__.'/../../../src/bootstrap.php';
         }
 
         return $this->loader;

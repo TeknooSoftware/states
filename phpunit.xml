@@ -11,7 +11,7 @@
         colors="true">
     <testsuites>
         <testsuite name="Uni Alteri/States Test Suite">
-            <directory>tests/UniAlteri/Tests</directory>
+            <directory>tests/</directory>
         </testsuite>
     </testsuites>
 
