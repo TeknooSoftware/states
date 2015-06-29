@@ -49,21 +49,21 @@ class FinderStandard implements FinderInterface
      *
      * @var string
      */
-    protected $statedClassName;
+    private $statedClassName;
 
     /**
      * Folder/Phar of the stated class.
      *
      * @var string
      */
-    protected $pathString;
+    private $pathString;
 
     /**
      * DI Container to use with this finder.
      *
      * @var DI\ContainerInterface
      */
-    protected $diContainer;
+    private $diContainer;
 
     /**
      * Default proxy class to use when there are no proxy class.
@@ -77,12 +77,12 @@ class FinderStandard implements FinderInterface
      *
      * @var \ArrayObject
      */
-    protected $statesNamesList;
+    private $statesNamesList;
 
     /**
      * @var ClassLoader
      */
-    protected $composerInstance;
+    private $composerInstance;
 
     /**
      * Initialize finder.
@@ -106,7 +106,7 @@ class FinderStandard implements FinderInterface
      * @param string $className
      * @return bool
      */
-    protected function testClassExists($className)
+    private function testClassExists($className)
     {
         if (class_exists($className, false)) {
             return true;
@@ -263,7 +263,7 @@ class FinderStandard implements FinderInterface
      *
      * @return string
      */
-    protected function getClassedName(string $statedClassName): string
+    private function getClassedName(string $statedClassName): string
     {
         $parts = explode('\\', $statedClassName);
 

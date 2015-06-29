@@ -54,35 +54,35 @@ trait StateTrait
      *
      * @var DI\ContainerInterface
      */
-    protected $diContainer;
+    private $diContainer;
 
     /**
      * List of methods available for this state.
      *
      * @var \ArrayObject
      */
-    protected $methodsListArray;
+    private $methodsListArray;
 
     /**
      * Reflection class object of this state to extract closures and description.
      *
      * @var \ReflectionClass
      */
-    protected $reflectionClass;
+    private $reflectionClass;
 
     /**
      * Reflections methods of this state to extract description and closures.
      *
      * @var \ReflectionMethod[]
      */
-    protected $reflectionsMethods;
+    private $reflectionsMethods;
 
     /**
      * List of closures already extracted and set into Injection Closure Container.
      *
      * @var \Closure[]
      */
-    protected $closuresObjects;
+    private $closuresObjects;
 
     /**
      * Methods to not return into descriptions.
@@ -111,14 +111,14 @@ trait StateTrait
      *
      * @var bool
      */
-    protected $privateModeStatus = false;
+    private $privateModeStatus = false;
 
     /**
      * To know the canonical stated class name of the object owning this state container.
      *
      * @var string
      */
-    protected $statedClassName;
+    private $statedClassName;
 
     /**
      * To build the ReflectionClass for the current object.
@@ -127,7 +127,7 @@ trait StateTrait
      *
      * @return \ReflectionClass
      */
-    protected function getReflectionClass(): \ReflectionClass
+    private function getReflectionClass(): \ReflectionClass
     {
         if (null === $this->reflectionClass) {
             $this->reflectionClass = new \ReflectionClass(\get_class($this));
@@ -260,7 +260,7 @@ trait StateTrait
      *
      * @throws Exception\InvalidArgument
      */
-    protected function checkVisibility(
+    private function checkVisibility(
         string $methodName,
         string $scope,
         string $statedClassOriginName = null

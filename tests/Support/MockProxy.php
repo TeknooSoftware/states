@@ -224,6 +224,16 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
+     * To return the list of all states entity available for this object
+     *
+     * @return \ArrayObject|States\States\StateInterface[]
+     */
+    public function getStatesList()
+    {
+        return $this->states;
+    }
+
+    /**
      * Check if the current entity is in the required state defined by $stateName.
      *
      * @param string $stateName

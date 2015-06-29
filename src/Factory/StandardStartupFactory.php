@@ -46,7 +46,7 @@ class StandardStartupFactory implements StartupFactoryInterface
      *
      * @var FactoryInterface[]|\ArrayObject
      */
-    protected static $factoryRegistry;
+    private static $factoryRegistry;
 
     /**
      * To find the factory to use for the new proxy object to initialize it with its container and states.

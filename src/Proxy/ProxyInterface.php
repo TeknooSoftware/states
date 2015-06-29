@@ -168,6 +168,13 @@ interface ProxyInterface
     public function listEnabledStates();
 
     /**
+     * To return the list of all states entity available for this object
+     *
+     * @return \ArrayObject|States\States\StateInterface[]
+     */
+    public function getStatesList();
+
+    /**
      * Check if the current entity is in the required state defined by $stateName.
      *
      * @param string $stateName

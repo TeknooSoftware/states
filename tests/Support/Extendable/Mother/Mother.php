@@ -47,7 +47,7 @@ class Mother extends Proxy\Integrated
     public function listMethodsByStates()
     {
         $methodsList = array();
-        foreach ($this->states as $stateName => $stateContainer) {
+        foreach ($this->getStatesList() as $stateName => $stateContainer) {
             $methodsList[$stateName] = $stateContainer->listMethods()->getArrayCopy();
         }
 

@@ -48,35 +48,35 @@ trait FactoryTrait
      *
      * @var DI\ContainerInterface
      */
-    protected $diContainer;
+    private $diContainer;
 
     /**
      * Finder used by this factory to load states and proxy for this stated class.
      *
      * @var Loader\FinderInterface
      */
-    protected $finder;
+    private $finder;
 
     /**
      * The stated class name used with this factory.
      *
      * @var string
      */
-    protected $statedClassName;
+    private $statedClassName;
 
     /**
      * The path of the stated class.
      *
      * @var string
      */
-    protected $path;
+    private $path;
 
     /**
      * To list states by stated classes (this class and its parents).
      *
      * @var \ArrayObject
      */
-    protected $statesByClassesList;
+    private $statesByClassesList;
 
     /**
      * To register a DI container for this object.
@@ -191,7 +191,7 @@ trait FactoryTrait
      *
      * @return $this
      */
-    protected function registerFactoryInRepository(): FactoryInterface
+    private function registerFactoryInRepository(): FactoryInterface
     {
         if (!empty($this->statedClassName) && $this->diContainer->testEntry(FactoryInterface::DI_FACTORY_REPOSITORY)) {
             $this->diContainer->get(FactoryInterface::DI_FACTORY_REPOSITORY)
@@ -210,7 +210,7 @@ trait FactoryTrait
      *
      * @throws Exception\UnavailableFactory when the required factory is not available
      */
-    protected function getFactoryFromStatedClassName(string $className): FactoryInterface
+    private function getFactoryFromStatedClassName(string $className): FactoryInterface
     {
         if ($this->diContainer->testEntry(FactoryInterface::DI_FACTORY_REPOSITORY)) {
             $repositoryContainer = $this->diContainer->get(FactoryInterface::DI_FACTORY_REPOSITORY);
@@ -229,7 +229,7 @@ trait FactoryTrait
      *
      * @throws Exception\UnavailableLoader
      */
-    protected function listStatesByClasses()
+    private function listStatesByClasses()
     {
         if (!$this->statesByClassesList instanceof \ArrayObject) {
             $statesByClassesList = new \ArrayObject();

@@ -52,21 +52,21 @@ trait ProxyTrait
      *
      * @var DI\ContainerInterface
      */
-    protected $diContainer;
+    private $diContainer;
 
     /**
      * List of currently enabled states.
      *
      * @var \ArrayObject|States\States\StateInterface[]
      */
-    protected $activesStates;
+    private $activesStates;
 
     /**
      * List of available states for this stated object.
      *
      * @var \ArrayObject|States\States\StateInterface[]
      */
-    protected $states;
+    private $states;
 
     /**
      * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
@@ -74,14 +74,14 @@ trait ProxyTrait
      *
      * @var string[]|\SplStack
      */
-    protected $callerStatedClassesStack;
+    private $callerStatedClassesStack;
 
     /**
      * To get the class name of the caller according to scope visibility.
      *
      * @return string
      */
-    protected function getCallerStatedClassName(): string
+    private function getCallerStatedClassName(): string
     {
         if (true !== $this->callerStatedClassesStack->isEmpty()) {
             return $this->callerStatedClassesStack->top();
@@ -98,7 +98,7 @@ trait ProxyTrait
      *
      * @return $this
      */
-    protected function pushCallerStatedClassName(States\States\StateInterface $state): ProxyInterface
+    private function pushCallerStatedClassName(States\States\StateInterface $state): ProxyInterface
     {
         $this->callerStatedClassesStack->push($state->getStatedClassName());
 
@@ -110,7 +110,7 @@ trait ProxyTrait
      *
      * @return $this
      */
-    protected function popCallerStatedClassName(): ProxyInterface
+    private function popCallerStatedClassName(): ProxyInterface
     {
         if (false === $this->callerStatedClassesStack->isEmpty()) {
             $this->callerStatedClassesStack->pop();
@@ -132,7 +132,7 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws \Exception
      */
-    protected function callInState(
+    private function callInState(
         States\States\StateInterface $state,
         string $methodName,
         array &$arguments,
@@ -296,7 +296,7 @@ trait ProxyTrait
      *                States\States\StateInterface::VISIBILITY_PROTECTED
      *                States\States\StateInterface::VISIBILITY_PRIVATE
      */
-    protected function getVisibilityScope(int $limit): string
+    private function getVisibilityScope(int $limit): string
     {
         //Get the calling stack
         $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, (int) $limit);
@@ -369,7 +369,7 @@ trait ProxyTrait
         }
 
         //Clone states stack
-        if ($this->states instanceof \ArrayObject) {
+        if ($this->states instanceof \ArrayAccess) {
             $clonedStatesArray = new \ArrayObject();
             foreach ($this->states as $key => $state) {
                 //Clone each stated object
@@ -381,7 +381,7 @@ trait ProxyTrait
         }
 
         //Enabling states
-        if ($this->activesStates instanceof \ArrayObject) {
+        if ($this->activesStates instanceof \ArrayAccess) {
             $activesStates = array_keys($this->activesStates->getArrayCopy());
             $this->activesStates = new \ArrayObject();
             foreach ($activesStates as $stateName) {
@@ -531,7 +531,7 @@ trait ProxyTrait
      */
     public function listAvailableStates()
     {
-        if ($this->states instanceof \ArrayObject) {
+        if ($this->states instanceof \ArrayAccess) {
             return array_keys($this->states->getArrayCopy());
         } else {
             return array();
@@ -545,11 +545,25 @@ trait ProxyTrait
      */
     public function listEnabledStates()
     {
-        if ($this->activesStates instanceof \ArrayObject) {
+        if ($this->activesStates instanceof \ArrayAccess) {
             return array_keys($this->activesStates->getArrayCopy());
         } else {
             return array();
         }
+    }
+
+    /**
+     * To return the list of all states entity available for this object
+     *
+     * @return \ArrayAccess|States\States\StateInterface[]
+     */
+    public function getStatesList()
+    {
+        if ($this->states instanceof \ArrayAccess) {
+            return $this->states;
+        }
+
+        return new \ArrayObject();
     }
 
     /**

@@ -320,6 +320,37 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Check the proxy's method getStatesList behavior when there are no registered state.
+     */
+    public function testGetStatesListEmpty()
+    {
+        $this->assertEmpty($this->proxy->getStatesList()->getArrayCopy());
+    }
+
+    /**
+     * Check the proxy's method getStatesList behavior when there are no registered state.
+     */
+    public function testGetStatesListNoInit()
+    {
+        $proxyReflectionClass = new \ReflectionClass($this->proxy);
+        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
+        $this->assertEmpty($proxy->getStatesList()->getArrayCopy());
+    }
+
+    /**
+     * Check the proxy's method getStatesList behavior.
+     */
+    public function testGetStatesList()
+    {
+        $this->proxy->registerState('state1', $this->state1);
+        $this->proxy->registerState('state3', $this->state3);
+        $statesList = $this->proxy->getStatesList();
+        $this->assertEquals(2, $statesList->count());
+        $this->assertInstanceOf('UniAlteri\States\States\StateInterface', $statesList['state1']);
+        $this->assertInstanceOf('UniAlteri\States\States\StateInterface', $statesList['state3']);
+    }
+
+    /**
      * Check the proxy's method listEnabledStates behavior when there are no enable state.
      */
     public function testListEnabledStatesNotInit()
