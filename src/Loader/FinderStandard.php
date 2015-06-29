@@ -212,7 +212,6 @@ class FinderStandard implements FinderInterface
      *
      * @return string
      *
-     * @throws Exception\UnReadablePath   if the stated file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
     public function loadState(string $stateName): string
@@ -234,7 +233,6 @@ class FinderStandard implements FinderInterface
      *
      * @return States\StateInterface
      *
-     * @throws Exception\UnReadablePath   if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
@@ -275,8 +273,6 @@ class FinderStandard implements FinderInterface
      * If the class has not proxy, load the default proxy for this stated class.
      *
      * @return string
-     *
-     * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function loadProxy(): string
     {

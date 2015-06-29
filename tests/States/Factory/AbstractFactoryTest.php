@@ -138,21 +138,6 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * The method getFinder of the factory requires the di container to get the finder generator, else throw exception.
-     */
-    public function testGetFinderExceptionNoContainer()
-    {
-        try {
-            $this->getFactoryObject(false)->getFinder();
-        } catch (Exception\UnavailableDIContainer $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the factory must throw an exception when there are no di container');
-    }
-
-    /**
      * The method getFinder of the factory requires the finder generator, else throw exception.
      */
     public function testGetFinderExceptionNoFinderServiceGenerator()

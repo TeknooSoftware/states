@@ -129,7 +129,6 @@ trait ProxyTrait
      *
      * @return mixed
      *
-     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws \Exception
      */
     private function callInState(
@@ -168,8 +167,6 @@ trait ProxyTrait
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
-     * @throws Exception\IllegalArgument      if the method's name is not a string
      * @throws \Exception
      */
     protected function findMethodToCall(string $methodName, array &$arguments)
@@ -263,6 +260,7 @@ trait ProxyTrait
 
     /**
      * To register a DI container for this object.
+     * @api
      *
      * @param DI\ContainerInterface $container
      *
@@ -277,6 +275,7 @@ trait ProxyTrait
 
     /**
      * To return the DI Container used for this object.
+     * @api
      *
      * @return DI\ContainerInterface
      */
@@ -359,6 +358,7 @@ trait ProxyTrait
 
     /**
      * Called to clone an Object.
+     * @api
      *
      * @return $this
      */
@@ -398,13 +398,13 @@ trait ProxyTrait
 
     /**
      * To register dynamically a new state for this object.
+     * @api
      *
      * @param string                       $stateName
      * @param States\States\StateInterface $stateObject
      *
      * @return $this
      *
-     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function registerState(string $stateName, States\States\StateInterface $stateObject): ProxyInterface
@@ -418,12 +418,12 @@ trait ProxyTrait
 
     /**
      * To remove dynamically a state from this object.
+     * @api
      *
      * @param string $stateName
      *
      * @return $this
      *
-     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
@@ -446,12 +446,12 @@ trait ProxyTrait
 
     /**
      * To disable all actives states and enable the required states.
+     * @api
      *
      * @param string $stateName
      *
      * @return $this
      *
-     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function switchState(string $stateName): ProxyInterface
@@ -466,13 +466,13 @@ trait ProxyTrait
 
     /**
      * To enable a loaded states.
+     * @api
      *
      * @param $stateName
      *
      * @return $this
      *
      * @throws Exception\StateNotFound   if $stateName does not exist
-     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
     public function enableState(string $stateName): ProxyInterface
@@ -490,12 +490,12 @@ trait ProxyTrait
 
     /**
      * To disable an active state (not available for calling, but always loaded).
+     * @api
      *
      * @param string $stateName
      *
      * @return $this
      *
-     * @throws Exception\IllegalArgument when the identifier is not a string
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
@@ -514,6 +514,7 @@ trait ProxyTrait
 
     /**
      * To disable all actives states.
+     * @api
      *
      * @return $this
      */
@@ -526,6 +527,7 @@ trait ProxyTrait
 
     /**
      * To list all currently available states for this object.
+     * @api
      *
      * @return string[]
      */
@@ -540,6 +542,7 @@ trait ProxyTrait
 
     /**
      * To list all enable states for this object.
+     * @api
      *
      * @return string[]
      */
@@ -554,6 +557,7 @@ trait ProxyTrait
 
     /**
      * To return the list of all states entity available for this object
+     * @api
      *
      * @return \ArrayAccess|States\States\StateInterface[]
      */
@@ -568,12 +572,11 @@ trait ProxyTrait
 
     /**
      * Check if the current entity is in the required state defined by $stateName.
+     * @api
      *
      * @param string $stateName
      *
      * @return bool
-     *
-     * @throws Exception\InvalidArgument when $stateName is not a valid string
      */
     public function inState(string $stateName): bool
     {
@@ -599,6 +602,7 @@ trait ProxyTrait
 
     /**
      * To call a method of the Object.
+     * @api
      *
      * @param string $name
      * @param array  $arguments
@@ -607,8 +611,6 @@ trait ProxyTrait
      *
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
-     * @throws Exception\IllegalArgument      if the method's name is not a string
      */
     public function __call(string $name, array $arguments)
     {
@@ -617,6 +619,7 @@ trait ProxyTrait
 
     /**
      * To return the description of the method.
+     * @api
      *
      * @param string $methodName
      * @param string $stateName  : Return the description for a specific state of the object,
@@ -625,7 +628,6 @@ trait ProxyTrait
      * @return \ReflectionMethod
      *
      * @throws Exception\StateNotFound        is the state required is not available
-     * @throws Exception\InvalidArgument      where $methodName or $stateName are not string
      * @throws Exception\MethodNotImplemented when the method is not currently available
      * @throws \Exception                     to rethrows unknown exceptions
      */
@@ -670,13 +672,13 @@ trait ProxyTrait
 
     /**
      * To invoke an object as a function.
+     * @api
      *
      * @param mixed ...$args
      *
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __invoke(...$args)
     {
@@ -689,13 +691,13 @@ trait ProxyTrait
 
     /**
      * To get a property of the object.
+     * @api
      *
      * @param string $name
      *
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __get(string $name)
     {
@@ -706,13 +708,13 @@ trait ProxyTrait
 
     /**
      * To test if a property is set for the object.
+     * @api
      *
      * @param string $name
      *
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __isset(string $name)
     {
@@ -723,6 +725,7 @@ trait ProxyTrait
 
     /**
      * To update a property of the object.
+     * @api
      *
      * @param string $name
      * @param string $value
@@ -730,7 +733,6 @@ trait ProxyTrait
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __set(string $name, $value)
     {
@@ -741,13 +743,13 @@ trait ProxyTrait
 
     /**
      * To remove a property of the object.
+     * @api
      *
      * @param string $name
      *
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function __unset(string $name)
     {
@@ -759,6 +761,7 @@ trait ProxyTrait
     /**
      * To transform the object to a string
      * You cannot throw an exception from within a __toString() method. Doing so will result in a fatal error.
+     * @api
      *
      * @return mixed
      */
@@ -779,11 +782,11 @@ trait ProxyTrait
 
     /**
      * This method is executed when using the count() function on an object implementing Countable.
+     * @api
      *
      * @return int
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function count(): int
     {
@@ -795,13 +798,13 @@ trait ProxyTrait
     /**
      * Whether or not an offset exists.
      * This method is executed when using isset() or empty() on states implementing ArrayAccess.
+     * @api
      *
      * @param string|int $offset
      *
      * @return bool
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetExists($offset)
     {
@@ -813,13 +816,13 @@ trait ProxyTrait
     /**
      * Returns the value at specified offset.
      * This method is executed when checking if offset is empty().
+     * @api
      *
      * @param string|int $offset
      *
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetGet($offset)
     {
@@ -830,6 +833,7 @@ trait ProxyTrait
 
     /**
      * Assigns a value to the specified offset.
+     * @api
      *
      * @param string|int $offset
      * @param mixed      $value
@@ -837,7 +841,6 @@ trait ProxyTrait
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetSet($offset, $value)
     {
@@ -848,11 +851,11 @@ trait ProxyTrait
 
     /**
      * Unset an offset.
+     * @api
      *
      * @param string|int $offset
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function offsetUnset($offset)
     {
@@ -866,11 +869,11 @@ trait ProxyTrait
 
     /**
      * Returns the current element.
+     * @api
      *
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function current()
     {
@@ -881,11 +884,11 @@ trait ProxyTrait
 
     /**
      * Returns the key of the current element.
+     * @api
      *
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function key()
     {
@@ -896,9 +899,9 @@ trait ProxyTrait
 
     /**
      * Moves the current position to the next element.
+     * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function next()
     {
@@ -909,9 +912,9 @@ trait ProxyTrait
 
     /**
      * Rewinds back to the first element of the Iterator.
+     * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function rewind()
     {
@@ -922,11 +925,11 @@ trait ProxyTrait
 
     /**
      * Seeks to a given position in the iterator.
+     * @api
      *
      * @param int $position
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function seek($position)
     {
@@ -936,11 +939,11 @@ trait ProxyTrait
 
     /**
      * This method is called after Iterator::rewind() and Iterator::next() to check if the current position is valid.
+     * @api
      *
      * @return bool
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function valid()
     {
@@ -951,11 +954,11 @@ trait ProxyTrait
 
     /**
      * Returns an external iterator.
+     * @api
      *
      * @return \Traversable
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function getIterator(): \Traversable
     {
@@ -970,9 +973,9 @@ trait ProxyTrait
 
     /**
      * To serialize the object.
+     * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      *
      * @return string
      */
@@ -985,11 +988,11 @@ trait ProxyTrait
 
     /**
      * To wake up the object.
+     * @api
      *
      * @param string $serialized
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
      */
     public function unserialize($serialized)
     {

@@ -57,9 +57,6 @@ class Integrated extends Standard implements IntegratedInterface
 
     /**
      * Default constructor used to initialize the stated object with its factory.
-     *
-     * @throws Exception\IllegalFactory
-     * @throws Exception\UnavailableFactory
      */
     public function __construct()
     {

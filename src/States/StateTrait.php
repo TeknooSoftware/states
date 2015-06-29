@@ -408,7 +408,6 @@ trait StateTrait
      * @return \Closure
      *
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
-     * @throws Exception\InvalidArgument      when the method name is not a string
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      */
     public function getClosure(

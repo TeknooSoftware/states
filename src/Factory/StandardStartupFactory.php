@@ -57,14 +57,13 @@ class StandardStartupFactory implements StartupFactoryInterface
      *
      * @return bool
      *
-     * @throws Exception\InvalidArgument    when $factoryIdentifier is not an object
      * @throws Exception\UnavailableFactory when the required factory was not found
      */
     public static function forwardStartup(Proxy\ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
     {
         $factoryIdentifier = get_class($proxyObject);
 
-        if (!static::$factoryRegistry instanceof \ArrayObject || !isset(static::$factoryRegistry[$factoryIdentifier])) {
+        if (!static::$factoryRegistry instanceof \ArrayAccess || !isset(static::$factoryRegistry[$factoryIdentifier])) {
             throw new Exception\UnavailableFactory(
                 sprintf('Error, the factory "%s" is not available', $factoryIdentifier)
             );
@@ -75,16 +74,13 @@ class StandardStartupFactory implements StartupFactoryInterface
 
     /**
      * To register a new factory object to initialize proxy objects.
-     *
+     * @api
      * @param string           $factoryIdentifier
      * @param FactoryInterface $factoryObject
-     *
-     * @throws Exception\InvalidArgument when $factoryIdentifier is not a string
-     * @throws Exception\IllegalFactory  when $factoryObject doest not implement the interface FactoryInterface
      */
     public static function registerFactory(string $factoryIdentifier, FactoryInterface $factoryObject)
     {
-        if (!static::$factoryRegistry instanceof \ArrayObject) {
+        if (!static::$factoryRegistry instanceof \ArrayAccess) {
             static::$factoryRegistry = new \ArrayObject();
         }
 
@@ -96,19 +92,19 @@ class StandardStartupFactory implements StartupFactoryInterface
      */
     public static function reset()
     {
-        if (static::$factoryRegistry instanceof \ArrayObject) {
+        if (static::$factoryRegistry instanceof \ArrayAccess) {
             static::$factoryRegistry = null;
         }
     }
 
     /**
      * To return all registered factories.
-     *
+     * @api
      * @return string[]|array
      */
     public static function listRegisteredFactory()
     {
-        if (!static::$factoryRegistry instanceof \ArrayObject) {
+        if (!static::$factoryRegistry instanceof \ArrayAccess) {
             return array();
         }
 

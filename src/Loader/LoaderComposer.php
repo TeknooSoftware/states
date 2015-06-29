@@ -78,7 +78,7 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * To register a DI container for this object.
-     *
+     * @api
      * @param DI\ContainerInterface $container
      *
      * @return $this
@@ -92,7 +92,7 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * To return the DI Container used for this object.
-     *
+     * @api
      * @return DI\ContainerInterface
      */
     public function getDIContainer()
@@ -103,13 +103,11 @@ class LoaderComposer implements LoaderInterface
     /**
      * To register a location to find some classes of a namespace.
      * A namespace can has several locations.
-     *
+     * @api
      * @param string $namespace
      * @param string $path
      *
      * @return $this
-     *
-     * @throws Exception\IllegalArgument if the path is not a valid string
      */
     public function registerNamespace(string $namespace, string $path): LoaderInterface
     {
@@ -127,7 +125,7 @@ class LoaderComposer implements LoaderInterface
      * @param string $factoryClassName
      * @return bool
      */
-    protected function loadFactory(string &$factoryClassName): bool
+    private function loadFactory(string &$factoryClassName): bool
     {
         if (true === $this->composerInstance->loadClass($factoryClassName)) {
             $reflectionClassInstance = new \ReflectionClass($factoryClassName);
@@ -142,7 +140,7 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * Method called to load a class by __autoload of PHP Engine.
-     *
+     * @api
      * @param string $className class name, support namespace prefixes
      *
      * @return bool

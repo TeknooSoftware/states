@@ -56,7 +56,6 @@ class Integrated implements FactoryInterface
      * @return $this
      *
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
-     * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function initialize(string $statedClassName, string $path): FactoryInterface
     {
