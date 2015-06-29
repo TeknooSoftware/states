@@ -597,8 +597,6 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $loader = $this->initializeLoader();
         $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
 
-
-
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
@@ -635,6 +633,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
+     *
      * @expectedException \Exception
      */
     public function testLoadClassViaNameSpaceAbsoluteWithFactoryException()
@@ -678,6 +677,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
+     *
      * @expectedException \Exception
      */
     public function testLoadClassViaNameSpaceWithProxyAbsoluteWithFactoryException()
@@ -1201,6 +1201,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
+     *
      * @expectedException \Exception
      */
     public function testLoadClassInPharViaNameSpaceAbsoluteWithFactoryException()
@@ -1250,6 +1251,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
+     *
      * @expectedException \Exception
      */
     public function testLoadClassInPharViaNameSpaceWithProxyAbsoluteWithFactoryException()

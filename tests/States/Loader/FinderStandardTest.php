@@ -474,7 +474,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
             ->willReturnCallback(function ($className) {
-                include_once $this->statedClass6Path . '/Class6.php';
+                include_once $this->statedClass6Path.'/Class6.php';
 
                 return true;
             });
@@ -493,7 +493,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
             ->willReturnCallback(function ($className) {
-                include_once $this->statedClass6Path . '/Class6.php';
+                include_once $this->statedClass6Path.'/Class6.php';
                 include_once $this->statedClass7Path.'/Class7.php';
 
                 return true;
@@ -517,8 +517,8 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->with($this->equalTo('UniAlteri\Tests\Support\StatedClass\Class8\Class8'))
             ->willReturnCallback(function () {
-                include_once $this->statedClass6Path . '/Class6.php';
-                include_once $this->statedClass7Path . '/Class7.php';
+                include_once $this->statedClass6Path.'/Class6.php';
+                include_once $this->statedClass7Path.'/Class7.php';
                 include_once $this->statedClass8Path.'/Class8.php';
 
                 return true;

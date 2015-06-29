@@ -2064,7 +2064,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testGetIterator()
     {
         $this->initializeProxy('state1', true);
-        $iterator = new \ArrayIterator([1,2,3]);
+        $iterator = new \ArrayIterator([1, 2, 3]);
         $this->state1->setClosure(function () use ($iterator) {
            return $iterator;
         });
