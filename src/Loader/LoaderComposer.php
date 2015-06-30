@@ -188,7 +188,7 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * Build the factory and initialize the loading stated class.
-     *
+     * @internal
      * @param string $factoryClassName
      * @param string $statedClassName
      * @param string $path

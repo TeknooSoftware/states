@@ -49,7 +49,7 @@ class Integrated implements FactoryInterface
      * It registers the class name and its path, retrieves the DI Container,
      * register the factory in the DI Container, it retrieves the finder object and load the proxy
      * from the finder.
-     *
+     * @internal
      * @param string $statedClassName the name of the stated class
      * @param string $path            of the stated class
      *

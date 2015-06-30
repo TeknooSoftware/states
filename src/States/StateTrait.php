@@ -38,7 +38,7 @@ use UniAlteri\States\Proxy;
  * Class StateTrait
  * Standard implementation of the state interface for state class.
  * It's a trait to allow developer to implement easily the interface for their state class.
- *
+ * @api
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
  * @link        http://teknoo.it/states Project website
@@ -138,7 +138,7 @@ trait StateTrait
 
     /**
      * To register a DI container for this object.
-     *
+     * @api
      * @param DI\ContainerInterface $container
      *
      * @return $this
@@ -152,7 +152,7 @@ trait StateTrait
 
     /**
      * To return the DI Container used for this object.
-     *
+     * @api
      * @return DI\ContainerInterface
      */
     public function getDIContainer(): DI\ContainerInterface
@@ -162,7 +162,7 @@ trait StateTrait
 
     /**
      * To get the canonical stated class name associated to this state.
-     *
+     * @internal
      * @return string
      */
     public function getStatedClassName(): string
@@ -172,7 +172,7 @@ trait StateTrait
 
     /**
      * To set the canonical stated class name associated to this state.
-     *
+     * @internal
      * @param string $statedClassName
      *
      * @return $this
@@ -188,7 +188,7 @@ trait StateTrait
      * To know if the mode Private is enabled : private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable.
-     *
+     * @internal
      * @return bool
      */
     public function isPrivateMode(): bool
@@ -201,7 +201,7 @@ trait StateTrait
      * If the mode Private is enable, private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable.
-     *
+     * @internal
      * @param bool $enable
      *
      * @return $this
@@ -215,7 +215,7 @@ trait StateTrait
 
     /**
      * To return an array of string listing all methods available in the state.
-     *
+     * @api
      * @return string[]
      */
     public function listMethods()
@@ -250,7 +250,7 @@ trait StateTrait
     /**
      * To check if the method is available in the scope.
      *
-     * @api
+     * @internal
      *
      * @param string      $methodName
      * @param string      $scope
@@ -311,7 +311,7 @@ trait StateTrait
 
     /**
      * To test if a method exists for this state in the current visibility scope.
-     *
+     * @internal
      * @param string      $methodName
      * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null $statedClassOriginName
@@ -351,7 +351,7 @@ trait StateTrait
     /**
      * To return the description of a method to configure the behavior of the proxy. Return also description of private
      * methods.
-     *
+     * @api
      * @param string $methodName
      *
      * @return \ReflectionMethod
@@ -399,7 +399,7 @@ trait StateTrait
 
     /**
      * To return a closure of the required method to use in the proxy, according with the current visibility scope.
-     *
+     * @internal
      * @param string               $methodName
      * @param Proxy\ProxyInterface $proxy
      * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE

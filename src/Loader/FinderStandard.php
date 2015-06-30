@@ -40,7 +40,7 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @api
+ * @internal
  */
 class FinderStandard implements FinderInterface
 {
@@ -117,7 +117,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * To register a DI container for this object.
-     *
+     * @internal
      * @param DI\ContainerInterface $container
      *
      * @return $this
@@ -131,7 +131,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * To return the DI Container.
-     *
+     * @internal
      * @throws Exception\IllegalProxy If the proxy class is not valid
      * @throws Exception\IllegalProxy If the proxy class is not valid used for this object.
      *
@@ -144,7 +144,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * To get the canonical stated class name associated to this state.
-     *
+     * @internal
      * @return string
      */
     public function getStatedClassName(): string
@@ -154,7 +154,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * To list all available states of the stated class.
-     *
+     * @internal
      * @return string[]
      *
      * @throws Exception\UnavailablePath if the states' folder is not available
@@ -207,7 +207,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * To load the required state object of the stated class.
-     *
+     * @internal
      * @param string $stateName
      *
      * @return string
@@ -228,7 +228,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * To load and build the required state object of the stated class.
-     *
+     * @internal
      * @param string $stateName
      *
      * @return States\StateInterface
@@ -271,7 +271,7 @@ class FinderStandard implements FinderInterface
     /**
      * To search and load the proxy class for this stated class.
      * If the class has not proxy, load the default proxy for this stated class.
-     *
+     * @internal
      * @return string
      */
     public function loadProxy(): string
@@ -297,7 +297,7 @@ class FinderStandard implements FinderInterface
     /**
      * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
      * standard proxy are excluded).
-     *
+     * @internal
      * @return string[]
      *
      * @throws Exception\IllegalProxy If the proxy class is not valid
@@ -332,7 +332,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * To load and build a proxy object for the stated class.
-     *
+     * @internal
      * @param array $arguments argument for proxy
      *
      * @return Proxy\ProxyInterface

@@ -263,7 +263,7 @@ trait FactoryTrait
 
     /**
      * To initialize a proxy object with its container and states. States are fetched by the finder of this stated class.
-     *
+     * @internal
      * @param Proxy\ProxyInterface $proxyObject
      * @param string               $stateName
      *

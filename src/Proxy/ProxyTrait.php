@@ -160,7 +160,7 @@ trait ProxyTrait
 
     /**
      * Internal method to find closure required by caller to call it.
-     *
+     * @api
      * @param string $methodName
      * @param array  $arguments  of the call
      *
@@ -221,7 +221,7 @@ trait ProxyTrait
 
     /**
      * To test if the identifier respects the pattern [a-zA-Z_][a-zA-Z0-9_\-]*.
-     *
+     * @api
      * @param string $name
      *
      * @return bool
