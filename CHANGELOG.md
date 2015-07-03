@@ -1,5 +1,23 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta5] - 2015-07-03 - Available on the branch "next"
+###Added
+- PHP7 Scalar Type Hinting on all library's methods : Code more readable and remove manual type checks.
+- LoaderComposer : Use composer to detect and load Stated classes.
+- FinderStandard is now built on Composer to find and load states and proxies. 
+- Add PHPDoc tags @api and @internals on methods to allow users to distinct usable methods
+- Validation states's name use now assert. Can be disable them in production to not launch the preg engine in full tested
+environments.
+
+####Changed
+- Split PHP's interfaces implementations and PHP's magic methods implementation from the Proxy Trait in several traits
+    There are no conflicts with some library who checks magic getters and setters.
+- Remove all definitions of these methods from Proxy Interface : To create a proxy is now easier.
+
+###Removed
+- LoaderStandard : Remplaced by LoaderComposer
+- IncludePathManager : Useless since switch to Composer
+
 ##[2.0.0-beta4] - 2015-06-22 - Available on the branch "next"
 ###Changed
 - Define a new interface UniAlteri\States\Proxy\IntegratedInterface to define integrated proxies
