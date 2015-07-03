@@ -48,6 +48,11 @@ class IntegratedProxy extends Proxy\Integrated implements
     \SeekableIterator,
     \Countable
 {
+    use Proxy\MagicCallTrait;
+    use Proxy\ArrayAccessTrait;
+    use Proxy\IteratorTrait;
+    use Proxy\SerializableTrait;
+
     /**
      * Class name of the factory to use during set up to initialize this object.
      * It is a virtual factory, it does nothing except logs actions.

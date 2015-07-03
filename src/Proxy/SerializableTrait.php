@@ -20,19 +20,11 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\Support;
-
-use UniAlteri\States\Proxy;
+namespace UniAlteri\States\Proxy;
 
 /**
- * Class StandardProxy
- * To build an specific instance of the class Proxy\Standard to test this default class.
- * By default, the class Proxy\Integrated uses '\UniAlteri\States\Factory\StandardStartupFactory' as startup factory.
- * But, in the test, we will use '\UniAlteri\Tests\Support\MockStartupFactory' to unit testing only the proxy.
- *
- * This extends support implements also all supported standard interface to tests implementation provided by the trait Proxy.
- * To avoid errors in the usage of this lib, these interfaces are not defined with released proxies.
- * You must implement these interface, according to your needs, in your derived proxies like in this class.
+ * Trait SerializableTrait
+ * Trait to use the interface \Serializable with a stated classes
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -42,14 +34,38 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StandardProxy extends Proxy\Standard implements
-    \Serializable,
-    \ArrayAccess,
-    \SeekableIterator,
-    \Countable
+trait SerializableTrait
 {
-    use Proxy\MagicCallTrait;
-    use Proxy\ArrayAccessTrait;
-    use Proxy\IteratorTrait;
-    use Proxy\SerializableTrait;
+    /*****************
+     * Serialization *
+     *****************/
+
+    /**
+     * To serialize the object.
+     * @api
+     *
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
+     * @return string
+     */
+    public function serialize(): string
+    {
+        $args = [];
+
+        return $this->findMethodToCall(__FUNCTION__, $args);
+    }
+
+    /**
+     * To wake up the object.
+     * @api
+     *
+     * @param string $serialized
+     *
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     */
+    public function unserialize($serialized)
+    {
+        $args = [$serialized];
+        $this->findMethodToCall(__FUNCTION__, $args);
+    }
 }
