@@ -231,7 +231,9 @@ trait ProxyTrait
      */
     protected function validateName(string $name): bool
     {
-        if (false == assert('preg_match("#^[a-zA-Z_][a-zA-Z0-9_\\-]*#iS", $name)')) {
+        try {
+            assert('preg_match("#^[a-zA-Z_][a-zA-Z0-9_\\-]*#iS", $name)');
+        } catch (\Exception $e) {
             throw new Exception\IllegalName('Error, the identifier is not a valid string');
         }
 
