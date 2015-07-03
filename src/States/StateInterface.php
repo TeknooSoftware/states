@@ -57,15 +57,17 @@ interface StateInterface
     /**
      * To register a DI container for this object.
      *
+     * @api
      * @param DI\ContainerInterface $container
      *
-     * @return StateInterface|$this
+     * @return $this
      */
     public function setDIContainer(DI\ContainerInterface $container): StateInterface;
 
     /**
      * To return the DI Container used for this object.
      *
+     * @api
      * @return DI\ContainerInterface
      */
     public function getDIContainer(): DI\ContainerInterface;
@@ -73,6 +75,7 @@ interface StateInterface
     /**
      * To get the canonical stated class name associated to this state.
      *
+     * @internal
      * @return string
      */
     public function getStatedClassName(): string;
@@ -80,9 +83,10 @@ interface StateInterface
     /**
      * To set the canonical stated class name associated to this state.
      *
+     * @internal
      * @param string $statedClassName
      *
-     * @return StateInterface
+     * @return $this
      */
     public function setStatedClassName(string $statedClassName): StateInterface;
 
@@ -91,6 +95,7 @@ interface StateInterface
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable.
      *
+     * @internal
      * @return bool
      */
     public function isPrivateMode(): bool;
@@ -100,16 +105,17 @@ interface StateInterface
      * If the mode Private is enable, private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable.
-     *
+     * @internal
      * @param bool $enable
      *
-     * @return StateInterface
+     * @return
      */
     public function setPrivateMode(bool $enable): StateInterface;
 
     /**
      * To return an array of string listing all methods available in the state.
      *
+     * @api
      * @return string[]
      */
     public function listMethods();
@@ -117,6 +123,7 @@ interface StateInterface
     /**
      * To test if a method exists for this state in the current visibility scope.
      *
+     * @internal
      * @param string      $methodName
      * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null $statedClassOriginName
@@ -135,6 +142,7 @@ interface StateInterface
      * To return the description of a method to configure the behavior of the proxy. Return also description of private
      * methods.
      *
+     * @api
      * @param string $methodName
      *
      * @return \ReflectionMethod
@@ -147,15 +155,15 @@ interface StateInterface
     /**
      * To return a closure of the required method to use in the proxy, according with the current visibility scope.
      *
-     * @param string                                $methodName
-     * @param Proxy\ProxyInterface|Proxy\ProxyTrait $proxy
-     * @param string                                $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null                           $statedClassOriginName
+     * @internal
+     * @param string               $methodName
+     * @param Proxy\ProxyInterface $proxy
+     * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null          $statedClassOriginName
      *
      * @return \Closure
      *
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
-     * @throws Exception\InvalidArgument      when the method name is not a string
      * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      */
     public function getClosure(

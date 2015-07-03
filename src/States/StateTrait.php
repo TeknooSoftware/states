@@ -137,11 +137,7 @@ trait StateTrait
     }
 
     /**
-     * To register a DI container for this object.
-     * @api
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
+     * {@inheritdoc StateInterface}
      */
     public function setDIContainer(DI\ContainerInterface $container): StateInterface
     {
@@ -152,6 +148,7 @@ trait StateTrait
 
     /**
      * To return the DI Container used for this object.
+     *
      * @api
      * @return DI\ContainerInterface
      */
@@ -162,6 +159,7 @@ trait StateTrait
 
     /**
      * To get the canonical stated class name associated to this state.
+     *
      * @internal
      * @return string
      */
@@ -188,6 +186,7 @@ trait StateTrait
      * To know if the mode Private is enabled : private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable.
+     *
      * @internal
      * @return bool
      */
@@ -215,6 +214,7 @@ trait StateTrait
 
     /**
      * To return an array of string listing all methods available in the state.
+     *
      * @api
      * @return string[]
      */
@@ -311,6 +311,7 @@ trait StateTrait
 
     /**
      * To test if a method exists for this state in the current visibility scope.
+     *
      * @internal
      * @param string      $methodName
      * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE

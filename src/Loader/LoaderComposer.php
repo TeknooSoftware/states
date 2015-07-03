@@ -29,7 +29,9 @@ use UniAlteri\States\Factory;
 /**
  * Class LoaderStandard
  * Default implementation of the "stated class autoloader".
- * It is used to allow php to load automatically stated class.
+ * It is used to allow php to load automatically stated class. It builds on the Composer Loader. It is registered to be
+ * called before the composer loader, find the factory attached to the stated class, load and run it to initialize the
+ * stated class
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *

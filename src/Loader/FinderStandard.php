@@ -30,7 +30,7 @@ use UniAlteri\States\Proxy;
 /**
  * Class FinderStandard
  * Default implementation of the finder. It is used with this library to find from each stated class
- * all states and the proxy.
+ * all states and the proxy. It needs an instance of the Composer Loader to find php classes and load them
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -132,8 +132,6 @@ class FinderStandard implements FinderInterface
     /**
      * To return the DI Container.
      * @internal
-     * @throws Exception\IllegalProxy If the proxy class is not valid
-     * @throws Exception\IllegalProxy If the proxy class is not valid used for this object.
      *
      * @return DI\ContainerInterface
      */

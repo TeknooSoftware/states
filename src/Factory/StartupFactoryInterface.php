@@ -44,13 +44,12 @@ interface StartupFactoryInterface
     /**
      * To find the factory to use for the new proxy object to initialize it with its container and states.
      * This method is called by the constructor of the stated object.
-     *
+     * @internal
      * @param Proxy\ProxyInterface $proxyObject
      * @param string               $stateName
      *
      * @return bool
      *
-     * @throws Exception\InvalidArgument    when $factoryIdentifier is not an object
      * @throws Exception\UnavailableFactory when the required factory was not found
      */
     public static function forwardStartup(Proxy\ProxyInterface $proxyObject, string $stateName = null): FactoryInterface;

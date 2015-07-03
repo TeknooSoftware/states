@@ -59,7 +59,7 @@ interface FinderInterface
 
     /**
      * To register a DI container for this object.
-     *
+     * @internal
      * @param DI\ContainerInterface $container
      *
      * @return $this
@@ -67,7 +67,8 @@ interface FinderInterface
     public function setDIContainer(DI\ContainerInterface $container): FinderInterface;
 
     /**
-     * To return the DI Container used for this object.
+     * To return the DI Container.
+     * @internal
      *
      * @return DI\ContainerInterface
      */
@@ -75,14 +76,14 @@ interface FinderInterface
 
     /**
      * To get the canonical stated class name associated to this state.
-     *
-     * @return $this
+     * @internal
+     * @return string
      */
     public function getStatedClassName(): string;
 
     /**
      * To list all available states of the stated class.
-     *
+     * @internal
      * @return string[]
      *
      * @throws Exception\UnavailablePath if the states' folder is not available
@@ -92,24 +93,22 @@ interface FinderInterface
 
     /**
      * To load the required state object of the stated class.
-     *
+     * @internal
      * @param string $stateName
      *
      * @return string
      *
-     * @throws Exception\UnReadablePath   if the stated file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
     public function loadState(string $stateName): string;
 
     /**
      * To load and build the required state object of the stated class.
-     *
+     * @internal
      * @param string $stateName
      *
      * @return States\StateInterface
      *
-     * @throws Exception\UnReadablePath   if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
@@ -118,17 +117,15 @@ interface FinderInterface
     /**
      * To search and load the proxy class for this stated class.
      * If the class has not proxy, load the default proxy for this stated class.
-     *
+     * @internal
      * @return string
-     *
-     * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function loadProxy(): string;
 
     /**
-     * To return the list of parents stated classes of this stated classes, library classes (Integrated proxy and
+     * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
      * standard proxy are excluded).
-     *
+     * @internal
      * @return string[]
      *
      * @throws Exception\IllegalProxy If the proxy class is not valid
@@ -137,7 +134,7 @@ interface FinderInterface
 
     /**
      * To load and build a proxy object for the stated class.
-     *
+     * @internal
      * @param array $arguments argument for proxy
      *
      * @return Proxy\ProxyInterface

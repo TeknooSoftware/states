@@ -58,7 +58,7 @@ interface LoaderInterface
 
     /**
      * To register a DI container for this object.
-     *
+     * @api
      * @param DI\ContainerInterface $container
      *
      * @return $this
@@ -67,7 +67,7 @@ interface LoaderInterface
 
     /**
      * To return the DI Container used for this object.
-     *
+     * @api
      * @return DI\ContainerInterface
      */
     public function getDIContainer();
@@ -75,32 +75,30 @@ interface LoaderInterface
     /**
      * To register a location to find some classes of a namespace.
      * A namespace can has several locations.
-     *
+     * @api
      * @param string $namespace
      * @param string $path
      *
      * @return $this
-     *
-     * @throws Exception\IllegalArgument if the path is not a valid string
      */
     public function registerNamespace(string $namespace, string $path): LoaderInterface;
 
     /**
      * Method called to load a class by __autoload of PHP Engine.
-     *
+     * @api
      * @param string $className class name, support namespace prefixes
      *
      * @return bool
      *
-     * @throws \Exception
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
+     * @throws \Exception
      */
     public function loadClass(string $className): bool;
 
     /**
      * Build the factory and initialize the loading stated class.
-     *
+     * @internal
      * @param string $factoryClassName
      * @param string $statedClassName
      * @param string $path

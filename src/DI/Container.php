@@ -67,6 +67,7 @@ class Container extends \Pimple\Container implements ContainerInterface
 
     /**
      * Call an entry of the container to retrieve an instance.
+     *
      * @api
      * @param string $name : identifier of the instance
      *
@@ -88,6 +89,7 @@ class Container extends \Pimple\Container implements ContainerInterface
 
     /**
      * Register a new shared object into container (the same object is returned at each call).
+     *
      * @api
      * @param string                 $name
      * @param object|callable|string $instance
@@ -123,6 +125,7 @@ class Container extends \Pimple\Container implements ContainerInterface
 
     /**
      * Register a new service into container (a new instance is returned at each call).
+     *
      * @api
      * @param string                 $name     : interface name, class name, alias
      * @param object|callable|string $instance
@@ -169,6 +172,7 @@ class Container extends \Pimple\Container implements ContainerInterface
 
     /**
      * Test if an entry is already registered.
+     *
      * @api
      * @param string $name
      *
@@ -185,6 +189,7 @@ class Container extends \Pimple\Container implements ContainerInterface
 
     /**
      * Remove an entry from the container.
+     *
      * @api
      * @param string $name
      *
@@ -201,7 +206,8 @@ class Container extends \Pimple\Container implements ContainerInterface
     }
 
     /**
-     * Configure the container from an array (provided by an INI file or other).
+     * Configure the container from an array (provided by an conf file or other).
+     *
      * @api
      * @param array|\ArrayObject $params
      *
@@ -232,6 +238,7 @@ class Container extends \Pimple\Container implements ContainerInterface
 
     /**
      * List all entries of this container.
+     *
      * @api
      * @return string[]
      */
