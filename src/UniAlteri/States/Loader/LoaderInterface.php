@@ -89,6 +89,7 @@ interface LoaderInterface
      * @return $this
      *
      * @throws Exception\UnavailablePath if the path is not readable
+     * @deprecated  Removed since 2.0
      */
     public function addIncludePath($path);
 
@@ -96,6 +97,7 @@ interface LoaderInterface
      * To list all active included path for this loaded.
      *
      * @return string[]
+     * @deprecated  Removed since 2.0
      */
     public function getIncludedPaths();
 
@@ -109,6 +111,7 @@ interface LoaderInterface
      * @return $this
      *
      * @throws Exception\IllegalArgument if the path is not a valid string
+     * @deprecated  Removed since 2.0
      */
     public function registerNamespace($namespace, $path);
 
@@ -116,6 +119,7 @@ interface LoaderInterface
      * To list all registered namespace.
      *
      * @return \ArrayObject
+     * @deprecated  Removed since 2.0
      */
     public function listNamespaces();
 
