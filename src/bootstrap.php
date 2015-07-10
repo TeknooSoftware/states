@@ -32,7 +32,11 @@ defined('DS')
     || define('DS', DIRECTORY_SEPARATOR);
 
 //Use composer has default auto loader
-$composerInstance = require __DIR__.'/../vendor/autoload.php';
+$composerFile = __DIR__.'/../../vendor/autoload.php';
+if (!file_exists($composerFile)) {
+    $composerFile = __DIR__.'/../vendor/autoload.php';
+}
+$composerInstance = require $composerFile;
 
 //Initial DI Container
 $diContainer = new DI\Container();
