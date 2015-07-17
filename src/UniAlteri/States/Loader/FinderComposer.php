@@ -22,14 +22,15 @@
 
 namespace UniAlteri\States\Loader;
 
+use Composer\Autoload\ClassLoader;
 use UniAlteri\States\DI;
 use UniAlteri\States\States;
 use UniAlteri\States\Proxy;
 
 /**
- * Class FinderStandard
+ * Class FinderComposer
  * Default implementation of the finder. It is used with this library to find from each stated class
- * all states and the proxy.
+ * all states and the proxy. It needs an instance of the Composer Loader to find php classes and load them
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -38,32 +39,31 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @deprecated  Removed since 2.0 : Use FinderComposer instead of FinderStandard
  *
- * @api
+ * @internal
  */
-class FinderStandard implements FinderInterface
+class FinderComposer implements FinderInterface
 {
     /**
      * Current stated class's name.
      *
      * @var string
      */
-    protected $statedClassName = null;
+    private $statedClassName;
 
     /**
      * Folder/Phar of the stated class.
      *
      * @var string
      */
-    protected $pathString = null;
+    private $pathString;
 
     /**
      * DI Container to use with this finder.
      *
      * @var DI\ContainerInterface
      */
-    protected $diContainer = null;
+    private $diContainer;
 
     /**
      * Default proxy class to use when there are no proxy class.
@@ -77,23 +77,47 @@ class FinderStandard implements FinderInterface
      *
      * @var \ArrayObject
      */
-    protected $statesNamesList = null;
+    private $statesNamesList;
+
+    /**
+     * @var ClassLoader
+     */
+    private $composerInstance;
 
     /**
      * Initialize finder.
      *
      * @param string $statedClassName
      * @param string $pathString
+     * @param ClassLoader $composerInstance
      */
-    public function __construct($statedClassName, $pathString)
+    public function __construct($statedClassName, $pathString, ClassLoader $composerInstance=null)
     {
         $this->statedClassName = $statedClassName;
         $this->pathString = $pathString;
+        $this->composerInstance = $composerInstance;
+    }
+
+    /**
+     * Check if a required class exists, and if not, try to load it via composer and recheck.
+     * Can not use directly autoloader with class_exists. Sometimes it's behavior is non consistent
+     * with spl_autoload_register.
+     *
+     * @param string $className
+     * @return bool
+     */
+    private function testClassExists($className)
+    {
+        if (class_exists($className, false)) {
+            return true;
+        }
+
+        return $this->composerInstance->loadClass($className) && class_exists($className, false);
     }
 
     /**
      * To register a DI container for this object.
-     *
+     * @internal
      * @param DI\ContainerInterface $container
      *
      * @return $this
@@ -106,10 +130,8 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To return the DI Containe.
-     *
-     * @throws Exception\IllegalProxy If the proxy class is not valid
-     * @throws Exception\IllegalProxy If the proxy class is not validr used for this object.
+     * To return the DI Container.
+     * @internal
      *
      * @return DI\ContainerInterface
      */
@@ -120,8 +142,8 @@ class FinderStandard implements FinderInterface
 
     /**
      * To get the canonical stated class name associated to this state.
-     *
-     * @return $this
+     * @internal
+     * @return string
      */
     public function getStatedClassName()
     {
@@ -130,7 +152,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * To list all available states of the stated class.
-     *
+     * @internal
      * @return string[]
      *
      * @throws Exception\UnavailablePath if the states' folder is not available
@@ -183,35 +205,20 @@ class FinderStandard implements FinderInterface
 
     /**
      * To load the required state object of the stated class.
-     *
+     * @internal
      * @param string $stateName
      *
      * @return string
      *
-     * @throws Exception\UnReadablePath   if the stated file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      */
     public function loadState($stateName)
     {
         $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
-        if (!class_exists($stateClassName, false)) {
-            $statePath = $this->pathString
-                            .DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH
-                            .DIRECTORY_SEPARATOR.$stateName.'.php';
-
-            if (!is_readable($statePath)) {
-                throw new Exception\UnReadablePath(
-                    sprintf('Error, the state "%s" was not found', $stateName)
-                );
-            }
-
-            include_once $statePath;
-            $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
-            if (!class_exists($stateClassName, false)) {
-                throw new Exception\UnavailableState(
-                    sprintf('Error, the state "%s" is not available', $stateName)
-                );
-            }
+        if (!$this->testClassExists($stateClassName)) {
+            throw new Exception\UnavailableState(
+                sprintf('Error, the state "%s" is not available', $stateName)
+            );
         }
 
         return $stateClassName;
@@ -219,12 +226,11 @@ class FinderStandard implements FinderInterface
 
     /**
      * To load and build the required state object of the stated class.
-     *
+     * @internal
      * @param string $stateName
      *
      * @return States\StateInterface
      *
-     * @throws Exception\UnReadablePath   if the state file is not readable
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
@@ -253,7 +259,7 @@ class FinderStandard implements FinderInterface
      *
      * @return string
      */
-    protected function getClassedName($statedClassName)
+    private function getClassedName($statedClassName)
     {
         $parts = explode('\\', $statedClassName);
 
@@ -263,39 +269,22 @@ class FinderStandard implements FinderInterface
     /**
      * To search and load the proxy class for this stated class.
      * If the class has not proxy, load the default proxy for this stated class.
-     *
+     * @internal
      * @return string
-     *
-     * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
     public function loadProxy()
     {
         //Build the class name
         $classPartName = $this->getClassedName($this->statedClassName);
         $proxyClassName = $this->statedClassName.'\\'.$classPartName;
-        if (!class_exists($proxyClassName, false)) {
-            //Build the class file path for the proxy (standardized into ProxyInterface)
-            $proxyPath = $this->pathString.DIRECTORY_SEPARATOR.$classPartName.FinderInterface::PROXY_FILE_EXTENSION;
 
-            if (!is_readable($proxyPath)) {
-                //The stated class has not its own proxy, reuse the standard proxy, as an alias
-                class_alias($this->defaultProxyClassName, $proxyClassName, true);
-                class_alias($this->defaultProxyClassName, $this->statedClassName, false);
-
-                return $proxyClassName;
-            }
-
-            include_once $proxyPath;
-            if (!class_exists($proxyClassName, false)) {
-                throw new Exception\IllegalProxy(
-                    sprintf(
-                        'Error, the proxy of "%s" must be called <StatedClassName>\'%s',
-                        $this->statedClassName,
-                        $classPartName
-                    )
-                );
-            } else {
-                //To access this class directly without repeat the stated class name
+        if (!$this->testClassExists($proxyClassName)) {
+            //The stated class has not its own proxy, reuse the standard proxy, as an alias
+            class_alias($this->defaultProxyClassName, $proxyClassName, true);
+            class_alias($this->defaultProxyClassName, $this->statedClassName, false);
+        } else {
+            //To access this class directly without repeat the stated class name
+            if (!class_exists($this->statedClassName, false)) {
                 class_alias($proxyClassName, $this->statedClassName, false);
             }
         }
@@ -306,7 +295,7 @@ class FinderStandard implements FinderInterface
     /**
      * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
      * standard proxy are excluded).
-     *
+     * @internal
      * @return string[]
      *
      * @throws Exception\IllegalProxy If the proxy class is not valid
@@ -341,7 +330,7 @@ class FinderStandard implements FinderInterface
 
     /**
      * To load and build a proxy object for the stated class.
-     *
+     * @internal
      * @param array $arguments argument for proxy
      *
      * @return Proxy\ProxyInterface

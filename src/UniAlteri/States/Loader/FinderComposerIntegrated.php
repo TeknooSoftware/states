@@ -23,9 +23,9 @@
 namespace UniAlteri\States\Loader;
 
 /**
- * Class FinderIntegrated
+ * Class FinderComposerIntegrated
  * Implementation of the finder. It is used with this library to find from each stated class all states
- * and the proxy. It extends FinderStandard to use '\UniAlteri\States\Proxy\Integrated' instead of
+ * and the proxy. It extends FinderComposer to use '\UniAlteri\States\Proxy\Integrated' instead of
  * '\UniAlteri\States\Proxy\Standard'.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
@@ -35,11 +35,10 @@ namespace UniAlteri\States\Loader;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
- * @deprecated  Removed since 2.0 : Use FinderComposerIntegrated instead of FinderIntegrated
  *
- * @api
+ * @internal
  */
-class FinderIntegrated extends FinderStandard
+class FinderComposerIntegrated extends FinderComposer
 {
     /**
      * Default proxy class to use when there are no proxy class.
