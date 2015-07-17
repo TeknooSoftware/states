@@ -85,7 +85,7 @@ class LoaderComposer implements LoaderInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container)
+    public function setDIContainer(DI\ContainerInterface $container): LoaderInterface
     {
         $this->diContainer = $container;
 
@@ -97,7 +97,7 @@ class LoaderComposer implements LoaderInterface
      * @api
      * @return DI\ContainerInterface
      */
-    public function getDIContainer()
+    public function getDIContainer(): DI\ContainerInterface
     {
         return $this->diContainer;
     }

@@ -63,14 +63,14 @@ interface LoaderInterface
      *
      * @return $this
      */
-    public function setDIContainer(DI\ContainerInterface $container);
+    public function setDIContainer(DI\ContainerInterface $container): LoaderInterface;
 
     /**
      * To return the DI Container used for this object.
      * @api
      * @return DI\ContainerInterface
      */
-    public function getDIContainer();
+    public function getDIContainer(): DI\ContainerInterface;
 
     /**
      * To register a location to find some classes of a namespace.
