@@ -28,7 +28,7 @@ use UniAlteri\States\States;
 use UniAlteri\Tests\Support;
 
 /**
- * Class FinderIntegratedTest
+ * Class FinderComposerIntegratedTest
  * Tests the excepted behavior of integrated finder implementing the interface \UniAlteri\States\Loader\FinderInterface.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
@@ -39,7 +39,7 @@ use UniAlteri\Tests\Support;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class FinderIntegratedTest extends FinderStandardTest
+class FinderComposerIntegratedTest extends FinderComposerTest
 {
     /**
      * Initialize the integrated finder for test with mock objects.
@@ -47,12 +47,12 @@ class FinderIntegratedTest extends FinderStandardTest
      * @param string $statedClassName
      * @param string $pathString
      *
-     * @return Loader\FinderStandard
+     * @return Loader\FinderComposer
      */
     protected function initializeFinder($statedClassName, $pathString)
     {
         $virtualDIContainer = new Support\MockDIContainer();
-        $this->finder = new Loader\FinderIntegrated($statedClassName, $pathString, $this->getClassLoaderMock());
+        $this->finder = new Loader\FinderComposerIntegrated($statedClassName, $pathString, $this->getClassLoaderMock());
         $this->finder->setDIContainer($virtualDIContainer);
 
         return $this->finder;
@@ -63,7 +63,7 @@ class FinderIntegratedTest extends FinderStandardTest
      */
     public function testSetAndGetDiContainer()
     {
-        $object = new Loader\FinderIntegrated('', '', $this->getClassLoaderMock());
+        $object = new Loader\FinderComposerIntegrated('', '', $this->getClassLoaderMock());
         $virtualContainer = new Support\MockDIContainer();
         $this->assertSame($object, $object->setDIContainer($virtualContainer));
         $this->assertSame($virtualContainer, $object->getDIContainer());

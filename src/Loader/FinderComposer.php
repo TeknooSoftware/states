@@ -28,7 +28,7 @@ use UniAlteri\States\States;
 use UniAlteri\States\Proxy;
 
 /**
- * Class FinderStandard
+ * Class FinderComposer
  * Default implementation of the finder. It is used with this library to find from each stated class
  * all states and the proxy. It needs an instance of the Composer Loader to find php classes and load them
  *
@@ -42,7 +42,7 @@ use UniAlteri\States\Proxy;
  *
  * @internal
  */
-class FinderStandard implements FinderInterface
+class FinderComposer implements FinderInterface
 {
     /**
      * Current stated class's name.

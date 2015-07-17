@@ -47,7 +47,7 @@ $diContainer->registerInstance(FactoryInterface::DI_FACTORY_REPOSITORY, new DI\C
 /*
  * Service to generate a finder for Stated class factory
  * @param DI\ContainerInterface $container
- * @return Loader\FinderIntegrated
+ * @return Loader\FinderComposerIntegrated
  * @throws Exception\UnavailableFactory if the local factory is not available
  */
 $finderService = function (DI\ContainerInterface $container) use ($composerInstance) {
@@ -57,7 +57,7 @@ $finderService = function (DI\ContainerInterface $container) use ($composerInsta
 
     $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
 
-    return new Loader\FinderIntegrated($factory->getStatedClassName(), $factory->getPath(), $composerInstance);
+    return new Loader\FinderComposerIntegrated($factory->getStatedClassName(), $factory->getPath(), $composerInstance);
 };
 
 //Register finder generator

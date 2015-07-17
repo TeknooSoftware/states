@@ -1,10 +1,18 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta6] - 2015-07-7 - Available on the branch "next"
+###Removed
+- FinderStandard : Remplaced by FinderComposer
+- FinderIntegrated : Remplaced by FinderComposerIntegrated
+
+###Changed
+- FinderStandard, is now built on Composer and it was renaming to allow a backport to the 1.x branch.
+
 ##[2.0.0-beta5] - 2015-07-03 - Available on the branch "next"
 ###Added
 - PHP7 Scalar Type Hinting on all library's methods : Code more readable and remove manual type checks.
 - LoaderComposer : Use composer to detect and load Stated classes.
-- FinderStandard is now built on Composer to find and load states and proxies. 
+- FinderComposer is now built on Composer to find and load states and proxies.
 - Add PHPDoc tags @api and @internals on methods to allow users to distinct usable methods
 - Validation states's name use now assert. Can be disable them in production to not launch the preg engine in full tested
 environments.
@@ -16,6 +24,8 @@ environments.
 
 ###Removed
 - LoaderStandard : Remplaced by LoaderComposer
+- FinderStandard : Remplaced by FinderComposer
+- FinderIntegrated : Remplaced by FinderComposerIntegrated
 - IncludePathManager : Useless since switch to Composer
 
 ##[2.0.0-beta4] - 2015-06-22 - Available on the branch "next"
