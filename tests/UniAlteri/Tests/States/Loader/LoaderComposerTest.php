@@ -652,14 +652,11 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3\\Factory':
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3b\\Class3b\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Factory':
-                        include_once $path.'/Class3/Factory.php';
-                        break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3':
-                        include_once $path.'/Class3/Class3.php';
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3b\\Factory':
+                        include_once $path.'/Class3b/Factory.php';
                         break;
                     default:
                         $this->fail('Unknown class loading '.$className);
@@ -670,7 +667,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             });
 
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3'));
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3b'));
     }
 
     /**
@@ -696,14 +693,11 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3\\Factory':
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3b\\Class3b\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Factory':
-                        include_once $path.'/Class3/Factory.php';
-                        break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3':
-                        include_once $path.'/Class3/Class3.php';
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3b\\Factory':
+                        include_once $path.'/Class3b/Factory.php';
                         break;
                     default:
                         $this->fail('Unknown class loading '.$className);
@@ -714,7 +708,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             });
 
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3'));
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3b\\Class3b'));
     }
 
     /**
@@ -1226,14 +1220,11 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar\\Factory':
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3bPhar\\Class3bPhar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Factory':
-                        include_once $path.'/Class3Phar/Factory.php';
-                        break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar':
-                        include_once $path.'/Class3Phar/Class3Phar.php';
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3bPhar\\Factory':
+                        include_once $path.'/Class3bPhar/Factory.php';
                         break;
                     default:
                         $this->fail('Unknown class loading '.$className);
@@ -1244,7 +1235,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             });
 
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar'));
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3bPhar'));
     }
 
     /**
@@ -1276,14 +1267,11 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar\\Factory':
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3bPhar\\Class3bPhar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Factory':
-                        include_once $path.'/Class3Phar/Factory.php';
-                        break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar':
-                        include_once $path.'/Class3Phar/Class3Phar.php';
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3bPhar\\Factory':
+                        include_once $path.'/Class3bPhar/Factory.php';
                         break;
                     default:
                         $this->fail('Unknown class loading '.$className);
@@ -1294,6 +1282,6 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             });
 
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar'));
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3bPhar\\Class3bPhar'));
     }
 }

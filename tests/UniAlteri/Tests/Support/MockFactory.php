@@ -149,6 +149,17 @@ class MockFactory implements Factory\FactoryInterface
     }
 
     /**
+     * Method added for tests to get action logs
+     * Return the list of initialized factories by the loader.
+     *
+     * @return string[]
+     */
+    public static function resetInitializedFactories()
+    {
+        self::$initializedFactoryNameArray = array();
+    }
+
+    /**
      * Build a new instance of an object.
      *
      * @param mixed  $arguments

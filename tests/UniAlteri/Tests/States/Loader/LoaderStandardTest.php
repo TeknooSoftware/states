@@ -333,6 +333,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildFactory()
     {
+        Support\MockFactory::resetInitializedFactories();
         $loader = $this->initializeLoader();
         $this->assertEquals(array(), Support\MockFactory::listInitializedFactories());
         $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class1', 'path1');
