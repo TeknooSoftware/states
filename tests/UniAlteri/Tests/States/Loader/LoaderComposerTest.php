@@ -1284,4 +1284,31 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3bPhar\\Class3bPhar'));
     }
+
+    /**
+     * Test if return of this method is valid
+     */
+    public function testAddIncludePath()
+    {
+        $loader = $this->initializeLoader();
+        $this->assertEquals($loader, $loader->addIncludePath('foo/bar'));
+    }
+
+    /**
+     * Test if return of this method is valid
+     */
+    public function testGetIncludedPaths()
+    {
+        $loader = $this->initializeLoader();
+        $this->assertEquals(new \ArrayObject([]), $loader->getIncludedPaths());
+    }
+
+    /**
+     * Test if return of this method is valid
+     */
+    public function testListNamespaces()
+    {
+        $loader = $this->initializeLoader();
+        $this->assertEquals(new \ArrayObject([]), $loader->listNamespaces());
+    }
 }

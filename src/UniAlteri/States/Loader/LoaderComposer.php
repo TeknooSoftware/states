@@ -132,9 +132,7 @@ class LoaderComposer implements LoaderInterface
         if (true === $this->composerInstance->loadClass($factoryClassName)) {
             $reflectionClassInstance = new \ReflectionClass($factoryClassName);
 
-            if ($reflectionClassInstance->implementsInterface('UniAlteri\\States\\Factory\\FactoryInterface')) {
-                return true;
-            }
+            return $reflectionClassInstance->implementsInterface('UniAlteri\\States\\Factory\\FactoryInterface');
         }
 
         return false;
@@ -252,7 +250,7 @@ class LoaderComposer implements LoaderInterface
      */
     public function getIncludedPaths()
     {
-        return [];
+        return new \ArrayObject([]);
     }
 
     /**
