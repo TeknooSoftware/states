@@ -24,8 +24,7 @@ namespace UniAlteri\States;
 
 use UniAlteri\States\Factory\FactoryInterface;
 
-defined('UA_STATES_PATH')
-    || define('UA_STATES_PATH', __DIR__);
+defined('UA_STATES_PATH') || define('UA_STATES_PATH', __DIR__);
 
 //Shortcut for DIRECTORY_SEPARATOR
 defined('DS') || define('DS', DIRECTORY_SEPARATOR);
