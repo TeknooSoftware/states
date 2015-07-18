@@ -28,8 +28,7 @@ defined('UA_STATES_PATH')
     || define('UA_STATES_PATH', __DIR__);
 
 //Shortcut for DIRECTORY_SEPARATOR
-defined('DS')
-    || define('DS', DIRECTORY_SEPARATOR);
+defined('DS') || define('DS', DIRECTORY_SEPARATOR);
 
 //Use composer has default auto loader
 $composerFile = __DIR__.'/../../../../vendor/autoload.php';
