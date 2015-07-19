@@ -23,9 +23,6 @@
 namespace UniAlteri\States\Loader;
 
 use Composer\Autoload\ClassLoader;
-use UniAlteri\States\DI;
-use UniAlteri\States\States;
-use UniAlteri\States\Proxy;
 
 /**
  * Class FinderComposer
