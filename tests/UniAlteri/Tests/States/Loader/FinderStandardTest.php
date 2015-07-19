@@ -128,7 +128,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        parent::tearDown();
+        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0755);
     }
 
     /**

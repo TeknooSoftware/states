@@ -106,7 +106,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
     protected $statedClass8Path = null;
 
     /**
-     * @var ClassLoader;
+     * @var ClassLoader
      */
     protected $classLoaderMock;
 
@@ -130,6 +130,8 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
         chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0755);
     }
 
+
+
     /**
      * @return ClassLoader|\PHPUnit_Framework_MockObject_MockObject
      */
@@ -147,7 +149,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     protected function tearDown()
     {
-        parent::tearDown();
+        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0755);
     }
 
     /**
