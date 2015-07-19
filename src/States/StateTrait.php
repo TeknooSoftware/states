@@ -32,7 +32,6 @@
 namespace UniAlteri\States\States;
 
 use UniAlteri\States\DI;
-use UniAlteri\States\Proxy;
 
 /**
  * Class StateTrait
