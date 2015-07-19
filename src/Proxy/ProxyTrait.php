@@ -141,7 +141,7 @@ trait ProxyTrait
         $this->pushCallerStatedClassName($state);
 
         //Method found, extract it
-        $callingClosure = $state->getClosure($methodName, $this, $scopeVisibility, $callerStatedClassName);
+        $callingClosure = $state->getClosure($methodName, $scopeVisibility, $callerStatedClassName);
 
         //Call it
         try {

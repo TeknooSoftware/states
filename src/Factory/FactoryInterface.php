@@ -22,7 +22,6 @@
 
 namespace UniAlteri\States\Factory;
 
-use UniAlteri\States\Command\Writer\Factory;
 use UniAlteri\States\Proxy;
 use UniAlteri\States\DI;
 use UniAlteri\States\Loader;

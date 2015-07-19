@@ -21,7 +21,6 @@
  */
 
 namespace UniAlteri\States\DI;
-use UniAlteri\Tests\States\DI\ContainerTest;
 
 /**
  * Class Container

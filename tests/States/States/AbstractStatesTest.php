@@ -445,7 +445,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testGetBadClosure()
     {
         try {
-            $this->getPublicClassObject()->getClosure('badMethod', $this->getMockProxy());
+            $this->getPublicClassObject()->getClosure('badMethod');
         } catch (States\Exception\MethodNotImplemented $e) {
             return;
         } catch (\Exception $e) {
@@ -460,7 +460,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testGetStaticClosure()
     {
         try {
-            $this->getPublicClassObject()->getClosure('staticMethod3', $this->getMockProxy());
+            $this->getPublicClassObject()->getClosure('staticMethod3');
         } catch (States\Exception\MethodNotImplemented $e) {
             return;
         } catch (\Exception $e) {
@@ -475,7 +475,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testGetClosureWithInvalidScope()
     {
         try {
-            $this->getPublicClassObject()->getClosure('standardMethod1', $this->getMockProxy(), 'badScope');
+            $this->getPublicClassObject()->getClosure('standardMethod1', 'badScope');
         } catch (States\Exception\InvalidArgument $e) {
             return;
         } catch (\Exception $e) {
@@ -491,7 +491,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $closure = $this->getPrivateClassObject()->getClosure(
             'standardMethod10',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PRIVATE
         );
 
@@ -499,7 +498,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $closure = $this->getProtectedClassObject()->getClosure(
             'standardMethod6',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PRIVATE
         );
 
@@ -507,7 +505,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $closure = $this->getPublicClassObject()->getClosure(
             'standardMethod1',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PRIVATE
         );
 
@@ -523,7 +520,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         try {
             $this->getPrivateClassObject()->getClosure(
                 'standardMethod10',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PROTECTED
             );
         } catch (States\Exception\MethodNotImplemented $e) {
@@ -535,7 +531,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $closure = $this->getProtectedClassObject()->getClosure(
             'standardMethod6',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
@@ -543,7 +538,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $closure = $this->getPublicClassObject()->getClosure(
             'standardMethod1',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
@@ -559,7 +553,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         try {
             $this->getPrivateClassObject()->getClosure(
                 'standardMethod10',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PUBLIC
             );
         } catch (States\Exception\MethodNotImplemented $e) {
@@ -573,7 +566,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         try {
             $this->getProtectedClassObject()->getClosure(
                 'standardMethod6',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PUBLIC
             );
         } catch (States\Exception\MethodNotImplemented $e) {
@@ -585,7 +577,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $closure = $this->getPublicClassObject()->getClosure(
             'standardMethod1',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PUBLIC
         );
 
@@ -602,7 +593,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod10',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PRIVATE,
                 'It\A\Stated\Class'
         );
@@ -614,7 +604,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod6',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PRIVATE,
                 'It\A\Stated\Class'
         );
@@ -626,7 +615,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod1',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PRIVATE,
                 'It\A\Stated\Class'
         );
@@ -646,7 +634,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
                     'standardMethod10',
-                    $this->getMockProxy(),
                     States\StateInterface::VISIBILITY_PROTECTED,
                     'It\A\Stated\Class'
             );
@@ -662,7 +649,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod6',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PROTECTED,
                 'It\A\Stated\Class'
         );
@@ -674,7 +660,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod1',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PROTECTED,
                 'It\A\Stated\Class'
         );
@@ -694,7 +679,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
                     'standardMethod10',
-                    $this->getMockProxy(),
                     States\StateInterface::VISIBILITY_PUBLIC,
                     'It\A\Stated\Class'
             );
@@ -712,7 +696,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
                     'standardMethod6',
-                    $this->getMockProxy(),
                     States\StateInterface::VISIBILITY_PUBLIC,
                     'It\A\Stated\Class'
             );
@@ -728,7 +711,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod1',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PUBLIC,
                 'It\A\Stated\Class'
         );
@@ -748,7 +730,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
                     'standardMethod10',
-                    $this->getMockProxy(),
                     States\StateInterface::VISIBILITY_PRIVATE,
                     'It\A\Stated\AnotherClass'
             );
@@ -764,7 +745,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod6',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PRIVATE,
                 'It\A\Stated\AnotherClass'
         );
@@ -776,7 +756,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod1',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PRIVATE,
                 'It\A\Stated\AnotherClass'
         );
@@ -796,7 +775,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
                     'standardMethod10',
-                    $this->getMockProxy(),
                     States\StateInterface::VISIBILITY_PROTECTED,
                     'It\A\Stated\AnotherClass'
             );
@@ -812,7 +790,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod6',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PROTECTED,
                 'It\A\Stated\AnotherClass'
         );
@@ -824,7 +801,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod1',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PROTECTED,
                 'It\A\Stated\AnotherClass'
         );
@@ -844,7 +820,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
                     'standardMethod10',
-                    $this->getMockProxy(),
                     States\StateInterface::VISIBILITY_PUBLIC,
                     'It\A\Stated\AnotherClass'
             );
@@ -862,7 +837,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
                     'standardMethod6',
-                    $this->getMockProxy(),
                     States\StateInterface::VISIBILITY_PUBLIC,
                     'It\A\Stated\AnotherClass'
             );
@@ -878,7 +852,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
                 'standardMethod1',
-                $this->getMockProxy(),
                 States\StateInterface::VISIBILITY_PUBLIC,
                 'It\A\Stated\AnotherClass'
         );
@@ -894,8 +867,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $fail = false;
         try {
             $this->getPrivateClassObject()->getClosure(
-                'standardMethod10',
-                $this->getMockProxy()
+                'standardMethod10'
             );
         } catch (States\Exception\MethodNotImplemented $e) {
             $fail = true;
@@ -907,8 +879,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $fail = false;
         try {
             $this->getProtectedClassObject()->getClosure(
-                'standardMethod6',
-                $this->getMockProxy()
+                'standardMethod6'
             );
         } catch (States\Exception\MethodNotImplemented $e) {
             $fail = true;
@@ -918,8 +889,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
         $closure = $this->getPublicClassObject()->getClosure(
-            'standardMethod1',
-            $this->getMockProxy()
+            'standardMethod1'
         );
 
         $this->assertInstanceOf('\Closure', $closure);
@@ -932,7 +902,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $closure = $this->getProtectedClassObject()->getClosure(
             'standardMethod6',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
@@ -948,19 +917,16 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $projected = $this->getProtectedClassObject();
         $closure1 = $projected->getClosure(
             'standardMethod6',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
         $closure2 = $projected->getClosure(
             'finalMethod7',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
         $closure3 = $projected->getClosure(
             'standardMethod6',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
@@ -975,19 +941,16 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $closure1 = $this->getProtectedClassObject()->getClosure(
             'standardMethod6',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
         $closure2 = $this->getProtectedClassObject()->getClosure(
             'finalMethod7',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
         $closure3 = $this->getProtectedClassObject()->getClosure(
             'standardMethod6',
-            $this->getMockProxy(),
             States\StateInterface::VISIBILITY_PROTECTED
         );
 

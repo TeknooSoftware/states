@@ -142,7 +142,6 @@ class StateNormal implements StateInterface
      * To return a closure of the required method to use in the proxy, according with the current visibility scope.
      *
      * @param string               $methodName
-     * @param Proxy\ProxyInterface $proxy
      * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null          $statedClassOriginName
      *
@@ -150,12 +149,9 @@ class StateNormal implements StateInterface
      *
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
      * @throws Exception\InvalidArgument      when the method name is not a string
-     * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
-     * @throws Exception\IllegalService       when there are no DI Container or Injection Closure Container bought
      */
     public function getClosure(
         string $methodName,
-        Proxy\ProxyInterface $proxy,
         string $scope = self::VISIBILITY_PUBLIC,
         string $statedClassOriginName = null
     ): \Closure {

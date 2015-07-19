@@ -157,18 +157,15 @@ interface StateInterface
      *
      * @internal
      * @param string               $methodName
-     * @param Proxy\ProxyInterface $proxy
      * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null          $statedClassOriginName
      *
      * @return \Closure
      *
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
-     * @throws Exception\IllegalProxy         when the proxy does not implement the good interface
      */
     public function getClosure(
         string $methodName,
-        Proxy\ProxyInterface $proxy,
         string $scope = self::VISIBILITY_PUBLIC,
         string $statedClassOriginName = null
     ): \Closure;

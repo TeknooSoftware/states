@@ -262,7 +262,6 @@ class MockState implements States\StateInterface
      * Return a closure of the required method to use in the proxy.
      *
      * @param string               $methodName
-     * @param Proxy\ProxyInterface $proxy
      * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null          $statedClassOriginName
      *
@@ -273,7 +272,6 @@ class MockState implements States\StateInterface
      */
     public function getClosure(
         string $methodName,
-        Proxy\ProxyInterface $proxy,
         string $scope = States\StateInterface::VISIBILITY_PUBLIC,
         string $statedClassOriginName = null
     ): \Closure {
