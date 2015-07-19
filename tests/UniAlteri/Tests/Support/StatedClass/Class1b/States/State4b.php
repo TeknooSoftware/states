@@ -22,7 +22,7 @@
  * Mock state file to test finder behavior with a valid state class
  */
 
-namespace Class1\States;
+namespace Class1b\States;
 
 use UniAlteri\Tests\Support;
 

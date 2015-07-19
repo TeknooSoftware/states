@@ -23,7 +23,7 @@
  * \UniAlteri\States\States\StateInterface
  */
 
-namespace Class1\States;
+namespace Class1b\States;
 
 /**
  * Class State3
