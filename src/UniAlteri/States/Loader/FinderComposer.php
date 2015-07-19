@@ -42,42 +42,14 @@ use UniAlteri\States\Proxy;
  *
  * @internal
  */
-class FinderComposer implements FinderInterface
+class FinderComposer extends FinderStandard implements FinderInterface
 {
-    /**
-     * Current stated class's name.
-     *
-     * @var string
-     */
-    private $statedClassName;
-
-    /**
-     * Folder/Phar of the stated class.
-     *
-     * @var string
-     */
-    private $pathString;
-
-    /**
-     * DI Container to use with this finder.
-     *
-     * @var DI\ContainerInterface
-     */
-    private $diContainer;
-
     /**
      * Default proxy class to use when there are no proxy class.
      *
      * @var string
      */
     protected $defaultProxyClassName = '\UniAlteri\States\Proxy\Standard';
-
-    /**
-     * List of states already fetched by this finder.
-     *
-     * @var \ArrayObject
-     */
-    private $statesNamesList;
 
     /**
      * @var ClassLoader
@@ -117,101 +89,6 @@ class FinderComposer implements FinderInterface
     }
 
     /**
-     * To register a DI container for this object.
-     *
-     * @internal
-     *
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container)
-    {
-        $this->diContainer = $container;
-
-        return $this;
-    }
-
-    /**
-     * To return the DI Container.
-     *
-     * @internal
-     *
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer()
-    {
-        return $this->diContainer;
-    }
-
-    /**
-     * To get the canonical stated class name associated to this state.
-     *
-     * @internal
-     *
-     * @return string
-     */
-    public function getStatedClassName()
-    {
-        return $this->statedClassName;
-    }
-
-    /**
-     * To list all available states of the stated class.
-     *
-     * @internal
-     *
-     * @return string[]
-     *
-     * @throws Exception\UnavailablePath if the states' folder is not available
-     * @throws Exception\UnReadablePath  if the states' folder is not readable
-     */
-    public function listStates()
-    {
-        if (!$this->statesNamesList instanceof \ArrayObject) {
-            //Checks if states are stored into the standardized path
-            $statesPath = $this->pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH;
-            if (!is_dir($statesPath)) {
-                throw new Exception\UnavailablePath(
-                    sprintf('Error, the path "%s" was not found', $statesPath)
-                );
-            }
-
-            //Checks if the path is available, use error_reporting to not use @
-            $oldErrorReporting = error_reporting(E_ALL & ~E_WARNING);
-            $hD = opendir($statesPath);
-            error_reporting($oldErrorReporting);
-            if (false === $hD) {
-                throw new Exception\UnReadablePath(
-                    sprintf('Error, the path "%s" is not available', $statesPath)
-                );
-            }
-
-            //Extracts all states (No check class exists)
-            $statesNameArray = new \ArrayObject();
-            while (false !== ($file = readdir($hD))) {
-                switch ($file) {
-                    case '.';
-                    case '..';
-                        break;
-                    default:
-                        if (strlen($file) - 4 == strrpos($file, '.php')) {
-                            $stateName = substr($file, 0, -4);
-                            $statesNameArray[] = $stateName;
-                        }
-                        break;
-                }
-            }
-
-            closedir($hD);
-
-            $this->statesNamesList = $statesNameArray;
-        }
-
-        return $this->statesNamesList;
-    }
-
-    /**
      * To load the required state object of the stated class.
      *
      * @internal
@@ -232,50 +109,6 @@ class FinderComposer implements FinderInterface
         }
 
         return $stateClassName;
-    }
-
-    /**
-     * To load and build the required state object of the stated class.
-     *
-     * @internal
-     *
-     * @param string $stateName
-     *
-     * @return States\StateInterface
-     *
-     * @throws Exception\UnavailableState if the required state is not available
-     * @throws Exception\IllegalState     if the state object does not implement the interface
-     */
-    public function buildState($stateName)
-    {
-        //Load the state class if it is not already done
-        $stateClassName = $this->loadState($stateName);
-
-        $stateObject = new $stateClassName();
-        if (!$stateObject instanceof States\StateInterface) {
-            throw new Exception\IllegalState(
-                sprintf(
-                    'Error, the state "%s" does not implement the interface "States\StateInterface"',
-                    $stateName
-                )
-            );
-        }
-
-        return $stateObject;
-    }
-
-    /**
-     * To extract the class name from the stated class name with namespace.
-     *
-     * @param string $statedClassName
-     *
-     * @return string
-     */
-    private function getClassedName($statedClassName)
-    {
-        $parts = explode('\\', $statedClassName);
-
-        return array_pop($parts);
     }
 
     /**
@@ -304,71 +137,5 @@ class FinderComposer implements FinderInterface
         }
 
         return $proxyClassName;
-    }
-
-    /**
-     * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
-     * standard proxy are excluded).
-     *
-     * @internal
-     *
-     * @return string[]
-     *
-     * @throws Exception\IllegalProxy If the proxy class is not valid
-     */
-    public function listParentsClassesNames()
-    {
-        //Build the class name
-        $classPartName = $this->getClassedName($this->statedClassName);
-        $proxyClassName = $this->statedClassName.'\\'.$classPartName;
-
-        //Fetch parents classes and extract library classes
-        if (class_exists($proxyClassName, false)) {
-            $finalParentsClassesList = new \ArrayObject();
-
-            $parentClassName = get_parent_class($proxyClassName);
-            while (false !== $parentClassName && false === strpos($parentClassName, 'UniAlteri\\States')) {
-                if (class_exists($parentClassName, false)) {
-                    $reflectionClassInstance = new \ReflectionClass($parentClassName);
-                    if ($reflectionClassInstance->implementsInterface('UniAlteri\\States\\Proxy\\ProxyInterface')) {
-                        $parentClassName = substr($parentClassName, 0, strrpos($parentClassName, '\\'));
-                        $finalParentsClassesList[] = $parentClassName;
-                    }
-                }
-                $parentClassName = get_parent_class($parentClassName);
-            }
-
-            return $finalParentsClassesList;
-        }
-
-        throw new Exception\IllegalProxy('Proxy class was not found');
-    }
-
-    /**
-     * To load and build a proxy object for the stated class.
-     *
-     * @internal
-     *
-     * @param array $arguments argument for proxy
-     *
-     * @return Proxy\ProxyInterface
-     *
-     * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
-     */
-    public function buildProxy($arguments = null)
-    {
-        //Load the proxy if it is not already done
-        $proxyClassName = $this->loadProxy();
-
-        //Load an instance of this proxy and test if it implements the interface ProxyInterface
-        $proxyObject = new $proxyClassName($arguments);
-        if ($proxyObject instanceof Proxy\ProxyInterface) {
-            return $proxyObject;
-        }
-
-        //Throw an error
-        throw new Exception\IllegalProxy(
-            sprintf('Error, the proxy of "%s" does not implement "Proxy\ProxyInterface"', $this->statedClassName)
-        );
     }
 }
