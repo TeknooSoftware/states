@@ -5,8 +5,7 @@ Uni Alteri - States library
 
 Welcome and thank you to having downloaded this library. It allows you to follow and implement the 
  [State Pattern](http://en.wikipedia.org/wiki/State_pattern)
- and to create easily and cleanly classes with several states, written in distinct codes blocks, 
- but never used "if conditions" with PHP 7+.
+ and to create easily and cleanly classes with several states, written in distinct codes blocks with PHP 7+.
 
 Quick startup
 -------------

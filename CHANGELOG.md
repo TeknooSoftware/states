@@ -1,12 +1,29 @@
 #Uni Alteri - States library - Change Log
 
-##[2.0.0-beta6] - 2015-07-7 - Available on the branch "next"
+##[1.2.0-beta4] - 2015-07-19
+###Changed
+- Define a new interface UniAlteri\States\Proxy\IntegratedInterface to define integrated proxies
+
+###Added
+- Backport from the next:2.x branch the LoaderComposer and FinderComposer to allow developer to use Composer instead
+the library's loader to simplify the use of this library by avoiding multiple autoload mappings.
+- New library's bootstrap, available in bootstrap_composer.php to use this library with LoaderComposer
+
+###Changed
+- LoaderStandard is marked as deprecated
+- FinderStandard is marked as deprecated
+- FinderIntegrated is marked as deprecated
+- ObjectInterface is marked as deprecated
+- InjectionClosure is marked as deprecated
+
+##[2.0.0-beta6] - 2015-07-19 - Available on the branch "next"
 ###Removed
-- FinderStandard : Remplaced by FinderComposer
-- FinderIntegrated : Remplaced by FinderComposerIntegrated
+- FinderStandard : Replaced by FinderComposer
+- FinderIntegrated : Replaced by FinderComposerIntegrated
 
 ###Changed
 - FinderStandard, is now built on Composer and it was renaming to allow a backport to the 1.x branch.
+- Fix tests
 
 ##[2.0.0-beta5] - 2015-07-03 - Available on the branch "next"
 ###Added
@@ -23,9 +40,9 @@ environments.
 - Remove all definitions of these methods from Proxy Interface : To create a proxy is now easier.
 
 ###Removed
-- LoaderStandard : Remplaced by LoaderComposer
-- FinderStandard : Remplaced by FinderComposer
-- FinderIntegrated : Remplaced by FinderComposerIntegrated
+- LoaderStandard : Replaced by LoaderComposer
+- FinderStandard : Replaced by FinderComposer
+- FinderIntegrated : Replaced by FinderComposerIntegrated
 - IncludePathManager : Useless since switch to Composer
 
 ##[2.0.0-beta4] - 2015-06-22 - Available on the branch "next"
