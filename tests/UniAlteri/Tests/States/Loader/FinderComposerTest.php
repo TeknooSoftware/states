@@ -118,11 +118,11 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
         parent::setUp();
         //Use mock stated class defined un Support directory
         $path = dirname(dirname(dirname(__FILE__))).'/Support/StatedClass/';
-        $this->statedClass1Path = $path.'Class1';
-        $this->statedClass2Path = $path.'Class2';
+        $this->statedClass1Path = $path.'Class1b';
+        $this->statedClass2Path = $path.'Class2b';
         $this->statedClass3Path = $path.'Class3';
-        $this->statedClass4Path = $path.'Class4';
-        $this->statedClass5Path = $path.'Class5';
+        $this->statedClass4Path = $path.'Class4b';
+        $this->statedClass5Path = $path.'Class5b';
         $this->statedClass6Path = $path.'Class6';
         $this->statedClass7Path = $path.'Class7';
         $this->statedClass8Path = $path.'Class8';
@@ -217,7 +217,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testListStates()
     {
-        $statesNamesArray = $this->initializeFinder('Class1', $this->statedClass1Path)->listStates();
+        $statesNamesArray = $this->initializeFinder('Class1b', $this->statedClass1Path)->listStates();
         $this->assertInstanceOf('ArrayObject', $statesNamesArray);
         $states = $statesNamesArray->getArrayCopy();
         sort($states);
@@ -237,7 +237,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadStateWithoutClass()
     {
-        $this->initializeFinder('Class1', $this->statedClass1Path);
+        $this->initializeFinder('Class1b', $this->statedClass1Path);
         try {
             $this->finder->loadState('State1');
         } catch (Exception\UnavailableState $e) {
@@ -254,10 +254,10 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadState()
     {
-        $this->initializeFinder('Class1', $this->statedClass1Path);
+        $this->initializeFinder('Class1b', $this->statedClass1Path);
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
-            ->with($this->equalTo('Class1\States\State4b'))
+            ->with($this->equalTo('Class1b\States\State4b'))
             ->willReturnCallback(function () {
                 include_once $this->statedClass1Path.'/States/State4b.php';
 
@@ -265,8 +265,8 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
             });
 
         $return = $this->finder->loadState('State4b');
-        $this->assertTrue(class_exists('Class1\\States\\State4b', false));
-        $this->assertEquals('Class1\\States\\State4b', $return);
+        $this->assertTrue(class_exists('Class1b\\States\\State4b', false));
+        $this->assertEquals('Class1b\\States\\State4b', $return);
     }
 
     /**
@@ -274,7 +274,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildStateWithoutClass()
     {
-        $this->initializeFinder('Class1', $this->statedClass1Path);
+        $this->initializeFinder('Class1b', $this->statedClass1Path);
         try {
             $this->finder->buildState('State1');
         } catch (Exception\UnavailableState $e) {
@@ -291,11 +291,11 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildStateBadImplementation()
     {
-        $this->initializeFinder('Class1', $this->statedClass1Path);
+        $this->initializeFinder('Class1b', $this->statedClass1Path);
 
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
-            ->with($this->equalTo('Class1\States\State3'))
+            ->with($this->equalTo('Class1b\States\State3'))
             ->willReturnCallback(function () {
                 include_once $this->statedClass1Path.'/States/State3.php';
 
@@ -318,11 +318,11 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildState()
     {
-        $this->initializeFinder('Class1', $this->statedClass1Path);
+        $this->initializeFinder('Class1b', $this->statedClass1Path);
 
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
-            ->with($this->equalTo('Class1\States\State4'))
+            ->with($this->equalTo('Class1b\States\State4'))
             ->willReturnCallback(function () {
                 include_once $this->statedClass1Path.'/States/State4.php';
 
@@ -330,7 +330,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
             });
 
         $stateObject = $this->finder->buildState('State4');
-        $this->assertEquals('Class1\States\State4', get_class($stateObject));
+        $this->assertEquals('Class1b\States\State4', get_class($stateObject));
         $this->assertInstanceOf('\UniAlteri\States\States\StateInterface', $stateObject);
     }
 
@@ -340,17 +340,17 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadProxyDefault()
     {
-        $this->initializeFinder('Class2', $this->statedClass2Path);
+        $this->initializeFinder('Class2b', $this->statedClass2Path);
 
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
-            ->with($this->equalTo('Class2\\Class2'))
+            ->with($this->equalTo('Class2b\\Class2b'))
             ->willReturnCallback(function () {
                 return false;
             });
 
         $proxyClassName = $this->finder->loadProxy();
-        $this->assertEquals('Class2\\Class2', $proxyClassName);
+        $this->assertEquals('Class2b\\Class2b', $proxyClassName);
     }
 
     /**
@@ -359,11 +359,11 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildProxyDefault()
     {
-        $this->initializeFinder('Class2', $this->statedClass2Path);
+        $this->initializeFinder('Class2b', $this->statedClass2Path);
         $proxy = $this->finder->buildProxy();
         $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
         $this->assertInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
-        $this->assertInstanceOf('Class2\\Class2', $proxy);
+        $this->assertInstanceOf('Class2b\\Class2b', $proxy);
     }
 
     /**
@@ -371,13 +371,13 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildProxySpecificBadInterface()
     {
-        $this->initializeFinder('Class4', $this->statedClass4Path);
+        $this->initializeFinder('Class4b', $this->statedClass4Path);
 
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
-            ->with($this->equalTo('Class4\Class4'))
+            ->with($this->equalTo('Class4b\Class4b'))
             ->willReturnCallback(function () {
-                include_once $this->statedClass4Path.'/Class4.php';
+                include_once $this->statedClass4Path.'/Class4b.php';
 
                 return true;
             });
@@ -398,20 +398,20 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadProxySpecific()
     {
-        $this->initializeFinder('Class5', $this->statedClass5Path);
+        $this->initializeFinder('Class5b', $this->statedClass5Path);
 
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
-            ->with($this->equalTo('Class5\Class5'))
+            ->with($this->equalTo('Class5b\Class5b'))
             ->willReturnCallback(function () {
-                include_once $this->statedClass5Path.'/Class5.php';
+                include_once $this->statedClass5Path.'/Class5b.php';
 
                 return true;
             });
 
         $this->finder->setDIContainer(new Support\MockDIContainer());
         $proxyClassName = $this->finder->loadProxy();
-        $this->assertEquals('Class5\\Class5', $proxyClassName);
+        $this->assertEquals('Class5b\\Class5b', $proxyClassName);
     }
 
     /**
@@ -420,13 +420,13 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testBuildProxySpecific()
     {
-        $this->initializeFinder('Class5', $this->statedClass5Path);
+        $this->initializeFinder('Class5b', $this->statedClass5Path);
 
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
-            ->with($this->equalTo('Class5\Class5'))
+            ->with($this->equalTo('Class5b\Class5b'))
             ->willReturnCallback(function () {
-                include_once $this->statedClass5Path.'/Class5.php';
+                include_once $this->statedClass5Path.'/Class5b.php';
 
                 return true;
             });
@@ -435,7 +435,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
         $proxy = $this->finder->buildProxy();
         $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
         $this->assertNotInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
-        $this->assertInstanceOf('Class5\\Class5', $proxy);
+        $this->assertInstanceOf('Class5b\\Class5b', $proxy);
     }
 
     /**
@@ -532,5 +532,22 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
             ],
             $this->finder->listParentsClassesNames()->getArrayCopy()
         );
+    }
+
+    /**
+     * Test the behavior of the finder when the sub directory where states files are stored is not readable.
+     */
+    public function testListStatePathNotReadable()
+    {
+        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
+        $this->initializeFinder('Class1', $this->statedClass1Path);
+        try {
+            $this->finder->listStates();
+        } catch (Exception\UnReadablePath $e) {
+            return;
+        } catch (\Exception $e) {
+        }
+
+        $this->fail('Error, if the state path is not readable, the Finder must throw an exception `Exception\UnReadablePath`');
     }
 }
