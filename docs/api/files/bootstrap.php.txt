@@ -24,8 +24,7 @@ namespace UniAlteri\States;
 
 use UniAlteri\States\Factory\FactoryInterface;
 
-defined('UA_STATES_PATH')
-    || define('UA_STATES_PATH', __DIR__);
+defined('UA_STATES_PATH') || define('UA_STATES_PATH', __DIR__);
 
 //Needed for test, but we can use your own autoloader to load file of this lib.
 //This lib respects PSR-0, PSR-1 and PSR-2

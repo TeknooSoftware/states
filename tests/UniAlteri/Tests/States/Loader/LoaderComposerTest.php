@@ -1286,7 +1286,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if return of this method is valid
+     * Test if return of this method is valid.
      */
     public function testAddIncludePath()
     {
@@ -1295,7 +1295,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if return of this method is valid
+     * Test if return of this method is valid.
      */
     public function testGetIncludedPaths()
     {
@@ -1304,7 +1304,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if return of this method is valid
+     * Test if return of this method is valid.
      */
     public function testListNamespaces()
     {

@@ -1,4 +1,5 @@
 <?php
+
 /**
  * States.
  *
@@ -24,12 +25,15 @@
  * * Register the service to build new finders for each stated class
  * * Register the service to build new injection closure for each stated classes' methods
  */
+
 namespace UniAlteri\Tests\States;
+
 use UniAlteri\States;
 use UniAlteri\States\Loader;
 use UniAlteri\States\Factory;
 use UniAlteri\States\Exception;
 use UniAlteri\Tests\Support;
+
 /**
  * Class BootstrapTest
  * Test behavior of the bootstrap file. It initialize the library :
@@ -148,7 +152,6 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
             $this->assertInstanceOf('\\UniAlteri\\States\\DI\\InjectionClosurePHP56', $injectionClosure);
         }
     }
-
 
     public function testLoaderComposerInitialisationBefore56()
     {

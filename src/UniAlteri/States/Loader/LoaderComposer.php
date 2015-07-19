@@ -31,7 +31,7 @@ use UniAlteri\States\Factory;
  * Default implementation of the "stated class autoloader".
  * It is used to allow php to load automatically stated class. It builds on the Composer Loader. It is registered to be
  * called before the composer loader, find the factory attached to the stated class, load and run it to initialize the
- * stated class
+ * stated class.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -80,7 +80,9 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * To register a DI container for this object.
+     *
      * @api
+     *
      * @param DI\ContainerInterface $container
      *
      * @return $this
@@ -94,7 +96,9 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * To return the DI Container used for this object.
+     *
      * @api
+     *
      * @return DI\ContainerInterface
      */
     public function getDIContainer()
@@ -105,7 +109,9 @@ class LoaderComposer implements LoaderInterface
     /**
      * To register a location to find some classes of a namespace.
      * A namespace can has several locations.
+     *
      * @api
+     *
      * @param string $namespace
      * @param string $path
      *
@@ -113,7 +119,7 @@ class LoaderComposer implements LoaderInterface
      */
     public function registerNamespace($namespace, $path)
     {
-        if ('\\' !== $namespace[strlen($namespace)-1]) {
+        if ('\\' !== $namespace[strlen($namespace) - 1]) {
             $namespace = ltrim($namespace, '\\').'\\';
         }
 
@@ -123,8 +129,10 @@ class LoaderComposer implements LoaderInterface
     }
 
     /**
-     * To load the factory of the stated class and check if it's implementing the good interface
+     * To load the factory of the stated class and check if it's implementing the good interface.
+     *
      * @param string $factoryClassName
+     *
      * @return bool
      */
     private function loadFactory(&$factoryClassName)
@@ -140,7 +148,9 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * Method called to load a class by __autoload of PHP Engine.
+     *
      * @api
+     *
      * @param string $className class name, support namespace prefixes
      *
      * @return bool
@@ -188,7 +198,9 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * Build the factory and initialize the loading stated class.
+     *
      * @internal
+     *
      * @param string $factoryClassName
      * @param string $statedClassName
      * @param string $path
@@ -235,6 +247,7 @@ class LoaderComposer implements LoaderInterface
      * @return $this
      *
      * @throws Exception\UnavailablePath if the path is not readable
+     *
      * @deprecated  Removed since 2.0
      */
     public function addIncludePath($path)
@@ -246,6 +259,7 @@ class LoaderComposer implements LoaderInterface
      * To list all active included path for this loaded.
      *
      * @return string[]
+     *
      * @deprecated  Removed since 2.0
      */
     public function getIncludedPaths()
@@ -257,6 +271,7 @@ class LoaderComposer implements LoaderInterface
      * To list all registered namespace.
      *
      * @return \ArrayObject
+     *
      * @deprecated  Removed since 2.0
      */
     public function listNamespaces()

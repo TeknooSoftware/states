@@ -30,7 +30,7 @@ use UniAlteri\States\Proxy;
 /**
  * Class FinderComposer
  * Default implementation of the finder. It is used with this library to find from each stated class
- * all states and the proxy. It needs an instance of the Composer Loader to find php classes and load them
+ * all states and the proxy. It needs an instance of the Composer Loader to find php classes and load them.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -87,11 +87,11 @@ class FinderComposer implements FinderInterface
     /**
      * Initialize finder.
      *
-     * @param string $statedClassName
-     * @param string $pathString
+     * @param string      $statedClassName
+     * @param string      $pathString
      * @param ClassLoader $composerInstance
      */
-    public function __construct($statedClassName, $pathString, ClassLoader $composerInstance=null)
+    public function __construct($statedClassName, $pathString, ClassLoader $composerInstance = null)
     {
         $this->statedClassName = $statedClassName;
         $this->pathString = $pathString;
@@ -104,6 +104,7 @@ class FinderComposer implements FinderInterface
      * with spl_autoload_register.
      *
      * @param string $className
+     *
      * @return bool
      */
     private function testClassExists($className)
@@ -117,7 +118,9 @@ class FinderComposer implements FinderInterface
 
     /**
      * To register a DI container for this object.
+     *
      * @internal
+     *
      * @param DI\ContainerInterface $container
      *
      * @return $this
@@ -131,6 +134,7 @@ class FinderComposer implements FinderInterface
 
     /**
      * To return the DI Container.
+     *
      * @internal
      *
      * @return DI\ContainerInterface
@@ -142,7 +146,9 @@ class FinderComposer implements FinderInterface
 
     /**
      * To get the canonical stated class name associated to this state.
+     *
      * @internal
+     *
      * @return string
      */
     public function getStatedClassName()
@@ -152,7 +158,9 @@ class FinderComposer implements FinderInterface
 
     /**
      * To list all available states of the stated class.
+     *
      * @internal
+     *
      * @return string[]
      *
      * @throws Exception\UnavailablePath if the states' folder is not available
@@ -205,7 +213,9 @@ class FinderComposer implements FinderInterface
 
     /**
      * To load the required state object of the stated class.
+     *
      * @internal
+     *
      * @param string $stateName
      *
      * @return string
@@ -226,7 +236,9 @@ class FinderComposer implements FinderInterface
 
     /**
      * To load and build the required state object of the stated class.
+     *
      * @internal
+     *
      * @param string $stateName
      *
      * @return States\StateInterface
@@ -269,7 +281,9 @@ class FinderComposer implements FinderInterface
     /**
      * To search and load the proxy class for this stated class.
      * If the class has not proxy, load the default proxy for this stated class.
+     *
      * @internal
+     *
      * @return string
      */
     public function loadProxy()
@@ -295,7 +309,9 @@ class FinderComposer implements FinderInterface
     /**
      * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
      * standard proxy are excluded).
+     *
      * @internal
+     *
      * @return string[]
      *
      * @throws Exception\IllegalProxy If the proxy class is not valid
@@ -330,7 +346,9 @@ class FinderComposer implements FinderInterface
 
     /**
      * To load and build a proxy object for the stated class.
+     *
      * @internal
+     *
      * @param array $arguments argument for proxy
      *
      * @return Proxy\ProxyInterface

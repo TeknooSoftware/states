@@ -37,7 +37,9 @@ use UniAlteri\States\Factory;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @deprecated  Removed since 2.0 : Use LoaderComposer instead of LoaderStandard
+ *
  * @api
  */
 class LoaderStandard implements LoaderInterface
@@ -123,6 +125,7 @@ class LoaderStandard implements LoaderInterface
      * @param bool $state
      *
      * @return $this
+     *
      * @deprecated  Removed since 2.0
      */
     public function setPSR0LoaderState($state)
@@ -136,6 +139,7 @@ class LoaderStandard implements LoaderInterface
      * To know the state of the PSR 0 loader to search required stated class in included paths.
      *
      * @return bool
+     *
      * @deprecated  Removed since 2.0
      */
     public function getPSR0LoaderState()
@@ -147,6 +151,7 @@ class LoaderStandard implements LoaderInterface
      * Return the current include path manager.
      *
      * @return IncludePathManagerInterface
+     *
      * @deprecated  Removed since 2.0
      */
     protected function getIncludePathManager()
@@ -206,6 +211,7 @@ class LoaderStandard implements LoaderInterface
      * To list all active included path for this loaded.
      *
      * @return string[]
+     *
      * @deprecated  Removed since 2.0
      */
     public function getIncludedPaths()
@@ -223,6 +229,7 @@ class LoaderStandard implements LoaderInterface
      * @return $this
      *
      * @throws Exception\IllegalArgument if the path is not a valid string
+     *
      * @deprecated  Removed since 2.0
      */
     public function registerNamespace($namespace, $path)
@@ -252,6 +259,7 @@ class LoaderStandard implements LoaderInterface
      * To list all registered namespace.
      *
      * @return \ArrayObject
+     *
      * @deprecated  Removed since 2.0
      */
     public function listNamespaces()

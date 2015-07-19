@@ -38,6 +38,7 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
  * @deprecated  Removed since 2.0 : Use FinderComposer instead of FinderStandard
  *
  * @api

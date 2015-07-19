@@ -61,7 +61,7 @@ class Proxy extends AbstractParser
         return $this->loadFile($this->getClassNameFile())
             ->isSubclassOf('\UniAlteri\States\Proxy\Standard')
             && !$this->loadFile($this->getClassNameFile())
-            ->isSubclassOf('\UniAlteri\States\Proxy\Integrated');
+            ->implementsInterface('\UniAlteri\States\Proxy\IntegratedInterface');
     }
 
     /**
