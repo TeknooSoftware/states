@@ -28,7 +28,7 @@ defined('DS')
     || define('DS', DIRECTORY_SEPARATOR);
 
 //Loading lib States
-$loader = require_once dirname(__DIR__).DS.'src'.DS.'UniAlteri'.DS.'States'.DS.'bootstrap.php';
+$loader = require_once dirname(__DIR__).DS.'src'.DS.'UniAlteri'.DS.'States'.DS.'bootstrap_composer.php';
 
 //Register demo namespace
 $loader->registerNamespace('\\demo\\Acme', __DIR__.DS.'Acme');

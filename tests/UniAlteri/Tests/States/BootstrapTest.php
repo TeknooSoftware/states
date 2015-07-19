@@ -60,13 +60,14 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
                 array($this->loader, 'loadClass')
             );
         }
+
         parent::tearDown();
     }
 
     public function testLoaderInitialisation()
     {
         //Call the bootstrap, it returns the loader
-        $this->loader = include 'UniAlteri/States/bootstrap_without_composer.php';
+        $this->loader = include 'UniAlteri/States/bootstrap.php';
 
         //Check if the loader implements the good interface
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->loader);
@@ -111,7 +112,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
     public function testLoaderComposerInitialisation()
     {
         //Call the bootstrap, it returns the loader
-        $this->loader = include 'UniAlteri/States/bootstrap.php';
+        $this->loader = include 'UniAlteri/States/bootstrap_composer.php';
         //Check if the loader implements the good interface
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->loader);
         //Check if the loader is initialized with a di container
@@ -159,7 +160,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
 
         defined('DISABLE_PHP_FLOC_OPERATOR') || define('DISABLE_PHP_FLOC_OPERATOR', true);
         //Call the bootstrap, it returns the loader
-        $this->loader = include 'UniAlteri/States/bootstrap.php';
+        $this->loader = include 'UniAlteri/States/bootstrap_composer.php';
         //Check if the loader implements the good interface
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->loader);
         //Check if the loader is initialized with a di container
@@ -203,7 +204,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         defined('DISABLE_PHP_FLOC_OPERATOR') || define('DISABLE_PHP_FLOC_OPERATOR', true);
 
         //Call the bootstrap, it returns the loader
-        $this->loader = include 'UniAlteri/States/bootstrap_without_composer.php';
+        $this->loader = include 'UniAlteri/States/bootstrap.php';
 
         //Check if the loader implements the good interface
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->loader);

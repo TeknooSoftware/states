@@ -7,6 +7,7 @@
 ###Added
 - Backport from the next:2.x branch the LoaderComposer and FinderComposer to allow developer to use Composer instead
 the library's loader to simplify the use of this library by avoiding multiple autoload mappings.
+- New library's bootstrap, available in bootstrap_composer.php to use this library with LoaderComposer
 
 ###Changed
 - LoaderStandard is marked as deprecated
