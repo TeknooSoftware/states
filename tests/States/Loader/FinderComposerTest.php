@@ -533,4 +533,21 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
             $this->finder->listParentsClassesNames()->getArrayCopy()
         );
     }
+
+    /**
+     * Test the behavior of the finder when the sub directory where states files are stored is not readable.
+     */
+    public function testListStatePathNotReadable()
+    {
+        chmod($this->statedClass1Path.DIRECTORY_SEPARATOR.Loader\FinderInterface::STATES_PATH, 0000);
+        $this->initializeFinder('Class1', $this->statedClass1Path);
+        try {
+            $this->finder->listStates();
+        } catch (Exception\UnReadablePath $e) {
+            return;
+        } catch (\Exception $e) {
+        }
+
+        $this->fail('Error, if the state path is not readable, the Finder must throw an exception `Exception\UnReadablePath`');
+    }
 }
