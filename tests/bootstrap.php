@@ -30,12 +30,7 @@ defined('UA_STATES_TEST_PATH')
 
 ini_set('memory_limit', '64M');
 
-//Update included Path for spl autoload
-set_include_path(
-    __DIR__
-    .PATH_SEPARATOR
-    .get_include_path()
-);
+require_once __DIR__.'/../vendor/autoload.php';
 
 date_default_timezone_set('UTC');
 
