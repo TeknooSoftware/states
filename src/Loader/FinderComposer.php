@@ -314,7 +314,8 @@ class FinderComposer implements FinderInterface
             while (false !== $parentClassName && false === strpos($parentClassName, 'UniAlteri\\States')) {
                 if (class_exists($parentClassName, false)) {
                     $reflectionClassInstance = new \ReflectionClass($parentClassName);
-                    if ($reflectionClassInstance->implementsInterface('UniAlteri\\States\\Proxy\\ProxyInterface')) {
+                    if ($reflectionClassInstance->implementsInterface('UniAlteri\\States\\Proxy\\ProxyInterface')
+                        && false === $reflectionClassInstance->isAbstract()) {
                         $parentClassName = substr($parentClassName, 0, strrpos($parentClassName, '\\'));
                         $finalParentsClassesList[] = $parentClassName;
                     }
