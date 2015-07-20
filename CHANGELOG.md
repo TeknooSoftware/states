@@ -1,5 +1,13 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta7] - 2015-07-20 - Available on the branch "next"
+###Changed
+- Behavior of LoaderComposer : Memorize the result about the factory loading to avoid multiple attempts.
+
+##[1.2.0-beta5] - 2015-07-20
+###Changed
+- Behavior of LoaderComposer : Memorize the result about the factory loading to avoid multiple attempts.
+
 ##[1.2.0-beta4] - 2015-07-19
 ###Changed
 - Define a new interface UniAlteri\States\Proxy\IntegratedInterface to define integrated proxies

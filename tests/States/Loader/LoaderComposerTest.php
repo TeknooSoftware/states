@@ -256,6 +256,49 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
      */
+    public function testLoadClassViaNameSpaceRelativeWithoutFactoryFileMultiple()
+    {
+        $loader = $this->initializeLoader();
+        $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->exactly(2))
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return false;
+            });
+
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false.
+     */
     public function testLoadClassViaNameSpaceWithProxyRelativeWithoutFactoryFile()
     {
         $loader = $this->initializeLoader();
@@ -424,6 +467,49 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
      */
+    public function testLoadClassViaNameSpaceRelativeMultiple()
+    {
+        $loader = $this->initializeLoader();
+        $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->atMost(2))
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                        include_once $path.'/Class2/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                        include_once $path.'/Class2/Class2.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
+        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
+        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false.
+     */
     public function testLoadClassViaNameSpaceWithProxyRelative()
     {
         $loader = $this->initializeLoader();
@@ -508,6 +594,49 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)
      * the loader must ignore the stated class and return false.
      */
+    public function testLoadClassViaNameSpaceAbsoluteWithoutFactoryFileMultiple()
+    {
+        $loader = $this->initializeLoader();
+        $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->exactly(2))
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                        return false;
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
+        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false.
+     */
     public function testLoadClassViaNameSpaceAbsoluteWithProxyWithoutFactoryFile()
     {
         $loader = $this->initializeLoader();
@@ -584,6 +713,49 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             });
 
         $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
+    }
+
+    /**
+     * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
+     * If the factory was not found (file not present, class not in the file, or exception during factory loading)
+     * the loader must ignore the stated class and return false.
+     */
+    public function testLoadClassViaNameSpaceAbsoluteMultiples()
+    {
+        $loader = $this->initializeLoader();
+        $path = dirname(dirname(__DIR__)).'/Support/NamespaceLoader/';
+
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('addPsr4')
+            ->with(
+                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo($path)
+            );
+
+        $this->getClassLoaderMock()->expects($this->atMost(2))
+            ->method('loadClass')
+            ->willReturnCallback(function ($className) use ($path) {
+                switch ($className) {
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                        return false;
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                        include_once $path.'/Class2/Factory.php';
+                        break;
+                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                        include_once $path.'/Class2/Class2.php';
+                        break;
+                    default:
+                        $this->fail('Unknown class loading '.$className);
+                        break;
+                }
+
+                return true;
+            });
+
+        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
         $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
     }
 
