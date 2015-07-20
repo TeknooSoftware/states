@@ -63,6 +63,12 @@ class LoaderComposer implements LoaderInterface
     protected $loadingFactoriesClassNameArray = [];
 
     /**
+     * To keep the list of factory already fetched
+     * @var array
+     */
+    private $factoryAvailabilityList = array();
+
+    /**
      * Initialize the loader object.
      *
      * @param ClassLoader $composerInstance
@@ -129,15 +135,17 @@ class LoaderComposer implements LoaderInterface
      */
     private function loadFactory(string &$factoryClassName): bool
     {
-        if (true === $this->composerInstance->loadClass($factoryClassName)) {
-            $reflectionClassInstance = new \ReflectionClass($factoryClassName);
+        if (!isset($this->factoryAvailabilityList[$factoryClassName])) {
+            if (true === $this->composerInstance->loadClass($factoryClassName)) {
+                $reflectionClassInstance = new \ReflectionClass($factoryClassName);
 
-            if ($reflectionClassInstance->implementsInterface('UniAlteri\\States\\Factory\\FactoryInterface')) {
-                return true;
+                $this->factoryAvailabilityList[$factoryClassName] = $reflectionClassInstance->implementsInterface('UniAlteri\\States\\Factory\\FactoryInterface');
+            } else {
+                $this->factoryAvailabilityList[$factoryClassName] = false;
             }
         }
 
-        return false;
+        return $this->factoryAvailabilityList[$factoryClassName];
     }
 
     /**
