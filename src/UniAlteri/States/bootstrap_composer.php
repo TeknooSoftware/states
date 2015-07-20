@@ -42,7 +42,7 @@ $diContainer = new DI\Container();
 //Initialize the Factory Repository
 $diContainer->registerInstance(FactoryInterface::DI_FACTORY_REPOSITORY, new DI\Container());
 
-/*
+/**
  * Service to generate a finder for Stated class factory
  * @param DI\ContainerInterface $container
  * @return Loader\FinderComposerIntegrated
