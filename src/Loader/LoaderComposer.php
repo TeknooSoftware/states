@@ -136,7 +136,8 @@ class LoaderComposer implements LoaderInterface
     private function loadFactory(string &$factoryClassName): bool
     {
         if (!isset($this->factoryAvailabilityList[$factoryClassName])) {
-            if (true === $this->composerInstance->loadClass($factoryClassName)) {
+            if (true === class_exists($factoryClassName, false)
+                || true === $this->composerInstance->loadClass($factoryClassName)) {
                 $reflectionClassInstance = new \ReflectionClass($factoryClassName);
 
                 $this->factoryAvailabilityList[$factoryClassName] = $reflectionClassInstance->implementsInterface('UniAlteri\\States\\Factory\\FactoryInterface');
