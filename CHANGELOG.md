@@ -1,5 +1,13 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta8] - 2015-07-27 - Available on the branch "next"
+###Fixed
+- Fix fatal error in LoaderComposer to avoid redeclare the factory 
+
+##[1.2.0-beta6] - 2015-07-27
+###Changed
+- Fix fatal error in LoaderComposer to avoid redeclare the factory
+
 ##[2.0.0-beta7] - 2015-07-20 - Available on the branch "next"
 ###Changed
 - Behavior of LoaderComposer : Memorize the result about the factory loading to avoid multiple attempts.
