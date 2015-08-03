@@ -51,22 +51,9 @@ class FinderComposerIntegratedTest extends FinderComposerTest
      */
     protected function initializeFinder($statedClassName, $pathString)
     {
-        $virtualDIContainer = new Support\MockDIContainer();
         $this->finder = new Loader\FinderComposerIntegrated($statedClassName, $pathString, $this->getClassLoaderMock());
-        $this->finder->setDIContainer($virtualDIContainer);
 
         return $this->finder;
-    }
-
-    /**
-     * Test behavior for methods Set And GetDiContainer.
-     */
-    public function testSetAndGetDiContainer()
-    {
-        $object = new Loader\FinderComposerIntegrated('', '', $this->getClassLoaderMock());
-        $virtualContainer = new Support\MockDIContainer();
-        $this->assertSame($object, $object->setDIContainer($virtualContainer));
-        $this->assertSame($virtualContainer, $object->getDIContainer());
     }
 
     /**
@@ -74,7 +61,18 @@ class FinderComposerIntegratedTest extends FinderComposerTest
      */
     public function testBuildProxyDefault()
     {
-        Factory\StandardStartupFactory::registerFactory('UniAlteri\States\Proxy\Integrated', new Support\MockFactory());
-        parent::testBuildProxyDefault();
+        $this->initializeFinder('Class2', $this->statedClass2Path);
+        Factory\StandardStartupFactory::registerFactory(
+            'UniAlteri\States\Proxy\Integrated',
+            new Support\MockFactory(
+                'my\Stated\Class',$this->finder,
+                new \ArrayObject([])
+            )
+        );
+
+        $proxy = $this->finder->buildProxy();
+        $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
+        $this->assertInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
+        $this->assertInstanceOf('Class2\\Class2', $proxy);
     }
 }

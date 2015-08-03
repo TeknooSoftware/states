@@ -122,28 +122,16 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
      */
     protected function initializeLoader()
     {
-        $this->loader = new Loader\LoaderComposer($this->getClassLoaderMock());
-
-        $this->loader->setDIContainer(new Support\MockDIContainer());
-        $this->loader->getDIContainer()->registerService(
-            Loader\FinderInterface::DI_FINDER_SERVICE,
+        $this->loader = new Loader\LoaderComposer(
+            $this->getClassLoaderMock(),
             function () {
-                return new Support\MockFinder('', '');
-            }
+                return new Support\MockFinder('my\Stated\Class', 'my\Path');
+            },
+            new \ArrayObject([])
         );
 
-        return $this->loader;
-    }
 
-    /**
-     * Test behavior for methods Set And GetDiContainer.
-     */
-    public function testSetAndGetDiContainer()
-    {
-        $object = new Loader\LoaderComposer($this->getClassLoaderMock());
-        $virtualContainer = new Support\MockDIContainer();
-        $this->assertSame($object, $object->setDIContainer($virtualContainer));
-        $this->assertSame($virtualContainer, $object->getDIContainer());
+        return $this->loader;
     }
 
     /**
@@ -198,12 +186,12 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $loader = $this->initializeLoader();
         $this->assertEquals(array(), Support\MockFactory::listInitializedFactories());
         $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class1', 'path1');
-        $this->assertEquals(array('class1:path1'), Support\MockFactory::listInitializedFactories());
+        $this->assertEquals(array('class1'), Support\MockFactory::listInitializedFactories());
         $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class2', 'path2');
-        $this->assertEquals(array('class1:path1', 'class2:path2'), Support\MockFactory::listInitializedFactories());
+        $this->assertEquals(array('class1', 'class2'), Support\MockFactory::listInitializedFactories());
         $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class1', 'path3');
         $this->assertEquals(
-            array('class1:path1', 'class2:path2', 'class1:path3'),
+            array('class1', 'class2', 'class1'),
             Support\MockFactory::listInitializedFactories(),
             'Error, the loader must not manage factory building. If an even stated class is initialized several times, the loader must call the factory each time. '
         );

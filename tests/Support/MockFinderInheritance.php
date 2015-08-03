@@ -43,13 +43,6 @@ use UniAlteri\States\States;
 class MockFinderInheritance implements Loader\FinderInterface
 {
     /**
-     * Mock container used for tests.
-     *
-     * @var DI\ContainerInterface
-     */
-    protected $container = null;
-
-    /**
      * To not return the default state.
      *
      * @var bool
@@ -86,30 +79,6 @@ class MockFinderInheritance implements Loader\FinderInterface
     }
 
     /**
-     * To register a DI container for this object.
-     *
-     * @param \UniAlteri\States\DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container): Loader\FinderInterface
-    {
-        $this->container = $container;
-
-        return $this;
-    }
-
-    /**
-     * To return the DI Container used for this object.
-     *
-     * @return \UniAlteri\States\DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface
-    {
-        return $this->container;
-    }
-
-    /**
      * List all available state object of the stated class.
      *
      * @return string[]
@@ -142,10 +111,10 @@ class MockFinderInheritance implements Loader\FinderInterface
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState(string $stateName): States\StateInterface
+    public function buildState(string $stateName, bool $privateMode, string $statedClassName): States\StateInterface
     {
         //Return a new mock state object for tests
-        return new MockState();
+        return new MockState($privateMode, $statedClassName);
     }
 
     /**
@@ -209,7 +178,7 @@ class MockFinderInheritance implements Loader\FinderInterface
      */
     public function listParentsClassesNames()
     {
-        return new \ArrayObject(['UniAlteri\Tests\Support\MockProxy']);
+        return new \ArrayObject(['My\Stated\Class1']);
     }
 
     /**

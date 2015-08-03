@@ -43,37 +43,40 @@ class StateTest extends AbstractStatesTest
     /**
      * Build a basic object to provide only public methods.
      *
-     * @param bool $initializeContainer initialize virtual di container for state
+     * @param bool $privateMode
+     * @param string $statedClassName
      *
      * @return Support\MockOnlyPublic
      */
-    protected function getPublicClassObject($initializeContainer = true)
+    protected function getPublicClassObject(bool $privateMode, string $statedClassName)
     {
-        return new Support\MockOnlyPublic($initializeContainer);
+        return new Support\MockOnlyPublic($privateMode, $statedClassName);
     }
 
     /**
      * Build a basic object to provide only protected methods.
      *
-     * @param bool $initializeContainer initialize virtual di container for state
+     * @param bool $privateMode
+     * @param string $statedClassName
      *
      * @return Support\MockOnlyProtected
      */
-    protected function getProtectedClassObject($initializeContainer = true)
+    protected function getProtectedClassObject(bool $privateMode, string $statedClassName)
     {
-        return new Support\MockOnlyProtected($initializeContainer);
+        return new Support\MockOnlyProtected($privateMode, $statedClassName);
     }
 
     /**
      * Build a basic object to provide only private methods.
      *
-     * @param bool $initializeContainer initialize virtual di container for state
+     * @param bool $privateMode
+     * @param string $statedClassName
      *
      * @return Support\MockOnlyPrivate
      */
-    protected function getPrivateClassObject($initializeContainer = true)
+    protected function getPrivateClassObject(bool $privateMode, string $statedClassName)
     {
-        return new Support\MockOnlyPrivate($initializeContainer);
+        return new Support\MockOnlyPrivate($privateMode, $statedClassName);
     }
 
     /**

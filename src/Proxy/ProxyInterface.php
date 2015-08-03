@@ -56,24 +56,6 @@ interface ProxyInterface
      **************************/
 
     /**
-     * To register a DI container for this object.
-     * @api
-     *
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container): ProxyInterface;
-
-    /**
-     * To return the DI Container used for this object.
-     * @api
-     *
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface;
-
-    /**
      * Called to clone an Object.
      * @api
      *

@@ -23,6 +23,7 @@
 namespace UniAlteri\Tests\States\Factory;
 
 use UniAlteri\States\Factory;
+use UniAlteri\States\Loader\FinderInterface;
 
 /**
  * Class StandardTest
@@ -41,16 +42,17 @@ class StandardTest extends AbstractFactoryTest
     /**
      * Return the Factory Object Interface.
      *
-     * @param bool $populateContainer to populate di container of this factory
+     * @param FinderInterface $finder
      *
      * @return Factory\FactoryInterface
      */
-    public function getFactoryObject($populateContainer = true)
+    public function getFactoryObject(FinderInterface $finder)
     {
-        $factory = new Factory\Standard();
-        if (true === $populateContainer) {
-            $factory->setDIContainer($this->container);
-        }
+        $factory = new Factory\Standard(
+            $finder->getStatedClassName(),
+            $finder,
+            $this->repository
+        );
 
         return $factory;
     }

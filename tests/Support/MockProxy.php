@@ -71,28 +71,6 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * To register a DI container for this object.
-     *
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container): Proxy\ProxyInterface
-    {
-        return $this;
-    }
-
-    /**
-     * To return the DI Container used for this object.
-     *
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface
-    {
-        //Not used in tests
-    }
-
-    /**
      * Called to clone an Object.
      *
      * @return $this

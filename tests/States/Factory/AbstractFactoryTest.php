@@ -43,13 +43,6 @@ use UniAlteri\Tests\Support;
 abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Mock container used for test.
-     *
-     * @var Support\MockDIContainer
-     */
-    protected $container = null;
-
-    /**
      * Mock finder used for test.
      *
      * @var Support\MockFinder
@@ -57,127 +50,37 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     protected $virtualFinder = null;
 
     /**
+     * @var \ArrayAccess
+     */
+    protected $repository;
+
+    /**
      * Initialize container used into Factory.
      */
     protected function setUp()
     {
         parent::setUp();
-        $this->container = new Support\MockDIContainer();
-        $this->registerMockFinderService();
-    }
-
-    /**
-     * Configure container.
-     */
-    protected function registerMockFinderService()
-    {
-        $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
-            if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
-                $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
-
-                return new Support\MockFinder($factory->getStatedClassName(), $factory->getPath());
-            } else {
-                return new Support\MockFinder('', '');
-            }
-        });
-    }
-
-    /**
-     * Replace finder service to generate virtual finder whose return ArrayObject instead of php array.
-     */
-    protected function registerMockFinderServiceWithArrayObject()
-    {
-        $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
-            if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
-                $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
-
-                return new Support\MockFinderWithArray($factory->getStatedClassName(), $factory->getPath());
-            } else {
-                return new Support\MockFinderWithArray('', '');
-            }
-        });
-    }
-
-    /**
-     * Replace finder service to generate virtual finder mock to use to test inheritance.
-     */
-    protected function registerMockFinderServiceForInheritance()
-    {
-        $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function ($container) {
-            if ($container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
-                $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
-
-                return new Support\MockFinderInheritance($factory->getStatedClassName(), $factory->getPath());
-            } else {
-                return new Support\MockFinderInheritance('', '');
-            }
-        });
+        $this->repository = new \ArrayObject([]);
     }
 
     /**
      * Return the Factory Object Interface.
      *
-     * @param bool $populateContainer to populate di container of this factory
+     * @param Loader\FinderInterface $finder
      *
      * @return Factory\FactoryInterface
      */
-    abstract public function getFactoryObject($populateContainer = true);
-
-    /**
-     * Test behavior for methods Set And GetDiContainer.
-     */
-    public function testSetAndGetDiContainer()
-    {
-        $object = $this->getFactoryObject(false);
-        $virtualContainer = new Support\MockDIContainer();
-        $this->assertSame($object, $object->setDIContainer($virtualContainer));
-        $this->assertSame($virtualContainer, $object->getDIContainer());
-    }
-
-    /**
-     * The method getFinder of the factory requires the finder generator, else throw exception.
-     */
-    public function testGetFinderExceptionNoFinderServiceGenerator()
-    {
-        try {
-            $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-            $this->getFactoryObject(true)->getFinder();
-        } catch (Exception\UnavailableLoader $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the factory must throw an exception when there are no finder generator into di container');
-    }
-
-    /**
-     * The method getFinder of the factory requires the finder generator, else throw exception.
-     */
-    public function testGetFinderExceptionBadFinderReturnedServiceGenerator()
-    {
-        try {
-            $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-            $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function () {
-                return new \stdClass();
-            });
-            $this->getFactoryObject(true)->getFinder();
-        } catch (Exception\UnavailableLoader $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the factory must throw an exception when there are the finder generator into di container return a bad object, not implementing the Finder Interface');
-    }
+    abstract public function getFactoryObject(Loader\FinderInterface $finder);
 
     /**
      * Test the factory behavior to build a new finder object from the service registered into its DI.
      */
     public function testGetFinder()
     {
-        $this->assertInstanceOf('UniAlteri\States\Loader\FinderInterface', $this->getFactoryObject(true)->getFinder());
+        $this->assertInstanceOf(
+            'UniAlteri\States\Loader\FinderInterface',
+            $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->getFinder()
+        );
     }
 
     /**
@@ -186,20 +89,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatedClassName()
     {
-        $factory = $this->getFactoryObject(true);
-        $factory->initialize('foo', 'bar');
-        $this->assertEquals('foo', $factory->getStatedClassName());
-    }
-
-    /**
-     * Test the behavior of the method getPath() with values (stated class name and path) defined
-     * by the loading during factory initialization.
-     */
-    public function testGetPath()
-    {
-        $factory = $this->getFactoryObject(true);
-        $factory->initialize('foo', 'bar');
-        $this->assertEquals('bar', $factory->getPath());
+        $factory = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'));
+        $this->assertEquals('My\Stated\Class', $factory->getStatedClassName());
     }
 
     /**
@@ -210,21 +101,12 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testInitialize()
     {
-        $virtualFinder = new Support\MockFinder('', '');
-        $this->container->unregister(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->container->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, function () use ($virtualFinder) {
-            return $virtualFinder;
-        });
+        $virtualFinder = new Support\MockFinder('My\Stated\Class', 'path/to/my/class');
 
-        $factory = $this->getFactoryObject(true);
+        $factory = $this->getFactoryObject($virtualFinder);
 
-        //Register Di Container
-        $repository = new Support\MockDIContainer();
-        $this->container->registerInstance(Factory\FactoryInterface::DI_FACTORY_REPOSITORY, $repository);
-
-        $factory->initialize('foo', 'bar');
         $this->assertTrue($virtualFinder->proxyHasBeenLoaded());
-        $this->assertSame($factory, $repository->get($factory->getStatedClassName()));
+        $this->assertSame($factory, $this->repository[$factory->getStatedClassName()]);
     }
 
     /**
@@ -234,7 +116,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         Support\MockFinder::$ignoreDefaultState = true;
         $proxy = new Support\MockProxy(null);
-        $this->getFactoryObject()->startup($proxy);
+        $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->startup($proxy);
         $this->assertEmpty($proxy->listEnabledStates());
     }
 
@@ -245,7 +127,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         try {
             Support\MockFinder::$ignoreDefaultState = false;
-            $this->getFactoryObject()->startup(new Support\MockProxy(null), 'NonExistentState');
+            $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->startup(new Support\MockProxy(null), 'NonExistentState');
         } catch (Exception\StateNotFound $exception) {
             return;
         }
@@ -259,8 +141,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testListAvailableStateInStartup()
     {
         $proxy = new Support\MockProxy(null);
-        $this->registerMockFinderService();
-        $this->getFactoryObject(true)
+        $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))
             ->startup($proxy);
         $this->assertEquals(
             array(
@@ -278,16 +159,11 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testListAvailableStateInStartupWithInheritanceMotherNotFound()
     {
-        $factoryMother = $this->getFactoryObject();
+        $factoryMother = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class1'));
         $factoryMother->getFinder();
 
-        //Register Di Container
-        $repository = new Support\MockDIContainer();
-        $this->container->registerInstance(Factory\FactoryInterface::DI_FACTORY_REPOSITORY, $repository);
-
         //Finder
-        $factoryDaughter = $this->getFactoryObject();
-        $this->registerMockFinderServiceForInheritance();
+        $factoryDaughter = $this->getFactoryObject(new Support\MockFinderInheritance('My\Stated\Class2', 'path/to/my/class2'));
         $factoryDaughter->getFinder();
 
         $proxy = new Support\MockProxyChild(null);
@@ -309,19 +185,11 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testListAvailableStateInStartupWithInheritance()
     {
-        $this->registerMockFinderService();
-        $factoryMother = $this->getFactoryObject(true);
+        $factoryMother = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class1', 'path/to/my/class1'));
         $factoryMother->getFinder();
 
-        //Register Di Container
-        $repository = new Support\MockDIContainer();
-        $repository->registerInstance('UniAlteri\Tests\Support\MockProxy', $factoryMother);
-        $this->container->registerInstance(Factory\FactoryInterface::DI_FACTORY_REPOSITORY, $repository);
-
         //Finder
-        $this->registerMockFinderService();
-        $factoryDaughter = $this->getFactoryObject(true);
-        $this->registerMockFinderServiceForInheritance();
+        $factoryDaughter = $this->getFactoryObject(new Support\MockFinderInheritance('My\Stated\Class2', 'path/to/my/class2'));
         $factoryDaughter->getFinder();
 
         $proxy = new Support\MockProxyChild(null);
@@ -350,7 +218,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testDefaultStateAutomaticallySelectedInStartup()
     {
         $proxy = new Support\MockProxy(null);
-        $this->getFactoryObject()->startup($proxy);
+        $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->startup($proxy);
         $this->assertEquals($proxy->listEnabledStates(), array('StateDefault'));
     }
 
@@ -360,7 +228,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testRequiredStateSelectedInStartup()
     {
         $proxy = new Support\MockProxy(null);
-        $this->getFactoryObject()->startup($proxy, 'MockState1');
+        $this->getFactoryObject(new Support\MockFinderInheritance('My\Stated\Class1', 'path/to/my/class'))->startup($proxy, 'MockState1');
         $this->assertEquals($proxy->listEnabledStates(), array('MockState1'));
     }
 
@@ -371,8 +239,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testListAvailableStateInStartupWithArrayObject()
     {
         $proxy = new Support\MockProxy(null);
-        $this->registerMockFinderServiceWithArrayObject();
-        $this->getFactoryObject()->startup($proxy);
+        $this->getFactoryObject(new Support\MockFinderWithArray('My\Stated\Class', 'path/to/my/class'))->startup($proxy);
         $this->assertEquals(
             array(
                 'MockState1',
@@ -391,8 +258,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testDefaultStateAutomaticallySelectedInStartupWithArrayObject()
     {
         $proxy = new Support\MockProxy(null);
-        $this->registerMockFinderServiceWithArrayObject();
-        $this->getFactoryObject()->startup($proxy);
+        $this->getFactoryObject(new Support\MockFinderWithArray('My\Stated\Class', 'path/to/my/class'))->startup($proxy);
         $this->assertEquals($proxy->listEnabledStates(), array('StateDefault'));
     }
 
@@ -403,8 +269,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testRequiredStateSelectedInStartupWithArrayObject()
     {
         $proxy = new Support\MockProxy(null);
-        $this->registerMockFinderServiceWithArrayObject();
-        $this->getFactoryObject()->startup($proxy, 'MockState1');
+        $this->getFactoryObject(new Support\MockFinderWithArray('My\Stated\Class', 'path/to/my/class'))->startup($proxy, 'MockState1');
         $this->assertEquals($proxy->listEnabledStates(), array('MockState1'));
     }
 
@@ -414,7 +279,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testBehaviorDefaultStateNotAvailable()
     {
         Support\MockFinder::$ignoreDefaultState = true;
-        $proxy = $this->getFactoryObject()->build();
+        $proxy = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->build();
         $this->assertEmpty($proxy->listEnabledStates());
     }
 
@@ -425,7 +290,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         try {
             Support\MockFinder::$ignoreDefaultState = false;
-            $this->getFactoryObject()->build(false, 'NonExistentState');
+            $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->build(false, 'NonExistentState');
         } catch (Exception\StateNotFound $exception) {
             return;
         }
@@ -438,7 +303,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testListAvailableState()
     {
-        $proxy = $this->getFactoryObject()->build();
+        $proxy = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->build();
         $this->assertEquals(
             array(
                 'MockState1',
@@ -455,7 +320,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testDefaultStateAutomaticallySelected()
     {
-        $proxy = $this->getFactoryObject()->build();
+        $proxy = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->build();
         $this->assertEquals($proxy->listEnabledStates(), array('StateDefault'));
     }
 
@@ -464,7 +329,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testRequiredStateSelected()
     {
-        $proxy = $this->getFactoryObject()->build(null, 'MockState1');
+        $proxy = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->build(null, 'MockState1');
         $this->assertEquals($proxy->listEnabledStates(), array('MockState1'));
     }
 
@@ -474,7 +339,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testPassedArguments()
     {
         $args = array('foo' => 'bar');
-        $proxy = $this->getFactoryObject()->build($args);
+        $proxy = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->build($args);
         $this->assertSame($args, $proxy->args);
     }
 }

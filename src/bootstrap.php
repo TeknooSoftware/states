@@ -38,36 +38,19 @@ if (!file_exists($composerFile)) {
 }
 $composerInstance = require $composerFile;
 
-//Initial DI Container
-$diContainer = new DI\Container();
-
-//Initialize the Factory Repository
-$diContainer->registerInstance(FactoryInterface::DI_FACTORY_REPOSITORY, new DI\Container());
-
 /**
  * Service to generate a finder for Stated class factory
- * @param DI\ContainerInterface $container
+ * @param string $statedClassName
+ * @param string $path
  * @return Loader\FinderComposerIntegrated
  * @throws Exception\UnavailableFactory if the local factory is not available
  */
-$finderService = function (DI\ContainerInterface $container) use ($composerInstance) {
-    if (false === $container->testEntry(Factory\FactoryInterface::DI_FACTORY_NAME)) {
-        throw new Exception\UnavailableFactory('Error, the factory is not available into container');
-    }
-
-    $factory = $container->get(Factory\FactoryInterface::DI_FACTORY_NAME);
-
-    return new Loader\FinderComposerIntegrated($factory->getStatedClassName(), $factory->getPath(), $composerInstance);
+$finderFactory = function (string $statedClassName, string $path) use ($composerInstance) {
+    return new Loader\FinderComposerIntegrated($statedClassName, $path, $composerInstance);
 };
 
-//Register finder generator
-$diContainer->registerService(Loader\FinderInterface::DI_FINDER_SERVICE, $finderService);
-
-$loader = new Loader\LoaderComposer($composerInstance);
-$loader->setDIContainer($diContainer);
-
-//Register loader into container
-$diContainer->registerInstance(Loader\LoaderInterface::DI_LOADER_INSTANCE, $loader);
+$factoryRepository = new \ArrayObject();
+$loader = new Loader\LoaderComposer($composerInstance, $finderFactory, $factoryRepository);
 
 //Register autoload function in the spl autoloader stack
 spl_autoload_register(

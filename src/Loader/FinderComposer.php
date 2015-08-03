@@ -40,7 +40,7 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @internal
+ *
  */
 class FinderComposer implements FinderInterface
 {
@@ -57,13 +57,6 @@ class FinderComposer implements FinderInterface
      * @var string
      */
     private $pathString;
-
-    /**
-     * DI Container to use with this finder.
-     *
-     * @var DI\ContainerInterface
-     */
-    private $diContainer;
 
     /**
      * Default proxy class to use when there are no proxy class.
@@ -116,33 +109,8 @@ class FinderComposer implements FinderInterface
     }
 
     /**
-     * To register a DI container for this object.
-     * @internal
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container): FinderInterface
-    {
-        $this->diContainer = $container;
-
-        return $this;
-    }
-
-    /**
-     * To return the DI Container.
-     * @internal
-     *
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface
-    {
-        return $this->diContainer;
-    }
-
-    /**
      * To get the canonical stated class name associated to this state.
-     * @internal
+     *
      * @return string
      */
     public function getStatedClassName(): string
@@ -152,7 +120,7 @@ class FinderComposer implements FinderInterface
 
     /**
      * To list all available states of the stated class.
-     * @internal
+     *
      * @return string[]
      *
      * @throws Exception\UnavailablePath if the states' folder is not available
@@ -205,7 +173,7 @@ class FinderComposer implements FinderInterface
 
     /**
      * To load the required state object of the stated class.
-     * @internal
+     *
      * @param string $stateName
      *
      * @return string
@@ -226,20 +194,22 @@ class FinderComposer implements FinderInterface
 
     /**
      * To load and build the required state object of the stated class.
-     * @internal
+     *
      * @param string $stateName
+     * @param bool $privateMode
+     * @param string $statedClassName
      *
      * @return States\StateInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState(string $stateName): States\StateInterface
+    public function buildState(string $stateName, bool $privateMode, string $statedClassName): States\StateInterface
     {
         //Load the state class if it is not already done
         $stateClassName = $this->loadState($stateName);
 
-        $stateObject = new $stateClassName();
+        $stateObject = new $stateClassName($privateMode, $statedClassName);
         if (!$stateObject instanceof States\StateInterface) {
             throw new Exception\IllegalState(
                 sprintf(
@@ -269,7 +239,7 @@ class FinderComposer implements FinderInterface
     /**
      * To search and load the proxy class for this stated class.
      * If the class has not proxy, load the default proxy for this stated class.
-     * @internal
+     *
      * @return string
      */
     public function loadProxy(): string
@@ -295,7 +265,7 @@ class FinderComposer implements FinderInterface
     /**
      * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
      * standard proxy are excluded).
-     * @internal
+     *
      * @return string[]
      *
      * @throws Exception\IllegalProxy If the proxy class is not valid
@@ -331,7 +301,7 @@ class FinderComposer implements FinderInterface
 
     /**
      * To load and build a proxy object for the stated class.
-     * @internal
+     *
      * @param array $arguments argument for proxy
      *
      * @return Proxy\ProxyInterface

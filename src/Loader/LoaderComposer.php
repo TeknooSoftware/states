@@ -46,16 +46,19 @@ use UniAlteri\States\Factory;
 class LoaderComposer implements LoaderInterface
 {
     /**
-     * DI Container to use with this loader.
-     *
-     * @var DI\ContainerInterface
-     */
-    protected $diContainer;
-
-    /**
      * @var ClassLoader
      */
     protected $composerInstance;
+
+    /**
+     * @var callable
+     */
+    protected $finderFactory;
+
+    /**
+     * @var \ArrayAccess
+     */
+    protected $factoryRepository;
 
     /**
      * @var string[]
@@ -72,10 +75,15 @@ class LoaderComposer implements LoaderInterface
      * Initialize the loader object.
      *
      * @param ClassLoader $composerInstance
+     * @param callable $finderFactory
+     * @param \ArrayAccess $factoryRepository
      */
-    public function __construct(ClassLoader $composerInstance)
+    public function __construct(ClassLoader $composerInstance, callable $finderFactory, \ArrayAccess $factoryRepository)
     {
         $this->composerInstance = $composerInstance;
+
+        $this->factoryRepository = $factoryRepository;
+        $this->finderFactory = $finderFactory;
 
         if (class_exists('\Phar', false)) {
             //instructs phar to intercept fopen, file_get_contents, opendir, and all of the stat-related functions
@@ -85,27 +93,23 @@ class LoaderComposer implements LoaderInterface
     }
 
     /**
-     * To register a DI container for this object.
-     * @api
-     * @param DI\ContainerInterface $container
+     * Return the factory used to create new finder for all new factory
      *
-     * @return $this
+     * @return callable
      */
-    public function setDIContainer(DI\ContainerInterface $container): LoaderInterface
+    public function getFinderFactory()
     {
-        $this->diContainer = $container;
-
-        return $this;
+        return $this->finderFactory;
     }
 
     /**
-     * To return the DI Container used for this object.
-     * @api
-     * @return DI\ContainerInterface
+     * Return the factory repository passed to all factory loaded by this loader
+     *
+     * @return \ArrayAccess
      */
-    public function getDIContainer(): DI\ContainerInterface
+    public function getFactoryRepository()
     {
-        return $this->diContainer;
+        return $this->factoryRepository;
     }
 
     /**
@@ -199,7 +203,7 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * Build the factory and initialize the loading stated class.
-     * @internal
+     *
      * @param string $factoryClassName
      * @param string $statedClassName
      * @param string $path
@@ -219,21 +223,18 @@ class LoaderComposer implements LoaderInterface
         }
 
         //Create a new instance of the factory
-        $factoryObject = new $factoryClassName();
+        $finderFactory = $this->finderFactory;
+        $factoryObject = new $factoryClassName(
+            $statedClassName,
+            $finderFactory($statedClassName, $path),
+            $this->factoryRepository
+        );
+
         if (!$factoryObject instanceof Factory\FactoryInterface) {
             throw new Exception\IllegalFactory(
                 sprintf('The factory of %s does not implement the interface', $statedClassName)
             );
         }
-
-        //clone the di container for this stated class, it will has its own di container
-        if ($this->diContainer instanceof DI\ContainerInterface) {
-            $diContainer = clone $this->diContainer;
-            $factoryObject->setDIContainer($diContainer);
-        }
-
-        //Call its initialize methods to load the stated class
-        $factoryObject->initialize($statedClassName, $path);
 
         return $factoryObject;
     }

@@ -43,47 +43,20 @@ use UniAlteri\States\Proxy;
 interface FinderInterface
 {
     /**
-     * Name of Finder (service to find and load elements of stated class).
-     */
-    const DI_FINDER_SERVICE = 'FinderStates';
-
-    /**
      * Folder where stored states of the stated class.
      */
     const STATES_PATH = 'States';
 
     /**
-     * PHP File of Proxy into each stated class.
-     */
-    const PROXY_FILE_EXTENSION = '.php';
-
-    /**
-     * To register a DI container for this object.
-     * @internal
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container): FinderInterface;
-
-    /**
-     * To return the DI Container.
-     * @internal
-     *
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface;
-
-    /**
      * To get the canonical stated class name associated to this state.
-     * @internal
+     *
      * @return string
      */
     public function getStatedClassName(): string;
 
     /**
      * To list all available states of the stated class.
-     * @internal
+     *
      * @return string[]
      *
      * @throws Exception\UnavailablePath if the states' folder is not available
@@ -93,7 +66,7 @@ interface FinderInterface
 
     /**
      * To load the required state object of the stated class.
-     * @internal
+     *
      * @param string $stateName
      *
      * @return string
@@ -104,20 +77,22 @@ interface FinderInterface
 
     /**
      * To load and build the required state object of the stated class.
-     * @internal
+     *
      * @param string $stateName
+     * @param bool $privateMode
+     * @param string $statedClassName
      *
      * @return States\StateInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState(string $stateName): States\StateInterface;
+    public function buildState(string $stateName, bool $privateMode, string $statedClassName): States\StateInterface;
 
     /**
      * To search and load the proxy class for this stated class.
      * If the class has not proxy, load the default proxy for this stated class.
-     * @internal
+     *
      * @return string
      */
     public function loadProxy(): string;
@@ -125,7 +100,7 @@ interface FinderInterface
     /**
      * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
      * standard proxy are excluded).
-     * @internal
+     *
      * @return string[]
      *
      * @throws Exception\IllegalProxy If the proxy class is not valid
@@ -134,7 +109,7 @@ interface FinderInterface
 
     /**
      * To load and build a proxy object for the stated class.
-     * @internal
+     *
      * @param array $arguments argument for proxy
      *
      * @return Proxy\ProxyInterface

@@ -40,19 +40,6 @@ use UniAlteri\States\States;
 class MockOnlyPrivate extends States\AbstractState
 {
     /**
-     * To simulate a real state behavior.
-     *
-     * @param bool $initializeContainer initialize virtual di container for state
-     */
-    public function __construct($initializeContainer = true)
-    {
-        if (true === $initializeContainer) {
-            //Mock DI Container
-            $this->setDIContainer(new MockDIContainer());
-        }
-    }
-
-    /**
      * Final Method 9.
      */
     final private function finalMethod9()

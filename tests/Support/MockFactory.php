@@ -65,32 +65,14 @@ class MockFactory implements Factory\FactoryInterface
     protected $path = null;
 
     /**
-     * @var DI\ContainerInterface
+     * Initialize factory
+     * @param string $statedClassName
+     * @param Loader\FinderInterface $finder
+     * @param \ArrayAccess $factoryRepository
      */
-    protected $diConainter = null;
-
-    /**
-     * To return the DI Container used for this object.
-     *
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface
+    public function __construct(string $statedClassName, Loader\FinderInterface $finder, \ArrayAccess $factoryRepository)
     {
-        return $this->diConainter;
-    }
-
-    /**
-     * To register a DI container for this object.
-     *
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container): Factory\FactoryInterface
-    {
-        $this->diConainter = $container;
-
-        return $this;
+        $this->initialize($statedClassName);
     }
 
     /**
@@ -137,11 +119,10 @@ class MockFactory implements Factory\FactoryInterface
      *
      * @return $this
      */
-    public function initialize(string $statedClassName, string $path): Factory\FactoryInterface
+    protected function initialize(string $statedClassName): Factory\FactoryInterface
     {
         $this->statedClassName = $statedClassName;
-        $this->path = $path;
-        self::$initializedFactoryNameArray[] = $statedClassName.':'.$path;
+        self::$initializedFactoryNameArray[] = $statedClassName;
         return $this;
     }
 

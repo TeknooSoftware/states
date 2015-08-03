@@ -70,7 +70,7 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testForwardStartup()
     {
-        $factory = new Support\MockFactory();
+        $factory = new Support\MockFactory('My\Stated\Class', new Support\MockFinder('My\Stated\Class', 'path/to/class'), new \ArrayObject());
         Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\MockProxy', $factory);
         $proxy = new Support\MockProxy(null);
         Factory\StandardStartupFactory::forwardStartup($proxy);
@@ -82,7 +82,7 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
      */
     public function testListRegisteredFactory()
     {
-        $factory = new Support\MockFactory();
+        $factory = new Support\MockFactory('My\Stated\Class', new Support\MockFinder('My\Stated\Class', 'path/to/class'), new \ArrayObject());
         Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\MockProxy1', $factory);
         Factory\StandardStartupFactory::reset();
         Factory\StandardStartupFactory::registerFactory('UniAlteri\Tests\Support\MockProxy2', $factory);

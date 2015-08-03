@@ -101,9 +101,14 @@ class MockState implements States\StateInterface
 
     /**
      * Initialize virtual state.
+     * @param bool $privateMode
+     * @param string $statedClassName
+     * @param \Closure $closure
      */
-    public function __construct($closure = null)
+    public function __construct(bool $privateMode, string $statedClassName, $closure = null)
     {
+        $this->setPrivateMode($privateMode)
+            ->setStatedClassName($statedClassName);
         if ($closure instanceof \Closure) {
             //Use as testing closure the passed closure
             $this->closure = $closure;
@@ -118,28 +123,6 @@ class MockState implements States\StateInterface
                 return '';
             };
         }
-    }
-
-    /**
-     * To register a DI container for this object.
-     *
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container): StateInterface
-    {
-        return $this;
-    }
-
-    /**
-     * To return the DI Container used for this object.
-     *
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface
-    {
-        //Not used in tests
     }
 
     /**

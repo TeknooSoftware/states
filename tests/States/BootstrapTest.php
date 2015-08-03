@@ -76,32 +76,7 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         //Check if the loader implements the good interface
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->loader);
 
-        //Check if the loader is initialized with a di container
-        $container = $this->loader->getDIContainer();
-        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\ContainerInterface', $container);
-
-        //Check if the factory repository has been created
-        $this->assertTrue($container->testEntry(Factory\FactoryInterface::DI_FACTORY_REPOSITORY));
-        $this->assertInstanceOf('\\UniAlteri\\States\\DI\\ContainerInterface', $container->get(Factory\FactoryInterface::DI_FACTORY_REPOSITORY));
-
-        //Check if required services are present into the di container
-        $this->assertTrue($container->testEntry(Loader\FinderInterface::DI_FINDER_SERVICE));
-
-        $fail = false;
-        try {
-            $container->get(Loader\FinderInterface::DI_FINDER_SERVICE);
-        } catch (Exception\UnavailableFactory $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-
-        $this->assertTrue($fail, 'Error, the service to create finder must throw exception if the DI Container for the class has not registered factory object');
-
-        //Test behavior of the service to create finder for a stated class
-        $factory = new Support\MockFactory();
-        $factory->initialize('className', 'path1');
-        $container->registerInstance(Factory\FactoryInterface::DI_FACTORY_NAME, $factory);
-        $finder = $container->get(Loader\FinderInterface::DI_FINDER_SERVICE);
-        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderInterface', $finder);
+        $this->assertInstanceOf('\\Closure', $this->loader->getFinderFactory());
+        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderInterface', $this->loader->getFinderFactory()->__invoke('class', 'path'));
     }
 }

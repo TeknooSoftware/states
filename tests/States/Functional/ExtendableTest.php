@@ -69,14 +69,6 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
             $this->loader = include __DIR__.'/../../../../../src/UniAlteri/States/bootstrap.php';
         }
 
-        //To share the Factory interface in all context for each test
-        $diContainer = $this->loader->getDiContainer();
-        if (!self::$factoryRegistry instanceof Di\Container) {
-            self::$factoryRegistry = $diContainer->get(FactoryInterface::DI_FACTORY_REPOSITORY);
-        } else {
-            $diContainer->registerInstance(FactoryInterface::DI_FACTORY_REPOSITORY, self::$factoryRegistry);
-        }
-
         return $this->loader;
     }
 

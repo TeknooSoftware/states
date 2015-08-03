@@ -32,6 +32,16 @@ use UniAlteri\States\States\StateInterface;
 class StateNormal implements StateInterface
 {
     /**
+     * To initialize this state
+     * @param bool $privateMode
+     * @param string $statedClassName
+     */
+    public function __construct(bool $privateMode, string $statedClassName)
+    {
+
+    }
+
+    /**
      * To get the canonical stated class name associated to this state.
      *
      * @return $this
@@ -73,26 +83,6 @@ class StateNormal implements StateInterface
      * @return StateInterface
      */
     public function setPrivateMode(bool $enable): StateInterface
-    {
-    }
-
-    /**
-     * To register a DI container for this object.
-     *
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container): StateInterface
-    {
-    }
-
-    /**
-     * To return the DI Container used for this object.
-     *
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface
     {
     }
 

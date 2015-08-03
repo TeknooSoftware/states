@@ -39,17 +39,6 @@ use UniAlteri\States\States;
  */
 class MockOnlyPublic extends States\AbstractState
 {
-    /**
-     * To simulate a real state behavior.
-     *
-     * @param bool $initializeContainer initialize virtual di container for state
-     */
-    public function __construct($initializeContainer = true)
-    {
-        if (true === $initializeContainer) {
-            $this->setDIContainer(new MockDIContainer());
-        }
-    }
 
     /**
      * Standard Method 1.

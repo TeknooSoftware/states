@@ -114,7 +114,6 @@ use Symfony\Component\Console\Output\OutputInterface;
              $factoryWriter->createStandardFactory($className, $namespace);
          }
 
-         $stateWriter = $this->createWriter('Writer\State', $destinationPath);
-         $stateWriter->createDefaultState($className, $namespace);
+         $this->createWriter('Writer\State', $destinationPath);
      }
  }

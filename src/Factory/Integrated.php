@@ -51,16 +51,15 @@ class Integrated implements FactoryInterface
      * from the finder.
      * @api
      * @param string $statedClassName the name of the stated class
-     * @param string $path            of the stated class
      *
      * @return $this
      *
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      */
-    public function initialize(string $statedClassName, string $path): FactoryInterface
+    protected function initialize(string $statedClassName): FactoryInterface
     {
         //Call trait's method to initialize this stated class
-        $this->traitInitialize($statedClassName, $path);
+        $this->traitInitialize($statedClassName);
         //Build the factory identifier (the proxy class name)
         $parts = explode('\\', $statedClassName);
         $statedClassName .= '\\'.array_pop($parts);

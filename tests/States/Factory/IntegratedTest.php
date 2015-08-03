@@ -23,6 +23,8 @@
 namespace UniAlteri\Tests\States\Factory;
 
 use UniAlteri\States\Factory;
+use UniAlteri\States\Loader\FinderInterface;
+use UniAlteri\Tests\Support\MockFinder;
 
 /**
  * Class IntegratedTest
@@ -40,34 +42,18 @@ class IntegratedTest extends AbstractFactoryTest
 {
     /**
      * Return the Factory Object Interface.
-     *
-     * @param bool $populateContainer to populate di container of this factory
+     * @param FinderInterface $finder
      *
      * @return Factory\FactoryInterface
      */
-    public function getFactoryObject($populateContainer = true)
+    public function getFactoryObject(FinderInterface $finder)
     {
-        $factory = new Factory\Integrated();
-        if (true === $populateContainer) {
-            $factory->setDIContainer($this->container);
-        }
+        $factory = new Factory\Integrated(
+            $finder->getStatedClassName(),
+            $finder,
+            $this->repository
+        );
 
         return $factory;
-    }
-
-    /**
-     * Test if the factory Integrated initialize the StartupFactory.
-     */
-    public function testInitialization()
-    {
-        Factory\StandardStartupFactory::reset();
-        $factory = $this->getFactoryObject(true);
-        $factory->initialize('foo', 'bar');
-        $this->assertEquals(
-            array(
-                'foo\\foo',
-            ),
-            Factory\StandardStartupFactory::listRegisteredFactory()
-        );
     }
 }

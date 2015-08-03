@@ -160,22 +160,9 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     protected function initializeFinder($statedClassName, $pathString)
     {
-        $virtualDIContainer = new Support\MockDIContainer();
         $this->finder = new Loader\FinderComposer($statedClassName, $pathString, $this->getClassLoaderMock());
-        $this->finder->setDIContainer($virtualDIContainer);
 
         return $this->finder;
-    }
-
-    /**
-     * Test behavior for methods Set And GetDiContainer.
-     */
-    public function testSetAndGetDiContainer()
-    {
-        $object = new Loader\FinderComposer('', '', $this->getClassLoaderMock());
-        $virtualContainer = new Support\MockDIContainer();
-        $this->assertSame($object, $object->setDIContainer($virtualContainer));
-        $this->assertSame($virtualContainer, $object->getDIContainer());
     }
 
     /**
@@ -276,7 +263,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeFinder('Class1', $this->statedClass1Path);
         try {
-            $this->finder->buildState('State1');
+            $this->finder->buildState('State1', false, 'Class1');
         } catch (Exception\UnavailableState $e) {
             return;
         } catch (\Exception $e) {
@@ -303,7 +290,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
             });
 
         try {
-            $this->finder->buildState('State3');
+            $this->finder->buildState('State3', false, 'Class1');
         } catch (Exception\IllegalState $e) {
             return;
         } catch (\Exception $e) {
@@ -329,7 +316,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $stateObject = $this->finder->buildState('State4');
+        $stateObject = $this->finder->buildState('State4', false, 'Class1');
         $this->assertEquals('Class1\States\State4', get_class($stateObject));
         $this->assertInstanceOf('\UniAlteri\States\States\StateInterface', $stateObject);
     }
@@ -409,7 +396,6 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $this->finder->setDIContainer(new Support\MockDIContainer());
         $proxyClassName = $this->finder->loadProxy();
         $this->assertEquals('Class5\\Class5', $proxyClassName);
     }
@@ -431,7 +417,6 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $this->finder->setDIContainer(new Support\MockDIContainer());
         $proxy = $this->finder->buildProxy();
         $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
         $this->assertNotInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);

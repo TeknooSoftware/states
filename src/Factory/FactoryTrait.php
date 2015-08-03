@@ -44,11 +44,11 @@ use UniAlteri\States\Proxy;
 trait FactoryTrait
 {
     /**
-     * DI Container to use with this factory object.
+     * Repository where all factories instances are registered
      *
-     * @var DI\ContainerInterface
+     * @var \ArrayAccess
      */
-    private $diContainer;
+    private $factoryRepository;
 
     /**
      * Finder used by this factory to load states and proxy for this stated class.
@@ -79,29 +79,40 @@ trait FactoryTrait
     private $statesByClassesList;
 
     /**
-     * To register a DI container for this object.
-     * @api
-     *
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
+     * Initialize factory
+     * @param string $statedClassName
+     * @param Loader\FinderInterface $finder
+     * @param \ArrayAccess $factoryRepository
      */
-    public function setDIContainer(DI\ContainerInterface $container): FactoryInterface
+    public function __construct(string $statedClassName, Loader\FinderInterface $finder, \ArrayAccess $factoryRepository)
     {
-        $this->diContainer = $container;
-
-        return $this;
+        $this->finder = $finder;
+        $this->factoryRepository = $factoryRepository;
+        $this->initialize($statedClassName);
     }
 
     /**
-     * To return the DI Container used for this object.
+     * It registers the class name and its path, retrieves the DI Container,
+     * register the factory in the DI Container, it retrieves the finder object and load the proxy
+     * from the finder.
      * @api
+     * @param string $statedClassName the name of the stated class
      *
-     * @return DI\ContainerInterface
+     * @return $this
      */
-    public function getDIContainer(): DI\ContainerInterface
+    protected function initialize(string $statedClassName): FactoryInterface
     {
-        return $this->diContainer;
+        //Initialize this factory
+        $this->statedClassName = $statedClassName;
+
+        //Initialize proxy
+        $finder = $this->getFinder();
+        $finder->loadProxy();
+
+        //Proxy has been found, register its factory
+        $this->registerFactoryInRepository();
+
+        return $this;
     }
 
     /**
@@ -109,26 +120,9 @@ trait FactoryTrait
      * @api
      *
      * @return Loader\FinderInterface
-     *
-     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      */
     public function getFinder(): Loader\FinderInterface
     {
-        if (!$this->finder instanceof Loader\FinderInterface) {
-            $diContainer = $this->getDIContainer();
-
-            if (false === $diContainer->testEntry(Loader\FinderInterface::DI_FINDER_SERVICE)) {
-                throw new Exception\UnavailableLoader('Error, the finder is not available for this factory');
-            }
-
-            $this->finder = $diContainer->get(Loader\FinderInterface::DI_FINDER_SERVICE);
-            if (!$this->finder instanceof Loader\FinderInterface) {
-                throw new Exception\UnavailableLoader(
-                    'Error, the service does not return a finder object for this factory'
-                );
-            }
-        }
-
         return $this->finder;
     }
 
@@ -143,59 +137,14 @@ trait FactoryTrait
     }
 
     /**
-     * To return the path of the stated class.
-     * @api
-     * @return string
-     */
-    public function getPath(): string
-    {
-        return $this->path;
-    }
-
-    /**
-     * Method called by the Loader to initialize the stated class :
-     * It registers the class name and its path, retrieves the DI Container,
-     * register the factory in the DI Container, it retrieves the finder object and load the proxy
-     * from the finder.
-     * @api
-     * @param string $statedClassName the name of the stated class
-     * @param string $path            of the stated class
-     *
-     * @return $this
-     *
-     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
-     */
-    public function initialize(string $statedClassName, string $path): FactoryInterface
-    {
-        //Initialize this factory
-        $this->statedClassName = $statedClassName;
-        $this->path = $path;
-
-        //Initialize Stated class container
-        $diContainer = $this->getDIContainer();
-        $diContainer->registerInstance(FactoryInterface::DI_FACTORY_NAME, $this);
-
-        //Initialize proxy
-        $finder = $this->getFinder();
-        $finder->loadProxy();
-
-        //Proxy has been found, register its factory
-        $this->registerFactoryInRepository();
-
-        return $this;
-    }
-
-    /**
      * To register this factory in the factory repository to be able to retrieve it from another children factories.
      *
      * @return $this
      */
     private function registerFactoryInRepository(): FactoryInterface
     {
-        $diContainer = $this->getDIContainer();
-        if (!empty($this->statedClassName) && $diContainer->testEntry(FactoryInterface::DI_FACTORY_REPOSITORY)) {
-            $diContainer->get(FactoryInterface::DI_FACTORY_REPOSITORY)
-                ->registerInstance($this->statedClassName, $this);
+        if (!empty($this->statedClassName)) {
+            $this->factoryRepository[$this->statedClassName] =  $this;
         }
 
         return $this;
@@ -212,12 +161,8 @@ trait FactoryTrait
      */
     private function getFactoryFromStatedClassName(string $className): FactoryInterface
     {
-        $diContainer = $this->getDIContainer();
-        if ($diContainer->testEntry(FactoryInterface::DI_FACTORY_REPOSITORY)) {
-            $repositoryContainer = $diContainer->get(FactoryInterface::DI_FACTORY_REPOSITORY);
-            if ($repositoryContainer instanceof DI\ContainerInterface && $repositoryContainer->testEntry($className)) {
-                return $repositoryContainer->get($className);
-            }
+        if (isset($this->factoryRepository[$className])) {
+            return $this->factoryRepository[$className];
         }
 
         throw new Exception\UnavailableFactory('Error, the factory for '.$className.' is not available in repository');
@@ -227,8 +172,6 @@ trait FactoryTrait
      * To return the list of available states (directly defined states and inherited states) for this class.
      *
      * @return string[]|Loader\FinderInterface[]
-     *
-     * @throws Exception\UnavailableLoader
      */
     private function listStatesByClasses()
     {
@@ -263,7 +206,7 @@ trait FactoryTrait
 
     /**
      * To initialize a proxy object with its container and states. States are fetched by the finder of this stated class.
-     * @internal
+     *
      * @param Proxy\ProxyInterface $proxyObject
      * @param string               $stateName
      *
@@ -278,9 +221,6 @@ trait FactoryTrait
         if (!$proxyObject instanceof Proxy\ProxyInterface) {
             throw new Exception\IllegalProxy('Error, the Proxy does not implements the Proxy Interface');
         }
-
-        $diContainerObject = clone $this->getDIContainer();
-        $proxyObject->setDIContainer($diContainerObject);
 
         //Get all states available
         $statesList = $this->listStatesByClasses();
@@ -297,10 +237,12 @@ trait FactoryTrait
 
         //Load each state into proxy
         foreach ($statesList as $loadingStateName => $finderLoader) {
-            $stateObject = $finderLoader->buildState($loadingStateName);
-            $stateObject->setDIContainer($diContainerObject)
-                ->setPrivateMode($finderLoader !== $mainFinder)
-                ->setStatedClassName($finderLoader->getStatedClassName());
+            $stateObject = $finderLoader->buildState(
+                $loadingStateName,
+                ($finderLoader !== $mainFinder),
+                $finderLoader->getStatedClassName()
+            );
+
             $proxyObject->registerState($loadingStateName, $stateObject);
         }
 
@@ -325,7 +267,6 @@ trait FactoryTrait
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
-     * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function build($arguments = null, string $stateName = null): Proxy\ProxyInterface
     {

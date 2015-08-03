@@ -77,9 +77,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     protected function setUp()
     {
         parent::setUp();
-        $this->state1 = new Support\MockState();
-        $this->state2 = new Support\MockState();
-        $this->state3 = new Support\MockState();
+        $this->state1 = new Support\MockState(false, 'my\Stated\Class');
+        $this->state2 = new Support\MockState(false, 'my\Stated\Class');
+        $this->state3 = new Support\MockState(false, 'my\Stated\Class');
         $this->buildProxy();
     }
 
@@ -107,17 +107,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         } else {
             $this->{$stateToEnable}->disallowMethod();
         }
-    }
-
-    /**
-     * Test behavior for methods Set And GetDiContainer.
-     */
-    public function testSetAndGetDiContainer()
-    {
-        $object = $this->buildProxy();
-        $virtualContainer = new Support\MockDIContainer();
-        $this->assertSame($object, $object->setDIContainer($virtualContainer));
-        $this->assertSame($virtualContainer, $object->getDIContainer());
     }
 
     /**
@@ -2174,10 +2163,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testCloning()
     {
         $this->initializeProxy('state1', true);
-        $this->proxy->setDIContainer(new Support\MockDIContainer());
         $obj = new \stdClass();
         $obj->foo = 'bar';
-        $this->proxy->getDIContainer()->registerInstance('obj', $obj);
         $clonedProxy = clone $this->proxy;
 
         //States must be independently
@@ -2193,14 +2180,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('state1'), $this->proxy->listEnabledStates());
         $this->assertEquals(array('state1', 'state2'), $clonedProxy->listAvailableStates());
         $this->assertEquals(array('state2'), $clonedProxy->listEnabledStates());
-
-        //container must be cloned
-        $diContainer = $this->proxy->getDIContainer();
-        $clonedDiContainer = $clonedProxy->getDIContainer();
-
-        $this->assertEquals(get_class($diContainer), get_class($clonedDiContainer));
-        $this->assertNotSame($diContainer, $clonedDiContainer);
-        $this->assertEquals('bar', $clonedDiContainer->get('obj')->foo);
     }
 
     /**

@@ -71,19 +71,6 @@ EOF;
      }
 
      /**
-      * Method to create the default and mandatory state for the defined stated class.
-      *
-      * @param string $className
-      * @param string $namespace
-      *
-      * @return bool
-      */
-     public function createDefaultState($className, $namespace)
-     {
-         return $this->createState($className, $namespace, ProxyInterface::DEFAULT_STATE_NAME);
-     }
-
-     /**
       * Method to create a new state for the defined stated class.
       *
       * @param string $className

@@ -42,12 +42,7 @@ use UniAlteri\States\Factory;
 interface LoaderInterface
 {
     /**
-     * Name of Finder (service to find and load elements of stated class).
-     */
-    const DI_LOADER_INSTANCE = 'ClassLoader';
-
-    /**
-     * PHP File of Factory into each stated class.
+     * File name of the Factory PHP Class of each Stated Class.
      */
     const FACTORY_FILE_NAME = 'Factory.php';
 
@@ -57,20 +52,18 @@ interface LoaderInterface
     const FACTORY_CLASS_NAME = 'Factory';
 
     /**
-     * To register a DI container for this object.
-     * @api
-     * @param DI\ContainerInterface $container
+     * Return the factory used to create new finder for all new factory
      *
-     * @return $this
+     * @return callable
      */
-    public function setDIContainer(DI\ContainerInterface $container): LoaderInterface;
+    public function getFinderFactory();
 
     /**
-     * To return the DI Container used for this object.
-     * @api
-     * @return DI\ContainerInterface
+     * Return the factory repository passed to all factory loaded by this loader
+     *
+     * @return \ArrayAccess
      */
-    public function getDIContainer(): DI\ContainerInterface;
+    public function getFactoryRepository();
 
     /**
      * To register a location to find some classes of a namespace.
@@ -98,7 +91,7 @@ interface LoaderInterface
 
     /**
      * Build the factory and initialize the loading stated class.
-     * @internal
+     *
      * @param string $factoryClassName
      * @param string $statedClassName
      * @param string $path

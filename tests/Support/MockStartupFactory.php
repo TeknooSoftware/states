@@ -57,13 +57,16 @@ class MockStartupFactory implements Factory\StartupFactoryInterface
      *
      * @return bool
      *
-     * @throws Exception\InvalidArgument    when $factoryIdentifier is not an object
      * @throws Exception\UnavailableFactory when the required factory was not found
      */
     public static function forwardStartup(Proxy\ProxyInterface $proxyObject, string $stateName = null): Factory\FactoryInterface
     {
         self::$calledProxyObject = $proxyObject;
 
-        return new MockFactory();
+        return new MockFactory(
+            'my\Stated\Class',
+            new MockFinder('my\Stated\Class', 'path\to\stated\class'),
+            new \ArrayObject([])
+        );
     }
 }

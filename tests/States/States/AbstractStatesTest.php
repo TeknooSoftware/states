@@ -42,31 +42,34 @@ use UniAlteri\Tests\Support;
 abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Build an basic object to provide only public methods.
+     * Build a basic object to provide only public methods.
      *
-     * @param bool $initializeContainer initialize virtual di container for state
+     * @param bool $privateMode
+     * @param string $statedClassName
      *
      * @return Support\MockOnlyPublic
      */
-    abstract protected function getPublicClassObject($initializeContainer = true);
+    abstract protected function getPublicClassObject(bool $privateMode, string $statedClassName);
 
     /**
-     * Build an basic object to provide only protected methods.
+     * Build a basic object to provide only protected methods.
      *
-     * @param bool $initializeContainer initialize virtual di container for state
+     * @param bool $privateMode
+     * @param string $statedClassName
      *
      * @return Support\MockOnlyProtected
      */
-    abstract protected function getProtectedClassObject($initializeContainer = true);
+    abstract protected function getProtectedClassObject(bool $privateMode, string $statedClassName);
 
     /**
-     * Build an basic object to provide only private methods.
+     * Build a basic object to provide only private methods.
      *
-     * @param bool $initializeContainer initialize virtual di container for state
+     * @param bool $privateMode
+     * @param string $statedClassName
      *
      * @return Support\MockOnlyPrivate
      */
-    abstract protected function getPrivateClassObject($initializeContainer = true);
+    abstract protected function getPrivateClassObject(bool $privateMode, string $statedClassName);
 
     /**
      * Build a virtual proxy for test.
@@ -74,17 +77,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      * @return Proxy\ProxyInterface
      */
     abstract protected function getMockProxy();
-
-    /**
-     * Test behavior for methods Set And GetDiContainer.
-     */
-    public function testSetAndGetDiContainer()
-    {
-        $object = $this->getPublicClassObject(false);
-        $virtualContainer = new Support\MockDIContainer();
-        $this->assertSame($object, $object->setDIContainer($virtualContainer));
-        $this->assertSame($virtualContainer, $object->getDIContainer());
-    }
 
     /**
      * Test if the state can return all its public method, without static.
@@ -97,7 +89,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'finalMethod2',
                 'standardMethod4',
             ),
-            $this->getPublicClassObject()->listMethods()->getArrayCopy()
+            $this->getPublicClassObject(false,  'My\Stated\Class')->listMethods()->getArrayCopy()
         );
     }
 
@@ -112,7 +104,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'finalMethod7',
                 'standardMethod8',
             ),
-            $this->getProtectedClassObject()->listMethods()->getArrayCopy()
+            $this->getProtectedClassObject(false,  'My\Stated\Class')->listMethods()->getArrayCopy()
         );
     }
 
@@ -127,7 +119,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'standardMethod10',
                 'finalMethod11',
             ),
-            $this->getPrivateClassObject()->listMethods()->getArrayCopy()
+            $this->getPrivateClassObject(false,  'My\Stated\Class')->listMethods()->getArrayCopy()
         );
     }
 
@@ -137,7 +129,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testGetBadMethodDescription()
     {
         try {
-            $this->getPublicClassObject()->getMethodDescription('badMethod');
+            $this->getPublicClassObject(false,  'My\Stated\Class')->getMethodDescription('badMethod');
         } catch (States\Exception\MethodNotImplemented $e) {
             return;
         } catch (\Exception $e) {
@@ -152,7 +144,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testGetIgnoredMethodDescriptionUsedByTrait()
     {
         try {
-            $this->getPublicClassObject()->getMethodDescription('setDIContainer');
+            $this->getPublicClassObject(false,  'My\Stated\Class')->getMethodDescription('getMethodDescription');
         } catch (States\Exception\MethodNotImplemented $e) {
             return;
         } catch (\Exception $e) {
@@ -180,20 +172,20 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescription()
     {
-        $this->assertSame('Final Method 9.', $this->formatDescription($this->getPrivateClassObject()->getMethodDescription('finalMethod9')));
-        $this->assertSame('Standard Method 10.', $this->formatDescription($this->getPrivateClassObject()->getMethodDescription('standardMethod10')));
+        $this->assertSame('Final Method 9.', $this->formatDescription($this->getPrivateClassObject(false,  'My\Stated\Class')->getMethodDescription('finalMethod9')));
+        $this->assertSame('Standard Method 10.', $this->formatDescription($this->getPrivateClassObject(false,  'My\Stated\Class')->getMethodDescription('standardMethod10')));
 
-        $this->assertSame('Standard Method 6.           @param $a      @param $b           @return mixed', $this->formatDescription($this->getProtectedClassObject()->getMethodDescription('standardMethod6')));
-        $this->assertSame('Final Method 7.', $this->formatDescription($this->getProtectedClassObject()->getMethodDescription('finalMethod7')));
+        $this->assertSame('Standard Method 6.           @param $a      @param $b           @return mixed', $this->formatDescription($this->getProtectedClassObject(false,  'My\Stated\Class')->getMethodDescription('standardMethod6')));
+        $this->assertSame('Final Method 7.', $this->formatDescription($this->getProtectedClassObject(false,  'My\Stated\Class')->getMethodDescription('finalMethod7')));
 
-        $this->assertSame('Standard Method 1.', $this->formatDescription($this->getPublicClassObject()->getMethodDescription('standardMethod1')));
-        $this->assertSame('Final Method 2.', $this->formatDescription($this->getPublicClassObject()->getMethodDescription('finalMethod2')));
+        $this->assertSame('Standard Method 1.', $this->formatDescription($this->getPublicClassObject(false,  'My\Stated\Class')->getMethodDescription('standardMethod1')));
+        $this->assertSame('Final Method 2.', $this->formatDescription($this->getPublicClassObject(false,  'My\Stated\Class')->getMethodDescription('finalMethod2')));
     }
 
     public function testTestMethodExceptionWithInvalidScope()
     {
         try {
-            $this->getPublicClassObject()->testMethod('standardMethod1', 'badScope');
+            $this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('standardMethod1', 'badScope');
         } catch (States\Exception\InvalidArgument $e) {
             return;
         } catch (\Exception $e) {
@@ -207,7 +199,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testTestMethodPrivateScope()
     {
-        $private = $this->getPrivateClassObject();
+        $private = $this->getPrivateClassObject(false,  'My\Stated\Class');
         $this->assertTrue($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PRIVATE));
         $this->assertTrue($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PRIVATE));
         $this->assertTrue($private->testMethod('standardMethod10', States\StateInterface::VISIBILITY_PRIVATE));
@@ -215,15 +207,15 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PRIVATE));
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PRIVATE));
 
-        $this->assertFalse($this->getProtectedClassObject()->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PRIVATE));
-        $this->assertTrue($this->getProtectedClassObject()->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PRIVATE));
-        $this->assertTrue($this->getProtectedClassObject()->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PRIVATE));
-        $this->assertTrue($this->getProtectedClassObject()->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PRIVATE));
 
-        $this->assertTrue($this->getPublicClassObject()->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PRIVATE));
-        $this->assertTrue($this->getPublicClassObject()->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PRIVATE));
-        $this->assertFalse($this->getPublicClassObject()->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PRIVATE));
-        $this->assertTrue($this->getPublicClassObject()->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertFalse($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PRIVATE));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PRIVATE));
     }
 
     /**
@@ -231,7 +223,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testTestMethodProtectedScope()
     {
-        $private = $this->getPrivateClassObject();
+        $private = $this->getPrivateClassObject(false,  'My\Stated\Class');
         $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PROTECTED));
         $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PROTECTED));
         $this->assertFalse($private->testMethod('standardMethod10', States\StateInterface::VISIBILITY_PROTECTED));
@@ -239,15 +231,15 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PROTECTED));
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PROTECTED));
 
-        $this->assertFalse($this->getProtectedClassObject()->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PROTECTED));
-        $this->assertTrue($this->getProtectedClassObject()->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PROTECTED));
-        $this->assertTrue($this->getProtectedClassObject()->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PROTECTED));
-        $this->assertTrue($this->getProtectedClassObject()->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PROTECTED));
 
-        $this->assertTrue($this->getPublicClassObject()->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PROTECTED));
-        $this->assertTrue($this->getPublicClassObject()->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PROTECTED));
-        $this->assertFalse($this->getPublicClassObject()->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PROTECTED));
-        $this->assertTrue($this->getPublicClassObject()->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertFalse($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PROTECTED));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PROTECTED));
     }
 
     /**
@@ -255,7 +247,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testTestMethodPublicScope()
     {
-        $private = $this->getPrivateClassObject();
+        $private = $this->getPrivateClassObject(false,  'My\Stated\Class');
         $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PUBLIC));
         $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PUBLIC));
         $this->assertFalse($private->testMethod('standardMethod10', States\StateInterface::VISIBILITY_PUBLIC));
@@ -263,15 +255,15 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PUBLIC));
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PUBLIC));
 
-        $this->assertFalse($this->getProtectedClassObject()->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PUBLIC));
-        $this->assertFalse($this->getProtectedClassObject()->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PUBLIC));
-        $this->assertFalse($this->getProtectedClassObject()->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PUBLIC));
-        $this->assertFalse($this->getProtectedClassObject()->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PUBLIC));
 
-        $this->assertTrue($this->getPublicClassObject()->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PUBLIC));
-        $this->assertTrue($this->getPublicClassObject()->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PUBLIC));
-        $this->assertFalse($this->getPublicClassObject()->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PUBLIC));
-        $this->assertTrue($this->getPublicClassObject()->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertFalse($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('staticMethod3', States\StateInterface::VISIBILITY_PUBLIC));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('standardMethod4', States\StateInterface::VISIBILITY_PUBLIC));
     }
 
     /**
@@ -279,7 +271,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testTestMethodDefaultAsPublicScope()
     {
-        $private = $this->getPrivateClassObject();
+        $private = $this->getPrivateClassObject(false,  'My\Stated\Class');
         $this->assertFalse($private->testMethod('finalMethod9'));
         $this->assertFalse($private->testMethod('finalMethod9'));
         $this->assertFalse($private->testMethod('standardMethod10'));
@@ -287,15 +279,15 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($private->testMethod('staticMethod12'));
         $this->assertFalse($private->testMethod('staticMethod12'));
 
-        $this->assertFalse($this->getProtectedClassObject()->testMethod('staticMethod5'));
-        $this->assertFalse($this->getProtectedClassObject()->testMethod('standardMethod6'));
-        $this->assertFalse($this->getProtectedClassObject()->testMethod('finalMethod7'));
-        $this->assertFalse($this->getProtectedClassObject()->testMethod('standardMethod8'));
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('staticMethod5'));
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('standardMethod6'));
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('finalMethod7'));
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->testMethod('standardMethod8'));
 
-        $this->assertTrue($this->getPublicClassObject()->testMethod('standardMethod1'));
-        $this->assertTrue($this->getPublicClassObject()->testMethod('finalMethod2'));
-        $this->assertFalse($this->getPublicClassObject()->testMethod('staticMethod3'));
-        $this->assertTrue($this->getPublicClassObject()->testMethod('standardMethod4'));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('standardMethod1'));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('finalMethod2'));
+        $this->assertFalse($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('staticMethod3'));
+        $this->assertTrue($this->getPublicClassObject(false,  'My\Stated\Class')->testMethod('standardMethod4'));
     }
 
     /**
@@ -304,7 +296,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testTestMethodPrivateScopeWithPrivateMode()
     {
-        $private = $this->getPrivateClassObject();
+        $private = $this->getPrivateClassObject(true,  'My\Stated\Class');
         $private->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
         $this->assertTrue($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
         $this->assertTrue($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
@@ -320,7 +312,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
 
-        $protected = $this->getProtectedClassObject();
+        $protected = $this->getProtectedClassObject(true,  'My\Stated\Class');
         $protected->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
         $this->assertFalse($protected->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
         $this->assertTrue($protected->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
@@ -332,7 +324,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($protected->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
         $this->assertTrue($protected->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\AnotherClass'));
 
-        $public = $this->getPublicClassObject();
+        $public = $this->getPublicClassObject(true,  'My\Stated\Class');
         $public->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
         $this->assertTrue($public->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
         $this->assertTrue($public->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PRIVATE, 'Its\Inherited\Class'));
@@ -351,7 +343,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testTestMethodProtectedScopeWithPrivateMode()
     {
-        $private = $this->getPrivateClassObject();
+        $private = $this->getPrivateClassObject(true,  'My\Stated\Class');
         $private->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
         $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
         $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
@@ -367,7 +359,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
 
-        $protected = $this->getProtectedClassObject();
+        $protected = $this->getProtectedClassObject(true,  'My\Stated\Class');
         $protected->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
         $this->assertFalse($protected->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
         $this->assertTrue($protected->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
@@ -379,7 +371,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($protected->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
         $this->assertTrue($protected->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\AnotherClass'));
 
-        $public = $this->getPublicClassObject();
+        $public = $this->getPublicClassObject(true,  'My\Stated\Class');
         $public->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
         $this->assertTrue($public->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
         $this->assertTrue($public->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\Class'));
@@ -398,7 +390,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testTestMethodPublicScopeWithPrivateMode()
     {
-        $private = $this->getPrivateClassObject();
+        $private = $this->getPrivateClassObject(true,  'My\Stated\Class');
         $private->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
         $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
         $this->assertFalse($private->testMethod('finalMethod9', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
@@ -414,7 +406,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
         $this->assertFalse($private->testMethod('staticMethod12', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
 
-        $protected = $this->getProtectedClassObject();
+        $protected = $this->getProtectedClassObject(true,  'My\Stated\Class');
         $protected->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
         $this->assertFalse($protected->testMethod('staticMethod5', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
         $this->assertFalse($protected->testMethod('standardMethod6', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
@@ -426,7 +418,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->assertFalse($protected->testMethod('finalMethod7', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
         $this->assertFalse($protected->testMethod('standardMethod8', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\AnotherClass'));
 
-        $public = $this->getPublicClassObject();
+        $public = $this->getPublicClassObject(true,  'My\Stated\Class');
         $public->setStatedClassName('Its\Inherited\Class')->setPrivateMode(true);
         $this->assertTrue($public->testMethod('standardMethod1', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
         $this->assertTrue($public->testMethod('finalMethod2', States\StateInterface::VISIBILITY_PUBLIC, 'Its\Inherited\Class'));
@@ -445,7 +437,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testGetBadClosure()
     {
         try {
-            $this->getPublicClassObject()->getClosure('badMethod');
+            $this->getPublicClassObject(false,  'My\Stated\Class')->getClosure('badMethod');
         } catch (States\Exception\MethodNotImplemented $e) {
             return;
         } catch (\Exception $e) {
@@ -460,7 +452,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testGetStaticClosure()
     {
         try {
-            $this->getPublicClassObject()->getClosure('staticMethod3');
+            $this->getPublicClassObject(false,  'My\Stated\Class')->getClosure('staticMethod3');
         } catch (States\Exception\MethodNotImplemented $e) {
             return;
         } catch (\Exception $e) {
@@ -475,7 +467,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testGetClosureWithInvalidScope()
     {
         try {
-            $this->getPublicClassObject()->getClosure('standardMethod1', 'badScope');
+            $this->getPublicClassObject(false,  'My\Stated\Class')->getClosure('standardMethod1', 'badScope');
         } catch (States\Exception\InvalidArgument $e) {
             return;
         } catch (\Exception $e) {
@@ -489,21 +481,21 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetClosureWithPrivateScope()
     {
-        $closure = $this->getPrivateClassObject()->getClosure(
+        $closure = $this->getPrivateClassObject(false,  'My\Stated\Class')->getClosure(
             'standardMethod10',
             States\StateInterface::VISIBILITY_PRIVATE
         );
 
         $this->assertInstanceOf('\Closure', $closure);
 
-        $closure = $this->getProtectedClassObject()->getClosure(
+        $closure = $this->getProtectedClassObject(false,  'My\Stated\Class')->getClosure(
             'standardMethod6',
             States\StateInterface::VISIBILITY_PRIVATE
         );
 
         $this->assertInstanceOf('\Closure', $closure);
 
-        $closure = $this->getPublicClassObject()->getClosure(
+        $closure = $this->getPublicClassObject(false,  'My\Stated\Class')->getClosure(
             'standardMethod1',
             States\StateInterface::VISIBILITY_PRIVATE
         );
@@ -518,7 +510,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $fail = false;
         try {
-            $this->getPrivateClassObject()->getClosure(
+            $this->getPrivateClassObject(false,  'My\Stated\Class')->getClosure(
                 'standardMethod10',
                 States\StateInterface::VISIBILITY_PROTECTED
             );
@@ -529,14 +521,14 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
 
-        $closure = $this->getProtectedClassObject()->getClosure(
+        $closure = $this->getProtectedClassObject(false,  'My\Stated\Class')->getClosure(
             'standardMethod6',
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
         $this->assertInstanceOf('\Closure', $closure);
 
-        $closure = $this->getPublicClassObject()->getClosure(
+        $closure = $this->getPublicClassObject(false,  'My\Stated\Class')->getClosure(
             'standardMethod1',
             States\StateInterface::VISIBILITY_PROTECTED
         );
@@ -551,7 +543,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $fail = false;
         try {
-            $this->getPrivateClassObject()->getClosure(
+            $this->getPrivateClassObject(false,  'My\Stated\Class')->getClosure(
                 'standardMethod10',
                 States\StateInterface::VISIBILITY_PUBLIC
             );
@@ -564,7 +556,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $fail = false;
         try {
-            $this->getProtectedClassObject()->getClosure(
+            $this->getProtectedClassObject(false,  'My\Stated\Class')->getClosure(
                 'standardMethod6',
                 States\StateInterface::VISIBILITY_PUBLIC
             );
@@ -575,7 +567,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
-        $closure = $this->getPublicClassObject()->getClosure(
+        $closure = $this->getPublicClassObject(false,  'My\Stated\Class')->getClosure(
             'standardMethod1',
             States\StateInterface::VISIBILITY_PUBLIC
         );
@@ -588,7 +580,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetClosureWithPrivateScopeWithPrivateModeSameClass()
     {
-        $closure = $this->getPrivateClassObject()
+        $closure = $this->getPrivateClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -599,7 +591,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Closure', $closure);
 
-        $closure = $this->getProtectedClassObject()
+        $closure = $this->getProtectedClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -610,7 +602,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Closure', $closure);
 
-        $closure = $this->getPublicClassObject()
+        $closure = $this->getPublicClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -629,7 +621,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $fail = false;
         try {
-            $this->getPrivateClassObject()
+            $this->getPrivateClassObject(true,  'My\Stated\Class')
                 ->setPrivateMode(true)
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
@@ -644,7 +636,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
 
-        $closure = $this->getProtectedClassObject()
+        $closure = $this->getProtectedClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -655,7 +647,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Closure', $closure);
 
-        $closure = $this->getPublicClassObject()
+        $closure = $this->getPublicClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -674,7 +666,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $fail = false;
         try {
-            $this->getPrivateClassObject()
+            $this->getPrivateClassObject(true,  'My\Stated\Class')
                 ->setPrivateMode(true)
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
@@ -691,7 +683,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $fail = false;
         try {
-            $this->getProtectedClassObject()
+            $this->getProtectedClassObject(true,  'My\Stated\Class')
                 ->setPrivateMode(true)
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
@@ -706,7 +698,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
-        $closure = $this->getPublicClassObject()
+        $closure = $this->getPublicClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -725,7 +717,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $fail = false;
         try {
-            $this->getPrivateClassObject()
+            $this->getPrivateClassObject(true,  'My\Stated\Class')
                 ->setPrivateMode(true)
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
@@ -740,7 +732,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
 
-        $closure = $this->getProtectedClassObject()
+        $closure = $this->getProtectedClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -751,7 +743,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Closure', $closure);
 
-        $closure = $this->getPublicClassObject()
+        $closure = $this->getPublicClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -770,7 +762,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $fail = false;
         try {
-            $this->getPrivateClassObject()
+            $this->getPrivateClassObject(true,  'My\Stated\Class')
                 ->setPrivateMode(true)
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
@@ -785,7 +777,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
 
-        $closure = $this->getProtectedClassObject()
+        $closure = $this->getProtectedClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -796,7 +788,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertInstanceOf('\Closure', $closure);
 
-        $closure = $this->getPublicClassObject()
+        $closure = $this->getPublicClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -815,7 +807,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $fail = false;
         try {
-            $this->getPrivateClassObject()
+            $this->getPrivateClassObject(true,  'My\Stated\Class')
                 ->setPrivateMode(true)
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
@@ -832,7 +824,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $fail = false;
         try {
-            $this->getProtectedClassObject()
+            $this->getProtectedClassObject(true,  'My\Stated\Class')
                 ->setPrivateMode(true)
                 ->setStatedClassName('It\A\Stated\Class')
                 ->getClosure(
@@ -847,7 +839,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
-        $closure = $this->getPublicClassObject()
+        $closure = $this->getPublicClassObject(true,  'My\Stated\Class')
             ->setPrivateMode(true)
             ->setStatedClassName('It\A\Stated\Class')
             ->getClosure(
@@ -866,7 +858,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     {
         $fail = false;
         try {
-            $this->getPrivateClassObject()->getClosure(
+            $this->getPrivateClassObject(false,  'My\Stated\Class')->getClosure(
                 'standardMethod10'
             );
         } catch (States\Exception\MethodNotImplemented $e) {
@@ -878,7 +870,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $fail = false;
         try {
-            $this->getProtectedClassObject()->getClosure(
+            $this->getProtectedClassObject(false,  'My\Stated\Class')->getClosure(
                 'standardMethod6'
             );
         } catch (States\Exception\MethodNotImplemented $e) {
@@ -888,7 +880,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
-        $closure = $this->getPublicClassObject()->getClosure(
+        $closure = $this->getPublicClassObject(false,  'My\Stated\Class')->getClosure(
             'standardMethod1'
         );
 
@@ -900,7 +892,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallingAfterGetClosure()
     {
-        $closure = $this->getProtectedClassObject()->getClosure(
+        $closure = $this->getProtectedClassObject(false,  'My\Stated\Class')->getClosure(
             'standardMethod6',
             States\StateInterface::VISIBILITY_PROTECTED
         );
@@ -914,7 +906,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMultipleSameClosures()
     {
-        $projected = $this->getProtectedClassObject();
+        $projected = $this->getProtectedClassObject(false,  'My\Stated\Class');
         $closure1 = $projected->getClosure(
             'standardMethod6',
             States\StateInterface::VISIBILITY_PROTECTED
@@ -939,17 +931,17 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMultipleClosuresMultipleState()
     {
-        $closure1 = $this->getProtectedClassObject()->getClosure(
+        $closure1 = $this->getProtectedClassObject(false,  'My\Stated\Class')->getClosure(
             'standardMethod6',
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
-        $closure2 = $this->getProtectedClassObject()->getClosure(
+        $closure2 = $this->getProtectedClassObject(false,  'My\Stated\Class')->getClosure(
             'finalMethod7',
             States\StateInterface::VISIBILITY_PROTECTED
         );
 
-        $closure3 = $this->getProtectedClassObject()->getClosure(
+        $closure3 = $this->getProtectedClassObject(false,  'My\Stated\Class')->getClosure(
             'standardMethod6',
             States\StateInterface::VISIBILITY_PROTECTED
         );
@@ -963,9 +955,9 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrivateModeIsDisableByDefault()
     {
-        $this->assertFalse($this->getPublicClassObject()->isPrivateMode());
-        $this->assertFalse($this->getProtectedClassObject()->isPrivateMode());
-        $this->assertFalse($this->getPrivateClassObject()->isPrivateMode());
+        $this->assertFalse($this->getPublicClassObject(false,  'My\Stated\Class')->isPrivateMode());
+        $this->assertFalse($this->getProtectedClassObject(false,  'My\Stated\Class')->isPrivateMode());
+        $this->assertFalse($this->getPrivateClassObject(false,  'My\Stated\Class')->isPrivateMode());
     }
 
     /**
@@ -973,9 +965,9 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrivateModeEnable()
     {
-        $statePublicMock = $this->getPublicClassObject();
-        $stateProtectedMock = $this->getProtectedClassObject();
-        $statePrivateMock = $this->getPrivateClassObject();
+        $statePublicMock = $this->getPublicClassObject(false,  'My\Stated\Class');
+        $stateProtectedMock = $this->getProtectedClassObject(false,  'My\Stated\Class');
+        $statePrivateMock = $this->getPrivateClassObject(false,  'My\Stated\Class');
 
         $statePublicMock->setPrivateMode(true);
         $this->assertTrue($statePublicMock->isPrivateMode());
@@ -992,9 +984,9 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrivateModeDisable()
     {
-        $statePublicMock = $this->getPublicClassObject();
-        $stateProtectedMock = $this->getProtectedClassObject();
-        $statePrivateMock = $this->getPrivateClassObject();
+        $statePublicMock = $this->getPublicClassObject(false,  'My\Stated\Class');
+        $stateProtectedMock = $this->getProtectedClassObject(false,  'My\Stated\Class');
+        $statePrivateMock = $this->getPrivateClassObject(false,  'My\Stated\Class');
 
         $statePublicMock->setPrivateMode(false);
         $this->assertFalse($statePublicMock->isPrivateMode());
@@ -1011,9 +1003,9 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testSetAndGetStatedClassName()
     {
-        $statePublicMock = $this->getPublicClassObject();
-        $stateProtectedMock = $this->getProtectedClassObject();
-        $statePrivateMock = $this->getPrivateClassObject();
+        $statePublicMock = $this->getPublicClassObject(false,  'My\Stated\Class');
+        $stateProtectedMock = $this->getProtectedClassObject(false,  'My\Stated\Class');
+        $statePrivateMock = $this->getPrivateClassObject(false,  'My\Stated\Class');
 
         $statePublicMock->setStatedClassName('Its\A\Stated\ClassNamePublic');
         $this->assertEquals('Its\A\Stated\ClassNamePublic', $statePublicMock->getStatedClassName());

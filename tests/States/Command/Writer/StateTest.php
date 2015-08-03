@@ -73,26 +73,6 @@ class StateTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    public function testCreateDefaultStateFailure()
-    {
-        $this->buildFileSystemMock()
-            ->expects($this->once())
-            ->method('write')
-            ->withAnyParameters()
-            ->willReturnCallback(
-                function ($file, $code) {
-                    $this->assertEquals('States/StateDefault.php', $file);
-                    $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\States;'));
-                    $this->assertNotFalse(strpos($code, 'class '.ProxyInterface::DEFAULT_STATE_NAME.' extends States\\AbstractState'));
-
-                    return 0;
-                }
-            );
-
-        $this->assertFalse($this->createWriter()->createDefaultState('fooBar', 'Acme\\NameProduct'));
-    }
-
     public function testCreateStateFailure()
     {
         $this->buildFileSystemMock()
@@ -101,16 +81,16 @@ class StateTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturnCallback(
                 function ($file, $code) {
-                    $this->assertEquals('States/StateDefault.php', $file);
+                    $this->assertEquals('States/helloWorld.php', $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
                     $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\States;'));
-                    $this->assertNotFalse(strpos($code, 'class '.ProxyInterface::DEFAULT_STATE_NAME.' extends States\\AbstractState'));
+                    $this->assertNotFalse(strpos($code, 'class helloWorld extends States\\AbstractState'));
 
                     return 10;
                 }
             );
 
-        $this->assertTrue($this->createWriter()->createDefaultState('fooBar', 'Acme\\NameProduct'));
+        $this->assertTrue($this->createWriter()->createState('fooBar', 'Acme\\NameProduct', 'helloWorld'));
     }
 
     public function testCreateDefaultState()

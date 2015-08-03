@@ -36,7 +36,7 @@ namespace UniAlteri\States\Loader;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @api
+ *
  */
 class FinderComposerIntegrated extends FinderComposer
 {

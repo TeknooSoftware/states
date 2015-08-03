@@ -42,32 +42,12 @@ use UniAlteri\States\Loader;
 interface FactoryInterface
 {
     /**
-     * Name of this factory into the DI Container available for each stated class.
+     * Initialize factory
+     * @param string $statedClassName
+     * @param Loader\FinderInterface $finder
+     * @param \ArrayAccess $factoryRepository
      */
-    const DI_FACTORY_NAME = 'Factory';
-
-    /**
-     * Name of the repository in the DI Container, shared with all DI, to register all loaded factory.
-     */
-    const DI_FACTORY_REPOSITORY = 'FactoryRepository';
-
-    /**
-     * To register a DI container for this object.
-     * @api
-     *
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container): FactoryInterface;
-
-    /**
-     * To return the DI Container used for this object.
-     * @api
-     *
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface;
+    public function __construct(string $statedClassName, Loader\FinderInterface $finder, \ArrayAccess $factoryRepository);
 
     /**
      * To return the loader of this stated class from its DI Container.
@@ -87,30 +67,8 @@ interface FactoryInterface
     public function getStatedClassName(): string;
 
     /**
-     * To return the path of the stated class.
-     * @api
-     * @return string
-     */
-    public function getPath(): string;
-
-    /**
-     * Method called by the Loader to initialize the stated class :
-     * It registers the class name and its path, retrieves the DI Container,
-     * register the factory in the DI Container, it retrieves the finder object and load the proxy
-     * from the finder.
-     * @api
-     * @param string $statedClassName the name of the stated class
-     * @param string $path            of the stated class
-     *
-     * @return $this
-     *
-     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
-     */
-    public function initialize(string $statedClassName, string $path): FactoryInterface;
-
-    /**
      * To initialize a proxy object with its container and states. States are fetched by the finder of this stated class.
-     * @internal
+     *
      * @param Proxy\ProxyInterface $proxyObject
      * @param string               $stateName
      *
@@ -132,7 +90,6 @@ interface FactoryInterface
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
-     * @throws Exception\UnavailableDIContainer if there are no di container
      */
     public function build($arguments = null, string $stateName = null): Proxy\ProxyInterface;
 }

@@ -57,7 +57,7 @@ class Factory extends Support\MockFactory
      *
      * @throws \Exception
      */
-    public function initialize(string $statedClassName, string $path): FactoryInterface
+    protected function initialize(string $statedClassName): FactoryInterface
     {
         throw new \Exception('test');
     }

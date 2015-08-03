@@ -49,13 +49,6 @@ use UniAlteri\States\DI;
 trait StateTrait
 {
     /**
-     * DI Container to use for this object.
-     *
-     * @var DI\ContainerInterface
-     */
-    private $diContainer;
-
-    /**
      * List of methods available for this state.
      *
      * @var \ArrayObject
@@ -93,8 +86,6 @@ trait StateTrait
         '__destruct' => '__destruct',
         'getReflectionClass' => 'getReflectionClass',
         'checkVisibility' => 'checkVisibility',
-        'setDIContainer' => 'setDIContainer',
-        'getDIContainer' => 'getDIContainer',
         'listMethods' => 'listMethods',
         'testMethod' => 'testMethod',
         'getMethodDescription' => 'getMethodDescription',
@@ -120,6 +111,17 @@ trait StateTrait
     private $statedClassName;
 
     /**
+     * To initialize this state
+     * @param bool $privateMode
+     * @param string $statedClassName
+     */
+    public function __construct(bool $privateMode, string $statedClassName)
+    {
+        $this->setPrivateMode($privateMode);
+        $this->setStatedClassName($statedClassName);
+    }
+
+    /**
      * To build the ReflectionClass for the current object.
      *
      * @api
@@ -136,30 +138,9 @@ trait StateTrait
     }
 
     /**
-     * {@inheritdoc StateInterface}
-     */
-    public function setDIContainer(DI\ContainerInterface $container): StateInterface
-    {
-        $this->diContainer = $container;
-
-        return $this;
-    }
-
-    /**
-     * To return the DI Container used for this object.
-     *
-     * @api
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface
-    {
-        return $this->diContainer;
-    }
-
-    /**
      * To get the canonical stated class name associated to this state.
      *
-     * @internal
+     *
      * @return string
      */
     public function getStatedClassName(): string
@@ -169,7 +150,7 @@ trait StateTrait
 
     /**
      * To set the canonical stated class name associated to this state.
-     * @internal
+     *
      * @param string $statedClassName
      *
      * @return $this
@@ -186,7 +167,7 @@ trait StateTrait
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable.
      *
-     * @internal
+     *
      * @return bool
      */
     public function isPrivateMode(): bool
@@ -199,7 +180,7 @@ trait StateTrait
      * If the mode Private is enable, private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable.
-     * @internal
+     *
      * @param bool $enable
      *
      * @return $this
@@ -249,7 +230,7 @@ trait StateTrait
     /**
      * To check if the method is available in the scope.
      *
-     * @internal
+     *
      *
      * @param string      $methodName
      * @param string      $scope
@@ -311,7 +292,7 @@ trait StateTrait
     /**
      * To test if a method exists for this state in the current visibility scope.
      *
-     * @internal
+     *
      * @param string      $methodName
      * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null $statedClassOriginName
@@ -399,7 +380,7 @@ trait StateTrait
 
     /**
      * To return a closure of the required method to use in the proxy, according with the current visibility scope.
-     * @internal
+     *
      * @param string               $methodName
      * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null          $statedClassOriginName

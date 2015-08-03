@@ -173,14 +173,6 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
                 $this->equalTo('\\vendor\\project\\package')
             );
 
-        $this->buildStateMock()
-            ->expects($this->once())
-            ->method('createDefaultState')
-            ->with(
-                $this->equalTo('fooBar'),
-                $this->equalTo('\\vendor\\project\\package')
-            );
-
         $command = $this->buildCommand();
         $command->run($input, $output);
     }
@@ -218,14 +210,6 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
         $this->buildFactoryMock()
             ->expects($this->once())
             ->method('createIntegratedFactory')
-            ->with(
-                $this->equalTo('fooBar'),
-                $this->equalTo('\\vendor\\project\\package')
-            );
-
-        $this->buildStateMock()
-            ->expects($this->once())
-            ->method('createDefaultState')
             ->with(
                 $this->equalTo('fooBar'),
                 $this->equalTo('\\vendor\\project\\package')

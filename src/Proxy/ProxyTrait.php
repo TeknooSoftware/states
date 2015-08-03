@@ -48,13 +48,6 @@ use UniAlteri\States;
 trait ProxyTrait
 {
     /**
-     * DI Container to use for this object.
-     *
-     * @var DI\ContainerInterface
-     */
-    private $diContainer;
-
-    /**
      * List of currently enabled states.
      *
      * @var \ArrayObject|States\States\StateInterface[]
@@ -261,32 +254,6 @@ trait ProxyTrait
     }
 
     /**
-     * To register a DI container for this object.
-     * @api
-     *
-     * @param DI\ContainerInterface $container
-     *
-     * @return $this
-     */
-    public function setDIContainer(DI\ContainerInterface $container): ProxyInterface
-    {
-        $this->diContainer = $container;
-
-        return $this;
-    }
-
-    /**
-     * To return the DI Container used for this object.
-     * @api
-     *
-     * @return DI\ContainerInterface
-     */
-    public function getDIContainer(): DI\ContainerInterface
-    {
-        return $this->diContainer;
-    }
-
-    /**
      * To determine the caller visibility scope to not permit to call protected or private method from an external object.
      * Use debug_backtrace to get the calling stack.
      * (PHP does not provide a method to get this, but the cost of debug_backtrace is light).
@@ -366,10 +333,6 @@ trait ProxyTrait
      */
     public function __clone()
     {
-        if ($this->diContainer instanceof DI\ContainerInterface) {
-            $this->diContainer = clone $this->diContainer;
-        }
-
         //Clone states stack
         if ($this->states instanceof \ArrayAccess) {
             $clonedStatesArray = new \ArrayObject();
