@@ -22,7 +22,6 @@
 
 namespace UniAlteri\Tests\States\States;
 
-use UniAlteri\States\DI;
 use UniAlteri\States\Proxy;
 use UniAlteri\States\States;
 use UniAlteri\Tests\Support;
@@ -44,7 +43,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     /**
      * Build a basic object to provide only public methods.
      *
-     * @param bool $privateMode
+     * @param bool   $privateMode
      * @param string $statedClassName
      *
      * @return Support\MockOnlyPublic
@@ -54,7 +53,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     /**
      * Build a basic object to provide only protected methods.
      *
-     * @param bool $privateMode
+     * @param bool   $privateMode
      * @param string $statedClassName
      *
      * @return Support\MockOnlyProtected
@@ -64,7 +63,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     /**
      * Build a basic object to provide only private methods.
      *
-     * @param bool $privateMode
+     * @param bool   $privateMode
      * @param string $statedClassName
      *
      * @return Support\MockOnlyPrivate

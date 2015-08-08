@@ -22,8 +22,6 @@
 
 namespace UniAlteri\States;
 
-use UniAlteri\States\Factory\FactoryInterface;
-
 defined('UA_STATES_PATH')
     || define('UA_STATES_PATH', __DIR__);
 
@@ -38,7 +36,7 @@ if (!file_exists($composerFile)) {
 }
 $composerInstance = require $composerFile;
 
-/**
+/*
  * Service to generate a finder for Stated class factory
  * @param string $statedClassName
  * @param string $path

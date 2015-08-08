@@ -30,9 +30,6 @@ namespace UniAlteri\Tests\States;
 
 use UniAlteri\States;
 use UniAlteri\States\Loader;
-use UniAlteri\States\Factory;
-use UniAlteri\States\Exception;
-use UniAlteri\Tests\Support;
 
 /**
  * Class BootstrapTest

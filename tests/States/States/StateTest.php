@@ -43,7 +43,7 @@ class StateTest extends AbstractStatesTest
     /**
      * Build a basic object to provide only public methods.
      *
-     * @param bool $privateMode
+     * @param bool   $privateMode
      * @param string $statedClassName
      *
      * @return Support\MockOnlyPublic
@@ -56,7 +56,7 @@ class StateTest extends AbstractStatesTest
     /**
      * Build a basic object to provide only protected methods.
      *
-     * @param bool $privateMode
+     * @param bool   $privateMode
      * @param string $statedClassName
      *
      * @return Support\MockOnlyProtected
@@ -69,7 +69,7 @@ class StateTest extends AbstractStatesTest
     /**
      * Build a basic object to provide only private methods.
      *
-     * @param bool $privateMode
+     * @param bool   $privateMode
      * @param string $statedClassName
      *
      * @return Support\MockOnlyPrivate

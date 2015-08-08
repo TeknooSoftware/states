@@ -65,7 +65,7 @@ class FinderComposerIntegratedTest extends FinderComposerTest
         Factory\StandardStartupFactory::registerFactory(
             'UniAlteri\States\Proxy\Integrated',
             new Support\MockFactory(
-                'my\Stated\Class',$this->finder,
+                'my\Stated\Class', $this->finder,
                 new \ArrayObject([])
             )
         );

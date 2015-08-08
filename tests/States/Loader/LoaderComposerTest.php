@@ -130,7 +130,6 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             new \ArrayObject([])
         );
 
-
         return $this->loader;
     }
 

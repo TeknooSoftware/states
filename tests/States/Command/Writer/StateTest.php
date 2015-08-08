@@ -24,7 +24,6 @@ namespace UniAlteri\Tests\States\Command\Writer;
 
 use Gaufrette\Filesystem;
 use UniAlteri\States\Command\Writer\State;
-use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Class StateTest.

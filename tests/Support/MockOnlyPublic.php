@@ -39,7 +39,6 @@ use UniAlteri\States\States;
  */
 class MockOnlyPublic extends States\AbstractState
 {
-
     /**
      * Standard Method 1.
      */

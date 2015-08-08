@@ -23,7 +23,6 @@
 namespace UniAlteri\States\Command\Writer;
 
 use UniAlteri\States\Loader\FinderInterface;
-use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
   * Class State

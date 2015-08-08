@@ -24,7 +24,6 @@ namespace UniAlteri\Tests\States\Factory;
 
 use UniAlteri\States\Factory;
 use UniAlteri\States\Loader\FinderInterface;
-use UniAlteri\Tests\Support\MockFinder;
 
 /**
  * Class IntegratedTest
@@ -42,6 +41,7 @@ class IntegratedTest extends AbstractFactoryTest
 {
     /**
      * Return the Factory Object Interface.
+     *
      * @param FinderInterface $finder
      *
      * @return Factory\FactoryInterface
