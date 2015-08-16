@@ -72,7 +72,6 @@ interface FactoryInterface
      * @return FactoryInterface
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      */
     public function startup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface;
@@ -87,7 +86,6 @@ interface FactoryInterface
      * @return ProxyInterface
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      */
     public function build($arguments = null, \string $stateName = null): ProxyInterface;
 }
