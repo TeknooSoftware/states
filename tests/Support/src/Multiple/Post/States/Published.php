@@ -22,7 +22,7 @@
 
 namespace UniAlteri\Tests\Support\Multiple\Post\States;
 
-use UniAlteri\States\State;
+use UniAlteri\States\State\AbstractState;
 
 /**
  * State Published
@@ -37,7 +37,7 @@ use UniAlteri\States\State;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Published extends States\AbstractState
+class Published extends AbstractState
 {
     /**
      * Return the body of the post.

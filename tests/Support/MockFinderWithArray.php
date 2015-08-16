@@ -21,9 +21,7 @@
  */
 
 namespace UniAlteri\Tests\Support;
-
-use UniAlteri\States\Proxy;
-use UniAlteri\States\State;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Class MockFinderWithArray
@@ -52,7 +50,7 @@ class MockFinderWithArray extends MockFinder
                 array(
                     'MockState1',
                     'MockState2',
-                    Proxy\ProxyInterface::DEFAULT_STATE_NAME,
+                    ProxyInterface::DEFAULT_STATE_NAME,
                     'MockState3',
                 )
             );

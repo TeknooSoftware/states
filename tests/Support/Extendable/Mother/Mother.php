@@ -22,7 +22,7 @@
 
 namespace UniAlteri\Tests\Support\Extendable\Mother;
 
-use UniAlteri\States\Proxy;
+use UniAlteri\States\Proxy\Integrated;
 
 /**
  * Proxy Mother
@@ -37,7 +37,7 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Mother extends Proxy\Integrated
+class Mother extends Integrated
 {
     /**
      * Return the list of available state in this class.

@@ -22,7 +22,7 @@
 
 namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\State;
+use UniAlteri\States\State\AbstractState;
 
 /**
  * Class MockOnlyPublic
@@ -37,7 +37,7 @@ use UniAlteri\States\State;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class MockOnlyPublic extends States\AbstractState
+class MockOnlyPublic extends AbstractState
 {
     /**
      * Standard Method 1.

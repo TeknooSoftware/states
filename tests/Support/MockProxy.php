@@ -23,9 +23,8 @@
 namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\Proxy\Exception;
-use UniAlteri\States\Proxy;
-use UniAlteri\States\DI;
-use UniAlteri\States;
+use UniAlteri\States\Proxy\ProxyInterface;
+use UniAlteri\States\State\StateInterface;
 
 /**
  * Class MockProxy
@@ -39,7 +38,7 @@ use UniAlteri\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class MockProxy implements Proxy\ProxyInterface
+class MockProxy implements ProxyInterface
 {
     /**
      * To test args passed by factory.
@@ -71,9 +70,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Called to clone an Object.
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function __clone()
     {
@@ -85,14 +82,9 @@ class MockProxy implements Proxy\ProxyInterface
      ***********************/
 
     /**
-     * Register dynamically a new state for this object.
-     *
-     * @param string                       $stateName
-     * @param States\States\StateInterface $stateObject
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function registerState(string $stateName, States\States\StateInterface $stateObject): Proxy\ProxyInterface
+    public function registerState(\string $stateName, StateInterface $stateObject): ProxyInterface
     {
         //Simulate real behavior
         $this->states[$stateName] = $stateObject;
@@ -101,13 +93,9 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Remove dynamically a state from this object.
-     *
-     * @param string $stateName
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function unregisterState(string $stateName): Proxy\ProxyInterface
+    public function unregisterState(\string $stateName): ProxyInterface
     {
         //Simulate real behavior
         if (isset($this->states[$stateName])) {
@@ -118,13 +106,9 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Disable all actives states and load the required states.
-     *
-     * @param string $stateName
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function switchState(string $stateName): Proxy\ProxyInterface
+    public function switchState(\string $stateName): ProxyInterface
     {
         //Simulate real behavior
         $this->actives = array($stateName => $stateName);
@@ -133,15 +117,9 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Enable a loaded states.
-     *
-     * @param $stateName
-     *
-     * @return $this
-     *
-     * @throws Exception\StateNotFound if $stateName does not exist
+     * {@inheritdoc}
      */
-    public function enableState(string $stateName): Proxy\ProxyInterface
+    public function enableState(\string $stateName): ProxyInterface
     {
         //Simulate real behavior
         $this->actives[$stateName] = $stateName;
@@ -150,13 +128,9 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Disable an active state (not available for calling, but already loaded).
-     *
-     * @param string $stateName
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function disableState(string $stateName): Proxy\ProxyInterface
+    public function disableState(\string $stateName): ProxyInterface
     {
         //Simulate real behavior
         if (isset($this->actives[$stateName])) {
@@ -167,11 +141,9 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Disable all actives states.
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function disableAllStates(): Proxy\ProxyInterface
+    public function disableAllStates(): ProxyInterface
     {
         //Simulate real behavior
         $this->actives = array();
@@ -180,9 +152,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * List all available states for this object. Include added dynamically states, exclude removed dynamically states.
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function listAvailableStates()
     {
@@ -191,9 +161,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * List all enable states for this object.
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function listEnabledStates()
     {
@@ -202,9 +170,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * To return the list of all states entity available for this object
-     *
-     * @return \ArrayObject|States\States\StateInterface[]
+     * {@inheritdoc}
      */
     public function getStatesList()
     {
@@ -212,15 +178,9 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Check if the current entity is in the required state defined by $stateName.
-     *
-     * @param string $stateName
-     *
-     * @return bool
-     *
-     * @throws Exception\InvalidArgument when $stateName is not a valid string
+     * {@inheritdoc}
      */
-    public function inState(string $stateName): bool
+    public function inState(\string $stateName): bool
     {
         return in_array(strtolower(str_replace('_', '', $stateName)), $this->actives);
     }
@@ -230,46 +190,23 @@ class MockProxy implements Proxy\ProxyInterface
      *******************/
 
     /**
-     * Call a method of the Object.
-     *
-     * @param $name
-     * @param $arguments
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
-    public function __call(string $name, array $arguments)
+    public function __call(\string $name, array $arguments)
     {
         //Not used in tests
     }
 
     /**
-     * Return the description of the method.
-     *
-     * @param string $methodName
-     * @param string $stateName  : Return the description for a specific state of the object, if null, use the current state
-     *
-     * @return \ReflectionMethod
-     *
-     * @throws Exception\StateNotFound is the state required is not available
+     * {@inheritdoc}
      */
-    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
+    public function getMethodDescription(\string $methodName, \string $stateName = null): \ReflectionMethod
     {
         //Not used in tests
     }
 
     /**
-     * To invoke an object as a function.
-     *
-     * @param mixed ...$args
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function __invoke(...$args)
     {
@@ -281,75 +218,41 @@ class MockProxy implements Proxy\ProxyInterface
      *******************/
 
     /**
-     * Get a property of the object.
-     *
-     * @param string $name
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
-    public function __get(string $name)
+    public function __get(\string $name)
     {
         //Not used in tests
     }
 
     /**
-     * Test if a property is set for the object.
-     *
-     * @param string $name
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
-    public function __isset(string $name)
+    public function __isset(\string $name)
     {
         //Not used in tests
     }
 
     /**
-     * Update a property of the object.
-     *
-     * @param string $name
-     * @param string $value
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
-    public function __set(string $name, $value)
+    public function __set(\string $name, $value)
     {
         //Not used in tests
     }
 
     /**
-     * To remove a property of the object.
-     *
-     * @param string $name
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
-    public function __unset(string $name)
+    public function __unset(\string $name)
     {
         //Not used in tests
     }
 
     /**
-     * To transform the object to a string.
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
-    public function __toString(): string
+    public function __toString(): \string
     {
         //Not used in tests
     }
@@ -359,12 +262,7 @@ class MockProxy implements Proxy\ProxyInterface
      ****************/
 
     /**
-     * This method is executed when using the count() function on an object implementing Countable.
-     *
-     * @return int
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function count(): int
     {
@@ -372,15 +270,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Whether or not an offset exists.
-     * This method is executed when using isset() or empty() on states implementing ArrayAccess.
-     *
-     * @param string|int $offset
-     *
-     * @return bool
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function offsetExists($offset)
     {
@@ -388,15 +278,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Returns the value at specified offset.
-     * This method is executed when checking if offset is empty().
-     *
-     * @param string|int $offset
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function offsetGet($offset)
     {
@@ -404,15 +286,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Assigns a value to the specified offset.
-     *
-     * @param string|int $offset
-     * @param mixed      $value
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function offsetSet($offset, $value)
     {
@@ -420,12 +294,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Unset an offset.
-     *
-     * @param string|int $offset
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function offsetUnset($offset)
     {
@@ -437,12 +306,7 @@ class MockProxy implements Proxy\ProxyInterface
      ************/
 
     /**
-     * Returns the current element.
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function current()
     {
@@ -450,12 +314,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Returns the key of the current element.
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function key()
     {
@@ -463,10 +322,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Moves the current position to the next element.
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function next()
     {
@@ -474,10 +330,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Rewinds back to the first element of the Iterator.
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function rewind()
     {
@@ -485,12 +338,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Seeks to a given position in the iterator.
-     *
-     * @param int $position
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function seek($position)
     {
@@ -498,12 +346,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * This method is called after Iterator::rewind() and Iterator::next() to check if the current position is valid.
-     *
-     * @return bool
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function valid()
     {
@@ -511,12 +354,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * Returns an external iterator.
-     *
-     * @return \Traversable
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function getIterator(): \Traversable
     {
@@ -528,12 +366,7 @@ class MockProxy implements Proxy\ProxyInterface
      *****************/
 
     /**
-     * To serialize the object.
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function serialize(): string
     {
@@ -541,12 +374,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * To wake up the object.
-     *
-     * @param string $serialized
-     *
-     * @throws Exception\MethodNotImplemented if any enable state implement the required method
-     * @throws Exception\UnavailableState     if the required state is not available
+     * {@inheritdoc}
      */
     public function unserialize($serialized)
     {
@@ -554,11 +382,7 @@ class MockProxy implements Proxy\ProxyInterface
     }
 
     /**
-     * o return the state identified in param for tests.
-     *
-     * @param $stateName
-     *
-     * @return States\States\StateInterface
+     * {@inheritdoc}
      */
     public function getState($stateName)
     {

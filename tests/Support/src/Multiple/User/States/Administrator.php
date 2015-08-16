@@ -22,7 +22,8 @@
 
 namespace UniAlteri\Tests\Support\Multiple\User\States;
 
-use UniAlteri\States\State;
+use UniAlteri\States\State\AbstractState;
+use UniAlteri\Tests\Support\Multiple\User\User;
 
 /**
  * State Administrator
@@ -37,14 +38,14 @@ use UniAlteri\States\State;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Administrator extends States\AbstractState
+class Administrator extends AbstractState
 {
     /**
      * Transform an user has moderator.
      *
-     * @param \UniAlteri\Tests\Support\Multiple\User $user
+     * @param User $user
      */
-    public function setModerator(\UniAlteri\Tests\Support\Multiple\User $user)
+    public function setModerator(User $user)
     {
         $user->setModerator(true);
     }

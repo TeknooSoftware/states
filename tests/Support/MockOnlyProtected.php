@@ -22,7 +22,7 @@
 
 namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\State;
+use UniAlteri\States\State\AbstractState;
 
 /**
  * Class MockOnlyProtected
@@ -37,7 +37,7 @@ use UniAlteri\States\State;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class MockOnlyProtected extends States\AbstractState
+class MockOnlyProtected extends AbstractState
 {
     protected static function _staticMethod5()
     {

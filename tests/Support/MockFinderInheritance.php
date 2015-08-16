@@ -22,11 +22,10 @@
 
 namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\DI;
 use UniAlteri\States\Loader\Exception;
-use UniAlteri\States\Proxy;
-use UniAlteri\States\Loader;
-use UniAlteri\States\State;
+use UniAlteri\States\Proxy\ProxyInterface;
+use UniAlteri\States\Loader\FinderInterface;
+use UniAlteri\States\State\StateInterface;
 
 /**
  * Class MockFinder
@@ -40,7 +39,7 @@ use UniAlteri\States\State;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class MockFinderInheritance implements Loader\FinderInterface
+class MockFinderInheritance implements FinderInterface
 {
     /**
      * To not return the default state.
@@ -79,9 +78,7 @@ class MockFinderInheritance implements Loader\FinderInterface
     }
 
     /**
-     * List all available state object of the stated class.
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function listStates()
     {
@@ -89,7 +86,7 @@ class MockFinderInheritance implements Loader\FinderInterface
         if (empty(static::$ignoreDefaultState)) {
             return array(
                 'MockState1',
-                Proxy\ProxyInterface::DEFAULT_STATE_NAME,
+                ProxyInterface::DEFAULT_STATE_NAME,
                 'MockState4',
             );
         } else {
@@ -101,44 +98,26 @@ class MockFinderInheritance implements Loader\FinderInterface
     }
 
     /**
-     * Load and build the required state object of the stated class.
-     *
-     * @param string $stateName
-     *
-     * @return States\StateInterface
-     *
-     * @throws Exception\UnReadablePath   if the state file is not readable
-     * @throws Exception\UnavailableState if the required state is not available
-     * @throws Exception\IllegalState     if the state object does not implement the interface
+     * {@inheritdoc}
      */
-    public function buildState(string $stateName, bool $privateMode, string $statedClassName): States\StateInterface
+    public function buildState(\string $stateName, \bool $privateMode, \string $statedClassName): StateInterface
     {
         //Return a new mock state object for tests
         return new MockState($privateMode, $statedClassName);
     }
 
     /**
-     * Load the required state object of the stated class.
-     *
-     * @param string $stateName
-     *
-     * @return \UniAlteri\States\State\StateInterface
+     * {@inheritdoc}
      */
-    public function loadState(string $stateName): string
+    public function loadState(\string $stateName): \string
     {
         return true;
     }
 
     /**
-     * Load a proxy object for the stated class.
-     *
-     * @param array $arguments argument for proxy
-     *
-     * @return Proxy\ProxyInterface
-     *
-     * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
+     * {@inheritdoc}
      */
-    public function loadProxy($arguments = null): string
+    public function loadProxy($arguments = null): \string
     {
         $this->proxyLoaded = true;
 
@@ -157,24 +136,15 @@ class MockFinderInheritance implements Loader\FinderInterface
     }
 
     /**
-     * Load and build a proxy object of the stated class.
-     *
-     * @param array $arguments argument for proxy
-     *
-     * @return \UniAlteri\States\Proxy\ProxyInterface
+     * {@inheritdoc}
      */
-    public function buildProxy($arguments = null): Proxy\ProxyInterface
+    public function buildProxy($arguments = null): ProxyInterface
     {
         return new MockProxy($arguments);
     }
 
     /**
-     * To return the list of parents stated classes of this stated classes, library classes (Integrated proxy and
-     * standard proxy are excluded).
-     *
-     * @return string[]
-     *
-     * @throws Exception\IllegalProxy If the proxy class is not valid
+     * {@inheritdoc}
      */
     public function listParentsClassesNames()
     {
@@ -182,11 +152,9 @@ class MockFinderInheritance implements Loader\FinderInterface
     }
 
     /**
-     * To get the canonical stated class name associated to this state.
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function getStatedClassName(): string
+    public function getStatedClassName(): \string
     {
         return $this->statedClassName;
     }

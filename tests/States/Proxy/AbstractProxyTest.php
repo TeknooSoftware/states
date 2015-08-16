@@ -67,7 +67,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     /**
      * Proxy to test and validate.
      *
-     * @var Proxy\ProxyInterface
+     * @var Proxy\ProxyInterface|Proxy\MagicCallTrait
      */
     protected $proxy;
 
@@ -590,25 +590,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a private method
-        $fail = false;
-        try {
-            testGetMethodDescriptionFromFunctionPrivate();
-        } catch (Exception\MethodNotImplemented $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        $this->assertInstanceOf('\ReflectionMethod', testGetMethodDescriptionFromFunctionPrivate());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a protected method
-        $fail = false;
-        try {
-            testGetMethodDescriptionFromFunctionProtected();
-        } catch (Exception\MethodNotImplemented $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-        $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
+        $this->assertInstanceOf('\ReflectionMethod', testGetMethodDescriptionFromFunctionProtected());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a public method
@@ -632,27 +618,13 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of private methods
-        $fail = false;
-        try {
-            $object = new \testGetMethodDescriptionFromOtherObject();
-            $object->privateMethod();
-        } catch (Exception\MethodNotImplemented $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        $object = new \testGetMethodDescriptionFromOtherObject();
+        $this->assertInstanceOf('\ReflectionMethod', $object->privateMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
-        $fail = false;
-        try {
-            $object = new \testGetMethodDescriptionFromOtherObject();
-            $object->protectedMethod();
-        } catch (Exception\MethodNotImplemented $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-        $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
+        $object = new \testGetMethodDescriptionFromOtherObject();
+        $this->assertInstanceOf('\ReflectionMethod', $object->protectedMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
@@ -684,15 +656,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of private methods
-        $fail = false;
-        try {
-            $object = new $childClassName();
-            $object->privateMethod();
-        } catch (Exception\MethodNotImplemented $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        $object = new $childClassName();
+        $this->assertInstanceOf('\ReflectionMethod', $object->privateMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
@@ -809,25 +774,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of private methods
-        $fail = false;
-        try {
-            \testGetMethodDescriptionFromOtherObject::privateMethodStatic();
-        } catch (Exception\MethodNotImplemented $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        $this->assertInstanceOf('\ReflectionMethod', \testGetMethodDescriptionFromOtherObject::privateMethodStatic());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of protected methods
-        $fail = false;
-        try {
-            \testGetMethodDescriptionFromOtherObject::protectedMethodStatic();
-        } catch (Exception\MethodNotImplemented $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-        $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
+        $this->assertInstanceOf('\ReflectionMethod', \testGetMethodDescriptionFromOtherObject::protectedMethodStatic());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of public methods
@@ -858,14 +809,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of private methods
-        $fail = false;
-        try {
-            $childClassName::privateMethodStatic();
-        } catch (Exception\MethodNotImplemented $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        $this->assertInstanceOf('\ReflectionMethod', $childClassName::privateMethodStatic());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
@@ -933,31 +877,17 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a closure to get a description of a private method
-        $fail = false;
-        try {
-            $closure = function () use ($proxy) {
-                return $proxy->getMethodDescription('privateTest');
-            };
-            $closure();
-        } catch (Exception\MethodNotImplemented $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        $closure = function () use ($proxy) {
+            return $proxy->getMethodDescription('privateTest');
+        };
+        $this->assertInstanceOf('\ReflectionMethod', $closure());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a closure to get a description of a protected method
-        $fail = false;
-        try {
-            $closure = function () use ($proxy) {
-                return $proxy->getMethodDescription('protectedTest');
-            };
-            $closure();
-        } catch (Exception\MethodNotImplemented $e) {
-            $fail = true;
-        } catch (\Exception $e) {
-        }
-        $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
+        $closure = function () use ($proxy) {
+            return $proxy->getMethodDescription('protectedTest');
+        };
+        $this->assertInstanceOf('\ReflectionMethod', $closure());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a closure to get a description of a public method

@@ -22,9 +22,10 @@
 
 namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\Factory;
+use UniAlteri\States\Factory\FactoryInterface;
 use UniAlteri\States\Factory\Exception;
-use UniAlteri\States\Proxy;
+use UniAlteri\States\Factory\StartupFactoryInterface;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Class MockStartupFactory
@@ -38,28 +39,20 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class MockStartupFactory implements Factory\StartupFactoryInterface
+class MockStartupFactory implements StartupFactoryInterface
 {
     /**
      * Proxy to initialize called with forwardStartup
      * Public to allow testCase to check its value to confirm the behavior of the integrated proxy.
      *
-     * @var Proxy\ProxyInterface
+     * @var ProxyInterface
      */
     public static $calledProxyObject = null;
 
     /**
-     * Find the factory to use for the new proxy object to initialize it with its container and states.
-     * This method is called by the constructor of the stated object.
-     *
-     * @param Proxy\ProxyInterface $proxyObject
-     * @param string               $stateName
-     *
-     * @return bool
-     *
-     * @throws Exception\UnavailableFactory when the required factory was not found
+     * {@inheritdoc}
      */
-    public static function forwardStartup(Proxy\ProxyInterface $proxyObject, string $stateName = null): Factory\FactoryInterface
+    public static function forwardStartup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
     {
         self::$calledProxyObject = $proxyObject;
 

@@ -32,118 +32,72 @@ use UniAlteri\States\State\StateInterface;
 class StateNormal implements StateInterface
 {
     /**
-     * To initialize this state
-     * @param bool $privateMode
-     * @param string $statedClassName
+     * {@inheritdoc}
      */
-    public function __construct(bool $privateMode, string $statedClassName)
+    public function __construct(\bool $privateMode, \string $statedClassName)
     {
 
     }
 
     /**
-     * To get the canonical stated class name associated to this state.
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    public function getStatedClassName(): string
+    public function getStatedClassName(): \string
     {
     }
 
     /**
-     * To set the canonical stated class name associated to this state.
-     *
-     * @param string $statedClassName
-     *
-     * @return StateInterface
+     * {@inheritdoc}
      */
-    public function setStatedClassName(string $statedClassName): StateInterface
+    public function setStatedClassName(\string $statedClassName): StateInterface
     {
     }
 
     /**
-     * To know if the mode Private is enabled : private method are only accessible from
-     * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isPrivateMode(): bool
+    public function isPrivateMode(): \bool
     {
     }
 
     /**
-     * To enable or disable the private mode of this state :
-     * If the mode Private is enable, private method are only accessible from
-     * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable.
-     *
-     * @param bool $enable
-     *
-     * @return StateInterface
+     * {@inheritdoc}
      */
-    public function setPrivateMode(bool $enable): StateInterface
+    public function setPrivateMode(\bool $enable): StateInterface
     {
     }
 
     /**
-     * To return an array of string listing all methods available in the state.
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function listMethods()
     {
     }
 
     /**
-     * To test if a method exists for this state in the current visibility scope.
-     *
-     * @param string      $methodName
-     * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null $statedClassOriginName
-     *
-     * @return bool
-     *
-     * @throws Exception\InvalidArgument when the method name is not a string
+     * {@inheritdoc}
      */
     public function testMethod(
-        string $methodName,
-        string $scope = self::VISIBILITY_PUBLIC,
-        string $statedClassOriginName = null
+        \string $methodName,
+        \string $scope = self::VISIBILITY_PUBLIC,
+        \string $statedClassOriginName = null
     ): bool {
     }
 
     /**
-     * To return the description of a method to configure the behavior of the proxy. Return also description of private
-     * methods.
-     *
-     * @param string $methodName
-     *
-     * @return \ReflectionMethod
-     *
-     * @throws Exception\MethodNotImplemented is the method does not exist
-     * @throws Exception\InvalidArgument      when the method name is not a string
+     * {@inheritdoc}
      */
-    public function getMethodDescription(string $methodName): \ReflectionMethod
+    public function getMethodDescription(\string $methodName): \ReflectionMethod
     {
     }
 
     /**
-     * To return a closure of the required method to use in the proxy, according with the current visibility scope.
-     *
-     * @param string               $methodName
-     * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null          $statedClassOriginName
-     *
-     * @return \Closure
-     *
-     * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
-     * @throws Exception\InvalidArgument      when the method name is not a string
+     * {@inheritdoc}
      */
     public function getClosure(
-        string $methodName,
-        string $scope = self::VISIBILITY_PUBLIC,
-        string $statedClassOriginName = null
+        \string $methodName,
+        \string $scope = self::VISIBILITY_PUBLIC,
+        \string $statedClassOriginName = null
     ): \Closure {
     }
 }

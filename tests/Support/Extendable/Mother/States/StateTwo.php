@@ -22,7 +22,7 @@
 
 namespace UniAlteri\Tests\Support\Extendable\Mother\States;
 
-use UniAlteri\States\State;
+use UniAlteri\States\State\AbstractState;
 
 /**
  * State StateTwo
@@ -36,7 +36,7 @@ use UniAlteri\States\State;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateTwo extends States\AbstractState
+class StateTwo extends AbstractState
 {
     /**
      * @return int

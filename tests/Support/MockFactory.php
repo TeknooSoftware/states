@@ -22,11 +22,10 @@
 
 namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\DI;
-use UniAlteri\States\Factory;
+use UniAlteri\States\Factory\FactoryInterface;
 use UniAlteri\States\Factory\Exception;
-use UniAlteri\States\Loader;
-use UniAlteri\States\Proxy;
+use UniAlteri\States\Loader\FinderInterface;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Class MockFactory
@@ -40,7 +39,7 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class MockFactory implements Factory\FactoryInterface
+class MockFactory implements FactoryInterface
 {
     /**
      * To list initialized factory by loader.
@@ -50,7 +49,7 @@ class MockFactory implements Factory\FactoryInterface
     protected static $initializedFactoryNameArray = array();
 
     /**
-     * @var Proxy\ProxyInterface
+     * @var ProxyInterface
      */
     protected $startupProxy;
 
@@ -65,33 +64,24 @@ class MockFactory implements Factory\FactoryInterface
     protected $path = null;
 
     /**
-     * Initialize factory
-     * @param string $statedClassName
-     * @param Loader\FinderInterface $finder
-     * @param \ArrayAccess $factoryRepository
+     * {@inheritdoc}
      */
-    public function __construct(string $statedClassName, Loader\FinderInterface $finder, \ArrayAccess $factoryRepository)
+    public function __construct(\string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository)
     {
         $this->initialize($statedClassName);
     }
 
     /**
-     * Return the loader of this stated class from its DI Container.
-     *
-     * @return Loader\FinderInterface
-     *
-     * @throws Exception\UnavailableLoader if any finder are available for this stated class
+     * {@inheritdoc}
      */
-    public function getFinder(): Loader\FinderInterface
+    public function getFinder(): FinderInterface
     {
         //Build a new mock finder
         return new MockFinder($this->statedClassName, $this->path);
     }
 
     /**
-     * Return the path of the stated class.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getPath(): string
     {
@@ -99,27 +89,17 @@ class MockFactory implements Factory\FactoryInterface
     }
 
     /**
-     * Return the stated class name used with this factory.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getStatedClassName(): string
+    public function getStatedClassName(): \string
     {
         return $this->statedClassName;
     }
 
     /**
-     * Method called by the Loader to initialize the stated class :
-     *  Extends the proxy used by this stated class a child called like the stated class.
-     *  => To allow developer to build new object with the operator new
-     *  => To allow developer to use the operator "instanceof".
-     *
-     * @param string $statedClassName the name of the stated class
-     * @param string $path            of the stated class
-     *
-     * @return $this
+     * {@inheritdoc}
      */
-    protected function initialize(string $statedClassName): Factory\FactoryInterface
+    protected function initialize(string $statedClassName): FactoryInterface
     {
         $this->statedClassName = $statedClassName;
         self::$initializedFactoryNameArray[] = $statedClassName;
@@ -149,33 +129,17 @@ class MockFactory implements Factory\FactoryInterface
     }
 
     /**
-     * Build a new instance of an object.
-     *
-     * @param mixed  $arguments
-     * @param string $stateName to build an object with a specific class
-     *
-     * @return Proxy\ProxyInterface
-     *
-     * @throws Exception\StateNotFound     if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * {@inheritdoc}
      */
-    public function build($arguments = null, string $stateName = null): Proxy\ProxyInterface
+    public function build($arguments = null, \string $stateName = null): ProxyInterface
     {
         return new MockProxy(array());
     }
 
     /**
-     * Initialize a proxy object with its container and states.
-     *
-     * @param Proxy\ProxyInterface $proxyObject
-     * @param string               $stateName
-     *
-     * @return $this
-     *
-     * @throws Exception\StateNotFound     if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader if any loader are available for this stated class
+     * {@inheritdoc}
      */
-    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): Factory\FactoryInterface
+    public function startup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface
     {
         $this->startupProxy = $proxyObject;
 
@@ -186,9 +150,9 @@ class MockFactory implements Factory\FactoryInterface
      * Get the proxy called to startup it
      * Method added for tests to check startup behavior.
      *
-     * @return Proxy\ProxyInterface
+     * @return ProxyInterface
      */
-    public function getStartupProxy(): Proxy\ProxyInterface
+    public function getStartupProxy(): ProxyInterface
     {
         return $this->startupProxy;
     }

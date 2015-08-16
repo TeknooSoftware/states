@@ -22,7 +22,6 @@
 
 namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\DI;
 use UniAlteri\States\Proxy;
 use UniAlteri\States\State;
 use UniAlteri\States\State\Exception;
@@ -40,7 +39,7 @@ use UniAlteri\States\State\StateInterface;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class MockState implements States\StateInterface
+class MockState implements StateInterface
 {
     /**
      * To allow always tested method or not.
@@ -105,7 +104,7 @@ class MockState implements States\StateInterface
      * @param string $statedClassName
      * @param \Closure $closure
      */
-    public function __construct(bool $privateMode, string $statedClassName, $closure = null)
+    public function __construct(\bool $privateMode, \string $statedClassName, $closure = null)
     {
         $this->setPrivateMode($privateMode)
             ->setStatedClassName($statedClassName);
@@ -150,9 +149,7 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * Return an array of string listing all methods available in the state.
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
     public function listMethods()
     {
@@ -173,36 +170,28 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * Test if a method exist for this state.
-     *
-     * @param string      $methodName
-     * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null $statedClassOriginName
-     *
-     * @return bool
-     *
-     * @throws Exception\InvalidArgument when the method name is not a string
+     * {@inheritdoc}
      */
     public function testMethod(
-        string $methodName,
-        string $scope = States\StateInterface::VISIBILITY_PUBLIC,
-        string $statedClassOriginName = null
-    ): bool {
+        \string $methodName,
+        \string $scope = StateInterface::VISIBILITY_PUBLIC,
+        \string $statedClassOriginName = null
+    ): \bool {
         //Simulate real behavior from the name of the method,
         //if the method name contains private, its a private method
         //if the method name contains protected, its a protected method
         //else its a public method
         switch ($scope) {
-            case States\StateInterface::VISIBILITY_PRIVATE:
+            case StateInterface::VISIBILITY_PRIVATE:
                 //Private, can access all
                 break;
-            case States\StateInterface::VISIBILITY_PROTECTED:
+            case StateInterface::VISIBILITY_PROTECTED:
                 //Can not access to private methods
                 if (false !== stripos($methodName, 'private')) {
                     return false;
                 }
                 break;
-            case States\StateInterface::VISIBILITY_PUBLIC:
+            case StateInterface::VISIBILITY_PUBLIC:
                 //Can not access to protected and private method.
                 if (false !== stripos($methodName, 'private')) {
                     return false;
@@ -222,15 +211,9 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * Return the description of a method to configure the behavior of the proxy.
-     *
-     * @param string $methodName
-     *
-     * @return \ReflectionMethod
-     *
-     * @throws Exception\MethodNotImplemented is the method does not exist
+     * {@inheritdoc}
      */
-    public function getMethodDescription(string $methodName): \ReflectionMethod
+    public function getMethodDescription(\string $methodName): \ReflectionMethod
     {
         if (false === $this->methodAllowed || true === $this->simulateMethodDescriptionFailure) {
             throw new Exception\MethodNotImplemented();
@@ -242,21 +225,12 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * Return a closure of the required method to use in the proxy.
-     *
-     * @param string               $methodName
-     * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null          $statedClassOriginName
-     *
-     * @return \Closure
-     *
-     * @throws Exception\MethodNotImplemented is the method does not exist
-     * @throws Exception\InvalidArgument      when the method name is not a string
+     * {@inheritdoc}
      */
     public function getClosure(
-        string $methodName,
-        string $scope = States\StateInterface::VISIBILITY_PUBLIC,
-        string $statedClassOriginName = null
+        \string $methodName,
+        \string $scope = StateInterface::VISIBILITY_PUBLIC,
+        \string $statedClassOriginName = null
     ): \Closure {
         if (false === $this->methodAllowed) {
             throw new Exception\MethodNotImplemented();
@@ -267,16 +241,16 @@ class MockState implements States\StateInterface
         //if the method name contains protected, its a protected method
         //else its a public method
         switch ($scope) {
-            case States\StateInterface::VISIBILITY_PRIVATE:
+            case StateInterface::VISIBILITY_PRIVATE:
                 //Private, can access all
                 break;
-            case States\StateInterface::VISIBILITY_PROTECTED:
+            case StateInterface::VISIBILITY_PROTECTED:
                 //Can not access to private methods
                 if (false !== stripos($methodName, 'private')) {
                     throw new Exception\MethodNotImplemented();
                 }
                 break;
-            case States\StateInterface::VISIBILITY_PUBLIC:
+            case StateInterface::VISIBILITY_PUBLIC:
                 //Can not access to protected and private method.
                 if (false !== stripos($methodName, 'private')) {
                     throw new Exception\MethodNotImplemented();
@@ -367,23 +341,17 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * To get the canonical stated class name associated to this state.
-     *
-     * @return string
+     * {@inheritdoc}
      */
-    public function getStatedClassName(): string
+    public function getStatedClassName(): \string
     {
         return $this->statedClassName;
     }
 
     /**
-     * To set the canonical stated class name associated to this state.
-     *
-     * @param string $statedClassName
-     *
-     * @return StateInterface
+     * {@inheritdoc}
      */
-    public function setStatedClassName(string $statedClassName): StateInterface
+    public function setStatedClassName(\string $statedClassName): StateInterface
     {
         $this->statedClassName = $statedClassName;
 
@@ -391,28 +359,17 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * To know if the mode Private is enabled : private method are only accessible from
-     * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
-    public function isPrivateMode(): bool
+    public function isPrivateMode(): \bool
     {
         return $this->privateModeEnable;
     }
 
     /**
-     * To enable or disable the private mode of this state :
-     * If the mode Private is enable, private method are only accessible from
-     * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable.
-     *
-     * @param bool $enable
-     *
-     * @return StateInterface
+     * {@inheritdoc}
      */
-    public function setPrivateMode(bool $enable): StateInterface
+    public function setPrivateMode(\bool $enable): StateInterface
     {
         $this->privateModeEnable = !empty($enable);
 
@@ -420,11 +377,7 @@ class MockState implements States\StateInterface
     }
 
     /**
-     * Method to use in test to perform internal recall via a method in state.
-     *
-     * @param string $methodName
-     *
-     * @return mixed
+     * {@inheritdoc}
      */
     public function recallMethod($methodName)
     {

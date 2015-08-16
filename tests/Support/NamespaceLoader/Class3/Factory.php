@@ -48,14 +48,7 @@ use UniAlteri\Tests\Support;
 class Factory extends Support\MockFactory
 {
     /**
-     * Throw an exception to test if the loader return false in loading class.
-     *
-     * @param string $statedClassName
-     * @param string $path
-     *
-     * @return bool|void
-     *
-     * @throws \Exception
+     * {@inheritdoc}
      */
     protected function initialize(string $statedClassName): FactoryInterface
     {

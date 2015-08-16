@@ -24,74 +24,47 @@
 
 namespace Acme\GoodFactory;
 
-use UniAlteri\States\DI;
 use UniAlteri\States\Factory\Exception;
 use UniAlteri\States\Factory\FactoryInterface;
-use UniAlteri\States\Loader;
-use UniAlteri\States\Proxy;
+use UniAlteri\States\Loader\FinderInterface;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 class Factory implements FactoryInterface
 {
     /**
-     * Initialize factory
-     * @param string $statedClassName
-     * @param Loader\FinderInterface $finder
-     * @param \ArrayAccess $factoryRepository
+     * {@inheritdoc}
      */
-    public function __construct(string $statedClassName, Loader\FinderInterface $finder, \ArrayAccess $factoryRepository)
+    public function __construct(\string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository)
     {
 
     }
 
     /**
-     * To return the loader of this stated class from its DI Container.
-     *
-     * @return Loader\FinderInterface
-     *
-     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
+     * {@inheritdoc}
      */
-    public function getFinder(): Loader\FinderInterface
+    public function getFinder(): FinderInterface
     {
     }
 
     /**
-     * To return the stated class name used with this factory.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getStatedClassName(): string
     {
     }
 
     /**
-     * To initialize a proxy object with its container and states. States are fetched by the finder of this stated class.
-     *
-     * @param Proxy\ProxyInterface $proxyObject
-     * @param string               $stateName
-     *
-     * @return $this
-     *
-     * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
-     * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
+     * {@inheritdoc}
      */
-    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
+    public function startup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface
     {
         return $this;
     }
 
     /**
-     * Build a new instance of an object.
-     *
-     * @param mixed  $arguments
-     * @param string $stateName to build an object with a specific class
-     *
-     * @return Proxy\ProxyInterface
-     *
-     * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
-     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
+     * {@inheritdoc}
      */
-    public function build($arguments = null, string $stateName = null): Proxy\ProxyInterface
+    public function build($arguments = null, \string $stateName = null): ProxyInterface
     {
     }
 }
