@@ -1,6 +1,6 @@
 #Uni Alteri - States library - Change Log
 
-##[2.0.0-beta9] - 2015-07-27 - Available on the branch "next"
+##[2.0.0-beta9] - 2015-08-16 - Available on the branch "next"
 ###Removed
 - DI/Container : Remove useless DI Container
 
