@@ -24,7 +24,6 @@ namespace UniAlteri\Tests\States\Loader;
 
 use UniAlteri\States\Loader;
 use UniAlteri\States\Factory;
-use UniAlteri\States\State;
 use UniAlteri\Tests\Support;
 
 /**

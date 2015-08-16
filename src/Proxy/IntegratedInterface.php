@@ -25,7 +25,7 @@ namespace UniAlteri\States\Proxy;
 /**
  * Interface IntegratedInterface
  * Variant of ProxyInterface to define proxies classes in stated classes, fully integrated in PHP :
- * Developers can use the operator "new" to instantiate a stated class, unlike with the ProxyInterface proxy alone
+ * Developers can use the operator "new" to instantiate a stated class, unlike with the ProxyInterface proxy alone.
  *
  * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
  * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.

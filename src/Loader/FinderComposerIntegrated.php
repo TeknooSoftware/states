@@ -26,7 +26,7 @@ namespace UniAlteri\States\Loader;
  * Class FinderComposerIntegrated
  * Implementation of the finder dedicated for Integrated factory and proxies. It is used with this library
  * to find from each stated class all states and the proxy. It needs an instance of the Composer Loader
- * to find php classes and load them
+ * to find php classes and load them.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *

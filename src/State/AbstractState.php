@@ -24,7 +24,7 @@ namespace UniAlteri\States\State;
 
 /**
  * Class AbstractState
- * Standard  implementation of the state interface, representing states entities in stated class
+ * Standard  implementation of the state interface, representing states entities in stated class.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *

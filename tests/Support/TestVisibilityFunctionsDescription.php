@@ -35,6 +35,7 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPrivate')) {
     function testGetMethodDescriptionFromFunctionPrivate()
     {
         global $proxy;
+
         return $proxy->getMethodDescription('privateTest');
     }
 }
@@ -55,6 +56,7 @@ if (!function_exists('testGetMethodDescriptionFromFunctionProtected')) {
     function testGetMethodDescriptionFromFunctionProtected()
     {
         global $proxy;
+
         return $proxy->getMethodDescription('protectedTest');
     }
 }

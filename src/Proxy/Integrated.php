@@ -26,7 +26,7 @@ namespace UniAlteri\States\Proxy;
  * Class Standard
  * Variant of default Proxy class to use in stated classes, fully integrated in PHP :
  * It allows developer to instantiate a stated class with the operator "new" like all other normal php classes,
- * unlike with the standard proxy
+ * unlike with the standard proxy.
  *
  * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
  * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.

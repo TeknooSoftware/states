@@ -21,6 +21,7 @@
  */
 
 namespace UniAlteri\Tests\Support;
+
 use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
