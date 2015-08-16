@@ -26,8 +26,8 @@ namespace Acme\GoodState\States;
 
 use UniAlteri\States\DI;
 use UniAlteri\States\Proxy;
-use UniAlteri\States\States\Exception;
-use UniAlteri\States\States\StateInterface;
+use UniAlteri\States\State\Exception;
+use UniAlteri\States\State\StateInterface;
 
 class StateNormal implements StateInterface
 {

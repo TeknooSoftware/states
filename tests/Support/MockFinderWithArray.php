@@ -23,7 +23,7 @@
 namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\Proxy;
-use UniAlteri\States\States;
+use UniAlteri\States\State;
 
 /**
  * Class MockFinderWithArray

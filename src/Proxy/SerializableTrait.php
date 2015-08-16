@@ -24,7 +24,7 @@ namespace UniAlteri\States\Proxy;
 
 /**
  * Trait SerializableTrait
- * Trait to use the interface \Serializable with a stated classes
+ * Trait to use the interface \Serializable (http://php.net/manual/en/class.serializable.php) with stated classes
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -33,6 +33,7 @@ namespace UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @method mixed findMethodToCall($name, $args)
  */
 trait SerializableTrait
 {
@@ -47,8 +48,10 @@ trait SerializableTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      *
      * @return string
+     *
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function serialize(): string
+    public function serialize(): \string
     {
         $args = [];
 

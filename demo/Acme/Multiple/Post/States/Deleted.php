@@ -22,7 +22,7 @@
 
 namespace demo\Acme\Multiple\Post\States;
 
-use UniAlteri\States\States;
+use UniAlteri\States\State\AbstractState;
 
 /**
  * State Deleted
@@ -36,7 +36,7 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Deleted extends States\AbstractState
+class Deleted extends AbstractState
 {
     /**
      * Return the body of the post. Return always Message deleted.

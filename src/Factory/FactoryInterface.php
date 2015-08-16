@@ -22,13 +22,12 @@
 
 namespace UniAlteri\States\Factory;
 
-use UniAlteri\States\Proxy;
-use UniAlteri\States\DI;
-use UniAlteri\States\Loader;
+use UniAlteri\States\Proxy\ProxyInterface;
+use UniAlteri\States\Loader\FinderInterface;
 
 /**
  * Interface FactoryInterface
- * Interface to define "stated object" factory to use with this library to build a new instance
+ * Interface to define stated class factory to use with this library to build a new instance
  * of a stated class.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
@@ -44,52 +43,51 @@ interface FactoryInterface
     /**
      * Initialize factory
      * @param string $statedClassName
-     * @param Loader\FinderInterface $finder
+     * @param FinderInterface $finder
      * @param \ArrayAccess $factoryRepository
      */
-    public function __construct(string $statedClassName, Loader\FinderInterface $finder, \ArrayAccess $factoryRepository);
+    public function __construct(\string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository);
 
     /**
-     * To return the loader of this stated class from its DI Container.
+     * To return the loader of the current stated class
      * @api
      *
-     * @return Loader\FinderInterface
-     *
-     * @throws Exception\UnavailableLoader      if any finder are available for this stated class
+     * @return FinderInterface
      */
-    public function getFinder(): Loader\FinderInterface;
+    public function getFinder(): FinderInterface;
 
     /**
-     * To return the stated class name used with this factory.
+     * To return the stated class name used with the factory.
      * @api
      * @return string
      */
-    public function getStatedClassName(): string;
+    public function getStatedClassName(): \string;
 
     /**
-     * To initialize a proxy object with its container and states. States are fetched by the finder of this stated class.
+     * To initialize a proxy object with its states. States are fetched by the finder of this stated class.
      *
-     * @param Proxy\ProxyInterface $proxyObject
+     * @param ProxyInterface $proxyObject
      * @param string               $stateName
      *
-     * @return $this
+     * @return FactoryInterface
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      */
-    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): FactoryInterface;
+    public function startup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface;
 
     /**
-     * Build a new instance of an object.
+     * Build a new instance of a stated class.
+     *
      * @api
      * @param mixed  $arguments
      * @param string $stateName to build an object with a specific class
      *
-     * @return Proxy\ProxyInterface
+     * @return ProxyInterface
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      */
-    public function build($arguments = null, string $stateName = null): Proxy\ProxyInterface;
+    public function build($arguments = null, \string $stateName = null): ProxyInterface;
 }

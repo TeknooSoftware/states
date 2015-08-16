@@ -22,7 +22,7 @@
 
 namespace UniAlteri\Tests\Support\Multiple\User\States;
 
-use UniAlteri\States\States;
+use UniAlteri\States\State;
 
 /**
  * State Administrator

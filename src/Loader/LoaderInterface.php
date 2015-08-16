@@ -22,12 +22,11 @@
 
 namespace UniAlteri\States\Loader;
 
-use UniAlteri\States\DI;
-use UniAlteri\States\Factory;
+use UniAlteri\States\Factory\FactoryInterface;
 
 /**
  * Interface LoaderInterface
- * Interface to define a "stated class autoloader" to allow php to load automatically stated class.
+ * It is used to allow php to load automatically stated classes without a specific behavior from the developer.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -72,14 +71,16 @@ interface LoaderInterface
      * @param string $namespace
      * @param string $path
      *
-     * @return $this
+     * @return LoaderInterface
      */
-    public function registerNamespace(string $namespace, string $path): LoaderInterface;
+    public function registerNamespace(\string $namespace, \string $path): LoaderInterface;
 
     /**
      * Method called to load a class by __autoload of PHP Engine.
+     * The class name can be the canonical stated class name or the canonical proxy class name of the stated class.
+     *
      * @api
-     * @param string $className class name, support namespace prefixes
+     * @param string $className canonical class name
      *
      * @return bool
      *
@@ -87,19 +88,24 @@ interface LoaderInterface
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      * @throws \Exception
      */
-    public function loadClass(string $className): bool;
+    public function loadClass(\string $className): \bool;
 
     /**
      * Build the factory and initialize the loading stated class.
+     * A new finder is built from the finder factory and must be injected in the factory with other stated class options
      *
      * @param string $factoryClassName
      * @param string $statedClassName
      * @param string $path
      *
-     * @return Factory\FactoryInterface
+     * @return FactoryInterface
      *
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      */
-    public function buildFactory(string $factoryClassName, string $statedClassName, string $path): Factory\FactoryInterface;
+    public function buildFactory(
+        \string $factoryClassName,
+        \string $statedClassName,
+        \string $path
+    ): FactoryInterface;
 }

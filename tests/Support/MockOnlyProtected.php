@@ -22,7 +22,7 @@
 
 namespace UniAlteri\Tests\Support;
 
-use UniAlteri\States\States;
+use UniAlteri\States\State;
 
 /**
  * Class MockOnlyProtected

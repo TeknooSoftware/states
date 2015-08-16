@@ -38,14 +38,15 @@ namespace UniAlteri\States\Proxy;
 trait IntegratedTrait
 {
     /**
-     * Method called by constructor to initialize this object from the stated class's factory.
+     * Method called by constructor of the integrated proxy to initialize it with the stated class factory,
+     * forwarded by the startup factory.
      *
      * @api
      *
      * @throws Exception\IllegalFactory
      * @throws Exception\UnavailableFactory
      */
-    protected function initializeObjectWithFactory()
+    public function initializeObjectWithFactory()
     {
         //Check if the startup class exists
         if (!class_exists(static::$startupFactoryClassName, true)) {

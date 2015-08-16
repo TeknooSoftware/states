@@ -23,12 +23,12 @@
 namespace UniAlteri\Tests\States\States;
 
 use UniAlteri\States\Proxy;
-use UniAlteri\States\States;
+use UniAlteri\States\State;
 use UniAlteri\Tests\Support;
 
 /**
  * Class AbstractStatesTest
- * Set of tests to test the excepted behaviors of all implementations of \UniAlteri\States\States\StateInterface *.
+ * Set of tests to test the excepted behaviors of all implementations of \UniAlteri\States\State\StateInterface *.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *

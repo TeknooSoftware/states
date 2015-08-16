@@ -27,8 +27,8 @@ use UniAlteri\Tests\Support;
 
 /**
  * Class StateTest
- * Implementation of AbstractStatesTest to test the trait \UniAlteri\States\States\StateTrait and
- * the abstract class \UniAlteri\States\States\AbstractState.
+ * Implementation of AbstractStatesTest to test the trait \UniAlteri\States\State\StateTrait and
+ * the abstract class \UniAlteri\States\State\AbstractState.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *

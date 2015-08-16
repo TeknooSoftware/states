@@ -16,7 +16,7 @@ This library allows you to write more readable code : You can segment your logic
 A stated class is written following these instructions :
 
 *   a folder called `States` containing all states, at least the state called `StateDefault`.
-*   one state by file, each state class must implement the interface `\UniAlteri\States\States\StateInterface`.
+*   one state by file, each state class must implement the interface `\UniAlteri\States\State\StateInterface`.
 *   one class by states, into separated file.
 *   the factory, defined in file Factory.php in the root folder of the stated class.
 *   the factory must implement the interface `\UniAlteri\States\Factory\FactoryInterface`
@@ -77,9 +77,9 @@ With the default proxy, all stated class cannot be instantiated with the operato
 A state is a logic representation in your business class to segment your code based on the behavior and states of your objects.
 
 All your states must be stored into the folder `States` of your each stated class folder. They must be only one state by file.
-The name of the file is the name of the state. Each state must implement the interface `\UniAlteri\States\States\StateInterface`.
-A default implementation of this library is available with the trait `\UniAlteri\States\States\StateTraits`. Your state can use
-directly this trait or inherit the abstract class `\UniAlteri\States\States\AbstractState`.
+The name of the file is the name of the state. Each state must implement the interface `\UniAlteri\States\State\StateInterface`.
+A default implementation of this library is available with the trait `\UniAlteri\States\State\StateTraits`. Your state can use
+directly this trait or inherit the abstract class `\UniAlteri\States\State\AbstractState`.
 
 In your state, you can use the keyword `$this` to refer to your stated object, like with a standard PHP object, even if the
 method called is available in another state. States' methods are directly used in the proxy, the state class has not
@@ -160,8 +160,8 @@ To help you, your factory class can extend the embedded factories `\UniAlteri\St
 
 ###Create states and the default state
 The states must be declared in separate files. A state is represented by PHP class and must implement the interface
-`\UniAlteri\States\States\StateInterface`. To help you, you can use the trait `\UniAlteri\States\States\StateTrait` or
-directly extend the class `\UniAlteri\States\States\AbstractState`.
+`\UniAlteri\States\State\StateInterface`. To help you, you can use the trait `\UniAlteri\States\State\StateTrait` or
+directly extend the class `\UniAlteri\States\State\AbstractState`.
 
 Each stated class must have at least one state and this state must be called `StateDefault`. It is the default state enabled
 in the constructor of each stated object.

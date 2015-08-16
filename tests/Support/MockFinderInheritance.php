@@ -26,7 +26,7 @@ use UniAlteri\States\DI;
 use UniAlteri\States\Loader\Exception;
 use UniAlteri\States\Proxy;
 use UniAlteri\States\Loader;
-use UniAlteri\States\States;
+use UniAlteri\States\State;
 
 /**
  * Class MockFinder
@@ -122,7 +122,7 @@ class MockFinderInheritance implements Loader\FinderInterface
      *
      * @param string $stateName
      *
-     * @return \UniAlteri\States\States\StateInterface
+     * @return \UniAlteri\States\State\StateInterface
      */
     public function loadState(string $stateName): string
     {

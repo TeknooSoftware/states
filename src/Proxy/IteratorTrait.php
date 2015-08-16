@@ -24,7 +24,7 @@ namespace UniAlteri\States\Proxy;
 
 /**
  * Trait IteratorTrait
- * Trait to use the interface \Iterator with a stated classes
+ * Trait to use the interface \Iterator (http://php.net/manual/en/class.iterator.php) with stated classes
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -33,6 +33,7 @@ namespace UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @method mixed findMethodToCall($name, $args)
  */
 trait IteratorTrait
 {

@@ -68,7 +68,7 @@ class State extends AbstractParser
     public function isValidState($stateName)
     {
         return $this->loadFile(FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php')
-            ->implementsInterface('UniAlteri\States\States\StateInterface');
+            ->implementsInterface('UniAlteri\States\State\StateInterface');
     }
 
     /**
@@ -83,14 +83,14 @@ class State extends AbstractParser
     public function isStandardState($stateName)
     {
         return $this->loadFile(FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php')
-            ->isSubclassOf('UniAlteri\States\States\AbstractState');
+            ->isSubclassOf('UniAlteri\States\State\AbstractState');
     }
 
     /**
      * Test if the state use of the default implementation of this library States provided by the trait.
      *
      * @param string $stateName to test
-     *                          \UniAlteri\States\States\TraitStates
+     *                          \UniAlteri\States\State\TraitStates
      *
      * @return bool
      *
@@ -99,7 +99,7 @@ class State extends AbstractParser
     public function useTraitState($stateName)
     {
         return in_array(
-            'UniAlteri\States\States\StateTrait',
+            'UniAlteri\States\State\StateTrait',
             $this->loadFile(FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php')->getTraitNames()
         );
     }

@@ -24,8 +24,15 @@ namespace UniAlteri\States\Proxy;
 
 /**
  * Interface IntegratedInterface
- * Variant of ProxyInterface to develop Integrated proxy to allow developer to create an instance a stated class
- * like another class with the operator new.
+ * Variant of ProxyInterface to define proxies classes in stated classes, fully integrated in PHP :
+ * Developers can use the operator "new" to instantiate a stated class, unlike with the ProxyInterface proxy alone
+ *
+ * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
+ * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
+ * $this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy instance.
+ *
+ * By default, this library creates an alias with the canonical proxy class name and the stated class name
+ * to simulate a real class with the stated class name.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -37,4 +44,14 @@ namespace UniAlteri\States\Proxy;
  */
 interface IntegratedInterface extends ProxyInterface
 {
+    /**
+     * Method called by constructor of the integrated proxy to initialize it with the stated class factory,
+     * forwarded by the startup factory.
+     *
+     * @api
+     *
+     * @throws Exception\IllegalFactory
+     * @throws Exception\UnavailableFactory
+     */
+    public function initializeObjectWithFactory();
 }

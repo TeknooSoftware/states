@@ -22,16 +22,15 @@
 
 namespace UniAlteri\States\Factory;
 
-use UniAlteri\States\DI;
-use UniAlteri\States\Loader;
-use UniAlteri\States\Proxy;
+use UniAlteri\States\Loader\FinderInterface;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Trait FactoryTrait
- * Standard implementation of the "stated object" factory to use with this library to build a new instance
- * of a stated class.
+ * Standard implementation of the stated object factory to use with this library to build a new instance
+ * of stated classes.
  *
- * It is a trait to allow developer to write theirs owns factory, extendable from any class.
+ * A trait implementation has been chosen to allow developer to write theirs owns factory, extendable from any class.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -53,7 +52,7 @@ trait FactoryTrait
     /**
      * Finder used by this factory to load states and proxy for this stated class.
      *
-     * @var Loader\FinderInterface
+     * @var FinderInterface
      */
     private $finder;
 
@@ -72,7 +71,7 @@ trait FactoryTrait
     private $path;
 
     /**
-     * To list states by stated classes (this class and its parents).
+     * To list states available in this stated classes (this class and its parents).
      *
      * @var \ArrayObject
      */
@@ -81,10 +80,10 @@ trait FactoryTrait
     /**
      * Initialize factory
      * @param string $statedClassName
-     * @param Loader\FinderInterface $finder
+     * @param FinderInterface $finder
      * @param \ArrayAccess $factoryRepository
      */
-    public function __construct(string $statedClassName, Loader\FinderInterface $finder, \ArrayAccess $factoryRepository)
+    public function __construct(\string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository)
     {
         $this->finder = $finder;
         $this->factoryRepository = $factoryRepository;
@@ -92,15 +91,13 @@ trait FactoryTrait
     }
 
     /**
-     * It registers the class name and its path, retrieves the DI Container,
-     * register the factory in the DI Container, it retrieves the finder object and load the proxy
-     * from the finder.
-     * @api
+     * It registers the class name in the factory, it retrieves the finder object and load the proxy from the finder.
+     *
      * @param string $statedClassName the name of the stated class
      *
-     * @return $this
+     * @return FactoryInterface
      */
-    protected function initialize(string $statedClassName): FactoryInterface
+    protected function initialize(\string $statedClassName): FactoryInterface
     {
         //Initialize this factory
         $this->statedClassName = $statedClassName;
@@ -116,22 +113,22 @@ trait FactoryTrait
     }
 
     /**
-     * To return the loader of this stated class from its DI Container.
+     * To return the loader of the current stated class
      * @api
      *
-     * @return Loader\FinderInterface
+     * @return FinderInterface
      */
-    public function getFinder(): Loader\FinderInterface
+    public function getFinder(): FinderInterface
     {
         return $this->finder;
     }
 
     /**
-     * To return the stated class name used with this factory.
+     * To return the stated class name used with the factory.
      * @api
      * @return string
      */
-    public function getStatedClassName(): string
+    public function getStatedClassName(): \string
     {
         return $this->statedClassName;
     }
@@ -139,7 +136,7 @@ trait FactoryTrait
     /**
      * To register this factory in the factory repository to be able to retrieve it from another children factories.
      *
-     * @return $this
+     * @return FactoryInterface
      */
     private function registerFactoryInRepository(): FactoryInterface
     {
@@ -159,7 +156,7 @@ trait FactoryTrait
      *
      * @throws Exception\UnavailableFactory when the required factory is not available
      */
-    private function getFactoryFromStatedClassName(string $className): FactoryInterface
+    private function getFactoryFromStatedClassName(\string $className): FactoryInterface
     {
         if (isset($this->factoryRepository[$className])) {
             return $this->factoryRepository[$className];
@@ -171,11 +168,12 @@ trait FactoryTrait
     /**
      * To return the list of available states (directly defined states and inherited states) for this class.
      *
-     * @return string[]|Loader\FinderInterface[]
+     * @return string[]|FinderInterface[]
      */
     private function listStatesByClasses()
     {
         if (!$this->statesByClassesList instanceof \ArrayAccess) {
+            //Compute the list of states at first call
             $statesByClassesList = new \ArrayObject();
 
             //Get all states directly available for this class
@@ -205,20 +203,20 @@ trait FactoryTrait
     }
 
     /**
-     * To initialize a proxy object with its container and states. States are fetched by the finder of this stated class.
+     * To initialize a proxy object with its states. States are fetched by the finder of this stated class.
      *
-     * @param Proxy\ProxyInterface $proxyObject
+     * @param ProxyInterface $proxyObject
      * @param string               $stateName
      *
-     * @return $this
+     * @return FactoryInterface
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      */
-    public function startup(Proxy\ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
+    public function startup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface
     {
-        if (!$proxyObject instanceof Proxy\ProxyInterface) {
+        if (!$proxyObject instanceof ProxyInterface) {
             throw new Exception\IllegalProxy('Error, the Proxy does not implements the Proxy Interface');
         }
 
@@ -237,38 +235,43 @@ trait FactoryTrait
 
         //Load each state into proxy
         foreach ($statesList as $loadingStateName => $finderLoader) {
+            //Create new state object by the finder
             $stateObject = $finderLoader->buildState(
                 $loadingStateName,
-                ($finderLoader !== $mainFinder),
+                ($finderLoader !== $mainFinder), //If the finder linked to this state is not this factory's finder
+                                                 // = finder come from another factory
+                                                 // = state must be used in private mode
                 $finderLoader->getStatedClassName()
             );
 
+            //Add the state in the proxy
             $proxyObject->registerState($loadingStateName, $stateObject);
         }
 
         //Switch to required state
         if (null !== $stateName) {
             $proxyObject->switchState($stateName);
-        } elseif (isset($statesList[Proxy\ProxyInterface::DEFAULT_STATE_NAME])) {
-            //No requiried stated name, check if the default state is available and load it
-            $proxyObject->switchState(Proxy\ProxyInterface::DEFAULT_STATE_NAME);
+        } elseif (isset($statesList[ProxyInterface::DEFAULT_STATE_NAME])) {
+            //No required stated name, check if the default state is available and load it
+            $proxyObject->switchState(ProxyInterface::DEFAULT_STATE_NAME);
         }
 
         return $this;
     }
 
     /**
-     * Build a new instance of an object.
+     * Build a new instance of a stated class.
+     *
      * @api
      * @param mixed  $arguments
      * @param string $stateName to build an object with a specific class
      *
-     * @return Proxy\ProxyInterface
+     * @return ProxyInterface
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\UnavailableLoader      if any finder are available for this stated class
      */
-    public function build($arguments = null, string $stateName = null): Proxy\ProxyInterface
+    public function build($arguments = null, \string $stateName = null): ProxyInterface
     {
         //Get finder loader
         $finderLoader = $this->getFinder();

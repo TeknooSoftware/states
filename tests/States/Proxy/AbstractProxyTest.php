@@ -25,7 +25,7 @@ namespace UniAlteri\Tests\States\Proxy;
 use UniAlteri\States\DI;
 use UniAlteri\States\Proxy;
 use UniAlteri\States\Proxy\Exception;
-use UniAlteri\States\States;
+use UniAlteri\States\State;
 use UniAlteri\Tests\Support;
 
 /**
@@ -338,8 +338,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->proxy->registerState('state3', $this->state3);
         $statesList = $this->proxy->getStatesList();
         $this->assertEquals(2, $statesList->count());
-        $this->assertInstanceOf('UniAlteri\States\States\StateInterface', $statesList['state1']);
-        $this->assertInstanceOf('UniAlteri\States\States\StateInterface', $statesList['state3']);
+        $this->assertInstanceOf('UniAlteri\States\State\StateInterface', $statesList['state1']);
+        $this->assertInstanceOf('UniAlteri\States\State\StateInterface', $statesList['state3']);
     }
 
     /**

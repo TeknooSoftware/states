@@ -22,7 +22,7 @@
 
 namespace demo\Acme\Article\States;
 
-use UniAlteri\States\States;
+use UniAlteri\States\State\AbstractState;
 
 /**
  * State Draft
@@ -36,7 +36,7 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Draft extends States\AbstractState
+class Draft extends AbstractState
 {
     /**
      * Publish this article.

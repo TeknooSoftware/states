@@ -22,7 +22,7 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\States\Exception;
+namespace UniAlteri\States\State\Exception;
 
 use UniAlteri\States\Exception;
 

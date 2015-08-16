@@ -22,13 +22,13 @@
 
 namespace UniAlteri\States\Loader;
 
-use UniAlteri\States\DI;
-use UniAlteri\States\States;
-use UniAlteri\States\Proxy;
+use UniAlteri\States\State\StateInterface;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Interface FinderInterface
- * Interface to define finder to use with this library to find from each stated class all states and the proxy.
+ * To define finder, it is used with this library to find from each stated class
+ * all states and the proxy. It needs an instance of the Composer Loader to find php classes and load them
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -52,7 +52,7 @@ interface FinderInterface
      *
      * @return string
      */
-    public function getStatedClassName(): string;
+    public function getStatedClassName(): \string;
 
     /**
      * To list all available states of the stated class.
@@ -73,21 +73,21 @@ interface FinderInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      */
-    public function loadState(string $stateName): string;
+    public function loadState(\string $stateName): \string;
 
     /**
      * To load and build the required state object of the stated class.
      *
      * @param string $stateName
-     * @param bool $privateMode
+     * @param bool $privateMode : If it's enable, private methods are not available
      * @param string $statedClassName
      *
-     * @return States\StateInterface
+     * @return StateInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState(string $stateName, bool $privateMode, string $statedClassName): States\StateInterface;
+    public function buildState(\string $stateName, \bool $privateMode, \string $statedClassName): StateInterface;
 
     /**
      * To search and load the proxy class for this stated class.
@@ -95,7 +95,7 @@ interface FinderInterface
      *
      * @return string
      */
-    public function loadProxy(): string;
+    public function loadProxy(): \string;
 
     /**
      * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
@@ -112,9 +112,9 @@ interface FinderInterface
      *
      * @param array $arguments argument for proxy
      *
-     * @return Proxy\ProxyInterface
+     * @return ProxyInterface
      *
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function buildProxy($arguments = null): Proxy\ProxyInterface;
+    public function buildProxy($arguments = null): ProxyInterface;
 }

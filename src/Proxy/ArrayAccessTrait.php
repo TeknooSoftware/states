@@ -24,7 +24,7 @@ namespace UniAlteri\States\Proxy;
 
 /**
  * Trait ArrayAccessTrait
- * Trait to use the interface \ArrayAccess with a stated classes
+ * Trait to use the interface \ArrayAccess (http://php.net/manual/en/class.arrayaccess.php) with stated classes
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -33,6 +33,7 @@ namespace UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @method mixed findMethodToCall($name, $args)
  */
 trait ArrayAccessTrait
 {
@@ -48,7 +49,7 @@ trait ArrayAccessTrait
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function count(): int
+    public function count(): \int
     {
         $args = [];
 

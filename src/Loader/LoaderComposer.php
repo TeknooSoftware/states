@@ -23,15 +23,14 @@
 namespace UniAlteri\States\Loader;
 
 use Composer\Autoload\ClassLoader;
-use UniAlteri\States\DI;
-use UniAlteri\States\Factory;
+use UniAlteri\States\Factory\FactoryInterface;
 
 /**
  * Class LoaderStandard
  * Default implementation of the "stated class autoloader".
- * It is used to allow php to load automatically stated class. It builds on the Composer Loader. It is registered to be
- * called before the composer loader, find the factory attached to the stated class, load and run it to initialize the
- * stated class
+ * It is used to allow php to load automatically stated classes without a specific behavior from the developer.
+ * It builds on the Composer Loader. It is registered to be  called before the composer loader, find the factory
+ * attached to the stated class, load and run it to initialize the stated class
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -86,7 +85,7 @@ class LoaderComposer implements LoaderInterface
         $this->finderFactory = $finderFactory;
 
         if (class_exists('\Phar', false)) {
-            //instructs phar to intercept fopen, file_get_contents, opendir, and all of the stat-related functions
+            //instructs phar to intercept fopen(), file_get_contents(), opendir(), and all of the stat-related functions
             //Needed to support Phar with the loader
             \Phar::interceptFileFuncs();
         }
@@ -119,9 +118,9 @@ class LoaderComposer implements LoaderInterface
      * @param string $namespace
      * @param string $path
      *
-     * @return $this
+     * @return LoaderInterface
      */
-    public function registerNamespace(string $namespace, string $path): LoaderInterface
+    public function registerNamespace(\string $namespace, \string $path): LoaderInterface
     {
         if ('\\' !== $namespace[strlen($namespace)-1]) {
             $namespace = ltrim($namespace, '\\').'\\';
@@ -137,7 +136,7 @@ class LoaderComposer implements LoaderInterface
      * @param string $factoryClassName
      * @return bool
      */
-    private function loadFactory(string &$factoryClassName): bool
+    private function loadFactory(\string &$factoryClassName): \bool
     {
         if (!isset($this->factoryAvailabilityList[$factoryClassName])) {
             if (true === class_exists($factoryClassName, false)
@@ -155,8 +154,10 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * Method called to load a class by __autoload of PHP Engine.
+     * The class name can be the canonical stated class name or the canonical proxy class name of the stated class.
+     *
      * @api
-     * @param string $className class name, support namespace prefixes
+     * @param string $className canonical class name
      *
      * @return bool
      *
@@ -164,20 +165,25 @@ class LoaderComposer implements LoaderInterface
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      * @throws \Exception
      */
-    public function loadClass(string $className): bool
+    public function loadClass(\string $className): \bool
     {
+        //Do nothing if this loader has already check the required class name or if the class provide from this library
         if (isset($this->loadingFactoriesClassNameArray[$className])
             || 0 === strpos($className, 'UniAlteri\\States')) {
             return false;
         }
 
+        //Found the canonical factory name from the stated class name
         $factoryClassName = $className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
         $this->loadingFactoriesClassNameArray[$factoryClassName] = true;
 
+        //Try to load the factory
         $statedClassName = $className;
         $factoryClassFound = $this->loadFactory($factoryClassName);
 
         if (false === $factoryClassFound) {
+            //Factory not found, the stated class name may be loaded from it's proxy class name :
+            //Retry to generate the canonical factory class name from the proxy class name
             $canonicalClassNameParts = explode('\\', $className);
             array_pop($canonicalClassNameParts);
             $statedClassName = implode('\\', $canonicalClassNameParts);
@@ -189,6 +195,7 @@ class LoaderComposer implements LoaderInterface
         }
 
         if (true === $factoryClassFound) {
+            //The factory has been found, build a new instance of it to initialize the required stated class
             $this->buildFactory(
                 $factoryClassName,
                 $statedClassName,
@@ -203,18 +210,22 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * Build the factory and initialize the loading stated class.
+     * A new finder is built from the finder factory and must be injected in the factory with other stated class options
      *
      * @param string $factoryClassName
      * @param string $statedClassName
      * @param string $path
      *
-     * @return Factory\FactoryInterface
+     * @return FactoryInterface
      *
      * @throws Exception\UnavailableFactory if the required factory is not available
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      */
-    public function buildFactory(string $factoryClassName, string $statedClassName, string $path): Factory\FactoryInterface
-    {
+    public function buildFactory(
+        \string $factoryClassName,
+        \string $statedClassName,
+        \string $path
+    ): FactoryInterface {
         //Check if the factory class is loaded
         if (!class_exists($factoryClassName, false)) {
             throw new Exception\UnavailableFactory(
@@ -230,7 +241,7 @@ class LoaderComposer implements LoaderInterface
             $this->factoryRepository
         );
 
-        if (!$factoryObject instanceof Factory\FactoryInterface) {
+        if (!$factoryObject instanceof FactoryInterface) {
             throw new Exception\IllegalFactory(
                 sprintf('The factory of %s does not implement the interface', $statedClassName)
             );

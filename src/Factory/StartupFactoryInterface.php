@@ -22,12 +22,12 @@
 
 namespace UniAlteri\States\Factory;
 
-use UniAlteri\States\Proxy;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Interface StartupFactoryInterface
- * Interface to define a factory used to initialize a stated object during in constructor.
- * This factory will only find the object's factory to forward to it the call.
+ * Interface to define the factory used to initialize a stated class instance during its initialization.
+ * This factory mist only find the factory's instance to forward to it the call.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -45,12 +45,12 @@ interface StartupFactoryInterface
      * To find the factory to use for the new proxy object to initialize it with its container and states.
      * This method is called by the constructor of the stated object.
      *
-     * @param Proxy\ProxyInterface $proxyObject
+     * @param ProxyInterface $proxyObject
      * @param string               $stateName
      *
-     * @return bool
+     * @return FactoryInterface
      *
      * @throws Exception\UnavailableFactory when the required factory was not found
      */
-    public static function forwardStartup(Proxy\ProxyInterface $proxyObject, string $stateName = null): FactoryInterface;
+    public static function forwardStartup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface;
 }

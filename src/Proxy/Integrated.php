@@ -24,17 +24,18 @@ namespace UniAlteri\States\Proxy;
 
 /**
  * Class Standard
- * Variant of default Proxy class to use in stated class when no proxy are defined in these classes.
+ * Variant of default Proxy class to use in stated classes, fully integrated in PHP :
+ * It allows developer to instantiate a stated class with the operator "new" like all other normal php classes,
+ * unlike with the standard proxy
  *
- * A stated object is a proxy, configured for its stated class, with its different stated objects.
- * It is a proxy because, by default, all calls are redirected to enabled states.
- * $this in all methods of the stated object (also of states' methods) points the proxy object.
+ * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
+ * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
+ * $this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy instance.
  *
- * The library creates an alias with the proxy class name and this default proxy to simulate a dedicated proxy
- * to this class.
+ * By default, this library creates an alias with the canonical proxy class name and the stated class name
+ * to simulate a real class with the stated class name.
  *
- * This proxy is a variant of the default proxy to allow developer to create an instance a stated class
- * like another class with the operator new.
+ * If a stated class has no proxy, an another alias is create from this standard proxy with the proxyless stated class name.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -60,8 +61,7 @@ class Integrated extends Standard implements IntegratedInterface
      */
     public function __construct()
     {
-        //Call the method of the trait to initialize local attributes of the proxy
-        $this->initializeProxy();
+        parent::__construct();
         //Call the startup factory to initialize this proxy
         $this->initializeObjectWithFactory();
     }

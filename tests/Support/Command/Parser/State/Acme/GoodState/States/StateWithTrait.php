@@ -24,8 +24,8 @@
 
 namespace Acme\GoodState\States;
 
-use UniAlteri\States\States\StateInterface;
-use UniAlteri\States\States\StateTrait;
+use UniAlteri\States\State\StateInterface;
+use UniAlteri\States\State\StateTrait;
 
 class StateWithTrait implements StateInterface
 {

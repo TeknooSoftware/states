@@ -33,6 +33,7 @@ namespace UniAlteri\States\Proxy;
  * @license     http://teknoo.it/states/license/mit         MIT License
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @method mixed findMethodToCall($name, $args)
  */
 trait MagicCallTrait
 {
@@ -69,7 +70,7 @@ trait MagicCallTrait
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function __get(string $name)
+    public function __get(\string $name)
     {
         $args = [$name];
 
@@ -86,7 +87,7 @@ trait MagicCallTrait
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function __isset(string $name)
+    public function __isset(\string $name)
     {
         $args = [$name];
 
@@ -104,7 +105,7 @@ trait MagicCallTrait
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function __set(string $name, $value)
+    public function __set(\string $name, $value)
     {
         $args = [$name, $value];
 
@@ -121,7 +122,7 @@ trait MagicCallTrait
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function __unset(string $name)
+    public function __unset(\string $name)
     {
         $args = [$name];
 
@@ -135,7 +136,7 @@ trait MagicCallTrait
      *
      * @return mixed
      */
-    public function __toString(): string
+    public function __toString(): \string
     {
         try {
             $args = [];

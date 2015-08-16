@@ -23,9 +23,8 @@
 namespace UniAlteri\States\Loader;
 
 use Composer\Autoload\ClassLoader;
-use UniAlteri\States\DI;
-use UniAlteri\States\States;
-use UniAlteri\States\Proxy;
+use UniAlteri\States\State\StateInterface;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Class FinderComposer
@@ -84,7 +83,7 @@ class FinderComposer implements FinderInterface
      * @param string $pathString
      * @param ClassLoader $composerInstance
      */
-    public function __construct(string $statedClassName, string $pathString, ClassLoader $composerInstance)
+    public function __construct(\string $statedClassName, \string $pathString, ClassLoader $composerInstance)
     {
         $this->statedClassName = $statedClassName;
         $this->pathString = $pathString;
@@ -113,7 +112,7 @@ class FinderComposer implements FinderInterface
      *
      * @return string
      */
-    public function getStatedClassName(): string
+    public function getStatedClassName(): \string
     {
         return $this->statedClassName;
     }
@@ -180,7 +179,7 @@ class FinderComposer implements FinderInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      */
-    public function loadState(string $stateName): string
+    public function loadState(\string $stateName): \string
     {
         $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
         if (!$this->testClassExists($stateClassName)) {
@@ -196,21 +195,21 @@ class FinderComposer implements FinderInterface
      * To load and build the required state object of the stated class.
      *
      * @param string $stateName
-     * @param bool $privateMode
+     * @param bool $privateMode : If it's enable, private methods are not available
      * @param string $statedClassName
      *
-     * @return States\StateInterface
+     * @return StateInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState(string $stateName, bool $privateMode, string $statedClassName): States\StateInterface
+    public function buildState(\string $stateName, \bool $privateMode, \string $statedClassName): StateInterface
     {
         //Load the state class if it is not already done
         $stateClassName = $this->loadState($stateName);
 
         $stateObject = new $stateClassName($privateMode, $statedClassName);
-        if (!$stateObject instanceof States\StateInterface) {
+        if (!$stateObject instanceof StateInterface) {
             throw new Exception\IllegalState(
                 sprintf(
                     'Error, the state "%s" does not implement the interface "States\StateInterface"',
@@ -229,7 +228,7 @@ class FinderComposer implements FinderInterface
      *
      * @return string
      */
-    private function getClassedName(string $statedClassName): string
+    private function getClassedName(\string $statedClassName): \string
     {
         $parts = explode('\\', $statedClassName);
 
@@ -242,7 +241,7 @@ class FinderComposer implements FinderInterface
      *
      * @return string
      */
-    public function loadProxy(): string
+    public function loadProxy(): \string
     {
         //Build the class name
         $classPartName = $this->getClassedName($this->statedClassName);
@@ -280,9 +279,11 @@ class FinderComposer implements FinderInterface
         if (class_exists($proxyClassName, false)) {
             $finalParentsClassesList = new \ArrayObject();
 
+            //Get name of the parent class
             $parentClassName = get_parent_class($proxyClassName);
             while (false !== $parentClassName && false === strpos($parentClassName, 'UniAlteri\\States')) {
                 if (class_exists($parentClassName, false)) {
+                    //Use reflection class on the reflection class, ignore bad proxy and abstract class
                     $reflectionClassInstance = new \ReflectionClass($parentClassName);
                     if ($reflectionClassInstance->implementsInterface('UniAlteri\\States\\Proxy\\ProxyInterface')
                         && false === $reflectionClassInstance->isAbstract()) {
@@ -304,18 +305,18 @@ class FinderComposer implements FinderInterface
      *
      * @param array $arguments argument for proxy
      *
-     * @return Proxy\ProxyInterface
+     * @return ProxyInterface
      *
      * @throws Exception\IllegalProxy If the proxy object does not implement Proxy/ProxyInterface
      */
-    public function buildProxy($arguments = null): Proxy\ProxyInterface
+    public function buildProxy($arguments = null): ProxyInterface
     {
         //Load the proxy if it is not already done
         $proxyClassName = $this->loadProxy();
 
         //Load an instance of this proxy and test if it implements the interface ProxyInterface
         $proxyObject = new $proxyClassName($arguments);
-        if ($proxyObject instanceof Proxy\ProxyInterface) {
+        if ($proxyObject instanceof ProxyInterface) {
             return $proxyObject;
         }
 

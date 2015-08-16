@@ -20,7 +20,7 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  * Mock state file to test finder behavior when the state class does not implement the Sates interface
- * \UniAlteri\States\States\StateInterface
+ * \UniAlteri\States\State\StateInterface
  */
 
 namespace Class1\States;
@@ -28,7 +28,7 @@ namespace Class1\States;
 /**
  * Class State3
  * Mock state file to test finder behavior when the state class does not implement the Sates interface
- * \UniAlteri\States\States\StateInterface.
+ * \UniAlteri\States\State\StateInterface.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *

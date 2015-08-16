@@ -74,6 +74,11 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->loader);
 
         $this->assertInstanceOf('\\Closure', $this->loader->getFinderFactory());
-        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderInterface', $this->loader->getFinderFactory()->__invoke('class', 'path'));
+
+        $finder = $this->loader->getFinderFactory()->__invoke('class', 'path');
+        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderInterface', $finder);
+        if ($finder instanceof Loader\FinderInterface) {
+            $this->assertEquals('class', $finder->getStatedClassName());
+        }
     }
 }

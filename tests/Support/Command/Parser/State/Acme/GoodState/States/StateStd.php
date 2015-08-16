@@ -24,7 +24,7 @@
 
 namespace Acme\GoodState\States;
 
-use UniAlteri\States\States\AbstractState;
+use UniAlteri\States\State\AbstractState;
 
 class StateStd extends AbstractState
 {

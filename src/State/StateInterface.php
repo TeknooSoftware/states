@@ -20,13 +20,11 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\States;
-
-use UniAlteri\States\DI;
+namespace UniAlteri\States\State;
 
 /**
  * Interface StateInterface
- * Interface to define a state for a stated class. Each state must implement this interface.
+ * Interface to define class representing states entities in stated class.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -58,35 +56,32 @@ interface StateInterface
      * @param bool $privateMode
      * @param string $statedClassName
      */
-    public function __construct(bool $privateMode, string $statedClassName);
+    public function __construct(\bool $privateMode, \string $statedClassName);
 
     /**
      * To get the canonical stated class name associated to this state.
      *
-     *
      * @return string
      */
-    public function getStatedClassName(): string;
+    public function getStatedClassName(): \string;
 
     /**
      * To set the canonical stated class name associated to this state.
      *
-     *
      * @param string $statedClassName
      *
-     * @return $this
+     * @return StateInterface
      */
-    public function setStatedClassName(string $statedClassName): StateInterface;
+    public function setStatedClassName(\string $statedClassName): StateInterface;
 
     /**
      * To know if the mode Private is enabled : private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable.
      *
-     *
      * @return bool
      */
-    public function isPrivateMode(): bool;
+    public function isPrivateMode(): \bool;
 
     /**
      * To enable or disable the private mode of this state :
@@ -96,12 +91,15 @@ interface StateInterface
      *
      * @param bool $enable
      *
-     * @return
+     * @return StateInterface
      */
-    public function setPrivateMode(bool $enable): StateInterface;
+    public function setPrivateMode(\bool $enable): StateInterface;
 
     /**
-     * To return an array of string listing all methods available in the state.
+     * To return an array of string listing all methods available in the state : public, protected and private.
+     * Ignore static method, because there are incompatible with the stated behavior :
+     * State can be only applied on instances entities like object,
+     * and not on static entities which by nature have no states
      *
      * @api
      * @return string[]
@@ -109,8 +107,10 @@ interface StateInterface
     public function listMethods();
 
     /**
-     * To test if a method exists for this state in the current visibility scope.
-     *
+     * To test if a method exists for this state in the required scope (check from the visibility of the method) :
+     *  Public method : Method always available
+     *  Protected method : Method available only for this stated class's methods (method present in this state or another state) and its children
+     *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children
      *
      * @param string      $methodName
      * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
@@ -121,14 +121,18 @@ interface StateInterface
      * @throws Exception\InvalidArgument when the method name is not a string
      */
     public function testMethod(
-        string $methodName,
-        string $scope = self::VISIBILITY_PUBLIC,
-        string $statedClassOriginName = null
-    ): bool;
+        \string $methodName,
+        \string $scope = StateInterface::VISIBILITY_PUBLIC,
+        \string $statedClassOriginName = null
+    ): \bool;
 
     /**
      * To return the description of a method to configure the behavior of the proxy. Return also description of private
-     * methods.
+     * methods : getMethodDescription() does not check if the caller is allowed to call the required method.
+     *
+     * getMethodDescription() ignores static method, because there are incompatible with the stated behavior :
+     * State can be only applied on instances entities like object,
+     * and not on static entities which by nature have no states
      *
      * @api
      * @param string $methodName
@@ -136,13 +140,14 @@ interface StateInterface
      * @return \ReflectionMethod
      *
      * @throws Exception\MethodNotImplemented is the method does not exist
-     * @throws Exception\InvalidArgument      when the method name is not a string
      */
-    public function getMethodDescription(string $methodName): \ReflectionMethod;
+    public function getMethodDescription(\string $methodName): \ReflectionMethod;
 
     /**
-     * To return a closure of the required method to use in the proxy, according with the current visibility scope.
-     *
+     * To return a closure of the required method to use in the proxy, in the required scope (check from the visibility of the method) :
+     *  Public method : Method always available
+     *  Protected method : Method available only for this stated class's methods (method present in this state or another state) and its children
+     *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children
      *
      * @param string               $methodName
      * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
@@ -153,8 +158,8 @@ interface StateInterface
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
      */
     public function getClosure(
-        string $methodName,
-        string $scope = self::VISIBILITY_PUBLIC,
-        string $statedClassOriginName = null
+        \string $methodName,
+        \string $scope = StateInterface::VISIBILITY_PUBLIC,
+        \string $statedClassOriginName = null
     ): \Closure;
 }

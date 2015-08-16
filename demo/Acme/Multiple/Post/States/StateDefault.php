@@ -22,7 +22,7 @@
 
 namespace demo\Acme\Multiple\Post\States;
 
-use UniAlteri\States\States;
+use UniAlteri\States\State\AbstractState;
 
 /**
  * State Deleted
@@ -36,7 +36,7 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateDefault extends States\AbstractState
+class StateDefault extends AbstractState
 {
     /**
      * Return the name of the post, or empty if no body has been defined.

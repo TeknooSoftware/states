@@ -22,7 +22,7 @@
 
 namespace UniAlteri\Tests\Support\Multiple\Post\States;
 
-use UniAlteri\States\States;
+use UniAlteri\States\State;
 
 /**
  * State Published

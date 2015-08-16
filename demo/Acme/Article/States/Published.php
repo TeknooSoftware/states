@@ -22,7 +22,8 @@
 
 namespace demo\Acme\Article\States;
 
-use UniAlteri\States\States;
+use UniAlteri\States\State\StateInterface;
+use UniAlteri\States\State\StateTrait;
 
 /**
  * State Published
@@ -36,9 +37,9 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Published implements States\StateInterface
+class Published implements StateInterface
 {
-    use States\StateTrait;
+    use StateTrait;
 
     /**
      * Get the body and transform BBCode to HTML.

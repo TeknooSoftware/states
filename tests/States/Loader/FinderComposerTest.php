@@ -24,7 +24,7 @@ namespace UniAlteri\Tests\States\Loader;
 
 use Composer\Autoload\ClassLoader;
 use UniAlteri\States\Loader;
-use UniAlteri\States\States;
+use UniAlteri\States\State;
 use UniAlteri\States\Loader\Exception;
 use UniAlteri\Tests\Support;
 
@@ -318,7 +318,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
 
         $stateObject = $this->finder->buildState('State4', false, 'Class1');
         $this->assertEquals('Class1\States\State4', get_class($stateObject));
-        $this->assertInstanceOf('\UniAlteri\States\States\StateInterface', $stateObject);
+        $this->assertInstanceOf('\UniAlteri\States\State\StateInterface', $stateObject);
     }
 
     /**

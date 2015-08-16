@@ -22,7 +22,7 @@
 
 namespace UniAlteri\Tests\Support\Extendable\Mother\States;
 
-use UniAlteri\States\States;
+use UniAlteri\States\State;
 
 /**
  * State StateOne

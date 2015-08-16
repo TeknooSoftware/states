@@ -22,7 +22,7 @@
 
 namespace Acme\Extendable\Daughter\States;
 
-use UniAlteri\States\States;
+use UniAlteri\States\State\AbstractState;
 
 /**
  * State StateDefault.
@@ -35,6 +35,6 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StateDefault extends States\AbstractState
+class StateDefault extends AbstractState
 {
 }

@@ -24,9 +24,9 @@ namespace UniAlteri\Tests\Support;
 
 use UniAlteri\States\DI;
 use UniAlteri\States\Proxy;
-use UniAlteri\States\States;
-use UniAlteri\States\States\Exception;
-use UniAlteri\States\States\StateInterface;
+use UniAlteri\States\State;
+use UniAlteri\States\State\Exception;
+use UniAlteri\States\State\StateInterface;
 
 /**
  * Class MockState

@@ -36,14 +36,14 @@ if (!file_exists($composerFile)) {
 }
 $composerInstance = require $composerFile;
 
-/*
+/**
  * Service to generate a finder for Stated class factory
  * @param string $statedClassName
  * @param string $path
  * @return Loader\FinderComposerIntegrated
  * @throws Exception\UnavailableFactory if the local factory is not available
  */
-$finderFactory = function (string $statedClassName, string $path) use ($composerInstance) {
+$finderFactory = function (\string $statedClassName, \string $path) use ($composerInstance) {
     return new Loader\FinderComposerIntegrated($statedClassName, $path, $composerInstance);
 };
 

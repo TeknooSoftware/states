@@ -11,8 +11,6 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @category    Exception
- *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
  * @link        http://teknoo.it/states Project website
@@ -22,15 +20,11 @@
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\States\Exception;
-
-use UniAlteri\States\Exception;
+namespace UniAlteri\States\State;
 
 /**
- * Class InvalidArgument
- * Exception threw when the argument's value has not respected some business rules.
- *
- * @category    Exception
+ * Class AbstractState
+ * Standard  implementation of the state interface, representing states entities in stated class
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -40,6 +34,7 @@ use UniAlteri\States\Exception;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class InvalidArgument extends Exception\InvalidArgument
+abstract class AbstractState implements StateInterface
 {
+    use StateTrait;
 }

@@ -22,19 +22,18 @@
 
 namespace UniAlteri\States\Proxy;
 
-use UniAlteri\States;
-use UniAlteri\States\DI;
+use UniAlteri\States\State\StateInterface;
 
 /**
  * Interface ProxyInterface
- * Interface to define "Proxy Object" used in this library to create stated object.
+ * Interface to define proxies classes in stated classes. It is used in this library to create stated object.
  *
- * A stated object is a proxy, configured for its stated class, with its different stated objects.
- * It is a proxy because, by default, all calls are redirected to enabled states.
- * $this in all methods of the stated object (also of states' methods) points the proxy object.
+ * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
+ * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
+ * $this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy instance.
  *
- * The library creates an alias with the proxy class name and this default proxy to simulate a dedicated proxy
- * to this class.
+ * By default, this library creates an alias with the canonical proxy class name and the stated class name
+ * to simulate a real class with the stated class name.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
  *
@@ -56,7 +55,7 @@ interface ProxyInterface
      **************************/
 
     /**
-     * Called to clone an Object.
+     * Called to clone this stated class instance, clone states entities and the current state of this instance
      * @api
      *
      * @return $this
@@ -68,74 +67,74 @@ interface ProxyInterface
      ***********************/
 
     /**
-     * To register dynamically a new state for this object.
+     * To register dynamically a new state for this stated class instance.
      * @api
      *
      * @param string                       $stateName
-     * @param States\States\StateInterface $stateObject
+     * @param StateInterface $stateObject
      *
-     * @return $this
+     * @return ProxyInterface
      *
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function registerState(string $stateName, States\States\StateInterface $stateObject): ProxyInterface;
+    public function registerState(\string $stateName, StateInterface $stateObject): ProxyInterface;
 
     /**
-     * To remove dynamically a state from this object.
+     * To remove dynamically a state from this stated class instance.
      * @api
      *
      * @param string $stateName
      *
-     * @return $this
+     * @return ProxyInterface
      *
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function unregisterState(string $stateName): ProxyInterface;
+    public function unregisterState(\string $stateName): ProxyInterface;
 
     /**
-     * To disable all actives states and enable the required states.
+     * To disable all enabled states and enable the required states.
      * @api
      *
      * @param string $stateName
      *
-     * @return $this
+     * @return ProxyInterface
      *
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function switchState(string $stateName): ProxyInterface;
+    public function switchState(\string $stateName): ProxyInterface;
 
     /**
      * To enable a loaded states.
      * @api
      *
-     * @param $stateName
+     * @param string $stateName
      *
-     * @return $this
+     * @return ProxyInterface
      *
      * @throws Exception\StateNotFound   if $stateName does not exist
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function enableState(string $stateName): ProxyInterface;
+    public function enableState(\string $stateName): ProxyInterface;
 
     /**
-     * To disable an active state (not available for calling, but always loaded).
+     * To disable an enabled state
      * @api
      *
      * @param string $stateName
      *
-     * @return $this
+     * @return ProxyInterface
      *
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
      */
-    public function disableState(string $stateName): ProxyInterface;
+    public function disableState(\string $stateName): ProxyInterface;
 
     /**
      * To disable all actives states.
      * @api
      *
-     * @return $this
+     * @return ProxyInterface
      */
     public function disableAllStates(): ProxyInterface;
 
@@ -159,26 +158,26 @@ interface ProxyInterface
      * To return the list of all states entity available for this object
      * @api
      *
-     * @return \ArrayAccess|States\States\StateInterface[]
+     * @return \ArrayAccess|StateInterface[]
      */
     public function getStatesList();
 
     /**
-     * Check if the current entity is in the required state defined by $stateName.
+     * Check if this stated class instance is in the required state defined by $stateName.
      * @api
      *
      * @param string $stateName
      *
      * @return bool
      */
-    public function inState(string $stateName): bool;
+    public function inState(\string $stateName): \bool;
 
     /*******************
      * Methods Calling *
      *******************/
 
     /**
-     * To call a method of the Object.
+     * To call a method of the this stated class instance not defined in the proxy.
      * @api
      *
      * @param string $name
@@ -189,10 +188,11 @@ interface ProxyInterface
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function __call(string $name, array $arguments);
+    public function __call(\string $name, array $arguments);
 
     /**
-     * To return the description of the method.
+     * To return the description of a method present in a state of this stated class instance.
+     * This method no checks if the method is available in the current scope by the called
      * @api
      *
      * @param string $methodName
@@ -205,5 +205,5 @@ interface ProxyInterface
      * @throws Exception\MethodNotImplemented when the method is not currently available
      * @throws \Exception                     to rethrows unknown exceptions
      */
-    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod;
+    public function getMethodDescription(\string $methodName, \string $stateName = null): \ReflectionMethod;
 }

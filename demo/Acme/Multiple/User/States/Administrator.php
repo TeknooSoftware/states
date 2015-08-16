@@ -22,7 +22,8 @@
 
 namespace demo\Acme\Multiple\User\States;
 
-use UniAlteri\States\States;
+use demo\Acme\Multiple\User\User;
+use UniAlteri\States\State\AbstractState;
 
 /**
  * State Administrator
@@ -36,14 +37,14 @@ use UniAlteri\States\States;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class Administrator extends States\AbstractState
+class Administrator extends AbstractState
 {
     /**
      * Transform an user has moderator.
      *
-     * @param \demo\Acme\Multiple\User $user
+     * @param User $user
      */
-    public function setModerator(\demo\Acme\Multiple\User $user)
+    public function setModerator(User $user)
     {
         $user->setModerator(true);
     }
