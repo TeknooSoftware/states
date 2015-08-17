@@ -1,5 +1,12 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta9] - 2015-08-16 - Available on the branch "next"
+###Removed
+- DI/Container : Remove useless DI Container
+
+###Changed
+- Dependency are now injected in constructor and not retrieved by the component from the service
+
 ##[2.0.0-beta8] - 2015-07-27 - Available on the branch "next"
 ###Fixed
 - Fix fatal error in LoaderComposer to avoid redeclare the factory 
@@ -46,7 +53,7 @@ the library's loader to simplify the use of this library by avoiding multiple au
 - PHP7 Scalar Type Hinting on all library's methods : Code more readable and remove manual type checks.
 - LoaderComposer : Use composer to detect and load Stated classes.
 - FinderComposer is now built on Composer to find and load states and proxies.
-- Add PHPDoc tags @api and @internals on methods to allow users to distinct usable methods
+- Add PHPDoc tags @api on methods to allow users to distinct usable methods
 - Validation states's name use now assert. Can be disable them in production to not launch the preg engine in full tested
 environments.
 

@@ -27,6 +27,7 @@ This library requires :
 
     * PHP 5.4+
     * Pimple ~3.0
+    * Composer
 
 Although highly recommended, Composer is not needed, this library can be used with its own psr0 autoloader.
 
