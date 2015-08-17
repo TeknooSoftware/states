@@ -19,14 +19,14 @@ Installation
 ------------
 To install this library with composer, run this command :
 
-    composer require unialteri/states
+    composer require unialteri/states:next-dev
 
 Requirements
 ------------
 This library requires :
 
     * PHP 7+
-    * Pimple ~3.0
+    * Composer
 
 Although highly recommended, Composer is not needed, this library can be used with its own psr0 autoloader.
 
