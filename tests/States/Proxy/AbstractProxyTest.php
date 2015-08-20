@@ -114,10 +114,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testRegisterStateBadName()
     {
-        ini_set('zend.assertions', 1);
-
         try {
-            $this->proxy->registerState('99', $this->state1);
+            $this->proxy->registerState('', $this->state1);
         } catch (Exception\IllegalName $e) {
             return;
         } catch (\Exception $e) {

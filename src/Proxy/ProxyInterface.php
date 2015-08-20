@@ -75,7 +75,7 @@ interface ProxyInterface
      *
      * @return ProxyInterface
      *
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     public function registerState(\string $stateName, StateInterface $stateObject): ProxyInterface;
 
@@ -88,7 +88,7 @@ interface ProxyInterface
      * @return ProxyInterface
      *
      * @throws Exception\StateNotFound   when the state was not found
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     public function unregisterState(\string $stateName): ProxyInterface;
 
@@ -100,7 +100,7 @@ interface ProxyInterface
      *
      * @return ProxyInterface
      *
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     public function switchState(\string $stateName): ProxyInterface;
 
@@ -113,7 +113,7 @@ interface ProxyInterface
      * @return ProxyInterface
      *
      * @throws Exception\StateNotFound   if $stateName does not exist
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     public function enableState(\string $stateName): ProxyInterface;
 
@@ -126,7 +126,7 @@ interface ProxyInterface
      * @return ProxyInterface
      *
      * @throws Exception\StateNotFound   when the state was not found
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     public function disableState(\string $stateName): ProxyInterface;
 

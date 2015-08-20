@@ -212,19 +212,17 @@ trait ProxyTrait
     }
 
     /**
-     * To test if the identifier respects the pattern [a-zA-Z_][a-zA-Z0-9_\-]*.
+     * To test if the identifier is an non empty string
      * @api
      * @param string $name
      *
      * @return bool
      *
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     protected function validateName(\string $name): \bool
     {
-        try {
-            assert('preg_match("#^[a-zA-Z_][a-zA-Z0-9_\\-]*#iS", $name)');
-        } catch (\Exception $e) {
+        if (empty($name)) {
             throw new Exception\IllegalName('Error, the identifier is not a valid string');
         }
 
@@ -370,7 +368,7 @@ trait ProxyTrait
      *
      * @return ProxyInterface
      *
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     public function registerState(\string $stateName, StateInterface $stateObject): ProxyInterface
     {
@@ -390,7 +388,7 @@ trait ProxyTrait
      * @return ProxyInterface
      *
      * @throws Exception\StateNotFound   when the state was not found
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     public function unregisterState(\string $stateName): ProxyInterface
     {
@@ -417,7 +415,7 @@ trait ProxyTrait
      *
      * @return ProxyInterface
      *
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     public function switchState(\string $stateName): ProxyInterface
     {
@@ -438,7 +436,7 @@ trait ProxyTrait
      * @return ProxyInterface
      *
      * @throws Exception\StateNotFound   if $stateName does not exist
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     public function enableState(\string $stateName): ProxyInterface
     {
@@ -462,7 +460,7 @@ trait ProxyTrait
      * @return ProxyInterface
      *
      * @throws Exception\StateNotFound   when the state was not found
-     * @throws Exception\IllegalName     when the identifier does not respect the pattern [a-zA-Z_][a-zA-Z0-9_\-]*
+     * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
     public function disableState(\string $stateName): ProxyInterface
     {

@@ -1,5 +1,13 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta10] - 2015-08-16 - Available on the branch "next"
+###Fixed
+- API Documentation
+
+###Changed
+- All non empty string are now granted for state's identifier in the proxy
+
+
 ##[2.0.0-beta9] - 2015-08-16 - Available on the branch "next"
 ###Removed
 - DI/Container : Remove useless DI Container
