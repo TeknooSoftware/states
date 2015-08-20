@@ -11,12 +11,12 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 if (!function_exists('testGetMethodDescriptionFromFunctionPrivate')) {
@@ -24,12 +24,12 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPrivate')) {
      * Build temp functions to test proxy behavior with different scope visibility
      * from a function to get a description of a private method.
      *
-     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
      * @link        http://teknoo.it/states Project website
      *
-     * @license     http://teknoo.it/states/license/mit         MIT License
-     * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+     * @license     http://teknoo.it/license/mit         MIT License
+     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testGetMethodDescriptionFromFunctionPrivate()
@@ -45,12 +45,12 @@ if (!function_exists('testGetMethodDescriptionFromFunctionProtected')) {
      * Build temp functions to test proxy behavior with different scope visibility
      * from a function to get a description of a protected method.
      *
-     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
      * @link        http://teknoo.it/states Project website
      *
-     * @license     http://teknoo.it/states/license/mit         MIT License
-     * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+     * @license     http://teknoo.it/license/mit         MIT License
+     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testGetMethodDescriptionFromFunctionProtected()
@@ -66,12 +66,12 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPublic')) {
      * Build temp functions to test proxy behavior with different scope visibility
      * from a function to get a description of a public method.
      *
-     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
      * @link        http://teknoo.it/states Project website
      *
-     * @license     http://teknoo.it/states/license/mit         MIT License
-     * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+     * @license     http://teknoo.it/license/mit         MIT License
+     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      *
      * @return \ReflectionMethod *
@@ -89,12 +89,12 @@ if (!trait_exists('testGetMethodDescriptionTrait')) {
      * Build temp functions to test proxy behavior with different scope visibility
      * from object of a the same class of a inherited class.
      *
-     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
      * @link        http://teknoo.it/states Project website
      *
-     * @license     http://teknoo.it/states/license/mit         MIT License
-     * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+     * @license     http://teknoo.it/license/mit         MIT License
+     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     trait testGetMethodDescriptionTrait
@@ -148,12 +148,12 @@ if (!class_exists('testGetMethodDescriptionFromOtherObject')) {
      * Build temp functions to test proxy behavior with different scope visibility
      * from a external object to get a description of methods.
      *
-     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
      * @link        http://teknoo.it/states Project website
      *
-     * @license     http://teknoo.it/states/license/mit         MIT License
-     * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+     * @license     http://teknoo.it/license/mit         MIT License
+     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     class testGetMethodDescriptionFromOtherObject
