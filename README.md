@@ -7,10 +7,6 @@ Welcome and thank you to having downloaded this library. It allows you to follow
  [State Pattern](http://en.wikipedia.org/wiki/State_pattern)
  and to create easily and cleanly classes with several states, written in distinct codes blocks with PHP 7+.
 
-Quick startup
--------------
-Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.md).
-
 Example
 -------
 An example of using this library is available in the folder : [Demo](demo/demo_article.php).
@@ -29,6 +25,14 @@ This library requires :
     * Composer
 
 Although highly recommended, Composer is not needed, this library can be used with its own psr0 autoloader.
+
+Presentation
+------------
+Quick How-to to learn how use this library : [Startup](docs/howto/details.md).
+
+Quick startup
+-------------
+Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.md).
 
 API Documentation
 -----------------
