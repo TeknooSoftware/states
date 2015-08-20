@@ -1,11 +1,13 @@
 #Uni Alteri - States library - Behavior
 
-This library is built on two features added with PHP 5.4 :
+This library is built on three features, added in PHP 5.4 and 5.6, updated in PHP 7 :
 
-*   `ReflectionMethod::getClosure()` to extract dynamically a class's method as a closure with the reflection API.
-*   `Closure Closure::bind()` to duplicate a closure with a specific bound object and class scope.
+*   `ReflectionMethod::getClosure()` to extract dynamically a class's method as a closure with the reflection API (`\ReflectionMethod`). 
+*   `Closure::call()` To execute the closure with the given parameters and returns the result, 
+    with $this bound to the proxy without duplicate it (unlike `Closure::bind()`.
+*   The new operator `...` to unpack quickly argument passed by `__call()`    
 
-Used collectively, these two methods allow developers to add dynamically methods on objects, the variable `$this`
+Used collectively, these three methods allow developers to add dynamically methods on objects, the variable `$this`
 referencing to these objects.
 
 This library reuses this behavior to implement states. A stated class is a virtual PHP class, composed of several
@@ -16,6 +18,7 @@ standard PHP classes :
     these proxy.
 *   a third standard PHP, the factory, called to load the stated class and initialize each stated object.
 
-When a stated class is being initialized by its factory and PHP, an object of the proxy class is instantiated and
-all stated classes are registered into the proxy. Closures are extracted and bounded with the proxy object on the demand
-during the first call.
+When a stated class is being initialized by the AutoLoader mechanism, the factory load states and proxy.
+All stated classes are registered into the proxy during it's initialisation by the factory. A proxy must be constructed
+ by a factory with the default implementation, but can be instantiate wit the `new` operator with the integrated implementation.
+Closures are extracted and cached on the demand during the first call, $this is bounded automatically by php at each call.

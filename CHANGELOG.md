@@ -2,7 +2,7 @@
 
 ##[2.0.0-beta10] - 2015-08-16 - Available on the branch "next"
 ###Fixed
-- API Documentation
+- Update Documentation
 
 ###Changed
 - All non empty string are now granted for state's identifier in the proxy
