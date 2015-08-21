@@ -36,7 +36,7 @@ The states must be declared in separate files. A state is represented by PHP cla
 directly extend the class `\UniAlteri\States\State\AbstractState`.
 
 Each stated class must have at least one state and this state must be called `StateDefault`. It is the default state enabled
-in the constructor of each stated object.
+in the constructor of each stated class instance.
 
 ###Create the proxy
 You can define it in the file `<StatedClassName>.php`. The proxy class must be called

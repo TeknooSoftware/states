@@ -14,9 +14,9 @@ This library reuses this behavior to implement states. A stated class is a virtu
 standard PHP classes :
 
 *   one standard PHP class by state, located in the subfolder `States`.
-*   a central standard PHP, called proxy, used to represent stated objects (from stated classes). $this referencing
+*   a central standard PHP, called proxy, used to represent stated class instances (from stated classes). $this referencing
     these proxy.
-*   a third standard PHP, the factory, called to load the stated class and initialize each stated object.
+*   a third standard PHP, the factory, called to load the stated class and initialize each stated class instance.
 
 When a stated class is being initialized by the AutoLoader mechanism, the factory load states and proxy.
 All stated classes are registered into the proxy during it's initialisation by the factory. A proxy must be constructed

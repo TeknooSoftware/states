@@ -26,7 +26,7 @@ use UniAlteri\States\Factory\Integrated;
 
 /**
  * Class FactoryClass
- * Factory to build a new stated object User
+ * Factory to build a new stated class instance User
  * Copy from Demo for functional tests.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)

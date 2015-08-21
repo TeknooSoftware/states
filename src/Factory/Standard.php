@@ -24,7 +24,7 @@ namespace UniAlteri\States\Factory;
 
 /**
  * Class Standard
- * Default implementation of the stated object factory to use with this library to build a new instance
+ * Default implementation of the stated class instance factory to use with this library to build a new instance
  * of stated classes.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)

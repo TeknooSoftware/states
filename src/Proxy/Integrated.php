@@ -57,7 +57,7 @@ class Integrated extends Standard implements IntegratedInterface
     protected static $startupFactoryClassName = '\UniAlteri\States\Factory\StandardStartupFactory';
 
     /**
-     * Default constructor used to initialize the stated object with its factory.
+     * Default constructor used to initialize the stated class instance with its factory.
      */
     public function __construct()
     {

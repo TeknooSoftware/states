@@ -27,7 +27,7 @@ use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
  * Trait FactoryTrait
- * Standard implementation of the stated object factory to use with this library to build a new instance
+ * Standard implementation of the stated class instance factory to use with this library to build a new instance
  * of stated classes.
  *
  * A trait implementation has been chosen to allow developer to write theirs owns factory, extendable from any class.

@@ -26,7 +26,7 @@ use UniAlteri\States\State\StateInterface;
 
 /**
  * Interface ProxyInterface
- * Interface to define proxies classes in stated classes. It is used in this library to create stated object.
+ * Interface to define proxies classes in stated classes. It is used in this library to create stated class instance.
  *
  * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
  * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.

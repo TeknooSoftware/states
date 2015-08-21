@@ -24,7 +24,7 @@ namespace UniAlteri\States\Factory;
 
 /**
  * Class Integrated
- * Implementation of the stated object factory to use with this library to build a new instance.
+ * Implementation of the stated class instance factory to use with this library to build a new instance.
  * It is an alternative of Standard factory to allow developers to use the operator `new` with stated classes.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)

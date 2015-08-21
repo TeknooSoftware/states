@@ -26,7 +26,7 @@ namespace UniAlteri\States\Exception;
 
 /**
  * Class AvailableSeveralMethodImplementations
- * Exception threw when a stated object is having several implementations a the calling method
+ * Exception threw when a stated class instance is having several implementations a the calling method
  * in different enabled states.
  *
  * @category    Exception

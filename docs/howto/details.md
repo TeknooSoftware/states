@@ -91,7 +91,7 @@ Your stated classed can has no defined states.
  
 If the state `StateDefault` is present, it will be automatically enable at startup.
 
-*Your stated object can execute several states in same time, but two enabled states cannot implement the same method, they must
+*Your stated class instance can execute several states in same time, but two enabled states cannot implement the same method, they must
 be alternately enabled or the required state must be defined in the called method name, prefixed by "Of", like `$this->myMethodOfMyState`.*
 
 ###Stated class and Inheritance

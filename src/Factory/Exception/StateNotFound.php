@@ -28,7 +28,7 @@ use UniAlteri\States\Exception;
 
 /**
  * Class StateNotFound
- * Exception thew when the requiring state is not available for the stated object.
+ * Exception thew when the requiring state is not available for the stated class instance.
  *
  * @category    Exception
  *

@@ -50,7 +50,7 @@ class StandardStartupFactory implements StartupFactoryInterface
 
     /**
      * To find the factory to use for the new proxy object to initialize it with its container and states.
-     * This method is called by the constructor of the stated object.
+     * This method is called by the constructor of the stated class instance.
      *
      * @param ProxyInterface $proxyObject
      * @param string               $stateName

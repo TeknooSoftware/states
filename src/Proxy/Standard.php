@@ -26,7 +26,7 @@ namespace UniAlteri\States\Proxy;
  * Class Standard
  * Default implementation of the proxy class in stated classes. It can not be instantiate directly by the developer,
  * it must use the factory to create a new instance of this stated class.
- * It is also used in this library to create stated object.
+ * It is also used in this library to create stated class instance.
  *
  * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
  * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.

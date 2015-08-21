@@ -27,7 +27,7 @@ use UniAlteri\States\State\Exception\MethodNotImplemented as StateMethodNotImple
 
 /**
  * Trait ProxyTrait
- * Default implementation of the proxy class in stated class. It is used in this library to create stated object.
+ * Default implementation of the proxy class in stated class. It is used in this library to create stated class instance.
  *
  * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
  * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
@@ -335,7 +335,7 @@ trait ProxyTrait
         if ($this->states instanceof \ArrayAccess) {
             $clonedStatesArray = new \ArrayObject();
             foreach ($this->states as $key => $state) {
-                //Clone each stated object
+                //Clone each stated class instance
                 $clonedState = clone $state;
                 //Update new stack
                 $clonedStatesArray[$key] = $clonedState;
