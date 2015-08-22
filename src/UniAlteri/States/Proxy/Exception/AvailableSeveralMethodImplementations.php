@@ -13,7 +13,7 @@
  *
  * @category    Exception
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -28,12 +28,12 @@ use UniAlteri\States\Exception;
 
 /**
  * Class AvailableSeveralMethodImplementations
- * Exception threw when a stated object is having several implementations a the calling method
+ * Exception threw when a stated class instance is having several implementations a the calling method
  * in different enabled states.
  *
  * @category    Exception
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *

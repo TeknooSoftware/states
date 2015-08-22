@@ -11,7 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -26,7 +26,7 @@ namespace UniAlteri\States\States;
  * Class AbstractState
  * Standard implementation of the state interface for state class as a abstract class.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *

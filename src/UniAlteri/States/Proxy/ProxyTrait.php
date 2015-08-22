@@ -11,7 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -28,16 +28,16 @@ use UniAlteri\States;
 /**
  * Trait ProxyTrait
  * Standard implementation of the "Proxy Object".
- * It is used in this library to create stated object.
+ * It is used in this library to create stated class instance.
  *
- * A stated object is a proxy, configured for its stated class, with its different stated objects.
+ * A stated class instance is a proxy, configured for its stated class, with its different stated class instances.
  * It is a proxy because, by default, all calls are redirected to enabled states.
- * $this in all methods of the stated object (also of states' methods) points the proxy object.
+ * $this in all methods of the stated class instance (also of states' methods) points the proxy object.
  *
  * The library creates an alias with the proxy class name and this default proxy to simulate a dedicated proxy
  * to this class.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -69,7 +69,7 @@ trait ProxyTrait
     protected $activesStates = null;
 
     /**
-     * List of available states for this stated object.
+     * List of available states for this stated class instance.
      *
      * @var \ArrayObject|States\States\StateInterface[]
      */
@@ -422,7 +422,7 @@ trait ProxyTrait
         if ($this->states instanceof \ArrayObject) {
             $clonedStatesArray = new \ArrayObject();
             foreach ($this->states as $key => $state) {
-                //Clone each stated object
+                //Clone each stated class instance
                 $clonedState = clone $state;
                 //Update new stack
                 $clonedStatesArray[$key] = $clonedState;

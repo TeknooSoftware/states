@@ -557,10 +557,10 @@
                     <h1><small>\UniAlteri\States\Proxy</small>ProxyTrait</h1>
                     <p><em>Trait ProxyTrait
 Standard implementation of the &quot;Proxy Object&quot;.</em></p>
-                    <p>It is used in this library to create stated object.</p>
-<p>A stated object is a proxy, configured for its stated class, with its different stated objects.
+                    <p>It is used in this library to create stated class instance.</p>
+<p>A stated class instance is a proxy, configured for its stated class, with its different stated class instances.
 It is a proxy because, by default, all calls are redirected to enabled states.
-$this in all methods of the stated object (also of states' methods) points the proxy object.</p>
+$this in all methods of the stated class instance (also of states' methods) points the proxy object.</p>
 <p>The library creates an alias with the proxy class name and this default proxy to simulate a dedicated proxy
 to this class.</p>
                     
@@ -688,7 +688,7 @@ to this class.</p>
                                 copyright
                             </th>
                             <td>
-                                                                    <p>Copyright (c) 2009-2015 Uni Alteri (<a href="http://agence.net.ua">http://agence.net.ua</a>)</p>
+                                                                    <p>Copyright (c) 2009-2015 Uni Alteri (<a href="http://uni-alteri.com">http://uni-alteri.com</a>)</p>
                                                             </td>
                         </tr>
                                             <tr>
@@ -799,7 +799,7 @@ to this class.</p>
             <article class="property">
                 <h3 class="protected ">$states</h3>
                 <pre class="signature">$states : \ArrayObject|array&lt;mixed,\UniAlteri\States\States\StateInterface&gt;</pre>
-                <p><em>List of available states for this stated object.</em></p>
+                <p><em>List of available states for this stated class instance.</em></p>
                 
 
                                 <h4>Type</h4>

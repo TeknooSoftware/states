@@ -11,7 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -30,7 +30,7 @@ namespace Class1\States;
  * Mock state file to test finder behavior when the state class does not implement the Sates interface
  * \UniAlteri\States\States\StateInterface.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *

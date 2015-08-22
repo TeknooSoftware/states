@@ -5,11 +5,7 @@ Uni Alteri - States library
 
 Welcome and thank you to having downloaded this library. It allows you to follow and implement the 
  [State Pattern](http://en.wikipedia.org/wiki/State_pattern)
- and to create easily and cleanly classes with several states, written in distinct codes blocks with PHP 5.4+.
-
-Quick startup
--------------
-Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.md).
+ and to create easily and cleanly classes with several states, written in distinct codes blocks with PHP 7+.
 
 Example
 -------
@@ -19,17 +15,25 @@ Installation
 ------------
 To install this library with composer, run this command :
 
-    composer require unialteri/states
+    composer require unialteri/state
 
 Requirements
 ------------
 This library requires :
 
     * PHP 5.4+
-    * Pimple ~3.0
+    * Pimple 3
     * Composer
 
 Although highly recommended, Composer is not needed, this library can be used with its own psr0 autoloader.
+
+Presentation
+------------
+Quick How-to to learn how use this library : [Startup](docs/howto/details.md).
+
+Quick startup
+-------------
+Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.md).
 
 API Documentation
 -----------------
@@ -42,7 +46,7 @@ Documentation to explain how this library works : [Behavior](docs/howto/behavior
 Credits
 -------
 Richard Déloge - <r.deloge@uni-alteri.com> - Lead developer.
-Uni Alteri - <http://agence.net.ua> - <http://teknoo.it>
+Uni Alteri - <http://uni-alteri.com> - <http://teknoo.it>
 
 License
 -------

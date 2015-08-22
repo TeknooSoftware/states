@@ -11,7 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -24,7 +24,7 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPrivate')) {
      * Build temp functions to test proxy behavior with different scope visibility
      * from a function to get a description of a private method.
      *
-     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
      * @link        http://teknoo.it/states Project website
      *
@@ -44,7 +44,7 @@ if (!function_exists('testGetMethodDescriptionFromFunctionProtected')) {
      * Build temp functions to test proxy behavior with different scope visibility
      * from a function to get a description of a protected method.
      *
-     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
      * @link        http://teknoo.it/states Project website
      *
@@ -64,7 +64,7 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPublic')) {
      * Build temp functions to test proxy behavior with different scope visibility
      * from a function to get a description of a public method.
      *
-     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
      * @link        http://teknoo.it/states Project website
      *
@@ -87,7 +87,7 @@ if (!trait_exists('testGetMethodDescriptionTrait')) {
      * Build temp functions to test proxy behavior with different scope visibility
      * from object of a the same class of a inherited class.
      *
-     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
      * @link        http://teknoo.it/states Project website
      *
@@ -146,7 +146,7 @@ if (!class_exists('testGetMethodDescriptionFromOtherObject')) {
      * Build temp functions to test proxy behavior with different scope visibility
      * from a external object to get a description of methods.
      *
-     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+     * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
      * @link        http://teknoo.it/states Project website
      *

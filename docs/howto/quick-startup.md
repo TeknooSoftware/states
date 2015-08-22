@@ -48,12 +48,12 @@ The method `build` can be used to create a new instance of your stated class, li
 classes. Another way is provided with the integrated factory (described in the section Integrated proxy and Integrated factory).
 
 ###Proxy
-The proxy is the central component of each stated class : it is the instantiated php class to represent your stated object.
+The proxy is the central component of each stated class : it is the instantiated php class to represent your stated class instance.
 All your states are registered into each proxy by the factory. The proxy manages also these states and allow you to
 enable, disable or switch between your states.
 
 All method calls to the proxy are forwarded to enabled states, however the php keyword `$this` represents always your
-stated object, aka the proxy and its states.
+stated class instance, aka the proxy and its states.
 
 Your proxy can have its own methods and attributes, like all another standard PHP classes, but these methods and attributes
 will be not impacted by the states management and will be always available (according visibility of these methods and attributes).
@@ -81,20 +81,20 @@ The name of the file is the name of the state. Each state must implement the int
 A default implementation of this library is available with the trait `\UniAlteri\States\States\StateTraits`. Your state can use
 directly this trait or inherit the abstract class `\UniAlteri\States\States\AbstractState`.
 
-In your state, you can use the keyword `$this` to refer to your stated object, like with a standard PHP object, even if the
+In your state, you can use the keyword `$this` to refer to your stated class instance, like with a standard PHP object, even if the
 method called is available in another state. States' methods are directly used in the proxy, the state class has not
-existence independent : the keyword `$this` used in state's method represent the stated object (via the proxy) and not the state.
+existence independent : the keyword `$this` used in state's method represent the stated class instance (via the proxy) and not the state.
 
 Visibilities (private, protected and public) are also available in states and they have the same behavior as in standard PHP classes.
 
 Your stated classed must be defined at least one state : It is the state called `StateDefault`. It is the state automatically enabled
-when a new stated object is instantiated.
+when a new stated class instance is instantiated.
 
-*Your stated object can execute several states in same time, but two enabled states cannot implement the same method, they must
+*Your stated class instance can execute several states in same time, but two enabled states cannot implement the same method, they must
 be alternately enabled or the required state must be defined in the called method name, prefixed by "Of", like `$this->myMethodOfMyState`.*
 
 ###Integrated proxy and Integrated factory
-Default implementations of the factory and the proxy are not fully usable to manage its stated objects like standard php objects :
+Default implementations of the factory and the proxy are not fully usable to manage its stated class instances like standard php objects :
 You cannot use the operator `new` to create a new instance of your stated class.
 
 This library provides also another implementation, called `integrated` to allow you to do this. They must be used together :
@@ -164,7 +164,7 @@ The states must be declared in separate files. A state is represented by PHP cla
 directly extend the class `\UniAlteri\States\States\AbstractState`.
 
 Each stated class must have at least one state and this state must be called `StateDefault`. It is the default state enabled
-in the constructor of each stated object.
+in the constructor of each stated class instance.
 
 ###Create the proxy
 The proxy is mandatory to use a stated class only if we use the Integrated implementation.

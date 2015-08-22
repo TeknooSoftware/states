@@ -11,7 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -27,16 +27,16 @@ use UniAlteri\States\DI;
 
 /**
  * Interface ProxyInterface
- * Interface to define "Proxy Object" used in this library to create stated object.
+ * Interface to define "Proxy Object" used in this library to create stated class instance.
  *
- * A stated object is a proxy, configured for its stated class, with its different stated objects.
+ * A stated class instance is a proxy, configured for its stated class, with its different stated class instances.
  * It is a proxy because, by default, all calls are redirected to enabled states.
- * $this in all methods of the stated object (also of states' methods) points the proxy object.
+ * $this in all methods of the stated class instance (also of states' methods) points the proxy object.
  *
  * The library creates an alias with the proxy class name and this default proxy to simulate a dedicated proxy
  * to this class.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *

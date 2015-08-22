@@ -11,7 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -28,12 +28,12 @@ use UniAlteri\States\Proxy;
 
 /**
  * Trait FactoryTrait
- * Standard implementation of the "stated object" factory to use with this library to build a new instance
+ * Standard implementation of the "stated class instance" factory to use with this library to build a new instance
  * of a stated class.
  *
  * It is a trait to allow developer to write theirs owns factory, extendable from any class.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *

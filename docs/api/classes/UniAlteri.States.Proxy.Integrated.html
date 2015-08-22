@@ -557,9 +557,9 @@
                     <h1><small>\UniAlteri\States\Proxy</small>Integrated</h1>
                     <p><em>Class Standard
 Variant of default Proxy class to use in stated class when no proxy are defined in these classes.</em></p>
-                    <p>A stated object is a proxy, configured for its stated class, with its different stated objects.
+                    <p>A stated class instance is a proxy, configured for its stated class, with its different stated class instances.
 It is a proxy because, by default, all calls are redirected to enabled states.
-$this in all methods of the stated object (also of states' methods) points the proxy object.</p>
+$this in all methods of the stated class instance (also of states' methods) points the proxy object.</p>
 <p>The library creates an alias with the proxy class name and this default proxy to simulate a dedicated proxy
 to this class.</p>
 <p>This proxy is a variant of the default proxy to allow developer to create an instance a stated class
@@ -699,7 +699,7 @@ like another class with the operator new.</p>
                                 copyright
                             </th>
                             <td>
-                                                                    <p>Copyright (c) 2009-2015 Uni Alteri (<a href="http://agence.net.ua">http://agence.net.ua</a>)</p>
+                                                                    <p>Copyright (c) 2009-2015 Uni Alteri (<a href="http://uni-alteri.com">http://uni-alteri.com</a>)</p>
                                                             </td>
                         </tr>
                                             <tr>
@@ -816,7 +816,7 @@ like another class with the operator new.</p>
             <article class="property">
                 <h3 class="protected ">$states</h3>
                 <pre class="signature">$states : \ArrayObject|array&lt;mixed,\UniAlteri\States\States\StateInterface&gt;</pre>
-                <p><em>List of available states for this stated object.</em></p>
+                <p><em>List of available states for this stated class instance.</em></p>
                 
 
                                 <h4>Type</h4>
@@ -927,7 +927,7 @@ private method access.</em></p>
                 <h3 class="public ">__construct()</h3>
                 <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
                 <pre class="signature" style="margin-right: 54px;">__construct() </pre>
-                <p><em>Default constructor used to initialize the stated object with its factory.</em></p>
+                <p><em>Default constructor used to initialize the stated class instance with its factory.</em></p>
                 
 
                 

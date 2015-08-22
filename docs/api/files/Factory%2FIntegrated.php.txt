@@ -11,7 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -26,10 +26,10 @@ use UniAlteri\States\DI;
 
 /**
  * Class Integrated
- * Embedded "stated object" factory to use with this library to build a new instance of a stated class.
+ * Embedded "stated class instance" factory to use with this library to build a new instance of a stated class.
  * It is an alternative of Standard factory to allow developers to use the operator `new` with the stated class.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://agence.net.ua)
+ * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
