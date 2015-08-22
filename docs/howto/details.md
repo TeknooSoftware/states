@@ -1,4 +1,4 @@
-#Uni Alteri - States library - Quick Startup
+#Uni Alteri - States library - Details
 
 ##Presentation
 
