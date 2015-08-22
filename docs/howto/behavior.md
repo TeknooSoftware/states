@@ -4,7 +4,7 @@ This library is built on three features, added in PHP 5.4 and 5.6, updated in PH
 
 *   `ReflectionMethod::getClosure()` to extract dynamically a class's method as a closure with the reflection API (`\ReflectionMethod`). 
 *   `Closure::call()` To execute the closure with the given parameters and returns the result, 
-    with $this bound to the proxy without duplicate it (unlike `Closure::bind()`.
+    with $this bound to the proxy without duplicate it (unlike `Closure::bind()` used in 1.x branch.
 *   The new operator `...` to unpack quickly argument passed by `__call()`    
 
 Used collectively, these three methods allow developers to add dynamically methods on objects, the variable `$this`
