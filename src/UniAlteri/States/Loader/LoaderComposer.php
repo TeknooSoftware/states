@@ -63,7 +63,8 @@ class LoaderComposer implements LoaderInterface
     protected $loadingFactoriesClassNameArray = [];
 
     /**
-     * To keep the list of factory already fetched
+     * To keep the list of factory already fetched.
+     *
      * @var array
      */
     private $factoryAvailabilityList = array();

@@ -23,12 +23,8 @@
 namespace UniAlteri\Tests\States\Functional;
 
 use UniAlteri\States\Di;
-use UniAlteri\States\Exception\MethodNotImplemented;
 use UniAlteri\States\Factory\FactoryInterface;
 use UniAlteri\States\Loader;
-use UniAlteri\Tests\Support\Extendable\Daughter\Daughter;
-use UniAlteri\Tests\Support\Extendable\GrandDaughter\GrandDaughter;
-use UniAlteri\Tests\Support\Extendable\Mother\Mother;
 
 /**
  * Class ArticleTest
