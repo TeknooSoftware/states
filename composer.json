@@ -29,17 +29,9 @@
     },
     "autoload": {
         "psr-4": {
-            "UniAlteri\\States\\": ["src/"]
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "UniAlteri\\Tests\\States\\": [
-                "tests/States/"
-            ],
-            "UniAlteri\\Tests\\Support\\": [
-                "tests/Support/"
-            ]
+            "UniAlteri\\States\\": ["src/"],
+            "UniAlteri\\Tests\\States\\": ["tests/States/"],
+            "UniAlteri\\Tests\\Support\\": ["tests/Support/"]
         }
     },
     "archive": {
