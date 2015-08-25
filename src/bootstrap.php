@@ -41,7 +41,6 @@ $composerInstance = require $composerFile;
  * @param string $statedClassName
  * @param string $path
  * @return Loader\FinderComposerIntegrated
- * @throws Exception\UnavailableFactory if the local factory is not available
  */
 $finderFactory = function (\string $statedClassName, \string $path) use ($composerInstance) {
     return new Loader\FinderComposerIntegrated($statedClassName, $path, $composerInstance);
