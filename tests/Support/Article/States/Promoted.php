@@ -22,9 +22,6 @@
 
 namespace UniAlteri\Tests\Support\Article\States;
 
-use UniAlteri\States\State\StateInterface;
-use UniAlteri\States\State\StateTrait;
-
 /**
  * State Promoted
  * State for a promoted article

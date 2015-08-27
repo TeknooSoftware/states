@@ -45,11 +45,11 @@ class StateTest extends AbstractStatesTest
      *
      * @param bool   $privateMode
      * @param string $statedClassName
-     * @param array $aliases
+     * @param array  $aliases
      *
      * @return Support\MockOnlyPublic
      */
-    protected function getPublicClassObject(\bool $privateMode, \string $statedClassName, array $aliases=[])
+    protected function getPublicClassObject(\bool $privateMode, \string $statedClassName, array $aliases = [])
     {
         return new Support\MockOnlyPublic($privateMode, $statedClassName, $aliases);
     }
@@ -59,11 +59,11 @@ class StateTest extends AbstractStatesTest
      *
      * @param bool   $privateMode
      * @param string $statedClassName
-     * @param array $aliases
+     * @param array  $aliases
      *
      * @return Support\MockOnlyProtected
      */
-    protected function getProtectedClassObject(\bool $privateMode, \string $statedClassName, array $aliases=[])
+    protected function getProtectedClassObject(\bool $privateMode, \string $statedClassName, array $aliases = [])
     {
         return new Support\MockOnlyProtected($privateMode, $statedClassName, $aliases);
     }
@@ -73,11 +73,11 @@ class StateTest extends AbstractStatesTest
      *
      * @param bool   $privateMode
      * @param string $statedClassName
-     * @param array $aliases
+     * @param array  $aliases
      *
      * @return Support\MockOnlyPrivate
      */
-    protected function getPrivateClassObject(\bool $privateMode, \string $statedClassName, array $aliases=[])
+    protected function getPrivateClassObject(\bool $privateMode, \string $statedClassName, array $aliases = [])
     {
         return new Support\MockOnlyPrivate($privateMode, $statedClassName, $aliases);
     }

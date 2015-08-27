@@ -46,33 +46,33 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      *
      * @param bool   $privateMode
      * @param string $statedClassName
-     * @param array $aliases
+     * @param array  $aliases
      *
      * @return Support\MockOnlyPublic
      */
-    abstract protected function getPublicClassObject(\bool $privateMode, \string $statedClassName, array $aliases=[]);
+    abstract protected function getPublicClassObject(\bool $privateMode, \string $statedClassName, array $aliases = []);
 
     /**
      * Build a basic object to provide only protected methods.
      *
      * @param bool   $privateMode
      * @param string $statedClassName
-     * @param array $aliases
+     * @param array  $aliases
      *
      * @return Support\MockOnlyProtected
      */
-    abstract protected function getProtectedClassObject(\bool $privateMode, \string $statedClassName, array $aliases=[]);
+    abstract protected function getProtectedClassObject(\bool $privateMode, \string $statedClassName, array $aliases = []);
 
     /**
      * Build a basic object to provide only private methods.
      *
      * @param bool   $privateMode
      * @param string $statedClassName
-     * @param array $aliases
+     * @param array  $aliases
      *
      * @return Support\MockOnlyPrivate
      */
-    abstract protected function getPrivateClassObject(\bool $privateMode, \string $statedClassName, array $aliases=[]);
+    abstract protected function getPrivateClassObject(\bool $privateMode, \string $statedClassName, array $aliases = []);
 
     /**
      * Build a virtual proxy for test.

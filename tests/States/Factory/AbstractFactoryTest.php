@@ -347,7 +347,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if the factory behavior when there are no alias
+     * Check if the factory behavior when there are no alias.
      */
     public function testStateAliasEmpty()
     {
@@ -357,7 +357,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if the factory behavior and if it found good alias and ignore external class
+     * Check if the factory behavior and if it found good alias and ignore external class.
      */
     public function testStateAlias()
     {
@@ -366,7 +366,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             'My\Stated\Class\States\MockState1',
             'My\Stated\Class\MockState2',
             'My\Stated\Class\States\MockState3',
-            'Other\NameSpace\Name'
+            'Other\NameSpace\Name',
         ]);
         $this->getFactoryObject($finderMock)->build();
         $this->assertEquals(array('MockState1', 'MockState3'), $finderMock->getLastMockStateBuilt()->getStateAliases());
