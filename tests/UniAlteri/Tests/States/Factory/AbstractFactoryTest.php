@@ -544,7 +544,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if the factory behavior when there are no alias
+     * Check if the factory behavior when there are no alias.
      */
     public function testStateAliasEmpty()
     {
@@ -554,7 +554,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check if the factory behavior and if it found good alias and ignore external class
+     * Check if the factory behavior and if it found good alias and ignore external class.
      */
     public function testStateAlias()
     {
@@ -565,7 +565,7 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
             'My\Stated\Class\States\MockState1',
             'My\Stated\Class\Alias2',
             'My\Stated\Class\States\MockState3',
-            'Other\NameSpace\Name'
+            'Other\NameSpace\Name',
         ]);
         $proxy = $factory->build();
         $factory->startup($proxy);

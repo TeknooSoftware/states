@@ -248,6 +248,7 @@ class MockFinder implements Loader\FinderInterface
 
     /**
      * @param array $parentsClassesNamesList
+     *
      * @return self
      */
     public function setParentsClassesNamesList($parentsClassesNamesList)

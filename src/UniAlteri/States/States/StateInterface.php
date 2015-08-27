@@ -92,7 +92,7 @@ interface StateInterface
     public function setStatedClassName($statedClassName);
 
     /**
-     * To update the list of aliases of this state in the current stated class
+     * To update the list of aliases of this state in the current stated class.
      *
      * @param string[] $aliases
      *
@@ -101,7 +101,7 @@ interface StateInterface
     public function setStateAliases(array $aliases);
 
     /**
-     * Return the list of aliases of this state in the current stated class
+     * Return the list of aliases of this state in the current stated class.
      *
      * @return string[]
      */

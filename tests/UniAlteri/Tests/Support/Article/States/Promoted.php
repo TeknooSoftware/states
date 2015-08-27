@@ -39,5 +39,4 @@ use UniAlteri\States\States;
  */
 class Promoted extends Published
 {
-
 }

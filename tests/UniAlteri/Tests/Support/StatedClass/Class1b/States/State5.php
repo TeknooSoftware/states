@@ -24,8 +24,6 @@
 
 namespace Class1b\States;
 
-use UniAlteri\Tests\Support;
-
 /**
  * Class State5
  * Mock state file to test finder behavior with a valid state class.

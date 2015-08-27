@@ -65,7 +65,7 @@ trait FactoryTrait
     protected $statedClassName = null;
 
     /**
-     * To list full class name of states
+     * To list full class name of states.
      *
      * @var string[]
      */
@@ -271,7 +271,7 @@ trait FactoryTrait
     }
 
     /**
-     * To list full class name of states
+     * To list full class name of states.
      *
      * @return string[]
      */
@@ -292,9 +292,9 @@ trait FactoryTrait
     }
 
     /**
-     * Return the list of available alias for a state
+     * Return the list of available alias for a state.
      *
-     * @param string $loadingStateName
+     * @param string                 $loadingStateName
      * @param Loader\FinderInterface $finderLoader
      *
      * @return string

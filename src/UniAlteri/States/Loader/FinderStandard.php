@@ -219,7 +219,7 @@ class FinderStandard implements FinderInterface
     }
 
     /**
-     * To return the list of parent php classes used by a state
+     * To return the list of parent php classes used by a state.
      *
      * @param string $stateName
      *

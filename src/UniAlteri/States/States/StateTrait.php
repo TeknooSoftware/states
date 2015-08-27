@@ -106,7 +106,7 @@ trait StateTrait
         'getStatedClassName' => 'getStatedClassName',
         'setStatedClassName' => 'setStatedClassName',
         'setStateAliases' => 'setStateAliases',
-        'getStateAliases' => 'getStateAliases'
+        'getStateAliases' => 'getStateAliases',
     );
 
     /**
@@ -124,7 +124,7 @@ trait StateTrait
     protected $statedClassName;
 
     /**
-     * List of aliases of this state in the stated class
+     * List of aliases of this state in the stated class.
      *
      * @var string[]
      */
@@ -195,7 +195,7 @@ trait StateTrait
     }
 
     /**
-     * To update the list of aliases of this state in the current stated class
+     * To update the list of aliases of this state in the current stated class.
      *
      * @param string[] $aliases
      *
@@ -209,7 +209,7 @@ trait StateTrait
     }
 
     /**
-     * Return the list of aliases of this state in the current stated class
+     * Return the list of aliases of this state in the current stated class.
      *
      * @return string[]
      */

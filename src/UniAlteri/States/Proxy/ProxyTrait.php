@@ -69,7 +69,7 @@ trait ProxyTrait
     protected $activesStates = null;
 
     /**
-     * List aliases of currently enabled stated in this proxy
+     * List aliases of currently enabled stated in this proxy.
      *
      * @var string[]
      */
@@ -502,7 +502,7 @@ trait ProxyTrait
     }
 
     /**
-     * To build the aliases list of actives states
+     * To build the aliases list of actives states.
      *
      * @return ProxyInterface
      */
@@ -510,7 +510,7 @@ trait ProxyTrait
     {
         $activesStatesAlias = [];
 
-        foreach ($this->activesStates as $a=>$state) {
+        foreach ($this->activesStates as $a => $state) {
             $activesStatesAlias += $state->getStateAliases();
         }
 

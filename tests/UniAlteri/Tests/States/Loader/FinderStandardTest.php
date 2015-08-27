@@ -498,7 +498,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Check behavior of getStateParentsClassesNamesList() if the finder return all parent class of a state (including external classes)
+     * Check behavior of getStateParentsClassesNamesList() if the finder return all parent class of a state (including external classes).
      */
     public function testGetStateParentsClassesNamesList()
     {
@@ -512,7 +512,7 @@ class FinderStandardTest extends \PHPUnit_Framework_TestCase
             $this->finder->getStateParentsClassesNamesList('State5')
         );
         $this->assertEquals(
-            array('Class1\States\State5', 'Class1\States\State4b', 'UniAlteri\Tests\Support\MockState',),
+            array('Class1\States\State5', 'Class1\States\State4b', 'UniAlteri\Tests\Support\MockState'),
             $this->finder->getStateParentsClassesNamesList('State6')
         );
     }
