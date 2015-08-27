@@ -455,6 +455,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testInState()
     {
+        /**
+         * @var Proxy\ProxyInterface $proxy
+         */
         $proxy = $this->getMock(get_class($this->buildProxy()), array('listEnabledStates'), array(), '', false);
         $proxy->expects($this->any())
             ->method('listEnabledStates')
@@ -463,6 +466,13 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         $this->assertFalse($proxy->inState('hello'));
         $this->assertTrue($proxy->inState('fOo'));
+        $proxy = $this->buildProxy();
+        $this->state3->setStateAliases(array('Alias2'));
+        $this->initializeProxy('state3');
+        $this->assertFalse($proxy->inState('Alias1'));
+        $this->state3->setStateAliases(array('Alias2', 'Alias1'));
+        $proxy->switchState('state3');
+        $this->assertTrue($proxy->inState('Alias1'));
     }
 
     /**

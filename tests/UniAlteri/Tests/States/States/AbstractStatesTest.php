@@ -1172,4 +1172,26 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $statePrivateMock->setStatedClassName('Its\A\Stated\ClassNamePrivate');
         $this->assertEquals('Its\A\Stated\ClassNamePrivate', $statePrivateMock->getStatedClassName());
     }
+
+    /**
+     * To check behavior of methods getStateAliases() and setStateAliases().
+     */
+    public function testSetAndGetStateAliases()
+    {
+        $statePublicMock = $this->getPublicClassObject(false,  'My\Stated\Class');
+        $this->assertEquals(array(), $statePublicMock->getStateAliases());
+        $stateProtectedMock = $this->getProtectedClassObject(false,  'My\Stated\Class');
+        $this->assertEquals(array(), $stateProtectedMock->getStateAliases());
+        $statePrivateMock = $this->getPrivateClassObject(false,  'My\Stated\Class');
+        $this->assertEquals(array(), $statePrivateMock->getStateAliases());
+
+        $statePublicMock->setStateAliases(array('foo', 'Bar'));
+        $this->assertEquals(array('foo', 'Bar'), $statePublicMock->getStateAliases());
+
+        $stateProtectedMock->setStateAliases(array('foo'));
+        $this->assertEquals(array('foo'), $stateProtectedMock->getStateAliases());
+
+        $statePrivateMock->setStateAliases(array());
+        $this->assertEquals(array(), $statePrivateMock->getStateAliases());
+    }
 }

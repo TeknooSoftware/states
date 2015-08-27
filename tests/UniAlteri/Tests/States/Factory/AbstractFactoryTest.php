@@ -542,4 +542,33 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $proxy = $this->getFactoryObject()->build($args);
         $this->assertSame($args, $proxy->args);
     }
+
+    /**
+     * Check if the factory behavior when there are no alias
+     */
+    public function testStateAliasEmpty()
+    {
+        $factory = $this->getFactoryObject(true);
+        $factory->build();
+        $this->assertEquals(array(), $factory->getFinder()->getLastMockStateBuilt()->getStateAliases());
+    }
+
+    /**
+     * Check if the factory behavior and if it found good alias and ignore external class
+     */
+    public function testStateAlias()
+    {
+        $factory = $this->getFactoryObject(true);
+        $factory->initialize('My\Stated\Class', 'path/to/class');
+        $finderMock = $factory->getFinder();
+        $finderMock->setParentsClassesNamesList([
+            'My\Stated\Class\States\MockState1',
+            'My\Stated\Class\Alias2',
+            'My\Stated\Class\States\MockState3',
+            'Other\NameSpace\Name'
+        ]);
+        $proxy = $factory->build();
+        $factory->startup($proxy);
+        $this->assertEquals(array('MockState1', 'MockState3'), $finderMock->getLastMockStateBuilt()->getStateAliases());
+    }
 }

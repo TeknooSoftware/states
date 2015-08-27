@@ -64,6 +64,21 @@ class MockFinder implements Loader\FinderInterface
     protected $proxyLoaded = false;
 
     /**
+     * @var States\StateInterface
+     */
+    protected $lastMockState;
+
+    /**
+     * @var array
+     */
+    protected $parentsClassesNamesList = array();
+
+    /**
+     * @var string
+     */
+    protected $statedClassName;
+
+    /**
      * Initialize finder.
      *
      * @param string $statedClassName
@@ -71,6 +86,7 @@ class MockFinder implements Loader\FinderInterface
      */
     public function __construct($statedClassName, $pathString)
     {
+        $this->statedClassName = $statedClassName;
     }
 
     /**
@@ -135,7 +151,17 @@ class MockFinder implements Loader\FinderInterface
     public function buildState($stateName)
     {
         //Return a new mock state object for tests
-        return new MockState();
+        $this->lastMockState = new MockState();
+
+        return $this->lastMockState;
+    }
+
+    /**
+     * @return States\StateInterface
+     */
+    public function getLastMockStateBuilt()
+    {
+        return $this->lastMockState;
     }
 
     /**
@@ -209,6 +235,7 @@ class MockFinder implements Loader\FinderInterface
      */
     public function getStatedClassName()
     {
+        return $this->statedClassName;
     }
 
     /**
@@ -216,6 +243,17 @@ class MockFinder implements Loader\FinderInterface
      */
     public function getStateParentsClassesNamesList($stateName)
     {
-        return array();
+        return $this->parentsClassesNamesList;
+    }
+
+    /**
+     * @param array $parentsClassesNamesList
+     * @return self
+     */
+    public function setParentsClassesNamesList($parentsClassesNamesList)
+    {
+        $this->parentsClassesNamesList = $parentsClassesNamesList;
+
+        return $this;
     }
 }

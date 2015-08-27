@@ -95,6 +95,11 @@ class MockState implements States\StateInterface
     protected $privateModeEnable = false;
 
     /**
+     * @var array
+     */
+    protected $aliases = array();
+
+    /**
      * Initialize virtual state.
      */
     public function __construct($closure = null)
@@ -439,6 +444,8 @@ class MockState implements States\StateInterface
      */
     public function setStateAliases(array $aliases)
     {
+        $this->aliases = $aliases;
+
         return $this;
     }
 
@@ -447,6 +454,6 @@ class MockState implements States\StateInterface
      */
     public function getStateAliases()
     {
-        return array();
+        return $this->aliases;
     }
 }
