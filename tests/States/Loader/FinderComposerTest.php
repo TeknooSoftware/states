@@ -214,6 +214,8 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
                 'State3',
                 'State4',
                 'State4b',
+                'State5',
+                'State6',
             ),
             $states
         );
@@ -534,5 +536,36 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->fail('Error, if the state path is not readable, the Finder must throw an exception `Exception\UnReadablePath`');
+    }
+
+    /**
+     * Check behavior of getStateParentsClassesNamesList() if the finder return all parent class of a state (including external classes)
+     */
+    public function testGetStateParentsClassesNamesList()
+    {
+        $this->getClassLoaderMock()->expects($this->any())
+            ->method('loadClass')
+            ->willReturnCallback(function ($class) {
+                $parts = explode('\\', $class);
+                $state = array_pop($parts);
+
+                include_once $this->statedClass1Path.'/States/'.$state.'.php';
+
+                return true;
+            });
+
+        $this->initializeFinder('Class1', $this->statedClass1Path);
+        $this->assertEquals(
+            array('UniAlteri\Tests\Support\MockState'),
+            $this->finder->getStateParentsClassesNamesList('State4b')
+        );
+        $this->assertEquals(
+            array('Class1\States\State4b', 'UniAlteri\Tests\Support\MockState'),
+            $this->finder->getStateParentsClassesNamesList('State5')
+        );
+        $this->assertEquals(
+            array('Class1\States\State5', 'Class1\States\State4b', 'UniAlteri\Tests\Support\MockState',),
+            $this->finder->getStateParentsClassesNamesList('State6')
+        );
     }
 }

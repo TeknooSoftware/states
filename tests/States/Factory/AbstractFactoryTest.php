@@ -363,12 +363,12 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         $finderMock = new Support\MockFinder('My\Stated\Class', 'path/to/my/class');
         $finderMock->setParentsClassesNamesList([
-            'My\Stated\Class\States\Alias1',
-            'My\Stated\Class\Alias2',
-            'My\Stated\Class\States\Alias3',
+            'My\Stated\Class\States\MockState1',
+            'My\Stated\Class\MockState2',
+            'My\Stated\Class\States\MockState3',
             'Other\NameSpace\Name'
         ]);
         $this->getFactoryObject($finderMock)->build();
-        $this->assertEquals(array('Alias1', 'Alias3'), $finderMock->getLastMockStateBuilt()->getStateAliases());
+        $this->assertEquals(array('MockState1', 'MockState3'), $finderMock->getLastMockStateBuilt()->getStateAliases());
     }
 }
