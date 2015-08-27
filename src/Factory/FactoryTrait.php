@@ -270,7 +270,7 @@ trait FactoryTrait
      * @param bool $enablePrivateMode
      * @return StateInterface
      */
-    private function buildState(\string $loadingStateName, FinderInterface $finderLoader, \bool $enablePrivateMode)
+    private function buildState(\string $loadingStateName, FinderInterface $finderLoader, \bool $enablePrivateMode): StateInterface
     {
         if (!isset($this->statesInstancesList[$loadingStateName])) {
             $this->statesInstancesList[$loadingStateName] = $finderLoader->buildState(
