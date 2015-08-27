@@ -92,6 +92,8 @@ trait StateTrait
         'isPrivateMode' => 'isPrivateMode',
         'getStatedClassName' => 'getStatedClassName',
         'setStatedClassName' => 'setStatedClassName',
+        'setStateAliases' => 'setStateAliases',
+        'getStateAliases' => 'getStateAliases'
     );
 
     /**
@@ -109,14 +111,22 @@ trait StateTrait
     private $statedClassName;
 
     /**
+     * List of aliases of this state in the stated class
+     *
+     * @var string[]
+     */
+    private $stateAliases = [];
+
+    /**
      * To initialize this state
      * @param bool $privateMode
      * @param string $statedClassName
      */
-    public function __construct(\bool $privateMode, \string $statedClassName)
+    public function __construct(\bool $privateMode, \string $statedClassName, array $aliases=[])
     {
         $this->setPrivateMode($privateMode);
         $this->setStatedClassName($statedClassName);
+        $this->setStateAliases($aliases);
     }
 
     /**
@@ -157,6 +167,30 @@ trait StateTrait
         $this->statedClassName = $statedClassName;
 
         return $this;
+    }
+
+    /**
+     * To update the list of aliases of this state in the current stated class
+     *
+     * @param string[] $aliases
+     *
+     * @return StateInterface
+     */
+    public function setStateAliases(array $aliases): StateInterface
+    {
+        $this->stateAliases = $aliases;
+
+        return $this;
+    }
+
+    /**
+     * Return the list of aliases of this state in the current stated class
+     *
+     * @return string[]
+     */
+    public function getStateAliases()
+    {
+        return $this->stateAliases;
     }
 
     /**

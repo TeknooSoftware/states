@@ -79,6 +79,13 @@ trait FactoryTrait
     private $statesByClassesList;
 
     /**
+     * To list full class name of states
+     *
+     * @var string[]
+     */
+    private $fullStatesClassesNamesList;
+
+    /**
      * List of state instance already built
      *
      * @var StateInterface[]
@@ -211,6 +218,52 @@ trait FactoryTrait
     }
 
     /**
+     * To list full class name of states
+     *
+     * @return string[]
+     */
+    private function getFullStateClassNameList()
+    {
+        if (empty($this->fullStatesClassesNamesList)) {
+            $fullStateClassNameList = [];
+
+            foreach ($this->listStatesByClasses() as $stateName => $finderLoader) {
+                $className = $finderLoader->getStatedClassName() . '\\' . FinderInterface::STATES_PATH . '\\' . $stateName;
+                $fullStateClassNameList[$className] = $className;
+            }
+
+            $this->fullStatesClassesNamesList = $fullStateClassNameList;
+        }
+
+        return $this->fullStatesClassesNamesList;
+    }
+
+    /**
+     * Return the list of available alias for a state
+     *
+     * @param string $loadingStateName
+     * @param FinderInterface $finderLoader
+     *
+     * @return string
+     */
+    private function computeStateAlias(\string $loadingStateName, FinderInterface $finderLoader): array
+    {
+        $parentStateClassNameList = [];
+
+        $fullStateClassName = $this->getFullStateClassNameList();
+
+        foreach ($finderLoader->getStateParentsClassesNamesList($loadingStateName) as $className) {
+            if (isset($fullStateClassName[$className])) {
+                $classNameParts = explode('\\', $className);
+
+                $parentStateClassNameList[] = array_pop($classNameParts);
+            }
+        }
+
+        return $parentStateClassNameList;
+    }
+
+    /**
      * To store a single instance of each state instance, shared by all stated class instance
      * @param string $loadingStateName
      * @param FinderInterface $finderLoader
@@ -223,7 +276,8 @@ trait FactoryTrait
             $this->statesInstancesList[$loadingStateName] = $finderLoader->buildState(
                 $loadingStateName,
                 $enablePrivateMode,
-                $finderLoader->getStatedClassName()
+                $finderLoader->getStatedClassName(),
+                $this->computeStateAlias($loadingStateName, $finderLoader)
             );
         }
 

@@ -34,7 +34,7 @@ class StateNormal implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(\bool $privateMode, \string $statedClassName)
+    public function __construct(\bool $privateMode, \string $statedClassName, array $aliases=[])
     {
 
     }
@@ -50,6 +50,20 @@ class StateNormal implements StateInterface
      * {@inheritdoc}
      */
     public function setStatedClassName(\string $statedClassName): StateInterface
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStateAliases(array $aliases): StateInterface
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStateAliases()
     {
     }
 

@@ -23,6 +23,7 @@
 namespace UniAlteri\Tests\States\Functional;
 
 use UniAlteri\States\Loader;
+use UniAlteri\Tests\Support\Article\Article;
 
 /**
  * Class ArticleTest
@@ -166,5 +167,72 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         if (!$fail) {
             $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
+    }
+
+    public function testStatesAlias()
+    {
+        defined('DS')
+            || define('DS', DIRECTORY_SEPARATOR);
+
+        //Register demo namespace
+        $this->getLoader()->registerNamespace('\\UniAlteri\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
+
+        $article = new Article();
+        $statesList = $article->listAvailableStates();
+        sort($statesList);
+        $this->assertEquals(
+            ['Archived', 'Draft', 'Extended', 'Promoted', 'Published', 'StateDefault'],
+            $statesList
+        );
+
+        $statesList = $article->listEnabledStates();
+        sort($statesList);
+        $this->assertEquals(['Draft', 'StateDefault'], $statesList);
+        $this->assertFalse($article->inState('Archived'));
+        $this->assertTrue($article->inState('Draft'));
+        $this->assertFalse($article->inState('Extended'));
+        $this->assertFalse($article->inState('Promoted'));
+        $this->assertFalse($article->inState('Published'));
+        $this->assertTrue($article->inState('StateDefault'));
+
+        $article->switchState('Published');
+
+        $this->assertEquals(['Published'], $article->listEnabledStates());
+        $this->assertFalse($article->inState('Archived'));
+        $this->assertFalse($article->inState('Draft'));
+        $this->assertFalse($article->inState('Extended'));
+        $this->assertFalse($article->inState('Promoted'));
+        $this->assertTrue($article->inState('Published'));
+        $this->assertFalse($article->inState('StateDefault'));
+
+        $article->switchState('Promoted');
+
+        $this->assertEquals(['Promoted'], $article->listEnabledStates());
+        $this->assertFalse($article->inState('Archived'));
+        $this->assertFalse($article->inState('Draft'));
+        $this->assertFalse($article->inState('Extended'));
+        $this->assertTrue($article->inState('Promoted'));
+        $this->assertTrue($article->inState('Published'));
+        $this->assertFalse($article->inState('StateDefault'));
+
+        $article->switchState('Archived');
+
+        $this->assertEquals(['Archived'], $article->listEnabledStates());
+        $this->assertTrue($article->inState('Archived'));
+        $this->assertFalse($article->inState('Draft'));
+        $this->assertFalse($article->inState('Extended'));
+        $this->assertFalse($article->inState('Promoted'));
+        $this->assertTrue($article->inState('Published'));
+        $this->assertFalse($article->inState('StateDefault'));
+
+        $article->switchState('Extended');
+
+        $this->assertEquals(['Extended'], $article->listEnabledStates());
+        $this->assertFalse($article->inState('Archived'));
+        $this->assertFalse($article->inState('Draft'));
+        $this->assertTrue($article->inState('Extended'));
+        $this->assertTrue($article->inState('Promoted'));
+        $this->assertTrue($article->inState('Published'));
+        $this->assertFalse($article->inState('StateDefault'));
     }
 }

@@ -97,10 +97,15 @@ class MockFinderInheritance implements FinderInterface
         }
     }
 
+    public function getStateParentsClassesNamesList(\string $stateName): array
+    {
+        return [];
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function buildState(\string $stateName, \bool $privateMode, \string $statedClassName): StateInterface
+    public function buildState(\string $stateName, \bool $privateMode, \string $statedClassName, array $aliases=[]): StateInterface
     {
         //Return a new mock state object for tests
         return new MockState($privateMode, $statedClassName);

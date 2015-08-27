@@ -192,23 +192,47 @@ class FinderComposer implements FinderInterface
     }
 
     /**
+     * To return the list of parent php classes used by a state
+     *
+     * @param string $stateName
+     *
+     * @return string[]
+     *
+     * @throws Exception\UnavailableState if the required state is not available
+     */
+    public function getStateParentsClassesNamesList(\string $stateName): array
+    {
+        $classNameList = [];
+
+        //Get name of the parent class
+        $parentClassName = get_parent_class($this->loadState($stateName));
+        while (false !== $parentClassName) {
+            $classNameList[] = $parentClassName;
+            $parentClassName = get_parent_class($parentClassName);
+        }
+
+        return $classNameList;
+    }
+
+    /**
      * To load and build the required state object of the stated class.
      *
      * @param string $stateName
      * @param bool $privateMode : If it's enable, private methods are not available
      * @param string $statedClassName
+     * @param array $aliases
      *
      * @return StateInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState(\string $stateName, \bool $privateMode, \string $statedClassName): StateInterface
+    public function buildState(\string $stateName, \bool $privateMode, \string $statedClassName, array $aliases=[]): StateInterface
     {
         //Load the state class if it is not already done
         $stateClassName = $this->loadState($stateName);
 
-        $stateObject = new $stateClassName($privateMode, $statedClassName);
+        $stateObject = new $stateClassName($privateMode, $statedClassName, $aliases);
         if (!$stateObject instanceof StateInterface) {
             throw new Exception\IllegalState(
                 sprintf(

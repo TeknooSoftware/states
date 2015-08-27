@@ -102,9 +102,10 @@ class MockState implements StateInterface
      * Initialize virtual state.
      * @param bool $privateMode
      * @param string $statedClassName
+     * @param array $aliases
      * @param \Closure $closure
      */
-    public function __construct(\bool $privateMode, \string $statedClassName, $closure = null)
+    public function __construct(\bool $privateMode, \string $statedClassName, array $aliases=[], $closure = null)
     {
         $this->setPrivateMode($privateMode)
             ->setStatedClassName($statedClassName);
@@ -356,6 +357,19 @@ class MockState implements StateInterface
         $this->statedClassName = $statedClassName;
 
         return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStateAliases(array $aliases): StateInterface
+    {
+        return $this;
+    }
+
+    public function getStateAliases()
+    {
+        return [];
     }
 
     /**
