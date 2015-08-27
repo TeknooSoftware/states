@@ -208,4 +208,12 @@ class MockFinderInheritance implements Loader\FinderInterface
     public function getStatedClassName()
     {
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStateParentsClassesNamesList($stateName)
+    {
+        return array();
+    }
 }

@@ -219,6 +219,29 @@ class FinderStandard implements FinderInterface
     }
 
     /**
+     * To return the list of parent php classes used by a state
+     *
+     * @param string $stateName
+     *
+     * @return string[]
+     *
+     * @throws Exception\UnavailableState if the required state is not available
+     */
+    public function getStateParentsClassesNamesList($stateName)
+    {
+        $classNameList = [];
+
+        //Get name of the parent class
+        $parentClassName = get_parent_class($this->loadState($stateName));
+        while (false !== $parentClassName) {
+            $classNameList[] = $parentClassName;
+            $parentClassName = get_parent_class($parentClassName);
+        }
+
+        return $classNameList;
+    }
+
+    /**
      * To load and build the required state object of the stated class.
      *
      * @param string $stateName

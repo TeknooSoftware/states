@@ -92,6 +92,22 @@ interface StateInterface
     public function setStatedClassName($statedClassName);
 
     /**
+     * To update the list of aliases of this state in the current stated class
+     *
+     * @param string[] $aliases
+     *
+     * @return StateInterface
+     */
+    public function setStateAliases(array $aliases);
+
+    /**
+     * Return the list of aliases of this state in the current stated class
+     *
+     * @return string[]
+     */
+    public function getStateAliases();
+
+    /**
      * To know if the mode Private is enabled : private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable.

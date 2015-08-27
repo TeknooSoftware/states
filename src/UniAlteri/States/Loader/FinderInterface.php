@@ -111,6 +111,17 @@ interface FinderInterface
     public function loadState($stateName);
 
     /**
+     * To return the list of parent php classes used by a state
+     *
+     * @param string $stateName
+     *
+     * @return string[]
+     *
+     * @throws Exception\UnavailableState if the required state is not available
+     */
+    public function getStateParentsClassesNamesList($stateName);
+
+    /**
      * To load and build the required state object of the stated class.
      *
      * @param string $stateName

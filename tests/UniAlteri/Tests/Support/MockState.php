@@ -433,4 +433,20 @@ class MockState implements States\StateInterface
     {
         return $this->{$methodName}();
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function setStateAliases(array $aliases)
+    {
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStateAliases()
+    {
+        return array();
+    }
 }

@@ -52,6 +52,20 @@ class StateNormal implements StateInterface
     }
 
     /**
+     * {@inheritdoc}
+     */
+    public function setStateAliases(array $aliases)
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getStateAliases()
+    {
+    }
+
+    /**
      * To know if the mode Private is enabled : private method are only accessible from
      * method present in the same stated class and not from methods of children of this class.
      * By default this mode is disable.

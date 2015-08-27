@@ -69,6 +69,13 @@ trait ProxyTrait
     protected $activesStates = null;
 
     /**
+     * List aliases of currently enabled stated in this proxy
+     *
+     * @var string[]
+     */
+    protected $activesStatesAlias = array();
+
+    /**
      * List of available states for this stated class instance.
      *
      * @var \ArrayObject|States\States\StateInterface[]
@@ -495,6 +502,25 @@ trait ProxyTrait
     }
 
     /**
+     * To build the aliases list of actives states
+     *
+     * @return ProxyInterface
+     */
+    protected function buildAliasesListOfActivesStates()
+    {
+        $activesStatesAlias = [];
+
+        foreach ($this->activesStates as $a=>$state) {
+            $activesStatesAlias += $state->getStateAliases();
+        }
+
+        $activesStatesAlias = array_map('strtolower', $activesStatesAlias);
+        $this->activesStatesAlias = array_combine($activesStatesAlias, $activesStatesAlias);
+
+        return $this;
+    }
+
+    /**
      * To disable all actives states and enable the required states.
      *
      * @param string $stateName
@@ -510,6 +536,8 @@ trait ProxyTrait
 
         $this->disableAllStates();
         $this->enableState($stateName);
+
+        $this->buildAliasesListOfActivesStates();
 
         return $this;
     }
@@ -531,6 +559,7 @@ trait ProxyTrait
 
         if (isset($this->states[$stateName])) {
             $this->activesStates[$stateName] = $this->states[$stateName];
+            $this->buildAliasesListOfActivesStates();
         } else {
             throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
@@ -555,6 +584,7 @@ trait ProxyTrait
 
         if (isset($this->activesStates[$stateName])) {
             unset($this->activesStates[$stateName]);
+            $this->buildAliasesListOfActivesStates();
         } else {
             throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
@@ -570,6 +600,8 @@ trait ProxyTrait
     public function disableAllStates()
     {
         $this->activesStates = new \ArrayObject();
+
+        $this->buildAliasesListOfActivesStates();
 
         return $this;
     }
@@ -627,7 +659,7 @@ trait ProxyTrait
                 array_map('strtolower', $enabledStatesList)
             );
 
-            return isset($enabledStatesList[$stateName]);
+            return isset($enabledStatesList[$stateName]) || isset($this->activesStatesAlias[$stateName]);
         } else {
             return false;
         }
