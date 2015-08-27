@@ -24,6 +24,7 @@ namespace UniAlteri\States\Factory;
 
 use UniAlteri\States\Loader\FinderInterface;
 use UniAlteri\States\Proxy\ProxyInterface;
+use UniAlteri\States\State\StateInterface;
 
 /**
  * Trait FactoryTrait
@@ -76,6 +77,13 @@ trait FactoryTrait
      * @var \ArrayObject
      */
     private $statesByClassesList;
+
+    /**
+     * List of state instance already built
+     *
+     * @var StateInterface[]
+     */
+    private $statesInstancesList = [];
 
     /**
      * Initialize factory
@@ -203,6 +211,26 @@ trait FactoryTrait
     }
 
     /**
+     * To store a single instance of each state instance, shared by all stated class instance
+     * @param string $loadingStateName
+     * @param FinderInterface $finderLoader
+     * @param bool $enablePrivateMode
+     * @return StateInterface
+     */
+    private function buildState(\string $loadingStateName, FinderInterface $finderLoader, \bool $enablePrivateMode)
+    {
+        if (!isset($this->statesInstancesList[$loadingStateName])) {
+            $this->statesInstancesList[$loadingStateName] = $finderLoader->buildState(
+                $loadingStateName,
+                $enablePrivateMode,
+                $finderLoader->getStatedClassName()
+            );
+        }
+
+        return $this->statesInstancesList[$loadingStateName];
+    }
+
+    /**
      * To initialize a proxy object with its states. States are fetched by the finder of this stated class.
      *
      * @param ProxyInterface $proxyObject
@@ -235,12 +263,12 @@ trait FactoryTrait
         //Load each state into proxy
         foreach ($statesList as $loadingStateName => $finderLoader) {
             //Create new state object by the finder
-            $stateObject = $finderLoader->buildState(
+            $stateObject = $this->buildState(
                 $loadingStateName,
-                ($finderLoader !== $mainFinder), //If the finder linked to this state is not this factory's finder
+                $finderLoader,
+                ($finderLoader !== $mainFinder) //If the finder linked to this state is not this factory's finder
                                                  // = finder come from another factory
                                                  // = state must be used in private mode
-                $finderLoader->getStatedClassName()
             );
 
             //Add the state in the proxy
