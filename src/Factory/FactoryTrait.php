@@ -24,7 +24,6 @@ namespace UniAlteri\States\Factory;
 
 use UniAlteri\States\Loader\FinderInterface;
 use UniAlteri\States\Proxy\ProxyInterface;
-use UniAlteri\States\State\StateInterface;
 
 /**
  * Trait FactoryTrait
@@ -88,7 +87,7 @@ trait FactoryTrait
     /**
      * List of state instance already built
      *
-     * @var StateInterface[]
+     * @var \UniAlteri\States\State\StateInterface[]
      */
     private $statesInstancesList = [];
 
@@ -268,9 +267,9 @@ trait FactoryTrait
      * @param string $loadingStateName
      * @param FinderInterface $finderLoader
      * @param bool $enablePrivateMode
-     * @return StateInterface
+     * @return \UniAlteri\States\State\StateInterface
      */
-    private function buildState(\string $loadingStateName, FinderInterface $finderLoader, \bool $enablePrivateMode): StateInterface
+    private function buildState(\string $loadingStateName, FinderInterface $finderLoader, \bool $enablePrivateMode)
     {
         if (!isset($this->statesInstancesList[$loadingStateName])) {
             $this->statesInstancesList[$loadingStateName] = $finderLoader->buildState(
