@@ -46,30 +46,33 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      *
      * @param bool   $privateMode
      * @param string $statedClassName
+     * @param array $aliases
      *
      * @return Support\MockOnlyPublic
      */
-    abstract protected function getPublicClassObject(\bool $privateMode, \string $statedClassName);
+    abstract protected function getPublicClassObject(\bool $privateMode, \string $statedClassName, array $aliases=[]);
 
     /**
      * Build a basic object to provide only protected methods.
      *
      * @param bool   $privateMode
      * @param string $statedClassName
+     * @param array $aliases
      *
      * @return Support\MockOnlyProtected
      */
-    abstract protected function getProtectedClassObject(\bool $privateMode, \string $statedClassName);
+    abstract protected function getProtectedClassObject(\bool $privateMode, \string $statedClassName, array $aliases=[]);
 
     /**
      * Build a basic object to provide only private methods.
      *
      * @param bool   $privateMode
      * @param string $statedClassName
+     * @param array $aliases
      *
      * @return Support\MockOnlyPrivate
      */
-    abstract protected function getPrivateClassObject(\bool $privateMode, \string $statedClassName);
+    abstract protected function getPrivateClassObject(\bool $privateMode, \string $statedClassName, array $aliases=[]);
 
     /**
      * Build a virtual proxy for test.
@@ -1015,5 +1018,29 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $statePrivateMock->setStatedClassName('Its\A\Stated\ClassNamePrivate');
         $this->assertEquals('Its\A\Stated\ClassNamePrivate', $statePrivateMock->getStatedClassName());
+    }
+
+    /**
+     * To check behavior of methods getStateAliases() and setStateAliases().
+     */
+    public function testSetAndGetStateAliases()
+    {
+        $statePublicMock = $this->getPublicClassObject(false,  'My\Stated\Class');
+        $this->assertEquals(array(), $statePublicMock->getStateAliases());
+        $stateProtectedMock = $this->getProtectedClassObject(false,  'My\Stated\Class');
+        $this->assertEquals(array(), $stateProtectedMock->getStateAliases());
+        $statePrivateMock = $this->getPrivateClassObject(false,  'My\Stated\Class');
+        $this->assertEquals(array(), $statePrivateMock->getStateAliases());
+        $statePrivateMock = $this->getPrivateClassObject(false,  'My\Stated\Class', array('Hello', 'World'));
+        $this->assertEquals(array('Hello', 'World'), $statePrivateMock->getStateAliases());
+
+        $statePublicMock->setStateAliases(array('foo', 'Bar'));
+        $this->assertEquals(array('foo', 'Bar'), $statePublicMock->getStateAliases());
+
+        $stateProtectedMock->setStateAliases(array('foo'));
+        $this->assertEquals(array('foo'), $stateProtectedMock->getStateAliases());
+
+        $statePrivateMock->setStateAliases(array());
+        $this->assertEquals(array(), $statePrivateMock->getStateAliases());
     }
 }

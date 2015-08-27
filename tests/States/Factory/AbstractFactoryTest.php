@@ -279,6 +279,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     {
         Support\MockFinder::$ignoreDefaultState = true;
         $proxy = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->build();
+        $statesList = $proxy->getStatesList();
+        $this->assertEquals(array(), reset($statesList)->getStateAliases());
         $this->assertEmpty($proxy->listEnabledStates());
     }
 
@@ -303,6 +305,8 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
     public function testListAvailableState()
     {
         $proxy = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->build();
+        $statesList = $proxy->getStatesList();
+        $this->assertEquals(array(), reset($statesList)->getStateAliases());
         $this->assertEquals(
             array(
                 'MockState1',
@@ -340,5 +344,31 @@ abstract class AbstractFactoryTest extends \PHPUnit_Framework_TestCase
         $args = array('foo' => 'bar');
         $proxy = $this->getFactoryObject(new Support\MockFinder('My\Stated\Class', 'path/to/my/class'))->build($args);
         $this->assertSame($args, $proxy->args);
+    }
+
+    /**
+     * Check if the factory behavior when there are no alias
+     */
+    public function testStateAliasEmpty()
+    {
+        $finderMock = new Support\MockFinder('My\Stated\Class', 'path/to/my/class');
+        $this->getFactoryObject($finderMock)->build();
+        $this->assertEquals(array(), $finderMock->getLastMockStateBuilt()->getStateAliases());
+    }
+
+    /**
+     * Check if the factory behavior and if it found good alias and ignore external class
+     */
+    public function testStateAlias()
+    {
+        $finderMock = new Support\MockFinder('My\Stated\Class', 'path/to/my/class');
+        $finderMock->setParentsClassesNamesList([
+            'My\Stated\Class\States\Alias1',
+            'My\Stated\Class\Alias2',
+            'My\Stated\Class\States\Alias3',
+            'Other\NameSpace\Name'
+        ]);
+        $this->getFactoryObject($finderMock)->build();
+        $this->assertEquals(array('Alias1', 'Alias3'), $finderMock->getLastMockStateBuilt()->getStateAliases());
     }
 }
