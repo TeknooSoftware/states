@@ -50,7 +50,9 @@ The method `build` can be used to create a new instance of your stated class, li
 classes. Another way is provided with the integrated factory (described in the section Integrated proxy and Integrated factory).
 
 ###Proxy
-The proxy is the central component of each stated class : The proxy instance represents the instance of your stated class.
+The proxy, called `Context` in the state pattern, is the central component of each stated class : 
+The proxy instance represents the instance of your stated class. It manages states and decide which states to execute calls.
+
 All your states are registered into each proxy by the factory. The proxy manages also these states and allow you to
 enable, disable or switch between your states.
 

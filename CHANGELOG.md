@@ -1,6 +1,6 @@
 #Uni Alteri - States library - Change Log
 
-##[1.2.0-beta7] - 2015-07-27
+##[1.2.0-beta7] - 2015-08-28
 ###Notes
 - 1.2.0-RC is planned for september, final version 1st october 2015
 
@@ -10,7 +10,7 @@
 ###Fixed
 - Update Documentation
 
-##[2.0.0-beta10] - 2015-08-16 - Available on the branch "next"
+##[2.0.0-beta10] - 2015-08-28 - Available on the branch "next"
 ###Notes
 - 2.0.0-RC1 is planned for september, last RC for the PHP7 release, stable version when XDebug will be compliant with PHP7.
 
