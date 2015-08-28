@@ -10,7 +10,7 @@
 ###Fixed
 - Update Documentation
 
-##[2.0.0-beta10] - 2015-08-28 - Available on the branch "next"
+##[2.0.0-beta11] - 2015-08-16 - Available on the branch "next"
 ###Notes
 - 2.0.0-RC1 is planned for september, last RC for the PHP7 release, stable version when XDebug will be compliant with PHP7.
 
@@ -18,6 +18,8 @@
 - States in a stated class can has aliases by using inheritance.
 - Optimize Factory to create only state instance by stated class.
 
+
+##[2.0.0-beta10] - 2015-08-16 - Available on the branch "next"
 ###Fixed
 - Update Documentation
 
