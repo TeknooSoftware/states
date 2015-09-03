@@ -36,6 +36,13 @@ use UniAlteri\Tests\Support;
  * @license     http://teknoo.it/license/mit         MIT License
  * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
+ * @covers UniAlteri\States\Proxy\ProxyTrait
+ * @covers UniAlteri\States\Proxy\Standard
+ * @covers UniAlteri\States\Proxy\ArrayAccessTrait
+ * @covers UniAlteri\States\Proxy\IteratorTrait
+ * @covers UniAlteri\States\Proxy\MagicCallTrait
+ * @covers UniAlteri\States\Proxy\SerializableTrait
  */
 class StandardTest extends AbstractProxyTest
 {

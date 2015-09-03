@@ -37,6 +37,8 @@ use UniAlteri\States\Exception\ClassNotFound;
  * @license     http://teknoo.it/license/mit         MIT License
  * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ *
+ * @covers UniAlteri\States\Command\Parser\Proxy
  */
 class ProxyTest extends \PHPUnit_Framework_TestCase
 {
