@@ -136,6 +136,17 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Developers can register several namespace with several locations into the loader to accelerate the loading process
+     * If the location is invalid, loader must throws exception.
+     * @expectedException \TypeError
+     */
+    public function testRegisterNamespaceBadName()
+    {
+        $loader = $this->initializeLoader();
+        $loader->registerNamespace('badNamespace', array());
+    }
+
+    /**
      * Test behavior of the loader when it cannot found and load the required class : it must return false
      * and give the hand to another loader.
      */

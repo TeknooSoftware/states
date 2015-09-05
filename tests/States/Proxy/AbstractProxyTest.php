@@ -111,6 +111,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
+     * @expectedException \TypeError
+     */
+    public function testRegisterStateInvalidName()
+    {
+        $this->proxy->registerState(array(), $this->state1);
+    }
+
+    /**
+     * Proxy must throw an exception if the registering state name is not a valid string.
      */
     public function testRegisterStateBadName()
     {
@@ -132,6 +141,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->registerState('state1', $this->state1);
         $this->assertEquals(array('state1'), $this->proxy->listAvailableStates());
+    }
+
+    /**
+     * Proxy must throw an exception if the state name is not a valid string.
+     * @expectedException \TypeError
+     */
+    public function testUnRegisterStateInvalidName()
+    {
+        $this->proxy->unregisterState(array());
     }
 
     /**
@@ -173,6 +191,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Proxy must throw an exception if the state name is not a valid string in switch state method.
+     * @expectedException \TypeError
+     */
+    public function testSwitchStateInvalidName()
+    {
+        $this->proxy->switchState(array());
+    }
+
+    /**
      * Proxy must throw an exception if the state does not exist in switch state method.
      */
     public function testSwitchStateNonExistentName()
@@ -209,6 +236,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Proxy must throw an exception if the state name is not a valid string when we want enable a state.
+     * @expectedException \TypeError
+     */
+    public function testEnableStateInvalidName()
+    {
+        $this->proxy->enableState(array());
+    }
+
+    /**
      * Proxy must throw an exception if the state is not available when we want enable a state.
      */
     public function testEnableStateNonExistentName()
@@ -242,6 +278,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy();
         $this->proxy->enableState('state2');
         $this->assertEquals(array('state1', 'state2'), $this->proxy->listEnabledStates());
+    }
+
+    /**
+     * Proxy must throw an exception if the state name is not a valid string when we want disable a state.
+     * @expectedException \TypeError
+     */
+    public function testDisableStateInvalidName()
+    {
+        $this->proxy->disableState(array());
     }
 
     /**
@@ -402,6 +447,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->state3->setStateAliases(array('Alias2', 'Alias1'));
         $proxy->switchState('state3');
         $this->assertTrue($proxy->inState('Alias1'));
+    }
+
+    /**
+     * Test proxy behavior when the called method name is not a string.
+     * @expectedException \TypeError
+     */
+    public function testCallInvalidName()
+    {
+        $this->proxy->__call(array(), array());
     }
 
     /**
