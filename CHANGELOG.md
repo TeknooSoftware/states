@@ -1,5 +1,14 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta12] - 2015-09-05 - Available on the branch "next"
+###Added
+- Some tests to check \TypeError
+
+
+###Changed
+- Change composer restriction to use last phpunit
+
+
 ##[1.2.0-beta7] - 2015-08-28
 ###Notes
 - 1.2.0-RC is planned for september, final version 1st october 2015
