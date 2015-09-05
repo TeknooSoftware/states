@@ -53,6 +53,15 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * The startup factory must throw an exception when the proxy does not implement the proxy interface.
+     * @expectedException \TypeError
+     */
+    public function testForwardStartupInvalidProxy()
+    {
+        Factory\StandardStartupFactory::forwardStartup(new \stdClass());
+    }
+
+    /**
      * The startup factory must throw an exception when the proxy cannot be initialized.
      */
     public function testForwardStartupProxyNotInitialized()
@@ -77,6 +86,22 @@ class StandardStartupFactoryTest extends \PHPUnit_Framework_TestCase
         $proxy = new Support\MockProxy(null);
         Factory\StandardStartupFactory::forwardStartup($proxy);
         $this->assertSame($factory->getStartupProxy(), $proxy);
+    }
+
+    /**
+     * The startup factory class must throw an exception when the identifier is not a valid string.
+     * @expectedException \TypeError
+     */
+    public function testRegisterFactoryInvalidIdentifier()
+    {
+        Factory\StandardStartupFactory::registerFactory(
+            array(),
+            new Support\MockFactory(
+                '',
+                new Support\MockFinder('', ''),
+                new \ArrayObject()
+            )
+        );
     }
 
     /**

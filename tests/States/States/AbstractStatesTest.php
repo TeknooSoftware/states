@@ -30,7 +30,7 @@ use UniAlteri\Tests\Support;
 /**
  * Class AbstractStatesTest
  * Set of tests to test the excepted behaviors of all implementations of \UniAlteri\States\State\StateInterface *.
- *
+
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
@@ -126,6 +126,17 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+
+
+    /**
+     * Test if exception when the name is not a valid string.
+     * @expectedException \TypeError
+     */
+    public function testGetBadNameMethodDescription()
+    {
+        $this->getPublicClassObject()->getMethodDescription(array());
+    }
+
     /**
      * Test if exception when we get a description of a non-existent method.
      */
@@ -183,6 +194,14 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $this->assertSame('Standard Method 1.', $this->formatDescription($this->getPublicClassObject(false,  'My\Stated\Class')->getMethodDescription('standardMethod1')));
         $this->assertSame('Final Method 2.', $this->formatDescription($this->getPublicClassObject(false,  'My\Stated\Class')->getMethodDescription('finalMethod2')));
+    }
+
+    /**
+     * @expectedException \TypeError
+     */
+    public function testTestMethodExceptionWithInvalidName()
+    {
+        $this->getPublicClassObject()->testMethod(array());
     }
 
     public function testTestMethodExceptionWithInvalidScope()
@@ -462,6 +481,15 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if the method is static');
+    }
+
+    /**
+     * Test exception through by state if the name is invalid.
+     * @expectedException \TypeError
+     */
+    public function testGetClosureWithInvalidName()
+    {
+        $this->getPublicClassObject()->getClosure(array(), $this->getMockProxy());
     }
 
     /**

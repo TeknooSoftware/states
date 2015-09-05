@@ -562,6 +562,25 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test the proxy behavior when the method name is not a valid string when we want its description.
+     * @expectedException \TypeError
+     */
+    public function testGetMethodDescriptionInvalidName()
+    {
+        $this->proxy->getMethodDescription(array());
+    }
+
+    /**
+     * Test the proxy behavior when hen we want a description of a method and the required state name is not a string.
+     * @expectedException \TypeError
+     */
+    public function testGetMethodDescriptionInvalidStateName()
+    {
+        $this->initializeProxy('state1', true);
+        $this->proxy->getMethodDescription('method1', array());
+    }
+
+    /**
      * Test the proxy behavior when hen we want a description of a method and the required state does not exist.
      */
     public function testGetMethodDescriptionInvalidState()
