@@ -4,7 +4,7 @@
     "description": "Library to create PHP classes following the State pattern and to create easily and cleanly classes with several states, written in distinct codes blocks with PHP 7+.",
     "keywords": ["states","class","state pattern","pattern","behavioral software design pattern"],
     "homepage": "http://teknoo.it/states",
-    "license": ["MIT","GPL-3.0+"],
+    "license": ["MIT"],
     "authors": [
         {
             "name": "Richard Déloge",

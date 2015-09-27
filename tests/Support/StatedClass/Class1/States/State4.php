@@ -16,7 +16,6 @@
  * @link        http://teknoo.it/states Project website
  *
  * @license     http://teknoo.it/license/mit         MIT License
- * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  * Mock state file to test finder behavior with a valid state class
@@ -35,7 +34,6 @@ use UniAlteri\Tests\Support;
  * @link        http://teknoo.it/states Project website
  *
  * @license     http://teknoo.it/license/mit         MIT License
- * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class State4 extends Support\MockState

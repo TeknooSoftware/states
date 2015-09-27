@@ -16,7 +16,6 @@
  * @link        http://teknoo.it/states Project website
  *
  * @license     http://teknoo.it/license/mit         MIT License
- * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 if (!function_exists('testGetMethodDescriptionFromFunctionPrivate')) {
@@ -29,7 +28,6 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPrivate')) {
      * @link        http://teknoo.it/states Project website
      *
      * @license     http://teknoo.it/license/mit         MIT License
-     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testGetMethodDescriptionFromFunctionPrivate()
@@ -50,7 +48,6 @@ if (!function_exists('testGetMethodDescriptionFromFunctionProtected')) {
      * @link        http://teknoo.it/states Project website
      *
      * @license     http://teknoo.it/license/mit         MIT License
-     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testGetMethodDescriptionFromFunctionProtected()
@@ -71,7 +68,6 @@ if (!function_exists('testGetMethodDescriptionFromFunctionPublic')) {
      * @link        http://teknoo.it/states Project website
      *
      * @license     http://teknoo.it/license/mit         MIT License
-     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      *
      * @return \ReflectionMethod *
@@ -94,7 +90,6 @@ if (!trait_exists('testGetMethodDescriptionTrait')) {
      * @link        http://teknoo.it/states Project website
      *
      * @license     http://teknoo.it/license/mit         MIT License
-     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     trait testGetMethodDescriptionTrait
@@ -153,7 +148,6 @@ if (!class_exists('testGetMethodDescriptionFromOtherObject')) {
      * @link        http://teknoo.it/states Project website
      *
      * @license     http://teknoo.it/license/mit         MIT License
-     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     class testGetMethodDescriptionFromOtherObject

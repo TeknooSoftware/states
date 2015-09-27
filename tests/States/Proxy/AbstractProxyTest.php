@@ -16,7 +16,6 @@
  * @link        http://teknoo.it/states Project website
  *
  * @license     http://teknoo.it/license/mit         MIT License
- * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
@@ -38,7 +37,6 @@ use UniAlteri\Tests\Support;
  * @link        http://teknoo.it/states Project website
  *
  * @license     http://teknoo.it/license/mit         MIT License
- * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
@@ -111,6 +109,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
+     *
      * @expectedException \TypeError
      */
     public function testRegisterStateInvalidName()
@@ -145,6 +144,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state name is not a valid string.
+     *
      * @expectedException \TypeError
      */
     public function testUnRegisterStateInvalidName()
@@ -192,6 +192,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state name is not a valid string in switch state method.
+     *
      * @expectedException \TypeError
      */
     public function testSwitchStateInvalidName()
@@ -237,6 +238,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state name is not a valid string when we want enable a state.
+     *
      * @expectedException \TypeError
      */
     public function testEnableStateInvalidName()
@@ -282,6 +284,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state name is not a valid string when we want disable a state.
+     *
      * @expectedException \TypeError
      */
     public function testDisableStateInvalidName()
@@ -429,7 +432,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testInState()
     {
-        /**
+        /*
          * @var Proxy\ProxyInterface
          */
         $proxy = $this->getMock(get_class($this->buildProxy()), array('listEnabledStates'), array(), '', false);
@@ -451,6 +454,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test proxy behavior when the called method name is not a string.
+     *
      * @expectedException \TypeError
      */
     public function testCallInvalidName()
@@ -617,6 +621,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the proxy behavior when the method name is not a valid string when we want its description.
+     *
      * @expectedException \TypeError
      */
     public function testGetMethodDescriptionInvalidName()
@@ -626,6 +631,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the proxy behavior when hen we want a description of a method and the required state name is not a string.
+     *
      * @expectedException \TypeError
      */
     public function testGetMethodDescriptionInvalidStateName()

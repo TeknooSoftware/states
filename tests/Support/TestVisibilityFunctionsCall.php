@@ -16,7 +16,6 @@
  * @link        http://teknoo.it/states Project website
  *
  * @license     http://teknoo.it/license/mit         MIT License
- * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 if (!function_exists('testCallFromFunctionPrivate')) {
@@ -29,7 +28,6 @@ if (!function_exists('testCallFromFunctionPrivate')) {
      * @link        http://teknoo.it/states Project website
      *
      * @license     http://teknoo.it/license/mit         MIT License
-     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testCallFromFunctionPrivate()
@@ -49,7 +47,6 @@ if (!function_exists('testCallFromFunctionProtected')) {
      * @link        http://teknoo.it/states Project website
      *
      * @license     http://teknoo.it/license/mit         MIT License
-     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testCallFromFunctionProtected()
@@ -69,7 +66,6 @@ if (!function_exists('testCallFromFunctionPublic')) {
      * @link        http://teknoo.it/states Project website
      *
      * @license     http://teknoo.it/license/mit         MIT License
-     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      *
      * @return mixed
@@ -92,7 +88,6 @@ if (!trait_exists('testCallTrait')) {
      * @link        http://teknoo.it/states Project website
      *
      * @license     http://teknoo.it/license/mit         MIT License
-     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     trait testCallTrait
@@ -151,7 +146,6 @@ if (!class_exists('testCallFromOtherObject')) {
      * @link        http://teknoo.it/states Project website
      *
      * @license     http://teknoo.it/license/mit         MIT License
-     * @license     http://teknoo.it/license/gpl-3.0     GPL v3 License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     class testCallFromOtherObject
