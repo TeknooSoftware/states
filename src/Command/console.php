@@ -34,7 +34,8 @@ require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'bootstrap.php';
 $fileSystemFactory = function ($directory) {
     return new Filesystem(
         new Local(
-            realpath($directory)
+            $directory,
+            true
         )
     );
 };

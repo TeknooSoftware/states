@@ -22,7 +22,7 @@
 namespace UniAlteri\States;
 
 //Use composer has default auto loader
-$composerFile = __DIR__.'/../../vendor/autoload.php';
+$composerFile = __DIR__.'/../../../../vendor/autoload.php';
 if (!file_exists($composerFile)) {
     $composerFile = __DIR__.'/../vendor/autoload.php';
 }

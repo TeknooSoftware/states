@@ -1,5 +1,13 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta13] - 2015-09-28 - Available on the branch "next"
+###Removed
+- GPL 3 license, keep only MIT license
+
+###Fixed
+- Bootstrap bug to find the composer autoloader file
+- CLI issues
+
 ##[1.2.0-rc1] - 2015-09-13
 ###Changed
 - First RC released

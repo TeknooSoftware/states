@@ -56,6 +56,11 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
     protected $state;
 
     /**
+     * @var string
+     */
+    protected $pathCalled;
+
+    /**
      * @return \PHPUnit_Framework_MockObject_MockObject|Factory
      */
     protected function buildFactoryMock()
@@ -117,6 +122,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
         return new ClassCreate(
             null,
             function ($service, $destinationPath) {
+                $this->pathCalled = $destinationPath;
                 switch ($service) {
                     case 'Writer\Factory':
                         return $this->buildFactoryMock();
@@ -175,6 +181,8 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
 
         $command = $this->buildCommand();
         $command->run($input, $output);
+
+        $this->assertEquals('path/to/class/vendor/project/package/fooBar', $this->pathCalled);
     }
 
     public function testCreateIntegratedClass()
@@ -217,5 +225,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
 
         $command = $this->buildCommand();
         $command->run($input, $output);
+
+        $this->assertEquals('path/to/class/vendor/project/package/fooBar', $this->pathCalled);
     }
 }

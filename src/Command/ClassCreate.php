@@ -25,6 +25,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
+use UniAlteri\States\Proxy\ProxyInterface;
 
 /**
   * Class ClassCreate
@@ -98,6 +99,8 @@ use Symfony\Component\Console\Output\OutputInterface;
          $className = array_pop($fullClassNameExploded);
          $namespace = implode('\\', $fullClassNameExploded);
 
+         $destinationPath .= DIRECTORY_SEPARATOR.trim(str_replace('\\', '/', $fullClassName), '/');
+
          $proxyWriter = $this->createWriter('Writer\Proxy', $destinationPath);
          if (true === $integrated) {
              $proxyWriter->createIntegratedProxy($className, $namespace);
@@ -112,6 +115,7 @@ use Symfony\Component\Console\Output\OutputInterface;
              $factoryWriter->createStandardFactory($className, $namespace);
          }
 
-         $this->createWriter('Writer\State', $destinationPath);
+         $stateWriter = $this->createWriter('Writer\State', $destinationPath);
+         $stateWriter->createState($className, $namespace, ProxyInterface::DEFAULT_STATE_NAME);
      }
  }
