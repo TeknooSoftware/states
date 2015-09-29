@@ -52,7 +52,7 @@ use UniAlteri\States\Loader\FinderInterface;
 
 namespace $namespace\\$className\\States;
 
-use UniAlteri\\States\\States;
+use UniAlteri\\States\\State\\AbstractState;
 
 /**
  * State $stateName
@@ -61,7 +61,7 @@ use UniAlteri\\States\\States;
  * @package     $namespace
  * @subpackage  States
  */
-class $stateName extends States\\AbstractState
+class $stateName extends AbstractState
 {
 }
 EOF;

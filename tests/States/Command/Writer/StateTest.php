@@ -80,8 +80,8 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 function ($file, $code) {
                     $this->assertEquals('States/helloWorld.php', $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\States;'));
-                    $this->assertNotFalse(strpos($code, 'class helloWorld extends States\\AbstractState'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\State\\AbstractState;'));
+                    $this->assertNotFalse(strpos($code, 'class helloWorld extends AbstractState'));
 
                     return 10;
                 }
@@ -100,8 +100,8 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 function ($file, $code) {
                     $this->assertEquals('States/helloWorld.php', $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\States;'));
-                    $this->assertNotFalse(strpos($code, 'class helloWorld extends States\\AbstractState'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\State\\AbstractState;'));
+                    $this->assertNotFalse(strpos($code, 'class helloWorld extends AbstractState'));
 
                     return 0;
                 }
@@ -120,8 +120,8 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 function ($file, $code) {
                     $this->assertEquals('States/helloWorld.php', $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\States;'));
-                    $this->assertNotFalse(strpos($code, 'class helloWorld extends States\\AbstractState'));
+                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\State\\AbstractState;'));
+                    $this->assertNotFalse(strpos($code, 'class helloWorld extends AbstractState'));
 
                     return 10;
                 }
