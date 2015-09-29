@@ -57,9 +57,6 @@ use UniAlteri\\States\\State\\AbstractState;
 /**
  * State $stateName
  * State for the stated class $className
- *
- * @package     $namespace
- * @subpackage  States
  */
 class $stateName extends AbstractState
 {

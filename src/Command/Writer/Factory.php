@@ -66,8 +66,6 @@ use $factoryExtendsNamespace;
 /**
  * Class Factory
  * Factory of the stated class $className
- *
- * @package     $namespace
  */
 class $factoryClassName extends $factoryExtendsClassName
 {

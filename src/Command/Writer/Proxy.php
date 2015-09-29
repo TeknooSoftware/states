@@ -60,8 +60,6 @@ use UniAlteri\\States\\Proxy;
 /**
  * Proxy $className
  * Proxy class of the stated class $className
- *
- * @package     $namespace
  */
 class $className extends $proxyClassName
 {
