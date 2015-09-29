@@ -157,7 +157,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
             ->willReturnMap(
                 [
                     ['mode', 'standard'],
-                    ['path', 'path/to/class'],
+                    ['path', 'path/to/class/vendor/project'],
                 ]
             );
 
@@ -201,7 +201,95 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
             ->willReturnMap(
                 [
                     ['mode', 'integrated'],
+                    ['path', 'path/to/class/vendor/project/package'],
+                ]
+            );
+
+        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+
+        $this->buildProxyMock()
+            ->expects($this->once())
+            ->method('createIntegratedProxy')
+            ->with(
+                $this->equalTo('fooBar'),
+                $this->equalTo('\\vendor\\project\\package')
+            );
+
+        $this->buildFactoryMock()
+            ->expects($this->once())
+            ->method('createIntegratedFactory')
+            ->with(
+                $this->equalTo('fooBar'),
+                $this->equalTo('\\vendor\\project\\package')
+            );
+
+        $command = $this->buildCommand();
+        $command->run($input, $output);
+
+        $this->assertEquals('path/to/class/vendor/project/package/fooBar', $this->pathCalled);
+    }
+
+    public function testCreateIntegratedClassMissingDestinationFolder()
+    {
+        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input->expects($this->any())
+            ->method('getArgument')
+            ->willReturnMap(
+                [
+                    ['className', '\\vendor\\project\\package\\fooBar'],
+                ]
+            );
+
+        $input->expects($this->any())
+            ->method('getOption')
+            ->willReturnMap(
+                [
+                    ['mode', 'integrated'],
                     ['path', 'path/to/class'],
+                ]
+            );
+
+        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+
+        $this->buildProxyMock()
+            ->expects($this->once())
+            ->method('createIntegratedProxy')
+            ->with(
+                $this->equalTo('fooBar'),
+                $this->equalTo('\\vendor\\project\\package')
+            );
+
+        $this->buildFactoryMock()
+            ->expects($this->once())
+            ->method('createIntegratedFactory')
+            ->with(
+                $this->equalTo('fooBar'),
+                $this->equalTo('\\vendor\\project\\package')
+            );
+
+        $command = $this->buildCommand();
+        $command->run($input, $output);
+
+        $this->assertEquals('path/to/class/vendor/project/package/fooBar', $this->pathCalled);
+    }
+
+    public function testCreateIntegratedClassExistingDestinationFolder()
+    {
+        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input->expects($this->any())
+            ->method('getArgument')
+            ->willReturnMap(
+                [
+                    ['className', '\\vendor\\project\\package\\fooBar'],
+                ]
+            );
+
+        $input->expects($this->any())
+            ->method('getOption')
+            ->willReturnMap(
+                [
+                    ['mode', 'integrated'],
+                    ['path', 'path/to/class/vendor/project/package/fooBar'],
                 ]
             );
 

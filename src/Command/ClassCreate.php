@@ -68,6 +68,29 @@ use UniAlteri\States\Proxy\ProxyInterface;
      }
 
      /**
+      * To generate the destination path from the destination option and the full class name (with namespace)
+      * @param string $destinationPath
+      * @param string $fullClassName
+      * @return string
+      */
+     protected function defineDestinationPatch(\string $destinationPath, \string $fullClassName): \string
+     {
+         $fullClassName = trim($fullClassName, '\\');
+         $fullClassNameParts = explode('\\', $fullClassName);
+
+         $fullClassNameFinal = str_replace('\\', '/', $fullClassName);
+         for ($i = count($fullClassNameParts); $i>0; $i--) {
+             $pathToTest = implode('/', array_slice($fullClassNameParts, 0, $i));
+             if (false !== strpos($destinationPath, $pathToTest)) {
+                 $fullClassNameFinal = implode('/', array_slice($fullClassNameParts, $i));
+                 break;
+             }
+         }
+
+         return rtrim($destinationPath.DIRECTORY_SEPARATOR.$fullClassNameFinal, '/');
+     }
+
+     /**
       * Executes the current command.
       *
       * This method is not abstract because you can use this class
@@ -99,7 +122,7 @@ use UniAlteri\States\Proxy\ProxyInterface;
          $className = array_pop($fullClassNameExploded);
          $namespace = implode('\\', $fullClassNameExploded);
 
-         $destinationPath .= DIRECTORY_SEPARATOR.trim(str_replace('\\', '/', $fullClassName), '/');
+         $destinationPath = $this->defineDestinationPatch($destinationPath, $fullClassName);
 
          $proxyWriter = $this->createWriter('Writer\Proxy', $destinationPath);
          if (true === $integrated) {
