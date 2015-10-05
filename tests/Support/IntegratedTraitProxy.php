@@ -24,8 +24,8 @@ namespace UniAlteri\Tests\Support;
 use UniAlteri\States\Proxy;
 
 /**
- * Class StandardProxy
- * To build an specific instance of the class Proxy\Standard to test this default class.
+ * Class IntegratedTraitProxy
+ * To build an specific instance of the class Proxy\Integrated to test this default class.
  * By default, the class Proxy\Integrated uses '\UniAlteri\States\Factory\StandardStartupFactory' as startup factory.
  * But, in the test, we will use '\UniAlteri\Tests\Support\MockStartupFactory' to unit testing only the proxy.
  *
@@ -40,12 +40,14 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StandardProxy extends Proxy\Standard implements
+class IntegratedTraitProxy extends MotherProxy implements Proxy\IntegratedInterface,
     \Serializable,
     \ArrayAccess,
     \SeekableIterator,
     \Countable
 {
+    use Proxy\ProxyTrait;
+    use Proxy\IntegratedTrait;
     use Proxy\MagicCallTrait;
     use Proxy\ArrayAccessTrait;
     use Proxy\IteratorTrait;
@@ -65,4 +67,33 @@ class StandardProxy extends Proxy\Standard implements
      * @var mixed
      */
     private $privateProperty = 'value1';
+
+    /**
+     * Class name of the factory to use during set up to initialize this object.
+     * It is a virtual factory, it does nothing except logs actions.
+     *
+     * @var string
+     */
+    protected static $startupFactoryClassName = '\UniAlteri\Tests\Support\MockStartupFactory';
+
+    /**
+     * Default constructor used to initialize the stated class instance with its factory.
+     */
+    public function __construct()
+    {
+        //Call the method of the trait to initialize local attributes of the proxy
+        $this->initializeProxy();
+        //Call the startup factory to initialize this proxy
+        $this->initializeObjectWithFactory();
+    }
+
+    /**
+     * Method to update static::$startupFactoryClassName to run some unit tests.
+     *
+     * @param string $className
+     */
+    public static function defineStartupFactoryClassName($className)
+    {
+        static::$startupFactoryClassName = $className;
+    }
 }

@@ -405,4 +405,104 @@ class MockState implements StateInterface
     {
         return $this->{$methodName}();
     }
+
+    public function getPublicProperty()
+    {
+        return $this->publicProperty;
+    }
+
+    public function issetPublicProperty()
+    {
+        return isset($this->publicProperty);
+    }
+
+    public function issetMissingPublicProperty()
+    {
+        return isset($this->missingPublicProperty);
+    }
+
+    public function setPublicProperty($value)
+    {
+        $this->publicProperty = $value;
+    }
+
+    public function unsetPublicProperty()
+    {
+        unset($this->publicProperty);
+    }
+
+    public function getProProperty()
+    {
+        return $this->protectedProperty;
+    }
+
+    public function issetProProperty()
+    {
+        return isset($this->protectedProperty);
+    }
+
+    public function issetMissingProProperty()
+    {
+        return isset($this->missingProtectedProperty);
+    }
+
+    public function setProProperty($value)
+    {
+        $this->protectedProperty = $value;
+    }
+
+    public function unsetProProperty()
+    {
+        unset($this->protectedProperty);
+    }
+
+    public function getPriProperty()
+    {
+        return $this->privateProperty;
+    }
+
+    public function issetPriProperty()
+    {
+        return isset($this->privateProperty);
+    }
+
+    public function issetMissingPriProperty()
+    {
+        return isset($this->missingPrivateProperty);
+    }
+
+    public function setPriProperty($value)
+    {
+        $this->privateProperty = $value;
+    }
+
+    public function unsetPriProperty()
+    {
+        unset($this->privateProperty);
+    }
+
+    public function getChildrenPriProperty()
+    {
+        return $this->parentPrivateProperty;
+    }
+
+    public function issetChildrenPriProperty()
+    {
+        return isset($this->parentPrivateProperty);
+    }
+
+    public function issetChildrenMissingPriProperty()
+    {
+        return isset($this->missingPrivateProperty);
+    }
+
+    public function setChildrenPriProperty($value)
+    {
+        $this->parentPrivateProperty = $value;
+    }
+
+    public function unsetChildrenPriProperty()
+    {
+        unset($this->parentPrivateProperty);
+    }
 }

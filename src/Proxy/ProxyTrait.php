@@ -148,6 +148,7 @@ trait ProxyTrait
         } catch (\Exception $e) {
             //Restore stated class name stack
             $this->popCallerStatedClassName();
+
             throw $e;
         }
 
@@ -605,6 +606,12 @@ trait ProxyTrait
      */
     public function __call(\string $name, array $arguments)
     {
+        if (!$this->callerStatedClassesStack->isEmpty()) {
+            if (method_exists($this, $name)) {
+                return $this->{$name}(...$arguments);
+            }
+        }
+
         return $this->findMethodToCall($name, $arguments);
     }
 
@@ -655,5 +662,112 @@ trait ProxyTrait
         throw new Exception\MethodNotImplemented(
             sprintf('Method "%s" is not available for this state', $methodName)
         );
+    }
+
+    /**
+     * To get a property of the instance
+     *
+     * Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
+     * can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
+     * error due to compilation pass with self::
+     *
+     * Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
+     * or method are not available in this closure (the scope differ).
+     *
+     * So we use magic call to restore this behavior during a calling
+     *
+     * @param string $name
+     *
+     * @return mixed
+     *
+     * @throws \ErrorException of the property is not accessible
+     */
+    public function __get(\string $name)
+    {
+        if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
+            return $this->{$name};
+        }
+
+        throw new \ErrorException('Error: Cannot access private property '.get_class($this).'::'.$name);
+    }
+
+    /**
+     * To test if a property is set for the instance.
+     *
+     * Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
+     * can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
+     * error due to compilation pass with self::
+     *
+     * Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
+     * or method are not available in this closure (the scope differ).
+     *
+     * So we use magic call to restore this behavior during a calling
+     *
+     * @param string $name
+     *
+     * @return mixed
+     */
+    public function __isset(\string $name)
+    {
+        if (!$this->callerStatedClassesStack->isEmpty()) {
+            return isset($this->{$name});
+        }
+
+        return false;
+    }
+
+    /**
+     * To update a property of the instance.
+     *
+     * Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
+     * can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
+     * error due to compilation pass with self::
+     *
+     * Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
+     * or method are not available in this closure (the scope differ).
+     *
+     * So we use magic call to restore this behavior during a calling
+     *
+     * @param string $name
+     * @param string $value
+     *
+     * @throws \ErrorException of the property is not accessible
+     */
+    public function __set(\string $name, $value)
+    {
+        if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
+            $this->{$name} = $value;
+
+            return;
+        }
+
+        throw new \ErrorException('Error: Cannot access private property '.get_class($this).'::'.$name);
+    }
+
+    /**
+     * To remove a property of the instance.
+     *
+     * Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
+     * can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
+     * error due to compilation pass with self::
+     *
+     * Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
+     * or method are not available in this closure (the scope differ).
+     *
+     * So we use magic call to restore this behavior during a calling
+     *
+     * @param string $name
+     *
+     * @throws \ErrorException of the property is not accessible
+     */
+    public function __unset(\string $name)
+    {
+        if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
+            unset($this->{$name});
+
+            return;
+        }
+
+        throw new \ErrorException('Error: Cannot access private property '.get_class($this).'::'.$name);
     }
 }

@@ -1619,119 +1619,118 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test exception behavior of the proxy when __get is not implemented into in actives states.
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
      */
-    public function testGetNonImplemented()
+    public function testGetIssetSetUnsetPublic()
     {
-        $this->initializeProxy();
-        try {
-            $this->proxy->property;
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when __get is not implemented into in actives states');
+        $this->assertEquals('value1', $this->proxy->publicProperty);
+        $this->assertTrue(isset($this->proxy->publicProperty));
+        $this->assertFalse(isset($this->proxy->missingPublicProperty));
+        $this->proxy->publicProperty = 'value2';
+        $this->assertEquals('value2', $this->proxy->publicProperty);
+        unset($this->proxy->publicProperty);
+        $this->assertFalse(isset($this->proxy->publicProperty));
     }
 
     /**
-     * Test proxy behavior with the magic method __get. If the call is forwarded to the active state.
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
      */
-    public function testGet()
+    public function testGetIssetSetUnsetPublicByMethod()
     {
         $this->initializeProxy('state1', true);
-        $this->proxy->property;
-
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('__get', $this->state1->getMethodNameCalled());
-        $this->assertSame(array('property'), $this->state1->getCalledArguments());
+        $this->assertEquals('value1', $this->proxy->getPublicProperty());
+        $this->assertTrue($this->proxy->issetPublicProperty());
+        $this->assertFalse($this->proxy->issetMissingPublicProperty());
+        $this->proxy->setPublicProperty('value2');
+        $this->assertEquals('value2', $this->proxy->getPublicProperty());
+        $this->proxy->unsetPublicProperty();
     }
 
     /**
-     * Test exception behavior of the proxy when __isset is not implemented into in actives states.
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * @expectedException \ErrorException
      */
-    public function testIssetNonImplemented()
+    public function testGetProtectedGet()
     {
-        $this->initializeProxy();
-        try {
-            $a = isset($this->proxy->property);
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when __isset is not implemented into in actives states');
+        $this->assertEquals('value1', $this->proxy->protectedProperty);
     }
 
     /**
-     * Test proxy behavior with the magic method __isset. If the call is forwarded to the active state.
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
      */
-    public function testIsset()
+    public function testIssetProtectedIsset()
     {
-        $this->initializeProxy('state1', true);
-        $a = isset($this->proxy->property);
-
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('__isset', $this->state1->getMethodNameCalled());
-        $this->assertSame(array('property'), $this->state1->getCalledArguments());
+        $this->assertFalse(isset($this->proxy->protectedProperty));
+        $this->assertFalse(isset($this->proxy->missingProtectedProperty));
     }
 
     /**
-     * Test exception behavior of the proxy when __set is not implemented into in actives states.
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * @expectedException \ErrorException
      */
-    public function testSetNonImplemented()
+    public function testSetProtected()
     {
-        $this->initializeProxy();
-        try {
-            $this->proxy->property = 'foo';
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when __set is not implemented into in actives states');
+        $this->proxy->protectedProperty = 'value2';
     }
 
     /**
-     * Test proxy behavior with the magic method __set. If the call is forwarded to the active state.
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * @expectedException \ErrorException
      */
-    public function testSet()
+    public function testUnsetProtected()
+    {
+        unset($this->proxy->protectedProperty);
+    }
+
+    /**
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     */
+    public function testGetIssetSetUnsetProtectedViaMethod()
     {
         $this->initializeProxy('state1', true);
-        $this->proxy->property = 'foo';
-
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('__set', $this->state1->getMethodNameCalled());
-        $this->assertSame(array('property', 'foo'), $this->state1->getCalledArguments());
+        $this->assertEquals('value1', $this->proxy->getProProperty());
+        $this->assertTrue($this->proxy->issetProProperty());
+        $this->assertFalse($this->proxy->issetMissingProProperty());
+        $this->proxy->setProProperty('value2');
+        $this->assertEquals('value2', $this->proxy->getProProperty());
+        $this->proxy->unsetProProperty();
+        $this->assertFalse($this->proxy->issetProProperty());
     }
 
     /**
-     * Test exception behavior of the proxy when __unset is not implemented into in actives states.
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * @expectedException \ErrorException
      */
-    public function testUnsetNonImplemented()
+    public function testGetPrivateGet()
     {
-        $this->initializeProxy();
-        try {
-            unset($this->proxy->property);
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when __unset is not implemented into in actives states');
+        $this->assertEquals('value1', $this->proxy->privateProperty);
     }
 
     /**
-     * Test proxy behavior with the magic method __unset. If the call is forwarded to the active state.
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
      */
-    public function testUnset()
+    public function testIssetPrivateIsset()
     {
-        $this->initializeProxy('state1', true);
-        unset($this->proxy->property);
+        $this->assertFalse(isset($this->proxy->privateProperty));
+        $this->assertFalse(isset($this->proxy->missingPrivateProperty));
+    }
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('__unset', $this->state1->getMethodNameCalled());
-        $this->assertSame(array('property'), $this->state1->getCalledArguments());
+    /**
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * @expectedException \ErrorException
+     */
+    public function testSetUnsetPrivate()
+    {
+        $this->proxy->privateProperty = 'value2';
+    }
+
+    /**
+     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * @expectedException \ErrorException
+     */
+    public function testUnsetPrivate()
+    {
+        unset($this->proxy->privateProperty);
     }
 
     /**

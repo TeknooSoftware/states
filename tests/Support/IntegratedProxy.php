@@ -52,6 +52,21 @@ class IntegratedProxy extends Proxy\Integrated implements
     use Proxy\SerializableTrait;
 
     /**
+     * @var mixed
+     */
+    public $publicProperty = 'value1';
+
+    /**
+     * @var mixed
+     */
+    protected $protectedProperty = 'value1';
+
+    /**
+     * @var mixed
+     */
+    private $privateProperty = 'value1';
+
+    /**
      * Class name of the factory to use during set up to initialize this object.
      * It is a virtual factory, it does nothing except logs actions.
      *

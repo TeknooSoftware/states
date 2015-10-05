@@ -24,7 +24,7 @@ namespace UniAlteri\Tests\Support;
 use UniAlteri\States\Proxy;
 
 /**
- * Class StandardProxy
+ * Class StandardTraitProxy
  * To build an specific instance of the class Proxy\Standard to test this default class.
  * By default, the class Proxy\Integrated uses '\UniAlteri\States\Factory\StandardStartupFactory' as startup factory.
  * But, in the test, we will use '\UniAlteri\Tests\Support\MockStartupFactory' to unit testing only the proxy.
@@ -40,12 +40,13 @@ use UniAlteri\States\Proxy;
  * @license     http://teknoo.it/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-class StandardProxy extends Proxy\Standard implements
+class StandardTraitProxy extends MotherProxy implements Proxy\ProxyInterface,
     \Serializable,
     \ArrayAccess,
     \SeekableIterator,
     \Countable
 {
+    use Proxy\ProxyTrait;
     use Proxy\MagicCallTrait;
     use Proxy\ArrayAccessTrait;
     use Proxy\IteratorTrait;
@@ -65,4 +66,13 @@ class StandardProxy extends Proxy\Standard implements
      * @var mixed
      */
     private $privateProperty = 'value1';
+
+    /**
+     * Initialize the proxy.
+     */
+    public function __construct()
+    {
+        //Call the method of the trait to initialize local attributes of the proxy
+        $this->initializeProxy();
+    }
 }
