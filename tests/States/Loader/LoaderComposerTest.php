@@ -12,6 +12,7 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
+ * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -31,6 +32,7 @@ use UniAlteri\Tests\Support;
  * Tests the excepted behavior of standard loader implementing the interface \UniAlteri\States\Loader\LoaderInterface.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
+ * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *

@@ -12,6 +12,7 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
+ * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -37,6 +38,7 @@ namespace UniAlteri\States\State;
  * A trait implementation has been chosen to allow developer to write theirs owns factory, extendable from any class.
  * @api
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
+ * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *

@@ -12,6 +12,7 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
+ * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
@@ -26,6 +27,7 @@ namespace UniAlteri\Tests\States\Proxy;
  * To perform some trait about behavior of magic call for private attributes and method.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
+ * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
  * @link        http://teknoo.it/states Project website
  *
