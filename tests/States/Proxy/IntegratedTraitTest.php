@@ -125,7 +125,8 @@ class IntegratedTraitTest extends AbstractProxyTest
         $this->assertSame($proxy, Support\MockStartupFactory::$calledProxyObject);
     }
     /**
-     * Test behavior of magic method during a state's method calling (scope is not initialized)
+     * Test behavior of magic method during a state's method calling (scope is not initialized).
+     *
      * @expectedException \UniAlteri\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCallPrivateChildrenFromState()

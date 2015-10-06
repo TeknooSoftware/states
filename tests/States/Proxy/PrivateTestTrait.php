@@ -23,7 +23,7 @@ namespace UniAlteri\Tests\States\Proxy;
 
 /**
  * Class PrivateTestTrait
- * To perform some trait about behavior of magic call for private attributes and method
+ * To perform some trait about behavior of magic call for private attributes and method.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
@@ -35,7 +35,8 @@ namespace UniAlteri\Tests\States\Proxy;
 trait PrivateTestTrait
 {
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     *
      * @expectedException \ErrorException
      */
     public function testGetPrivateGetMethodChildren()
@@ -45,7 +46,7 @@ trait PrivateTestTrait
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during a state's methode calling (scope is not initialized).
      */
     public function testIssetPrivateIssetMethodChildren()
     {
@@ -55,7 +56,8 @@ trait PrivateTestTrait
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     *
      * @expectedException \ErrorException
      */
     public function testSetUnsetPrivateMethodChildren()
@@ -65,7 +67,8 @@ trait PrivateTestTrait
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     *
      * @expectedException \ErrorException
      */
     public function testUnsetPrivateMethodChildren()
@@ -75,7 +78,7 @@ trait PrivateTestTrait
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during a state's methode calling (scope is not initialized).
      */
     public function testGetIssetSetUnsetPrivateViaMethodChildren()
     {
@@ -90,7 +93,7 @@ trait PrivateTestTrait
     }
 
     /**
-     * Test behavior of magic method during a state's method calling (scope is not initialized)
+     * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
     public function testCallPrivateFromState()
     {
@@ -99,7 +102,8 @@ trait PrivateTestTrait
     }
 
     /**
-     * Test behavior of magic method during a state's method calling (scope is not initialized)
+     * Test behavior of magic method during a state's method calling (scope is not initialized).
+     *
      * @expectedException \UniAlteri\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCallPrivateChildrenFromOutside()
@@ -108,7 +112,8 @@ trait PrivateTestTrait
     }
 
     /**
-     * Test behavior of magic method during a state's method calling (scope is not initialized)
+     * Test behavior of magic method during a state's method calling (scope is not initialized).
+     *
      * @expectedException \UniAlteri\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCallPrivateChildrenFromState()

@@ -1619,7 +1619,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during outside calling
+     * Test behavior of magic method during outside calling.
      */
     public function testGetIssetSetUnsetPublic()
     {
@@ -1633,7 +1633,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's method calling
+     * Test behavior of magic method during a state's method calling.
      */
     public function testGetIssetSetUnsetPublicByMethod()
     {
@@ -1647,7 +1647,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during outside calling
+     * Test behavior of magic method during outside calling.
+     *
      * @expectedException \ErrorException
      */
     public function testGetProtectedGet()
@@ -1656,7 +1657,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's method calling
+     * Test behavior of magic method during a state's method calling.
      */
     public function testIssetProtectedIsset()
     {
@@ -1665,7 +1666,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during outside calling
+     * Test behavior of magic method during outside calling.
+     *
      * @expectedException \ErrorException
      */
     public function testSetProtected()
@@ -1674,7 +1676,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's method calling
+     * Test behavior of magic method during a state's method calling.
+     *
      * @expectedException \ErrorException
      */
     public function testUnsetProtected()
@@ -1683,7 +1686,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during outside calling
+     * Test behavior of magic method during outside calling.
      */
     public function testGetIssetSetUnsetProtectedViaMethod()
     {
@@ -1698,7 +1701,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's method calling
+     * Test behavior of magic method during a state's method calling.
+     *
      * @expectedException \ErrorException
      */
     public function testGetPrivateGet()
@@ -1707,7 +1711,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during outside calling
+     * Test behavior of magic method during outside calling.
      */
     public function testIssetPrivateIsset()
     {
@@ -1716,7 +1720,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's method calling
+     * Test behavior of magic method during a state's method calling.
+     *
      * @expectedException \ErrorException
      */
     public function testSetUnsetPrivate()
@@ -1725,7 +1730,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during outside calling
+     * Test behavior of magic method during outside calling.
+     *
      * @expectedException \ErrorException
      */
     public function testUnsetPrivate()
@@ -1734,7 +1740,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method __call about a protected method during outside calling
+     * Test behavior of magic method __call about a protected method during outside calling.
      */
     public function testCallPublicFromOutside()
     {
@@ -1742,7 +1748,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method __call about a protected method during outside calling
+     * Test behavior of magic method __call about a protected method during outside calling.
+     *
      * @expectedException \UniAlteri\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCallProtectedFromOutside()
@@ -1751,7 +1758,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method __call about a protected method during outside calling
+     * Test behavior of magic method __call about a protected method during outside calling.
+     *
      * @expectedException \UniAlteri\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCallPrivateFromOutside()
@@ -1760,7 +1768,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method __call about a protected method during a state's method calling
+     * Test behavior of magic method __call about a protected method during a state's method calling.
      */
     public function testCallPublicFromState()
     {
@@ -1769,7 +1777,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method __call about a protected method during outside calling
+     * Test behavior of magic method __call about a protected method during outside calling.
      */
     public function testCallProtectedFromState()
     {

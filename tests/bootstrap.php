@@ -18,7 +18,6 @@
  * @license     http://teknoo.it/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
-
 defined('RUN_CLI_MODE')
     || define('RUN_CLI_MODE', true);
 
