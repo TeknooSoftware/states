@@ -27,7 +27,7 @@ use UniAlteri\Tests\Support;
 
 /**
  * Class IntegratedTraitTest
- * Implementation of AbstractProxyTest to test the proxy Proxy\Integrated.
+ * Implementation of AbstractProxyTest to test the trait Proxy\IntegratedTrait.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  *
@@ -45,6 +45,8 @@ use UniAlteri\Tests\Support;
  */
 class IntegratedTraitTest extends AbstractProxyTest
 {
+    use PrivateTestTrait;
+
     /**
      * For these tests, we use Support\IntegratedProxy instead of Proxy\Integrated to use the
      * Support\MockStartupFactory instead of Factory\StandardStartupFactory.
@@ -122,59 +124,13 @@ class IntegratedTraitTest extends AbstractProxyTest
         $proxy = new Support\IntegratedProxy();
         $this->assertSame($proxy, Support\MockStartupFactory::$calledProxyObject);
     }
-
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
-     * @expectedException \ErrorException
+     * Test behavior of magic method during a state's method calling (scope is not initialized)
+     * @expectedException \UniAlteri\States\Proxy\Exception\MethodNotImplemented
      */
-    public function testGetPrivateGetMethodChildren()
+    public function testCallPrivateChildrenFromState()
     {
         $this->initializeProxy('state1', true);
-        $this->proxy->getChildrenPriProperty();
-    }
-
-    /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
-     */
-    public function testIssetPrivateIssetMethodChildren()
-    {
-        $this->initializeProxy('state1', true);
-        $this->assertFalse($this->proxy->issetChildrenPriProperty());
-        $this->assertFalse($this->proxy->issetChildrenMissingPriProperty());
-    }
-
-    /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
-     * @expectedException \ErrorException
-     */
-    public function testSetUnsetPrivateMethodChildren()
-    {
-        $this->initializeProxy('state1', true);
-        $this->proxy->setChildrenPriProperty('value2');
-    }
-
-    /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
-     * @expectedException \ErrorException
-     */
-    public function testUnsetPrivateMethodChildren()
-    {
-        $this->initializeProxy('state1', true);
-        $this->proxy->unsetChildrenPriProperty();
-    }
-
-    /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
-     */
-    public function testGetIssetSetUnsetPrivateViaMethod()
-    {
-        $this->initializeProxy('state1', true);
-        $this->assertEquals('value1', $this->proxy->getPriProperty());
-        $this->assertTrue($this->proxy->issetPriProperty());
-        $this->assertFalse($this->proxy->issetMissingPriProperty());
-        $this->proxy->setPriProperty('value2');
-        $this->assertEquals('value2', $this->proxy->getPriProperty());
-        $this->proxy->unsetPriProperty();
-        $this->assertFalse($this->proxy->issetPriProperty());
+        $this->proxy->callChildrenPriMethod();
     }
 }

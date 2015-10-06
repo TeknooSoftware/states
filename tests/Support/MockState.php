@@ -191,6 +191,10 @@ class MockState implements StateInterface
         switch ($scope) {
             case StateInterface::VISIBILITY_PRIVATE:
                 //Private, can access all
+                if ('parentPrivateMethodToCall' === $methodName) {
+                    //Ignore this method
+                    return false;
+                }
                 break;
             case StateInterface::VISIBILITY_PROTECTED:
                 //Can not access to private methods
@@ -504,5 +508,37 @@ class MockState implements StateInterface
     public function unsetChildrenPriProperty()
     {
         unset($this->parentPrivateProperty);
+    }
+
+    /**
+     * @return string
+     */
+    public function callPublicMethod()
+    {
+        return $this->publicMethodToCall();
+    }
+
+    /**
+     * @return string
+     */
+    public function callProMethod()
+    {
+        return $this->protectedMethodToCall();
+    }
+
+    /**
+     * @return string
+     */
+    public function callPriMethod()
+    {
+        return $this->privateMethodToCall();
+    }
+
+    /**
+     * @return string
+     */
+    public function callChildrenPriMethod()
+    {
+        return $this->parentPrivateMethodToCall();
     }
 }

@@ -53,16 +53,19 @@ class StandardTraitProxy extends MotherProxy implements Proxy\ProxyInterface,
     use Proxy\SerializableTrait;
 
     /**
+     * Property to test behavior of proxy when a method in a state want access to a public property
      * @var mixed
      */
     public $publicProperty = 'value1';
 
     /**
+     * Property to test behavior of proxy when a method in a state want access to a protected property
      * @var mixed
      */
     protected $protectedProperty = 'value1';
 
     /**
+     * Property to test behavior of proxy when a method in a state want access to a private property
      * @var mixed
      */
     private $privateProperty = 'value1';
@@ -74,5 +77,32 @@ class StandardTraitProxy extends MotherProxy implements Proxy\ProxyInterface,
     {
         //Call the method of the trait to initialize local attributes of the proxy
         $this->initializeProxy();
+    }
+
+    /**
+     * Method to test behavior of proxy when a method in a state want access to a public method
+     * @return string
+     */
+    public function publicMethodToCall()
+    {
+        return 'fooBar';
+    }
+
+    /**
+     * Method to test behavior of proxy when a method in a state want access to a protected method
+     * @return string
+     */
+    protected function protectedMethodToCall()
+    {
+        return 'fooBar';
+    }
+
+    /**
+     * Method to test behavior of proxy when a method in a state want access to a private method
+     * @return string
+     */
+    private function privateMethodToCall()
+    {
+        return 'fooBar';
     }
 }

@@ -76,6 +76,40 @@ trait ProxyTrait
     private $callerStatedClassesStack;
 
     /**
+     * List all methods available in the proxy, with all states, get the list available in the current scope,
+     * unlike method_exists is not dependant about the scope and return unavailable privates methods
+     * @var string[]
+     */
+    private $globalMethodsList;
+
+    /**
+     * List all methods available in the proxy, with all states, get the list available in the current scope,
+     * unlike method_exists is not dependant about the scope and return unavailable privates methods
+     *
+     * @return array|\string[]
+     */
+    private function getGlobalMethodsList()
+    {
+        if (null === $this->globalMethodsList) {
+            $this->globalMethodsList = array_flip(get_class_methods($this));
+        }
+
+        return $this->globalMethodsList;
+    }
+
+    /**
+     * Check if a method exist in the current scope for this proxy.
+     * unlike method_exists is not dependant about the scope and return unavailable privates methods
+     * unlike is_callable, this check is not influenced by __call()
+     * @param string $methodName
+     * @return bool
+     */
+    private function checkMethodExist(\string $methodName)
+    {
+        return isset($this->getGlobalMethodsList()[$methodName]);
+    }
+
+    /**
      * To get the class name of the caller according to scope visibility.
      *
      * @return string
@@ -607,7 +641,7 @@ trait ProxyTrait
     public function __call(\string $name, array $arguments)
     {
         if (!$this->callerStatedClassesStack->isEmpty()) {
-            if (method_exists($this, $name)) {
+            if ($this->checkMethodExist($name)) {
                 return $this->{$name}(...$arguments);
             }
         }
@@ -745,7 +779,7 @@ trait ProxyTrait
     }
 
     /**
-     * To remove a property of the instance.
+     * To remove a property from the instance.
      *
      * Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
      * can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid

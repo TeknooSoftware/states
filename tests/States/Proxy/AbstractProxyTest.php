@@ -1619,7 +1619,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during outside calling
      */
     public function testGetIssetSetUnsetPublic()
     {
@@ -1633,7 +1633,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during a state's method calling
      */
     public function testGetIssetSetUnsetPublicByMethod()
     {
@@ -1647,7 +1647,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during outside calling
      * @expectedException \ErrorException
      */
     public function testGetProtectedGet()
@@ -1656,7 +1656,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during a state's method calling
      */
     public function testIssetProtectedIsset()
     {
@@ -1665,7 +1665,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during outside calling
      * @expectedException \ErrorException
      */
     public function testSetProtected()
@@ -1674,7 +1674,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during a state's method calling
      * @expectedException \ErrorException
      */
     public function testUnsetProtected()
@@ -1683,7 +1683,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during outside calling
      */
     public function testGetIssetSetUnsetProtectedViaMethod()
     {
@@ -1698,7 +1698,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during a state's method calling
      * @expectedException \ErrorException
      */
     public function testGetPrivateGet()
@@ -1707,7 +1707,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during outside calling
      */
     public function testIssetPrivateIsset()
     {
@@ -1716,7 +1716,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during a state's method calling
      * @expectedException \ErrorException
      */
     public function testSetUnsetPrivate()
@@ -1725,12 +1725,56 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized)
+     * Test behavior of magic method during outside calling
      * @expectedException \ErrorException
      */
     public function testUnsetPrivate()
     {
         unset($this->proxy->privateProperty);
+    }
+
+    /**
+     * Test behavior of magic method __call about a protected method during outside calling
+     */
+    public function testCallPublicFromOutside()
+    {
+        $this->assertEquals('fooBar', $this->proxy->publicMethodToCall());
+    }
+
+    /**
+     * Test behavior of magic method __call about a protected method during outside calling
+     * @expectedException \UniAlteri\States\Proxy\Exception\MethodNotImplemented
+     */
+    public function testCallProtectedFromOutside()
+    {
+        $this->proxy->protectedMethodToCall();
+    }
+
+    /**
+     * Test behavior of magic method __call about a protected method during outside calling
+     * @expectedException \UniAlteri\States\Proxy\Exception\MethodNotImplemented
+     */
+    public function testCallPrivateFromOutside()
+    {
+        $this->proxy->privateMethodToCall();
+    }
+
+    /**
+     * Test behavior of magic method __call about a protected method during a state's method calling
+     */
+    public function testCallPublicFromState()
+    {
+        $this->initializeProxy('state1', true);
+        $this->assertEquals('fooBar', $this->proxy->callPublicMethod());
+    }
+
+    /**
+     * Test behavior of magic method __call about a protected method during outside calling
+     */
+    public function testCallProtectedFromState()
+    {
+        $this->initializeProxy('state1', true);
+        $this->assertEquals('fooBar', $this->proxy->callProMethod());
     }
 
     /**
