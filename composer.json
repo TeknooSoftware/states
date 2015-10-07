@@ -19,7 +19,7 @@
     "require":{
         "php": ">=7.0-dev",
         "symfony/console": "~2.0",
-        "knplabs/gaufrette": "<2.0"
+        "knplabs/gaufrette": "~0.1"
     },
     "require-dev": {
         "phpunit/phpunit": "5.0.x-dev"
