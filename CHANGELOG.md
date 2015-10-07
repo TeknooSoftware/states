@@ -1,5 +1,25 @@
 #Uni Alteri - States library - Change Log
 
+##[2.0.0-beta14] - 2015-10-07 - Available on the branch "next"
+###Changed
+- Change copyright
+
+###Added
+- Add test to support a possible change in behavior with PHP \ Closure :: call ()
+
+##[1.2.0-rc2] - 2015-10-07
+###Changed
+- Second RC released
+- Change copyright
+
+##[2.0.0-beta13] - 2015-09-28 - Available on the branch "next"
+###Removed
+- GPL 3 license, keep only MIT license
+
+###Fixed
+- Bootstrap bug to find the composer autoloader file
+- CLI issues
+
 ##[1.2.0-rc1] - 2015-09-13
 ###Changed
 - First RC released
