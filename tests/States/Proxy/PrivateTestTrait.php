@@ -106,7 +106,7 @@ trait PrivateTestTrait
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
      *
-     * @expectedException \UniAlteri\States\Proxy\Exception\MethodNotImplemented
+     * @expectedException \Throwable
      */
     public function testCallPrivateChildrenFromOutside()
     {
@@ -116,7 +116,7 @@ trait PrivateTestTrait
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
      *
-     * @expectedException \UniAlteri\States\Proxy\Exception\MethodNotImplemented
+     * @expectedException \Throwable
      */
     public function testCallPrivateChildrenFromState()
     {
