@@ -21,7 +21,7 @@ Requirements
 ------------
 This library requires :
 
-    * PHP 5.4+
+    * PHP 5.4 to PHP5.6
     * Pimple 3
     * Composer
 
