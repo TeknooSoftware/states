@@ -1,7 +1,7 @@
 {
     "name": "unialteri/states",
     "type": "library",
-    "description": "Library to create PHP classes following the State pattern and to create easily and cleanly classes with several states, written in distinct codes blocks with PHP 5.4+.",
+    "description": "Library to create PHP classes following the State pattern in PHP5.4+. This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and thus improve maintainability.",
     "keywords": ["states","class","state pattern","pattern","behavioral software design pattern"],
     "homepage": "http://teknoo.it/states",
     "license": ["MIT","GPL-3.0+"],
