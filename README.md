@@ -3,10 +3,10 @@ Uni Alteri - States library
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/417986ff-17b4-4772-a3d8-9885d6304786/mini.png)](https://insight.sensiolabs.com/projects/417986ff-17b4-4772-a3d8-9885d6304786) [![Build Status](https://travis-ci.org/UniAlteri/states.svg?branch=master)](https://travis-ci.org/UniAlteri/states)
 
-Welcome and thank you to having downloaded this library. It allows you to follow and implement the 
- [State Pattern](http://en.wikipedia.org/wiki/State_pattern)
- and to create easily and cleanly classes with several states, written in distinct codes blocks with PHP 7+.
-
+Welcome and thank you to having downloaded this library. 
+It's allow you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP7+. 
+This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and thus improve maintainability.
+ 
 Example
 -------
 An example of using this library is available in the folder : [Demo](demo/demo_article.php).
