@@ -110,6 +110,7 @@ class StateNormal implements StateInterface
      * {@inheritdoc}
      */
     public function getClosure(
+        Proxy\ProxyInterface $proxy,
         \string $methodName,
         \string $scope = self::VISIBILITY_PUBLIC,
         \string $statedClassOriginName = null

@@ -38,6 +38,49 @@ trait PrivateTestTrait
 {
     /**
      * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     *
+     * @expectedException \ErrorException
+     */
+    public function testGetPrivateGetMethodChildren()
+    {
+        $this->initializeProxy('state1', true);
+        $this->proxy->getChildrenPriProperty();
+    }
+
+    /**
+     * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     */
+    public function testIssetPrivateIssetMethodChildren()
+    {
+        $this->initializeProxy('state1', true);
+        $this->assertFalse($this->proxy->issetChildrenPriProperty());
+        $this->assertFalse($this->proxy->issetChildrenMissingPriProperty());
+    }
+
+    /**
+     * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     *
+     * @expectedException \ErrorException
+     */
+    public function testSetUnsetPrivateMethodChildren()
+    {
+        $this->initializeProxy('state1', true);
+        $this->proxy->setChildrenPriProperty('value2');
+    }
+
+    /**
+     * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     *
+     * @expectedException \ErrorException
+     */
+    public function testUnsetPrivateMethodChildren()
+    {
+        $this->initializeProxy('state1', true);
+        $this->proxy->unsetChildrenPriProperty();
+    }
+
+    /**
+     * Test behavior of magic method during a state's methode calling (scope is not initialized).
      */
     public function testGetIssetSetUnsetPrivateViaMethodChildren()
     {

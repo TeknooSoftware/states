@@ -241,6 +241,7 @@ class MockState implements StateInterface
      * {@inheritdoc}
      */
     public function getClosure(
+        Proxy\ProxyInterface $proxy,
         \string $methodName,
         \string $scope = StateInterface::VISIBILITY_PUBLIC,
         \string $statedClassOriginName = null
@@ -285,7 +286,7 @@ class MockState implements StateInterface
             $reflectionObject = new \ReflectionObject($this);
             $reflectionMethod = $reflectionObject->getMethod($methodName);
 
-            return $reflectionMethod->getClosure($this);
+            return $reflectionMethod->getClosure($this)->bindTo($proxy);
         } else {
             return $this->closure;
         }
