@@ -40,7 +40,7 @@ use UniAlteri\States\Proxy\ProxyInterface;
  * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @deprecated  Removed in version v2.0, useless with PHP7+ and \Closure::call
+ * @deprecated  Removed in version v2.0, useless with PHP7+
  *
  * @api
  */
