@@ -1,5 +1,9 @@
 #Uni Alteri - States library - Change Log
 
+##[1.2.0-rc4
+###Fixed
+- Clean code to remove code to manage PHP 7
+
 ##[2.0.0-beta15] - 2015-10-15 - Available on the branch "next"
 ###Added
 - Add test to support a possible change in behavior with PHP \ Closure :: call ()
