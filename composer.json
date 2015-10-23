@@ -13,8 +13,8 @@
         }
     ],
     "support": {
-        "issues": "https://github.com/UniAlteri/states/issues",
-        "source": "https://github.com/UniAlteri/states"
+        "issues": "https://github.com/TeknooSoftware/states/issues",
+        "source": "https://github.com/TeknooSoftware/states"
     },
     "require":{
         "php": ">=7.0-dev",
