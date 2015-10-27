@@ -14,9 +14,9 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
 
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
@@ -27,8 +27,8 @@
 
 namespace Support\FileLoader\Class3;
 
-use UniAlteri\States\Factory\FactoryInterface;
-use UniAlteri\Tests\Support;
+use Teknoo\States\Factory\FactoryInterface;
+use Teknoo\Tests\Support;
 
 /**
  * Class FactoryClass
@@ -39,9 +39,9 @@ use UniAlteri\Tests\Support;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
 
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */

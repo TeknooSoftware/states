@@ -14,16 +14,16 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Command\Writer;
+namespace Teknoo\Tests\States\Command\Writer;
 
 use Gaufrette\Filesystem;
-use UniAlteri\States\Command\Writer\State;
+use Teknoo\States\Command\Writer\State;
 
 /**
  * Class StateTest.
@@ -31,9 +31,9 @@ use UniAlteri\States\Command\Writer\State;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class StateTest extends \PHPUnit_Framework_TestCase
@@ -82,7 +82,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 function ($file, $code) {
                     $this->assertEquals('States/helloWorld.php', $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\State\\AbstractState;'));
+                    $this->assertNotFalse(strpos($code, 'use Teknoo\\States\\State\\AbstractState;'));
                     $this->assertNotFalse(strpos($code, 'class helloWorld extends AbstractState'));
 
                     return 10;
@@ -102,7 +102,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 function ($file, $code) {
                     $this->assertEquals('States/helloWorld.php', $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\State\\AbstractState;'));
+                    $this->assertNotFalse(strpos($code, 'use Teknoo\\States\\State\\AbstractState;'));
                     $this->assertNotFalse(strpos($code, 'class helloWorld extends AbstractState'));
 
                     return 0;
@@ -122,7 +122,7 @@ class StateTest extends \PHPUnit_Framework_TestCase
                 function ($file, $code) {
                     $this->assertEquals('States/helloWorld.php', $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar\\States;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\State\\AbstractState;'));
+                    $this->assertNotFalse(strpos($code, 'use Teknoo\\States\\State\\AbstractState;'));
                     $this->assertNotFalse(strpos($code, 'class helloWorld extends AbstractState'));
 
                     return 10;

@@ -14,16 +14,16 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Proxy;
+namespace Teknoo\Tests\States\Proxy;
 
-use UniAlteri\States\Proxy;
-use UniAlteri\Tests\Support;
+use Teknoo\States\Proxy;
+use Teknoo\Tests\Support;
 
 /**
  * Class StandardTest
@@ -32,17 +32,17 @@ use UniAlteri\Tests\Support;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Proxy\ProxyTrait
- * @covers UniAlteri\States\Proxy\Standard
- * @covers UniAlteri\States\Proxy\ArrayAccessTrait
- * @covers UniAlteri\States\Proxy\IteratorTrait
- * @covers UniAlteri\States\Proxy\MagicCallTrait
- * @covers UniAlteri\States\Proxy\SerializableTrait
+ * @covers Teknoo\States\Proxy\ProxyTrait
+ * @covers Teknoo\States\Proxy\Standard
+ * @covers Teknoo\States\Proxy\ArrayAccessTrait
+ * @covers Teknoo\States\Proxy\IteratorTrait
+ * @covers Teknoo\States\Proxy\MagicCallTrait
+ * @covers Teknoo\States\Proxy\SerializableTrait
  */
 class StandardTest extends AbstractProxyTest
 {

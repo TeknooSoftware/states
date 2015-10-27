@@ -14,13 +14,13 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Command\Parser;
+namespace Teknoo\States\Command\Parser;
 
 /**
  * Class Proxy
@@ -29,9 +29,9 @@ namespace UniAlteri\States\Command\Parser;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class Proxy extends AbstractParser
@@ -46,7 +46,7 @@ class Proxy extends AbstractParser
     public function isValidProxy()
     {
         return $this->loadFile($this->getClassNameFile())
-            ->implementsInterface('\UniAlteri\States\Proxy\ProxyInterface');
+            ->implementsInterface('\Teknoo\States\Proxy\ProxyInterface');
     }
 
     /**
@@ -59,9 +59,9 @@ class Proxy extends AbstractParser
     public function isStandardProxy()
     {
         return $this->loadFile($this->getClassNameFile())
-            ->isSubclassOf('\UniAlteri\States\Proxy\Standard')
+            ->isSubclassOf('\Teknoo\States\Proxy\Standard')
             && !$this->loadFile($this->getClassNameFile())
-            ->implementsInterface('\UniAlteri\States\Proxy\IntegratedInterface');
+            ->implementsInterface('\Teknoo\States\Proxy\IntegratedInterface');
     }
 
     /**
@@ -74,12 +74,12 @@ class Proxy extends AbstractParser
     public function isIntegratedProxy()
     {
         return $this->loadFile($this->getClassNameFile())
-            ->isSubclassOf('\UniAlteri\States\Proxy\Integrated');
+            ->isSubclassOf('\Teknoo\States\Proxy\Integrated');
     }
 
     /**
      * Test if the proxy use of the default implementation of this library States provided by the trait
-     * \UniAlteri\States\Proxy\TraitProxy.
+     * \Teknoo\States\Proxy\TraitProxy.
      *
      * @return bool
      *
@@ -88,7 +88,7 @@ class Proxy extends AbstractParser
     public function useTraitProxy()
     {
         return in_array(
-            'UniAlteri\States\Proxy\ProxyTrait',
+            'Teknoo\States\Proxy\ProxyTrait',
             $this->loadFile($this->getClassNameFile())->getTraitNames()
         );
     }

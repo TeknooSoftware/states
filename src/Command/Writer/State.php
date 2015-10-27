@@ -14,15 +14,15 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Command\Writer;
+namespace Teknoo\States\Command\Writer;
 
-use UniAlteri\States\Loader\FinderInterface;
+use Teknoo\States\Loader\FinderInterface;
 
 /**
   * Class State
@@ -30,9 +30,9 @@ use UniAlteri\States\Loader\FinderInterface;
   *
   * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
   *
-  * @link        http://teknoo.it/states Project website
+  * @link        http://teknoo.software/states Project website
   *
-  * @license     http://teknoo.it/license/mit         MIT License
+  * @license     http://teknoo.software/license/mit         MIT License
   * @author      Richard Déloge <r.deloge@uni-alteri.com>
   */
  class State extends AbstractWriter
@@ -53,7 +53,7 @@ use UniAlteri\States\Loader\FinderInterface;
 
 namespace $namespace\\$className\\States;
 
-use UniAlteri\\States\\State\\AbstractState;
+use Teknoo\\States\\State\\AbstractState;
 
 /**
  * State $stateName

@@ -14,33 +14,33 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Loader;
+namespace Teknoo\Tests\States\Loader;
 
 use Composer\Autoload\ClassLoader;
-use UniAlteri\States\Loader;
-use UniAlteri\States\State;
-use UniAlteri\States\Loader\Exception;
-use UniAlteri\Tests\Support;
+use Teknoo\States\Loader;
+use Teknoo\States\State;
+use Teknoo\States\Loader\Exception;
+use Teknoo\Tests\Support;
 
 /**
  * Class FinderComposerTest
- * Tests the excepted behavior of standard finder implementing the interface \UniAlteri\States\Loader\FinderInterface.
+ * Tests the excepted behavior of standard finder implementing the interface \Teknoo\States\Loader\FinderInterface.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Loader\FinderComposer
+ * @covers Teknoo\States\Loader\FinderComposer
  */
 class FinderComposerTest extends \PHPUnit_Framework_TestCase
 {
@@ -322,7 +322,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
 
         $stateObject = $this->finder->buildState('State4', false, 'Class1');
         $this->assertEquals('Class1\States\State4', get_class($stateObject));
-        $this->assertInstanceOf('\UniAlteri\States\State\StateInterface', $stateObject);
+        $this->assertInstanceOf('\Teknoo\States\State\StateInterface', $stateObject);
     }
 
     /**
@@ -352,8 +352,8 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeFinder('Class2', $this->statedClass2Path);
         $proxy = $this->finder->buildProxy();
-        $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
-        $this->assertInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
+        $this->assertInstanceOf('\Teknoo\States\Proxy\ProxyInterface', $proxy);
+        $this->assertInstanceOf('\Teknoo\States\Proxy\Standard', $proxy);
         $this->assertInstanceOf('Class2\\Class2', $proxy);
     }
 
@@ -422,8 +422,8 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
             });
 
         $proxy = $this->finder->buildProxy();
-        $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
-        $this->assertNotInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
+        $this->assertInstanceOf('\Teknoo\States\Proxy\ProxyInterface', $proxy);
+        $this->assertNotInstanceOf('\Teknoo\States\Proxy\Standard', $proxy);
         $this->assertInstanceOf('Class5\\Class5', $proxy);
     }
 
@@ -441,7 +441,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testListParentsClassesNamesNotFound()
     {
-        $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\ClassMissed', $this->statedClass6Path);
+        $this->initializeFinder('Teknoo\Tests\Support\StatedClass\ClassMissed', $this->statedClass6Path);
         try {
             $this->finder->listParentsClassesNames();
         } catch (Exception\IllegalProxy $e) {
@@ -458,7 +458,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testListParentsClassesNamesNoParent()
     {
-        $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\Class6', $this->statedClass6Path);
+        $this->initializeFinder('Teknoo\Tests\Support\StatedClass\Class6', $this->statedClass6Path);
 
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
@@ -477,7 +477,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testListParentsClassesNamesOneParent()
     {
-        $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\Class7', $this->statedClass7Path);
+        $this->initializeFinder('Teknoo\Tests\Support\StatedClass\Class7', $this->statedClass7Path);
 
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
@@ -490,7 +490,7 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
 
         $this->finder->loadProxy();
         $this->assertEquals(
-            ['UniAlteri\Tests\Support\StatedClass\Class6'],
+            ['Teknoo\Tests\Support\StatedClass\Class6'],
             $this->finder->listParentsClassesNames()->getArrayCopy()
         );
     }
@@ -500,11 +500,11 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
      */
     public function testListParentsClassesNamesMultiParent()
     {
-        $this->initializeFinder('UniAlteri\Tests\Support\StatedClass\Class8', $this->statedClass8Path);
+        $this->initializeFinder('Teknoo\Tests\Support\StatedClass\Class8', $this->statedClass8Path);
 
         $this->getClassLoaderMock()->expects($this->any())
             ->method('loadClass')
-            ->with($this->equalTo('UniAlteri\Tests\Support\StatedClass\Class8\Class8'))
+            ->with($this->equalTo('Teknoo\Tests\Support\StatedClass\Class8\Class8'))
             ->willReturnCallback(function () {
                 include_once $this->statedClass6Path.'/Class6.php';
                 include_once $this->statedClass7Path.'/Class7.php';
@@ -516,8 +516,8 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
         $this->finder->loadProxy();
         $this->assertEquals(
             [
-                'UniAlteri\Tests\Support\StatedClass\Class7',
-                'UniAlteri\Tests\Support\StatedClass\Class6',
+                'Teknoo\Tests\Support\StatedClass\Class7',
+                'Teknoo\Tests\Support\StatedClass\Class6',
             ],
             $this->finder->listParentsClassesNames()->getArrayCopy()
         );
@@ -558,15 +558,15 @@ class FinderComposerTest extends \PHPUnit_Framework_TestCase
 
         $this->initializeFinder('Class1', $this->statedClass1Path);
         $this->assertEquals(
-            array('UniAlteri\Tests\Support\MockState'),
+            array('Teknoo\Tests\Support\MockState'),
             $this->finder->getStateParentsClassesNamesList('State4b')
         );
         $this->assertEquals(
-            array('Class1\States\State4b', 'UniAlteri\Tests\Support\MockState'),
+            array('Class1\States\State4b', 'Teknoo\Tests\Support\MockState'),
             $this->finder->getStateParentsClassesNamesList('State5')
         );
         $this->assertEquals(
-            array('Class1\States\State5', 'Class1\States\State4b', 'UniAlteri\Tests\Support\MockState'),
+            array('Class1\States\State5', 'Class1\States\State4b', 'Teknoo\Tests\Support\MockState'),
             $this->finder->getStateParentsClassesNamesList('State6')
         );
     }

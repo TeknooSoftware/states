@@ -14,9 +14,9 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 if (!function_exists('testCallFromFunctionPrivate')) {
@@ -26,9 +26,9 @@ if (!function_exists('testCallFromFunctionPrivate')) {
      *
      * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
-     * @link        http://teknoo.it/states Project website
+     * @link        http://teknoo.software/states Project website
      *
-     * @license     http://teknoo.it/license/mit         MIT License
+     * @license     http://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testCallFromFunctionPrivate()
@@ -45,9 +45,9 @@ if (!function_exists('testCallFromFunctionProtected')) {
      *
      * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
-     * @link        http://teknoo.it/states Project website
+     * @link        http://teknoo.software/states Project website
      *
-     * @license     http://teknoo.it/license/mit         MIT License
+     * @license     http://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     function testCallFromFunctionProtected()
@@ -64,9 +64,9 @@ if (!function_exists('testCallFromFunctionPublic')) {
      *
      * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
-     * @link        http://teknoo.it/states Project website
+     * @link        http://teknoo.software/states Project website
      *
-     * @license     http://teknoo.it/license/mit         MIT License
+     * @license     http://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      *
      * @return mixed
@@ -86,9 +86,9 @@ if (!trait_exists('testCallTrait')) {
      *
      * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
-     * @link        http://teknoo.it/states Project website
+     * @link        http://teknoo.software/states Project website
      *
-     * @license     http://teknoo.it/license/mit         MIT License
+     * @license     http://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     trait testCallTrait
@@ -144,9 +144,9 @@ if (!class_exists('testCallFromOtherObject')) {
      *
      * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
      *
-     * @link        http://teknoo.it/states Project website
+     * @link        http://teknoo.software/states Project website
      *
-     * @license     http://teknoo.it/license/mit         MIT License
+     * @license     http://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <r.deloge@uni-alteri.com>
      */
     class testCallFromOtherObject

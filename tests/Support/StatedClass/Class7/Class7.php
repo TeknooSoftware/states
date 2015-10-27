@@ -14,17 +14,17 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  * Mock proxy file to test finder behavior when the proxy class is valid
  */
 
-namespace UniAlteri\Tests\Support\StatedClass\Class7;
+namespace Teknoo\Tests\Support\StatedClass\Class7;
 
-use UniAlteri\Tests\Support\StatedClass\Class6\Class6;
+use Teknoo\Tests\Support\StatedClass\Class6\Class6;
 
 /**
  * Class Class7
@@ -33,9 +33,9 @@ use UniAlteri\Tests\Support\StatedClass\Class6\Class6;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class Class7 extends Class6

@@ -14,15 +14,15 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Command\Writer;
+namespace Teknoo\States\Command\Writer;
 
-use UniAlteri\States\Loader\LoaderInterface;
+use Teknoo\States\Loader\LoaderInterface;
 
 /**
   * Class Factory
@@ -30,9 +30,9 @@ use UniAlteri\States\Loader\LoaderInterface;
   *
   * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
   *
-  * @link        http://teknoo.it/states Project website
+  * @link        http://teknoo.software/states Project website
   *
-  * @license     http://teknoo.it/license/mit         MIT License
+  * @license     http://teknoo.software/license/mit         MIT License
   * @author      Richard Déloge <r.deloge@uni-alteri.com>
   */
  class Factory extends AbstractWriter
@@ -48,10 +48,10 @@ use UniAlteri\States\Loader\LoaderInterface;
       */
      protected function generateFactory($className, $namespace, $isIntegrated)
      {
-         $factoryExtendsNamespace = 'UniAlteri\\States\\Factory\\Standard';
+         $factoryExtendsNamespace = 'Teknoo\\States\\Factory\\Standard';
          $factoryExtendsClassName = 'Standard';
          if (!empty($isIntegrated)) {
-             $factoryExtendsNamespace = 'UniAlteri\\States\\Factory\\Integrated';
+             $factoryExtendsNamespace = 'Teknoo\\States\\Factory\\Integrated';
              $factoryExtendsClassName = 'Integrated';
          }
 

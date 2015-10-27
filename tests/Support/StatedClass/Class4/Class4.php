@@ -14,13 +14,13 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  * Mock proxy file to test finder behavior when the proxy class does not implement the good interface :
- * \UniAlteri\States\Proxy\ProxyInterface
+ * \Teknoo\States\Proxy\ProxyInterface
  */
 
 namespace Class4;
@@ -28,14 +28,14 @@ namespace Class4;
 /**
  * Class Class4
  * Mock proxy file to test finder behavior when the proxy class does not implement the good interface :
- * \UniAlteri\States\Proxy\ProxyInterface.
+ * \Teknoo\States\Proxy\ProxyInterface.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class Class4

@@ -14,13 +14,13 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Command;
+namespace Teknoo\Tests\States\Command;
 
 /**
  * Class ConsoleTest.
@@ -28,9 +28,9 @@ namespace UniAlteri\Tests\States\Command;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class ConsoleTest extends \PHPUnit_Framework_TestCase
@@ -70,13 +70,13 @@ class ConsoleTest extends \PHPUnit_Framework_TestCase
         $factory = $command->getFactory();
 
         $this->assertEquals('Closure', get_class($factory));
-        $this->assertInstanceOf('UniAlteri\States\Command\Parser\Factory', $factory('Parser\Factory', 'path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Parser\Proxy', $factory('Parser\Proxy', 'path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Parser\State', $factory('Parser\State', 'path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Parser\StatedClass', $factory('Parser\StatedClass', 'path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Writer\Factory', $factory('Writer\Factory', 'path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Writer\Proxy', $factory('Writer\Proxy', 'path'));
-        $this->assertInstanceOf('UniAlteri\States\Command\Writer\State', $factory('Writer\State', 'path'));
+        $this->assertInstanceOf('Teknoo\States\Command\Parser\Factory', $factory('Parser\Factory', 'path'));
+        $this->assertInstanceOf('Teknoo\States\Command\Parser\Proxy', $factory('Parser\Proxy', 'path'));
+        $this->assertInstanceOf('Teknoo\States\Command\Parser\State', $factory('Parser\State', 'path'));
+        $this->assertInstanceOf('Teknoo\States\Command\Parser\StatedClass', $factory('Parser\StatedClass', 'path'));
+        $this->assertInstanceOf('Teknoo\States\Command\Writer\Factory', $factory('Writer\Factory', 'path'));
+        $this->assertInstanceOf('Teknoo\States\Command\Writer\Proxy', $factory('Writer\Proxy', 'path'));
+        $this->assertInstanceOf('Teknoo\States\Command\Writer\State', $factory('Writer\State', 'path'));
         try {
             $factory('BadService', 'path');
         } catch (\Exception $e) {

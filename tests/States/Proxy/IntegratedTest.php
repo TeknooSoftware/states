@@ -14,17 +14,17 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Proxy;
+namespace Teknoo\Tests\States\Proxy;
 
-use UniAlteri\States\Proxy;
-use UniAlteri\States\Proxy\Exception;
-use UniAlteri\Tests\Support;
+use Teknoo\States\Proxy;
+use Teknoo\States\Proxy\Exception;
+use Teknoo\Tests\Support;
 
 /**
  * Class IntegratedTest
@@ -33,18 +33,18 @@ use UniAlteri\Tests\Support;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Proxy\ProxyTrait
- * @covers UniAlteri\States\Proxy\Integrated
- * @covers UniAlteri\States\Proxy\IntegratedTrait
- * @covers UniAlteri\States\Proxy\ArrayAccessTrait
- * @covers UniAlteri\States\Proxy\IteratorTrait
- * @covers UniAlteri\States\Proxy\MagicCallTrait
- * @covers UniAlteri\States\Proxy\SerializableTrait
+ * @covers Teknoo\States\Proxy\ProxyTrait
+ * @covers Teknoo\States\Proxy\Integrated
+ * @covers Teknoo\States\Proxy\IntegratedTrait
+ * @covers Teknoo\States\Proxy\ArrayAccessTrait
+ * @covers Teknoo\States\Proxy\IteratorTrait
+ * @covers Teknoo\States\Proxy\MagicCallTrait
+ * @covers Teknoo\States\Proxy\SerializableTrait
  */
 class IntegratedTest extends AbstractProxyTest
 {
@@ -55,7 +55,7 @@ class IntegratedTest extends AbstractProxyTest
     protected function setUp()
     {
         //Change the startup factory to the mock for each test
-        Support\IntegratedProxy::defineStartupFactoryClassName('\UniAlteri\Tests\Support\MockStartupFactory');
+        Support\IntegratedProxy::defineStartupFactoryClassName('\Teknoo\Tests\Support\MockStartupFactory');
         parent::setUp();
     }
 

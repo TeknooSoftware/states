@@ -14,19 +14,19 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Proxy;
+namespace Teknoo\Tests\States\Proxy;
 
-use UniAlteri\States\DI;
-use UniAlteri\States\Proxy;
-use UniAlteri\States\Proxy\Exception;
-use UniAlteri\States\State;
-use UniAlteri\Tests\Support;
+use Teknoo\States\DI;
+use Teknoo\States\Proxy;
+use Teknoo\States\Proxy\Exception;
+use Teknoo\States\State;
+use Teknoo\Tests\Support;
 
 /**
  * Class AbstractProxyTest
@@ -36,9 +36,9 @@ use UniAlteri\Tests\Support;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
@@ -386,8 +386,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->proxy->registerState('state3', $this->state3);
         $statesList = $this->proxy->getStatesList();
         $this->assertEquals(2, $statesList->count());
-        $this->assertInstanceOf('UniAlteri\States\State\StateInterface', $statesList['state1']);
-        $this->assertInstanceOf('UniAlteri\States\State\StateInterface', $statesList['state3']);
+        $this->assertInstanceOf('Teknoo\States\State\StateInterface', $statesList['state1']);
+        $this->assertInstanceOf('Teknoo\States\State\StateInterface', $statesList['state3']);
     }
 
     /**

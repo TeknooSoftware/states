@@ -14,13 +14,13 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Proxy;
+namespace Teknoo\States\Proxy;
 
 /**
  * Trait IntegratedTrait
@@ -30,9 +30,9 @@ namespace UniAlteri\States\Proxy;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 trait IntegratedTrait
@@ -53,12 +53,12 @@ trait IntegratedTrait
             throw new Exception\UnavailableFactory('Error, the startup factory is not available');
         }
 
-        //Check if the startup class implements the interface 'UniAlteri\States\Factory\StartupFactoryInterface'
+        //Check if the startup class implements the interface 'Teknoo\States\Factory\StartupFactoryInterface'
         $interfacesImplementedArray = array_flip(//Do a flip because isset is more effecient than in_array
             class_implements(static::$startupFactoryClassName)
         );
 
-        if (!isset($interfacesImplementedArray['UniAlteri\States\Factory\StartupFactoryInterface'])) {
+        if (!isset($interfacesImplementedArray['Teknoo\States\Factory\StartupFactoryInterface'])) {
             throw new Exception\IllegalFactory('Error, the startup factory does not implement the startup interface');
         }
 

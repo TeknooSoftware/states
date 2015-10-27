@@ -14,16 +14,16 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
 
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Factory;
+namespace Teknoo\States\Factory;
 
-use UniAlteri\States\Proxy\ProxyInterface;
+use Teknoo\States\Proxy\ProxyInterface;
 
 /**
  * Class StandardStartupFactory
@@ -33,9 +33,9 @@ use UniAlteri\States\Proxy\ProxyInterface;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
 
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *

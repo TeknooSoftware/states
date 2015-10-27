@@ -14,15 +14,15 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Command\Parser;
+namespace Teknoo\States\Command\Parser;
 
-use UniAlteri\States\Loader\FinderInterface;
+use Teknoo\States\Loader\FinderInterface;
 
 /**
  * Class State
@@ -31,9 +31,9 @@ use UniAlteri\States\Loader\FinderInterface;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class State extends AbstractParser
@@ -68,7 +68,7 @@ class State extends AbstractParser
     public function isValidState($stateName)
     {
         return $this->loadFile(FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php')
-            ->implementsInterface('UniAlteri\States\State\StateInterface');
+            ->implementsInterface('Teknoo\States\State\StateInterface');
     }
 
     /**
@@ -83,14 +83,14 @@ class State extends AbstractParser
     public function isStandardState($stateName)
     {
         return $this->loadFile(FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php')
-            ->isSubclassOf('UniAlteri\States\State\AbstractState');
+            ->isSubclassOf('Teknoo\States\State\AbstractState');
     }
 
     /**
      * Test if the state use of the default implementation of this library States provided by the trait.
      *
      * @param string $stateName to test
-     *                          \UniAlteri\States\State\TraitStates
+     *                          \Teknoo\States\State\TraitStates
      *
      * @return bool
      *
@@ -99,7 +99,7 @@ class State extends AbstractParser
     public function useTraitState($stateName)
     {
         return in_array(
-            'UniAlteri\States\State\StateTrait',
+            'Teknoo\States\State\StateTrait',
             $this->loadFile(FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php')->getTraitNames()
         );
     }

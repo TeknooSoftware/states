@@ -1,4 +1,4 @@
-#Uni Alteri - States library - Change Log
+#Teknoo Software - States library - Change Log
 
 ##[2.0.0-beta15] - 2015-10-15 - Available on the branch "next"
 ###Added

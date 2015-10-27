@@ -14,29 +14,29 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\States;
+namespace Teknoo\Tests\States\States;
 
-use UniAlteri\States\Proxy;
-use UniAlteri\States\State\StateInterface;
-use UniAlteri\States\State\Exception as StateException;
-use UniAlteri\Tests\Support;
+use Teknoo\States\Proxy;
+use Teknoo\States\State\StateInterface;
+use Teknoo\States\State\Exception as StateException;
+use Teknoo\Tests\Support;
 
 /**
  * Class AbstractStatesTest
- * Set of tests to test the excepted behaviors of all implementations of \UniAlteri\States\State\StateInterface *.
+ * Set of tests to test the excepted behaviors of all implementations of \Teknoo\States\State\StateInterface *.
  
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase

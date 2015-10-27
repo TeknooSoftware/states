@@ -14,9 +14,9 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  * Mock factory file to test loader behavior when the factory class is valid.
@@ -24,9 +24,9 @@
  * The path is not computed from the class's name following PSR-0 recommendations
  */
 
-namespace UniAlteri\Tests\Support\Loader\Class2;
+namespace Teknoo\Tests\Support\Loader\Class2;
 
-use UniAlteri\Tests\Support;
+use Teknoo\Tests\Support;
 
 /**
  * Class FactoryClass
@@ -37,9 +37,9 @@ use UniAlteri\Tests\Support;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class Factory extends Support\MockFactory

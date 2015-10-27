@@ -14,32 +14,32 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Loader;
+namespace Teknoo\Tests\States\Loader;
 
-use UniAlteri\States\Loader;
-use UniAlteri\States\Factory;
-use UniAlteri\Tests\Support;
+use Teknoo\States\Loader;
+use Teknoo\States\Factory;
+use Teknoo\Tests\Support;
 
 /**
  * Class FinderComposerIntegratedTest
- * Tests the excepted behavior of integrated finder implementing the interface \UniAlteri\States\Loader\FinderInterface.
+ * Tests the excepted behavior of integrated finder implementing the interface \Teknoo\States\Loader\FinderInterface.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Loader\FinderComposerIntegrated
- * @covers UniAlteri\States\Loader\FinderComposer
+ * @covers Teknoo\States\Loader\FinderComposerIntegrated
+ * @covers Teknoo\States\Loader\FinderComposer
  */
 class FinderComposerIntegratedTest extends FinderComposerTest
 {
@@ -65,7 +65,7 @@ class FinderComposerIntegratedTest extends FinderComposerTest
     {
         $this->initializeFinder('Class2', $this->statedClass2Path);
         Factory\StandardStartupFactory::registerFactory(
-            'UniAlteri\States\Proxy\Integrated',
+            'Teknoo\States\Proxy\Integrated',
             new Support\MockFactory(
                 'my\Stated\Class', $this->finder,
                 new \ArrayObject([])
@@ -73,8 +73,8 @@ class FinderComposerIntegratedTest extends FinderComposerTest
         );
 
         $proxy = $this->finder->buildProxy();
-        $this->assertInstanceOf('\UniAlteri\States\Proxy\ProxyInterface', $proxy);
-        $this->assertInstanceOf('\UniAlteri\States\Proxy\Standard', $proxy);
+        $this->assertInstanceOf('\Teknoo\States\Proxy\ProxyInterface', $proxy);
+        $this->assertInstanceOf('\Teknoo\States\Proxy\Standard', $proxy);
         $this->assertInstanceOf('Class2\\Class2', $proxy);
     }
 }

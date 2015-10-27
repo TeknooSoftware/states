@@ -14,9 +14,9 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
@@ -27,7 +27,7 @@ $loader = include 'demo.php';
 //Register demo namespace
 $loader->registerNamespace('\\demo\\Acme\\Multiple', 'phar://'.__DIR__.DS.'Acme'.DS.'multiple.phar');
 
-print 'Uni Alteri - States library - Demo :'.PHP_EOL.PHP_EOL;
+print 'Teknoo Software - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize user
 print 'User : ';
 $simpleUser = new Acme\Multiple\User\User('simple');

@@ -14,19 +14,19 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Command\Parser;
+namespace Teknoo\Tests\States\Command\Parser;
 
 use Gaufrette\Filesystem;
-use UniAlteri\States\Command\Parser\Exception\ClassNotFound;
-use UniAlteri\States\Command\Parser\State;
-use UniAlteri\States\Exception\UnReadablePath;
-use UniAlteri\States\Loader\FinderInterface;
+use Teknoo\States\Command\Parser\Exception\ClassNotFound;
+use Teknoo\States\Command\Parser\State;
+use Teknoo\States\Exception\UnReadablePath;
+use Teknoo\States\Loader\FinderInterface;
 
 /**
  * Class StateTest.
@@ -34,12 +34,12 @@ use UniAlteri\States\Loader\FinderInterface;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Command\Parser\State
+ * @covers Teknoo\States\Command\Parser\State
  */
 class StateTest extends \PHPUnit_Framework_TestCase
 {

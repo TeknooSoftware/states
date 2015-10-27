@@ -14,9 +14,9 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
@@ -25,14 +25,14 @@ namespace demo;
 use Acme\Extendable\Daughter\Daughter;
 use Acme\Extendable\GrandDaughter\GrandDaughter;
 use Acme\Extendable\Mother\Mother;
-use UniAlteri\States\Exception\MethodNotImplemented;
+use Teknoo\States\Exception\MethodNotImplemented;
 
 $loader = include 'demo.php';
 
 //Register demo namespace
 $loader->registerNamespace('\\Acme\\Extendable', __DIR__.DS.'Acme'.DS.'Extendable');
 
-print 'Uni Alteri - States library - Demo for extendable behavior:'.PHP_EOL;
+print 'Teknoo Software - States library - Demo for extendable behavior:'.PHP_EOL;
 
 //Initialize objects
 $motherInstance = new Mother();

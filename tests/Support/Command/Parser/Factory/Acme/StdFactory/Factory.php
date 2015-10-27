@@ -14,9 +14,9 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  * Mock factory file to test command for cli helper
@@ -24,7 +24,7 @@
 
 namespace Acme\StdFactory;
 
-use UniAlteri\States\Factory\Standard;
+use Teknoo\States\Factory\Standard;
 
 class Factory extends Standard
 {

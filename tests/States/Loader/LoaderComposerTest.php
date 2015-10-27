@@ -14,32 +14,32 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Loader;
+namespace Teknoo\Tests\States\Loader;
 
 use Composer\Autoload\ClassLoader;
-use UniAlteri\States\Loader;
-use UniAlteri\States\Loader\Exception;
-use UniAlteri\Tests\Support;
+use Teknoo\States\Loader;
+use Teknoo\States\Loader\Exception;
+use Teknoo\Tests\Support;
 
 /**
  * Class LoaderComposerTest
- * Tests the excepted behavior of standard loader implementing the interface \UniAlteri\States\Loader\LoaderInterface.
+ * Tests the excepted behavior of standard loader implementing the interface \Teknoo\States\Loader\LoaderInterface.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Loader\LoaderComposer
+ * @covers Teknoo\States\Loader\LoaderComposer
  */
 class LoaderComposerTest extends \PHPUnit_Framework_TestCase
 {
@@ -198,11 +198,11 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         Support\MockFactory::resetInitializedFactories();
         $loader = $this->initializeLoader();
         $this->assertEquals(array(), Support\MockFactory::listInitializedFactories());
-        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class1', 'path1');
+        $loader->buildFactory('\\Teknoo\\Tests\\Support\\MockFactory', 'class1', 'path1');
         $this->assertEquals(array('class1'), Support\MockFactory::listInitializedFactories());
-        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class2', 'path2');
+        $loader->buildFactory('\\Teknoo\\Tests\\Support\\MockFactory', 'class2', 'path2');
         $this->assertEquals(array('class1', 'class2'), Support\MockFactory::listInitializedFactories());
-        $loader->buildFactory('\\UniAlteri\\Tests\\Support\\MockFactory', 'class1', 'path3');
+        $loader->buildFactory('\\Teknoo\\Tests\\Support\\MockFactory', 'class1', 'path3');
         $this->assertEquals(
             array('class1', 'class2', 'class1'),
             Support\MockFactory::listInitializedFactories(),
@@ -223,7 +223,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -231,13 +231,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Class1':
                         return false;
                         break;
                     default:
@@ -248,8 +248,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return false;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1'));
     }
 
     /**
@@ -265,7 +265,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -273,13 +273,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Class1':
                         return false;
                         break;
                     default:
@@ -290,9 +290,9 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return false;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1'));
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1'));
     }
 
     /**
@@ -308,7 +308,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -316,13 +316,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Class1\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Class1':
                         return false;
                         break;
                     default:
@@ -333,8 +333,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1\\Class1'));
     }
 
     /**
@@ -350,7 +350,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -358,13 +358,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1b\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Class1b':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1b\\Class1b':
                         return false;
                         break;
                     default:
@@ -375,8 +375,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1b'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1b'));
     }
 
     /**
@@ -392,7 +392,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -400,13 +400,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Class1b\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1b\\Class1b\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1b\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Class1b':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1b\\Class1b':
                         return false;
                         break;
                     default:
@@ -417,8 +417,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1b\\Class1b'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1b\\Class1b'));
     }
 
     /**
@@ -434,7 +434,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -442,13 +442,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Factory':
                         include_once $path.'/Class2/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2':
                         include_once $path.'/Class2/Class2.php';
                         break;
                     default:
@@ -459,8 +459,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2'));
     }
 
     /**
@@ -476,7 +476,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -484,13 +484,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Factory':
                         include_once $path.'/Class2/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2':
                         include_once $path.'/Class2/Class2.php';
                         break;
                     default:
@@ -501,9 +501,9 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2'));
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2'));
     }
 
     /**
@@ -519,7 +519,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -527,13 +527,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Factory':
                         include_once $path.'/Class2/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2':
                         include_once $path.'/Class2/Class2.php';
                         break;
                     default:
@@ -544,8 +544,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2'));
     }
 
     /**
@@ -561,7 +561,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -569,13 +569,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Class1':
                         return false;
                         break;
                     default:
@@ -586,8 +586,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1'));
     }
 
     /**
@@ -603,7 +603,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -611,13 +611,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Class1':
                         return false;
                         break;
                     default:
@@ -628,9 +628,9 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1'));
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1'));
     }
 
     /**
@@ -646,7 +646,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -654,13 +654,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Class1\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1\\Class1':
                         return false;
                         break;
                     default:
@@ -671,8 +671,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1\\Class1'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1\\Class1'));
     }
 
     /**
@@ -688,7 +688,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -696,13 +696,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Factory':
                         include_once $path.'/Class2/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2':
                         include_once $path.'/Class2/Class2.php';
                         break;
                     default:
@@ -713,8 +713,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2'));
     }
 
     /**
@@ -730,7 +730,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -738,13 +738,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Factory':
                         include_once $path.'/Class2/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2':
                         include_once $path.'/Class2/Class2.php';
                         break;
                     default:
@@ -755,9 +755,9 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2'));
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2'));
     }
 
     /**
@@ -773,7 +773,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -781,13 +781,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Factory':
                         include_once $path.'/Class2/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2':
                         include_once $path.'/Class2/Class2.php';
                         break;
                     default:
@@ -798,8 +798,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2\\Class2'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2\\Class2'));
     }
 
     /**
@@ -817,7 +817,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -825,13 +825,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3\\Class3\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3\\Factory':
                         include_once $path.'/Class3/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3\\Class3':
                         include_once $path.'/Class3/Class3.php';
                         break;
                     default:
@@ -842,8 +842,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class3'));
     }
 
     /**
@@ -861,7 +861,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -869,13 +869,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3\\Class3\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3\\Factory':
                         include_once $path.'/Class3/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3\\Class3':
                         include_once $path.'/Class3/Class3.php';
                         break;
                     default:
@@ -886,8 +886,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', $path);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3\\Class3'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', $path);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class3\\Class3'));
     }
 
     /**
@@ -909,7 +909,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -917,13 +917,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar':
                         return false;
                         break;
                     default:
@@ -934,8 +934,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1Phar'));
     }
 
     /**
@@ -957,7 +957,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -965,13 +965,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar':
                         return false;
                         break;
                     default:
@@ -982,8 +982,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar'));
     }
 
     /**
@@ -1005,7 +1005,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -1013,13 +1013,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1bPhar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar':
                         return false;
                         break;
                     default:
@@ -1030,8 +1030,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar'));
     }
 
     /**
@@ -1053,7 +1053,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -1061,13 +1061,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1bPhar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar':
                         return false;
                         break;
                     default:
@@ -1078,8 +1078,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1bPhar\\Class1bPhar'));
     }
 
     /**
@@ -1101,7 +1101,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -1109,13 +1109,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Factory':
                         include_once $path.'/Class2Phar/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
                         include_once $path.'/Class2Phar/Class2.php';
                         break;
                     default:
@@ -1126,8 +1126,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2Phar'));
     }
 
     /**
@@ -1149,7 +1149,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -1157,13 +1157,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Factory':
                         include_once $path.'/Class2Phar/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
                         include_once $path.'/Class2Phar/Class2.php';
                         break;
                     default:
@@ -1174,8 +1174,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
+        $loader->registerNamespace('Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
     }
 
     /**
@@ -1197,7 +1197,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -1205,13 +1205,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class2Phar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Class2Phar':
                         return false;
                         break;
                     default:
@@ -1222,8 +1222,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1Phar'));
     }
 
     /**
@@ -1245,7 +1245,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -1253,13 +1253,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar':
                         return false;
                         break;
                     default:
@@ -1270,8 +1270,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class1Phar\\Class1Phar'));
     }
 
     /**
@@ -1293,7 +1293,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -1301,13 +1301,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Factory':
                         include_once $path.'/Class2Phar/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
                         include_once $path.'/Class2Phar/Class2Phar.php';
                         break;
                     default:
@@ -1318,8 +1318,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2Phar'));
     }
 
     /**
@@ -1341,7 +1341,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -1349,13 +1349,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Factory':
                         include_once $path.'/Class2Phar/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar':
                         include_once $path.'/Class2Phar/Class2Phar.php';
                         break;
                     default:
@@ -1366,8 +1366,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertTrue($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
     }
 
     /**
@@ -1391,7 +1391,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -1399,13 +1399,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3Phar\\Factory':
                         include_once $path.'/Class3Phar/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar':
                         include_once $path.'/Class3Phar/Class3Phar.php';
                         break;
                     default:
@@ -1416,8 +1416,8 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class3Phar'));
     }
 
     /**
@@ -1441,7 +1441,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         $this->getClassLoaderMock()->expects($this->any())
             ->method('addPsr4')
             ->with(
-                $this->equalTo('UniAlteri\\Tests\\Support\\Loader\\'),
+                $this->equalTo('Teknoo\\Tests\\Support\\Loader\\'),
                 $this->equalTo($path)
             );
 
@@ -1449,13 +1449,13 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
             ->method('loadClass')
             ->willReturnCallback(function ($className) use ($path) {
                 switch ($className) {
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar\\Factory':
                         return false;
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Factory':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3Phar\\Factory':
                         include_once $path.'/Class3Phar/Factory.php';
                         break;
-                    case '\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar':
+                    case '\\Teknoo\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar':
                         include_once $path.'/Class3Phar/Class3Phar.php';
                         break;
                     default:
@@ -1466,7 +1466,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
                 return true;
             });
 
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
-        $this->assertFalse($loader->loadClass('\\UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar'));
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
+        $this->assertFalse($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class3Phar\\Class3Phar'));
     }
 }

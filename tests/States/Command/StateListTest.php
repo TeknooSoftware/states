@@ -14,16 +14,16 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Command;
+namespace Teknoo\Tests\States\Command;
 
-use UniAlteri\States\Command\Parser\State;
-use UniAlteri\States\Command\StateList;
+use Teknoo\States\Command\Parser\State;
+use Teknoo\States\Command\StateList;
 
 /**
  * Class StateListTest.
@@ -31,12 +31,12 @@ use UniAlteri\States\Command\StateList;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Command\StateList
+ * @covers Teknoo\States\Command\StateList
  */
 class StateListTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,7 +52,7 @@ class StateListTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->parser instanceof \PHPUnit_Framework_MockObject_MockObject) {
             $this->parser = $this->getMock(
-                'UniAlteri\States\Command\Parser\State',
+                'Teknoo\States\Command\Parser\State',
                 array(),
                 array(),
                 '',

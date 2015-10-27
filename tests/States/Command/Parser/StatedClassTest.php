@@ -14,20 +14,20 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Command\Parser;
+namespace Teknoo\Tests\States\Command\Parser;
 
 use Gaufrette\Filesystem;
-use UniAlteri\States\Command\Parser\Proxy;
-use UniAlteri\States\Command\Parser\State;
-use UniAlteri\States\Command\Parser\Factory;
-use UniAlteri\States\Command\Parser\StatedClass;
-use UniAlteri\States\Loader\FinderInterface;
+use Teknoo\States\Command\Parser\Proxy;
+use Teknoo\States\Command\Parser\State;
+use Teknoo\States\Command\Parser\Factory;
+use Teknoo\States\Command\Parser\StatedClass;
+use Teknoo\States\Loader\FinderInterface;
 
 /**
  * Class StatedClassTest.
@@ -35,12 +35,12 @@ use UniAlteri\States\Loader\FinderInterface;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Command\Parser\StatedClass
+ * @covers Teknoo\States\Command\Parser\StatedClass
  */
 class StatedClassTest extends \PHPUnit_Framework_TestCase
 {
@@ -89,7 +89,7 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->proxyParser instanceof \PHPUnit_Framework_MockObject_MockObject) {
             $this->proxyParser = $this->getMock(
-                '\UniAlteri\States\Command\Parser\Proxy',
+                '\Teknoo\States\Command\Parser\Proxy',
                 array(),
                 array(),
                 '',
@@ -107,7 +107,7 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->stateParser instanceof \PHPUnit_Framework_MockObject_MockObject) {
             $this->stateParser = $this->getMock(
-                'UniAlteri\States\Command\Parser\State',
+                'Teknoo\States\Command\Parser\State',
                 array(),
                 array(),
                 '',
@@ -125,7 +125,7 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->factoryParser instanceof \PHPUnit_Framework_MockObject_MockObject) {
             $this->factoryParser = $this->getMock(
-                'UniAlteri\States\Command\Parser\Factory',
+                'Teknoo\States\Command\Parser\Factory',
                 array(),
                 array(),
                 '',

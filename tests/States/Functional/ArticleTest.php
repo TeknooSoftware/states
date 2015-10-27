@@ -14,16 +14,16 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Functional;
+namespace Teknoo\Tests\States\Functional;
 
-use UniAlteri\States\Loader;
-use UniAlteri\Tests\Support\Article\Article;
+use Teknoo\States\Loader;
+use Teknoo\Tests\Support\Article\Article;
 
 /**
  * Class ArticleTest
@@ -32,9 +32,9 @@ use UniAlteri\Tests\Support\Article\Article;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class ArticleTest extends \PHPUnit_Framework_TestCase
@@ -42,14 +42,14 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
     /**
      * Loader of the states library.
      *
-     * @var \UniAlteri\States\Loader\LoaderInterface
+     * @var \Teknoo\States\Loader\LoaderInterface
      */
     protected $loader = null;
 
     /**
      * Load the library State and retrieve its default loader from its bootstrap.
      *
-     * @return \UniAlteri\States\Loader\LoaderInterface
+     * @return \Teknoo\States\Loader\LoaderInterface
      */
     protected function getLoader()
     {
@@ -69,9 +69,9 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
             || define('DS', DIRECTORY_SEPARATOR);
 
         //Register demo namespace
-        $this->getLoader()->registerNamespace('\\UniAlteri\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
+        $this->getLoader()->registerNamespace('\\Teknoo\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
 
-        $article = new \UniAlteri\Tests\Support\Article();
+        $article = new \Teknoo\Tests\Support\Article();
 
         //It is a new article, not published, the constructor load the state 'Draft'
         $this->assertEquals(array('StateDefault', 'Draft'), $article->listEnabledStates());
@@ -91,7 +91,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Lorem <strong>Ipsum</strong>', $article->getFormattedBody());
 
         //Open a published article
-        $article = new \UniAlteri\Tests\Support\Article(
+        $article = new \Teknoo\Tests\Support\Article(
             array(
                 'is_published' => true,
                 'title' => 'title 2',
@@ -175,7 +175,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
             || define('DS', DIRECTORY_SEPARATOR);
 
         //Register demo namespace
-        $this->getLoader()->registerNamespace('\\UniAlteri\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
+        $this->getLoader()->registerNamespace('\\Teknoo\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
 
         $article = new Article();
         $statesList = $article->listAvailableStates();

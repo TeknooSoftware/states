@@ -14,15 +14,15 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Functional;
+namespace Teknoo\Tests\States\Functional;
 
-use UniAlteri\States\Loader;
+use Teknoo\States\Loader;
 
 /**
  * Class MultipleTest
@@ -31,9 +31,9 @@ use UniAlteri\States\Loader;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class MultipleTest extends \PHPUnit_Framework_TestCase
@@ -41,14 +41,14 @@ class MultipleTest extends \PHPUnit_Framework_TestCase
     /**
      * Loader of the states library.
      *
-     * @var \UniAlteri\States\Loader\LoaderInterface
+     * @var \Teknoo\States\Loader\LoaderInterface
      */
     protected $loader = null;
 
     /**
      * Load the library State and retrieve its default loader from its bootstrap.
      *
-     * @return \UniAlteri\States\Loader\LoaderInterface
+     * @return \Teknoo\States\Loader\LoaderInterface
      */
     protected function getLoader()
     {
@@ -90,17 +90,17 @@ class MultipleTest extends \PHPUnit_Framework_TestCase
         $loader = $this->getLoader();
 
         //Register demo namespace
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
-        $loader->registerNamespace('\\UniAlteri\\Tests\\Support\\Multiple', 'phar://'.UA_STATES_TEST_PATH.DS.'Support'.DS.'multiple.phar');
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Multiple', 'phar://'.UA_STATES_TEST_PATH.DS.'Support'.DS.'multiple.phar');
 
         //Initialize user
-        $simpleUser = new \UniAlteri\Tests\Support\Multiple\User('simple 1');
+        $simpleUser = new \Teknoo\Tests\Support\Multiple\User('simple 1');
         $this->assertEquals('simple 1', $simpleUser->getName());
         //Initialize moderator
-        $moderator = new \UniAlteri\Tests\Support\Multiple\User('modo', false, true);
+        $moderator = new \Teknoo\Tests\Support\Multiple\User('modo', false, true);
         $this->assertEquals('modo', $moderator->getName());
         //Initialize admin
-        $administrator = new \UniAlteri\Tests\Support\Multiple\User('admin', true, true);
+        $administrator = new \Teknoo\Tests\Support\Multiple\User('admin', true, true);
         $this->assertEquals('admin', $administrator->getName());
 
         //Method not available, because state Moderator is not enabled
@@ -123,7 +123,7 @@ class MultipleTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($simpleUser->isModerator());
 
         //Initialize another stated class of this phar
-        $newPost = new \UniAlteri\Tests\Support\Multiple\Post();
-        $this->assertInstanceOf('\UniAlteri\Tests\Support\Multiple\Post', $newPost);
+        $newPost = new \Teknoo\Tests\Support\Multiple\Post();
+        $this->assertInstanceOf('\Teknoo\Tests\Support\Multiple\Post', $newPost);
     }
 }

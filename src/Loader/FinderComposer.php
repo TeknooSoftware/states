@@ -14,18 +14,18 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
 
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Loader;
+namespace Teknoo\States\Loader;
 
 use Composer\Autoload\ClassLoader;
-use UniAlteri\States\State\StateInterface;
-use UniAlteri\States\Proxy\ProxyInterface;
+use Teknoo\States\State\StateInterface;
+use Teknoo\States\Proxy\ProxyInterface;
 
 /**
  * Class FinderComposer
@@ -35,9 +35,9 @@ use UniAlteri\States\Proxy\ProxyInterface;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
 
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
@@ -64,7 +64,7 @@ class FinderComposer implements FinderInterface
      *
      * @var string
      */
-    protected $defaultProxyClassName = '\UniAlteri\States\Proxy\Standard';
+    protected $defaultProxyClassName = '\Teknoo\States\Proxy\Standard';
 
     /**
      * List of states already fetched by this finder.
@@ -307,11 +307,11 @@ class FinderComposer implements FinderInterface
 
             //Get name of the parent class
             $parentClassName = get_parent_class($proxyClassName);
-            while (false !== $parentClassName && false === strpos($parentClassName, 'UniAlteri\\States')) {
+            while (false !== $parentClassName && false === strpos($parentClassName, 'Teknoo\\States')) {
                 if (class_exists($parentClassName, false)) {
                     //Use reflection class on the reflection class, ignore bad proxy and abstract class
                     $reflectionClassInstance = new \ReflectionClass($parentClassName);
-                    if ($reflectionClassInstance->implementsInterface('UniAlteri\\States\\Proxy\\ProxyInterface')
+                    if ($reflectionClassInstance->implementsInterface('Teknoo\\States\\Proxy\\ProxyInterface')
                         && false === $reflectionClassInstance->isAbstract()) {
                         $parentClassName = substr($parentClassName, 0, strrpos($parentClassName, '\\'));
                         $finalParentsClassesList[] = $parentClassName;

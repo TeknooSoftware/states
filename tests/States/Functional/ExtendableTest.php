@@ -14,20 +14,20 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Functional;
+namespace Teknoo\Tests\States\Functional;
 
-use UniAlteri\States\Di;
-use UniAlteri\States\Exception\MethodNotImplemented;
-use UniAlteri\States\Loader;
-use UniAlteri\Tests\Support\Extendable\Daughter\Daughter;
-use UniAlteri\Tests\Support\Extendable\GrandDaughter\GrandDaughter;
-use UniAlteri\Tests\Support\Extendable\Mother\Mother;
+use Teknoo\States\Di;
+use Teknoo\States\Exception\MethodNotImplemented;
+use Teknoo\States\Loader;
+use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
+use Teknoo\Tests\Support\Extendable\GrandDaughter\GrandDaughter;
+use Teknoo\Tests\Support\Extendable\Mother\Mother;
 
 /**
  * Class ArticleTest
@@ -36,9 +36,9 @@ use UniAlteri\Tests\Support\Extendable\Mother\Mother;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class ExtendableTest extends \PHPUnit_Framework_TestCase
@@ -46,7 +46,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     /**
      * Loader of the states library.
      *
-     * @var \UniAlteri\States\Loader\LoaderInterface
+     * @var \Teknoo\States\Loader\LoaderInterface
      */
     protected $loader = null;
 
@@ -60,12 +60,12 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     /**
      * Load the library State and retrieve its default loader from its bootstrap.
      *
-     * @return \UniAlteri\States\Loader\LoaderInterface
+     * @return \Teknoo\States\Loader\LoaderInterface
      */
     protected function getLoader()
     {
         if (null === $this->loader) {
-            $this->loader = include __DIR__.'/../../../../../src/UniAlteri/States/bootstrap.php';
+            $this->loader = include __DIR__.'/../../../../../src/Teknoo/States/bootstrap.php';
         }
 
         return $this->loader;

@@ -14,17 +14,17 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Command;
+namespace Teknoo\Tests\States\Command;
 
-use UniAlteri\States\Command\ClassCreate;
-use UniAlteri\States\Command\ClassInformation;
-use UniAlteri\States\Command\Parser\StatedClass;
+use Teknoo\States\Command\ClassCreate;
+use Teknoo\States\Command\ClassInformation;
+use Teknoo\States\Command\Parser\StatedClass;
 
 /**
  * Class ClassInformationTest.
@@ -32,12 +32,12 @@ use UniAlteri\States\Command\Parser\StatedClass;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Command\ClassInformation
+ * @covers Teknoo\States\Command\ClassInformation
  */
 class ClassInformationTest extends \PHPUnit_Framework_TestCase
 {
@@ -53,7 +53,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->parser instanceof \PHPUnit_Framework_MockObject_MockObject) {
             $this->parser = $this->getMock(
-                'UniAlteri\States\Command\Parser\StatedClass',
+                'Teknoo\States\Command\Parser\StatedClass',
                 array(),
                 array(),
                 '',
@@ -116,7 +116,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('hasProxy')
             ->willReturn(false);
 
-        $parserParser = $this->getMock('UniAlteri\States\Command\Parser\Proxy', [], [], '', false);
+        $parserParser = $this->getMock('Teknoo\States\Command\Parser\Proxy', [], [], '', false);
 
         $this->buildStatedClassMock()
             ->expects($this->once())
@@ -140,7 +140,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('hasFactory')
             ->willReturn(false);
 
-        $factoryParser = $this->getMock('UniAlteri\States\Command\Parser\Factory', [], [], '', false);
+        $factoryParser = $this->getMock('Teknoo\States\Command\Parser\Factory', [], [], '', false);
 
         $this->buildStatedClassMock()
             ->expects($this->once())
@@ -159,7 +159,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('isIntegratedFactory')
             ->willReturn(false);
 
-        $stateParser = $this->getMock('UniAlteri\States\Command\Parser\State', [], [], '', false);
+        $stateParser = $this->getMock('Teknoo\States\Command\Parser\State', [], [], '', false);
         $stateParser->expects($this->any())
             ->method('listStates')
             ->willReturn(new \ArrayObject(['State1', 'State2', 'State3']));
@@ -205,7 +205,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('hasProxy')
             ->willReturn(true);
 
-        $parserParser = $this->getMock('UniAlteri\States\Command\Parser\Proxy', [], [], '', false);
+        $parserParser = $this->getMock('Teknoo\States\Command\Parser\Proxy', [], [], '', false);
 
         $this->buildStatedClassMock()
             ->expects($this->once())
@@ -229,7 +229,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('hasFactory')
             ->willReturn(true);
 
-        $factoryParser = $this->getMock('UniAlteri\States\Command\Parser\Factory', [], [], '', false);
+        $factoryParser = $this->getMock('Teknoo\States\Command\Parser\Factory', [], [], '', false);
 
         $this->buildStatedClassMock()
             ->expects($this->once())
@@ -248,7 +248,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('isIntegratedFactory')
             ->willReturn(true);
 
-        $stateParser = $this->getMock('UniAlteri\States\Command\Parser\State', [], [], '', false);
+        $stateParser = $this->getMock('Teknoo\States\Command\Parser\State', [], [], '', false);
         $stateParser->expects($this->any())
             ->method('listStates')
             ->willReturn(new \ArrayObject(['State1', 'State2', 'State3']));

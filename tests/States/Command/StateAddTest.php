@@ -14,16 +14,16 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Command;
+namespace Teknoo\Tests\States\Command;
 
-use UniAlteri\States\Command\StateAdd;
-use UniAlteri\States\Command\Writer\State;
+use Teknoo\States\Command\StateAdd;
+use Teknoo\States\Command\Writer\State;
 
 /**
  * Class StateAddTest.
@@ -31,12 +31,12 @@ use UniAlteri\States\Command\Writer\State;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Command\StateAdd
+ * @covers Teknoo\States\Command\StateAdd
  */
 class StateAddTest extends \PHPUnit_Framework_TestCase
 {
@@ -52,7 +52,7 @@ class StateAddTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->state instanceof \PHPUnit_Framework_MockObject_MockObject) {
             $this->state = $this->getMock(
-                'UniAlteri\States\Command\Writer\State',
+                'Teknoo\States\Command\Writer\State',
                 array(),
                 array(),
                 '',

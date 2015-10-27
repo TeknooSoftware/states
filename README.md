@@ -1,7 +1,7 @@
-Uni Alteri - States library
+Teknoo Software - States library
 ===========================
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/417986ff-17b4-4772-a3d8-9885d6304786/mini.png)](https://insight.sensiolabs.com/projects/417986ff-17b4-4772-a3d8-9885d6304786) [![Build Status](https://travis-ci.org/UniAlteri/states.svg?branch=master)](https://travis-ci.org/UniAlteri/states)
+[![SensioLabsInsight](https://insight.sensiolabs.com/projects/417986ff-17b4-4772-a3d8-9885d6304786/mini.png)](https://insight.sensiolabs.com/projects/417986ff-17b4-4772-a3d8-9885d6304786) [![Build Status](https://travis-ci.org/Teknoo/states.svg?branch=master)](https://travis-ci.org/Teknoo/states)
 
 Welcome and thank you to having downloaded this library. 
 It's allow you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
@@ -15,7 +15,7 @@ Installation
 ------------
 To install this library with composer, run this command :
 
-    composer require unialteri/states:next-dev
+    composer require teknoo/states:next-dev
 
 Requirements
 ------------
@@ -55,7 +55,8 @@ From the version 2.0, this library has been redesigned to
 Credits
 -------
 Richard Déloge - <r.deloge@uni-alteri.com> - Lead developer.
-Uni Alteri - <http://uni-alteri.com> - <http://teknoo.it>
+Teknoo Software - <http://teknoo.software>
+Uni Alteri - <http://uni-alteri.com>
 
 License
 -------

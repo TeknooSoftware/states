@@ -14,18 +14,18 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Command;
+namespace Teknoo\Tests\States\Command;
 
-use UniAlteri\States\Command\ClassCreate;
-use UniAlteri\States\Command\Writer\Factory;
-use UniAlteri\States\Command\Writer\Proxy;
-use UniAlteri\States\Command\Writer\State;
+use Teknoo\States\Command\ClassCreate;
+use Teknoo\States\Command\Writer\Factory;
+use Teknoo\States\Command\Writer\Proxy;
+use Teknoo\States\Command\Writer\State;
 
 /**
  * Class ClassCreateTest.
@@ -33,12 +33,12 @@ use UniAlteri\States\Command\Writer\State;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\Command\ClassCreate
+ * @covers Teknoo\States\Command\ClassCreate
  */
 class ClassCreateTest extends \PHPUnit_Framework_TestCase
 {
@@ -69,7 +69,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->factory instanceof \PHPUnit_Framework_MockObject_MockObject) {
             $this->factory = $this->getMock(
-                'UniAlteri\States\Command\Writer\Factory',
+                'Teknoo\States\Command\Writer\Factory',
                 array(),
                 array(),
                 '',
@@ -87,7 +87,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->proxy instanceof \PHPUnit_Framework_MockObject_MockObject) {
             $this->proxy = $this->getMock(
-                'UniAlteri\States\Command\Writer\Proxy',
+                'Teknoo\States\Command\Writer\Proxy',
                 array(),
                 array(),
                 '',
@@ -105,7 +105,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
     {
         if (!$this->state instanceof \PHPUnit_Framework_MockObject_MockObject) {
             $this->state = $this->getMock(
-                'UniAlteri\States\Command\Writer\State',
+                'Teknoo\States\Command\Writer\State',
                 array(),
                 array(),
                 '',

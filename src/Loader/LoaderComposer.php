@@ -14,17 +14,17 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
 
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Loader;
+namespace Teknoo\States\Loader;
 
 use Composer\Autoload\ClassLoader;
-use UniAlteri\States\Factory\FactoryInterface;
+use Teknoo\States\Factory\FactoryInterface;
 
 /**
  * Class LoaderStandard
@@ -36,9 +36,9 @@ use UniAlteri\States\Factory\FactoryInterface;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
 
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
@@ -145,7 +145,7 @@ class LoaderComposer implements LoaderInterface
                 || true === $this->composerInstance->loadClass($factoryClassName)) {
                 $reflectionClassInstance = new \ReflectionClass($factoryClassName);
 
-                $this->factoryAvailabilityList[$factoryClassName] = $reflectionClassInstance->implementsInterface('UniAlteri\\States\\Factory\\FactoryInterface');
+                $this->factoryAvailabilityList[$factoryClassName] = $reflectionClassInstance->implementsInterface('Teknoo\\States\\Factory\\FactoryInterface');
             } else {
                 $this->factoryAvailabilityList[$factoryClassName] = false;
             }
@@ -171,7 +171,7 @@ class LoaderComposer implements LoaderInterface
     {
         //Do nothing if this loader has already check the required class name or if the class provide from this library
         if (isset($this->loadingFactoriesClassNameArray[$className])
-            || 0 === strpos($className, 'UniAlteri\\States')) {
+            || 0 === strpos($className, 'Teknoo\\States')) {
             return false;
         }
 

@@ -14,9 +14,9 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  * Test behavior of the bootstrap file. It initialize the library :
@@ -26,10 +26,10 @@
  * * Register the service to build new injection closure for each stated classes' methods
  */
 
-namespace UniAlteri\Tests\States;
+namespace Teknoo\Tests\States;
 
-use UniAlteri\States;
-use UniAlteri\States\Loader;
+use Teknoo\States;
+use Teknoo\States\Loader;
 
 /**
  * Class BootstrapTest
@@ -42,21 +42,21 @@ use UniAlteri\States\Loader;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class BootstrapTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @var \UniAlteri\States\Loader\LoaderInterface
+     * @var \Teknoo\States\Loader\LoaderInterface
      */
     protected $loader = null;
 
     protected function tearDown()
     {
-        if ($this->loader instanceof \UniAlteri\States\Loader\LoaderInterface) {
+        if ($this->loader instanceof \Teknoo\States\Loader\LoaderInterface) {
             spl_autoload_unregister(
                 array($this->loader, 'loadClass')
             );
@@ -71,12 +71,12 @@ class BootstrapTest extends \PHPUnit_Framework_TestCase
         $this->loader = include __DIR__.'/../../src/bootstrap.php';
 
         //Check if the loader implements the good interface
-        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\LoaderInterface', $this->loader);
+        $this->assertInstanceOf('\\Teknoo\\States\\Loader\\LoaderInterface', $this->loader);
 
         $this->assertInstanceOf('\\Closure', $this->loader->getFinderFactory());
 
         $finder = $this->loader->getFinderFactory()->__invoke('class', 'path');
-        $this->assertInstanceOf('\\UniAlteri\\States\\Loader\\FinderInterface', $finder);
+        $this->assertInstanceOf('\\Teknoo\\States\\Loader\\FinderInterface', $finder);
         if ($finder instanceof Loader\FinderInterface) {
             $this->assertEquals('class', $finder->getStatedClassName());
         }

@@ -14,17 +14,17 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\Command\Writer;
+namespace Teknoo\Tests\States\Command\Writer;
 
 use Gaufrette\Filesystem;
-use UniAlteri\States\Command\Writer\Factory;
-use UniAlteri\States\Loader\LoaderInterface;
+use Teknoo\States\Command\Writer\Factory;
+use Teknoo\States\Loader\LoaderInterface;
 
 /**
  * Class FactoryTest.
@@ -32,9 +32,9 @@ use UniAlteri\States\Loader\LoaderInterface;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class FactoryTest extends \PHPUnit_Framework_TestCase
@@ -83,7 +83,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
                 function ($file, $code) {
                     $this->assertEquals(LoaderInterface::FACTORY_FILE_NAME, $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Standard;'));
+                    $this->assertNotFalse(strpos($code, 'use Teknoo\\States\\Factory\\Standard;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Standard'));
 
                     return 0;
@@ -103,7 +103,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
                 function ($file, $code) {
                     $this->assertEquals(LoaderInterface::FACTORY_FILE_NAME, $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Standard;'));
+                    $this->assertNotFalse(strpos($code, 'use Teknoo\\States\\Factory\\Standard;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Standard'));
 
                     return 10;
@@ -123,7 +123,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
                 function ($file, $code) {
                     $this->assertEquals(LoaderInterface::FACTORY_FILE_NAME, $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Integrated;'));
+                    $this->assertNotFalse(strpos($code, 'use Teknoo\\States\\Factory\\Integrated;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Integrated'));
 
                     return 0;
@@ -143,7 +143,7 @@ class FactoryTest extends \PHPUnit_Framework_TestCase
                 function ($file, $code) {
                     $this->assertEquals(LoaderInterface::FACTORY_FILE_NAME, $file);
                     $this->assertNotFalse(strpos($code, 'namespace Acme\\NameProduct\\fooBar;'));
-                    $this->assertNotFalse(strpos($code, 'use UniAlteri\\States\\Factory\\Integrated;'));
+                    $this->assertNotFalse(strpos($code, 'use Teknoo\\States\\Factory\\Integrated;'));
                     $this->assertNotFalse(strpos($code, 'class '.LoaderInterface::FACTORY_CLASS_NAME.' extends Integrated'));
 
                     return 10;

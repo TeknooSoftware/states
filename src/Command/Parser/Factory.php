@@ -14,15 +14,15 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Command\Parser;
+namespace Teknoo\States\Command\Parser;
 
-use UniAlteri\States\Loader\LoaderInterface;
+use Teknoo\States\Loader\LoaderInterface;
 
 /**
  * Class Factory
@@ -31,9 +31,9 @@ use UniAlteri\States\Loader\LoaderInterface;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 class Factory extends AbstractParser
@@ -48,7 +48,7 @@ class Factory extends AbstractParser
     public function isValidFactory()
     {
         return $this->loadFile(LoaderInterface::FACTORY_FILE_NAME)
-            ->implementsInterface('\UniAlteri\States\Factory\FactoryInterface');
+            ->implementsInterface('\Teknoo\States\Factory\FactoryInterface');
     }
 
     /**
@@ -61,7 +61,7 @@ class Factory extends AbstractParser
     public function isStandardFactory()
     {
         return $this->loadFile(LoaderInterface::FACTORY_FILE_NAME)
-            ->isSubclassOf('\UniAlteri\States\Factory\Standard');
+            ->isSubclassOf('\Teknoo\States\Factory\Standard');
     }
 
     /**
@@ -74,12 +74,12 @@ class Factory extends AbstractParser
     public function isIntegratedFactory()
     {
         return $this->loadFile(LoaderInterface::FACTORY_FILE_NAME)
-            ->isSubclassOf('\UniAlteri\States\Factory\Integrated');
+            ->isSubclassOf('\Teknoo\States\Factory\Integrated');
     }
 
     /**
      * Test if the factory use of the default implementation of this library States provided by the trait
-     * \UniAlteri\States\Factory\TraitFactory.
+     * \Teknoo\States\Factory\TraitFactory.
      *
      * @return bool
      *
@@ -88,7 +88,7 @@ class Factory extends AbstractParser
     public function useTraitFactory()
     {
         return in_array(
-            'UniAlteri\States\Factory\FactoryTrait',
+            'Teknoo\States\Factory\FactoryTrait',
             $this->loadFile(LoaderInterface::FACTORY_FILE_NAME)->getTraitNames()
         );
     }

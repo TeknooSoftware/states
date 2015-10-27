@@ -14,32 +14,32 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\States\States;
+namespace Teknoo\Tests\States\States;
 
-use UniAlteri\States\Proxy;
-use UniAlteri\Tests\Support;
+use Teknoo\States\Proxy;
+use Teknoo\Tests\Support;
 
 /**
  * Class StateTest
- * Implementation of AbstractStatesTest to test the trait \UniAlteri\States\State\StateTrait and
- * the abstract class \UniAlteri\States\State\AbstractState.
+ * Implementation of AbstractStatesTest to test the trait \Teknoo\States\State\StateTrait and
+ * the abstract class \Teknoo\States\State\AbstractState.
  *
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
- * @covers UniAlteri\States\State\StateTrait
- * @covers UniAlteri\States\State\AbstractState
+ * @covers Teknoo\States\State\StateTrait
+ * @covers Teknoo\States\State\AbstractState
  */
 class StateTest extends AbstractStatesTest
 {

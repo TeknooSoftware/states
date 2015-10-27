@@ -14,18 +14,18 @@
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
 
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\Tests\Support;
+namespace Teknoo\Tests\Support;
 
-use UniAlteri\States\Proxy\Exception;
-use UniAlteri\States\Proxy\ProxyInterface;
-use UniAlteri\States\State\StateInterface;
+use Teknoo\States\Proxy\Exception;
+use Teknoo\States\Proxy\ProxyInterface;
+use Teknoo\States\State\StateInterface;
 
 /**
  * Class MockProxy
@@ -34,9 +34,9 @@ use UniAlteri\States\State\StateInterface;
  * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/license/mit         MIT License
+ * @license     http://teknoo.software/license/mit         MIT License
 
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
