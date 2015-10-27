@@ -46,7 +46,8 @@ Documentation to explain how this library works : [Behavior](docs/howto/behavior
 Credits
 -------
 Richard Déloge - <r.deloge@uni-alteri.com> - Lead developer.
-Uni Alteri - <http://uni-alteri.com> - <http://teknoo.it>
+Teknoo Software - <http://teknoo.software>
+Uni Alteri - <http://uni-alteri.com>
 
 License
 -------
