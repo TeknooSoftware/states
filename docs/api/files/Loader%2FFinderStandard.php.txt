@@ -14,18 +14,18 @@
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Loader;
+namespace Teknoo\States\Loader;
 
-use UniAlteri\States\DI;
-use UniAlteri\States\States;
-use UniAlteri\States\Proxy;
+use Teknoo\States\DI;
+use Teknoo\States\States;
+use Teknoo\States\Proxy;
 
 /**
  * Class FinderStandard
@@ -35,10 +35,10 @@ use UniAlteri\States\Proxy;
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  * @deprecated  Removed since 2.0 : Use FinderComposer instead of FinderStandard
@@ -73,7 +73,7 @@ class FinderStandard implements FinderInterface
      *
      * @var string
      */
-    protected $defaultProxyClassName = '\UniAlteri\States\Proxy\Standard';
+    protected $defaultProxyClassName = '\Teknoo\States\Proxy\Standard';
 
     /**
      * List of states already fetched by this finder.
@@ -221,6 +221,29 @@ class FinderStandard implements FinderInterface
     }
 
     /**
+     * To return the list of parent php classes used by a state.
+     *
+     * @param string $stateName
+     *
+     * @return string[]
+     *
+     * @throws Exception\UnavailableState if the required state is not available
+     */
+    public function getStateParentsClassesNamesList($stateName)
+    {
+        $classNameList = [];
+
+        //Get name of the parent class
+        $parentClassName = get_parent_class($this->loadState($stateName));
+        while (false !== $parentClassName) {
+            $classNameList[] = $parentClassName;
+            $parentClassName = get_parent_class($parentClassName);
+        }
+
+        return $classNameList;
+    }
+
+    /**
      * To load and build the required state object of the stated class.
      *
      * @param string $stateName
@@ -325,10 +348,11 @@ class FinderStandard implements FinderInterface
             $finalParentsClassesList = new \ArrayObject();
 
             $parentClassName = get_parent_class($proxyClassName);
-            while (false !== $parentClassName && false === strpos($parentClassName, 'UniAlteri\\States')) {
+            while (false !== $parentClassName && false === strpos($parentClassName, 'Teknoo\\States')) {
                 if (class_exists($parentClassName, false)) {
                     $reflectionClassInstance = new \ReflectionClass($parentClassName);
-                    if ($reflectionClassInstance->implementsInterface('UniAlteri\\States\\Proxy\\ProxyInterface')) {
+                    if ($reflectionClassInstance->implementsInterface('Teknoo\\States\\Proxy\\ProxyInterface')
+                        && false === $reflectionClassInstance->isAbstract()) {
                         $parentClassName = substr($parentClassName, 0, strrpos($parentClassName, '\\'));
                         $finalParentsClassesList[] = $parentClassName;
                     }

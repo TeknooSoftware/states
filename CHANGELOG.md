@@ -1,4 +1,4 @@
-#Uni Alteri - States library - Change Log
+#Teknoo Software - States library - Change Log
 
 ##[1.2.0-rc4
 ###Fixed
@@ -206,7 +206,7 @@ environments.
  
 ###Added
 - Support of PHP7 (States is 7x faster than with PHP5.5)
-- Add travis file to support IC outside Uni Alteri's server
+- Add travis file to support IC outside Teknoo Software's server
 
 ##[1.1.1] - 2015-05-06
 ###Fixed

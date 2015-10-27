@@ -1,0 +1,1336 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Teknoo.html">\Teknoo</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">11</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">24</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-656320272"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-656320272" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1735464736"></a>
+                                <a href="../namespaces/Teknoo.html" style="margin-left: 30px; padding-left: 0">Teknoo</a>
+            </div>
+            <div id="namespace-1735464736" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-656936086"></a>
+                                <a href="../namespaces/Teknoo.States.html" style="margin-left: 30px; padding-left: 0">States</a>
+            </div>
+            <div id="namespace-656936086" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-851264731"></a>
+                                <a href="../namespaces/Teknoo.States.Command.html" style="margin-left: 30px; padding-left: 0">Command</a>
+            </div>
+            <div id="namespace-851264731" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1351200365"></a>
+                                <a href="../namespaces/Teknoo.States.Command.Parser.html" style="margin-left: 30px; padding-left: 0">Parser</a>
+            </div>
+            <div id="namespace-1351200365" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2137660530"></a>
+                                <a href="../namespaces/Teknoo.States.Command.Parser.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-2137660530" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.Exception.ClassNotFound.html">ClassNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.Exception.UnReadablePath.html">UnReadablePath</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.AbstractParser.html">AbstractParser</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.Factory.html">Factory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.Proxy.html">Proxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.State.html">State</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.StatedClass.html">StatedClass</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1444325870"></a>
+                                <a href="../namespaces/Teknoo.States.Command.Writer.html" style="margin-left: 30px; padding-left: 0">Writer</a>
+            </div>
+            <div id="namespace-1444325870" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Writer.AbstractWriter.html">AbstractWriter</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Writer.Factory.html">Factory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Writer.Proxy.html">Proxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Writer.State.html">State</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Command.AbstractCommand.html">AbstractCommand</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.ClassCreate.html">ClassCreate</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.ClassInformation.html">ClassInformation</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.StateAdd.html">StateAdd</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.StateList.html">StateList</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-977667593"></a>
+                                <a href="../namespaces/Teknoo.States.DI.html" style="margin-left: 30px; padding-left: 0">DI</a>
+            </div>
+            <div id="namespace-977667593" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-377568732"></a>
+                                <a href="../namespaces/Teknoo.States.DI.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-377568732" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.DI.Exception.ClassNotFound.html">ClassNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.DI.Exception.IllegalName.html">IllegalName</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.DI.Exception.IllegalService.html">IllegalService</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.DI.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.DI.ContainerInterface.html">ContainerInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.DI.InjectionClosureInterface.html">InjectionClosureInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.DI.Container.html">Container</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.DI.InjectionClosure.html">InjectionClosure</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-718248402"></a>
+                                <a href="../namespaces/Teknoo.States.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-718248402" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.AvailableSeveralMethodImplementations.html">AvailableSeveralMethodImplementations</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.ClassNotFound.html">ClassNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalArgument.html">IllegalArgument</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalName.html">IllegalName</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalService.html">IllegalService</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalState.html">IllegalState</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.MethodNotImplemented.html">MethodNotImplemented</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.Standard.html">Standard</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.StateNotFound.html">StateNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnavailableClosure.html">UnavailableClosure</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnavailableDIContainer.html">UnavailableDIContainer</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnavailableLoader.html">UnavailableLoader</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnavailablePath.html">UnavailablePath</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnavailableState.html">UnavailableState</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnReadablePath.html">UnReadablePath</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2085317982"></a>
+                                <a href="../namespaces/Teknoo.States.Factory.html" style="margin-left: 30px; padding-left: 0">Factory</a>
+            </div>
+            <div id="namespace-2085317982" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-2013672340"></a>
+                                <a href="../namespaces/Teknoo.States.Factory.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-2013672340" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Exception.StateNotFound.html">StateNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Exception.UnavailableDIContainer.html">UnavailableDIContainer</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Exception.UnavailableLoader.html">UnavailableLoader</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Factory.FactoryInterface.html">FactoryInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Factory.StartupFactoryInterface.html">StartupFactoryInterface</a></li>
+                                                                            <li class="trait"><a href="../classes/Teknoo.States.Factory.FactoryTrait.html">FactoryTrait</a></li>
+                                                                            <li class="class"><a href="../classes/Teknoo.States.Factory.Integrated.html">Integrated</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Standard.html">Standard</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.StandardStartupFactory.html">StandardStartupFactory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1477920249"></a>
+                                <a href="../namespaces/Teknoo.States.Loader.html" style="margin-left: 30px; padding-left: 0">Loader</a>
+            </div>
+            <div id="namespace-1477920249" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-447244140"></a>
+                                <a href="../namespaces/Teknoo.States.Loader.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-447244140" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.IllegalArgument.html">IllegalArgument</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.IllegalState.html">IllegalState</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.UnavailablePath.html">UnavailablePath</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.UnavailableState.html">UnavailableState</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.UnReadablePath.html">UnReadablePath</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Loader.FinderInterface.html">FinderInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Loader.IncludePathManagerInterface.html">IncludePathManagerInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Loader.LoaderInterface.html">LoaderInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.FinderIntegrated.html">FinderIntegrated</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.FinderStandard.html">FinderStandard</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.IncludePathManager.html">IncludePathManager</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.LoaderComposer.html">LoaderComposer</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.LoaderStandard.html">LoaderStandard</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-848313162"></a>
+                                <a href="../namespaces/Teknoo.States.Proxy.html" style="margin-left: 30px; padding-left: 0">Proxy</a>
+            </div>
+            <div id="namespace-848313162" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-20714890"></a>
+                                <a href="../namespaces/Teknoo.States.Proxy.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-20714890" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.AvailableSeveralMethodImplementations.html">AvailableSeveralMethodImplementations</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.IllegalArgument.html">IllegalArgument</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.IllegalName.html">IllegalName</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.MethodNotImplemented.html">MethodNotImplemented</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.StateNotFound.html">StateNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.UnavailableClosure.html">UnavailableClosure</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.UnavailableState.html">UnavailableState</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Proxy.IntegratedInterface.html">IntegratedInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">ProxyInterface</a></li>
+                                                                            <li class="trait"><a href="../classes/Teknoo.States.Proxy.IntegratedTrait.html">IntegratedTrait</a></li>
+                                                    <li class="trait"><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html">ProxyTrait</a></li>
+                                                                            <li class="class"><a href="../classes/Teknoo.States.Proxy.Integrated.html">Integrated</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Standard.html">Standard</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1447474176"></a>
+                                <a href="../namespaces/Teknoo.States.States.html" style="margin-left: 30px; padding-left: 0">States</a>
+            </div>
+            <div id="namespace-1447474176" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-883880420"></a>
+                                <a href="../namespaces/Teknoo.States.States.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-883880420" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.States.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.States.Exception.IllegalService.html">IllegalService</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.States.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.States.Exception.MethodNotImplemented.html">MethodNotImplemented</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.States.StateInterface.html">StateInterface</a></li>
+                                                                            <li class="trait"><a href="../classes/Teknoo.States.States.StateTrait.html">StateTrait</a></li>
+                                                                            <li class="class"><a href="../classes/Teknoo.States.States.AbstractState.html">AbstractState</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.ObjectInterface.html">ObjectInterface</a></li>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Teknoo.States.Loader.html">\Teknoo\States\Loader</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Teknoo\States\Loader</small>FinderStandard</h1>
+                    <p><em>Class FinderStandard
+Default implementation of the finder. It is used with this library to find from each stated class
+all states and the proxy.</em></p>
+                    
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method___construct" class="">__construct()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_setDIContainer" class="">setDIContainer()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_getDIContainer" class="">getDIContainer()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_getStatedClassName" class="">getStatedClassName()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_listStates" class="">listStates()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_loadState" class="">loadState()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_getStateParentsClassesNamesList" class="">getStateParentsClassesNamesList()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_buildState" class="">buildState()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_loadProxy" class="">loadProxy()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_listParentsClassesNames" class="">listParentsClassesNames()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_buildProxy" class="">buildProxy()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#method_getClassedName" class="">getClassedName()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#property_statedClassName" class="">$statedClassName</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#property_pathString" class="">$pathString</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#property_diContainer" class="">$diContainer</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#property_defaultProxyClassName" class="">$defaultProxyClassName</a><br />
+                                                                    <a href="../classes/Teknoo.States.Loader.FinderStandard.html#property_statesNamesList" class="">$statesNamesList</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <em>No private methods found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No private properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Loader.FinderStandard.html"><div class="path-wrapper">Loader/FinderStandard.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Teknoo\States\Loader\FinderStandard</div>
+                            </dd>
+
+                                                                            <dt>Implements</dt>
+                                                        <dd><a href="../classes/Teknoo.States.Loader.FinderInterface.html"><div class="namespace-wrapper">\Teknoo\States\Loader\FinderInterface</div></a></dd>
+                        
+                        
+                        
+                                                                            <dt>See also</dt>
+                                                                                    <dd><a href="http://teknoo.software/states"><div class="namespace-wrapper">Project website</div></a></dd>
+                                                    
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                copyright
+                            </th>
+                            <td>
+                                                                    <p>Copyright (c) 2009-2016 Uni Alteri (<a href="http://uni-alteri.com">http://uni-alteri.com</a>)</p>
+                                                                    <p>Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                license
+                            </th>
+                            <td>
+                                                                    <p><a href="http://teknoo.software/states/license/mit">http://teknoo.software/states/license/mit</a>         MIT License</p>
+                                                                    <p><a href="http://teknoo.software/states/license/gpl-3.0">http://teknoo.software/states/license/gpl-3.0</a>     GPL v3 License</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                author
+                            </th>
+                            <td>
+                                                                    <p>Richard Déloge <a href="mailto:r.deloge@uni-alteri.com">r.deloge@uni-alteri.com</a></p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                deprecated
+                            </th>
+                            <td>
+                                                                    <p>Removed since 2.0 : Use FinderComposer instead of FinderStandard</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                api
+                            </th>
+                            <td>
+                                                                    
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_statedClassName" name="property_statedClassName" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$statedClassName</h3>
+                <pre class="signature">$statedClassName : string</pre>
+                <p><em>Current stated class&#039;s name.</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_pathString" name="property_pathString" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$pathString</h3>
+                <pre class="signature">$pathString : string</pre>
+                <p><em>Folder/Phar of the stated class.</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_diContainer" name="property_diContainer" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$diContainer</h3>
+                <pre class="signature">$diContainer : \Teknoo\States\DI\ContainerInterface</pre>
+                <p><em>DI Container to use with this finder.</em></p>
+                
+
+                                <h4>Type</h4>
+                <a href="../classes/Teknoo.States.DI.ContainerInterface.html">\Teknoo\States\DI\ContainerInterface</a>
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_defaultProxyClassName" name="property_defaultProxyClassName" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$defaultProxyClassName</h3>
+                <pre class="signature">$defaultProxyClassName : string</pre>
+                <p><em>Default proxy class to use when there are no proxy class.</em></p>
+                
+
+                                <h4>Type</h4>
+                string
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_statesNamesList" name="property_statesNamesList" class="anchor"></a>
+            <article class="property">
+                <h3 class="protected ">$statesNamesList</h3>
+                <pre class="signature">$statesNamesList : \ArrayObject</pre>
+                <p><em>List of states already fetched by this finder.</em></p>
+                
+
+                                <h4>Type</h4>
+                \ArrayObject
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct(string  <span class="argument">$statedClassName</span>, string  <span class="argument">$pathString</span>) </pre>
+                <p><em>Initialize finder.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$statedClassName </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$pathString </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_setDIContainer" name="method_setDIContainer" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">setDIContainer()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">setDIContainer(\Teknoo\States\DI\ContainerInterface  <span class="argument">$container</span>) : $this</pre>
+                <p><em>To register a DI container for this object.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Teknoo.States.DI.ContainerInterface.html">\Teknoo\States\DI\ContainerInterface</a></td>
+                                <td>$container </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    $this
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getDIContainer" name="method_getDIContainer" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getDIContainer()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getDIContainer() : \Teknoo\States\DI\ContainerInterface</pre>
+                <p><em>To return the DI Containe.</em></p>
+                
+
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Loader\Exception\IllegalProxy</dt>
+                            <dd><p>If the proxy class is not valid</p></dd>
+                                                    <dt>\Teknoo\States\Loader\Exception\IllegalProxy</dt>
+                            <dd><p>If the proxy class is not validr used for this object.</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.DI.ContainerInterface.html">\Teknoo\States\DI\ContainerInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getStatedClassName" name="method_getStatedClassName" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getStatedClassName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getStatedClassName() : $this</pre>
+                <p><em>To get the canonical stated class name associated to this state.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    $this
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_listStates" name="method_listStates" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">listStates()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">listStates() : array&lt;mixed,string&gt;</pre>
+                <p><em>To list all available states of the stated class.</em></p>
+                
+
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Loader\Exception\UnavailablePath</dt>
+                            <dd><p>if the states' folder is not available</p></dd>
+                                                    <dt>\Teknoo\States\Loader\Exception\UnReadablePath</dt>
+                            <dd><p>if the states' folder is not readable</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,string&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_loadState" name="method_loadState" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">loadState()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">loadState(string  <span class="argument">$stateName</span>) : string</pre>
+                <p><em>To load the required state object of the stated class.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$stateName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Loader\Exception\UnReadablePath</dt>
+                            <dd><p>if the stated file is not readable</p></dd>
+                                                    <dt>\Teknoo\States\Loader\Exception\UnavailableState</dt>
+                            <dd><p>if the required state is not available</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getStateParentsClassesNamesList" name="method_getStateParentsClassesNamesList" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getStateParentsClassesNamesList()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getStateParentsClassesNamesList(string  <span class="argument">$stateName</span>) : array&lt;mixed,string&gt;</pre>
+                <p><em>To return the list of parent php classes used by a state.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$stateName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Loader\Exception\UnavailableState</dt>
+                            <dd><p>if the required state is not available</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,string&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_buildState" name="method_buildState" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">buildState()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">buildState(string  <span class="argument">$stateName</span>) : \Teknoo\States\States\StateInterface</pre>
+                <p><em>To load and build the required state object of the stated class.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$stateName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Loader\Exception\UnReadablePath</dt>
+                            <dd><p>if the state file is not readable</p></dd>
+                                                    <dt>\Teknoo\States\Loader\Exception\UnavailableState</dt>
+                            <dd><p>if the required state is not available</p></dd>
+                                                    <dt>\Teknoo\States\Loader\Exception\IllegalState</dt>
+                            <dd><p>if the state object does not implement the interface</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.States.StateInterface.html">\Teknoo\States\States\StateInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_loadProxy" name="method_loadProxy" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">loadProxy()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">loadProxy() : string</pre>
+                <p><em>To search and load the proxy class for this stated class.</em></p>
+                <p>If the class has not proxy, load the default proxy for this stated class.</p>
+
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Loader\Exception\IllegalProxy</dt>
+                            <dd><p>If the proxy object does not implement Proxy/ProxyInterface</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_listParentsClassesNames" name="method_listParentsClassesNames" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">listParentsClassesNames()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">listParentsClassesNames() : array&lt;mixed,string&gt;</pre>
+                <p><em>To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and
+standard proxy are excluded).</em></p>
+                
+
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Loader\Exception\IllegalProxy</dt>
+                            <dd><p>If the proxy class is not valid</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,string&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_buildProxy" name="method_buildProxy" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">buildProxy()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">buildProxy(array  <span class="argument">$arguments = null</span>) : \Teknoo\States\Proxy\ProxyInterface</pre>
+                <p><em>To load and build a proxy object for the stated class.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>array</td>
+                                <td>$arguments </td>
+                                <td><p>argument for proxy</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Loader\Exception\IllegalProxy</dt>
+                            <dd><p>If the proxy object does not implement Proxy/ProxyInterface</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">\Teknoo\States\Proxy\ProxyInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getClassedName" name="method_getClassedName" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">getClassedName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getClassedName(string  <span class="argument">$statedClassName</span>) : string</pre>
+                <p><em>To extract the class name from the stated class name with namespace.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$statedClassName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">FinderStandard.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Loader/FinderStandard.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Teknoo.html">\Teknoo</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on October 27th, 2015 at 23:22.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

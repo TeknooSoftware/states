@@ -14,26 +14,26 @@
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
 /**
  * @category    States
  *
- * @copyright   Copyright (c) 2009-2013 Uni Alteri (http://uni-alteri.com)
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @copyright   Copyright (c) 2009-2013 Teknoo Software (http://uni-alteri.com)
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\States;
+namespace Teknoo\States\States;
 
-use UniAlteri\States\DI;
-use UniAlteri\States\Proxy;
+use Teknoo\States\DI;
+use Teknoo\States\Proxy;
 
 /**
  * Class StateTrait
@@ -43,10 +43,10 @@ use UniAlteri\States\Proxy;
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 trait StateTrait
@@ -107,6 +107,8 @@ trait StateTrait
         'isPrivateMode' => 'isPrivateMode',
         'getStatedClassName' => 'getStatedClassName',
         'setStatedClassName' => 'setStatedClassName',
+        'setStateAliases' => 'setStateAliases',
+        'getStateAliases' => 'getStateAliases',
     );
 
     /**
@@ -122,6 +124,13 @@ trait StateTrait
      * @var string
      */
     protected $statedClassName;
+
+    /**
+     * List of aliases of this state in the stated class.
+     *
+     * @var string[]
+     */
+    protected $stateAliases = array();
 
     /**
      * To build the ReflectionClass for the current object.
@@ -185,6 +194,30 @@ trait StateTrait
         $this->statedClassName = $statedClassName;
 
         return $this;
+    }
+
+    /**
+     * To update the list of aliases of this state in the current stated class.
+     *
+     * @param string[] $aliases
+     *
+     * @return StateInterface
+     */
+    public function setStateAliases(array $aliases)
+    {
+        $this->stateAliases = $aliases;
+
+        return $this;
+    }
+
+    /**
+     * Return the list of aliases of this state in the current stated class.
+     *
+     * @return string[]
+     */
+    public function getStateAliases()
+    {
+        return $this->stateAliases;
     }
 
     /**

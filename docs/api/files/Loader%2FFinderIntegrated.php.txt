@@ -14,28 +14,28 @@
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Loader;
+namespace Teknoo\States\Loader;
 
 /**
  * Class FinderIntegrated
  * Implementation of the finder. It is used with this library to find from each stated class all states
- * and the proxy. It extends FinderStandard to use '\UniAlteri\States\Proxy\Integrated' instead of
- * '\UniAlteri\States\Proxy\Standard'.
+ * and the proxy. It extends FinderStandard to use '\Teknoo\States\Proxy\Integrated' instead of
+ * '\Teknoo\States\Proxy\Standard'.
  *
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  * @deprecated  Removed since 2.0 : Use FinderComposerIntegrated instead of FinderIntegrated
@@ -49,6 +49,6 @@ class FinderIntegrated extends FinderStandard
      *
      * @var string
      */
-    protected $defaultProxyClassName = '\UniAlteri\States\Proxy\Integrated';
+    protected $defaultProxyClassName = '\Teknoo\States\Proxy\Integrated';
 }
 

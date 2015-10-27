@@ -1,9 +1,9 @@
 {
-    "name": "unialteri/states",
+    "name": "teknoo/states",
     "type": "library",
     "description": "Library to create PHP classes following the State pattern in PHP. This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and thus improve maintainability.",
     "keywords": ["states","class","state pattern","pattern","behavioral software design pattern"],
-    "homepage": "http://teknoo.it/states",
+    "homepage": "http://teknoo.software/states",
     "license": ["MIT","GPL-3.0+"],
     "authors": [
         {
@@ -34,9 +34,9 @@
     },
     "autoload": {
         "psr-4": {
-            "UniAlteri\\States\\": ["src/UniAlteri/States/"],
-            "UniAlteri\\Tests\\States\\": ["tests/UniAlteri/Tests/States"],
-            "UniAlteri\\Tests\\Support\\": ["tests/UniAlteri/Tests/Support"]
+            "Teknoo\\States\\": ["src/Teknoo/States/"],
+            "Teknoo\\Tests\\States\\": ["tests/Teknoo/Tests/States"],
+            "Teknoo\\Tests\\Support\\": ["tests/Teknoo/Tests/Support"]
         }
     },
     "archive": {

@@ -1,4 +1,4 @@
-#Uni Alteri - States library - Behavior
+#Teknoo Software - States library - Behavior
 
 This library is built on three features, added in PHP 5.4 and 5.6, updated in PHP 7 :
 

@@ -10,8 +10,8 @@
         bootstrap="tests/bootstrap.php"
         colors="true">
     <testsuites>
-        <testsuite name="Uni Alteri/States Test Suite">
-            <directory>tests/UniAlteri/Tests</directory>
+        <testsuite name="Teknoo Software/States Test Suite">
+            <directory>tests/Teknoo/Tests</directory>
         </testsuite>
     </testsuites>
 

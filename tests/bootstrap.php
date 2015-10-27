@@ -14,10 +14,10 @@
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 defined('RUN_CLI_MODE')
@@ -27,7 +27,7 @@ defined('PHPUNIT')
     || define('PHPUNIT', true);
 
 defined('UA_STATES_TEST_PATH')
-    || define('UA_STATES_TEST_PATH', __DIR__.DIRECTORY_SEPARATOR.'UniAlteri'.DIRECTORY_SEPARATOR.'Tests');
+    || define('UA_STATES_TEST_PATH', __DIR__.DIRECTORY_SEPARATOR.'Teknoo'.DIRECTORY_SEPARATOR.'Tests');
 
 ini_set('memory_limit', '64M');
 
@@ -46,7 +46,7 @@ error_reporting(E_ALL | E_STRICT);
 
 //Prevent error
 $iterator = new RecursiveIteratorIterator(
-    new RecursiveDirectoryIterator(__DIR__.'/UniAlteri/Tests/Support'),
+    new RecursiveDirectoryIterator(__DIR__.'/Teknoo/Tests/Support'),
     RecursiveIteratorIterator::SELF_FIRST
 );
 

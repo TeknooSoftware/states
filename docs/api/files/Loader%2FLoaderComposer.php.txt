@@ -14,18 +14,18 @@
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Loader;
+namespace Teknoo\States\Loader;
 
 use Composer\Autoload\ClassLoader;
-use UniAlteri\States\DI;
-use UniAlteri\States\Factory;
+use Teknoo\States\DI;
+use Teknoo\States\Factory;
 
 /**
  * Class LoaderStandard
@@ -37,10 +37,10 @@ use UniAlteri\States\Factory;
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  *
  * @api
@@ -63,6 +63,13 @@ class LoaderComposer implements LoaderInterface
      * @var string[]
      */
     protected $loadingFactoriesClassNameArray = [];
+
+    /**
+     * To keep the list of factory already fetched.
+     *
+     * @var array
+     */
+    private $factoryAvailabilityList = array();
 
     /**
      * Initialize the loader object.
@@ -139,13 +146,18 @@ class LoaderComposer implements LoaderInterface
      */
     private function loadFactory(&$factoryClassName)
     {
-        if (true === $this->composerInstance->loadClass($factoryClassName)) {
-            $reflectionClassInstance = new \ReflectionClass($factoryClassName);
+        if (!isset($this->factoryAvailabilityList[$factoryClassName])) {
+            if (true === class_exists($factoryClassName, false)
+                || true === $this->composerInstance->loadClass($factoryClassName)) {
+                $reflectionClassInstance = new \ReflectionClass($factoryClassName);
 
-            return $reflectionClassInstance->implementsInterface('UniAlteri\\States\\Factory\\FactoryInterface');
+                $this->factoryAvailabilityList[$factoryClassName] = $reflectionClassInstance->implementsInterface('Teknoo\\States\\Factory\\FactoryInterface');
+            } else {
+                $this->factoryAvailabilityList[$factoryClassName] = false;
+            }
         }
 
-        return false;
+        return $this->factoryAvailabilityList[$factoryClassName];
     }
 
     /**
@@ -164,7 +176,7 @@ class LoaderComposer implements LoaderInterface
     public function loadClass($className)
     {
         if (isset($this->loadingFactoriesClassNameArray[$className])
-            || 0 === strpos($className, 'UniAlteri\\States')) {
+            || 0 === strpos($className, 'Teknoo\\States')) {
             return false;
         }
 

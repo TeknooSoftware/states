@@ -14,18 +14,18 @@
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
-namespace UniAlteri\States\Factory;
+namespace Teknoo\States\Factory;
 
-use UniAlteri\States\DI;
-use UniAlteri\States\Loader;
-use UniAlteri\States\Proxy;
+use Teknoo\States\DI;
+use Teknoo\States\Loader;
+use Teknoo\States\Proxy;
 
 /**
  * Trait FactoryTrait
@@ -37,10 +37,10 @@ use UniAlteri\States\Proxy;
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 trait FactoryTrait
@@ -65,6 +65,13 @@ trait FactoryTrait
      * @var string
      */
     protected $statedClassName = null;
+
+    /**
+     * To list full class name of states.
+     *
+     * @var string[]
+     */
+    protected $fullStatesClassesNamesList;
 
     /**
      * The path of the stated class.
@@ -266,6 +273,52 @@ trait FactoryTrait
     }
 
     /**
+     * To list full class name of states.
+     *
+     * @return string[]
+     */
+    protected function getFullStateClassNameList()
+    {
+        if (empty($this->fullStatesClassesNamesList)) {
+            $fullStateClassNameList = [];
+
+            foreach ($this->listStatesByClasses() as $stateName => $finderLoader) {
+                $className = $finderLoader->getStatedClassName().'\\'.Loader\FinderInterface::STATES_PATH.'\\'.$stateName;
+                $fullStateClassNameList[$className] = $className;
+            }
+
+            $this->fullStatesClassesNamesList = $fullStateClassNameList;
+        }
+
+        return $this->fullStatesClassesNamesList;
+    }
+
+    /**
+     * Return the list of available alias for a state.
+     *
+     * @param string                 $loadingStateName
+     * @param Loader\FinderInterface $finderLoader
+     *
+     * @return string
+     */
+    protected function computeStateAlias($loadingStateName, Loader\FinderInterface $finderLoader)
+    {
+        $parentStateClassNameList = [];
+
+        $fullStateClassName = $this->getFullStateClassNameList();
+
+        foreach ($finderLoader->getStateParentsClassesNamesList($loadingStateName) as $className) {
+            if (isset($fullStateClassName[$className])) {
+                $classNameParts = explode('\\', $className);
+
+                $parentStateClassNameList[] = array_pop($classNameParts);
+            }
+        }
+
+        return $parentStateClassNameList;
+    }
+
+    /**
      * To initialize a proxy object with its container and states. States are fetched by the finder of this stated class.
      *
      * @param Proxy\ProxyInterface $proxyObject
@@ -313,7 +366,8 @@ trait FactoryTrait
             $stateObject = $finderLoader->buildState($loadingStateName);
             $stateObject->setDIContainer($diContainerObject)
                 ->setPrivateMode($finderLoader !== $mainFinder)
-                ->setStatedClassName($finderLoader->getStatedClassName());
+                ->setStatedClassName($finderLoader->getStatedClassName())
+                ->setStateAliases($this->computeStateAlias($loadingStateName, $finderLoader));
             $proxyObject->registerState($loadingStateName, $stateObject);
         }
 

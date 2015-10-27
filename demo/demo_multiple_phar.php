@@ -14,10 +14,10 @@
  * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
  *
- * @link        http://teknoo.it/states Project website
+ * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.it/states/license/mit         MIT License
- * @license     http://teknoo.it/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
  * @author      Richard Déloge <r.deloge@uni-alteri.com>
  */
 
@@ -29,12 +29,12 @@ defined('DS')
     || define('DS', DIRECTORY_SEPARATOR);
 
 //Loading lib States
-$loader = require_once dirname(__DIR__).DS.'src'.DS.'UniAlteri'.DS.'States'.DS.'bootstrap_composer.php';
+$loader = require_once dirname(__DIR__).DS.'src'.DS.'Teknoo'.DS.'States'.DS.'bootstrap_composer.php';
 
 //Register demo namespace
 $loader->registerNamespace('\\demo\\Acme\\Multiple', 'phar://'.__DIR__.DS.'Acme'.DS.'multiple.phar');
 
-print 'Uni Alteri - States library - Demo :'.PHP_EOL.PHP_EOL;
+print 'Teknoo Software - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize user
 print 'user'.PHP_EOL;
 $simpleUser = new Acme\Multiple\User\User('simple 1');
