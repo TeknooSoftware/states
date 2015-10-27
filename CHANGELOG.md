@@ -1,5 +1,16 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.0-beta16] - 2015-10-15 - Available on the branch "next"
+###Changed
+- Migrate library from Uni Alteri to Teknoo Software organization
+
+##[1.2.0-rc4] - 2015-10-25
+###Fixed
+- Clean code to remove code to manage PHP 7
+
+###Changed
+- Migrate library from Uni Alteri to Teknoo Software organization
+
 ##[2.0.0-beta15] - 2015-10-15 - Available on the branch "next"
 ###Added
 - Add test to support a possible change in behavior with PHP \ Closure :: call ()
@@ -202,7 +213,7 @@ environments.
  
 ###Added
 - Support of PHP7 (States is 7x faster than with PHP5.5)
-- Add travis file to support IC outside Uni Alteri's server
+- Add travis file to support IC outside Teknoo Software's server
 
 ##[1.1.1] - 2015-05-06
 ###Fixed
