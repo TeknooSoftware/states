@@ -1,8 +1,11 @@
 #Teknoo Software - States library - Change Log
 
-##[1.2.0-rc4
+##[1.2.0-rc4] - 2015-10-25
 ###Fixed
 - Clean code to remove code to manage PHP 7
+
+###Changed
+- Migrate library from Uni Alteri to Teknoo Software organization
 
 ##[2.0.0-beta15] - 2015-10-15 - Available on the branch "next"
 ###Added
