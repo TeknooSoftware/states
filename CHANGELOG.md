@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[1.2.0-rc5] - 2015-10-31
+###Fixed
+- Fix migration about Uni Alteri to Teknoo Software organization
+- Fit git export
+
 ##[1.2.0-rc4] - 2015-10-25
 ###Fixed
 - Clean code to remove code to manage PHP 7
