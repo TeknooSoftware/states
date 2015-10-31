@@ -1,5 +1,15 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.0-beta17] - 2015-10-15 - Available on the branch "next"
+###Fixed
+- Fix migration about Uni Alteri to Teknoo Software organization
+- Fit git export
+
+##[1.2.0-rc5] - 2015-10-31
+###Fixed
+- Fix migration about Uni Alteri to Teknoo Software organization
+- Fit git export
+
 ##[2.0.0-beta16] - 2015-10-15 - Available on the branch "next"
 ###Changed
 - Migrate library from Uni Alteri to Teknoo Software organization
