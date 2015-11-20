@@ -11,14 +11,14 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
- * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
+ *
+ * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/states/license/mit         MIT License
  * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
 namespace Teknoo\States\DI;
@@ -29,14 +29,14 @@ namespace Teknoo\States\DI;
  * methods of a stated class * in the proxy. These containers implement also a "static" mechanism to allow developers to use
  * clean static var in these functions.
  *
- * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
- * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
+ *
+ * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/states/license/mit         MIT License
  * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @deprecated  Removed in version v2.0, useless with PHP7+
  *

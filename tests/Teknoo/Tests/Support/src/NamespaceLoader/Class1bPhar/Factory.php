@@ -12,12 +12,12 @@
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
  * @subpackage  Tests
- * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
- * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
+ *
+ * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  * @link        http://teknoo.software/states Project website
  * @license     http://teknoo.software/states/license/mit         MIT License
  * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @author      Richard Déloge <richarddeloge@gmail.com>
  * Mock factory file to test loader behavior when the factory class is missing
  * This factory is included from namespace definitions registered into loader.
  * The path is not computed from the class's name following PSR-0 recommendations

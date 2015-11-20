@@ -11,14 +11,14 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
- * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
+ *
+ * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/states/license/mit         MIT License
  * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * Mock factory file to test loader behavior when the factory class is valid but its method initialize throws an
  * exception and stated class loaded by loader with PSR-0 recommendations (file computed from namespace)
@@ -35,14 +35,14 @@ use Teknoo\Tests\Support;
  * exception and stated class loaded by loader with PSR-0 recommendations (file computed from namespace)
  * and not from namespace definitions).
  *
- * @copyright   Copyright (c) 2009-2016 Uni Alteri (http://uni-alteri.com)
- * @copyright   Copyright (c) 2009-2016 Richard Déloge (r.deloge@uni-alteri.com)
+ *
+ * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/states/license/mit         MIT License
  * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class Factory extends Support\MockFactory
 {
