@@ -40,5 +40,4 @@ use Teknoo\States\States;
  */
 class Promoted extends Published
 {
-
 }

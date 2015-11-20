@@ -13,7 +13,6 @@
  *
  * @category    Exception
  *
- *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -30,7 +29,6 @@ namespace Teknoo\States\Exception;
  * Exception threw when the calling method is not currently available in the proxy object with enabled states.
  *
  * @category    Exception
- *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *

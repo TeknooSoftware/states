@@ -13,7 +13,6 @@
  *
  * @category    Exception
  *
- *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -31,7 +30,6 @@ namespace Teknoo\States\Exception;
  * in different enabled states.
  *
  * @category    Exception
- *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *

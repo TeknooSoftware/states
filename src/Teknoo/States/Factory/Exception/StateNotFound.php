@@ -13,7 +13,6 @@
  *
  * @category    Exception
  *
- *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -32,7 +31,6 @@ use Teknoo\States\Exception;
  * Exception thew when the requiring state is not available for the stated class instance.
  *
  * @category    Exception
- *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *

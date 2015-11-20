@@ -457,7 +457,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testInState()
     {
-        /**
+        /*
          * @var Proxy\ProxyInterface
          */
         $proxy = $this->getMock(get_class($this->buildProxy()), array('listEnabledStates'), array(), '', false);

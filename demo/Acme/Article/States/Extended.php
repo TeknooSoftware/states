@@ -40,5 +40,4 @@ use Teknoo\States\States;
  */
 class Extended extends Promoted
 {
-
 }
