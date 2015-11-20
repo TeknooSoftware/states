@@ -11,13 +11,13 @@
  * obtain it through the world-wide-web, please send an email
  * to contact@uni-alteri.com so we can send you a copy immediately.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
- * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
+ *
+ * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
 namespace Teknoo\Tests\States\Proxy;
@@ -26,13 +26,13 @@ namespace Teknoo\Tests\States\Proxy;
  * Class PrivateTestTrait
  * To perform some trait about behavior of magic call for private attributes and method.
  *
- * @copyright   Copyright (c) 2009-2015 Uni Alteri (http://uni-alteri.com)
- * @copyright   Copyright (c) 2009-2015 Richard Déloge (r.deloge@uni-alteri.com)
+ *
+ * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
- * @author      Richard Déloge <r.deloge@uni-alteri.com>
+ * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 trait PrivateTestTrait
 {

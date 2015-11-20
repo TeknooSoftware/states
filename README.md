@@ -54,13 +54,12 @@ From the version 2.0, this library has been redesigned to
 
 Credits
 -------
-Richard Déloge - <r.deloge@uni-alteri.com> - Lead developer.
+Richard Déloge - <richarddeloge@gmail.com> - Lead developer.
 Teknoo Software - <http://teknoo.software>
-Uni Alteri - <http://uni-alteri.com>
 
 About Teknoo Software
 ---------------------
-**Teknoo Software** is the [Uni Alteri](http://uni-alteri.com)'s PHP software editor, founded by Richard Déloge, also co-founder of the web agency Uni Alteri. 
+**Teknoo Software** is a PHP software editor, founded by Richard Déloge, also co-founder of the web agency Uni Alteri. 
 Teknoo Software shares the same DNA as Uni Alteri : Provide to our partners and to the community a set of high quality services or software, sharing knowledge and skills.
 
 License
