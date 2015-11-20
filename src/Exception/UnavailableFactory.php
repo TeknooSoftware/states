@@ -13,7 +13,6 @@
  *
  * @category    Exception
  *
- *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -29,7 +28,6 @@ namespace Teknoo\States\Exception;
  * Exception threw when the required factory is not available.
  *
  * @category    Exception
- *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *

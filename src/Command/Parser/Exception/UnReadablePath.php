@@ -13,7 +13,6 @@
  *
  * @category    Exception
  *
- *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -31,7 +30,6 @@ use Teknoo\States\Loader\Exception;
  * Exception threw when the path exist but is not readable.
  *
  * @category    Exception
- *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
