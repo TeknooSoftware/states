@@ -1,6 +1,31 @@
 <?php
 
-return array (
+/**
+ * States.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the MIT license and the version 3 of the GPL3
+ * license that are bundled with this package in the folder licences
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to contact@uni-alteri.com so we can send you a copy immediately.
+ *
+ *
+ * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
+ *
+ * @link        http://teknoo.software/states Project website
+ *
+ * @license     http://teknoo.software/states/license/mit         MIT License
+ * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @author      Richard Déloge <richarddeloge@gmail.com>
+ */
+
+/**
+ * Script to map all old namespace class (from Uni Alteri) to new Teknoo organization namespace
+ */
+
+$mapping = array (
     'UniAlteri\\States\\Command\\AbstractCommand' => 'Teknoo\\States\\Command\\AbstractCommand',
     'UniAlteri\\States\\Command\\ClassCreate' => 'Teknoo\\States\\Command\\ClassCreate',
     'UniAlteri\\States\\Command\\ClassInformation' => 'Teknoo\\States\\Command\\ClassInformation',
@@ -99,100 +124,11 @@ return array (
     'UniAlteri\\States\\States\\Exception\\InvalidArgument' => 'Teknoo\\States\\States\\Exception\\InvalidArgument',
     'UniAlteri\\States\\States\\Exception\\MethodNotImplemented' => 'Teknoo\\States\\States\\Exception\\MethodNotImplemented',
     'UniAlteri\\States\\States\\StateInterface' => 'Teknoo\\States\\States\\StateInterface',
-    'UniAlteri\\States\\States\\StateTrait' => 'Teknoo\\States\\States\\StateTrait',
-    'UniAlteri\\Tests\\States\\BootstrapTest' => 'Teknoo\\Tests\\States\\BootstrapTest',
-    'UniAlteri\\Tests\\States\\Command\\ClassCreateTest' => 'Teknoo\\Tests\\States\\Command\\ClassCreateTest',
-    'UniAlteri\\Tests\\States\\Command\\ClassInformationTest' => 'Teknoo\\Tests\\States\\Command\\ClassInformationTest',
-    'UniAlteri\\Tests\\States\\Command\\ConsoleTest' => 'Teknoo\\Tests\\States\\Command\\ConsoleTest',
-    'UniAlteri\\Tests\\States\\Command\\Parser\\FactoryTest' => 'Teknoo\\Tests\\States\\Command\\Parser\\FactoryTest',
-    'UniAlteri\\Tests\\States\\Command\\Parser\\ProxyTest' => 'Teknoo\\Tests\\States\\Command\\Parser\\ProxyTest',
-    'UniAlteri\\Tests\\States\\Command\\Parser\\StateTest' => 'Teknoo\\Tests\\States\\Command\\Parser\\StateTest',
-    'UniAlteri\\Tests\\States\\Command\\Parser\\StatedClassTest' => 'Teknoo\\Tests\\States\\Command\\Parser\\StatedClassTest',
-    'UniAlteri\\Tests\\States\\Command\\StateAddTest' => 'Teknoo\\Tests\\States\\Command\\StateAddTest',
-    'UniAlteri\\Tests\\States\\Command\\StateListTest' => 'Teknoo\\Tests\\States\\Command\\StateListTest',
-    'UniAlteri\\Tests\\States\\Command\\Writer\\FactoryTest' => 'Teknoo\\Tests\\States\\Command\\Writer\\FactoryTest',
-    'UniAlteri\\Tests\\States\\Command\\Writer\\ProxyTest' => 'Teknoo\\Tests\\States\\Command\\Writer\\ProxyTest',
-    'UniAlteri\\Tests\\States\\Command\\Writer\\StateTest' => 'Teknoo\\Tests\\States\\Command\\Writer\\StateTest',
-    'UniAlteri\\Tests\\States\\DI\\ContainerTest' => 'Teknoo\\Tests\\States\\DI\\ContainerTest',
-    'UniAlteri\\Tests\\States\\DI\\InjectionClosure56Test' => 'Teknoo\\Tests\\States\\DI\\InjectionClosure56Test',
-    'UniAlteri\\Tests\\States\\DI\\InjectionClosureTest' => 'Teknoo\\Tests\\States\\DI\\InjectionClosureTest',
-    'UniAlteri\\Tests\\States\\Factory\\AbstractFactoryTest' => 'Teknoo\\Tests\\States\\Factory\\AbstractFactoryTest',
-    'UniAlteri\\Tests\\States\\Factory\\IntegratedTest' => 'Teknoo\\Tests\\States\\Factory\\IntegratedTest',
-    'UniAlteri\\Tests\\States\\Factory\\StandardStartupFactoryTest' => 'Teknoo\\Tests\\States\\Factory\\StandardStartupFactoryTest',
-    'UniAlteri\\Tests\\States\\Factory\\StandardTest' => 'Teknoo\\Tests\\States\\Factory\\StandardTest',
-    'UniAlteri\\Tests\\States\\Functional\\ArticleComposerTest' => 'Teknoo\\Tests\\States\\Functional\\ArticleComposerTest',
-    'UniAlteri\\Tests\\States\\Functional\\ArticleTest' => 'Teknoo\\Tests\\States\\Functional\\ArticleTest',
-    'UniAlteri\\Tests\\States\\Functional\\ExtendableComposerTest' => 'Teknoo\\Tests\\States\\Functional\\ExtendableComposerTest',
-    'UniAlteri\\Tests\\States\\Functional\\ExtendableTest' => 'Teknoo\\Tests\\States\\Functional\\ExtendableTest',
-    'UniAlteri\\Tests\\States\\Functional\\MultipleComposerTest' => 'Teknoo\\Tests\\States\\Functional\\MultipleComposerTest',
-    'UniAlteri\\Tests\\States\\Functional\\MultipleTest' => 'Teknoo\\Tests\\States\\Functional\\MultipleTest',
-    'UniAlteri\\Tests\\States\\Loader\\FinderComposerIntegratedTest' => 'Teknoo\\Tests\\States\\Loader\\FinderComposerIntegratedTest',
-    'UniAlteri\\Tests\\States\\Loader\\FinderComposerTest' => 'Teknoo\\Tests\\States\\Loader\\FinderComposerTest',
-    'UniAlteri\\Tests\\States\\Loader\\FinderIntegratedTest' => 'Teknoo\\Tests\\States\\Loader\\FinderIntegratedTest',
-    'UniAlteri\\Tests\\States\\Loader\\FinderStandardTest' => 'Teknoo\\Tests\\States\\Loader\\FinderStandardTest',
-    'UniAlteri\\Tests\\States\\Loader\\IncludePathManagerTest' => 'Teknoo\\Tests\\States\\Loader\\IncludePathManagerTest',
-    'UniAlteri\\Tests\\States\\Loader\\LoaderComposerTest' => 'Teknoo\\Tests\\States\\Loader\\LoaderComposerTest',
-    'UniAlteri\\Tests\\States\\Loader\\LoaderStandardTest' => 'Teknoo\\Tests\\States\\Loader\\LoaderStandardTest',
-    'UniAlteri\\Tests\\States\\Proxy\\AbstractProxyTest' => 'Teknoo\\Tests\\States\\Proxy\\AbstractProxyTest',
-    'UniAlteri\\Tests\\States\\Proxy\\IntegratedTest' => 'Teknoo\\Tests\\States\\Proxy\\IntegratedTest',
-    'UniAlteri\\Tests\\States\\Proxy\\StandardTest' => 'Teknoo\\Tests\\States\\Proxy\\StandardTest',
-    'UniAlteri\\Tests\\States\\States\\AbstractStatesTest' => 'Teknoo\\Tests\\States\\States\\AbstractStatesTest',
-    'UniAlteri\\Tests\\States\\States\\StateTest' => 'Teknoo\\Tests\\States\\States\\StateTest',
-    'UniAlteri\\Tests\\Support\\Article\\Article' => 'Teknoo\\Tests\\Support\\Article\\Article',
-    'UniAlteri\\Tests\\Support\\Article\\Factory' => 'Teknoo\\Tests\\Support\\Article\\Factory',
-    'UniAlteri\\Tests\\Support\\Article\\States\\Archived' => 'Teknoo\\Tests\\Support\\Article\\States\\Archived',
-    'UniAlteri\\Tests\\Support\\Article\\States\\Draft' => 'Teknoo\\Tests\\Support\\Article\\States\\Draft',
-    'UniAlteri\\Tests\\Support\\Article\\States\\Extended' => 'Teknoo\\Tests\\Support\\Article\\States\\Extended',
-    'UniAlteri\\Tests\\Support\\Article\\States\\Promoted' => 'Teknoo\\Tests\\Support\\Article\\States\\Promoted',
-    'UniAlteri\\Tests\\Support\\Article\\States\\Published' => 'Teknoo\\Tests\\Support\\Article\\States\\Published',
-    'UniAlteri\\Tests\\Support\\Article\\States\\StateDefault' => 'Teknoo\\Tests\\Support\\Article\\States\\StateDefault',
-    'UniAlteri\\Tests\\Support\\Extendable\\Daughter\\Daughter' => 'Teknoo\\Tests\\Support\\Extendable\\Daughter\\Daughter',
-    'UniAlteri\\Tests\\Support\\Extendable\\Daughter\\Factory' => 'Teknoo\\Tests\\Support\\Extendable\\Daughter\\Factory',
-    'UniAlteri\\Tests\\Support\\Extendable\\Daughter\\States\\StateDefault' => 'Teknoo\\Tests\\Support\\Extendable\\Daughter\\States\\StateDefault',
-    'UniAlteri\\Tests\\Support\\Extendable\\Daughter\\States\\StateOne' => 'Teknoo\\Tests\\Support\\Extendable\\Daughter\\States\\StateOne',
-    'UniAlteri\\Tests\\Support\\Extendable\\Daughter\\States\\StateThree' => 'Teknoo\\Tests\\Support\\Extendable\\Daughter\\States\\StateThree',
-    'UniAlteri\\Tests\\Support\\Extendable\\GrandDaughter\\Factory' => 'Teknoo\\Tests\\Support\\Extendable\\GrandDaughter\\Factory',
-    'UniAlteri\\Tests\\Support\\Extendable\\GrandDaughter\\GrandDaughter' => 'Teknoo\\Tests\\Support\\Extendable\\GrandDaughter\\GrandDaughter',
-    'UniAlteri\\Tests\\Support\\Extendable\\GrandDaughter\\States\\StateThree' => 'Teknoo\\Tests\\Support\\Extendable\\GrandDaughter\\States\\StateThree',
-    'UniAlteri\\Tests\\Support\\Extendable\\Mother\\Factory' => 'Teknoo\\Tests\\Support\\Extendable\\Mother\\Factory',
-    'UniAlteri\\Tests\\Support\\Extendable\\Mother\\Mother' => 'Teknoo\\Tests\\Support\\Extendable\\Mother\\Mother',
-    'UniAlteri\\Tests\\Support\\Extendable\\Mother\\States\\StateDefault' => 'Teknoo\\Tests\\Support\\Extendable\\Mother\\States\\StateDefault',
-    'UniAlteri\\Tests\\Support\\Extendable\\Mother\\States\\StateOne' => 'Teknoo\\Tests\\Support\\Extendable\\Mother\\States\\StateOne',
-    'UniAlteri\\Tests\\Support\\Extendable\\Mother\\States\\StateTwo' => 'Teknoo\\Tests\\Support\\Extendable\\Mother\\States\\StateTwo',
-    'UniAlteri\\Tests\\Support\\IntegratedProxy' => 'Teknoo\\Tests\\Support\\IntegratedProxy',
-    'UniAlteri\\Tests\\Support\\Loader\\Class2Phar\\Factory' => 'Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Factory',
-    'UniAlteri\\Tests\\Support\\Loader\\Class2\\Factory' => 'Teknoo\\Tests\\Support\\Loader\\Class2\\Factory',
-    'UniAlteri\\Tests\\Support\\Loader\\Class3Phar\\Factory' => 'Teknoo\\Tests\\Support\\Loader\\Class3Phar\\Factory',
-    'UniAlteri\\Tests\\Support\\Loader\\Class3\\Factory' => 'Teknoo\\Tests\\Support\\Loader\\Class3\\Factory',
-    'UniAlteri\\Tests\\Support\\Loader\\Class3bPhar\\Factory' => 'Teknoo\\Tests\\Support\\Loader\\Class3bPhar\\Factory',
-    'UniAlteri\\Tests\\Support\\Loader\\Class3b\\Factory' => 'Teknoo\\Tests\\Support\\Loader\\Class3b\\Factory',
-    'UniAlteri\\Tests\\Support\\MockDIContainer' => 'Teknoo\\Tests\\Support\\MockDIContainer',
-    'UniAlteri\\Tests\\Support\\MockFactory' => 'Teknoo\\Tests\\Support\\MockFactory',
-    'UniAlteri\\Tests\\Support\\MockFinder' => 'Teknoo\\Tests\\Support\\MockFinder',
-    'UniAlteri\\Tests\\Support\\MockFinderInheritance' => 'Teknoo\\Tests\\Support\\MockFinderInheritance',
-    'UniAlteri\\Tests\\Support\\MockFinderWithArray' => 'Teknoo\\Tests\\Support\\MockFinderWithArray',
-    'UniAlteri\\Tests\\Support\\MockIncludePathManager' => 'Teknoo\\Tests\\Support\\MockIncludePathManager',
-    'UniAlteri\\Tests\\Support\\MockInjectionClosure' => 'Teknoo\\Tests\\Support\\MockInjectionClosure',
-    'UniAlteri\\Tests\\Support\\MockInvokableClass' => 'Teknoo\\Tests\\Support\\MockInvokableClass',
-    'UniAlteri\\Tests\\Support\\MockOnlyPrivate' => 'Teknoo\\Tests\\Support\\MockOnlyPrivate',
-    'UniAlteri\\Tests\\Support\\MockOnlyProtected' => 'Teknoo\\Tests\\Support\\MockOnlyProtected',
-    'UniAlteri\\Tests\\Support\\MockOnlyPublic' => 'Teknoo\\Tests\\Support\\MockOnlyPublic',
-    'UniAlteri\\Tests\\Support\\MockProxy' => 'Teknoo\\Tests\\Support\\MockProxy',
-    'UniAlteri\\Tests\\Support\\MockProxyChild' => 'Teknoo\\Tests\\Support\\MockProxyChild',
-    'UniAlteri\\Tests\\Support\\MockStartupFactory' => 'Teknoo\\Tests\\Support\\MockStartupFactory',
-    'UniAlteri\\Tests\\Support\\MockState' => 'Teknoo\\Tests\\Support\\MockState',
-    'UniAlteri\\Tests\\Support\\Multiple\\Post\\Factory' => 'Teknoo\\Tests\\Support\\Multiple\\Post\\Factory',
-    'UniAlteri\\Tests\\Support\\Multiple\\Post\\Post' => 'Teknoo\\Tests\\Support\\Multiple\\Post\\Post',
-    'UniAlteri\\Tests\\Support\\Multiple\\Post\\States\\Deleted' => 'Teknoo\\Tests\\Support\\Multiple\\Post\\States\\Deleted',
-    'UniAlteri\\Tests\\Support\\Multiple\\Post\\States\\Published' => 'Teknoo\\Tests\\Support\\Multiple\\Post\\States\\Published',
-    'UniAlteri\\Tests\\Support\\Multiple\\Post\\States\\StateDefault' => 'Teknoo\\Tests\\Support\\Multiple\\Post\\States\\StateDefault',
-    'UniAlteri\\Tests\\Support\\Multiple\\User\\Factory' => 'Teknoo\\Tests\\Support\\Multiple\\User\\Factory',
-    'UniAlteri\\Tests\\Support\\Multiple\\User\\States\\Administrator' => 'Teknoo\\Tests\\Support\\Multiple\\User\\States\\Administrator',
-    'UniAlteri\\Tests\\Support\\Multiple\\User\\States\\Moderator' => 'Teknoo\\Tests\\Support\\Multiple\\User\\States\\Moderator',
-    'UniAlteri\\Tests\\Support\\Multiple\\User\\States\\StateDefault' => 'Teknoo\\Tests\\Support\\Multiple\\User\\States\\StateDefault',
-    'UniAlteri\\Tests\\Support\\Multiple\\User\\User' => 'Teknoo\\Tests\\Support\\Multiple\\User\\User',
-    'UniAlteri\\Tests\\Support\\StandardProxy' => 'Teknoo\\Tests\\Support\\StandardProxy',
-    'UniAlteri\\Tests\\Support\\StatedClass\\Class6\\Class6' => 'Teknoo\\Tests\\Support\\StatedClass\\Class6\\Class6',
-    'UniAlteri\\Tests\\Support\\StatedClass\\Class7\\Class7' => 'Teknoo\\Tests\\Support\\StatedClass\\Class7\\Class7',
-    'UniAlteri\\Tests\\Support\\StatedClass\\Class8\\Class8' => 'Teknoo\\Tests\\Support\\StatedClass\\Class8\\Class8',
+    'UniAlteri\\States\\States\\StateTrait' => 'Teknoo\\States\\States\\StateTrait'
 );
+
+foreach ($mapping as $oldClasName => $newClassName) {
+    if (!class_exists($oldClasName, false)) {
+        class_alias($newClassName, $oldClasName);
+    }
+}
