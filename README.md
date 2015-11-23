@@ -1,5 +1,5 @@
 Teknoo Software - States library
-===========================
+================================
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/417986ff-17b4-4772-a3d8-9885d6304786/mini.png)](https://insight.sensiolabs.com/projects/417986ff-17b4-4772-a3d8-9885d6304786) [![Build Status](https://travis-ci.org/Teknoo/states.svg?branch=master)](https://travis-ci.org/Teknoo/states)
 
