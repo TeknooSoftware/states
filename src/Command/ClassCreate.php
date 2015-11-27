@@ -74,7 +74,7 @@ use Teknoo\States\Proxy\ProxyInterface;
       * @param string $fullClassName
       * @return string
       */
-     protected function defineDestinationPatch(\string $destinationPath, \string $fullClassName): \string
+     protected function defineDestinationPatch(string $destinationPath, string $fullClassName): string
      {
          $fullClassName = trim($fullClassName, '\\');
          $fullClassNameParts = explode('\\', $fullClassName);

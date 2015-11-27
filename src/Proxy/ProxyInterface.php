@@ -79,7 +79,7 @@ interface ProxyInterface
      *
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    public function registerState(\string $stateName, StateInterface $stateObject): ProxyInterface;
+    public function registerState(string $stateName, StateInterface $stateObject): ProxyInterface;
 
     /**
      * To remove dynamically a state from this stated class instance.
@@ -92,7 +92,7 @@ interface ProxyInterface
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    public function unregisterState(\string $stateName): ProxyInterface;
+    public function unregisterState(string $stateName): ProxyInterface;
 
     /**
      * To disable all enabled states and enable the required states.
@@ -104,7 +104,7 @@ interface ProxyInterface
      *
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    public function switchState(\string $stateName): ProxyInterface;
+    public function switchState(string $stateName): ProxyInterface;
 
     /**
      * To enable a loaded states.
@@ -117,7 +117,7 @@ interface ProxyInterface
      * @throws Exception\StateNotFound   if $stateName does not exist
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    public function enableState(\string $stateName): ProxyInterface;
+    public function enableState(string $stateName): ProxyInterface;
 
     /**
      * To disable an enabled state
@@ -130,7 +130,7 @@ interface ProxyInterface
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    public function disableState(\string $stateName): ProxyInterface;
+    public function disableState(string $stateName): ProxyInterface;
 
     /**
      * To disable all actives states.
@@ -172,7 +172,7 @@ interface ProxyInterface
      *
      * @return bool
      */
-    public function inState(\string $stateName): \bool;
+    public function inState(string $stateName): bool;
 
     /*******************
      * Methods Calling *
@@ -190,7 +190,7 @@ interface ProxyInterface
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function __call(\string $name, array $arguments);
+    public function __call(string $name, array $arguments);
 
     /**
      * To return the description of a method present in a state of this stated class instance.
@@ -207,5 +207,5 @@ interface ProxyInterface
      * @throws Exception\MethodNotImplemented when the method is not currently available
      * @throws \Exception                     to rethrows unknown exceptions
      */
-    public function getMethodDescription(\string $methodName, \string $stateName = null): \ReflectionMethod;
+    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod;
 }

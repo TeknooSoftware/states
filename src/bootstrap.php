@@ -35,7 +35,7 @@ $composerInstance = require $composerFile;
  * @param string $path
  * @return Loader\FinderComposerIntegrated
  */
-$finderFactory = function (\string $statedClassName, \string $path) use ($composerInstance) {
+$finderFactory = function (string $statedClassName, string $path) use ($composerInstance) {
     return new Loader\FinderComposerIntegrated($statedClassName, $path, $composerInstance);
 };
 

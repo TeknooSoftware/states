@@ -48,7 +48,7 @@ interface FactoryInterface
      * @param FinderInterface $finder
      * @param \ArrayAccess $factoryRepository
      */
-    public function __construct(\string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository);
+    public function __construct(string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository);
 
     /**
      * To return the loader of the current stated class
@@ -63,7 +63,7 @@ interface FactoryInterface
      * @api
      * @return string
      */
-    public function getStatedClassName(): \string;
+    public function getStatedClassName(): string;
 
     /**
      * To initialize a proxy object with its states. States are fetched by the finder of this stated class.
@@ -76,7 +76,7 @@ interface FactoryInterface
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      */
-    public function startup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface;
+    public function startup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface;
 
     /**
      * Build a new instance of a stated class.
@@ -89,5 +89,5 @@ interface FactoryInterface
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      */
-    public function build($arguments = null, \string $stateName = null): ProxyInterface;
+    public function build($arguments = null, string $stateName = null): ProxyInterface;
 }

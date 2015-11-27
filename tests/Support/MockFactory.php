@@ -68,7 +68,7 @@ class MockFactory implements FactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(\string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository)
+    public function __construct(string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository)
     {
         $this->initialize($statedClassName);
     }
@@ -93,7 +93,7 @@ class MockFactory implements FactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatedClassName(): \string
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }
@@ -133,7 +133,7 @@ class MockFactory implements FactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function build($arguments = null, \string $stateName = null): ProxyInterface
+    public function build($arguments = null, string $stateName = null): ProxyInterface
     {
         return new MockProxy(array());
     }
@@ -141,7 +141,7 @@ class MockFactory implements FactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function startup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface
+    public function startup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
     {
         $this->startupProxy = $proxyObject;
 

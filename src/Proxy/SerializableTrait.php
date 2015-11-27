@@ -53,7 +53,7 @@ trait SerializableTrait
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function serialize(): \string
+    public function serialize(): string
     {
         $args = [];
 

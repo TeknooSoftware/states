@@ -43,7 +43,7 @@ class GoodProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function __call(\string $name, array $arguments)
+    public function __call(string $name, array $arguments)
     {
     }
 
@@ -57,35 +57,35 @@ class GoodProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function registerState(\string $stateName, StateInterface $stateObject): ProxyInterface
+    public function registerState(string $stateName, StateInterface $stateObject): ProxyInterface
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function unregisterState(\string $stateName): ProxyInterface
+    public function unregisterState(string $stateName): ProxyInterface
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function switchState(\string $stateName): ProxyInterface
+    public function switchState(string $stateName): ProxyInterface
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function enableState(\string $stateName): ProxyInterface
+    public function enableState(string $stateName): ProxyInterface
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function disableState(\string $stateName): ProxyInterface
+    public function disableState(string $stateName): ProxyInterface
     {
     }
 
@@ -120,14 +120,14 @@ class GoodProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function inState(\string $stateName): \bool
+    public function inState(string $stateName): bool
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getMethodDescription(\string $methodName, \string $stateName = null): \ReflectionMethod
+    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {
     }
 }

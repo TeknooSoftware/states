@@ -61,7 +61,7 @@ class StandardStartupFactory implements StartupFactoryInterface
      *
      * @throws Exception\UnavailableFactory when the required factory was not found
      */
-    public static function forwardStartup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface
+    public static function forwardStartup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
     {
         $factoryIdentifier = get_class($proxyObject);
 
@@ -80,7 +80,7 @@ class StandardStartupFactory implements StartupFactoryInterface
      * @param string           $factoryIdentifier
      * @param FactoryInterface $factoryObject
      */
-    public static function registerFactory(\string $factoryIdentifier, FactoryInterface $factoryObject)
+    public static function registerFactory(string $factoryIdentifier, FactoryInterface $factoryObject)
     {
         if (!static::$factoryRegistry instanceof \ArrayAccess) {
             static::$factoryRegistry = new \ArrayObject();

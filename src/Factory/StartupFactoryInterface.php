@@ -54,5 +54,5 @@ interface StartupFactoryInterface
      *
      * @throws Exception\UnavailableFactory when the required factory was not found
      */
-    public static function forwardStartup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface;
+    public static function forwardStartup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface;
 }

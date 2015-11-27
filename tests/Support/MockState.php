@@ -112,7 +112,7 @@ class MockState implements StateInterface
      * @param array $aliases
      * @param \Closure $closure
      */
-    public function __construct(\bool $privateMode, \string $statedClassName, array $aliases=[], $closure = null)
+    public function __construct(bool $privateMode, string $statedClassName, array $aliases=[], $closure = null)
     {
         $this->aliases = $aliases;
         $this->setPrivateMode($privateMode)
@@ -182,10 +182,10 @@ class MockState implements StateInterface
      * {@inheritdoc}
      */
     public function testMethod(
-        \string $methodName,
-        \string $scope = StateInterface::VISIBILITY_PUBLIC,
-        \string $statedClassOriginName = null
-    ): \bool {
+        string $methodName,
+        string $scope = StateInterface::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
+    ): bool {
         //Simulate real behavior from the name of the method,
         //if the method name contains private, its a private method
         //if the method name contains protected, its a protected method
@@ -226,7 +226,7 @@ class MockState implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function getMethodDescription(\string $methodName): \ReflectionMethod
+    public function getMethodDescription(string $methodName): \ReflectionMethod
     {
         if (false === $this->methodAllowed || true === $this->simulateMethodDescriptionFailure) {
             throw new Exception\MethodNotImplemented();
@@ -242,9 +242,9 @@ class MockState implements StateInterface
      */
     public function getClosure(
         Proxy\ProxyInterface $proxy,
-        \string $methodName,
-        \string $scope = StateInterface::VISIBILITY_PUBLIC,
-        \string $statedClassOriginName = null
+        string $methodName,
+        string $scope = StateInterface::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
     ): \Closure {
         if (false === $this->methodAllowed) {
             throw new Exception\MethodNotImplemented();
@@ -357,7 +357,7 @@ class MockState implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatedClassName(): \string
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }
@@ -365,7 +365,7 @@ class MockState implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function setStatedClassName(\string $statedClassName): StateInterface
+    public function setStatedClassName(string $statedClassName): StateInterface
     {
         $this->statedClassName = $statedClassName;
 
@@ -390,7 +390,7 @@ class MockState implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function isPrivateMode(): \bool
+    public function isPrivateMode(): bool
     {
         return $this->privateModeEnable;
     }
@@ -398,7 +398,7 @@ class MockState implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function setPrivateMode(\bool $enable): StateInterface
+    public function setPrivateMode(bool $enable): StateInterface
     {
         $this->privateModeEnable = !empty($enable);
 

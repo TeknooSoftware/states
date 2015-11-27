@@ -51,7 +51,7 @@ trait ArrayAccessTrait
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function count(): \int
+    public function count(): int
     {
         $args = [];
 

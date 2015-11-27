@@ -99,7 +99,7 @@ trait FactoryTrait
      * @param FinderInterface $finder
      * @param \ArrayAccess $factoryRepository
      */
-    public function __construct(\string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository)
+    public function __construct(string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository)
     {
         $this->finder = $finder;
         $this->factoryRepository = $factoryRepository;
@@ -113,7 +113,7 @@ trait FactoryTrait
      *
      * @return FactoryInterface
      */
-    protected function initialize(\string $statedClassName): FactoryInterface
+    protected function initialize(string $statedClassName): FactoryInterface
     {
         //Initialize this factory
         $this->statedClassName = $statedClassName;
@@ -144,7 +144,7 @@ trait FactoryTrait
      * @api
      * @return string
      */
-    public function getStatedClassName(): \string
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }
@@ -172,7 +172,7 @@ trait FactoryTrait
      *
      * @throws Exception\UnavailableFactory when the required factory is not available
      */
-    private function getFactoryFromStatedClassName(\string $className): FactoryInterface
+    private function getFactoryFromStatedClassName(string $className): FactoryInterface
     {
         if (isset($this->factoryRepository[$className])) {
             return $this->factoryRepository[$className];
@@ -247,7 +247,7 @@ trait FactoryTrait
      *
      * @return string
      */
-    private function computeStateAlias(\string $loadingStateName, FinderInterface $finderLoader): array
+    private function computeStateAlias(string $loadingStateName, FinderInterface $finderLoader): array
     {
         $parentStateClassNameList = [];
 
@@ -271,7 +271,7 @@ trait FactoryTrait
      * @param bool $enablePrivateMode
      * @return \Teknoo\States\State\StateInterface
      */
-    private function buildState(\string $loadingStateName, FinderInterface $finderLoader, \bool $enablePrivateMode)
+    private function buildState(string $loadingStateName, FinderInterface $finderLoader, bool $enablePrivateMode)
     {
         if (!isset($this->statesInstancesList[$loadingStateName])) {
             $this->statesInstancesList[$loadingStateName] = $finderLoader->buildState(
@@ -296,7 +296,7 @@ trait FactoryTrait
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      */
-    public function startup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface
+    public function startup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
     {
         if (!$proxyObject instanceof ProxyInterface) {
             throw new Exception\IllegalProxy('Error, the Proxy does not implements the Proxy Interface');
@@ -352,7 +352,7 @@ trait FactoryTrait
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
      */
-    public function build($arguments = null, \string $stateName = null): ProxyInterface
+    public function build($arguments = null, string $stateName = null): ProxyInterface
     {
         //Get finder loader
         $finderLoader = $this->getFinder();

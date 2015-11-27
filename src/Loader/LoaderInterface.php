@@ -75,7 +75,7 @@ interface LoaderInterface
      *
      * @return LoaderInterface
      */
-    public function registerNamespace(\string $namespace, \string $path): LoaderInterface;
+    public function registerNamespace(string $namespace, string $path): LoaderInterface;
 
     /**
      * Method called to load a class by __autoload of PHP Engine.
@@ -90,7 +90,7 @@ interface LoaderInterface
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      * @throws \Exception
      */
-    public function loadClass(\string $className): \bool;
+    public function loadClass(string $className): bool;
 
     /**
      * Build the factory and initialize the loading stated class.
@@ -106,8 +106,8 @@ interface LoaderInterface
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      */
     public function buildFactory(
-        \string $factoryClassName,
-        \string $statedClassName,
-        \string $path
+        string $factoryClassName,
+        string $statedClassName,
+        string $path
     ): FactoryInterface;
 }

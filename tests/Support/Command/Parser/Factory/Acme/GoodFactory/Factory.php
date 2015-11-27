@@ -35,7 +35,7 @@ class Factory implements FactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(\string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository)
+    public function __construct(string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository)
     {
 
     }
@@ -57,7 +57,7 @@ class Factory implements FactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function startup(ProxyInterface $proxyObject, \string $stateName = null): FactoryInterface
+    public function startup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
     {
         return $this;
     }
@@ -65,7 +65,7 @@ class Factory implements FactoryInterface
     /**
      * {@inheritdoc}
      */
-    public function build($arguments = null, \string $stateName = null): ProxyInterface
+    public function build($arguments = null, string $stateName = null): ProxyInterface
     {
     }
 }

@@ -35,7 +35,7 @@ class StateNormal implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(\bool $privateMode, \string $statedClassName, array $aliases=[])
+    public function __construct(bool $privateMode, string $statedClassName, array $aliases=[])
     {
 
     }
@@ -43,14 +43,14 @@ class StateNormal implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatedClassName(): \string
+    public function getStatedClassName(): string
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setStatedClassName(\string $statedClassName): StateInterface
+    public function setStatedClassName(string $statedClassName): StateInterface
     {
     }
 
@@ -71,14 +71,14 @@ class StateNormal implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function isPrivateMode(): \bool
+    public function isPrivateMode(): bool
     {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function setPrivateMode(\bool $enable): StateInterface
+    public function setPrivateMode(bool $enable): StateInterface
     {
     }
 
@@ -93,16 +93,16 @@ class StateNormal implements StateInterface
      * {@inheritdoc}
      */
     public function testMethod(
-        \string $methodName,
-        \string $scope = self::VISIBILITY_PUBLIC,
-        \string $statedClassOriginName = null
+        string $methodName,
+        string $scope = self::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
     ): bool {
     }
 
     /**
      * {@inheritdoc}
      */
-    public function getMethodDescription(\string $methodName): \ReflectionMethod
+    public function getMethodDescription(string $methodName): \ReflectionMethod
     {
     }
 
@@ -111,9 +111,9 @@ class StateNormal implements StateInterface
      */
     public function getClosure(
         Proxy\ProxyInterface $proxy,
-        \string $methodName,
-        \string $scope = self::VISIBILITY_PUBLIC,
-        \string $statedClassOriginName = null
+        string $methodName,
+        string $scope = self::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
     ): \Closure {
     }
 }

@@ -88,7 +88,7 @@ trait ProxyTrait
      * List all methods available in the proxy, with all states, get the list available in the current scope,
      * unlike method_exists is not dependant about the scope and return unavailable privates methods
      *
-     * @return array|\string[]
+     * @return array|string[]
      */
     private function getGlobalMethodsList()
     {
@@ -106,7 +106,7 @@ trait ProxyTrait
      * @param string $methodName
      * @return bool
      */
-    private function checkMethodExist(\string $methodName)
+    private function checkMethodExist(string $methodName)
     {
         return isset($this->getGlobalMethodsList()[$methodName]);
     }
@@ -116,7 +116,7 @@ trait ProxyTrait
      *
      * @return string
      */
-    private function getCallerStatedClassName(): \string
+    private function getCallerStatedClassName(): string
     {
         if (true !== $this->callerStatedClassesStack->isEmpty()) {
             return $this->callerStatedClassesStack->top();
@@ -168,9 +168,9 @@ trait ProxyTrait
      */
     private function callInState(
         StateInterface $state,
-        \string $methodName,
+        string $methodName,
         array &$arguments,
-        \string $scopeVisibility
+        string $scopeVisibility
     ) {
         $callerStatedClassName = $this->getCallerStatedClassName();
         $this->pushCallerStatedClassName($state);
@@ -205,7 +205,7 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws \Exception
      */
-    protected function findMethodToCall(\string $methodName, array &$arguments)
+    protected function findMethodToCall(string $methodName, array &$arguments)
     {
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
         $scopeVisibility = $this->getVisibilityScope(4);
@@ -264,7 +264,7 @@ trait ProxyTrait
      *
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    protected function validateName(\string $name): \bool
+    protected function validateName(string $name): bool
     {
         if (empty($name)) {
             throw new Exception\IllegalName('Error, the identifier is not a valid string');
@@ -303,7 +303,7 @@ trait ProxyTrait
      *                StateInterface::VISIBILITY_PROTECTED
      *                StateInterface::VISIBILITY_PRIVATE
      */
-    private function getVisibilityScope(\int $limit): \string
+    private function getVisibilityScope(int $limit): string
     {
         //Get the calling stack
         $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, (int) $limit);
@@ -414,7 +414,7 @@ trait ProxyTrait
      *
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    public function registerState(\string $stateName, StateInterface $stateObject): ProxyInterface
+    public function registerState(string $stateName, StateInterface $stateObject): ProxyInterface
     {
         $this->validateName($stateName);
 
@@ -434,7 +434,7 @@ trait ProxyTrait
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    public function unregisterState(\string $stateName): ProxyInterface
+    public function unregisterState(string $stateName): ProxyInterface
     {
         $this->validateName($stateName);
 
@@ -480,7 +480,7 @@ trait ProxyTrait
      *
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    public function switchState(\string $stateName): ProxyInterface
+    public function switchState(string $stateName): ProxyInterface
     {
         $this->validateName($stateName);
 
@@ -503,7 +503,7 @@ trait ProxyTrait
      * @throws Exception\StateNotFound   if $stateName does not exist
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    public function enableState(\string $stateName): ProxyInterface
+    public function enableState(string $stateName): ProxyInterface
     {
         $this->validateName($stateName);
 
@@ -528,7 +528,7 @@ trait ProxyTrait
      * @throws Exception\StateNotFound   when the state was not found
      * @throws Exception\IllegalName     when the identifier is not an non empty string
      */
-    public function disableState(\string $stateName): ProxyInterface
+    public function disableState(string $stateName): ProxyInterface
     {
         $this->validateName($stateName);
 
@@ -610,7 +610,7 @@ trait ProxyTrait
      *
      * @return bool
      */
-    public function inState(\string $stateName): \bool
+    public function inState(string $stateName): bool
     {
         $stateName = (string) $stateName;
         $enabledStatesList = $this->listEnabledStates();
@@ -640,7 +640,7 @@ trait ProxyTrait
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
-    public function __call(\string $name, array $arguments)
+    public function __call(string $name, array $arguments)
     {
         if (!$this->callerStatedClassesStack->isEmpty()) {
             if ($this->checkMethodExist($name)) {
@@ -666,7 +666,7 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented when the method is not currently available
      * @throws \Exception                     to rethrows unknown exceptions
      */
-    public function getMethodDescription(\string $methodName, \string $stateName = null): \ReflectionMethod
+    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {
         //Retrieve the visibility scope
         try {
@@ -718,7 +718,7 @@ trait ProxyTrait
      *
      * @throws \ErrorException of the property is not accessible
      */
-    public function __get(\string $name)
+    public function __get(string $name)
     {
         if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
             return $this->{$name};
@@ -743,7 +743,7 @@ trait ProxyTrait
      *
      * @return mixed
      */
-    public function __isset(\string $name)
+    public function __isset(string $name)
     {
         if (!$this->callerStatedClassesStack->isEmpty()) {
             return isset($this->{$name});
@@ -769,7 +769,7 @@ trait ProxyTrait
      *
      * @throws \ErrorException of the property is not accessible
      */
-    public function __set(\string $name, $value)
+    public function __set(string $name, $value)
     {
         if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
             $this->{$name} = $value;
@@ -796,7 +796,7 @@ trait ProxyTrait
      *
      * @throws \ErrorException of the property is not accessible
      */
-    public function __unset(\string $name)
+    public function __unset(string $name)
     {
         if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
             unset($this->{$name});

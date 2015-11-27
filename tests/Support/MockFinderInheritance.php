@@ -113,7 +113,7 @@ class MockFinderInheritance implements FinderInterface
      * @param string $stateName
      * @return mixed
      */
-    public function getStateParentsClassesNamesList(\string $stateName): array
+    public function getStateParentsClassesNamesList(string $stateName): array
     {
         return $this->parentsClassesNamesList;
     }
@@ -132,7 +132,7 @@ class MockFinderInheritance implements FinderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildState(\string $stateName, \bool $privateMode, \string $statedClassName, array $aliases=[]): StateInterface
+    public function buildState(string $stateName, bool $privateMode, string $statedClassName, array $aliases=[]): StateInterface
     {
         //Return a new mock state object for tests
         $this->lastMockState = new MockState($privateMode, $statedClassName, $aliases);
@@ -151,7 +151,7 @@ class MockFinderInheritance implements FinderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadState(\string $stateName): \string
+    public function loadState(string $stateName): string
     {
         return true;
     }
@@ -159,7 +159,7 @@ class MockFinderInheritance implements FinderInterface
     /**
      * {@inheritdoc}
      */
-    public function loadProxy($arguments = null): \string
+    public function loadProxy($arguments = null): string
     {
         $this->proxyLoaded = true;
 
@@ -196,7 +196,7 @@ class MockFinderInheritance implements FinderInterface
     /**
      * {@inheritdoc}
      */
-    public function getStatedClassName(): \string
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }

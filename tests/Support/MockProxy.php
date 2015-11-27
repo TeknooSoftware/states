@@ -86,7 +86,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function registerState(\string $stateName, StateInterface $stateObject): ProxyInterface
+    public function registerState(string $stateName, StateInterface $stateObject): ProxyInterface
     {
         //Simulate real behavior
         $this->states[$stateName] = $stateObject;
@@ -97,7 +97,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function unregisterState(\string $stateName): ProxyInterface
+    public function unregisterState(string $stateName): ProxyInterface
     {
         //Simulate real behavior
         if (isset($this->states[$stateName])) {
@@ -110,7 +110,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function switchState(\string $stateName): ProxyInterface
+    public function switchState(string $stateName): ProxyInterface
     {
         //Simulate real behavior
         $this->actives = array($stateName => $stateName);
@@ -121,7 +121,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function enableState(\string $stateName): ProxyInterface
+    public function enableState(string $stateName): ProxyInterface
     {
         //Simulate real behavior
         $this->actives[$stateName] = $stateName;
@@ -132,7 +132,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function disableState(\string $stateName): ProxyInterface
+    public function disableState(string $stateName): ProxyInterface
     {
         //Simulate real behavior
         if (isset($this->actives[$stateName])) {
@@ -182,7 +182,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function inState(\string $stateName): bool
+    public function inState(string $stateName): bool
     {
         return in_array(strtolower(str_replace('_', '', $stateName)), $this->actives);
     }
@@ -194,7 +194,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function __call(\string $name, array $arguments)
+    public function __call(string $name, array $arguments)
     {
         //Not used in tests
     }
@@ -202,7 +202,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getMethodDescription(\string $methodName, \string $stateName = null): \ReflectionMethod
+    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {
         //Not used in tests
     }
@@ -222,7 +222,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function __get(\string $name)
+    public function __get(string $name)
     {
         //Not used in tests
     }
@@ -230,7 +230,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function __isset(\string $name)
+    public function __isset(string $name)
     {
         //Not used in tests
     }
@@ -238,7 +238,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function __set(\string $name, $value)
+    public function __set(string $name, $value)
     {
         //Not used in tests
     }
@@ -246,7 +246,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function __unset(\string $name)
+    public function __unset(string $name)
     {
         //Not used in tests
     }
@@ -254,7 +254,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function __toString(): \string
+    public function __toString(): string
     {
         //Not used in tests
     }

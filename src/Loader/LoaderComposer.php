@@ -122,7 +122,7 @@ class LoaderComposer implements LoaderInterface
      *
      * @return LoaderInterface
      */
-    public function registerNamespace(\string $namespace, \string $path): LoaderInterface
+    public function registerNamespace(string $namespace, string $path): LoaderInterface
     {
         if ('\\' !== $namespace[strlen($namespace)-1]) {
             $namespace = ltrim($namespace, '\\').'\\';
@@ -138,7 +138,7 @@ class LoaderComposer implements LoaderInterface
      * @param string $factoryClassName
      * @return bool
      */
-    private function loadFactory(\string &$factoryClassName): \bool
+    private function loadFactory(string &$factoryClassName): bool
     {
         if (!isset($this->factoryAvailabilityList[$factoryClassName])) {
             if (true === class_exists($factoryClassName, false)
@@ -167,7 +167,7 @@ class LoaderComposer implements LoaderInterface
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      * @throws \Exception
      */
-    public function loadClass(\string $className): \bool
+    public function loadClass(string $className): bool
     {
         //Do nothing if this loader has already check the required class name or if the class provide from this library
         if (isset($this->loadingFactoriesClassNameArray[$className])
@@ -224,9 +224,9 @@ class LoaderComposer implements LoaderInterface
      * @throws Exception\IllegalFactory     if the factory does not implement the good interface
      */
     public function buildFactory(
-        \string $factoryClassName,
-        \string $statedClassName,
-        \string $path
+        string $factoryClassName,
+        string $statedClassName,
+        string $path
     ): FactoryInterface {
         //Check if the factory class is loaded
         if (!class_exists($factoryClassName, false)) {

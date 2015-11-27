@@ -54,7 +54,7 @@ interface FinderInterface
      *
      * @return string
      */
-    public function getStatedClassName(): \string;
+    public function getStatedClassName(): string;
 
     /**
      * To list all available states of the stated class.
@@ -75,7 +75,7 @@ interface FinderInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      */
-    public function loadState(\string $stateName): \string;
+    public function loadState(string $stateName): string;
 
     /**
      * To return the list of parent php classes used by a state
@@ -86,7 +86,7 @@ interface FinderInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      */
-    public function getStateParentsClassesNamesList(\string $stateName): array;
+    public function getStateParentsClassesNamesList(string $stateName): array;
 
     /**
      * To load and build the required state object of the stated class.
@@ -101,7 +101,7 @@ interface FinderInterface
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState(\string $stateName, \bool $privateMode, \string $statedClassName, array $aliases=[]): StateInterface;
+    public function buildState(string $stateName, bool $privateMode, string $statedClassName, array $aliases=[]): StateInterface;
 
     /**
      * To search and load the proxy class for this stated class.
@@ -109,7 +109,7 @@ interface FinderInterface
      *
      * @return string
      */
-    public function loadProxy(): \string;
+    public function loadProxy(): string;
 
     /**
      * To return the list of parents stated classes of the stated classes, library classes (Integrated proxy and

@@ -125,7 +125,7 @@ trait StateTrait
      * @param bool $privateMode
      * @param string $statedClassName
      */
-    public function __construct(\bool $privateMode, \string $statedClassName, array $aliases=[])
+    public function __construct(bool $privateMode, string $statedClassName, array $aliases=[])
     {
         $this->setPrivateMode($privateMode);
         $this->setStatedClassName($statedClassName);
@@ -153,7 +153,7 @@ trait StateTrait
      *
      * @return string
      */
-    public function getStatedClassName(): \string
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }
@@ -165,7 +165,7 @@ trait StateTrait
      *
      * @return StateInterface
      */
-    public function setStatedClassName(\string $statedClassName): StateInterface
+    public function setStatedClassName(string $statedClassName): StateInterface
     {
         $this->statedClassName = $statedClassName;
 
@@ -203,7 +203,7 @@ trait StateTrait
      *
      * @return bool
      */
-    public function isPrivateMode(): \bool
+    public function isPrivateMode(): bool
     {
         return $this->privateModeStatus;
     }
@@ -218,7 +218,7 @@ trait StateTrait
      *
      * @return StateInterface
      */
-    public function setPrivateMode(\bool $enable): StateInterface
+    public function setPrivateMode(bool $enable): StateInterface
     {
         $this->privateModeStatus = !empty($enable);
 
@@ -280,10 +280,10 @@ trait StateTrait
      * @throws Exception\InvalidArgument
      */
     private function checkVisibility(
-        \string $methodName,
-        \string $scope,
-        \string $statedClassOriginName = null
-    ): \bool {
+        string $methodName,
+        string $scope,
+        string $statedClassOriginName = null
+    ): bool {
         $visible = false;
         if (isset($this->reflectionsMethods[$methodName])) {
             //Check visibility scope
@@ -343,10 +343,10 @@ trait StateTrait
      * @throws Exception\InvalidArgument when the method name is not a string
      */
     public function testMethod(
-        \string $methodName,
-        \string $scope = StateInterface::VISIBILITY_PUBLIC,
-        \string $statedClassOriginName = null
-    ): \bool {
+        string $methodName,
+        string $scope = StateInterface::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
+    ): bool {
         //Method is already extracted
         if (isset($this->reflectionsMethods[$methodName])) {
             if ($this->reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
@@ -385,7 +385,7 @@ trait StateTrait
      *
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    public function getMethodDescription(\string $methodName): \ReflectionMethod
+    public function getMethodDescription(string $methodName): \ReflectionMethod
     {
         if (isset($this->methodsNamesToIgnoreArray[$methodName])) {
             throw new Exception\MethodNotImplemented('Error, this method is not implemented by this state');
@@ -442,9 +442,9 @@ trait StateTrait
      */
     public function getClosure(
         ProxyInterface $proxy,
-        \string $methodName,
-        \string $scope = StateInterface::VISIBILITY_PUBLIC,
-        \string $statedClassOriginName = null
+        string $methodName,
+        string $scope = StateInterface::VISIBILITY_PUBLIC,
+        string $statedClassOriginName = null
     ): \Closure {
         if (!($this->closuresObjects instanceof \ArrayObject)) {
             //Initialize locale closure cache

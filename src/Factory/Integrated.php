@@ -51,7 +51,7 @@ class Integrated implements FactoryInterface
      *
      * @return FactoryInterface
      */
-    protected function initialize(\string $statedClassName): FactoryInterface
+    protected function initialize(string $statedClassName): FactoryInterface
     {
         //Call trait's method to initialize this stated class
         $this->traitInitialize($statedClassName);

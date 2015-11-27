@@ -85,7 +85,7 @@ class FinderComposer implements FinderInterface
      * @param string $pathString
      * @param ClassLoader $composerInstance
      */
-    public function __construct(\string $statedClassName, \string $pathString, ClassLoader $composerInstance)
+    public function __construct(string $statedClassName, string $pathString, ClassLoader $composerInstance)
     {
         $this->statedClassName = $statedClassName;
         $this->pathString = $pathString;
@@ -114,7 +114,7 @@ class FinderComposer implements FinderInterface
      *
      * @return string
      */
-    public function getStatedClassName(): \string
+    public function getStatedClassName(): string
     {
         return $this->statedClassName;
     }
@@ -181,7 +181,7 @@ class FinderComposer implements FinderInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      */
-    public function loadState(\string $stateName): \string
+    public function loadState(string $stateName): string
     {
         $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
         if (!$this->testClassExists($stateClassName)) {
@@ -202,7 +202,7 @@ class FinderComposer implements FinderInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      */
-    public function getStateParentsClassesNamesList(\string $stateName): array
+    public function getStateParentsClassesNamesList(string $stateName): array
     {
         $classNameList = [];
 
@@ -229,7 +229,7 @@ class FinderComposer implements FinderInterface
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState(\string $stateName, \bool $privateMode, \string $statedClassName, array $aliases=[]): StateInterface
+    public function buildState(string $stateName, bool $privateMode, string $statedClassName, array $aliases=[]): StateInterface
     {
         //Load the state class if it is not already done
         $stateClassName = $this->loadState($stateName);
@@ -254,7 +254,7 @@ class FinderComposer implements FinderInterface
      *
      * @return string
      */
-    private function getClassedName(\string $statedClassName): \string
+    private function getClassedName(string $statedClassName): string
     {
         $parts = explode('\\', $statedClassName);
 
@@ -267,7 +267,7 @@ class FinderComposer implements FinderInterface
      *
      * @return string
      */
-    public function loadProxy(): \string
+    public function loadProxy(): string
     {
         //Build the class name
         $classPartName = $this->getClassedName($this->statedClassName);
