@@ -1,9 +1,29 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.0-beta18] - 2015-10-15 - Available on the branch "next"
+###Fixed
+- Fix last change with PHP7 RC8 and scalar type must be unqualified
+
+##[1.2.0-rc6] - 2015-11-29
+###Remove
+- Typo3 class alias loader, replaced by a manual class_alias generated during library bootstrapt
+
+###Fixed
+- Fix migration about Uni Alteri to Teknoo Software organization
+
+##[2.0.0-beta17] - 2015-10-15 - Available on the branch "next"
+###Fixed
+- Fix migration about Uni Alteri to Teknoo Software organization
+- Fit git export
+
 ##[1.2.0-rc5] - 2015-10-31
 ###Fixed
 - Fix migration about Uni Alteri to Teknoo Software organization
 - Fit git export
+
+##[2.0.0-beta16] - 2015-10-15 - Available on the branch "next"
+###Changed
+- Migrate library from Uni Alteri to Teknoo Software organization
 
 ##[1.2.0-rc4] - 2015-10-25
 ###Fixed
