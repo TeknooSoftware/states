@@ -176,7 +176,8 @@ class LoaderComposer implements LoaderInterface
     public function loadClass($className)
     {
         if (isset($this->loadingFactoriesClassNameArray[$className])
-            || 0 === strpos($className, 'Teknoo\\States')) {
+            || 0 === strpos($className, 'Teknoo\\States')
+            || 0 === strpos($className, 'UniAlteri\\States')) {
             return false;
         }
 
