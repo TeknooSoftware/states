@@ -50,7 +50,6 @@ $mapping = array (
     'UniAlteri\\States\\DI\\Exception\\InvalidArgument' => 'Teknoo\\States\\DI\\Exception\\InvalidArgument',
     'UniAlteri\\States\\DI\\InjectionClosure' => 'Teknoo\\States\\DI\\InjectionClosure',
     'UniAlteri\\States\\DI\\InjectionClosureInterface' => 'Teknoo\\States\\DI\\InjectionClosureInterface',
-    'UniAlteri\\States\\DI\\InjectionClosurePHP56' => 'Teknoo\\States\\DI\\InjectionClosurePHP56',
     'UniAlteri\\States\\Exception\\AvailableSeveralMethodImplementations' => 'Teknoo\\States\\Exception\\AvailableSeveralMethodImplementations',
     'UniAlteri\\States\\Exception\\ClassNotFound' => 'Teknoo\\States\\Exception\\ClassNotFound',
     'UniAlteri\\States\\Exception\\IllegalArgument' => 'Teknoo\\States\\Exception\\IllegalArgument',
@@ -126,6 +125,10 @@ $mapping = array (
     'UniAlteri\\States\\States\\StateInterface' => 'Teknoo\\States\\States\\StateInterface',
     'UniAlteri\\States\\States\\StateTrait' => 'Teknoo\\States\\States\\StateTrait'
 );
+
+if (!defined('DISABLE_PHP_FLOC_OPERATOR') && '5.6' <= PHP_VERSION) {
+    $mapping['UniAlteri\\States\\DI\\InjectionClosurePHP56'] = 'Teknoo\\States\\DI\\InjectionClosurePHP56';
+}
 
 foreach ($mapping as $oldClasName => $newClassName) {
     if (!class_exists($oldClasName, false)) {
