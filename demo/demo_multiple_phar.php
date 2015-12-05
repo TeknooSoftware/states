@@ -34,34 +34,34 @@ $loader = require_once dirname(__DIR__).DS.'src'.DS.'Teknoo'.DS.'States'.DS.'boo
 //Register demo namespace
 $loader->registerNamespace('\\demo\\Acme\\Multiple', 'phar://'.__DIR__.DS.'Acme'.DS.'multiple.phar');
 
-print 'Teknoo Software - States library - Demo :'.PHP_EOL.PHP_EOL;
+echo 'Teknoo Software - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize user
-print 'user'.PHP_EOL;
+echo 'user'.PHP_EOL;
 $simpleUser = new Acme\Multiple\User\User('simple 1');
-print 'get name : '.$simpleUser->getName().PHP_EOL;
+echo 'get name : '.$simpleUser->getName().PHP_EOL;
 //Initialize moderator
-print 'moderator'.PHP_EOL;
+echo 'moderator'.PHP_EOL;
 //You call also directly the stated class name and not the proxy
 $moderator = new Acme\Multiple\User('modo', false, true);
-print 'get name : '.$moderator->getName().PHP_EOL;
+echo 'get name : '.$moderator->getName().PHP_EOL;
 //Initialize admin
-print 'admin'.PHP_EOL;
+echo 'admin'.PHP_EOL;
 $administrator = new Acme\Multiple\User\User('admin', true, true);
-print 'get name : '.$administrator->getName().PHP_EOL.PHP_EOL;
+echo 'get name : '.$administrator->getName().PHP_EOL.PHP_EOL;
 
 //Method not available, because state Moderator is not enabled
 try {
-    print 'user is moderator '.$simpleUser->isModerator().PHP_EOL;
+    echo 'user is moderator '.$simpleUser->isModerator().PHP_EOL;
 } catch (\Exception $e) {
     echo $e->getMessage().PHP_EOL;
 }
-print 'modo is moderator '.$moderator->isModerator().PHP_EOL;
-print 'admin is moderator '.$administrator->isModerator().PHP_EOL;
+echo 'modo is moderator '.$moderator->isModerator().PHP_EOL;
+echo 'admin is moderator '.$administrator->isModerator().PHP_EOL;
 
-print 'admin transforms the user as modo :'.PHP_EOL;
+echo 'admin transforms the user as modo :'.PHP_EOL;
 $administrator->setModerator($simpleUser);
-print 'user is moderator '.$simpleUser->isModerator().PHP_EOL;
+echo 'user is moderator '.$simpleUser->isModerator().PHP_EOL;
 
 //Initialize another stated class of this phar
 $newPost = new Acme\Multiple\Post\Post();
-print 'object post created'.PHP_EOL;
+echo 'object post created'.PHP_EOL;

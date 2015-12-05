@@ -103,7 +103,7 @@ class LoaderStandardTest extends \PHPUnit_Framework_TestCase
      */
     protected function pharTestsAreAvailable()
     {
-        return (class_exists('\Phar', false) && file_exists($this->pharFileNamespace));
+        return class_exists('\Phar', false) && file_exists($this->pharFileNamespace);
     }
 
     /**

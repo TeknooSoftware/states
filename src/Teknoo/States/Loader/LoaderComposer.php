@@ -207,10 +207,12 @@ class LoaderComposer implements LoaderInterface
             );
 
             $this->loadingFactoriesClassNameArray[$factoryClassName] = true;
+
             return true;
         }
 
         $this->loadingFactoriesClassNameArray[$factoryClassName] = false;
+
         return false;
     }
 
