@@ -1,5 +1,16 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.0-rc1] - 2015-10-15 - Available on the branch "next"
+###Fixed
+- Coverage tests
+
+##[1.2.0] - 2015-12-05
+###Added
+- Stable release 1.2.0
+
+###Fixed
+- Coverage tests
+
 ##[2.0.0-beta18] - 2015-10-15 - Available on the branch "next"
 ###Fixed
 - Fix last change with PHP7 RC8 and scalar type must be unqualified
