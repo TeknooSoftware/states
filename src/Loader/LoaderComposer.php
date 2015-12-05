@@ -169,14 +169,15 @@ class LoaderComposer implements LoaderInterface
      */
     public function loadClass(string $className): bool
     {
+        //Found the canonical factory name from the stated class name
+        $factoryClassName = $className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
+
         //Do nothing if this loader has already check the required class name or if the class provide from this library
         if (isset($this->loadingFactoriesClassNameArray[$className])
             || 0 === strpos($className, 'Teknoo\\States')) {
             return false;
         }
 
-        //Found the canonical factory name from the stated class name
-        $factoryClassName = $className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
         $this->loadingFactoriesClassNameArray[$factoryClassName] = true;
 
         //Try to load the factory
