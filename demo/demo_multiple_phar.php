@@ -27,37 +27,37 @@ $loader = include 'demo.php';
 //Register demo namespace
 $loader->registerNamespace('\\demo\\Acme\\Multiple', 'phar://'.__DIR__.DS.'Acme'.DS.'multiple.phar');
 
-print 'Teknoo Software - States library - Demo :'.PHP_EOL.PHP_EOL;
+echo 'Teknoo Software - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize user
-print 'User : ';
+echo 'User : ';
 $simpleUser = new Acme\Multiple\User\User('simple');
-print 'get name : '.GREEN_COLOR.$simpleUser->getName().RESET_COLOR.PHP_EOL;
+echo 'get name : '.GREEN_COLOR.$simpleUser->getName().RESET_COLOR.PHP_EOL;
 //Initialize moderator
-print 'Moderator : ';
+echo 'Moderator : ';
 //You call also directly the stated class name and not the proxy
 $moderator = new Acme\Multiple\User('modo', false, true);
-print 'get name : '.GREEN_COLOR.$moderator->getName().RESET_COLOR.PHP_EOL;
+echo 'get name : '.GREEN_COLOR.$moderator->getName().RESET_COLOR.PHP_EOL;
 //Initialize admin
-print 'Admin : ';
+echo 'Admin : ';
 $administrator = new Acme\Multiple\User\User('admin', true, true);
-print 'get name : '.GREEN_COLOR.$administrator->getName().RESET_COLOR.PHP_EOL.PHP_EOL;
+echo 'get name : '.GREEN_COLOR.$administrator->getName().RESET_COLOR.PHP_EOL.PHP_EOL;
 
 //Method not available, because state Moderator is not enabled
-print 'User is moderator : ';
+echo 'User is moderator : ';
 try {
-    print $simpleUser->isModerator().PHP_EOL;
+    echo $simpleUser->isModerator().PHP_EOL;
 } catch (\Exception $e) {
     echo 'Excepted Error : '.RED_COLOR.$e->getMessage().GREEN_COLOR.' GOOD'.RESET_COLOR.PHP_EOL;
 }
-print 'Modo is moderator : '.GREEN_COLOR.$moderator->isModerator().RESET_COLOR.PHP_EOL;
-print 'Admin is moderator : '.GREEN_COLOR.$administrator->isModerator().RESET_COLOR.PHP_EOL;
+echo 'Modo is moderator : '.GREEN_COLOR.$moderator->isModerator().RESET_COLOR.PHP_EOL;
+echo 'Admin is moderator : '.GREEN_COLOR.$administrator->isModerator().RESET_COLOR.PHP_EOL;
 
-print SEPARATOR.'Admin transforms the user as modo :'.PHP_EOL;
+echo SEPARATOR.'Admin transforms the user as modo :'.PHP_EOL;
 $administrator->setModerator($simpleUser);
-print 'User is moderator : '.GREEN_COLOR.$simpleUser->isModerator().RESET_COLOR.PHP_EOL;
+echo 'User is moderator : '.GREEN_COLOR.$simpleUser->isModerator().RESET_COLOR.PHP_EOL;
 
 //Initialize another stated class of this phar
 $newPost = new Acme\Multiple\Post\Post();
-print GREEN_COLOR.'Object post created'.RESET_COLOR.PHP_EOL;
+echo GREEN_COLOR.'Object post created'.RESET_COLOR.PHP_EOL;
 
-print PHP_EOL.GREEN_COLOR.'Demo finished'.RESET_COLOR.PHP_EOL;
+echo PHP_EOL.GREEN_COLOR.'Demo finished'.RESET_COLOR.PHP_EOL;
