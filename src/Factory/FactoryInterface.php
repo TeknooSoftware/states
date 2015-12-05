@@ -74,7 +74,6 @@ interface FactoryInterface
      * @return FactoryInterface
      *
      * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
-     * @throws Exception\IllegalProxy           if the proxy object does not implement the interface
      */
     public function startup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface;
 

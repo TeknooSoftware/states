@@ -39,6 +39,7 @@ use Teknoo\States\Command\Writer\State;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @covers Teknoo\States\Command\ClassCreate
+ * @covers Teknoo\States\Command\AbstractCommand
  */
 class ClassCreateTest extends \PHPUnit_Framework_TestCase
 {

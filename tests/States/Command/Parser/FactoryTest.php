@@ -40,6 +40,7 @@ use Teknoo\States\Loader\LoaderInterface;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @covers Teknoo\States\Command\Parser\Factory
+ * @covers Teknoo\States\Command\Parser\AbstractParser
  */
 class FactoryTest extends \PHPUnit_Framework_TestCase
 {

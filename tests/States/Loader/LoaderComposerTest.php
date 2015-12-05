@@ -210,6 +210,21 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
         );
     }
 
+    public function testGetFinderFactory()
+    {
+        Support\MockFactory::resetInitializedFactories();
+        $loader = $this->initializeLoader();
+        $this->assertTrue(is_callable($loader->getFinderFactory()));
+
+    }
+
+    public function testGetFactoryRepository()
+    {
+        Support\MockFactory::resetInitializedFactories();
+        $loader = $this->initializeLoader();
+        $this->assertInstanceOf('\ArrayAccess', $loader->getFactoryRepository());
+    }
+
     /**
      * After found the stated class, the loader must load its factory and initialize it by calling its initialize() method.
      * If the factory was not found (file not present, class not in the file, or exception during factory loading)

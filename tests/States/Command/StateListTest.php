@@ -37,6 +37,7 @@ use Teknoo\States\Command\StateList;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @covers Teknoo\States\Command\StateList
+ * @covers Teknoo\States\Command\AbstractCommand
  */
 class StateListTest extends \PHPUnit_Framework_TestCase
 {

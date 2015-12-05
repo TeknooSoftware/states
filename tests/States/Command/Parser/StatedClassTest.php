@@ -41,6 +41,7 @@ use Teknoo\States\Loader\FinderInterface;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @covers Teknoo\States\Command\Parser\StatedClass
+ * @covers Teknoo\States\Command\Parser\AbstractParser
  */
 class StatedClassTest extends \PHPUnit_Framework_TestCase
 {

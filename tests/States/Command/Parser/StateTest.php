@@ -40,6 +40,7 @@ use Teknoo\States\Loader\FinderInterface;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @covers Teknoo\States\Command\Parser\State
+ * @covers Teknoo\States\Command\Parser\AbstractParser
  */
 class StateTest extends \PHPUnit_Framework_TestCase
 {

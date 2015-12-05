@@ -38,6 +38,7 @@ use Teknoo\States\Command\Parser\StatedClass;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @covers Teknoo\States\Command\ClassInformation
+ * @covers Teknoo\States\Command\AbstractCommand
  */
 class ClassInformationTest extends \PHPUnit_Framework_TestCase
 {

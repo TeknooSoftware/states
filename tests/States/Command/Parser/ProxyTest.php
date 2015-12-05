@@ -39,6 +39,7 @@ use Teknoo\States\Exception\ClassNotFound;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @covers Teknoo\States\Command\Parser\Proxy
+ * @covers Teknoo\States\Command\Parser\AbstractParser
  */
 class ProxyTest extends \PHPUnit_Framework_TestCase
 {
