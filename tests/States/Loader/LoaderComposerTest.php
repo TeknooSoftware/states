@@ -730,6 +730,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
 
         $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', $path);
         $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2'));
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2'));
     }
 
     /**

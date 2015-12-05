@@ -169,16 +169,16 @@ class LoaderComposer implements LoaderInterface
      */
     public function loadClass(string $className): bool
     {
-        //Found the canonical factory name from the stated class name
-        $factoryClassName = $className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
-
         //Do nothing if this loader has already check the required class name or if the class provide from this library
-        if (isset($this->loadingFactoriesClassNameArray[$className])
-            || 0 === strpos($className, 'Teknoo\\States')) {
+        if (0 === strpos($className, 'Teknoo\\States')) {
             return false;
         }
 
-        $this->loadingFactoriesClassNameArray[$factoryClassName] = true;
+        //Found the canonical factory name from the stated class name
+        $factoryClassName = $className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
+        if (isset($this->loadingFactoriesClassNameArray[$factoryClassName])) {
+            return $this->loadingFactoriesClassNameArray[$factoryClassName];
+        }
 
         //Try to load the factory
         $statedClassName = $className;
@@ -192,7 +192,6 @@ class LoaderComposer implements LoaderInterface
             $statedClassName = implode('\\', $canonicalClassNameParts);
 
             $factoryClassName = $statedClassName.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
-            $this->loadingFactoriesClassNameArray[$factoryClassName] = true;
 
             $factoryClassFound = $this->loadFactory($factoryClassName);
         }
@@ -205,8 +204,12 @@ class LoaderComposer implements LoaderInterface
                 dirname($this->composerInstance->findFile($factoryClassName))
             );
 
+            $this->loadingFactoriesClassNameArray[$factoryClassName] = true;
+
             return true;
         }
+
+        $this->loadingFactoriesClassNameArray[$factoryClassName] = false;
 
         return false;
     }
