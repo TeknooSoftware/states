@@ -175,14 +175,15 @@ class LoaderComposer implements LoaderInterface
      */
     public function loadClass($className)
     {
-        if (isset($this->loadingFactoriesClassNameArray[$className])
-            || 0 === strpos($className, 'Teknoo\\States')
+        if (0 === strpos($className, 'Teknoo\\States')
             || 0 === strpos($className, 'Teknoo\\Tests\\States')) {
             return false;
         }
 
         $factoryClassName = $className.'\\'.LoaderInterface::FACTORY_CLASS_NAME;
-        $this->loadingFactoriesClassNameArray[$factoryClassName] = true;
+        if (isset($this->loadingFactoriesClassNameArray[$factoryClassName])) {
+            return $this->loadingFactoriesClassNameArray[$factoryClassName];
+        }
 
         $statedClassName = $className;
         $factoryClassFound = $this->loadFactory($factoryClassName);
@@ -205,9 +206,11 @@ class LoaderComposer implements LoaderInterface
                 dirname($this->composerInstance->findFile($factoryClassName))
             );
 
+            $this->loadingFactoriesClassNameArray[$factoryClassName] = true;
             return true;
         }
 
+        $this->loadingFactoriesClassNameArray[$factoryClassName] = false;
         return false;
     }
 

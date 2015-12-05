@@ -1363,6 +1363,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
 
         $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Loader', 'phar://'.$this->pharFileNamespace);
         $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
+        $this->assertTrue($loader->loadClass('\\Teknoo\\Tests\\Support\\Loader\\Class2Phar\\Class2Phar'));
     }
 
     /**
@@ -1484,5 +1485,14 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     {
         $loader = $this->initializeLoader();
         $this->assertEquals(new \ArrayObject([]), $loader->listNamespaces());
+    }
+
+    /**
+     * Test if return of this method is valid.
+     */
+    public function testLoadClassInternal()
+    {
+        $loader = $this->initializeLoader();
+        $this->assertFalse($loader->loadClass('Teknoo\States\Loader\LoaderComposer'));
     }
 }
