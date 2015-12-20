@@ -49,7 +49,6 @@ From the version 2.0, this library has been redesigned to
 * Reuse all composer's autoloader usefull and powerfull features instead internal autoloader.
 * Reduce the number of necessary components to the internal functioning of this library (Dependency Injector, Closure Injector). 
 * Forbid the usage of slows functions like `call_user_func`.
-* Use `Closure::call()` instead of `Closure::bind` to reduce memory ans cpu consumptions.
 * Use Scalar Type Hinting to use PHP Engine's check instead if statements.
 
 Credits
