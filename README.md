@@ -28,7 +28,7 @@ Although highly recommended, Composer is not needed, this library can be used wi
 
 Presentation
 ------------
-Quick How-to to learn how use this library : [Startup](docs/howto/details.md).
+Description about components of this library : [Startup](docs/howto/details.md).
 
 Quick startup
 -------------
