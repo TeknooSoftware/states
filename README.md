@@ -5,7 +5,7 @@ Teknoo Software - States library
 
 Welcome and thank you to having downloaded this library. 
 It's allow you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
-This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and thus improve maintainability.
+This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability.
  
 Example
 -------
@@ -23,8 +23,6 @@ This library requires :
 
     * PHP 7+ (For PHP5.4 to 5.6, please to use the first major version, States 1.0+)
     * Composer
-
-Although highly recommended, Composer is not needed, this library can be used with its own psr0 autoloader.
 
 Presentation
 ------------
@@ -46,7 +44,7 @@ Mandatory evolutions in 2.x versions
 ------------------------------------
 
 From the version 2.0, this library has been redesigned to 
-* Reuse all composer's autoloader usefull and powerfull features instead internal autoloader.
+* Reuse all composer's autoloader features instead internal autoloader.
 * Reduce the number of necessary components to the internal functioning of this library (Dependency Injector, Closure Injector). 
 * Forbid the usage of slows functions like `call_user_func`.
 * Use Scalar Type Hinting to use PHP Engine's check instead if statements.
@@ -63,7 +61,7 @@ Teknoo Software shares the same DNA as Uni Alteri : Provide to our partners and 
 
 License
 -------
-States is licensed under the MIT and GPL3+ Licenses - see the licenses folder for details
+States is licensed under the MIT License - see the licenses folder for details
 
 Contribute :)
 -------------
