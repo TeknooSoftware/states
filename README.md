@@ -1,11 +1,11 @@
 Teknoo Software - States library
-===========================
+================================
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/119ff38f-0b64-4100-8e1f-ff55d7be857a/mini.png)](https://insight.sensiolabs.com/projects/119ff38f-0b64-4100-8e1f-ff55d7be857a) [![Build Status](https://travis-ci.org/TeknooSoftware/states.svg?branch=master)](https://travis-ci.org/TeknooSoftware/states)
 
-Welcome and thank you to having downloaded this library. 
-It's allow you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
-This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and thus improve maintainability.
+Welcome and thank you to having downloaded this library.
+It's allow you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP.
+This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability.
 
 Example
 -------
@@ -15,7 +15,7 @@ Installation
 ------------
 To install this library with composer, run this command :
 
-    composer require teknoo/state
+    composer require teknoo/states:next-dev
 
 Requirements
 ------------
@@ -29,7 +29,7 @@ Although highly recommended, Composer is not needed, this library can be used wi
 
 Presentation
 ------------
-Quick How-to to learn how use this library : [Startup](docs/howto/details.md).
+Description about components of this library : [Startup](docs/howto/details.md).
 
 Quick startup
 -------------
@@ -43,6 +43,15 @@ Behavior Documentation
 ----------------------
 Documentation to explain how this library works : [Behavior](docs/howto/behavior.md).
 
+Mandatory evolutions in 2.x versions
+------------------------------------
+
+From the version 2.0, this library has been redesigned to
+* Reuse all composer's autoloader features instead internal autoloader.
+* Reduce the number of necessary components to the internal functioning of this library (Dependency Injector, Closure Injector).
+* Forbid the usage of slows functions like `call_user_func`.
+* Use Scalar Type Hinting to use PHP Engine's check instead if statements.
+
 Credits
 -------
 Richard Déloge - <richarddeloge@gmail.com> - Lead developer.
@@ -50,12 +59,12 @@ Teknoo Software - <http://teknoo.software>
 
 About Teknoo Software
 ---------------------
-**Teknoo Software** is a PHP software editor, founded by Richard Déloge, also co-founder of the web agency Uni Alteri. 
+**Teknoo Software** is a PHP software editor, founded by Richard Déloge, also co-founder of the web agency Uni Alteri.
 Teknoo Software shares the same DNA as Uni Alteri : Provide to our partners and to the community a set of high quality services or software, sharing knowledge and skills.
 
 License
 -------
-States is licensed under the MIT and GPL3+ Licenses - see the licenses folder for details
+States is licensed under the MIT License - see the licenses folder for details
 
 Contribute :)
 -------------
