@@ -37,6 +37,9 @@ if (!file_exists($composerFile)) {
 }
 $composerInstance = require $composerFile;
 
+//Legacy mode
+include_once UA_STATES_PATH.'/../../../migration/ClassAliasMap.php';
+
 //Initial DI Container
 $diContainer = new DI\Container();
 
