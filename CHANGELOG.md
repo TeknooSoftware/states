@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[1.2.1] - Soon
+###Fixed
+- Documentation
+
 ##[2.0.0-rc1] - 2015-10-15 - Available on the branch "next"
 ###Fixed
 - Coverage tests
