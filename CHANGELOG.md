@@ -1,6 +1,6 @@
 #Teknoo Software - States library - Change Log
 
-##[1.2.1] - Soon
+##[1.2.1] - 2016-01-12
 ###Fixed
 - Documentation
 
