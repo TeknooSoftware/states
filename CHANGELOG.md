@@ -1,5 +1,19 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.0-rc2] - 2016-01-12 - Available on the branch "next"
+###Updated
+- Set minimum stability to stable in composer
+
+###Fixed
+- Documentation
+
+###Added
+- Api documentation
+
+##[1.2.1] - 2016-01-12
+###Fixed
+- Documentation
+
 ##[2.0.0-rc1] - 2015-10-15 - Available on the branch "next"
 ###Fixed
 - Coverage tests
