@@ -145,7 +145,7 @@ class LoaderComposer implements LoaderInterface
                 || true === $this->composerInstance->loadClass($factoryClassName)) {
                 $reflectionClassInstance = new \ReflectionClass($factoryClassName);
 
-                $this->factoryAvailabilityList[$factoryClassName] = $reflectionClassInstance->implementsInterface('Teknoo\\States\\Factory\\FactoryInterface');
+                $this->factoryAvailabilityList[$factoryClassName] = $reflectionClassInstance->implementsInterface(FactoryInterface::class);
             } else {
                 $this->factoryAvailabilityList[$factoryClassName] = false;
             }

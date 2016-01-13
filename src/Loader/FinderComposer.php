@@ -311,7 +311,7 @@ class FinderComposer implements FinderInterface
                 if (class_exists($parentClassName, false)) {
                     //Use reflection class on the reflection class, ignore bad proxy and abstract class
                     $reflectionClassInstance = new \ReflectionClass($parentClassName);
-                    if ($reflectionClassInstance->implementsInterface('Teknoo\\States\\Proxy\\ProxyInterface')
+                    if ($reflectionClassInstance->implementsInterface(ProxyInterface::class)
                         && false === $reflectionClassInstance->isAbstract()) {
                         $parentClassName = substr($parentClassName, 0, strrpos($parentClassName, '\\'));
                         $finalParentsClassesList[] = $parentClassName;
