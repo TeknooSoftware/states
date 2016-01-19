@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.0-rc3] - 2016-01-19 - Available on the branch "next"
+###Updated
+- Use ::class instead of class name in string
+
 ##[2.0.0-rc2] - 2016-01-12 - Available on the branch "next"
 ###Updated
 - Set minimum stability to stable in composer
