@@ -132,7 +132,7 @@ class FinderComposer implements FinderInterface
         if (!$this->statesNamesList instanceof \ArrayObject) {
             //Checks if states are stored into the standardized path
             $statesPath = $this->pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH;
-            if (!is_dir($statesPath)) {
+            if (!\is_dir($statesPath)) {
                 throw new Exception\UnavailablePath(
                     sprintf('Error, the path "%s" was not found', $statesPath)
                 );
@@ -156,7 +156,7 @@ class FinderComposer implements FinderInterface
                     case '..';
                         break;
                     default:
-                        if (strlen($file) - 4 == strrpos($file, '.php')) {
+                        if (\strlen($file) - 4 == strrpos($file, '.php')) {
                             $stateName = substr($file, 0, -4);
                             $statesNameArray[] = $stateName;
                         }

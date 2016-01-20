@@ -318,7 +318,7 @@ trait ProxyTrait
             //apply default behavior : Public
             $callerLine = array_pop($callingStack);
 
-            if (!empty($callerLine['object']) && is_object($callerLine['object'])) {
+            if (!empty($callerLine['object']) && \is_object($callerLine['object'])) {
                 //It is an object
                 $callerObject = $callerLine['object'];
 
@@ -342,19 +342,19 @@ trait ProxyTrait
             }
 
             if (!empty($callerLine['class'])
-                && is_string($callerLine['class'])
+                && \is_string($callerLine['class'])
                 && class_exists($callerLine['class'], false)) {
 
                 //It is a class
                 $callerName = $callerLine['class'];
                 $thisClassName = \get_class($this);
 
-                if (is_subclass_of($callerName, $thisClassName, true)) {
+                if (\is_subclass_of($callerName, $thisClassName, true)) {
                     //It's a child class, so protected scope
                     return StateInterface::VISIBILITY_PROTECTED;
                 }
 
-                if (is_a($callerName, $thisClassName, true)) {
+                if (\is_a($callerName, $thisClassName, true)) {
                     //It's this class, so private scope
                     return StateInterface::VISIBILITY_PRIVATE;
                 }
@@ -615,7 +615,7 @@ trait ProxyTrait
         $stateName = (string) $stateName;
         $enabledStatesList = $this->listEnabledStates();
 
-        if (is_array($enabledStatesList) && !empty($enabledStatesList)) {
+        if (\is_array($enabledStatesList) && !empty($enabledStatesList)) {
             //array_flip + isset is more efficient than in_array
             $stateName = strtr(strtolower($stateName), '_', '');
             $enabledStatesList = array_flip(

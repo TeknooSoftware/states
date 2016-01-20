@@ -156,7 +156,7 @@ abstract class AbstractParser
         $nameSpaceTokenDetected = false;
         //Browse tokens to find the class name
         foreach ($tokens as $token) {
-            if (!is_array($token)) {
+            if (!\is_array($token)) {
                 continue;
             }
 

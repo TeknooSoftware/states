@@ -124,7 +124,7 @@ class LoaderComposer implements LoaderInterface
      */
     public function registerNamespace(string $namespace, string $path): LoaderInterface
     {
-        if ('\\' !== $namespace[strlen($namespace)-1]) {
+        if ('\\' !== $namespace[\strlen($namespace)-1]) {
             $namespace = ltrim($namespace, '\\').'\\';
         }
 
