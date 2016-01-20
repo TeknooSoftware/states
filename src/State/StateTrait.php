@@ -359,7 +359,7 @@ trait StateTrait
         try {
             //Try extract description
             $this->getMethodDescription($methodName);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             //Method not found, store locally the result
             $this->reflectionsMethods[$methodName] = false;
 
@@ -415,7 +415,7 @@ trait StateTrait
             }
 
             return $this->reflectionsMethods[$methodName];
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             //Method not found
             throw new Exception\MethodNotImplemented(
                 sprintf('Method "%s" is not available for this state', $methodName),

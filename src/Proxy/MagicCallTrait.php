@@ -71,7 +71,7 @@ trait MagicCallTrait
             $args = [];
 
             return $this->findMethodToCall(__FUNCTION__, $args);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             return '';
         }
     }
