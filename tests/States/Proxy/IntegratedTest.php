@@ -72,6 +72,16 @@ class IntegratedTest extends AbstractProxyTest
     }
 
     /**
+     * Test behavior of magic method during a state's method calling.
+     *
+     * @expectedException \Throwable
+     */
+    public function testGetPrivateGet()
+    {
+        $this->assertEquals('value1', $this->proxy->privateProperty);
+    }
+
+    /**
      * Test if the class initialize its vars from the trait constructor.
      */
     public function testInitializationProxyVar()

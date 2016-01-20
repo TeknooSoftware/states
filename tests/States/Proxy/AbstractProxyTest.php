@@ -83,6 +83,12 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->buildProxy();
     }
 
+    protected function tearDown()
+    {
+        $this->proxy = null;
+        parent::tearDown();
+    }
+
     /**
      * Build a proxy object, into $this->proxy to test it.
      *
@@ -1625,13 +1631,41 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetIssetSetUnsetPublic()
     {
+        //Test defined property
         $this->assertEquals('value1', $this->proxy->publicProperty);
         $this->assertTrue(isset($this->proxy->publicProperty));
-        $this->assertFalse(isset($this->proxy->missingPublicProperty));
         $this->proxy->publicProperty = 'value2';
         $this->assertEquals('value2', $this->proxy->publicProperty);
         unset($this->proxy->publicProperty);
         $this->assertFalse(isset($this->proxy->publicProperty));
+
+        //Test missing property
+        $this->assertFalse(isset($this->proxy->missingPublicProperty));
+        $fail = false;
+        try {
+            $a = $this->proxy->missingPublicProperty;
+        } catch (\Throwable $e) {
+            $fail = true;
+        }
+        if (false === $fail) {
+            $this->fail('Error __get must throw an exception for missing property');
+        }
+
+        $this->proxy->missingPublicProperty = 'fooBar';
+        $this->assertTrue(isset($this->proxy->missingPublicProperty));
+        $this->assertEquals('fooBar', $this->proxy->missingPublicProperty);
+        unset($this->proxy->missingPublicProperty);
+        $this->assertFalse(isset($this->proxy->missingPublicProperty));
+
+        $fail = false;
+        try {
+            $a = $this->proxy->missingPublicProperty;
+        } catch (\Throwable $e) {
+            $fail = true;
+        }
+        if (false === $fail) {
+            $this->fail('Error __get must throw an exception for missing property');
+        }
     }
 
     /**
@@ -1639,13 +1673,40 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetIssetSetUnsetPublicByMethod()
     {
+        //Test defined property
         $this->initializeProxy('state1', true);
         $this->assertEquals('value1', $this->proxy->getPublicProperty());
         $this->assertTrue($this->proxy->issetPublicProperty());
-        $this->assertFalse($this->proxy->issetMissingPublicProperty());
         $this->proxy->setPublicProperty('value2');
         $this->assertEquals('value2', $this->proxy->getPublicProperty());
         $this->proxy->unsetPublicProperty();
+
+        //Test missing property
+        $this->assertFalse($this->proxy->issetMissingPublicProperty());
+        $fail = false;
+        try {
+            $a = $this->proxy->getOnMissingPublicProperty();
+        } catch (\Throwable $e) {
+            $fail = true;
+        }
+        if (false === $fail) {
+            $this->fail('Error __get must throw an exception for missing property');
+        }
+
+        $this->proxy->setOnMissingPublicProperty('fooBar');
+        $this->assertTrue($this->proxy->issetMissingPublicProperty());
+        $this->assertEquals('fooBar', $this->proxy->getOnMissingPublicProperty());
+        $this->proxy->unsetOnMissingPublicProperty();
+        $this->assertFalse($this->proxy->issetMissingPublicProperty());
+        $fail = false;
+        try {
+            $a = $this->proxy->getOnMissingPublicProperty();
+        } catch (\Throwable $e) {
+            $fail = true;
+        }
+        if (false === $fail) {
+            $this->fail('Error __get must throw an exception for missing property');
+        }
     }
 
     /**

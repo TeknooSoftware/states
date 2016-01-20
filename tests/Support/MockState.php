@@ -428,6 +428,21 @@ class MockState implements StateInterface
         return isset($this->missingPublicProperty);
     }
 
+    public function getOnMissingPublicProperty()
+    {
+        return $this->missingPublicProperty;
+    }
+
+    public function setOnMissingPublicProperty($value)
+    {
+        $this->missingPublicProperty = $value;
+    }
+
+    public function unsetOnMissingPublicProperty()
+    {
+        unset($this->missingPublicProperty);
+    }
+
     public function setPublicProperty($value)
     {
         $this->publicProperty = $value;

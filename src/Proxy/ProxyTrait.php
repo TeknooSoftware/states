@@ -85,6 +85,16 @@ trait ProxyTrait
     private $globalMethodsList;
 
     /**
+     * @var \ReflectionObject
+     */
+    private $thisReflection;
+
+    /**
+     * @var null|array
+     */
+    private $publicPropertiesList = [];
+
+    /**
      * List all methods available in the proxy, with all states, get the list available in the current scope,
      * unlike method_exists is not dependant about the scope and return unavailable privates methods
      *
@@ -181,7 +191,7 @@ trait ProxyTrait
         //Call it
         try {
             $returnValues = $callingClosure(...$arguments);
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             //Restore stated class name stack
             $this->popCallerStatedClassName();
 
@@ -690,7 +700,7 @@ trait ProxyTrait
                 $e->getCode(),
                 $e
             );
-        } catch (\Exception $e) {
+        } catch (\Throwable $e) {
             throw $e;
         }
 
@@ -698,6 +708,34 @@ trait ProxyTrait
         throw new Exception\MethodNotImplemented(
             sprintf('Method "%s" is not available for this state', $methodName)
         );
+    }
+
+    /**
+     * Get a reflection instance about this object
+     * @return \ReflectionObject
+     */
+    private function getThisReflection(): \ReflectionObject
+    {
+        if (!$this->thisReflection instanceof \ReflectionObject) {
+            $this->thisReflection = new \ReflectionObject($this);
+        }
+
+        return $this->thisReflection;
+    }
+
+    /**
+     * To check if the required property is an public accessible or not
+     * @param string $name
+     * @return bool
+     */
+    private function isPublicProperty(string $name): bool
+    {
+        if (!isset($this->publicPropertiesList[$name])) {
+            $tr = $this->getThisReflection();
+            $this->publicPropertiesList[$name] = (!$tr->hasProperty($name) || $tr->getProperty($name)->isPublic());
+        }
+
+        return $this->publicPropertiesList[$name];
     }
 
     /**
@@ -720,7 +758,15 @@ trait ProxyTrait
      */
     public function __get(string $name)
     {
-        if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
+        if (!$this->callerStatedClassesStack->isEmpty()) {
+            if (property_exists($this, $name)) {
+                return $this->{$name};
+            }
+
+            throw new \ErrorException('Undefined property '.get_class($this).'::'.$name);
+        }
+
+        if ($this->isPublicProperty($name)) {
             return $this->{$name};
         }
 
@@ -749,7 +795,7 @@ trait ProxyTrait
             return isset($this->{$name});
         }
 
-        return false;
+        return $this->isPublicProperty($name) && isset($this->{$name});
     }
 
     /**
@@ -771,7 +817,13 @@ trait ProxyTrait
      */
     public function __set(string $name, $value)
     {
-        if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
+        if (!$this->callerStatedClassesStack->isEmpty()) {
+            $this->{$name} = $value;
+
+            return;
+        }
+
+        if ($this->isPublicProperty($name)) {
             $this->{$name} = $value;
 
             return;
@@ -799,6 +851,12 @@ trait ProxyTrait
     public function __unset(string $name)
     {
         if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
+            unset($this->{$name});
+
+            return;
+        }
+
+        if ($this->isPublicProperty($name)) {
             unset($this->{$name});
 
             return;
