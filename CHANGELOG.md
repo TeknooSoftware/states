@@ -1,5 +1,32 @@
 #Teknoo Software - States library - Change Log
 
+##[1.2.2] - 2016-01-27
+###Fixed
+- .gitignore clean
+
+##[2.0.0-rc4] - 2016-01-20 - Available on the branch "next"
+###Updated
+- Clean .gitignore
+- Optimizing for inlined internal functions
+
+###Fixed
+- Use \Throwable instead of \Exception (new feature of PHP7)
+- Fix behavior of magic getter and setter to keep the natural behavior of PHP objects with private, protected and public properties
+
+##[2.0.0-rc3] - 2016-01-19 - Available on the branch "next"
+###Updated
+- Use ::class instead of class name in string
+
+##[2.0.0-rc2] - 2016-01-12 - Available on the branch "next"
+###Updated
+- Set minimum stability to stable in composer
+
+###Fixed
+- Documentation
+
+###Added
+- Api documentation
+
 ##[1.2.1] - 2016-01-12
 ###Fixed
 - Documentation
