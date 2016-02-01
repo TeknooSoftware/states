@@ -27,15 +27,15 @@ use Teknoo\States\Factory\FactoryInterface;
 
 defined('UA_STATES_PATH') || define('UA_STATES_PATH', __DIR__);
 
-//Legacy mode
-include_once UA_STATES_PATH.'/../../../migration/ClassAliasMap.php';
-
 //Needed for test, but we can use your own autoloader to load file of this lib.
 //This lib respects PSR-0, PSR-1 and PSR-2
 $iniFile = dirname(dirname(dirname(__DIR__))).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
 if (is_readable($iniFile)) {
     include_once $iniFile;
 }
+
+//Legacy mode
+include_once UA_STATES_PATH.'/../../../migration/ClassAliasMap.php';
 
 //Initial DI Container
 $diContainer = new DI\Container();

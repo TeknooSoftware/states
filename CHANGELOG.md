@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[1.2.3] - 2016-02-01
+###Fixed
+- Fix composer minimum requirements
+- Fix bootstrap migration
+
 ##[1.2.2] - 2016-01-27
 ###Fixed
 - .gitignore clean
