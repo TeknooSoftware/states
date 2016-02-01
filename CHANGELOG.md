@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.0-rc5] - 2016-02-01 - Available on the branch "next"
+###Fixed
+- Fix composer minimum requirements
+
 ##[2.0.0-rc4] - 2016-01-20 - Available on the branch "next"
 ###Updated
 - Clean .gitignore
