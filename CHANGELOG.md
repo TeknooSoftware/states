@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.0] - 2016-02-11 - Available on the branch "next"
+###Updated
+- Final Release, 1.x is switched on legacy branch and next is merged with master.
+
 ##[2.0.0-rc5] - 2016-02-01 - Available on the branch "next"
 ###Fixed
 - Fix composer minimum requirements
