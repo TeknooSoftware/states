@@ -15,7 +15,7 @@ Installation
 ------------
 To install this library with composer, run this command :
 
-    composer require teknoo/states:next-dev
+    composer require teknoo/states
 
 Requirements
 ------------
