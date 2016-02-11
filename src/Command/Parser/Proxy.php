@@ -1,0 +1,95 @@
+<?php
+
+/**
+ * States.
+ *
+ * LICENSE
+ *
+ * This source file is subject to the MIT license and the version 3 of the GPL3
+ * license that are bundled with this package in the folder licences
+ * If you did not receive a copy of the license and are unable to
+ * obtain it through the world-wide-web, please send an email
+ * to contact@uni-alteri.com so we can send you a copy immediately.
+ *
+ *
+ * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
+ *
+ * @link        http://teknoo.software/states Project website
+ *
+ * @license     http://teknoo.software/license/mit         MIT License
+ * @author      Richard Déloge <richarddeloge@gmail.com>
+ */
+
+namespace Teknoo\States\Command\Parser;
+
+/**
+ * Class Proxy
+ * Parser to analyze proxy.
+ *
+ *
+ * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
+ *
+ * @link        http://teknoo.software/states Project website
+ *
+ * @license     http://teknoo.software/license/mit         MIT License
+ * @author      Richard Déloge <richarddeloge@gmail.com>
+ */
+class Proxy extends AbstractParser
+{
+    /**
+     * Test if the proxy implements the good interface defined in the library States.
+     *
+     * @return bool
+     *
+     * @throws Exception\UnReadablePath when the path is not readable
+     */
+    public function isValidProxy()
+    {
+        return $this->loadFile($this->getClassNameFile())
+            ->implementsInterface('\Teknoo\States\Proxy\ProxyInterface');
+    }
+
+    /**
+     * Test if the proxy is a subclass of the standard proxy implemented in the library States.
+     *
+     * @return bool
+     *
+     * @throws Exception\UnReadablePath when the path is not readable
+     */
+    public function isStandardProxy()
+    {
+        return $this->loadFile($this->getClassNameFile())
+            ->isSubclassOf('\Teknoo\States\Proxy\Standard')
+            && !$this->loadFile($this->getClassNameFile())
+            ->implementsInterface('\Teknoo\States\Proxy\IntegratedInterface');
+    }
+
+    /**
+     * Test if the proxy is a subclass of the integrated proxy implemented in the library States.
+     *
+     * @return bool
+     *
+     * @throws Exception\UnReadablePath when the path is not readable
+     */
+    public function isIntegratedProxy()
+    {
+        return $this->loadFile($this->getClassNameFile())
+            ->isSubclassOf('\Teknoo\States\Proxy\Integrated');
+    }
+
+    /**
+     * Test if the proxy use of the default implementation of this library States provided by the trait
+     * \Teknoo\States\Proxy\TraitProxy.
+     *
+     * @return bool
+     *
+     * @throws Exception\UnReadablePath when the path is not readable
+     */
+    public function useTraitProxy()
+    {
+        return in_array(
+            'Teknoo\States\Proxy\ProxyTrait',
+            $this->loadFile($this->getClassNameFile())->getTraitNames()
+        );
+    }
+}

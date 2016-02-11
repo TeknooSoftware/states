@@ -16,9 +16,10 @@
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  * @link        http://teknoo.software/states Project website
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
+
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-$application = require __DIR__.'/../src/Teknoo/States/Command/console.php';
+
+$application = require __DIR__.'/../src/Command/console.php';
 $application->run();

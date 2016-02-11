@@ -16,8 +16,7 @@
  *
  * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
@@ -34,8 +33,7 @@ use Acme\Extendable\Mother\Mother;
  *
  * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class Daughter extends Mother
@@ -48,7 +46,7 @@ class Daughter extends Mother
     public function listMethodsByStates()
     {
         $methodsList = array();
-        foreach ($this->states as $stateName => $stateContainer) {
+        foreach ($this->getStatesList() as $stateName => $stateContainer) {
             $methodsList[$stateName] = $stateContainer->listMethods()->getArrayCopy();
         }
 

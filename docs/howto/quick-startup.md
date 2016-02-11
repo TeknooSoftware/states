@@ -3,9 +3,7 @@
 ##Presentation
 
 ###Requirements
-This library works with PHP 5.4 and newer. It does not require external library except a Dependency Injection library.
-States uses, by default, Pimple as DI, but States provides an interface to allow you to use your own DI library.
-The DI library to use is defined into the bootstrap. It is described in a followed chapter.
+This library works with PHP 7 and newer. It does not require external library except a Composer.
 
 ##Write your first stated class
 **All following instructions are illustrated in the demo available in the folder `demo` at the root of this library.**
@@ -14,18 +12,11 @@ The DI library to use is defined into the bootstrap. It is described in a follow
 To load the library, you can include the file `bootstrap.php` located in the folder `/src/Teknoo/States` of this library.
 It does it :
 
-*   This bootstrap file instantiate a new DI Container from the implementation of the library.
-*   Creates the service to build a new finder (object to locate files of each stated class) for each stated class. (The service is a closure).
-*   Registers the previous service in the DI Container.
-*   Creates the service to build a new injection closure (object to manage methods of states) and registers in the DI Container.
-*   Instantiates a new loader instance. (object called by spl_autoload to detect stated class).
+*   This bootstrap file instantiate the library.
+*   Creates the service to build a new finder (object to locate files of each stated class).
+*   Find the Composer instance
+*   Instantiates a new loader instance with the composer instance. 
 *   Registers the loader in the stack __autoload.
-
-*Warning : the library require also a `autoloader PSR-0` or `PSR-4` (http://www.php-fig.org/psr/psr-0/). By default, this lib use the 
-PSR-4 autoloader of Composer, but an implementation is available in the root of this project (file called `autoloader_psr0.php`), 
-if it has been detected, it is automatically loaded by the file `bootstrap.php` if composer is unavailable. 
-Else you can use another implementation.*
-
 
 ###Prepare folders
 The files of your stated classes must be placed into folder called with the same name as the stated class.

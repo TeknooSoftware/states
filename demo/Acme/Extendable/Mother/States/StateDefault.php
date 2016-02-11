@@ -16,14 +16,13 @@
  *
  * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
 namespace Acme\Extendable\Mother\States;
 
-use Teknoo\States\States;
+use Teknoo\States\State\AbstractState;
 
 /**
  * State StateDefault.
@@ -33,10 +32,9 @@ use Teknoo\States\States;
  *
  * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class StateDefault extends States\AbstractState
+class StateDefault extends AbstractState
 {
 }

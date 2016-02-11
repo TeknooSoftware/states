@@ -1,11 +1,9 @@
-#Teknoo Software - States library - Detail
+#Teknoo Software - States library - Details
 
 ##Presentation
 
 ###Requirements
-This library works with PHP 5.4 and newer. It does not require external library except a Dependency Injection library.
-States uses, by default, Pimple as DI, but States provides an interface to allow you to use your own DI library.
-The DI library to use is defined into the bootstrap. It is described in a followed chapter.
+This library works with PHP 7 and newer. It does not require external library except a Composer.
 
 ###Introduction
 This library allows you to write more readable code,

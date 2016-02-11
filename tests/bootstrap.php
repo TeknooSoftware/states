@@ -16,8 +16,7 @@
  *
  * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 defined('RUN_CLI_MODE')
@@ -27,18 +26,11 @@ defined('PHPUNIT')
     || define('PHPUNIT', true);
 
 defined('UA_STATES_TEST_PATH')
-    || define('UA_STATES_TEST_PATH', __DIR__.DIRECTORY_SEPARATOR.'Teknoo'.DIRECTORY_SEPARATOR.'Tests');
+    || define('UA_STATES_TEST_PATH', __DIR__);
 
 ini_set('memory_limit', '64M');
 
-require_once dirname(__DIR__).DIRECTORY_SEPARATOR.'autoloader_psr0.php';
-
-//Update included Path for spl autoload
-set_include_path(
-    __DIR__
-    .PATH_SEPARATOR
-    .get_include_path()
-);
+require_once __DIR__.'/../vendor/autoload.php';
 
 date_default_timezone_set('UTC');
 
@@ -46,7 +38,7 @@ error_reporting(E_ALL | E_STRICT);
 
 //Prevent error
 $iterator = new RecursiveIteratorIterator(
-    new RecursiveDirectoryIterator(__DIR__.'/Teknoo/Tests/Support'),
+    new RecursiveDirectoryIterator(__DIR__.'/Support'),
     RecursiveIteratorIterator::SELF_FIRST
 );
 

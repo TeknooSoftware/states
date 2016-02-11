@@ -16,52 +16,48 @@
  *
  * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
 namespace demo;
 
-error_reporting(E_ALL | E_STRICT);
-
-defined('DS')
-    || define('DS', DIRECTORY_SEPARATOR);
-
-//Loading lib States
-$loader = require_once dirname(__DIR__).DS.'src'.DS.'Teknoo'.DS.'States'.DS.'bootstrap_composer.php';
+$loader = include 'demo.php';
 
 //Register demo namespace
 $loader->registerNamespace('\\demo\\Acme\\Multiple', 'phar://'.__DIR__.DS.'Acme'.DS.'multiple.phar');
 
 echo 'Teknoo Software - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize user
-echo 'user'.PHP_EOL;
-$simpleUser = new Acme\Multiple\User\User('simple 1');
-echo 'get name : '.$simpleUser->getName().PHP_EOL;
+echo 'User : ';
+$simpleUser = new Acme\Multiple\User\User('simple');
+echo 'get name : '.GREEN_COLOR.$simpleUser->getName().RESET_COLOR.PHP_EOL;
 //Initialize moderator
-echo 'moderator'.PHP_EOL;
+echo 'Moderator : ';
 //You call also directly the stated class name and not the proxy
 $moderator = new Acme\Multiple\User('modo', false, true);
-echo 'get name : '.$moderator->getName().PHP_EOL;
+echo 'get name : '.GREEN_COLOR.$moderator->getName().RESET_COLOR.PHP_EOL;
 //Initialize admin
-echo 'admin'.PHP_EOL;
+echo 'Admin : ';
 $administrator = new Acme\Multiple\User\User('admin', true, true);
-echo 'get name : '.$administrator->getName().PHP_EOL.PHP_EOL;
+echo 'get name : '.GREEN_COLOR.$administrator->getName().RESET_COLOR.PHP_EOL.PHP_EOL;
 
 //Method not available, because state Moderator is not enabled
+echo 'User is moderator : ';
 try {
-    echo 'user is moderator '.$simpleUser->isModerator().PHP_EOL;
+    echo $simpleUser->isModerator().PHP_EOL;
 } catch (\Exception $e) {
-    echo $e->getMessage().PHP_EOL;
+    echo 'Excepted Error : '.RED_COLOR.$e->getMessage().GREEN_COLOR.' GOOD'.RESET_COLOR.PHP_EOL;
 }
-echo 'modo is moderator '.$moderator->isModerator().PHP_EOL;
-echo 'admin is moderator '.$administrator->isModerator().PHP_EOL;
+echo 'Modo is moderator : '.GREEN_COLOR.$moderator->isModerator().RESET_COLOR.PHP_EOL;
+echo 'Admin is moderator : '.GREEN_COLOR.$administrator->isModerator().RESET_COLOR.PHP_EOL;
 
-echo 'admin transforms the user as modo :'.PHP_EOL;
+echo SEPARATOR.'Admin transforms the user as modo :'.PHP_EOL;
 $administrator->setModerator($simpleUser);
-echo 'user is moderator '.$simpleUser->isModerator().PHP_EOL;
+echo 'User is moderator : '.GREEN_COLOR.$simpleUser->isModerator().RESET_COLOR.PHP_EOL;
 
 //Initialize another stated class of this phar
 $newPost = new Acme\Multiple\Post\Post();
-echo 'object post created'.PHP_EOL;
+echo GREEN_COLOR.'Object post created'.RESET_COLOR.PHP_EOL;
+
+echo PHP_EOL.GREEN_COLOR.'Demo finished'.RESET_COLOR.PHP_EOL;

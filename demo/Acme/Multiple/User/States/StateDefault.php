@@ -16,14 +16,13 @@
  *
  * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
 namespace demo\Acme\Multiple\User\States;
 
-use Teknoo\States\States;
+use Teknoo\States\State\AbstractState;
 
 /**
  * State StateDefault
@@ -34,11 +33,10 @@ use Teknoo\States\States;
  *
  * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class StateDefault extends States\AbstractState
+class StateDefault extends AbstractState
 {
     /**
      * Return the user name of this user.

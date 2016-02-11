@@ -16,14 +16,14 @@
  *
  * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
 namespace demo\Acme\Multiple\User\States;
 
-use Teknoo\States\States;
+use demo\Acme\Multiple\User\User;
+use Teknoo\States\State\AbstractState;
 
 /**
  * State Administrator
@@ -34,18 +34,17 @@ use Teknoo\States\States;
  *
  * @link        http://teknoo.software/states Project website
  *
- * @license     http://teknoo.software/states/license/mit         MIT License
- * @license     http://teknoo.software/states/license/gpl-3.0     GPL v3 License
+ * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Administrator extends States\AbstractState
+class Administrator extends AbstractState
 {
     /**
      * Transform an user has moderator.
      *
-     * @param \demo\Acme\Multiple\User $user
+     * @param User $user
      */
-    public function setModerator(\demo\Acme\Multiple\User $user)
+    public function setModerator(User $user)
     {
         $user->setModerator(true);
     }

@@ -4,7 +4,7 @@
     "description": "Library to create PHP classes following the State pattern in PHP. This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and thus improve maintainability.",
     "keywords": ["states","class","state pattern","pattern","behavioral software design pattern"],
     "homepage": "http://teknoo.software/states",
-    "license": ["MIT","GPL-3.0+"],
+    "license": ["MIT"],
     "authors": [
         {
             "name": "Richard Déloge",
@@ -20,22 +20,19 @@
         "optimize-autoloader": true
     },
     "require":{
-        "php": ">=5.4.0,<7.0",
-        "pimple/pimple": "~3.0",
+        "php": "~7.0",
         "symfony/console": "~2.2",
         "knplabs/gaufrette": "~0.2"
     },
     "require-dev": {
-        "phpunit/phpunit": "~4.3",
-        "phpunit/phpunit-mock-objects": "~2.3",
-        "phpunit/phpunit-selenium": "~1.4",
-        "phpunit/phpunit-story": "~1.0"
+        "phpunit/phpunit": "~5.0"
     },
+    "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "Teknoo\\States\\": ["src/Teknoo/States/"],
-            "Teknoo\\Tests\\States\\": ["tests/Teknoo/Tests/States"],
-            "Teknoo\\Tests\\Support\\": ["tests/Teknoo/Tests/Support"]
+            "Teknoo\\States\\": ["src/"],
+            "Teknoo\\Tests\\States\\": ["tests/States/"],
+            "Teknoo\\Tests\\Support\\": ["tests/Support/"]
         }
     },
     "archive": {
