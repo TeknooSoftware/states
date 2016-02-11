@@ -1,5 +1,13 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.0] - 2016-02-11 - Available on the branch "next"
+###Updated
+- Final Release, 1.x is switched on legacy branch and next is merged with master.
+
+##[2.0.0-rc5] - 2016-02-01 - Available on the branch "next"
+###Fixed
+- Fix composer minimum requirements
+
 ##[1.2.3] - 2016-02-01
 ###Fixed
 - Fix composer minimum requirements
@@ -82,12 +90,12 @@
 ##[2.0.0-beta15] - 2015-10-15 - Available on the branch "next"
 ###Added
 - Add test to support a possible change in behavior with PHP \ Closure :: call ()
-- Support of the new PHP7 behavior (since PHP 7.0RC5) with ReflectionFunctionAbstract::getClosure(). 
+- Support of the new PHP7 behavior (since PHP 7.0RC5) with ReflectionFunctionAbstract::getClosure().
     (Their scope can not be change by \Closure::bind(), but $this can be rebinded to another object)
 
 ##[1.2.0-rc3] - 2015-10-15
 ###Removed
-- Support of PHP7 because of PHP7 behavior has changed since PHP 7.0RC5 with ReflectionFunctionAbstract::getClosure(). 
+- Support of PHP7 because of PHP7 behavior has changed since PHP 7.0RC5 with ReflectionFunctionAbstract::getClosure().
     (Their scope can not be change by \Closure::bind(), but $this can be rebinded to another object)
 
 ##[2.0.0-beta14] - 2015-10-07 - Available on the branch "next"
@@ -158,7 +166,7 @@
 
 ##[2.0.0-beta8] - 2015-07-27 - Available on the branch "next"
 ###Fixed
-- Fix fatal error in LoaderComposer to avoid redeclare the factory 
+- Fix fatal error in LoaderComposer to avoid redeclare the factory
 
 ##[1.2.0-beta6] - 2015-07-27
 ###Changed
@@ -222,14 +230,14 @@ environments.
 - Define a new interface UniAlteri\States\Proxy\IntegratedInterface to define integrated proxies
 
 ###Added
-- Define a new complementary trait to write easier new integrated proxies. 
+- Define a new complementary trait to write easier new integrated proxies.
 
 ##[1.2.0-beta3] - 2015-06-22
 ###Changed
 - Define a new interface UniAlteri\States\Proxy\IntegratedInterface to define integrated proxies
 
 ###Added
-- Define a new complementary trait to write easier new integrated proxies. 
+- Define a new complementary trait to write easier new integrated proxies.
 
 ##[2.0.0-beta3] - 2015-06-10 - Available on the branch "next"
 ###Removed
@@ -248,18 +256,18 @@ environments.
 - Support of inheritance of stated class like all standard PHP classes.
 - Add demo to illustrate inheritance feature.
 - Complete units tests and functional tests about inheritance feature.
-  
+
 ###Changed
 - Optimize finder behavior to save list of states
-  
+
 ##[1.2.0-beta1] - 2015-06-06
 ###Added
 - Support of inheritance of stated class like all standard PHP classes.
 - Add demo to illustrate inheritance feature.
 - Complete units tests and functional tests about inheritance feature.
-  
+
 ###Changed
-- Optimize finder behavior to save list of states  
+- Optimize finder behavior to save list of states
 
 ##[2.0.0-beta] - 2015-05-30 - Available on the branch "next"
 ###Removed
@@ -271,14 +279,14 @@ environments.
 - Use "..." operator instead of func_get_args().
 
 ###Notes
-- Support of PHP 5.4 and PHP 5.5 are always available with 1.x versions. 
+- Support of PHP 5.4 and PHP 5.5 are always available with 1.x versions.
 - EOL of the branch 1.x scheduled for 20 Jun 2017. (One later after 5.5).
-- No new features planned for 2.0 compared to 1.x versions, only best performances and use last PHP's features. 
+- No new features planned for 2.0 compared to 1.x versions, only best performances and use last PHP's features.
 
 ##[1.1.2] - 2015-05-24
 ###Chanced
 - Remove useless tests units about PHP's behavior.
- 
+
 ###Added
 - Support of PHP7 (States is 7x faster than with PHP5.5)
 - Add travis file to support IC outside Teknoo Software's server
@@ -288,19 +296,19 @@ environments.
 - Code style fix
 - Use callable type
 - Use (int) cast instead of intval()
-- Fix version 
+- Fix version
 
 ##[1.1.0] - 2015-02-15
-###Fixed 
+###Fixed
 - Code style fix
 - Fix version
 
 ###Changed
 - Minimize using of call_user_function_array, use direct calling.
- 
+
 ###Added
 - Add method in InjectionClosure to allow proxy to invoke directly the closure without used
-call_user_func_* 
+call_user_func_*
 
 ###Changed
 - Remove call_user_func_array in proxy
@@ -323,7 +331,7 @@ call_user_func_*
 - Documentation updated
 
 ##[1.0.0] - 2015-01-17
-- First stable of the states library 
+- First stable of the states library
 
 ###Added
 - New CLI tool
