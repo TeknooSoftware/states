@@ -34,7 +34,7 @@ Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.
 
 API Documentation
 -----------------
-Generated documentation from the library with PhpDocumentor : [Open](https://cdn.rawgit.com/TeknooSoftware/states/master/docs/api/index.html).
+Temporary unavailable
 
 Behavior Documentation
 ----------------------
