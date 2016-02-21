@@ -122,8 +122,9 @@ trait StateTrait
 
     /**
      * To initialize this state
-     * @param bool $privateMode
-     * @param string $statedClassName
+     * @param bool $privateMode : To know if the private mode is enable or not for this state (see isPrivateMode()).
+     * @param string $statedClassName : To know the canonical stated class name of the object owning this state container.
+     * @param string[] $aliases : List of aliases of this state in the stated class
      */
     public function __construct(bool $privateMode, string $statedClassName, array $aliases=[])
     {

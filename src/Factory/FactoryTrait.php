@@ -245,7 +245,7 @@ trait FactoryTrait
      * @param string $loadingStateName
      * @param FinderInterface $finderLoader
      *
-     * @return string
+     * @return string[]
      */
     private function computeStateAlias(string $loadingStateName, FinderInterface $finderLoader): array
     {

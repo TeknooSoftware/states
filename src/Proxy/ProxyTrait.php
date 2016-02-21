@@ -174,7 +174,7 @@ trait ProxyTrait
      *
      * @return mixed
      *
-     * @throws \Exception
+     * @throws \Throwable
      */
     private function callInState(
         StateInterface $state,
@@ -186,6 +186,9 @@ trait ProxyTrait
         $this->pushCallerStatedClassName($state);
 
         //Method found, extract it
+        /**
+         * @var ProxyInterface|ProxyTrait $this
+         */
         $callingClosure = $state->getClosure($this, $methodName, $scopeVisibility, $callerStatedClassName);
 
         //Call it
@@ -674,7 +677,7 @@ trait ProxyTrait
      *
      * @throws Exception\StateNotFound        is the state required is not available
      * @throws Exception\MethodNotImplemented when the method is not currently available
-     * @throws \Exception                     to rethrows unknown exceptions
+     * @throws \Throwable                     to rethrows unknown exceptions
      */
     public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {
