@@ -1,6 +1,6 @@
 #Teknoo Software - States library - Change Log
 
-##[2.0.1] -
+##[2.0.1] - 2016-02-21
 ###Fixed
 - Fix some mistake in the phpdoc
 
