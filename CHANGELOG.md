@@ -4,6 +4,9 @@
 ###Fixed
 - Fix some mistake in the phpdoc
 
+###Updated
+- Prevent mistake on missing startup factory class definition for integrated stated class
+
 ##[2.0.0] - 2016-02-11 - Available on the branch "next"
 ###Updated
 - Final Release, 1.x is switched on legacy branch and next is merged with master.
