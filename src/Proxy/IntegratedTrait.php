@@ -34,6 +34,8 @@ namespace Teknoo\States\Proxy;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ *
+ * @property string $startupFactoryClassName
  */
 trait IntegratedTrait
 {
@@ -49,8 +51,8 @@ trait IntegratedTrait
     public function initializeObjectWithFactory()
     {
         //Check if the startup class exists
-        if (!class_exists(static::$startupFactoryClassName, true)) {
-            throw new Exception\UnavailableFactory('Error, the startup factory is not available');
+        if (!isset(static::$startupFactoryClassName) || !class_exists(static::$startupFactoryClassName, true)) {
+            throw new Exception\UnavailableFactory('Error, the startup factory is not available or not defined');
         }
 
         //Check if the startup class implements the interface 'Teknoo\States\Factory\StartupFactoryInterface'
