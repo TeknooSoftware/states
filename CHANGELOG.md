@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.2] - 2016-02-26
+
+###Updated
+- Update minimum requirement about symfony console to be compatible with symfony 3
+
 ##[2.0.1] - 2016-02-21
 ###Fixed
 - Fix some mistake in the phpdoc
