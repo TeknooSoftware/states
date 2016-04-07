@@ -64,12 +64,12 @@ class MultipleTest extends \PHPUnit_Framework_TestCase
      */
     protected function setUp()
     {
-        $multiplePharPath = UA_STATES_TEST_PATH.DIRECTORY_SEPARATOR.'Support'
+        $multiplePharPath = TK_STATES_TEST_PATH.DIRECTORY_SEPARATOR.'Support'
                                                .DIRECTORY_SEPARATOR.'multiple.phar';
 
         if (!file_exists($multiplePharPath)) {
             //Compute Path for this Phar
-            $multiplePath = UA_STATES_TEST_PATH.DIRECTORY_SEPARATOR.'Support'
+            $multiplePath = TK_STATES_TEST_PATH.DIRECTORY_SEPARATOR.'Support'
                                                .DIRECTORY_SEPARATOR.'src'
                                                .DIRECTORY_SEPARATOR.'Multiple';
 
@@ -90,8 +90,8 @@ class MultipleTest extends \PHPUnit_Framework_TestCase
         $loader = $this->getLoader();
 
         //Register demo namespace
-        $loader->registerNamespace('\\Teknoo\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
-        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Multiple', 'phar://'.UA_STATES_TEST_PATH.DS.'Support'.DS.'multiple.phar');
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support', TK_STATES_TEST_PATH.DS.'Support');
+        $loader->registerNamespace('\\Teknoo\\Tests\\Support\\Multiple', 'phar://'.TK_STATES_TEST_PATH.DS.'Support'.DS.'multiple.phar');
 
         //Initialize user
         $simpleUser = new \Teknoo\Tests\Support\Multiple\User('simple 1');

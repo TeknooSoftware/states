@@ -25,8 +25,8 @@ defined('RUN_CLI_MODE')
 defined('PHPUNIT')
     || define('PHPUNIT', true);
 
-defined('UA_STATES_TEST_PATH')
-    || define('UA_STATES_TEST_PATH', __DIR__);
+defined('TK_STATES_TEST_PATH')
+    || define('TK_STATES_TEST_PATH', __DIR__);
 
 ini_set('memory_limit', '64M');
 

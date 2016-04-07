@@ -69,7 +69,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
             || define('DS', DIRECTORY_SEPARATOR);
 
         //Register demo namespace
-        $this->getLoader()->registerNamespace('\\Teknoo\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
+        $this->getLoader()->registerNamespace('\\Teknoo\\Tests\\Support', TK_STATES_TEST_PATH.DS.'Support');
 
         $article = new \Teknoo\Tests\Support\Article();
 
@@ -175,7 +175,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
             || define('DS', DIRECTORY_SEPARATOR);
 
         //Register demo namespace
-        $this->getLoader()->registerNamespace('\\Teknoo\\Tests\\Support', UA_STATES_TEST_PATH.DS.'Support');
+        $this->getLoader()->registerNamespace('\\Teknoo\\Tests\\Support', TK_STATES_TEST_PATH.DS.'Support');
 
         $article = new Article();
         $statesList = $article->listAvailableStates();
