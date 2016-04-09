@@ -1,7 +1,10 @@
 #Teknoo Software - States library - Change Log
 
-##[2.0.2] - 2016-02-26
+##[2.0.3] - 2016-04-09
+###Updated
+- Fix code style with cs-fixer
 
+##[2.0.2] - 2016-02-26
 ###Updated
 - Update minimum requirement about symfony console to be compatible with symfony 3
 
