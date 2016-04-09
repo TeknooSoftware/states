@@ -21,7 +21,6 @@
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\GoodState\States;
 
 use Teknoo\States\State\StateInterface;

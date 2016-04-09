@@ -20,7 +20,6 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Factory\Exception;
 
 use Teknoo\States\Exception;

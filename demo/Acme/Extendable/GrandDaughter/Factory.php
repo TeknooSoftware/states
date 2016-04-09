@@ -19,7 +19,6 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Acme\Extendable\GrandDaughter;
 
 use Teknoo\States\Factory\Integrated;

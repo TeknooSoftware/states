@@ -19,7 +19,6 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Acme\Extendable\GrandDaughter\States;
 
 use Acme\Extendable\Daughter\States as Daughter;

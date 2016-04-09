@@ -21,7 +21,6 @@
  *
  * Mock proxy file to test finder behavior when the proxy class is valid
  */
-
 namespace Teknoo\Tests\Support\StatedClass\Class6;
 
 use Teknoo\States\Proxy\Integrated;

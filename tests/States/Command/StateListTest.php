@@ -19,7 +19,6 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\Tests\States\Command;
 
 use Teknoo\States\Command\Parser\State;

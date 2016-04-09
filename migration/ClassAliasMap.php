@@ -22,10 +22,9 @@
  */
 
 /**
- * Script to map all old namespace class (from Uni Alteri) to new Teknoo organization namespace
+ * Script to map all old namespace class (from Uni Alteri) to new Teknoo organization namespace.
  */
-
-$mapping = array (
+$mapping = array(
     'UniAlteri\\States\\Command\\AbstractCommand' => 'Teknoo\\States\\Command\\AbstractCommand',
     'UniAlteri\\States\\Command\\ClassCreate' => 'Teknoo\\States\\Command\\ClassCreate',
     'UniAlteri\\States\\Command\\ClassInformation' => 'Teknoo\\States\\Command\\ClassInformation',
@@ -123,7 +122,7 @@ $mapping = array (
     'UniAlteri\\States\\States\\Exception\\InvalidArgument' => 'Teknoo\\States\\States\\Exception\\InvalidArgument',
     'UniAlteri\\States\\States\\Exception\\MethodNotImplemented' => 'Teknoo\\States\\States\\Exception\\MethodNotImplemented',
     'UniAlteri\\States\\States\\StateInterface' => 'Teknoo\\States\\States\\StateInterface',
-    'UniAlteri\\States\\States\\StateTrait' => 'Teknoo\\States\\States\\StateTrait'
+    'UniAlteri\\States\\States\\StateTrait' => 'Teknoo\\States\\States\\StateTrait',
 );
 
 if (!defined('DISABLE_PHP_FLOC_OPERATOR') && '5.6' <= PHP_VERSION) {

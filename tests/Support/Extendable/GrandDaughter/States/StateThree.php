@@ -19,7 +19,6 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\Tests\Support\Extendable\GrandDaughter\States;
 
 use Teknoo\Tests\Support\Extendable\Daughter\States as Daughter;

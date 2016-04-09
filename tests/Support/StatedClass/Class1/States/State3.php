@@ -22,7 +22,6 @@
  * Mock state file to test finder behavior when the state class does not implement the Sates interface
  * \Teknoo\States\State\StateInterface
  */
-
 namespace Class1\States;
 
 /**

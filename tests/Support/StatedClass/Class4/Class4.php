@@ -22,7 +22,6 @@
  * Mock proxy file to test finder behavior when the proxy class does not implement the good interface :
  * \Teknoo\States\Proxy\ProxyInterface
  */
-
 namespace Class4;
 
 /**

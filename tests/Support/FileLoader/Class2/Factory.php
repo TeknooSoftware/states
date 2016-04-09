@@ -22,7 +22,6 @@
  * Mock factory file to test loader behavior when the factory class is valid and stated class loaded by loader
  * with PSR-0 recommendations (file computed from namespace) and not from namespace definitions)
  */
-
 namespace Support\FileLoader\Class2;
 
 use Teknoo\Tests\Support;
