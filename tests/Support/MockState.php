@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\Tests\Support;
 
 use Teknoo\States\Proxy;
@@ -38,7 +36,6 @@ use Teknoo\States\State\StateInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class MockState implements StateInterface
@@ -107,12 +104,13 @@ class MockState implements StateInterface
 
     /**
      * Initialize virtual state.
-     * @param bool $privateMode
-     * @param string $statedClassName
-     * @param array $aliases
+     *
+     * @param bool     $privateMode
+     * @param string   $statedClassName
+     * @param array    $aliases
      * @param \Closure $closure
      */
-    public function __construct(bool $privateMode, string $statedClassName, array $aliases=[], $closure = null)
+    public function __construct(bool $privateMode, string $statedClassName, array $aliases = [], $closure = null)
     {
         $this->aliases = $aliases;
         $this->setPrivateMode($privateMode)
@@ -166,9 +164,10 @@ class MockState implements StateInterface
     }
 
     /**
-     * To update the closure to use in this mock
+     * To update the closure to use in this mock.
      *
      * @param \Closure $closure
+     *
      * @return $this
      */
     public function setClosure(\Closure $closure)

@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Loader;
 
 use Teknoo\States\State\StateInterface;
@@ -29,7 +27,7 @@ use Teknoo\States\Proxy\ProxyInterface;
 /**
  * Interface FinderInterface
  * To define finder, it is used with this library to find from each stated class
- * all states and the proxy. It needs an instance of the Composer Loader to find php classes and load them
+ * all states and the proxy. It needs an instance of the Composer Loader to find php classes and load them.
  *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
@@ -37,7 +35,6 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @api
@@ -78,7 +75,7 @@ interface FinderInterface
     public function loadState(string $stateName): string;
 
     /**
-     * To return the list of parent php classes used by a state
+     * To return the list of parent php classes used by a state.
      *
      * @param string $stateName
      *
@@ -92,16 +89,16 @@ interface FinderInterface
      * To load and build the required state object of the stated class.
      *
      * @param string $stateName
-     * @param bool $privateMode : If it's enable, private methods are not available
+     * @param bool   $privateMode     : If it's enable, private methods are not available
      * @param string $statedClassName
-     * @param array $aliases
+     * @param array  $aliases
      *
      * @return StateInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState(string $stateName, bool $privateMode, string $statedClassName, array $aliases=[]): StateInterface;
+    public function buildState(string $stateName, bool $privateMode, string $statedClassName, array $aliases = []): StateInterface;
 
     /**
      * To search and load the proxy class for this stated class.

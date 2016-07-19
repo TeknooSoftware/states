@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Proxy;
 
 use Teknoo\States\State\StateInterface;
@@ -42,7 +40,6 @@ use Teknoo\States\State\StateInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 interface ProxyInterface
@@ -57,7 +54,8 @@ interface ProxyInterface
      **************************/
 
     /**
-     * Called to clone this stated class instance, clone states entities and the current state of this instance
+     * Called to clone this stated class instance, clone states entities and the current state of this instance.
+     *
      * @api
      *
      * @return $this
@@ -70,70 +68,76 @@ interface ProxyInterface
 
     /**
      * To register dynamically a new state for this stated class instance.
+     *
      * @api
      *
-     * @param string                       $stateName
+     * @param string         $stateName
      * @param StateInterface $stateObject
      *
      * @return ProxyInterface
      *
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\IllegalName when the identifier is not an non empty string
      */
     public function registerState(string $stateName, StateInterface $stateObject): ProxyInterface;
 
     /**
      * To remove dynamically a state from this stated class instance.
+     *
      * @api
      *
      * @param string $stateName
      *
      * @return ProxyInterface
      *
-     * @throws Exception\StateNotFound   when the state was not found
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\StateNotFound when the state was not found
+     * @throws Exception\IllegalName   when the identifier is not an non empty string
      */
     public function unregisterState(string $stateName): ProxyInterface;
 
     /**
      * To disable all enabled states and enable the required states.
+     *
      * @api
      *
      * @param string $stateName
      *
      * @return ProxyInterface
      *
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\IllegalName when the identifier is not an non empty string
      */
     public function switchState(string $stateName): ProxyInterface;
 
     /**
      * To enable a loaded states.
+     *
      * @api
      *
      * @param string $stateName
      *
      * @return ProxyInterface
      *
-     * @throws Exception\StateNotFound   if $stateName does not exist
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\StateNotFound if $stateName does not exist
+     * @throws Exception\IllegalName   when the identifier is not an non empty string
      */
     public function enableState(string $stateName): ProxyInterface;
 
     /**
-     * To disable an enabled state
+     * To disable an enabled state.
+     *
      * @api
      *
      * @param string $stateName
      *
      * @return ProxyInterface
      *
-     * @throws Exception\StateNotFound   when the state was not found
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\StateNotFound when the state was not found
+     * @throws Exception\IllegalName   when the identifier is not an non empty string
      */
     public function disableState(string $stateName): ProxyInterface;
 
     /**
      * To disable all actives states.
+     *
      * @api
      *
      * @return ProxyInterface
@@ -142,6 +146,7 @@ interface ProxyInterface
 
     /**
      * To list all currently available states for this object.
+     *
      * @api
      *
      * @return string[]
@@ -150,6 +155,7 @@ interface ProxyInterface
 
     /**
      * To list all enable states for this object.
+     *
      * @api
      *
      * @return string[]
@@ -157,7 +163,8 @@ interface ProxyInterface
     public function listEnabledStates();
 
     /**
-     * To return the list of all states entity available for this object
+     * To return the list of all states entity available for this object.
+     *
      * @api
      *
      * @return \ArrayAccess|StateInterface[]
@@ -166,6 +173,7 @@ interface ProxyInterface
 
     /**
      * Check if this stated class instance is in the required state defined by $stateName.
+     *
      * @api
      *
      * @param string $stateName
@@ -180,6 +188,7 @@ interface ProxyInterface
 
     /**
      * To call a method of the this stated class instance not defined in the proxy.
+     *
      * @api
      *
      * @param string $name
@@ -194,7 +203,8 @@ interface ProxyInterface
 
     /**
      * To return the description of a method present in a state of this stated class instance.
-     * This method no checks if the method is available in the current scope by the called
+     * This method no checks if the method is available in the current scope by the called.
+     *
      * @api
      *
      * @param string $methodName

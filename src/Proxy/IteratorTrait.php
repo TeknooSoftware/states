@@ -17,15 +17,13 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Proxy;
 
 /**
  * Trait IteratorTrait
- * Trait to use the interface \Iterator (http://php.net/manual/en/class.iterator.php) with stated classes
+ * Trait to use the interface \Iterator (http://php.net/manual/en/class.iterator.php) with stated classes.
  *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
@@ -33,8 +31,8 @@ namespace Teknoo\States\Proxy;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ *
  * @method mixed findMethodToCall($name, $args)
  */
 trait IteratorTrait
@@ -45,6 +43,7 @@ trait IteratorTrait
 
     /**
      * Returns the current element.
+     *
      * @api
      *
      * @return mixed
@@ -60,6 +59,7 @@ trait IteratorTrait
 
     /**
      * Returns the key of the current element.
+     *
      * @api
      *
      * @return mixed
@@ -75,6 +75,7 @@ trait IteratorTrait
 
     /**
      * Moves the current position to the next element.
+     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -88,6 +89,7 @@ trait IteratorTrait
 
     /**
      * Rewinds back to the first element of the Iterator.
+     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -101,6 +103,7 @@ trait IteratorTrait
 
     /**
      * Seeks to a given position in the iterator.
+     *
      * @api
      *
      * @param int $position
@@ -115,6 +118,7 @@ trait IteratorTrait
 
     /**
      * This method is called after Iterator::rewind() and Iterator::next() to check if the current position is valid.
+     *
      * @api
      *
      * @return bool
@@ -130,6 +134,7 @@ trait IteratorTrait
 
     /**
      * Returns an external iterator.
+     *
      * @api
      *
      * @return \Traversable

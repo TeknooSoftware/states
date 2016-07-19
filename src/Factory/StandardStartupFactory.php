@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Factory;
 
 use Teknoo\States\Proxy\ProxyInterface;
@@ -36,7 +34,6 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @api
@@ -55,7 +52,7 @@ class StandardStartupFactory implements StartupFactoryInterface
      * This method is called by the constructor of the stated class instance.
      *
      * @param ProxyInterface $proxyObject
-     * @param string               $stateName
+     * @param string         $stateName
      *
      * @return FactoryInterface
      *
@@ -76,7 +73,9 @@ class StandardStartupFactory implements StartupFactoryInterface
 
     /**
      * To register a new factory object to initialize proxy objects.
+     *
      * @api
+     *
      * @param string           $factoryIdentifier
      * @param FactoryInterface $factoryObject
      */
@@ -90,7 +89,7 @@ class StandardStartupFactory implements StartupFactoryInterface
     }
 
     /**
-     * To reset startup registry.     *
+     * To reset startup registry.     *.
      */
     public static function reset()
     {
@@ -101,7 +100,9 @@ class StandardStartupFactory implements StartupFactoryInterface
 
     /**
      * To return all registered factories.
+     *
      * @api
+     *
      * @return string[]|array
      */
     public static function listRegisteredFactory()

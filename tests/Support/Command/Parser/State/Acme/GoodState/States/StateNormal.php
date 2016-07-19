@@ -17,17 +17,13 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * Mock factory file to test command for cli helper
  */
-
 namespace Acme\GoodState\States;
 
-use Teknoo\States\DI;
 use Teknoo\States\Proxy;
-use Teknoo\States\State\Exception;
 use Teknoo\States\State\StateInterface;
 
 class StateNormal implements StateInterface
@@ -35,9 +31,8 @@ class StateNormal implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function __construct(bool $privateMode, string $statedClassName, array $aliases=[])
+    public function __construct(bool $privateMode, string $statedClassName, array $aliases = [])
     {
-
     }
 
     /**

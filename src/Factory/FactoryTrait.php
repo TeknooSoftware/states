@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Factory;
 
 use Teknoo\States\Loader\FinderInterface;
@@ -39,13 +37,12 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 trait FactoryTrait
 {
     /**
-     * Repository where all factories instances are registered
+     * Repository where all factories instances are registered.
      *
      * @var \ArrayAccess
      */
@@ -80,24 +77,25 @@ trait FactoryTrait
     private $statesByClassesList;
 
     /**
-     * To list full class name of states
+     * To list full class name of states.
      *
      * @var string[]
      */
     private $fullStatesClassesNamesList;
 
     /**
-     * List of state instance already built
+     * List of state instance already built.
      *
      * @var \Teknoo\States\State\StateInterface[]
      */
     private $statesInstancesList = [];
 
     /**
-     * Initialize factory
-     * @param string $statedClassName
+     * Initialize factory.
+     *
+     * @param string          $statedClassName
      * @param FinderInterface $finder
-     * @param \ArrayAccess $factoryRepository
+     * @param \ArrayAccess    $factoryRepository
      */
     public function __construct(string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository)
     {
@@ -129,7 +127,8 @@ trait FactoryTrait
     }
 
     /**
-     * To return the loader of the current stated class
+     * To return the loader of the current stated class.
+     *
      * @api
      *
      * @return FinderInterface
@@ -141,7 +140,9 @@ trait FactoryTrait
 
     /**
      * To return the stated class name used with the factory.
+     *
      * @api
+     *
      * @return string
      */
     public function getStatedClassName(): string
@@ -157,7 +158,7 @@ trait FactoryTrait
     private function registerFactoryInRepository(): FactoryInterface
     {
         if (!empty($this->statedClassName)) {
-            $this->factoryRepository[$this->statedClassName] =  $this;
+            $this->factoryRepository[$this->statedClassName] = $this;
         }
 
         return $this;
@@ -219,7 +220,7 @@ trait FactoryTrait
     }
 
     /**
-     * To list full class name of states
+     * To list full class name of states.
      *
      * @return string[]
      */
@@ -229,7 +230,7 @@ trait FactoryTrait
             $fullStateClassNameList = [];
 
             foreach ($this->listStatesByClasses() as $stateName => $finderLoader) {
-                $className = $finderLoader->getStatedClassName() . '\\' . FinderInterface::STATES_PATH . '\\' . $stateName;
+                $className = $finderLoader->getStatedClassName().'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
                 $fullStateClassNameList[$className] = $className;
             }
 
@@ -240,9 +241,9 @@ trait FactoryTrait
     }
 
     /**
-     * Return the list of available alias for a state
+     * Return the list of available alias for a state.
      *
-     * @param string $loadingStateName
+     * @param string          $loadingStateName
      * @param FinderInterface $finderLoader
      *
      * @return string[]
@@ -265,10 +266,12 @@ trait FactoryTrait
     }
 
     /**
-     * To store a single instance of each state instance, shared by all stated class instance
-     * @param string $loadingStateName
+     * To store a single instance of each state instance, shared by all stated class instance.
+     *
+     * @param string          $loadingStateName
      * @param FinderInterface $finderLoader
-     * @param bool $enablePrivateMode
+     * @param bool            $enablePrivateMode
+     *
      * @return \Teknoo\States\State\StateInterface
      */
     private function buildState(string $loadingStateName, FinderInterface $finderLoader, bool $enablePrivateMode)
@@ -289,11 +292,11 @@ trait FactoryTrait
      * To initialize a proxy object with its states. States are fetched by the finder of this stated class.
      *
      * @param ProxyInterface $proxyObject
-     * @param string               $stateName
+     * @param string         $stateName
      *
      * @return FactoryInterface
      *
-     * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
+     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      */
     public function startup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
     {
@@ -340,12 +343,13 @@ trait FactoryTrait
      * Build a new instance of a stated class.
      *
      * @api
+     *
      * @param mixed  $arguments
      * @param string $stateName to build an object with a specific class
      *
      * @return ProxyInterface
      *
-     * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
+     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      */
     public function build($arguments = null, string $stateName = null): ProxyInterface
     {

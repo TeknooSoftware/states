@@ -17,15 +17,13 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Proxy;
 
 /**
  * Trait MagicCallTrait
- * Trait to use PHP magic's calls (http://php.net/manual/en/language.oop5.magic.php) with stated classes
+ * Trait to use PHP magic's calls (http://php.net/manual/en/language.oop5.magic.php) with stated classes.
  *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
@@ -33,8 +31,8 @@ namespace Teknoo\States\Proxy;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ *
  * @method mixed findMethodToCall($name, $args)
  */
 trait MagicCallTrait
@@ -45,6 +43,7 @@ trait MagicCallTrait
 
     /**
      * To invoke an object as a function.
+     *
      * @api
      *
      * @param mixed ...$args
@@ -61,6 +60,7 @@ trait MagicCallTrait
     /**
      * To transform the object to a string
      * You cannot throw an exception from within a __toString() method. Doing so will result in a fatal error.
+     *
      * @api
      *
      * @return mixed

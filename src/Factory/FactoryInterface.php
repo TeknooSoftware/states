@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Factory;
 
 use Teknoo\States\Proxy\ProxyInterface;
@@ -37,21 +35,22 @@ use Teknoo\States\Loader\FinderInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 interface FactoryInterface
 {
     /**
-     * Initialize factory
-     * @param string $statedClassName
+     * Initialize factory.
+     *
+     * @param string          $statedClassName
      * @param FinderInterface $finder
-     * @param \ArrayAccess $factoryRepository
+     * @param \ArrayAccess    $factoryRepository
      */
     public function __construct(string $statedClassName, FinderInterface $finder, \ArrayAccess $factoryRepository);
 
     /**
-     * To return the loader of the current stated class
+     * To return the loader of the current stated class.
+     *
      * @api
      *
      * @return FinderInterface
@@ -60,7 +59,9 @@ interface FactoryInterface
 
     /**
      * To return the stated class name used with the factory.
+     *
      * @api
+     *
      * @return string
      */
     public function getStatedClassName(): string;
@@ -69,11 +70,11 @@ interface FactoryInterface
      * To initialize a proxy object with its states. States are fetched by the finder of this stated class.
      *
      * @param ProxyInterface $proxyObject
-     * @param string               $stateName
+     * @param string         $stateName
      *
      * @return FactoryInterface
      *
-     * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
+     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      */
     public function startup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface;
 
@@ -81,12 +82,13 @@ interface FactoryInterface
      * Build a new instance of a stated class.
      *
      * @api
+     *
      * @param mixed  $arguments
      * @param string $stateName to build an object with a specific class
      *
      * @return ProxyInterface
      *
-     * @throws Exception\StateNotFound          if the $stateName was not found for this stated class
+     * @throws Exception\StateNotFound if the $stateName was not found for this stated class
      */
     public function build($arguments = null, string $stateName = null): ProxyInterface;
 }

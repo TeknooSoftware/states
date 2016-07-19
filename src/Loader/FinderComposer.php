@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Loader;
 
 use Composer\Autoload\ClassLoader;
@@ -30,7 +28,7 @@ use Teknoo\States\Proxy\ProxyInterface;
 /**
  * Class FinderComposer
  * Default implementation of the finder. It is used with this library to find from each stated class
- * all states and the proxy. It needs an instance of the Composer Loader to find php classes and load them
+ * all states and the proxy. It needs an instance of the Composer Loader to find php classes and load them.
  *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
@@ -38,10 +36,7 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
- *
- *
  */
 class FinderComposer implements FinderInterface
 {
@@ -81,8 +76,8 @@ class FinderComposer implements FinderInterface
     /**
      * Initialize finder.
      *
-     * @param string $statedClassName
-     * @param string $pathString
+     * @param string      $statedClassName
+     * @param string      $pathString
      * @param ClassLoader $composerInstance
      */
     public function __construct(string $statedClassName, string $pathString, ClassLoader $composerInstance)
@@ -98,6 +93,7 @@ class FinderComposer implements FinderInterface
      * with spl_autoload_register.
      *
      * @param string $className
+     *
      * @return bool
      */
     private function testClassExists($className)
@@ -194,7 +190,7 @@ class FinderComposer implements FinderInterface
     }
 
     /**
-     * To return the list of parent php classes used by a state
+     * To return the list of parent php classes used by a state.
      *
      * @param string $stateName
      *
@@ -220,16 +216,16 @@ class FinderComposer implements FinderInterface
      * To load and build the required state object of the stated class.
      *
      * @param string $stateName
-     * @param bool $privateMode : If it's enable, private methods are not available
+     * @param bool   $privateMode     : If it's enable, private methods are not available
      * @param string $statedClassName
-     * @param array $aliases
+     * @param array  $aliases
      *
      * @return StateInterface
      *
      * @throws Exception\UnavailableState if the required state is not available
      * @throws Exception\IllegalState     if the state object does not implement the interface
      */
-    public function buildState(string $stateName, bool $privateMode, string $statedClassName, array $aliases=[]): StateInterface
+    public function buildState(string $stateName, bool $privateMode, string $statedClassName, array $aliases = []): StateInterface
     {
         //Load the state class if it is not already done
         $stateClassName = $this->loadState($stateName);

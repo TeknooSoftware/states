@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Factory;
 
 use Teknoo\States\Proxy\ProxyInterface;
@@ -36,7 +34,6 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @api
@@ -48,7 +45,7 @@ interface StartupFactoryInterface
      * This method is called by the constructor of the stated class instance.
      *
      * @param ProxyInterface $proxyObject
-     * @param string               $stateName
+     * @param string         $stateName
      *
      * @return FactoryInterface
      *

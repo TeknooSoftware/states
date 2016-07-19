@@ -17,14 +17,12 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * Mock factory file to test loader behavior when the factory class is valid but its method initialize throws an
  * exception and stated class loaded by loader with PSR-0 recommendations (file computed from namespace)
  * and not from namespace definitions)
  */
-
 namespace Support\FileLoader\Class3;
 
 use Teknoo\States\Factory\FactoryInterface;
@@ -42,7 +40,6 @@ use Teknoo\Tests\Support;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class Factory extends Support\MockFactory

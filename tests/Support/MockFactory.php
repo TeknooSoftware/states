@@ -17,14 +17,11 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\Tests\Support;
 
 use Teknoo\States\Factory\FactoryInterface;
-use Teknoo\States\Factory\Exception;
 use Teknoo\States\Loader\FinderInterface;
 use Teknoo\States\Proxy\ProxyInterface;
 
@@ -38,7 +35,6 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class MockFactory implements FactoryInterface
@@ -105,6 +101,7 @@ class MockFactory implements FactoryInterface
     {
         $this->statedClassName = $statedClassName;
         self::$initializedFactoryNameArray[] = $statedClassName;
+
         return $this;
     }
 

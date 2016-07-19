@@ -19,7 +19,6 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Command;
 
 use Symfony\Component\Console\Input\InputArgument;
@@ -69,9 +68,11 @@ use Teknoo\States\Proxy\ProxyInterface;
      }
 
      /**
-      * To generate the destination path from the destination option and the full class name (with namespace)
+      * To generate the destination path from the destination option and the full class name (with namespace).
+      *
       * @param string $destinationPath
       * @param string $fullClassName
+      *
       * @return string
       */
      protected function defineDestinationPatch(string $destinationPath, string $fullClassName): string
@@ -80,7 +81,7 @@ use Teknoo\States\Proxy\ProxyInterface;
          $fullClassNameParts = explode('\\', $fullClassName);
 
          $fullClassNameFinal = str_replace('\\', '/', $fullClassName);
-         for ($i = count($fullClassNameParts); $i>0; $i--) {
+         for ($i = count($fullClassNameParts); $i > 0; --$i) {
              $pathToTest = implode('/', array_slice($fullClassNameParts, 0, $i));
              if (false !== strpos($destinationPath, $pathToTest)) {
                  $fullClassNameFinal = implode('/', array_slice($fullClassNameParts, $i));

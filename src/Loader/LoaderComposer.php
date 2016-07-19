@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Loader;
 
 use Composer\Autoload\ClassLoader;
@@ -31,7 +29,7 @@ use Teknoo\States\Factory\FactoryInterface;
  * Default implementation of the "stated class autoloader".
  * It is used to allow php to load automatically stated classes without a specific behavior from the developer.
  * It builds on the Composer Loader. It is registered to be  called before the composer loader, find the factory
- * attached to the stated class, load and run it to initialize the stated class
+ * attached to the stated class, load and run it to initialize the stated class.
  *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
@@ -39,7 +37,6 @@ use Teknoo\States\Factory\FactoryInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @api
@@ -67,7 +64,8 @@ class LoaderComposer implements LoaderInterface
     protected $loadingFactoriesClassNameArray = [];
 
     /**
-     * To keep the list of factory already fetched
+     * To keep the list of factory already fetched.
+     *
      * @var array
      */
     private $factoryAvailabilityList = array();
@@ -75,8 +73,8 @@ class LoaderComposer implements LoaderInterface
     /**
      * Initialize the loader object.
      *
-     * @param ClassLoader $composerInstance
-     * @param callable $finderFactory
+     * @param ClassLoader  $composerInstance
+     * @param callable     $finderFactory
      * @param \ArrayAccess $factoryRepository
      */
     public function __construct(ClassLoader $composerInstance, callable $finderFactory, \ArrayAccess $factoryRepository)
@@ -94,7 +92,7 @@ class LoaderComposer implements LoaderInterface
     }
 
     /**
-     * Return the factory used to create new finder for all new factory
+     * Return the factory used to create new finder for all new factory.
      *
      * @return callable
      */
@@ -104,7 +102,7 @@ class LoaderComposer implements LoaderInterface
     }
 
     /**
-     * Return the factory repository passed to all factory loaded by this loader
+     * Return the factory repository passed to all factory loaded by this loader.
      *
      * @return \ArrayAccess
      */
@@ -116,7 +114,9 @@ class LoaderComposer implements LoaderInterface
     /**
      * To register a location to find some classes of a namespace.
      * A namespace can has several locations.
+     *
      * @api
+     *
      * @param string $namespace
      * @param string $path
      *
@@ -124,7 +124,7 @@ class LoaderComposer implements LoaderInterface
      */
     public function registerNamespace(string $namespace, string $path): LoaderInterface
     {
-        if ('\\' !== $namespace[\strlen($namespace)-1]) {
+        if ('\\' !== $namespace[\strlen($namespace) - 1]) {
             $namespace = ltrim($namespace, '\\').'\\';
         }
 
@@ -134,8 +134,10 @@ class LoaderComposer implements LoaderInterface
     }
 
     /**
-     * To load the factory of the stated class and check if it's implementing the good interface
+     * To load the factory of the stated class and check if it's implementing the good interface.
+     *
      * @param string $factoryClassName
+     *
      * @return bool
      */
     private function loadFactory(string &$factoryClassName): bool
@@ -159,6 +161,7 @@ class LoaderComposer implements LoaderInterface
      * The class name can be the canonical stated class name or the canonical proxy class name of the stated class.
      *
      * @api
+     *
      * @param string $className canonical class name
      *
      * @return bool
@@ -216,7 +219,7 @@ class LoaderComposer implements LoaderInterface
 
     /**
      * Build the factory and initialize the loading stated class.
-     * A new finder is built from the finder factory and must be injected in the factory with other stated class options
+     * A new finder is built from the finder factory and must be injected in the factory with other stated class options.
      *
      * @param string $factoryClassName
      * @param string $statedClassName

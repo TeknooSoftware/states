@@ -17,15 +17,13 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Proxy;
 
 /**
  * Trait SerializableTrait
- * Trait to use the interface \Serializable (http://php.net/manual/en/class.serializable.php) with stated classes
+ * Trait to use the interface \Serializable (http://php.net/manual/en/class.serializable.php) with stated classes.
  *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
@@ -33,8 +31,8 @@ namespace Teknoo\States\Proxy;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ *
  * @method mixed findMethodToCall($name, $args)
  */
 trait SerializableTrait
@@ -45,6 +43,7 @@ trait SerializableTrait
 
     /**
      * To serialize the object.
+     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -62,6 +61,7 @@ trait SerializableTrait
 
     /**
      * To wake up the object.
+     *
      * @api
      *
      * @param string $serialized

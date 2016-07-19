@@ -17,15 +17,13 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Proxy;
 
 /**
  * Trait ArrayAccessTrait
- * Trait to use the interface \ArrayAccess (http://php.net/manual/en/class.arrayaccess.php) with stated classes
+ * Trait to use the interface \ArrayAccess (http://php.net/manual/en/class.arrayaccess.php) with stated classes.
  *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
@@ -33,8 +31,8 @@ namespace Teknoo\States\Proxy;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ *
  * @method mixed findMethodToCall($name, $args)
  */
 trait ArrayAccessTrait
@@ -45,6 +43,7 @@ trait ArrayAccessTrait
 
     /**
      * This method is executed when using the count() function on an object implementing Countable.
+     *
      * @api
      *
      * @return int
@@ -61,6 +60,7 @@ trait ArrayAccessTrait
     /**
      * Whether or not an offset exists.
      * This method is executed when using isset() or empty() on states implementing ArrayAccess.
+     *
      * @api
      *
      * @param string|int $offset
@@ -79,6 +79,7 @@ trait ArrayAccessTrait
     /**
      * Returns the value at specified offset.
      * This method is executed when checking if offset is empty().
+     *
      * @api
      *
      * @param string|int $offset
@@ -96,6 +97,7 @@ trait ArrayAccessTrait
 
     /**
      * Assigns a value to the specified offset.
+     *
      * @api
      *
      * @param string|int $offset
@@ -114,6 +116,7 @@ trait ArrayAccessTrait
 
     /**
      * Unset an offset.
+     *
      * @api
      *
      * @param string|int $offset

@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\State;
 
 use Teknoo\States\Proxy\ProxyInterface;
@@ -35,7 +33,6 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 interface StateInterface
@@ -56,12 +53,13 @@ interface StateInterface
     const VISIBILITY_PRIVATE = 'private';
 
     /**
-     * To initialize this state
-     * @param bool $privateMode
-     * @param string $statedClassName
+     * To initialize this state.
+     *
+     * @param bool     $privateMode
+     * @param string   $statedClassName
      * @param string[] $aliases
      */
-    public function __construct(bool $privateMode, string $statedClassName, array $aliases=[]);
+    public function __construct(bool $privateMode, string $statedClassName, array $aliases = []);
 
     /**
      * To get the canonical stated class name associated to this state.
@@ -80,7 +78,7 @@ interface StateInterface
     public function setStatedClassName(string $statedClassName): StateInterface;
 
     /**
-     * To update the list of aliases of this state in the current stated class
+     * To update the list of aliases of this state in the current stated class.
      *
      * @param string[] $aliases
      *
@@ -89,7 +87,7 @@ interface StateInterface
     public function setStateAliases(array $aliases): StateInterface;
 
     /**
-     * Return the list of aliases of this state in the current stated class
+     * Return the list of aliases of this state in the current stated class.
      *
      * @return string[]
      */
@@ -120,9 +118,10 @@ interface StateInterface
      * To return an array of string listing all methods available in the state : public, protected and private.
      * Ignore static method, because there are incompatible with the stated behavior :
      * State can be only applied on instances entities like object,
-     * and not on static entities which by nature have no states
+     * and not on static entities which by nature have no states.
      *
      * @api
+     *
      * @return string[]
      */
     public function listMethods();
@@ -131,7 +130,7 @@ interface StateInterface
      * To test if a method exists for this state in the required scope (check from the visibility of the method) :
      *  Public method : Method always available
      *  Protected method : Method available only for this stated class's methods (method present in this state or another state) and its children
-     *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children
+     *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children.
      *
      * @param string      $methodName
      * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
@@ -143,7 +142,7 @@ interface StateInterface
      */
     public function testMethod(
         string $methodName,
-        string $scope = StateInterface::VISIBILITY_PUBLIC,
+        string $scope = self::VISIBILITY_PUBLIC,
         string $statedClassOriginName = null
     ): bool;
 
@@ -156,6 +155,7 @@ interface StateInterface
      * and not on static entities which by nature have no states
      *
      * @api
+     *
      * @param string $methodName
      *
      * @return \ReflectionMethod
@@ -168,12 +168,12 @@ interface StateInterface
      * To return a closure of the required method to use in the proxy, in the required scope (check from the visibility of the method) :
      *  Public method : Method always available
      *  Protected method : Method available only for this stated class's methods (method present in this state or another state) and its children
-     *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children
+     *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children.
      *
-     * @param ProxyInterface       $proxy
-     * @param string               $methodName
-     * @param string               $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null          $statedClassOriginName
+     * @param ProxyInterface $proxy
+     * @param string         $methodName
+     * @param string         $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null    $statedClassOriginName
      *
      * @return \Closure
      *
@@ -182,7 +182,7 @@ interface StateInterface
     public function getClosure(
         ProxyInterface $proxy,
         string $methodName,
-        string $scope = StateInterface::VISIBILITY_PUBLIC,
+        string $scope = self::VISIBILITY_PUBLIC,
         string $statedClassOriginName = null
     ): \Closure;
 }

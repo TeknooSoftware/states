@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Loader;
 
 use Teknoo\States\Factory\FactoryInterface;
@@ -35,7 +33,6 @@ use Teknoo\States\Factory\FactoryInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * @api
@@ -53,14 +50,14 @@ interface LoaderInterface
     const FACTORY_CLASS_NAME = 'Factory';
 
     /**
-     * Return the factory used to create new finder for all new factory
+     * Return the factory used to create new finder for all new factory.
      *
      * @return callable
      */
     public function getFinderFactory();
 
     /**
-     * Return the factory repository passed to all factory loaded by this loader
+     * Return the factory repository passed to all factory loaded by this loader.
      *
      * @return \ArrayAccess
      */
@@ -69,7 +66,9 @@ interface LoaderInterface
     /**
      * To register a location to find some classes of a namespace.
      * A namespace can has several locations.
+     *
      * @api
+     *
      * @param string $namespace
      * @param string $path
      *
@@ -82,6 +81,7 @@ interface LoaderInterface
      * The class name can be the canonical stated class name or the canonical proxy class name of the stated class.
      *
      * @api
+     *
      * @param string $className canonical class name
      *
      * @return bool
@@ -94,7 +94,7 @@ interface LoaderInterface
 
     /**
      * Build the factory and initialize the loading stated class.
-     * A new finder is built from the finder factory and must be injected in the factory with other stated class options
+     * A new finder is built from the finder factory and must be injected in the factory with other stated class options.
      *
      * @param string $factoryClassName
      * @param string $statedClassName

@@ -17,7 +17,6 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
  * Mock factory file to test loader behavior when the factory class is missing but its initialize method
@@ -25,7 +24,6 @@
  * This factory is included from namespace definitions registered into loader.
  * The path is not computed from the class's name following PSR-0 recommendations
  */
-
 namespace Teknoo\Tests\Support\Loader\Class3Phar;
 
 use Teknoo\States\Factory\FactoryInterface;
@@ -44,7 +42,6 @@ use Teknoo\Tests\Support;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class Factory extends Support\MockFactory

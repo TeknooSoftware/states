@@ -17,14 +17,11 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\Tests\Support;
 
 use Teknoo\States\Factory\FactoryInterface;
-use Teknoo\States\Factory\Exception;
 use Teknoo\States\Factory\StartupFactoryInterface;
 use Teknoo\States\Proxy\ProxyInterface;
 
@@ -38,7 +35,6 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class MockStartupFactory implements StartupFactoryInterface

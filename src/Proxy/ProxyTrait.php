@@ -17,10 +17,8 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\States\Proxy;
 
 use Teknoo\States\State\StateInterface;
@@ -43,27 +41,26 @@ use Teknoo\States\State\Exception\MethodNotImplemented as StateMethodNotImplemen
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 trait ProxyTrait
 {
     /**
-     * List of currently enabled states in this proxy
+     * List of currently enabled states in this proxy.
      *
      * @var \ArrayObject|StateInterface[]
      */
     private $activesStates;
 
     /**
-     * List aliases of currently enabled stated in this proxy
+     * List aliases of currently enabled stated in this proxy.
      *
      * @var string[]
      */
     private $activesStatesAlias = [];
 
     /**
-     * List of available states for this stated class instance
+     * List of available states for this stated class instance.
      *
      * @var \ArrayObject|StateInterface[]
      */
@@ -79,7 +76,8 @@ trait ProxyTrait
 
     /**
      * List all methods available in the proxy, with all states, get the list available in the current scope,
-     * unlike method_exists is not dependant about the scope and return unavailable privates methods
+     * unlike method_exists is not dependant about the scope and return unavailable privates methods.
+     *
      * @var string[]
      */
     private $globalMethodsList;
@@ -96,7 +94,7 @@ trait ProxyTrait
 
     /**
      * List all methods available in the proxy, with all states, get the list available in the current scope,
-     * unlike method_exists is not dependant about the scope and return unavailable privates methods
+     * unlike method_exists is not dependant about the scope and return unavailable privates methods.
      *
      * @return array|string[]
      */
@@ -112,8 +110,10 @@ trait ProxyTrait
     /**
      * Check if a method exist in the current scope for this proxy.
      * unlike method_exists is not dependant about the scope and return unavailable privates methods
-     * unlike is_callable, this check is not influenced by __call()
+     * unlike is_callable, this check is not influenced by __call().
+     *
      * @param string $methodName
+     *
      * @return bool
      */
     private function checkMethodExist(string $methodName)
@@ -168,9 +168,9 @@ trait ProxyTrait
      * Prepare the execution's context and execute a method available in a state passed in args with the closure.
      *
      * @param StateInterface $state
-     * @param string $methodName
-     * @param array  $arguments
-     * @param string $scopeVisibility self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string         $methodName
+     * @param array          $arguments
+     * @param string         $scopeVisibility self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      *
      * @return mixed
      *
@@ -186,7 +186,7 @@ trait ProxyTrait
         $this->pushCallerStatedClassName($state);
 
         //Method found, extract it
-        /**
+        /*
          * @var ProxyInterface|ProxyTrait $this
          */
         $callingClosure = $state->getClosure($this, $methodName, $scopeVisibility, $callerStatedClassName);
@@ -209,7 +209,9 @@ trait ProxyTrait
 
     /**
      * Internal method to find, in enabled stated, the closure required by caller to call it.
+     *
      * @api
+     *
      * @param string $methodName
      * @param array  $arguments  of the call
      *
@@ -269,13 +271,15 @@ trait ProxyTrait
     }
 
     /**
-     * To test if the identifier is an non empty string
+     * To test if the identifier is an non empty string.
+     *
      * @api
+     *
      * @param string $name
      *
      * @return bool
      *
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\IllegalName when the identifier is not an non empty string
      */
     protected function validateName(string $name): bool
     {
@@ -381,7 +385,8 @@ trait ProxyTrait
     }
 
     /**
-     * Called to clone this stated class instance, clone states entities and the current state of this instance
+     * Called to clone this stated class instance, clone states entities and the current state of this instance.
+     *
      * @api
      *
      * @return $this
@@ -418,14 +423,15 @@ trait ProxyTrait
 
     /**
      * To register dynamically a new state for this stated class instance.
+     *
      * @api
      *
-     * @param string                       $stateName
+     * @param string         $stateName
      * @param StateInterface $stateObject
      *
      * @return ProxyInterface
      *
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\IllegalName when the identifier is not an non empty string
      */
     public function registerState(string $stateName, StateInterface $stateObject): ProxyInterface
     {
@@ -438,14 +444,15 @@ trait ProxyTrait
 
     /**
      * To remove dynamically a state from this stated class instance.
+     *
      * @api
      *
      * @param string $stateName
      *
      * @return ProxyInterface
      *
-     * @throws Exception\StateNotFound   when the state was not found
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\StateNotFound when the state was not found
+     * @throws Exception\IllegalName   when the identifier is not an non empty string
      */
     public function unregisterState(string $stateName): ProxyInterface
     {
@@ -465,7 +472,7 @@ trait ProxyTrait
     }
 
     /**
-     * To build the aliases list of actives states
+     * To build the aliases list of actives states.
      *
      * @return ProxyInterface
      */
@@ -473,7 +480,7 @@ trait ProxyTrait
     {
         $activesStatesAlias = [];
 
-        foreach ($this->activesStates as $a=>$state) {
+        foreach ($this->activesStates as $a => $state) {
             $activesStatesAlias += $state->getStateAliases();
         }
 
@@ -485,13 +492,14 @@ trait ProxyTrait
 
     /**
      * To disable all enabled states and enable the required states.
+     *
      * @api
      *
      * @param string $stateName
      *
      * @return ProxyInterface
      *
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\IllegalName when the identifier is not an non empty string
      */
     public function switchState(string $stateName): ProxyInterface
     {
@@ -507,14 +515,15 @@ trait ProxyTrait
 
     /**
      * To enable a loaded states.
+     *
      * @api
      *
      * @param string $stateName
      *
      * @return ProxyInterface
      *
-     * @throws Exception\StateNotFound   if $stateName does not exist
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\StateNotFound if $stateName does not exist
+     * @throws Exception\IllegalName   when the identifier is not an non empty string
      */
     public function enableState(string $stateName): ProxyInterface
     {
@@ -531,15 +540,16 @@ trait ProxyTrait
     }
 
     /**
-     * To disable an enabled state
+     * To disable an enabled state.
+     *
      * @api
      *
      * @param string $stateName
      *
      * @return ProxyInterface
      *
-     * @throws Exception\StateNotFound   when the state was not found
-     * @throws Exception\IllegalName     when the identifier is not an non empty string
+     * @throws Exception\StateNotFound when the state was not found
+     * @throws Exception\IllegalName   when the identifier is not an non empty string
      */
     public function disableState(string $stateName): ProxyInterface
     {
@@ -557,6 +567,7 @@ trait ProxyTrait
 
     /**
      * To disable all actives states.
+     *
      * @api
      *
      * @return ProxyInterface
@@ -572,6 +583,7 @@ trait ProxyTrait
 
     /**
      * To list all currently available states for this object.
+     *
      * @api
      *
      * @return string[]
@@ -587,6 +599,7 @@ trait ProxyTrait
 
     /**
      * To list all enable states for this object.
+     *
      * @api
      *
      * @return string[]
@@ -601,7 +614,8 @@ trait ProxyTrait
     }
 
     /**
-     * To return the list of all states entity available for this object
+     * To return the list of all states entity available for this object.
+     *
      * @api
      *
      * @return \ArrayAccess|StateInterface[]
@@ -617,6 +631,7 @@ trait ProxyTrait
 
     /**
      * Check if this stated class instance is in the required state defined by $stateName.
+     *
      * @api
      *
      * @param string $stateName
@@ -643,6 +658,7 @@ trait ProxyTrait
 
     /**
      * To call a method of the this stated class instance not defined in the proxy.
+     *
      * @api
      *
      * @param string $name
@@ -666,7 +682,8 @@ trait ProxyTrait
 
     /**
      * To return the description of a method present in a state of this stated class instance.
-     * This method no checks if the method is available in the current scope by the called
+     * This method no checks if the method is available in the current scope by the called.
+     *
      * @api
      *
      * @param string $methodName
@@ -714,7 +731,8 @@ trait ProxyTrait
     }
 
     /**
-     * Get a reflection instance about this object
+     * Get a reflection instance about this object.
+     *
      * @return \ReflectionObject
      */
     private function getThisReflection(): \ReflectionObject
@@ -727,8 +745,10 @@ trait ProxyTrait
     }
 
     /**
-     * To check if the required property is an public accessible or not
+     * To check if the required property is an public accessible or not.
+     *
      * @param string $name
+     *
      * @return bool
      */
     private function isPublicProperty(string $name): bool
@@ -742,7 +762,7 @@ trait ProxyTrait
     }
 
     /**
-     * To get a property of the instance
+     * To get a property of the instance.
      *
      * Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
      * can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid

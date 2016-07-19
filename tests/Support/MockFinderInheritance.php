@@ -17,13 +17,10 @@
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace Teknoo\Tests\Support;
 
-use Teknoo\States\Loader\Exception;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\Loader\FinderInterface;
 use Teknoo\States\State\StateInterface;
@@ -38,7 +35,6 @@ use Teknoo\States\State\StateInterface;
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
-
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class MockFinderInheritance implements FinderInterface
@@ -111,6 +107,7 @@ class MockFinderInheritance implements FinderInterface
 
     /**
      * @param string $stateName
+     *
      * @return mixed
      */
     public function getStateParentsClassesNamesList(string $stateName): array
@@ -120,6 +117,7 @@ class MockFinderInheritance implements FinderInterface
 
     /**
      * @param array $parentsClassesNamesList
+     *
      * @return self
      */
     public function setParentsClassesNamesList($parentsClassesNamesList)
@@ -132,7 +130,7 @@ class MockFinderInheritance implements FinderInterface
     /**
      * {@inheritdoc}
      */
-    public function buildState(string $stateName, bool $privateMode, string $statedClassName, array $aliases=[]): StateInterface
+    public function buildState(string $stateName, bool $privateMode, string $statedClassName, array $aliases = []): StateInterface
     {
         //Return a new mock state object for tests
         $this->lastMockState = new MockState($privateMode, $statedClassName, $aliases);
