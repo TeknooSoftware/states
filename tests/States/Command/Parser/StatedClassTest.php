@@ -70,13 +70,8 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
     protected function buildFileSystemMock()
     {
         if (!$this->fileSystem instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->fileSystem = $this->getMock(
-                '\Gaufrette\Filesystem',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->fileSystem = $this->createMock(
+                '\Gaufrette\Filesystem');
         }
 
         return $this->fileSystem;
@@ -88,13 +83,8 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
     protected function buildProxyMock()
     {
         if (!$this->proxyParser instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->proxyParser = $this->getMock(
-                '\Teknoo\States\Command\Parser\Proxy',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->proxyParser = $this->createMock(
+                '\Teknoo\States\Command\Parser\Proxy');
         }
 
         return $this->proxyParser;
@@ -106,13 +96,8 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
     protected function buildStateMock()
     {
         if (!$this->stateParser instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->stateParser = $this->getMock(
-                'Teknoo\States\Command\Parser\State',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->stateParser = $this->createMock(
+                'Teknoo\States\Command\Parser\State');
         }
 
         return $this->stateParser;
@@ -124,13 +109,8 @@ class StatedClassTest extends \PHPUnit_Framework_TestCase
     protected function buildFactoryMock()
     {
         if (!$this->factoryParser instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->factoryParser = $this->getMock(
-                'Teknoo\States\Command\Parser\Factory',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->factoryParser = $this->createMock(
+                'Teknoo\States\Command\Parser\Factory');
         }
 
         return $this->factoryParser;

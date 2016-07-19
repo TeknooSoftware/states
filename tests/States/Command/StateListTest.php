@@ -51,13 +51,8 @@ class StateListTest extends \PHPUnit_Framework_TestCase
     protected function buildStateClassMock()
     {
         if (!$this->parser instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->parser = $this->getMock(
-                'Teknoo\States\Command\Parser\State',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->parser = $this->createMock(
+                'Teknoo\States\Command\Parser\State');
         }
 
         return $this->parser;
@@ -85,7 +80,7 @@ class StateListTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteFalse()
     {
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
         $input->expects($this->any())
             ->method('getArgument')
             ->willReturnMap(
@@ -94,7 +89,7 @@ class StateListTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
         $output->expects($this->any())
             ->method('write')

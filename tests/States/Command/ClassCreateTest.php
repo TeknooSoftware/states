@@ -68,13 +68,8 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
     protected function buildFactoryMock()
     {
         if (!$this->factory instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->factory = $this->getMock(
-                'Teknoo\States\Command\Writer\Factory',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->factory = $this->createMock(
+                'Teknoo\States\Command\Writer\Factory');
         }
 
         return $this->factory;
@@ -86,13 +81,8 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
     protected function buildProxyMock()
     {
         if (!$this->proxy instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->proxy = $this->getMock(
-                'Teknoo\States\Command\Writer\Proxy',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->proxy = $this->createMock(
+                'Teknoo\States\Command\Writer\Proxy');
         }
 
         return $this->proxy;
@@ -104,13 +94,8 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
     protected function buildStateMock()
     {
         if (!$this->state instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->state = $this->getMock(
-                'Teknoo\States\Command\Writer\State',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->state = $this->createMock(
+                'Teknoo\States\Command\Writer\State');
         }
 
         return $this->state;
@@ -145,7 +130,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateStandardClass()
     {
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
         $input->expects($this->any())
             ->method('getArgument')
             ->willReturnMap(
@@ -163,7 +148,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
         $this->buildProxyMock()
             ->expects($this->once())
@@ -189,7 +174,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateIntegratedClass()
     {
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
         $input->expects($this->any())
             ->method('getArgument')
             ->willReturnMap(
@@ -207,7 +192,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
         $this->buildProxyMock()
             ->expects($this->once())
@@ -233,7 +218,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateIntegratedClassMissingDestinationFolder()
     {
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
         $input->expects($this->any())
             ->method('getArgument')
             ->willReturnMap(
@@ -251,7 +236,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
         $this->buildProxyMock()
             ->expects($this->once())
@@ -277,7 +262,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateIntegratedClassExistingDestinationFolder()
     {
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
         $input->expects($this->any())
             ->method('getArgument')
             ->willReturnMap(
@@ -295,7 +280,7 @@ class ClassCreateTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
         $this->buildProxyMock()
             ->expects($this->once())

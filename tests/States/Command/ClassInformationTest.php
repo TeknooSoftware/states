@@ -52,13 +52,8 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
     protected function buildStatedClassMock()
     {
         if (!$this->parser instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->parser = $this->getMock(
-                'Teknoo\States\Command\Parser\StatedClass',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->parser = $this->createMock(
+                'Teknoo\States\Command\Parser\StatedClass');
         }
 
         return $this->parser;
@@ -86,7 +81,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteFalse()
     {
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
         $input->expects($this->any())
             ->method('getArgument')
             ->willReturnMap(
@@ -95,7 +90,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
         $output->expects($this->any())
             ->method('write')
@@ -116,7 +111,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('hasProxy')
             ->willReturn(false);
 
-        $parserParser = $this->getMock('Teknoo\States\Command\Parser\Proxy', [], [], '', false);
+        $parserParser = $this->createMock('Teknoo\States\Command\Parser\Proxy');
 
         $this->buildStatedClassMock()
             ->expects($this->once())
@@ -140,7 +135,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('hasFactory')
             ->willReturn(false);
 
-        $factoryParser = $this->getMock('Teknoo\States\Command\Parser\Factory', [], [], '', false);
+        $factoryParser = $this->createMock('Teknoo\States\Command\Parser\Factory');
 
         $this->buildStatedClassMock()
             ->expects($this->once())
@@ -159,7 +154,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('isIntegratedFactory')
             ->willReturn(false);
 
-        $stateParser = $this->getMock('Teknoo\States\Command\Parser\State', [], [], '', false);
+        $stateParser = $this->createMock('Teknoo\States\Command\Parser\State');
         $stateParser->expects($this->any())
             ->method('listStates')
             ->willReturn(new \ArrayObject(['State1', 'State2', 'State3']));
@@ -175,7 +170,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
 
     public function testExecuteTrue()
     {
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
         $input->expects($this->any())
             ->method('getArgument')
             ->willReturnMap(
@@ -184,7 +179,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
         $output->expects($this->any())
             ->method('write')
@@ -205,7 +200,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('hasProxy')
             ->willReturn(true);
 
-        $parserParser = $this->getMock('Teknoo\States\Command\Parser\Proxy', [], [], '', false);
+        $parserParser = $this->createMock('Teknoo\States\Command\Parser\Proxy');
 
         $this->buildStatedClassMock()
             ->expects($this->once())
@@ -229,7 +224,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('hasFactory')
             ->willReturn(true);
 
-        $factoryParser = $this->getMock('Teknoo\States\Command\Parser\Factory', [], [], '', false);
+        $factoryParser = $this->createMock('Teknoo\States\Command\Parser\Factory');
 
         $this->buildStatedClassMock()
             ->expects($this->once())
@@ -248,7 +243,7 @@ class ClassInformationTest extends \PHPUnit_Framework_TestCase
             ->method('isIntegratedFactory')
             ->willReturn(true);
 
-        $stateParser = $this->getMock('Teknoo\States\Command\Parser\State', [], [], '', false);
+        $stateParser = $this->createMock('Teknoo\States\Command\Parser\State');
         $stateParser->expects($this->any())
             ->method('listStates')
             ->willReturn(new \ArrayObject(['State1', 'State2', 'State3']));

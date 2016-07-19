@@ -48,13 +48,8 @@ class ProxyTest extends \PHPUnit_Framework_TestCase
     protected function buildFileSystemMock()
     {
         if (!$this->fileSystem instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->fileSystem = $this->getMock(
-                '\Gaufrette\Filesystem',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->fileSystem = $this->createMock(
+                '\Gaufrette\Filesystem');
         }
 
         return $this->fileSystem;

@@ -110,7 +110,7 @@ class LoaderComposerTest extends \PHPUnit_Framework_TestCase
     protected function getClassLoaderMock()
     {
         if (!$this->classLoaderMock instanceof ClassLoader) {
-            $this->classLoaderMock = $this->getMock('Composer\Autoload\ClassLoader', [], [], '', false);
+            $this->classLoaderMock = $this->createMock('Composer\Autoload\ClassLoader');
         }
 
         return $this->classLoaderMock;

@@ -51,13 +51,8 @@ class StateAddTest extends \PHPUnit_Framework_TestCase
     protected function buildStateMock()
     {
         if (!$this->state instanceof \PHPUnit_Framework_MockObject_MockObject) {
-            $this->state = $this->getMock(
-                'Teknoo\States\Command\Writer\State',
-                array(),
-                array(),
-                '',
-                false
-            );
+            $this->state = $this->createMock(
+                'Teknoo\States\Command\Writer\State');
         }
 
         return $this->state;
@@ -85,7 +80,7 @@ class StateAddTest extends \PHPUnit_Framework_TestCase
 
     public function testCreateState()
     {
-        $input = $this->getMock('Symfony\Component\Console\Input\InputInterface', [], [], '', false);
+        $input = $this->createMock('Symfony\Component\Console\Input\InputInterface');
         $input->expects($this->any())
             ->method('getArgument')
             ->willReturnMap(
@@ -103,7 +98,7 @@ class StateAddTest extends \PHPUnit_Framework_TestCase
                 ]
             );
 
-        $output = $this->getMock('Symfony\Component\Console\Output\OutputInterface', [], [], '', false);
+        $output = $this->createMock('Symfony\Component\Console\Output\OutputInterface');
 
         $this->buildStateMock()
             ->expects($this->once())
