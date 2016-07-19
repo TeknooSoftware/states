@@ -1,0 +1,2239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/>
+    <meta charset="utf-8"/>
+    <title>API Documentation</title>
+    <meta name="author" content=""/>
+    <meta name="description" content=""/>
+
+    <link href="../css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="../css/font-awesome.min.css" rel="stylesheet">
+    <link href="../css/prism.css" rel="stylesheet" media="all"/>
+    <link href="../css/template.css" rel="stylesheet" media="all"/>
+    
+    <!--[if lt IE 9]>
+    <script src="../js/html5.js"></script>
+    <![endif]-->
+    <script src="../js/jquery-1.11.0.min.js"></script>
+    <script src="../js/ui/1.10.4/jquery-ui.min.js"></script>
+    <script src="../js/bootstrap.min.js"></script>
+    <script src="../js/jquery.smooth-scroll.js"></script>
+    <script src="../js/prism.min.js"></script>
+    <!-- TODO: Add http://jscrollpane.kelvinluck.com/ to style the scrollbars for browsers not using webkit-->
+    <script type="text/javascript">
+    function loadExternalCodeSnippets() {
+        Array.prototype.slice.call(document.querySelectorAll('pre[data-src]')).forEach(function (pre) {
+            var src = pre.getAttribute('data-src');
+            var extension = (src.match(/\.(\w+)$/) || [, ''])[1];
+            var language = 'php';
+
+            var code = document.createElement('code');
+            code.className = 'language-' + language;
+
+            pre.textContent = '';
+
+            code.textContent = 'Loading…';
+
+            pre.appendChild(code);
+
+            var xhr = new XMLHttpRequest();
+
+            xhr.open('GET', src, true);
+
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+
+                    if (xhr.status < 400 && xhr.responseText) {
+                        code.textContent = xhr.responseText;
+
+                        Prism.highlightElement(code);
+                    }
+                    else if (xhr.status >= 400) {
+                        code.textContent = '✖ Error ' + xhr.status + ' while fetching file: ' + xhr.statusText;
+                    }
+                    else {
+                        code.textContent = '✖ Error: File does not exist or is empty';
+                    }
+                }
+            };
+
+            xhr.send(null);
+        });
+    }
+
+    $(document).ready(function(){
+        loadExternalCodeSnippets();
+    });
+    $('#source-view').on('shown', function () {
+        loadExternalCodeSnippets();
+    })
+</script>
+
+    <link rel="shortcut icon" href="../images/favicon.ico"/>
+    <link rel="apple-touch-icon" href="../images/apple-touch-icon.png"/>
+    <link rel="apple-touch-icon" sizes="72x72" href="../images/apple-touch-icon-72x72.png"/>
+    <link rel="apple-touch-icon" sizes="114x114" href="../images/apple-touch-icon-114x114.png"/>
+</head>
+<body>
+
+<div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+        <div class="container">
+            <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+                <i class="icon-ellipsis-vertical"></i>
+            </a>
+            <a class="brand" href="../index.html">API Documentation</a>
+
+            <div class="nav-collapse">
+                <ul class="nav pull-right">
+                                        <li class="dropdown">
+                        <a href="../index.html" class="dropdown-toggle" data-toggle="dropdown">
+                            API Documentation <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                                                        <li><a href="../namespaces/Teknoo.html">\Teknoo</a></li>
+                                                    </ul>
+                    </li>
+                                        <li class="dropdown" id="charts-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Charts <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../graphs/class.html">
+                                    <i class="icon-list-alt"></i>&#160;Class hierarchy diagram
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="dropdown" id="reports-menu">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            Reports <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li>
+                                <a href="../reports/errors.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Errors <span class="label label-info pull-right">14</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/markers.html">
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <i class="icon-list-alt"></i>&#160;Markers <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="../reports/deprecated.html">
+                                                                                                            <i class="icon-list-alt"></i>&#160;Deprecated <span class="label label-info pull-right">0</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <!--<div class="go_to_top">-->
+    <!--<a href="#___" style="color: inherit">Back to top&#160;&#160;<i class="icon-upload icon-white"></i></a>-->
+    <!--</div>-->
+</div>
+
+<div id="___" class="container-fluid">
+        <section class="row-fluid">
+        <div class="span2 sidebar">
+                                <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle " data-toggle="collapse" data-target="#namespace-1085700851"></a>
+                                <a href="../namespaces/default.html" style="margin-left: 30px; padding-left: 0">\</a>
+            </div>
+            <div id="namespace-1085700851" class="accordion-body collapse in">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1618826148"></a>
+                                <a href="../namespaces/Teknoo.html" style="margin-left: 30px; padding-left: 0">Teknoo</a>
+            </div>
+            <div id="namespace-1618826148" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-943125511"></a>
+                                <a href="../namespaces/Teknoo.States.html" style="margin-left: 30px; padding-left: 0">States</a>
+            </div>
+            <div id="namespace-943125511" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-924162395"></a>
+                                <a href="../namespaces/Teknoo.States.Command.html" style="margin-left: 30px; padding-left: 0">Command</a>
+            </div>
+            <div id="namespace-924162395" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-897650550"></a>
+                                <a href="../namespaces/Teknoo.States.Command.Parser.html" style="margin-left: 30px; padding-left: 0">Parser</a>
+            </div>
+            <div id="namespace-897650550" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-209106938"></a>
+                                <a href="../namespaces/Teknoo.States.Command.Parser.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-209106938" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.Exception.ClassNotFound.html">ClassNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.Exception.UnReadablePath.html">UnReadablePath</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.AbstractParser.html">AbstractParser</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.Factory.html">Factory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.Proxy.html">Proxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.State.html">State</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Parser.StatedClass.html">StatedClass</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-400004365"></a>
+                                <a href="../namespaces/Teknoo.States.Command.Writer.html" style="margin-left: 30px; padding-left: 0">Writer</a>
+            </div>
+            <div id="namespace-400004365" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Writer.AbstractWriter.html">AbstractWriter</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Writer.Factory.html">Factory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Writer.Proxy.html">Proxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.Writer.State.html">State</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Command.AbstractCommand.html">AbstractCommand</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.ClassCreate.html">ClassCreate</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.ClassInformation.html">ClassInformation</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.StateAdd.html">StateAdd</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Command.StateList.html">StateList</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1405837188"></a>
+                                <a href="../namespaces/Teknoo.States.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1405837188" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.AvailableSeveralMethodImplementations.html">AvailableSeveralMethodImplementations</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.ClassNotFound.html">ClassNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalArgument.html">IllegalArgument</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalName.html">IllegalName</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.IllegalState.html">IllegalState</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.MethodNotImplemented.html">MethodNotImplemented</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.Standard.html">Standard</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.StateNotFound.html">StateNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnavailablePath.html">UnavailablePath</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnavailableState.html">UnavailableState</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Exception.UnReadablePath.html">UnReadablePath</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1186328455"></a>
+                                <a href="../namespaces/Teknoo.States.Factory.html" style="margin-left: 30px; padding-left: 0">Factory</a>
+            </div>
+            <div id="namespace-1186328455" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1002809787"></a>
+                                <a href="../namespaces/Teknoo.States.Factory.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1002809787" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Exception.StateNotFound.html">StateNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Factory.FactoryInterface.html">FactoryInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Factory.StartupFactoryInterface.html">StartupFactoryInterface</a></li>
+                                                                            <li class="trait"><a href="../classes/Teknoo.States.Factory.FactoryTrait.html">FactoryTrait</a></li>
+                                                                            <li class="class"><a href="../classes/Teknoo.States.Factory.Integrated.html">Integrated</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.Standard.html">Standard</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Factory.StandardStartupFactory.html">StandardStartupFactory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1849547429"></a>
+                                <a href="../namespaces/Teknoo.States.Loader.html" style="margin-left: 30px; padding-left: 0">Loader</a>
+            </div>
+            <div id="namespace-1849547429" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-610884198"></a>
+                                <a href="../namespaces/Teknoo.States.Loader.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-610884198" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.IllegalProxy.html">IllegalProxy</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.IllegalState.html">IllegalState</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.UnavailablePath.html">UnavailablePath</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.UnavailableState.html">UnavailableState</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.Exception.UnReadablePath.html">UnReadablePath</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Loader.FinderInterface.html">FinderInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Loader.LoaderInterface.html">LoaderInterface</a></li>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.FinderComposer.html">FinderComposer</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.FinderComposerIntegrated.html">FinderComposerIntegrated</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Loader.LoaderComposer.html">LoaderComposer</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1339602305"></a>
+                                <a href="../namespaces/Teknoo.States.Proxy.html" style="margin-left: 30px; padding-left: 0">Proxy</a>
+            </div>
+            <div id="namespace-1339602305" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1068544078"></a>
+                                <a href="../namespaces/Teknoo.States.Proxy.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1068544078" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.AvailableSeveralMethodImplementations.html">AvailableSeveralMethodImplementations</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.IllegalFactory.html">IllegalFactory</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.IllegalName.html">IllegalName</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.MethodNotImplemented.html">MethodNotImplemented</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.StateNotFound.html">StateNotFound</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Exception.UnavailableFactory.html">UnavailableFactory</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Proxy.IntegratedInterface.html">IntegratedInterface</a></li>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">ProxyInterface</a></li>
+                                                                            <li class="trait"><a href="../classes/Teknoo.States.Proxy.ArrayAccessTrait.html">ArrayAccessTrait</a></li>
+                                                    <li class="trait"><a href="../classes/Teknoo.States.Proxy.IntegratedTrait.html">IntegratedTrait</a></li>
+                                                    <li class="trait"><a href="../classes/Teknoo.States.Proxy.IteratorTrait.html">IteratorTrait</a></li>
+                                                    <li class="trait"><a href="../classes/Teknoo.States.Proxy.MagicCallTrait.html">MagicCallTrait</a></li>
+                                                    <li class="trait"><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html">ProxyTrait</a></li>
+                                                    <li class="trait"><a href="../classes/Teknoo.States.Proxy.SerializableTrait.html">SerializableTrait</a></li>
+                                                                            <li class="class"><a href="../classes/Teknoo.States.Proxy.Integrated.html">Integrated</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.Proxy.Standard.html">Standard</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-528082902"></a>
+                                <a href="../namespaces/Teknoo.States.State.html" style="margin-left: 30px; padding-left: 0">State</a>
+            </div>
+            <div id="namespace-528082902" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                                                    <div class="accordion" style="margin-bottom: 0">
+        <div class="accordion-group">
+            <div class="accordion-heading">
+                                    <a class="accordion-toggle collapsed" data-toggle="collapse" data-target="#namespace-1390662136"></a>
+                                <a href="../namespaces/Teknoo.States.State.Exception.html" style="margin-left: 30px; padding-left: 0">Exception</a>
+            </div>
+            <div id="namespace-1390662136" class="accordion-body collapse ">
+                <div class="accordion-inner">
+
+                    
+                    <ul>
+                                                                                                    <li class="class"><a href="../classes/Teknoo.States.State.Exception.InvalidArgument.html">InvalidArgument</a></li>
+                                                    <li class="class"><a href="../classes/Teknoo.States.State.Exception.MethodNotImplemented.html">MethodNotImplemented</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                    <li class="interface"><a href="../classes/Teknoo.States.State.StateInterface.html">StateInterface</a></li>
+                                                                            <li class="trait"><a href="../classes/Teknoo.States.State.StateTrait.html">StateTrait</a></li>
+                                                                            <li class="class"><a href="../classes/Teknoo.States.State.AbstractState.html">AbstractState</a></li>
+                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+                    
+                    <ul>
+                                                                                            </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+        </div>
+    </section>
+    <section class="row-fluid">
+        <div class="span10 offset2">
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <nav>
+                                                <a href="../namespaces/Teknoo.States.Proxy.html">\Teknoo\States\Proxy</a> <i class="icon-level-up"></i>
+                                            </nav>
+                    <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal"><i class="icon-code"></i></a>
+
+                    <h1><small>\Teknoo\States\Proxy</small>Standard</h1>
+                    <p><em>Class Standard
+Default implementation of the proxy class in stated classes. It can not be instantiate directly by the developer,
+it must use the factory to create a new instance of this stated class.</em></p>
+                    <p>It is also used in this library to create stated class instance.</p>
+<p>A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
+The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
+$this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy instance.</p>
+<p>By default, this library creates an alias with the canonical proxy class name and the stated class name
+to simulate a real class with the stated class name.</p>
+<p>If a stated class has no proxy, an another alias is create from this standard proxy with the proxyless stated class name.</p>
+                    
+                                        
+                    <section id="summary">
+                        <h2>Summary</h2>
+                        <section class="row-fluid heading">
+                            <section class="span4">
+                                <a href="#methods">Methods</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#properties">Properties</a>
+                            </section>
+                            <section class="span4">
+                                <a href="#constants">Constants</a>
+                            </section>
+                        </section>
+                        <section class="row-fluid public">
+                            <section class="span4">
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method___clone" class="">__clone()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_registerState" class="">registerState()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_unregisterState" class="">unregisterState()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_switchState" class="">switchState()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_enableState" class="">enableState()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_disableState" class="">disableState()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_disableAllStates" class="">disableAllStates()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_listAvailableStates" class="">listAvailableStates()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_listEnabledStates" class="">listEnabledStates()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_getStatesList" class="">getStatesList()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_inState" class="">inState()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method___call" class="">__call()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_getMethodDescription" class="">getMethodDescription()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method___get" class="">__get()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method___isset" class="">__isset()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method___set" class="">__set()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method___unset" class="">__unset()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.Standard.html#method___construct" class="">__construct()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No public properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No constants found</em>
+                                                            </section>
+                        </section>
+                        <section class="row-fluid protected">
+                            <section class="span4">
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_findMethodToCall" class="">findMethodToCall()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_validateName" class="">validateName()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_initializeProxy" class="">initializeProxy()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <em>No protected properties found</em>
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                        <section class="row-fluid private">
+                            <section class="span4">
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_getGlobalMethodsList" class="">getGlobalMethodsList()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_checkMethodExist" class="">checkMethodExist()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_getCallerStatedClassName" class="">getCallerStatedClassName()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_pushCallerStatedClassName" class="">pushCallerStatedClassName()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_popCallerStatedClassName" class="">popCallerStatedClassName()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_callInState" class="">callInState()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_getVisibilityScope" class="">getVisibilityScope()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_buildAliasesListOfActivesStates" class="">buildAliasesListOfActivesStates()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_getThisReflection" class="">getThisReflection()</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#method_isPublicProperty" class="">isPublicProperty()</a><br />
+                                                            </section>
+                            <section class="span4">
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#property_activesStates" class="">$activesStates</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#property_activesStatesAlias" class="">$activesStatesAlias</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#property_states" class="">$states</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#property_callerStatedClassesStack" class="">$callerStatedClassesStack</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#property_globalMethodsList" class="">$globalMethodsList</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#property_thisReflection" class="">$thisReflection</a><br />
+                                                                    <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html#property_publicPropertiesList" class="">$publicPropertiesList</a><br />
+                                                            </section>
+                            <section class="span4">
+                                <em>N/A</em>
+                            </section>
+                        </section>
+                    </section>
+                </div>
+                <aside class="span4 detailsbar">
+                                        
+                    
+                    <dl>
+                        <dt>File</dt>
+                            <dd><a href="../files/Proxy.Standard.html"><div class="path-wrapper">Proxy/Standard.php</div></a></dd>
+                                                <dt>Package</dt>
+                            <dd><div class="namespace-wrapper">Default</div></dd>
+                                                <dt>Class hierarchy</dt>
+                            <dd class="hierarchy">
+                                                                                                                                                                    <div class="namespace-wrapper">\Teknoo\States\Proxy\Standard</div>
+                            </dd>
+
+                                                                            <dt>Implements</dt>
+                                                        <dd><a href="../classes/Teknoo.States.Proxy.ProxyInterface.html"><div class="namespace-wrapper">\Teknoo\States\Proxy\ProxyInterface</div></a></dd>
+                        
+                                                                                    <dt>Uses traits</dt>
+                                                        <dd>
+                                <a href="../classes/Teknoo.States.Proxy.ProxyTrait.html">                                    <div class="namespace-wrapper">\Teknoo\States\Proxy\ProxyTrait</div>
+                                </a>                            </dd>
+                        
+                        
+                                                                            <dt>See also</dt>
+                                                                                        <dd><a href="http://teknoo.software/states"><span class="namespace-wrapper">Project website</span></a></dd>
+                                                    
+                                                                        </dl>
+                    <h2>Tags</h2>
+                    <table class="table table-condensed">
+                                            <tr>
+                            <th>
+                                copyright
+                            </th>
+                            <td>
+                                                                    <p>Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                license
+                            </th>
+                            <td>
+                                                                    <p><a href="http://teknoo.software/license/mit">http://teknoo.software/license/mit</a>         MIT License</p>
+                                                            </td>
+                        </tr>
+                                            <tr>
+                            <th>
+                                author
+                            </th>
+                            <td>
+                                                                    <p>Richard Déloge <a href="mailto:richarddeloge@gmail.com">richarddeloge@gmail.com</a></p>
+                                                            </td>
+                        </tr>
+                                        </table>
+                </aside>
+            </div>
+
+                        
+                                    <a id="properties" name="properties"></a>
+            <div class="row-fluid">
+                <div class="span8 content class">
+                    <h2>Properties</h2>
+                </div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_activesStates" name="property_activesStates" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$activesStates</h3>
+                <pre class="signature">$activesStates : \ArrayObject|array&lt;mixed,\Teknoo\States\State\StateInterface&gt;</pre>
+                <p><em>List of currently enabled states in this proxy.</em></p>
+                
+
+                                <h4>Type</h4>
+                \ArrayObject|array&lt;mixed,<a href="../classes/Teknoo.States.State.StateInterface.html">\Teknoo\States\State\StateInterface</a>&gt;
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_activesStatesAlias" name="property_activesStatesAlias" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$activesStatesAlias</h3>
+                <pre class="signature">$activesStatesAlias : array&lt;mixed,string&gt;</pre>
+                <p><em>List aliases of currently enabled stated in this proxy.</em></p>
+                
+
+                                <h4>Type</h4>
+                array&lt;mixed,string&gt;
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_states" name="property_states" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$states</h3>
+                <pre class="signature">$states : \ArrayObject|array&lt;mixed,\Teknoo\States\State\StateInterface&gt;</pre>
+                <p><em>List of available states for this stated class instance.</em></p>
+                
+
+                                <h4>Type</h4>
+                \ArrayObject|array&lt;mixed,<a href="../classes/Teknoo.States.State.StateInterface.html">\Teknoo\States\State\StateInterface</a>&gt;
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_callerStatedClassesStack" name="property_callerStatedClassesStack" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$callerStatedClassesStack</h3>
+                <pre class="signature">$callerStatedClassesStack : array&lt;mixed,string&gt;|\SplStack</pre>
+                <p><em>Stack to know the caller canonical stated class when an internal method call a parent method to forbid
+private method access.</em></p>
+                
+
+                                <h4>Type</h4>
+                array&lt;mixed,string&gt;|\SplStack
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_globalMethodsList" name="property_globalMethodsList" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$globalMethodsList</h3>
+                <pre class="signature">$globalMethodsList : array&lt;mixed,string&gt;</pre>
+                <p><em>List all methods available in the proxy, with all states, get the list available in the current scope,
+unlike method_exists is not dependant about the scope and return unavailable privates methods.</em></p>
+                
+
+                                <h4>Type</h4>
+                array&lt;mixed,string&gt;
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_thisReflection" name="property_thisReflection" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$thisReflection</h3>
+                <pre class="signature">$thisReflection : \ReflectionObject</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                \ReflectionObject
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="property_publicPropertiesList" name="property_publicPropertiesList" class="anchor"></a>
+            <article class="property">
+                <h3 class="private ">$publicPropertiesList</h3>
+                <pre class="signature">$publicPropertiesList : null|array</pre>
+                <p><em></em></p>
+                
+
+                                <h4>Type</h4>
+                null|array
+                                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                        <dl>
+                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                            
+                                    <a id="methods" name="methods"></a>
+            <div class="row-fluid">
+                <div class="span8 content class"><h2>Methods</h2></div>
+                <aside class="span4 detailsbar"></aside>
+            </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___clone" name="method___clone" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__clone()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__clone() : $this</pre>
+                <p><em>Called to clone this stated class instance, clone states entities and the current state of this instance.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    $this
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_registerState" name="method_registerState" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">registerState()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">registerState(string  <span class="argument">$stateName</span>, \Teknoo\States\State\StateInterface  <span class="argument">$stateObject</span>) : \Teknoo\States\Proxy\ProxyInterface</pre>
+                <p><em>To register dynamically a new state for this stated class instance.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$stateName </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td><a href="../classes/Teknoo.States.State.StateInterface.html">\Teknoo\States\State\StateInterface</a></td>
+                                <td>$stateObject </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Proxy\Exception\IllegalName</dt>
+                            <dd><p>when the identifier is not an non empty string</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">\Teknoo\States\Proxy\ProxyInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_unregisterState" name="method_unregisterState" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">unregisterState()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">unregisterState(string  <span class="argument">$stateName</span>) : \Teknoo\States\Proxy\ProxyInterface</pre>
+                <p><em>To remove dynamically a state from this stated class instance.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$stateName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Proxy\Exception\StateNotFound</dt>
+                            <dd><p>when the state was not found</p></dd>
+                                                    <dt>\Teknoo\States\Proxy\Exception\IllegalName</dt>
+                            <dd><p>when the identifier is not an non empty string</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">\Teknoo\States\Proxy\ProxyInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_switchState" name="method_switchState" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">switchState()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">switchState(string  <span class="argument">$stateName</span>) : \Teknoo\States\Proxy\ProxyInterface</pre>
+                <p><em>To disable all enabled states and enable the required states.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$stateName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Proxy\Exception\IllegalName</dt>
+                            <dd><p>when the identifier is not an non empty string</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">\Teknoo\States\Proxy\ProxyInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_enableState" name="method_enableState" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">enableState()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">enableState(string  <span class="argument">$stateName</span>) : \Teknoo\States\Proxy\ProxyInterface</pre>
+                <p><em>To enable a loaded states.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$stateName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Proxy\Exception\StateNotFound</dt>
+                            <dd><p>if $stateName does not exist</p></dd>
+                                                    <dt>\Teknoo\States\Proxy\Exception\IllegalName</dt>
+                            <dd><p>when the identifier is not an non empty string</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">\Teknoo\States\Proxy\ProxyInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_disableState" name="method_disableState" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">disableState()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">disableState(string  <span class="argument">$stateName</span>) : \Teknoo\States\Proxy\ProxyInterface</pre>
+                <p><em>To disable an enabled state.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$stateName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Proxy\Exception\StateNotFound</dt>
+                            <dd><p>when the state was not found</p></dd>
+                                                    <dt>\Teknoo\States\Proxy\Exception\IllegalName</dt>
+                            <dd><p>when the identifier is not an non empty string</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">\Teknoo\States\Proxy\ProxyInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_disableAllStates" name="method_disableAllStates" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">disableAllStates()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">disableAllStates() : \Teknoo\States\Proxy\ProxyInterface</pre>
+                <p><em>To disable all actives states.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">\Teknoo\States\Proxy\ProxyInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_listAvailableStates" name="method_listAvailableStates" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">listAvailableStates()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">listAvailableStates() : array&lt;mixed,string&gt;</pre>
+                <p><em>To list all currently available states for this object.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,string&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_listEnabledStates" name="method_listEnabledStates" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">listEnabledStates()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">listEnabledStates() : array&lt;mixed,string&gt;</pre>
+                <p><em>To list all enable states for this object.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array&lt;mixed,string&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getStatesList" name="method_getStatesList" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getStatesList()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getStatesList() : \ArrayAccess|array&lt;mixed,\Teknoo\States\State\StateInterface&gt;</pre>
+                <p><em>To return the list of all states entity available for this object.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \ArrayAccess|array&lt;mixed,<a href="../classes/Teknoo.States.State.StateInterface.html">\Teknoo\States\State\StateInterface</a>&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_inState" name="method_inState" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">inState()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">inState(string  <span class="argument">$stateName</span>) : boolean</pre>
+                <p><em>Check if this stated class instance is in the required state defined by $stateName.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$stateName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___call" name="method___call" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__call()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__call(string  <span class="argument">$name</span>, array  <span class="argument">$arguments</span>) : mixed</pre>
+                <p><em>To call a method of the this stated class instance not defined in the proxy.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$arguments </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Exception</dt>
+                            <dd></dd>
+                                                    <dt>\Teknoo\States\Proxy\Exception\MethodNotImplemented</dt>
+                            <dd><p>if any enabled state implement the required method</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getMethodDescription" name="method_getMethodDescription" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">getMethodDescription()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getMethodDescription(string  <span class="argument">$methodName</span>, string  <span class="argument">$stateName = null</span>) : \ReflectionMethod</pre>
+                <p><em>To return the description of a method present in a state of this stated class instance.</em></p>
+                <p>This method no checks if the method is available in the current scope by the called.</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$methodName </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$stateName </td>
+                                <td><p>: Return the description for a specific state of the object,
+if null, use the current state</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Proxy\Exception\StateNotFound</dt>
+                            <dd><p>is the state required is not available</p></dd>
+                                                    <dt>\Teknoo\States\Proxy\Exception\MethodNotImplemented</dt>
+                            <dd><p>when the method is not currently available</p></dd>
+                                                    <dt>\Throwable</dt>
+                            <dd><p>to rethrows unknown exceptions</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    \ReflectionMethod
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___get" name="method___get" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__get()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__get(string  <span class="argument">$name</span>) : mixed</pre>
+                <p><em>To get a property of the instance.</em></p>
+                <p>Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
+can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
+error due to compilation pass with self::</p>
+<p>Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
+or method are not available in this closure (the scope differ).</p>
+<p>So we use magic call to restore this behavior during a calling</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\ErrorException</dt>
+                            <dd><p>of the property is not accessible</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___isset" name="method___isset" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__isset()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__isset(string  <span class="argument">$name</span>) : mixed</pre>
+                <p><em>To test if a property is set for the instance.</em></p>
+                <p>Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
+can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
+error due to compilation pass with self::</p>
+<p>Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
+or method are not available in this closure (the scope differ).</p>
+<p>So we use magic call to restore this behavior during a calling</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___set" name="method___set" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__set()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__set(string  <span class="argument">$name</span>, string  <span class="argument">$value</span>) </pre>
+                <p><em>To update a property of the instance.</em></p>
+                <p>Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
+can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
+error due to compilation pass with self::</p>
+<p>Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
+or method are not available in this closure (the scope differ).</p>
+<p>So we use magic call to restore this behavior during a calling</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$value </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\ErrorException</dt>
+                            <dd><p>of the property is not accessible</p></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___unset" name="method___unset" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__unset()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__unset(string  <span class="argument">$name</span>) </pre>
+                <p><em>To remove a property from the instance.</em></p>
+                <p>Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
+can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
+error due to compilation pass with self::</p>
+<p>Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
+or method are not available in this closure (the scope differ).</p>
+<p>So we use magic call to restore this behavior during a calling</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\ErrorException</dt>
+                            <dd><p>of the property is not accessible</p></dd>
+                                                                    </dl>
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method___construct" name="method___construct" class="anchor"></a>
+            <article class="method">
+                <h3 class="public ">__construct()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">__construct() </pre>
+                <p><em>Initialize the proxy.</em></p>
+                
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_findMethodToCall" name="method_findMethodToCall" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">findMethodToCall()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">findMethodToCall(string  <span class="argument">$methodName</span>, array  <span class="argument">$arguments</span>) : mixed</pre>
+                <p><em>Internal method to find, in enabled stated, the closure required by caller to call it.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$methodName </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$arguments </td>
+                                <td><p>of the call</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Proxy\Exception\MethodNotImplemented</dt>
+                            <dd><p>if any enabled state implement the required method</p></dd>
+                                                    <dt>\Exception</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_validateName" name="method_validateName" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">validateName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">validateName(string  <span class="argument">$name</span>) : boolean</pre>
+                <p><em>To test if the identifier is an non empty string.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Teknoo\States\Proxy\Exception\IllegalName</dt>
+                            <dd><p>when the identifier is not an non empty string</p></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr>
+                        <th>
+                            api
+                        </th>
+                        <td>
+                                                                                            
+                                                    </td>
+                    </tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_initializeProxy" name="method_initializeProxy" class="anchor"></a>
+            <article class="method">
+                <h3 class="protected ">initializeProxy()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">initializeProxy() </pre>
+                <p><em>Method to call into the constructor to initialize proxy&#039;s vars.</em></p>
+                <p>Externalized from the constructor to allow developers to write their own constructors into theirs classes.</p>
+
+                
+                
+                				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getGlobalMethodsList" name="method_getGlobalMethodsList" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getGlobalMethodsList()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getGlobalMethodsList() : array|array&lt;mixed,string&gt;</pre>
+                <p><em>List all methods available in the proxy, with all states, get the list available in the current scope,
+unlike method_exists is not dependant about the scope and return unavailable privates methods.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    array|array&lt;mixed,string&gt;
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_checkMethodExist" name="method_checkMethodExist" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">checkMethodExist()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">checkMethodExist(string  <span class="argument">$methodName</span>) : boolean</pre>
+                <p><em>Check if a method exist in the current scope for this proxy.</em></p>
+                <p>unlike method_exists is not dependant about the scope and return unavailable privates methods
+unlike is_callable, this check is not influenced by __call().</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$methodName </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getCallerStatedClassName" name="method_getCallerStatedClassName" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getCallerStatedClassName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getCallerStatedClassName() : string</pre>
+                <p><em>To get the class name of the caller according to scope visibility.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_pushCallerStatedClassName" name="method_pushCallerStatedClassName" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">pushCallerStatedClassName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">pushCallerStatedClassName(\Teknoo\States\State\StateInterface  <span class="argument">$state</span>) : \Teknoo\States\Proxy\ProxyInterface</pre>
+                <p><em>To push in the caller stated classes name stack
+the class of the current object.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Teknoo.States.State.StateInterface.html">\Teknoo\States\State\StateInterface</a></td>
+                                <td>$state </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">\Teknoo\States\Proxy\ProxyInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_popCallerStatedClassName" name="method_popCallerStatedClassName" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">popCallerStatedClassName()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">popCallerStatedClassName() : \Teknoo\States\Proxy\ProxyInterface</pre>
+                <p><em>To pop the current caller in the stated class name stack.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">\Teknoo\States\Proxy\ProxyInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_callInState" name="method_callInState" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">callInState()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">callInState(\Teknoo\States\State\StateInterface  <span class="argument">$state</span>, string  <span class="argument">$methodName</span>, array  <span class="argument">$arguments</span>, string  <span class="argument">$scopeVisibility</span>) : mixed</pre>
+                <p><em>Prepare the execution&#039;s context and execute a method available in a state passed in args with the closure.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td><a href="../classes/Teknoo.States.State.StateInterface.html">\Teknoo\States\State\StateInterface</a></td>
+                                <td>$state </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$methodName </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>array</td>
+                                <td>$arguments </td>
+                                <td></td>
+                            </tr>
+                                                    <tr>
+                                <td>string</td>
+                                <td>$scopeVisibility </td>
+                                <td><p>self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE</p></td>
+                            </tr>
+                                            </table>
+                
+                                    <h4>Throws</h4>
+                    <dl>
+                                                    <dt>\Throwable</dt>
+                            <dd></dd>
+                                                                    </dl>
+                
+                                    <h4>Returns</h4>
+                    mixed
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getVisibilityScope" name="method_getVisibilityScope" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getVisibilityScope()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getVisibilityScope(integer  <span class="argument">$limit</span>) : string</pre>
+                <p><em>To determine the caller visibility scope to not grant to call protected or private method from an external object.</em></p>
+                <p>getVisibilityScope() uses debug_backtrace() to get last entries in the calling stack.
+(PHP does not provide a method to get this, but the cost of to call the debug_backtrace is very light).</p>
+<p>Called from the main block : Public scope
+Called from a global function : Public scope
+Called from another class (not a child class), via a static method or an instance of this class : Public scope
+Called from a child class, via a static method or an instance of this class : Protected scope
+Called from a static method of this stated class, or from a method of this stated class (but not this instance) : Private scope
+Called from a method of this stated class instance : Private state</p>
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>integer</td>
+                                <td>$limit </td>
+                                <td><p>To define the caller into the calling stack</p></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    string
+                                            &mdash; <p>Return :  StateInterface::VISIBILITY_PUBLIC
+StateInterface::VISIBILITY_PROTECTED
+StateInterface::VISIBILITY_PRIVATE</p>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_buildAliasesListOfActivesStates" name="method_buildAliasesListOfActivesStates" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">buildAliasesListOfActivesStates()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">buildAliasesListOfActivesStates() : \Teknoo\States\Proxy\ProxyInterface</pre>
+                <p><em>To build the aliases list of actives states.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    <a href="../classes/Teknoo.States.Proxy.ProxyInterface.html">\Teknoo\States\Proxy\ProxyInterface</a>
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_getThisReflection" name="method_getThisReflection" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">getThisReflection()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">getThisReflection() : \ReflectionObject</pre>
+                <p><em>Get a reflection instance about this object.</em></p>
+                
+
+                
+                
+                                    <h4>Returns</h4>
+                    \ReflectionObject
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    <div class="row-fluid">
+        <div class="span8 content class">
+            <a id="method_isPublicProperty" name="method_isPublicProperty" class="anchor"></a>
+            <article class="method">
+                <h3 class="private ">isPublicProperty()</h3>
+                <a href="#source-view" role="button" class="pull-right btn" data-toggle="modal" style="font-size: 1.1em; padding: 9px 14px"><i class="icon-code"></i></a>
+                <pre class="signature" style="margin-right: 54px;">isPublicProperty(string  <span class="argument">$name</span>) : boolean</pre>
+                <p><em>To check if the required property is an public accessible or not.</em></p>
+                
+
+                                    <h4>Parameters</h4>
+                    <table class="table table-condensed table-hover">
+                                                    <tr>
+                                <td>string</td>
+                                <td>$name </td>
+                                <td></td>
+                            </tr>
+                                            </table>
+                
+                
+                                    <h4>Returns</h4>
+                    boolean
+                                    				
+                            </article>
+        </div>
+        <aside class="span4 detailsbar">
+            <h1><i class="icon-arrow-down"></i></h1>
+                                                            <dl>
+                                                    <dt>Inherited from</dt>
+                    <dd><a href="../classes/Teknoo.States.Proxy.ProxyTrait.html"><div class="path-wrapper">\Teknoo\States\Proxy\ProxyTrait</div></a></dd>
+                                                            </dl>
+            <h2>Tags</h2>
+            <table class="table table-condensed">
+                                    <tr><td colspan="2"><em>None found</em></td></tr>
+                            </table>
+        </aside>
+    </div>
+
+                                    </div>
+    </section>
+
+    <div id="source-view" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="source-view-label" aria-hidden="true">
+        <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h3 id="source-view-label">Standard.php</h3>
+        </div>
+        <div class="modal-body">
+            <pre data-src="../files/Proxy/Standard.php.txt" class="language-php line-numbers"></pre>
+        </div>
+    </div>
+
+    <footer class="row-fluid">
+        <section class="span10 offset2">
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <section class="row-fluid footer-sections">
+                        <section class="span4">
+                                                        <h1><i class="icon-code"></i></h1>
+                            <div>
+                                <ul>
+                                                                            <li><a href="../namespaces/Teknoo.html">\Teknoo</a></li>
+                                                                    </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-bar-chart"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../graphs/class.html">Class Hierarchy Diagram</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                        <section class="span4">
+                                                        <h1><i class="icon-pushpin"></i></h1>
+                            <div>
+                                <ul>
+                                    <li><a href="../reports/errors.html">Errors</a></li>
+                                    <li><a href="../reports/markers.html">Markers</a></li>
+                                </ul>
+                            </div>
+                        </section>
+                    </section>
+                </section>
+            </section>
+            <section class="row-fluid">
+                <section class="span10 offset1">
+                    <hr />
+                    Documentation is powered by <a href="http://www.phpdoc.org/">phpDocumentor </a> and authored
+                    on July 19th, 2016 at 22:25.
+                </section>
+            </section>
+        </section>
+    </footer>
+</div>
+
+</body>
+</html>

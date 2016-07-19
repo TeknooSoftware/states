@@ -3,8 +3,7 @@ Teknoo Software - States library
 
 [![SensioLabsInsight](https://insight.sensiolabs.com/projects/119ff38f-0b64-4100-8e1f-ff55d7be857a/mini.png)](https://insight.sensiolabs.com/projects/119ff38f-0b64-4100-8e1f-ff55d7be857a) [![Build Status](https://travis-ci.org/TeknooSoftware/states.svg?branch=next)](https://travis-ci.org/TeknooSoftware/states)
 
-Welcome and thank you to having downloaded this library. 
-It's allow you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
+States allows you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
 This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability.
  
 Example
@@ -34,7 +33,7 @@ Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.
 
 API Documentation
 -----------------
-Temporary unavailable
+The API documentation is available at : [API](docs/howto/api/index.index).
 
 Behavior Documentation
 ----------------------
@@ -56,8 +55,9 @@ Teknoo Software - <http://teknoo.software>
 
 About Teknoo Software
 ---------------------
-**Teknoo Software** is a PHP software editor, founded by Richard Déloge, also co-founder of the web agency Uni Alteri. 
-Teknoo Software shares the same DNA as Uni Alteri : Provide to our partners and to the community a set of high quality services or software, sharing knowledge and skills.
+**Teknoo Software** is a PHP software editor, founded by Richard Déloge. 
+Teknoo Software's DNA is simple : Provide to our partners and to the community a set of high quality services or software,
+ sharing knowledge and skills.
 
 License
 -------
