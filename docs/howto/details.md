@@ -1,11 +1,9 @@
 #Teknoo Software - States library - Details
 
-##Presentation
-
-###Requirements
+##Requirements
 This library works with PHP 7 and newer. It does not require external library except a Composer.
 
-###Introduction
+##Introduction
 This library allows you to write more readable code,
  
 It allows you to follow and implement the  [State Pattern](http://en.wikipedia.org/wiki/State_pattern)
@@ -26,7 +24,7 @@ A stated class is written following these instructions :
 
 These elements will be detailed in the following chapters.
 
-###Factory
+##Factory
 The factory is an essential component of each stated class : it loads all php classes of a stated class.
 A stated class is composed of many php classes, the factory manages the stated class loading and present each
 stated class as a standard php class.
@@ -49,7 +47,7 @@ This library provides a default implementation of this interface with the trait 
 The method `build` can be used to create a new instance of your stated class, like with the operator `new` for standard
 classes. Another way is provided with the integrated factory (described in the section Integrated proxy and Integrated factory).
 
-###Proxy
+##Proxy
 The proxy, called `Context` in the state pattern, is the central component of each stated class : 
 The proxy instance represents the instance of your stated class. It manages states and decide which states to execute calls.
 
@@ -75,7 +73,7 @@ With this implementation, all stated class cannot be instantiated with the opera
  of your factory. Unlike  with the `\Teknoo\States\Proxy\Integrated` implementations, the operator `new` is available
  (described in the section Integrated proxy and Integrated factory).
 
-###States
+##States
 A state is a logic representation in your business class to segment your code based on the behavior and states of your objects.
 
 All your states must be stored into the folder `States` of your each stated class folder. They must be only one state by file.
@@ -96,7 +94,7 @@ If the state `StateDefault` is present, it will be automatically enable at start
 *Your stated class instance can execute several states in same time, but two enabled states cannot implement the same method, they must
 be alternately enabled or the required state must be defined in the called method name, prefixed by "Of", like `$this->myMethodOfMyState`.*
 
-###Stated class and Inheritance
+##Stated class and Inheritance
 Stated classes support inheritance with other stated classes and natural PHP classes:
 
 Extends another stated class:
@@ -122,7 +120,7 @@ But, the behavior is completed for states :
     - A child class can overload a state defined in the parent class : The list of methods can be different.
     - A child class can extend a state defined in the parent class : The state PHP class must extend the original PHP state class.
 
-###Integrated proxy and Integrated factory
+##Integrated proxy and Integrated factory
 Default implementations of the factory and the proxy are not fully usable to manage its stated class instance like standard php objects :
 You cannot use the operator `new` to create a new instance of your stated class.
 

@@ -5,39 +5,107 @@ Teknoo Software - States library
 
 States allows you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
 This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability.
+
+Short Example
+------------
+    /**
+     * File States/English.php
+     */
+    class English extends \Teknoo\States\State\AbstractState 
+    {
+        public function sayHello(): string
+        {
+            return 'Good morning, '.$this->name;
+        }
+    
+        public function displayDate(\DateTime $now): string 
+        {
+            return $now->format('%m %d, %Y');
+        }
+    }
+    
+    /**
+     * File States/French.php
+     */
+    class French extends \Teknoo\States\State\AbstractState 
+    {
+        public function sayHello(): string
+        {
+            return 'Bonjour, '.$this->name;
+        }
+    
+        public function displayDate(\DateTime $now): string 
+        {
+            return $now->format('%d %m %Y');
+        }
+    }
+    
+    /**
+     * File MyClass.php
+     */
+    class MyClass extends \Teknoo\States\Proxy\Integrated
+    {
+        private $name;
+        
+        public function setName(string $name): MyClass
+        {
+            $this->name = $name;
+            
+            return $this;
+        }
+    }
+    
+    $frenchMan = new MyClass();
+    $frenchMan->switchState('French');
+    $frenchMan->setName('Roger');
+    
+    $englishMan = new MyClass();
+    $englishMan->switchState('Enflish');
+    $englishMan->setName('Richard');
+    
+    $now = new \DateTime('2016-07-01');
+    
+    foreach ([$frenchMan, $englishMan] as $man) {
+        echo $man->sayHello().PHP_EOL;
+        echo 'Date: '.$man->displayDate($now);
+    }
+    
+    //Display
+    Bonjour Roger
+    Date: 01 07 2016
+    Good morning Richard
+    Date: 07 01, 2016
  
-Example
--------
+Full Example
+------------
 An example of using this library is available in the folder : [Demo](demo/demo_article.php).
 
-Installation
-------------
+Installation & Requirements
+---------------------------
 To install this library with composer, run this command :
 
     composer require teknoo/states
 
-Requirements
-------------
 This library requires :
 
     * PHP 7+ (For PHP5.4 to 5.6, please to use the first major version, States 1.0+)
     * Composer
+    
+Quick How-to to implement your first stated class
+-------------------------------------------------
+Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.md).    
 
-Presentation
-------------
+Details
+-------
 Description about components of this library : [Startup](docs/howto/details.md).
-
-Quick startup
--------------
-Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.md).
-
-API Documentation
------------------
-The API documentation is available at : [API](docs/howto/api/index.index).
 
 Behavior Documentation
 ----------------------
 Documentation to explain how this library works : [Behavior](docs/howto/behavior.md).
+
+API Documentation
+-----------------
+The API documentation is available at : [API](docs/howto/api/index.index).
 
 Mandatory evolutions in 2.x versions
 ------------------------------------
