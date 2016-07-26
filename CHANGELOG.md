@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.5] - 2016-07-26
+###Fixed
+- Remove legacy reference to Uni Alteri in licences
+
 ##[2.0.4] - 2016-07-26
 ###Updated
 - Fix code style with cs-fixer
