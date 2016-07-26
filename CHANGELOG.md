@@ -1,5 +1,13 @@
 #Teknoo Software - States library - Change Log
 
+##[2.0.4] - 2016-07-26
+###Updated
+- Fix code style with cs-fixer
+- Improve documentation and fix documentations
+
+###Add
+- Add the API documentation about the 2.x branch.
+
 ##[2.0.3] - 2016-04-09
 ###Updated
 - Fix code style with cs-fixer
