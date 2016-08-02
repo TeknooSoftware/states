@@ -86,11 +86,11 @@ class StateAdd extends AbstractCommand
     {
         $fullClassName = $input->getArgument('className');
         $stateName = $input->getArgument('name');
-        $destinationPath = rtrim($input->getOption('path'), ' /');
+        $destinationPath = \rtrim($input->getOption('path'), ' /');
 
-        $fullClassNameExploded = explode('\\', $fullClassName);
-        $className = array_pop($fullClassNameExploded);
-        $namespace = implode('\\', $fullClassNameExploded);
+        $fullClassNameExploded = \explode('\\', $fullClassName);
+        $className = \array_pop($fullClassNameExploded);
+        $namespace = \implode('\\', $fullClassNameExploded);
 
         $stateWriter = $this->createWriter('Writer\State', $destinationPath);
         $stateWriter->createState($className, $namespace, $stateName);

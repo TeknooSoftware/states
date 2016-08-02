@@ -98,11 +98,11 @@ class FinderComposer implements FinderInterface
      */
     private function testClassExists($className)
     {
-        if (class_exists($className, false)) {
+        if (\class_exists($className, false)) {
             return true;
         }
 
-        return $this->composerInstance->loadClass($className) && class_exists($className, false);
+        return $this->composerInstance->loadClass($className) && \class_exists($className, false);
     }
 
     /**
@@ -130,30 +130,30 @@ class FinderComposer implements FinderInterface
             $statesPath = $this->pathString.DIRECTORY_SEPARATOR.FinderInterface::STATES_PATH;
             if (!\is_dir($statesPath)) {
                 throw new Exception\UnavailablePath(
-                    sprintf('Error, the path "%s" was not found', $statesPath)
+                    \sprintf('Error, the path "%s" was not found', $statesPath)
                 );
             }
 
             //Checks if the path is available, use error_reporting to not use @
-            $oldErrorReporting = error_reporting(E_ALL & ~E_WARNING);
-            $hD = opendir($statesPath);
-            error_reporting($oldErrorReporting);
+            $oldErrorReporting = \error_reporting(E_ALL & ~E_WARNING);
+            $hD = \opendir($statesPath);
+            \error_reporting($oldErrorReporting);
             if (false === $hD) {
                 throw new Exception\UnReadablePath(
-                    sprintf('Error, the path "%s" is not available', $statesPath)
+                    \sprintf('Error, the path "%s" is not available', $statesPath)
                 );
             }
 
             //Extracts all states (No check class exists)
             $statesNameArray = new \ArrayObject();
-            while (false !== ($file = readdir($hD))) {
+            while (false !== ($file = \readdir($hD))) {
                 switch ($file) {
                     case '.';
                     case '..';
                         break;
                     default:
-                        if (\strlen($file) - 4 == strrpos($file, '.php')) {
-                            $stateName = substr($file, 0, -4);
+                        if (\strlen($file) - 4 == \strrpos($file, '.php')) {
+                            $stateName = \substr($file, 0, -4);
                             $statesNameArray[] = $stateName;
                         }
                         break;
@@ -182,7 +182,7 @@ class FinderComposer implements FinderInterface
         $stateClassName = $this->statedClassName.'\\'.FinderInterface::STATES_PATH.'\\'.$stateName;
         if (!$this->testClassExists($stateClassName)) {
             throw new Exception\UnavailableState(
-                sprintf('Error, the state "%s" is not available', $stateName)
+                \sprintf('Error, the state "%s" is not available', $stateName)
             );
         }
 
@@ -203,10 +203,10 @@ class FinderComposer implements FinderInterface
         $classNameList = [];
 
         //Get name of the parent class
-        $parentClassName = get_parent_class($this->loadState($stateName));
+        $parentClassName = \get_parent_class($this->loadState($stateName));
         while (false !== $parentClassName) {
             $classNameList[] = $parentClassName;
-            $parentClassName = get_parent_class($parentClassName);
+            $parentClassName = \get_parent_class($parentClassName);
         }
 
         return $classNameList;
@@ -233,7 +233,7 @@ class FinderComposer implements FinderInterface
         $stateObject = new $stateClassName($privateMode, $statedClassName, $aliases);
         if (!$stateObject instanceof StateInterface) {
             throw new Exception\IllegalState(
-                sprintf(
+                \sprintf(
                     'Error, the state "%s" does not implement the interface "States\StateInterface"',
                     $stateName
                 )
@@ -252,9 +252,9 @@ class FinderComposer implements FinderInterface
      */
     private function getClassedName(string $statedClassName): string
     {
-        $parts = explode('\\', $statedClassName);
+        $parts = \explode('\\', $statedClassName);
 
-        return array_pop($parts);
+        return \array_pop($parts);
     }
 
     /**
@@ -271,12 +271,12 @@ class FinderComposer implements FinderInterface
 
         if (!$this->testClassExists($proxyClassName)) {
             //The stated class has not its own proxy, reuse the standard proxy, as an alias
-            class_alias($this->defaultProxyClassName, $proxyClassName, true);
-            class_alias($this->defaultProxyClassName, $this->statedClassName, false);
+            \class_alias($this->defaultProxyClassName, $proxyClassName, true);
+            \class_alias($this->defaultProxyClassName, $this->statedClassName, false);
         } else {
             //To access this class directly without repeat the stated class name
-            if (!class_exists($this->statedClassName, false)) {
-                class_alias($proxyClassName, $this->statedClassName, false);
+            if (!\class_exists($this->statedClassName, false)) {
+                \class_alias($proxyClassName, $this->statedClassName, false);
             }
         }
 
@@ -298,22 +298,22 @@ class FinderComposer implements FinderInterface
         $proxyClassName = $this->statedClassName.'\\'.$classPartName;
 
         //Fetch parents classes and extract library classes
-        if (class_exists($proxyClassName, false)) {
+        if (\class_exists($proxyClassName, false)) {
             $finalParentsClassesList = new \ArrayObject();
 
             //Get name of the parent class
-            $parentClassName = get_parent_class($proxyClassName);
-            while (false !== $parentClassName && false === strpos($parentClassName, 'Teknoo\\States')) {
-                if (class_exists($parentClassName, false)) {
+            $parentClassName = \get_parent_class($proxyClassName);
+            while (false !== $parentClassName && false === \strpos($parentClassName, 'Teknoo\\States')) {
+                if (\class_exists($parentClassName, false)) {
                     //Use reflection class on the reflection class, ignore bad proxy and abstract class
                     $reflectionClassInstance = new \ReflectionClass($parentClassName);
                     if ($reflectionClassInstance->implementsInterface(ProxyInterface::class)
                         && false === $reflectionClassInstance->isAbstract()) {
-                        $parentClassName = substr($parentClassName, 0, strrpos($parentClassName, '\\'));
+                        $parentClassName = \substr($parentClassName, 0, \strrpos($parentClassName, '\\'));
                         $finalParentsClassesList[] = $parentClassName;
                     }
                 }
-                $parentClassName = get_parent_class($parentClassName);
+                $parentClassName = \get_parent_class($parentClassName);
             }
 
             return $finalParentsClassesList;
@@ -344,7 +344,7 @@ class FinderComposer implements FinderInterface
 
         //Throw an error
         throw new Exception\IllegalProxy(
-            sprintf('Error, the proxy of "%s" does not implement "Proxy\ProxyInterface"', $this->statedClassName)
+            \sprintf('Error, the proxy of "%s" does not implement "Proxy\ProxyInterface"', $this->statedClassName)
         );
     }
 }

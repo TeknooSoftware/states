@@ -60,11 +60,11 @@ class StandardStartupFactory implements StartupFactoryInterface
      */
     public static function forwardStartup(ProxyInterface $proxyObject, string $stateName = null): FactoryInterface
     {
-        $factoryIdentifier = get_class($proxyObject);
+        $factoryIdentifier = \get_class($proxyObject);
 
         if (!static::$factoryRegistry instanceof \ArrayAccess || !isset(static::$factoryRegistry[$factoryIdentifier])) {
             throw new Exception\UnavailableFactory(
-                sprintf('Error, the factory "%s" is not available', $factoryIdentifier)
+                \sprintf('Error, the factory "%s" is not available', $factoryIdentifier)
             );
         }
 
@@ -111,6 +111,6 @@ class StandardStartupFactory implements StartupFactoryInterface
             return array();
         }
 
-        return array_keys(static::$factoryRegistry->getArrayCopy());
+        return \array_keys(static::$factoryRegistry->getArrayCopy());
     }
 }

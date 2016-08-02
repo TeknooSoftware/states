@@ -77,19 +77,19 @@ use Teknoo\States\Proxy\ProxyInterface;
       */
      protected function defineDestinationPatch(string $destinationPath, string $fullClassName): string
      {
-         $fullClassName = trim($fullClassName, '\\');
-         $fullClassNameParts = explode('\\', $fullClassName);
+         $fullClassName = \trim($fullClassName, '\\');
+         $fullClassNameParts = \explode('\\', $fullClassName);
 
-         $fullClassNameFinal = str_replace('\\', '/', $fullClassName);
-         for ($i = count($fullClassNameParts); $i > 0; --$i) {
-             $pathToTest = implode('/', array_slice($fullClassNameParts, 0, $i));
-             if (false !== strpos($destinationPath, $pathToTest)) {
-                 $fullClassNameFinal = implode('/', array_slice($fullClassNameParts, $i));
+         $fullClassNameFinal = \str_replace('\\', '/', $fullClassName);
+         for ($i = \count($fullClassNameParts); $i > 0; --$i) {
+             $pathToTest = \implode('/', \array_slice($fullClassNameParts, 0, $i));
+             if (false !== \strpos($destinationPath, $pathToTest)) {
+                 $fullClassNameFinal = \implode('/', \array_slice($fullClassNameParts, $i));
                  break;
              }
          }
 
-         return rtrim($destinationPath.DIRECTORY_SEPARATOR.$fullClassNameFinal, '/');
+         return \rtrim($destinationPath.DIRECTORY_SEPARATOR.$fullClassNameFinal, '/');
      }
 
      /**
@@ -112,7 +112,7 @@ use Teknoo\States\Proxy\ProxyInterface;
      protected function execute(InputInterface $input, OutputInterface $output)
      {
          $fullClassName = $input->getArgument('className');
-         $destinationPath = rtrim($input->getOption('path'), ' /');
+         $destinationPath = \rtrim($input->getOption('path'), ' /');
 
          $mode = $input->getOption('mode');
          $integrated = true;
@@ -120,9 +120,9 @@ use Teknoo\States\Proxy\ProxyInterface;
              $integrated = false;
          }
 
-         $fullClassNameExploded = explode('\\', $fullClassName);
-         $className = array_pop($fullClassNameExploded);
-         $namespace = implode('\\', $fullClassNameExploded);
+         $fullClassNameExploded = \explode('\\', $fullClassName);
+         $className = \array_pop($fullClassNameExploded);
+         $namespace = \implode('\\', $fullClassNameExploded);
 
          $destinationPath = $this->defineDestinationPatch($destinationPath, $fullClassName);
 

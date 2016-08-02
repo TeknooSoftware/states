@@ -50,12 +50,12 @@ trait IntegratedTrait
     public function initializeObjectWithFactory()
     {
         //Check if the startup class exists
-        if (!isset(static::$startupFactoryClassName) || !class_exists(static::$startupFactoryClassName, true)) {
+        if (!isset(static::$startupFactoryClassName) || !\class_exists(static::$startupFactoryClassName, true)) {
             throw new Exception\UnavailableFactory('Error, the startup factory is not available or not defined');
         }
 
         //Check if the startup class implements the interface 'Teknoo\States\Factory\StartupFactoryInterface'
-        $interfacesImplementedArray = array_flip(//Do a flip because isset is more effecient than in_array
+        $interfacesImplementedArray = \array_flip(//Do a flip because isset is more effecient than in_array
             class_implements(static::$startupFactoryClassName)
         );
 

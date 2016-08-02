@@ -118,7 +118,7 @@ abstract class AbstractParser
         $className = $this->extractClassWithNamespace($file);
         include_once $this->statedClassPath.DIRECTORY_SEPARATOR.$file;
 
-        if (!class_exists($className, false)) {
+        if (!\class_exists($className, false)) {
             throw new Exception\ClassNotFound('The class '.$className.' was not found');
         }
 
@@ -132,9 +132,9 @@ abstract class AbstractParser
      */
     protected function getClassNameFile()
     {
-        $explodedPath = explode(DIRECTORY_SEPARATOR, $this->statedClassPath);
+        $explodedPath = \explode(DIRECTORY_SEPARATOR, $this->statedClassPath);
 
-        return end($explodedPath).'.php';
+        return \end($explodedPath).'.php';
     }
 
     /**
@@ -150,7 +150,7 @@ abstract class AbstractParser
         $className = null;
 
         //Fun lexers of Zend to get token of this file
-        $tokens = token_get_all($this->getFile($file));
+        $tokens = \token_get_all($this->getFile($file));
         $classTokenDetected = false;
         $nameSpaceTokenDetected = false;
         //Browse tokens to find the class name
@@ -167,7 +167,7 @@ abstract class AbstractParser
                     $nameSpace .= '\\';
                 } elseif (T_STRING == $token[0] || T_NS_SEPARATOR == $token[0]) {
                     $nameSpace .= $token[1];
-                } elseif ('' != trim($token[1])) {
+                } elseif ('' != \trim($token[1])) {
                     $nameSpaceTokenDetected = false;
                 }
                 continue;

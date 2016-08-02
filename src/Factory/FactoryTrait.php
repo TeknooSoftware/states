@@ -256,9 +256,9 @@ trait FactoryTrait
 
         foreach ($finderLoader->getStateParentsClassesNamesList($loadingStateName) as $className) {
             if (isset($fullStateClassName[$className])) {
-                $classNameParts = explode('\\', $className);
+                $classNameParts = \explode('\\', $className);
 
-                $parentStateClassNameList[] = array_pop($classNameParts);
+                $parentStateClassNameList[] = \array_pop($classNameParts);
             }
         }
 
@@ -306,7 +306,7 @@ trait FactoryTrait
         //Check if the require state is available
         if (null !== $stateName && !isset($statesList[$stateName])) {
             throw new Exception\StateNotFound(
-                sprintf('Error, the state "%s" was not found in this stated class', $stateName)
+                \sprintf('Error, the state "%s" was not found in this stated class', $stateName)
             );
         }
 

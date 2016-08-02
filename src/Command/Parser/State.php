@@ -47,8 +47,8 @@ class State extends AbstractParser
         $filesList = $this->listFiles();
         $final = new \ArrayObject();
         foreach ($filesList as $file) {
-            if (0 === strpos($file, FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR)) {
-                $final[] = substr(substr($file, 0, -4), 7);
+            if (0 === \strpos($file, FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR)) {
+                $final[] = \substr(\substr($file, 0, -4), 7);
             }
         }
 
@@ -97,7 +97,7 @@ class State extends AbstractParser
      */
     public function useTraitState($stateName)
     {
-        return in_array(
+        return \in_array(
             'Teknoo\States\State\StateTrait',
             $this->loadFile(FinderInterface::STATES_PATH.DIRECTORY_SEPARATOR.$stateName.'.php')->getTraitNames()
         );

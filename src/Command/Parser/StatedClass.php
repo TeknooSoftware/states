@@ -76,7 +76,7 @@ class StatedClass extends AbstractParser
      */
     public function hasStatesFolder()
     {
-        return in_array(
+        return \in_array(
             FinderInterface::STATES_PATH,
             $this->listFiles()->getArrayCopy()
         );
@@ -89,7 +89,7 @@ class StatedClass extends AbstractParser
      */
     public function hasProxy()
     {
-        return in_array(
+        return \in_array(
             $this->getClassNameFile(),
             $this->listFiles()->getArrayCopy()
         );
@@ -102,7 +102,7 @@ class StatedClass extends AbstractParser
      */
     public function hasFactory()
     {
-        return in_array(
+        return \in_array(
             LoaderInterface::FACTORY_FILE_NAME,
             $this->listFiles()->getArrayCopy()
         );

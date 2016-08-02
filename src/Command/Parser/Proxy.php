@@ -86,7 +86,7 @@ class Proxy extends AbstractParser
      */
     public function useTraitProxy()
     {
-        return in_array(
+        return \in_array(
             'Teknoo\States\Proxy\ProxyTrait',
             $this->loadFile($this->getClassNameFile())->getTraitNames()
         );

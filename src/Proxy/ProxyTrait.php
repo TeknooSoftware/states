@@ -101,7 +101,7 @@ trait ProxyTrait
     private function getGlobalMethodsList()
     {
         if (null === $this->globalMethodsList) {
-            $this->globalMethodsList = array_flip(get_class_methods($this));
+            $this->globalMethodsList = \array_flip(\get_class_methods($this));
         }
 
         return $this->globalMethodsList;
@@ -227,13 +227,13 @@ trait ProxyTrait
 
         $callerStatedClassName = $this->getCallerStatedClassName();
 
-        $methodsWithStatesArray = explode('Of', $methodName);
+        $methodsWithStatesArray = \explode('Of', $methodName);
         if (1 < count($methodsWithStatesArray)) {
             //A specific state is required for this call
-            $statesName = lcfirst(array_pop($methodsWithStatesArray));
+            $statesName = \lcfirst(\array_pop($methodsWithStatesArray));
             if (isset($this->activesStates[$statesName])) {
                 //Get the state name
-                $methodName = implode('Of', $methodsWithStatesArray);
+                $methodName = \implode('Of', $methodsWithStatesArray);
 
                 $activeStateObject = $this->activesStates[$statesName];
                 if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
@@ -252,7 +252,7 @@ trait ProxyTrait
                 } else {
                     //Else, throw an exception
                     throw new Exception\AvailableSeveralMethodImplementations(
-                        sprintf(
+                        \sprintf(
                             'Method "%s" has several implementations in different states',
                             $methodName
                         )
@@ -266,7 +266,7 @@ trait ProxyTrait
         }
 
         throw new Exception\MethodNotImplemented(
-            sprintf('Method "%s" is not available with actives states', $methodName)
+            \sprintf('Method "%s" is not available with actives states', $methodName)
         );
     }
 
@@ -330,10 +330,10 @@ trait ProxyTrait
             --$limit;
         }
 
-        if (count($callingStack) >= $limit) {
+        if (\count($callingStack) >= $limit) {
             //If size of the calling stack is less : called from main php file, or corrupted stack :
             //apply default behavior : Public
-            $callerLine = array_pop($callingStack);
+            $callerLine = \array_pop($callingStack);
 
             if (!empty($callerLine['object']) && \is_object($callerLine['object'])) {
                 //It is an object
@@ -344,7 +344,7 @@ trait ProxyTrait
                     return StateInterface::VISIBILITY_PRIVATE;
                 }
 
-                if (get_class($this) === get_class($callerObject)) {
+                if (\get_class($this) === \get_class($callerObject)) {
                     //It's a brother (another instance of this same stated class, not a child), So Private scope too
                     return StateInterface::VISIBILITY_PRIVATE;
                 }
@@ -360,7 +360,7 @@ trait ProxyTrait
 
             if (!empty($callerLine['class'])
                 && \is_string($callerLine['class'])
-                && class_exists($callerLine['class'], false)) {
+                && \class_exists($callerLine['class'], false)) {
 
                 //It is a class
                 $callerName = $callerLine['class'];
@@ -407,7 +407,7 @@ trait ProxyTrait
 
         //Enabling states
         if ($this->activesStates instanceof \ArrayAccess) {
-            $activesStates = array_keys($this->activesStates->getArrayCopy());
+            $activesStates = \array_keys($this->activesStates->getArrayCopy());
             $this->activesStates = new \ArrayObject();
             foreach ($activesStates as $stateName) {
                 $this->enableState($stateName);
@@ -465,7 +465,7 @@ trait ProxyTrait
                 unset($this->activesStates[$stateName]);
             }
         } else {
-            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
+            throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
@@ -484,8 +484,8 @@ trait ProxyTrait
             $activesStatesAlias += $state->getStateAliases();
         }
 
-        $activesStatesAlias = array_map('strtolower', $activesStatesAlias);
-        $this->activesStatesAlias = array_combine($activesStatesAlias, $activesStatesAlias);
+        $activesStatesAlias = \array_map('strtolower', $activesStatesAlias);
+        $this->activesStatesAlias = \array_combine($activesStatesAlias, $activesStatesAlias);
 
         return $this;
     }
@@ -533,7 +533,7 @@ trait ProxyTrait
             $this->activesStates[$stateName] = $this->states[$stateName];
             $this->buildAliasesListOfActivesStates();
         } else {
-            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
+            throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
@@ -559,7 +559,7 @@ trait ProxyTrait
             unset($this->activesStates[$stateName]);
             $this->buildAliasesListOfActivesStates();
         } else {
-            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
+            throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
@@ -591,7 +591,7 @@ trait ProxyTrait
     public function listAvailableStates()
     {
         if ($this->states instanceof \ArrayAccess) {
-            return array_keys($this->states->getArrayCopy());
+            return \array_keys($this->states->getArrayCopy());
         } else {
             return [];
         }
@@ -607,7 +607,7 @@ trait ProxyTrait
     public function listEnabledStates()
     {
         if ($this->activesStates instanceof \ArrayAccess) {
-            return array_keys($this->activesStates->getArrayCopy());
+            return \array_keys($this->activesStates->getArrayCopy());
         } else {
             return [];
         }
@@ -645,9 +645,9 @@ trait ProxyTrait
 
         if (\is_array($enabledStatesList) && !empty($enabledStatesList)) {
             //array_flip + isset is more efficient than in_array
-            $stateName = strtr(strtolower($stateName), '_', '');
-            $enabledStatesList = array_flip(
-                array_map('strtolower', $enabledStatesList)
+            $stateName = \strtr(\strtolower($stateName), '_', '');
+            $enabledStatesList = \array_flip(
+                \array_map('strtolower', $enabledStatesList)
             );
 
             return isset($enabledStatesList[$stateName]) || isset($this->activesStatesAlias[$stateName]);
@@ -711,7 +711,7 @@ trait ProxyTrait
                 //Retrieve description from the required state
                 return $this->states[$stateName]->getMethodDescription($methodName);
             } elseif (null !== $stateName) {
-                throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
+                throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
             }
         } catch (StateMethodNotImplemented $e) {
             //Catch MethodNotImplemented from state entity to surround in a proxy exception
@@ -726,7 +726,7 @@ trait ProxyTrait
 
         //Method not found
         throw new Exception\MethodNotImplemented(
-            sprintf('Method "%s" is not available for this state', $methodName)
+            \sprintf('Method "%s" is not available for this state', $methodName)
         );
     }
 
@@ -782,18 +782,18 @@ trait ProxyTrait
     public function __get(string $name)
     {
         if (!$this->callerStatedClassesStack->isEmpty()) {
-            if (property_exists($this, $name)) {
+            if (\property_exists($this, $name)) {
                 return $this->{$name};
             }
 
-            throw new \ErrorException('Undefined property '.get_class($this).'::'.$name);
+            throw new \ErrorException('Undefined property '.\get_class($this).'::'.$name);
         }
 
         if ($this->isPublicProperty($name)) {
             return $this->{$name};
         }
 
-        throw new \ErrorException('Error: Cannot access private property '.get_class($this).'::'.$name);
+        throw new \ErrorException('Error: Cannot access private property '.\get_class($this).'::'.$name);
     }
 
     /**
@@ -852,7 +852,7 @@ trait ProxyTrait
             return;
         }
 
-        throw new \ErrorException('Error: Cannot access private property '.get_class($this).'::'.$name);
+        throw new \ErrorException('Error: Cannot access private property '.\get_class($this).'::'.$name);
     }
 
     /**
@@ -873,7 +873,7 @@ trait ProxyTrait
      */
     public function __unset(string $name)
     {
-        if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
+        if (!$this->callerStatedClassesStack->isEmpty() && \property_exists($this, $name)) {
             unset($this->{$name});
 
             return;
@@ -885,6 +885,6 @@ trait ProxyTrait
             return;
         }
 
-        throw new \ErrorException('Error: Cannot access private property '.get_class($this).'::'.$name);
+        throw new \ErrorException('Error: Cannot access private property '.\get_class($this).'::'.$name);
     }
 }

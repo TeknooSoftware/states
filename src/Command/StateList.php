@@ -72,7 +72,7 @@ class StateList extends AbstractCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $stateParser = $this->createParser('Parser\State', rtrim($input->getArgument('path'), ' /'));
-        $output->write(implode(PHP_EOL, $stateParser->listStates()->getArrayCopy()), true);
+        $stateParser = $this->createParser('Parser\State', \rtrim($input->getArgument('path'), ' /'));
+        $output->write(\implode(PHP_EOL, $stateParser->listStates()->getArrayCopy()), true);
     }
 }

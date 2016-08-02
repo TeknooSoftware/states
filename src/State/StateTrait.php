@@ -409,7 +409,7 @@ trait StateTrait
                     // State can be only applied on instances entities like object,
                     // and not on static entities which by nature have no states
                     throw new Exception\MethodNotImplemented(
-                        sprintf('Method "%s" is not available for this state', $methodName)
+                        \sprintf('Method "%s" is not available for this state', $methodName)
                     );
                 }
 
@@ -420,7 +420,7 @@ trait StateTrait
         } catch (\Throwable $e) {
             //Method not found
             throw new Exception\MethodNotImplemented(
-                sprintf('Method "%s" is not available for this state', $methodName),
+                \sprintf('Method "%s" is not available for this state', $methodName),
                 $e->getCode(),
                 $e
             );
@@ -453,7 +453,7 @@ trait StateTrait
             $this->closuresObjects = new \ArrayObject();
         }
 
-        $proxyIdentifier = spl_object_hash($proxy);
+        $proxyIdentifier = \spl_object_hash($proxy);
         if (!isset($this->closuresObjects[$proxyIdentifier])) {
             $this->closuresObjects[$proxyIdentifier] = new \ArrayObject();
         }
@@ -468,7 +468,7 @@ trait StateTrait
         //Check visibility scope
         if (false === $this->checkVisibility($methodName, $scope, $statedClassOriginName)) {
             throw new Exception\MethodNotImplemented(
-                sprintf('Method "%s" is not available for this state', $methodName)
+                \sprintf('Method "%s" is not available for this state', $methodName)
             );
         }
 

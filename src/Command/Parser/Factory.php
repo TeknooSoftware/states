@@ -86,7 +86,7 @@ class Factory extends AbstractParser
      */
     public function useTraitFactory()
     {
-        return in_array(
+        return \in_array(
             'Teknoo\States\Factory\FactoryTrait',
             $this->loadFile(LoaderInterface::FACTORY_FILE_NAME)->getTraitNames()
         );
