@@ -46,7 +46,7 @@ class Draft extends AbstractState
         $this->setAttribute('is_published', true);
         //Switch to Published State, so this state will be not available for next operations
         $this->disableState('Draft');
-        $this->enableState('Published');
+        $this->enableState(Published::class);
     }
 
     /**

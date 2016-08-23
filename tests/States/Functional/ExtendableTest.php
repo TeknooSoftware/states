@@ -25,6 +25,9 @@ use Teknoo\States\Di;
 use Teknoo\States\Exception\MethodNotImplemented;
 use Teknoo\States\Loader;
 use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
+use Teknoo\Tests\Support\Extendable\Daughter\States\StateOne;
+use Teknoo\Tests\Support\Extendable\Daughter\States\StateThree;
+use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree as StateThreeGD;
 use Teknoo\Tests\Support\Extendable\GrandDaughter\GrandDaughter;
 use Teknoo\Tests\Support\Extendable\Mother\Mother;
 
@@ -208,6 +211,32 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     /**
      * Test behavior of overloaded states.
      */
+    public function testOverloadedStateWithCanonicalStateName()
+    {
+        $motherInstance = new Mother();
+        $motherInstance->enableState('StateOne');
+        $this->assertEquals(123, $motherInstance->method1());
+        $this->assertEquals(456, $motherInstance->method2());
+        $daughterInstance = new Daughter();
+        $daughterInstance->enableState(StateOne::class);
+        $this->assertEquals(321, $daughterInstance->method3());
+        $this->assertEquals(654, $daughterInstance->method4());
+        try {
+            $daughterInstance->method1();
+        } catch (MethodNotImplemented $e) {
+            return;
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+
+            return;
+        }
+
+        $this->fail('Error, the daughter class overload the StateOne, Mother\'s methods must not be available');
+    }
+
+    /**
+     * Test behavior of overloaded states.
+     */
     public function testExtendedState()
     {
         $daughterInstance = new Daughter();
@@ -216,6 +245,21 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
 
         $grandDaughterInstace = new GrandDaughter();
         $grandDaughterInstace->enableState('StateThree');
+        $this->assertEquals(666, $grandDaughterInstace->method6());
+        $this->assertEquals(777, $grandDaughterInstace->method7());
+    }
+
+    /**
+     * Test behavior of overloaded states.
+     */
+    public function testExtendedStateWithCanonicalStateName()
+    {
+        $daughterInstance = new Daughter();
+        $daughterInstance->enableState(StateThree::class);
+        $this->assertEquals(666, $daughterInstance->method6());
+
+        $grandDaughterInstace = new GrandDaughter();
+        $grandDaughterInstace->enableState(StateThreeGD::class);
         $this->assertEquals(666, $grandDaughterInstace->method6());
         $this->assertEquals(777, $grandDaughterInstace->method7());
     }

@@ -1,5 +1,17 @@
 #Teknoo Software - States library - Change Log
 
+##[2.1.0] - 2016-08-23
+###Added
+- Can use the canonical state'name (full state' class name, with its namespace) instead its identifier (class name only)
+ for proxy's methods:  
+    * registerState
+    * unregisterState
+    * switchState
+    * enableState
+    * disableState
+    * inState
+ example $instance->switchState(MyState::class); instead of $instance->switchState('MyState'); 
+
 ##[2.0.6] - 2016-08-04
 ###Fixed
 - Improve optimization on call to native function and optimized

@@ -21,8 +21,9 @@
  */
 namespace Teknoo\Tests\States\Functional;
 
-use Teknoo\States\Loader;
 use Teknoo\Tests\Support\Article\Article;
+use Teknoo\Tests\Support\Article\States\Extended;
+use Teknoo\Tests\Support\Article\States\StateDefault;
 
 /**
  * Class ArticleTest
@@ -224,7 +225,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($article->inState('Published'));
         $this->assertFalse($article->inState('StateDefault'));
 
-        $article->switchState('Extended');
+        $article->switchState(Extended::class);
 
         $this->assertEquals(['Extended'], $article->listEnabledStates());
         $this->assertFalse($article->inState('Archived'));
@@ -232,6 +233,6 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($article->inState('Extended'));
         $this->assertTrue($article->inState('Promoted'));
         $this->assertTrue($article->inState('Published'));
-        $this->assertFalse($article->inState('StateDefault'));
+        $this->assertFalse($article->inState(StateDefault::class));
     }
 }

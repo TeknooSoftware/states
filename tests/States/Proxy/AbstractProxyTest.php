@@ -150,6 +150,16 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Check behavior of the proxy when we add a new state.
+     */
+    public function testRegisterStateWithCanonicalName()
+    {
+        $that = get_class($this->proxy);
+        $this->proxy->registerState(\substr($that, 0, \strrpos($that, '\\')).'\\States\\state1', $this->state1);
+        $this->assertEquals(array('state1'), $this->proxy->listAvailableStates());
+    }
+
+    /**
      * Proxy must throw an exception if the state name is not a valid string.
      *
      * @expectedException \TypeError
@@ -181,6 +191,17 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeProxy();
         $this->proxy->unregisterState('state2');
+        $this->assertEquals(array('state1', 'state3'), $this->proxy->listAvailableStates());
+    }
+
+    /**
+     * Test proxy behavior to unregister a state.
+     */
+    public function testUnRegisterStateWithCanonicalName()
+    {
+        $this->initializeProxy();
+        $that = get_class($this->proxy);
+        $this->proxy->unregisterState(\substr($that, 0, \strrpos($that, '\\')).'\\States\\state2', $this->state1);
         $this->assertEquals(array('state1', 'state3'), $this->proxy->listAvailableStates());
     }
 
@@ -233,6 +254,17 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Test proxy behavior when we switch of states.
+     */
+    public function testSwitchStateWithCanonicalName()
+    {
+        $this->initializeProxy();
+        $that = get_class($this->proxy);
+        $this->proxy->switchState(\substr($that, 0, \strrpos($that, '\\')).'\\States\\state3', $this->state1);
+        $this->assertEquals(array('state3'), $this->proxy->listEnabledStates());
+    }
+
+    /**
      * Test proxy behavior when we switch to already enable state.
      */
     public function testSwitchAlreadyLoadedState()
@@ -276,6 +308,18 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy();
         $this->proxy->disableState('state1');
         $this->proxy->enableState('state2');
+        $this->assertEquals(array('state2'), $this->proxy->listEnabledStates());
+    }
+
+    /**
+     * Check proxy behavior when we enable a state.
+     */
+    public function testEnableStateWithCanonicalName()
+    {
+        $this->initializeProxy();
+        $that = get_class($this->proxy);
+        $this->proxy->disableState(\substr($that, 0, \strrpos($that, '\\')).'\\States\\state1', $this->state1);
+        $this->proxy->enableState(\substr($that, 0, \strrpos($that, '\\')).'\\States\\state2', $this->state1);
         $this->assertEquals(array('state2'), $this->proxy->listEnabledStates());
     }
 

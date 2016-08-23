@@ -271,7 +271,35 @@ trait ProxyTrait
     }
 
     /**
+     * Convert also canonical states name (aka state's class name) to its identifier (kepp only the class name without
+     * its namespace)
+     *
+     * @param string $name
+     */
+    private function convertStateName(string &$name)
+    {
+        //Generator to browse all classname (self and parent's) of the current instance
+        $allowedNamespacesGenerator = function (string $that) {
+            do {
+                //Remove proxy name and add states subnamespace
+                yield \substr($that, 0, \strrpos($that, '\\')).'\\States\\';
+                $that = \get_parent_class($that);
+            } while (!empty($that));
+        };
+
+        //To remove namespaces from state's name.
+        foreach ($allowedNamespacesGenerator(static::class) as $namespace) {
+            if (0 === \strpos($name, $namespace)) {
+                $name = \substr($name, \strlen($namespace));
+                break;
+            }
+        }
+    }
+
+    /**
      * To test if the identifier is an non empty string.
+     * Convert also canonical states name (aka state's class name) to its identifier (kepp only the class name without
+     * its namespace)
      *
      * @api
      *
@@ -281,11 +309,13 @@ trait ProxyTrait
      *
      * @throws Exception\IllegalName when the identifier is not an non empty string
      */
-    protected function validateName(string $name): bool
+    protected function validateName(string &$name): bool
     {
         if (empty($name)) {
             throw new Exception\IllegalName('Error, the identifier is not a valid string');
         }
+
+        $this->convertStateName($name);
 
         return true;
     }
@@ -640,7 +670,7 @@ trait ProxyTrait
      */
     public function inState(string $stateName): bool
     {
-        $stateName = (string) $stateName;
+        $this->validateName($stateName);
         $enabledStatesList = $this->listEnabledStates();
 
         if (\is_array($enabledStatesList) && !empty($enabledStatesList)) {
