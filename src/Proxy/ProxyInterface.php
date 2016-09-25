@@ -31,10 +31,6 @@ use Teknoo\States\State\StateInterface;
  * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
  * $this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy instance.
  *
- * By default, this library creates an alias with the canonical proxy class name and the stated class name
- * to simulate a real class with the stated class name.
- *
- *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -151,7 +147,7 @@ interface ProxyInterface
      *
      * @return string[]
      */
-    public function listAvailableStates();
+    public static function listAvailableStates(): array;
 
     /**
      * To list all enable states for this object.
