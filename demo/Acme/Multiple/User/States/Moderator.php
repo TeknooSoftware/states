@@ -37,13 +37,15 @@ use Teknoo\States\State\AbstractState;
  */
 class Moderator extends AbstractState
 {
-    /**
-     * To know if this user is a moderator.
-     *
-     * @return bool
-     */
     public function isModerator()
     {
-        return $this->isModerator;
+        /**
+         * To know if this user is a moderator.
+         *
+         * @return bool
+         */
+        return function () {
+            return $this->isModerator;
+        };
     }
 }

@@ -26,10 +26,7 @@ use Acme\Extendable\GrandDaughter\GrandDaughter;
 use Acme\Extendable\Mother\Mother;
 use Teknoo\States\Exception\MethodNotImplemented;
 
-$loader = include 'demo.php';
-
-//Register demo namespace
-$loader->registerNamespace('\\Acme\\Extendable', __DIR__.DS.'Acme'.DS.'Extendable');
+include 'demo.php';
 
 echo 'Teknoo Software - States library - Demo for extendable behavior:'.PHP_EOL;
 

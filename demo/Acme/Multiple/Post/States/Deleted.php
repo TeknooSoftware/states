@@ -37,13 +37,15 @@ use Teknoo\States\State\AbstractState;
  */
 class Deleted extends AbstractState
 {
-    /**
-     * Return the body of the post. Return always Message deleted.
-     *
-     * @return string
-     */
     public function getMessage()
     {
-        return 'Message deleted';
+        /**
+         * Return the body of the post. Return always Message deleted.
+         *
+         * @return string
+         */
+        return function () {
+            return 'Message deleted';
+        };
     }
 }

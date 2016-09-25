@@ -37,17 +37,19 @@ use Teknoo\States\State\AbstractState;
  */
 class Published extends AbstractState
 {
-    /**
-     * Return the body of the post.
-     *
-     * @return string
-     */
     public function getMessage()
     {
-        if (!empty($this->message)) {
-            return $this->message;
-        }
+        /**
+         * Return the body of the post.
+         *
+         * @return string
+         */
+        return function () {
+            if (!empty($this->message)) {
+                return $this->message;
+            }
 
-        return '';
+            return '';
+        };
     }
 }

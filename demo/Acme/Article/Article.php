@@ -21,6 +21,12 @@
  */
 namespace demo\Acme\Article;
 
+use demo\Acme\Article\States\Archived;
+use demo\Acme\Article\States\Draft;
+use demo\Acme\Article\States\Extended;
+use demo\Acme\Article\States\Promoted;
+use demo\Acme\Article\States\Published;
+use demo\Acme\Article\States\StateDefault;
 use Teknoo\States\Proxy;
 
 /**
@@ -35,7 +41,7 @@ use Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Article extends Proxy\Integrated
+class Article extends Proxy\Standard
 {
     /**
      * Article's data.
@@ -43,6 +49,18 @@ class Article extends Proxy\Integrated
      * @var array
      */
     protected $data = array();
+
+    public static function listAvailableStates(): array
+    {
+        return [
+            Archived::class,
+            Draft::class,
+            Extended::class,
+            Promoted::class,
+            Published::class,
+            StateDefault::class
+        ];
+    }
 
     /**
      * Get an article's attribute.
@@ -57,7 +75,7 @@ class Article extends Proxy\Integrated
             return $this->data[$name];
         }
 
-        return;
+        return null;
     }
 
     /**
@@ -82,9 +100,9 @@ class Article extends Proxy\Integrated
         parent::__construct();
         //If the article is published, load the state Published, else load the state Draft
         if (false === $this->isPublished()) {
-            $this->enableState('Draft');
+            $this->enableState(Draft::class);
         } else {
-            $this->enableState('Published');
+            $this->enableState(Published::class);
         }
     }
 }

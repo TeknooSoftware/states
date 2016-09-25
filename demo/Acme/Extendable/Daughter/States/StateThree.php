@@ -41,7 +41,9 @@ class StateThree extends AbstractState
      */
     public function method6()
     {
-        return 666;
+        return function() {
+            return 666;
+        };
     }
 
     /**
@@ -49,7 +51,9 @@ class StateThree extends AbstractState
      */
     public function methodRecallMotherPrivate()
     {
-        return $this->methodPrivate() * 3;
+        return function () {
+            return $this->methodPrivate() * 3;
+        };
     }
 
     /**
@@ -57,6 +61,8 @@ class StateThree extends AbstractState
      */
     public function methodRecallMotherProtected()
     {
-        return $this->methodProtected() * 3;
+        return function () {
+            return $this->methodProtected() * 3;
+        };
     }
 }

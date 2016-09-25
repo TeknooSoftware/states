@@ -35,7 +35,7 @@ use Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Mother extends Proxy\Integrated
+class Mother extends Proxy\Standard
 {
     /**
      * Return the list of available state in this class.

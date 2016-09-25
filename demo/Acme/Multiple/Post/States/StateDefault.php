@@ -37,43 +37,49 @@ use Teknoo\States\State\AbstractState;
  */
 class StateDefault extends AbstractState
 {
-    /**
-     * Return the name of the post, or empty if no body has been defined.
-     *
-     * @return string
-     */
     public function getTitle()
     {
-        if (!empty($this->title)) {
-            return $this->title;
-        }
+        /**
+         * Return the name of the post, or empty if no body has been defined.
+         *
+         * @return string
+         */
+        return function() {
+            if (!empty($this->title)) {
+                return $this->title;
+            }
 
-        return '';
+            return '';
+        };
     }
 
-    /**
-     * Define the title of this post.
-     *
-     * @param string $title
-     *
-     * @return $this
-     */
-    public function setTitle($title)
+    public function setTitle()
     {
-        $this->title = $title;
+        /**
+         * Define the title of this post.
+         *
+         * @param string $title
+         *
+         * @return $this
+         */
+        return function ($title) {
+            $this->title = $title;
 
-        return $this;
+            return $this;
+        };
     }
 
-    /**
-     * Define the body of this post.
-     *
-     * @param string $body
-     *
-     * @return $this
-     */
-    public function setBody($body)
+    public function setBody()
     {
-        $this->body = $body;
+        /**
+         * Define the body of this post.
+         *
+         * @param string $body
+         *
+         * @return $this
+         */
+        return function ($body) {
+            $this->body = $body;
+        };
     }
 }

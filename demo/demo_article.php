@@ -21,10 +21,8 @@
  */
 namespace demo;
 
-$loader = include 'demo.php';
-
-//Register demo namespace
-$loader->registerNamespace('\\demo\\Acme\\Article', __DIR__.DS.'Acme'.DS.'Article');
+$composer = include 'demo.php';
+$composer->setPsr4('demo\\Acme\\', __DIR__.DS.'Acme'.DS);
 
 echo 'Teknoo Software - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize new article
@@ -54,8 +52,7 @@ echo $article->getFormattedBody().PHP_EOL;
 
 //Open a published article
 echo SEPARATOR.'Open article'.PHP_EOL;
-//You call also directly the stated class name and not the proxy
-$article = new Acme\Article(
+$article = new Acme\Article\Article(
     array(
         'is_published' => true,
         'title' => 'title 2',

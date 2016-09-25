@@ -38,13 +38,15 @@ use Teknoo\States\State\AbstractState;
  */
 class Administrator extends AbstractState
 {
-    /**
-     * Transform an user has moderator.
-     *
-     * @param User $user
-     */
-    public function setModerator(User $user)
+    public function setModerator()
     {
-        $user->setModerator(true);
+        /**
+         * Transform an user has moderator.
+         *
+         * @param User $user
+         */
+        return function (User $user) {
+            $user->setModerator(true);
+        };
     }
 }

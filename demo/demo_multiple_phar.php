@@ -21,10 +21,7 @@
  */
 namespace demo;
 
-$loader = include 'demo.php';
-
-//Register demo namespace
-$loader->registerNamespace('\\demo\\Acme\\Multiple', 'phar://'.__DIR__.DS.'Acme'.DS.'multiple.phar');
+include 'demo.php';
 
 echo 'Teknoo Software - States library - Demo :'.PHP_EOL.PHP_EOL;
 //Initialize user

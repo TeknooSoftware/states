@@ -36,14 +36,16 @@ use Teknoo\States\State\AbstractState;
  */
 class StateDefault extends AbstractState
 {
-    /**
-     * Return the title of this article.
-     *
-     * @return string
-     */
     public function getTitle()
     {
-        return $this->getAttribute('title');
+        /**
+         * Return the title of this article.
+         *
+         * @return string
+         */
+        return function () {
+            return $this->getAttribute('title');
+        };
     }
 
     /**
@@ -53,8 +55,15 @@ class StateDefault extends AbstractState
      */
     public function isPublished()
     {
-        $isPublished = $this->getAttribute('is_published');
+        /**
+         * Return the title of this article.
+         *
+         * @return string
+         */
+        return function() {
+            $isPublished = $this->getAttribute('is_published');
 
-        return !empty($isPublished);
+            return !empty($isPublished);
+        };
     }
 }

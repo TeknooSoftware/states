@@ -39,4 +39,4 @@ defined('RESET_COLOR')
 || define('RESET_COLOR', "\033[0m");
 
 //Loading lib States
-return require_once dirname(__DIR__).DS.'src'.DS.'bootstrap.php';
+return require_once dirname(__DIR__).DS.'vendor'.DS.'autoload.php';

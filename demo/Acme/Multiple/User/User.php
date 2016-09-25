@@ -35,7 +35,7 @@ use Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class User extends Proxy\Integrated
+class User extends Proxy\Standard
 {
     /**
      * Username of this user.

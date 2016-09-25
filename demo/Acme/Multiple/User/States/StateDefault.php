@@ -37,26 +37,31 @@ use Teknoo\States\State\AbstractState;
  */
 class StateDefault extends AbstractState
 {
-    /**
-     * Return the user name of this user.
-     *
-     * @return string
-     */
     public function getName()
     {
-        return $this->userName;
+        /**
+         * Return the user name of this user.
+         *
+         * @return string
+         */
+        return function() {
+            return $this->userName;
+        };
     }
 
-    /**
-     * Transform this user as moderator.
-     *
-     * @param bool $value
-     */
-    protected function setModerator($value)
+    protected function setModerator()
     {
-        $this->isModerator = $value;
-        if (!empty($this->isModerator)) {
-            $this->enableState('Moderator');
-        }
+        /**
+         * Transform this user as moderator.
+         *
+         * @param bool $value
+         */
+        return function ($value) {
+            $this->isModerator = $value;
+
+            if (!empty($this->isModerator)) {
+                $this->enableState('Moderator');
+            }
+        };
     }
 }
