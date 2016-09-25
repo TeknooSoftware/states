@@ -44,7 +44,7 @@ namespace Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Standard implements ProxyInterface
+abstract class Standard implements ProxyInterface
 {
     use ProxyTrait;
 
