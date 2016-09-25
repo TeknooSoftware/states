@@ -169,7 +169,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testStatesAlias()
+    public function testStatesCanonicalClassName()
     {
         defined('DS')
             || define('DS', DIRECTORY_SEPARATOR);
