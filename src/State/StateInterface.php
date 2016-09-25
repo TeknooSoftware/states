@@ -53,13 +53,17 @@ interface StateInterface
     const VISIBILITY_PRIVATE = 'private';
 
     /**
+     * Keyword to identify the state default
+     */
+    const STATE_DEFAULT_NAME = 'StateDefault';
+
+    /**
      * To initialize this state.
      *
      * @param bool     $privateMode
      * @param string   $statedClassName
-     * @param string[] $aliases
      */
-    public function __construct(bool $privateMode, string $statedClassName, array $aliases = []);
+    public function __construct(bool $privateMode, string $statedClassName);
 
     /**
      * To get the canonical stated class name associated to this state.
@@ -76,22 +80,6 @@ interface StateInterface
      * @return StateInterface
      */
     public function setStatedClassName(string $statedClassName): StateInterface;
-
-    /**
-     * To update the list of aliases of this state in the current stated class.
-     *
-     * @param string[] $aliases
-     *
-     * @return StateInterface
-     */
-    public function setStateAliases(array $aliases): StateInterface;
-
-    /**
-     * Return the list of aliases of this state in the current stated class.
-     *
-     * @return string[]
-     */
-    public function getStateAliases();
 
     /**
      * To know if the mode Private is enabled : private method are only accessible from
