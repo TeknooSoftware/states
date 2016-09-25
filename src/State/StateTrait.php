@@ -44,6 +44,7 @@ use Teknoo\States\Proxy\ProxyInterface;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin StateInterface
  */
 trait StateTrait
 {
@@ -92,9 +93,7 @@ trait StateTrait
         'setPrivateMode' => 'setPrivateMode',
         'isPrivateMode' => 'isPrivateMode',
         'getStatedClassName' => 'getStatedClassName',
-        'setStatedClassName' => 'setStatedClassName',
-        'setStateAliases' => 'setStateAliases',
-        'getStateAliases' => 'getStateAliases',
+        'setStatedClassName' => 'setStatedClassName'
     );
 
     /**
@@ -111,25 +110,17 @@ trait StateTrait
      */
     private $statedClassName;
 
-    /**
-     * List of aliases of this state in the stated class.
-     *
-     * @var string[]
-     */
-    private $stateAliases = [];
 
     /**
      * To initialize this state.
      *
      * @param bool     $privateMode     : To know if the private mode is enable or not for this state (see isPrivateMode()).
      * @param string   $statedClassName : To know the canonical stated class name of the object owning this state container.
-     * @param string[] $aliases         : List of aliases of this state in the stated class
      */
-    public function __construct(bool $privateMode, string $statedClassName, array $aliases = [])
+    public function __construct(bool $privateMode, string $statedClassName)
     {
         $this->setPrivateMode($privateMode);
         $this->setStatedClassName($statedClassName);
-        $this->setStateAliases($aliases);
     }
 
     /**
@@ -170,30 +161,6 @@ trait StateTrait
         $this->statedClassName = $statedClassName;
 
         return $this;
-    }
-
-    /**
-     * To update the list of aliases of this state in the current stated class.
-     *
-     * @param string[] $aliases
-     *
-     * @return StateInterface
-     */
-    public function setStateAliases(array $aliases): StateInterface
-    {
-        $this->stateAliases = $aliases;
-
-        return $this;
-    }
-
-    /**
-     * Return the list of aliases of this state in the current stated class.
-     *
-     * @return string[]
-     */
-    public function getStateAliases()
-    {
-        return $this->stateAliases;
     }
 
     /**
@@ -459,10 +426,14 @@ trait StateTrait
         }
 
         if (!isset($this->closuresObjects[$proxyIdentifier][$methodName])) {
-            //The closure is not already generated, so extract them
-            $methodReflection = $this->getMethodDescription($methodName);
+            $closure = $this->$methodName();
+            if (!$closure instanceof \Closure) {
+                throw new Exception\MethodNotImplemented(
+                    \sprintf('Method "%s" is not a valid Closure', $methodName)
+                );
+            }
 
-            $this->closuresObjects[$proxyIdentifier][$methodName] = $methodReflection->getClosure($this)->bindTo($proxy);
+            $this->closuresObjects[$proxyIdentifier][$methodName] = $closure;
         }
 
         //Check visibility scope
