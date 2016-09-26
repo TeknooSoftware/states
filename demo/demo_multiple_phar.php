@@ -21,6 +21,8 @@
  */
 namespace demo;
 
+use demo\Acme\Multiple\User\User;
+
 $composer = include 'demo.php';
 $composer->setPsr4('demo\\Acme\\', __DIR__.DS.'Acme'.DS);
 
@@ -32,7 +34,7 @@ echo 'get name : '.GREEN_COLOR.$simpleUser->getName().RESET_COLOR.PHP_EOL;
 //Initialize moderator
 echo 'Moderator : ';
 //You call also directly the stated class name and not the proxy
-$moderator = new Acme\Multiple\User('modo', false, true);
+$moderator = new User('modo', false, true);
 echo 'get name : '.GREEN_COLOR.$moderator->getName().RESET_COLOR.PHP_EOL;
 //Initialize admin
 echo 'Admin : ';
