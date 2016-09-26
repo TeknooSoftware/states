@@ -426,7 +426,11 @@ trait StateTrait
         }
 
         if (!isset($this->closuresObjects[$proxyIdentifier][$methodName])) {
-            $closure = $this->$methodName();
+            $description = $this->getMethodDescription($methodName);
+            //$description->setAccessible(true);
+            $closureBuilder = $description->getClosure($this);
+            $closure = $closureBuilder();
+
             if (!$closure instanceof \Closure) {
                 throw new Exception\MethodNotImplemented(
                     \sprintf('Method "%s" is not a valid Closure', $methodName)

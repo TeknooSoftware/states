@@ -56,4 +56,9 @@ abstract class Standard implements ProxyInterface
         //Call the method of the trait to initialize local attributes of the proxy
         $this->initializeProxy();
     }
+
+    public static function listAvailableStates(): array
+    {
+        return [];
+    }
 }

@@ -28,9 +28,10 @@ use Teknoo\States\State\Exception\MethodNotImplemented as StateMethodNotImplemen
  * Trait ProxyTrait
  * Default implementation of the proxy class in stated class. It is used in this library to create stated class instance.
  *
- * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
- * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
- * $this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy instance.
+ * A stated class instance is a proxy instance, configured from the stated class's factory, with different states
+ * instance.  The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
+ * $this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy
+ * instance.
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -88,21 +89,65 @@ trait ProxyTrait
     }
 
     /**
+     * Method to initialize a list of states class in this proxy. Is a state have a same name of a previous loaded state
+     * (from its daughters) it's skipped
+     * @param array $statesList
+     * @param bool $enablePrivateMode
+     * @param string $selfClassName
+     * @param array &$loadedStatesList
+     */
+    private function initializeStates(
+        array $statesList,
+        bool $enablePrivateMode,
+        string $selfClassName,
+        array &$loadedStatesList
+    ) {
+        foreach ($statesList as $stateClassName) {
+            //Extract short class name and check if this state is not already loaded
+            $shortStateName = \substr($stateClassName, \strrpos($stateClassName, '\\')+1);
+            if (isset($loadedStatesList[$shortStateName])) {
+                continue;
+            }
+
+            //Register it
+            $loadedStatesList[$shortStateName] = $stateClassName;
+
+            //Load and Register
+            $this->registerState($stateClassName, new $stateClassName($enablePrivateMode, $selfClassName));
+
+            //If the state is the default
+            if ($shortStateName == StateInterface::STATE_DEFAULT_NAME) {
+                $this->enableState($stateClassName);
+            }
+        }
+    }
+
+    /**
      * To initialize the proxy instance with all declared states
      *
      * @return ProxyInterface
      */
-    protected function loadStates(): ProxyInterface
+    private function loadStates(): ProxyInterface
     {
-        $currentClassName = self::class;
-        $stateDefaultLength = \strlen(StateInterface::STATE_DEFAULT_NAME) + 1;
-        foreach ($this->listAvailableStates() as $stateClassName) {
-            $this->registerState($stateClassName, new $stateClassName(false, $currentClassName));
+        $currentClassName = static::class;
+        $loadedStatesList = [];
 
-            if (\strlen($stateClassName) - $stateDefaultLength == \strripos($stateClassName, '\\'.StateInterface::STATE_DEFAULT_NAME)) {
-                $this->enableState($stateClassName);
+        $this->initializeStates(static::listAvailableStates(), false, $currentClassName, $loadedStatesList);
+
+        $parentClassName = \get_class($this);
+        do {
+            $parentClassName = \get_parent_class($parentClassName);
+            if (\class_exists($parentClassName)
+                    && \is_subclass_of($parentClassName, ProxyInterface::class)) {
+
+                $this->initializeStates(
+                    $parentClassName::listAvailableStates(),
+                    true,
+                    $parentClassName,
+                    $loadedStatesList
+                );
             }
-        }
+        } while (false !== $parentClassName);
 
         return $this;
     }
@@ -320,7 +365,8 @@ trait ProxyTrait
      * Called from a global function : Public scope
      * Called from another class (not a child class), via a static method or an instance of this class : Public scope
      * Called from a child class, via a static method or an instance of this class : Protected scope
-     * Called from a static method of this stated class, or from a method of this stated class (but not this instance) : Private scope
+     * Called from a static method of this stated class, or from a method of this stated class (but not this instance) :
+     *  Private scope
      * Called from a method of this stated class instance : Private state
      *
      * @param int $limit To define the caller into the calling stack
