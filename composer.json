@@ -36,9 +36,7 @@
     "archive": {
         "exclude": ["demo", "vendor", ".idea"]
     },
-    "bin": ["bin/states"],
     "scripts": {
       "test":"phpunit",
-      "states":"bin/states"
     }
 }
