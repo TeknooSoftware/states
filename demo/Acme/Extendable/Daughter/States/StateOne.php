@@ -21,6 +21,7 @@
  */
 namespace Acme\Extendable\Daughter\States;
 
+use Acme\Extendable\GrandDaughter\GrandDaughter;
 use Teknoo\States\State\AbstractState;
 
 /**
@@ -33,6 +34,7 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin GrandDaughter
  */
 class StateOne extends AbstractState
 {
@@ -42,17 +44,17 @@ class StateOne extends AbstractState
         /**
          * @return int
          */
-        return function() {
+        return function() {
             return 321;
         };
     }
 
-    /**
-     * @return int
-     */
     public function method4()
     {
-        return function() {
+        /**
+         * @return int
+         */
+        return function() {
             return 654;
         };
     }

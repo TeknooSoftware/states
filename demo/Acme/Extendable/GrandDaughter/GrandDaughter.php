@@ -22,6 +22,7 @@
 namespace Acme\Extendable\GrandDaughter;
 
 use Acme\Extendable\Daughter\Daughter;
+use Acme\Extendable\GrandDaughter\States\StateThree;
 
 /**
  * Proxy GrandDaughter
@@ -37,6 +38,13 @@ use Acme\Extendable\Daughter\Daughter;
  */
 class GrandDaughter extends Daughter
 {
+    public static function listAvailableStates(): array
+    {
+        return [
+            StateThree::class
+        ];
+    }
+
     /**
      * Return the list of available state in this class.
      *

@@ -21,6 +21,9 @@
  */
 namespace demo\Acme\Multiple\Post;
 
+use demo\Acme\Multiple\Post\States\Deleted;
+use demo\Acme\Multiple\Post\States\Published;
+use demo\Acme\Multiple\Post\States\StateDefault;
 use Teknoo\States\Proxy;
 
 /**
@@ -35,6 +38,14 @@ use Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Post extends Proxy\Integrated
+class Post extends Proxy\Standard
 {
+    public static function listAvailableStates(): array
+    {
+        return [
+            Deleted::class,
+            Published::class,
+            StateDefault::class
+        ];
+    }
 }

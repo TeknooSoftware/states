@@ -21,6 +21,9 @@
  */
 namespace demo\Acme\Multiple\User;
 
+use demo\Acme\Multiple\User\States\Administrator;
+use demo\Acme\Multiple\User\States\Moderator;
+use demo\Acme\Multiple\User\States\StateDefault;
 use Teknoo\States\Proxy;
 
 /**
@@ -58,6 +61,15 @@ class User extends Proxy\Standard
      */
     protected $isModerator = false;
 
+    public static function listAvailableStates(): array
+    {
+        return [
+            Administrator::class,
+            Moderator::class,
+            StateDefault::class
+        ];
+    }
+
     /**
      * To initialize this user with some data.
      *
@@ -75,12 +87,12 @@ class User extends Proxy\Standard
         parent::__construct();
         //Load states
         if (!empty($this->isAdmin)) {
-            $this->enableState('Administrator');
-            $this->enableState('Moderator');
+            $this->enableState(Administrator::class);
+            $this->enableState(Moderator::class);
         }
 
         if (!empty($this->isModerator)) {
-            $this->enableState('Moderator');
+            $this->enableState(Moderator::class);
         }
     }
 }

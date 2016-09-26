@@ -21,6 +21,9 @@
  */
 namespace Acme\Extendable\Mother;
 
+use Acme\Extendable\Mother\States\StateDefault;
+use Acme\Extendable\Mother\States\StateOne;
+use Acme\Extendable\Mother\States\StateTwo;
 use Teknoo\States\Proxy;
 
 /**
@@ -37,6 +40,15 @@ use Teknoo\States\Proxy;
  */
 class Mother extends Proxy\Standard
 {
+    public static function listAvailableStates(): array
+    {
+        return [
+            StateDefault::class,
+            StateOne::class,
+            StateTwo::class
+        ];
+    }
+
     /**
      * Return the list of available state in this class.
      *

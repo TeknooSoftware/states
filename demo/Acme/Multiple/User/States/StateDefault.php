@@ -21,6 +21,7 @@
  */
 namespace demo\Acme\Multiple\User\States;
 
+use demo\Acme\Multiple\User\User;
 use Teknoo\States\State\AbstractState;
 
 /**
@@ -34,6 +35,7 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin User
  */
 class StateDefault extends AbstractState
 {
@@ -60,7 +62,7 @@ class StateDefault extends AbstractState
             $this->isModerator = $value;
 
             if (!empty($this->isModerator)) {
-                $this->enableState('Moderator');
+                $this->enableState(Moderator::class);
             }
         };
     }

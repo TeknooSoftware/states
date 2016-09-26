@@ -21,6 +21,9 @@
  */
 namespace Acme\Extendable\Daughter;
 
+use Acme\Extendable\Daughter\States\StateDefault;
+use Acme\Extendable\Daughter\States\StateOne;
+use Acme\Extendable\Daughter\States\StateThree;
 use Acme\Extendable\Mother\Mother;
 
 /**
@@ -37,6 +40,15 @@ use Acme\Extendable\Mother\Mother;
  */
 class Daughter extends Mother
 {
+    public static function listAvailableStates(): array
+    {
+        return [
+            StateDefault::class,
+            StateOne::class,
+            StateThree::class
+        ];
+    }
+
     /**
      * Return the list of available state in this class.
      *

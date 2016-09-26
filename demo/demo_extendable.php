@@ -23,10 +23,14 @@ namespace demo;
 
 use Acme\Extendable\Daughter\Daughter;
 use Acme\Extendable\GrandDaughter\GrandDaughter;
+use Acme\Extendable\GrandDaughter\States\StateThree;
 use Acme\Extendable\Mother\Mother;
+use Acme\Extendable\Mother\States\StateOne;
+use Acme\Extendable\Mother\States\StateTwo;
 use Teknoo\States\Exception\MethodNotImplemented;
 
-include 'demo.php';
+$composer = include 'demo.php';
+$composer->setPsr4('Acme\\', __DIR__.DS.'Acme'.DS);
 
 echo 'Teknoo Software - States library - Demo for extendable behavior:'.PHP_EOL;
 
@@ -56,11 +60,11 @@ foreach ($grandDaughterInstance->listMethodsByStates() as $stateName => $methods
 }
 echo RESET_COLOR.PHP_EOL;
 
-$motherInstance->enableState('StateOne');
+$motherInstance->enableState(StateOne::class);
 echo PHP_EOL.'Call method1 of mother object : '.GREEN_COLOR.$motherInstance->method1().RESET_COLOR;
 echo PHP_EOL.'Call method2 of mother object : '.GREEN_COLOR.$motherInstance->method2().RESET_COLOR;
 
-$daughterInstance->enableState('StateOne');
+$daughterInstance->enableState(\Acme\Extendable\Daughter\States\StateOne::class);
 echo PHP_EOL.'Call method3 of daughter object : '.GREEN_COLOR.$daughterInstance->method3().RESET_COLOR;
 echo PHP_EOL.'Call method4 of daughter object : '.GREEN_COLOR.$daughterInstance->method4().RESET_COLOR.PHP_EOL;
 echo PHP_EOL.'Forbid call of mother method 1 from daughter object (StateOne is overloaded in Daughter class and method1 has not been defined here) : ';
@@ -77,21 +81,21 @@ try {
     exit;
 }
 
-$grandDaughterInstance->enableState('StateThree');
+$grandDaughterInstance->enableState(StateThree::class);
 echo PHP_EOL.'Call daughter method6 from a granddaughter object with the StateThree extended, not overloaded : ';
 echo GREEN_COLOR.$grandDaughterInstance->method6().RESET_COLOR;
 echo PHP_EOL.'Call now the method7 defined in this state for GrandDaughter class : ';
 echo GREEN_COLOR.$grandDaughterInstance->method7().RESET_COLOR.PHP_EOL;
 
 echo PHP_EOL.'Test behavior when we call a private method defined in mother class, via a public method, by a mother object : ';
-$motherInstance->enableState('StateTwo');
+$motherInstance->enableState(StateTwo::class);
 echo GREEN_COLOR.$motherInstance->methodRecallPrivate().RESET_COLOR;
 echo PHP_EOL.'Test behavior when we call a private method defined in mother class, via a public method, by a daughter object : ';
-$daughterInstance->enableState('StateTwo');
+$daughterInstance->enableState(StateTwo::class);
 echo GREEN_COLOR.$daughterInstance->methodRecallPrivate().RESET_COLOR;
 
 echo PHP_EOL.'Test behavior when we call a private method defined in mother class, via a public method in daughter class, by a daughter object : ';
-$daughterInstance->enableState('StateTwo')->enableState('StateThree');
+$daughterInstance->enableState(StateTwo::class)->enableState(\Acme\Extendable\Daughter\States\StateThree::class);
 
 try {
     $daughterInstance->methodRecallMotherPrivate();

@@ -21,6 +21,7 @@
  */
 namespace demo\Acme\Multiple\Post\States;
 
+use demo\Acme\Multiple\Post\Post;
 use Teknoo\States\State\AbstractState;
 
 /**
@@ -34,6 +35,7 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin Post
  */
 class Published extends AbstractState
 {

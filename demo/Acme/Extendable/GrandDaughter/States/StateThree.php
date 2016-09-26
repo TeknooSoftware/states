@@ -22,6 +22,7 @@
 namespace Acme\Extendable\GrandDaughter\States;
 
 use Acme\Extendable\Daughter\States as Daughter;
+use Acme\Extendable\GrandDaughter\GrandDaughter;
 
 /**
  * State StateThree.
@@ -33,14 +34,17 @@ use Acme\Extendable\Daughter\States as Daughter;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin GrandDaughter
  */
 class StateThree extends Daughter\StateThree
 {
-    /**
-     * @return int
-     */
     public function method7()
     {
-        return 777;
+        /**
+         * @return int
+         */
+        return function () {
+            return 777;
+        };
     }
 }

@@ -21,6 +21,7 @@
  */
 namespace Acme\Extendable\Mother\States;
 
+use Acme\Extendable\Mother\Mother;
 use Teknoo\States\State\AbstractState;
 
 /**
@@ -33,6 +34,7 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin Mother
  */
 class StateDefault extends AbstractState
 {

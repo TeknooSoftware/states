@@ -20,6 +20,7 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 namespace demo\Acme\Article\States;
+use demo\Acme\Article\Article;
 
 /**
  * State Archived
@@ -32,6 +33,7 @@ namespace demo\Acme\Article\States;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin Article
  */
 class Archived extends Published
 {
