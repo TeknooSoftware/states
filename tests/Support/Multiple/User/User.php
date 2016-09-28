@@ -22,6 +22,9 @@
 namespace Teknoo\Tests\Support\Multiple\User;
 
 use Teknoo\States\Proxy;
+use Teknoo\Tests\Support\Multiple\User\States\Administrator;
+use Teknoo\Tests\Support\Multiple\User\States\Moderator;
+use Teknoo\Tests\Support\Multiple\User\States\StateDefault;
 
 /**
  * Proxy User
@@ -36,7 +39,7 @@ use Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class User extends Proxy\Integrated
+class User extends Proxy\Standard
 {
     /**
      * Username of this user.
@@ -83,5 +86,14 @@ class User extends Proxy\Integrated
         if (!empty($this->isModerator)) {
             $this->enableState('Moderator');
         }
+    }
+
+    public static function listAvailableStates(): array
+    {
+        return [
+            Administrator::class,
+            Moderator::class,
+            StateDefault::class
+        ];
     }
 }

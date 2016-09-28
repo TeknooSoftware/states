@@ -22,6 +22,7 @@
 namespace Teknoo\Tests\Support\Extendable\GrandDaughter;
 
 use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
+use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree;
 
 /**
  * Proxy GrandDaughter
@@ -38,6 +39,13 @@ use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
  */
 class GrandDaughter extends Daughter
 {
+    public static function listAvailableStates(): array
+    {
+        return [
+            StateThree::class
+        ];
+    }
+
     /**
      * Return the list of available state in this class.
      *

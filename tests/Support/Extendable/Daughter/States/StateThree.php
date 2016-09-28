@@ -34,30 +34,37 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin GrandDaughter
  */
 class StateThree extends AbstractState
 {
-    /**
-     * @return int
-     */
     public function method6()
     {
-        return 666;
+        /**
+         * @return int
+         */
+        return function() {
+            return 666;
+        };
     }
 
-    /**
-     * @return int
-     */
     public function methodRecallMotherPrivate()
     {
-        return $this->methodPrivate() * 3;
+        /**
+         * @return int
+         */
+        return function () {
+            return $this->methodPrivate() * 3;
+        };
     }
 
-    /**
-     * @return int
-     */
     public function methodRecallMotherProtected()
     {
-        return $this->methodProtected() * 3;
+        /**
+         * @return int
+         */
+        return function () {
+            return $this->methodProtected() * 3;
+        };
     }
 }

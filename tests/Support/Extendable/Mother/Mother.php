@@ -21,7 +21,10 @@
  */
 namespace Teknoo\Tests\Support\Extendable\Mother;
 
-use Teknoo\States\Proxy\Integrated;
+use Teknoo\States\Proxy\Standard;
+use Teknoo\Tests\Support\Extendable\Mother\States\StateDefault;
+use Teknoo\Tests\Support\Extendable\Mother\States\StateOne;
+use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
 
 /**
  * Proxy Mother
@@ -36,8 +39,17 @@ use Teknoo\States\Proxy\Integrated;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Mother extends Integrated
+class Mother extends Standard
 {
+    public static function listAvailableStates(): array
+    {
+        return [
+            StateDefault::class,
+            StateOne::class,
+            StateTwo::class
+        ];
+    }
+
     /**
      * Return the list of available state in this class.
      *

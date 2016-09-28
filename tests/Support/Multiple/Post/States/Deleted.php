@@ -24,8 +24,8 @@ namespace Teknoo\Tests\Support\Multiple\Post\States;
 use Teknoo\States\State\AbstractState;
 
 /**
- * State Published
- * State for a post when a message is published
+ * State Deleted
+ * State for a post when a message is deleted
  * Copy from Demo for functional tests.
  *
  *
@@ -35,20 +35,19 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin Post
  */
-class Published extends AbstractState
+class Deleted extends AbstractState
 {
-    /**
-     * Return the body of the post.
-     *
-     * @return string
-     */
     public function getMessage()
     {
-        if (!empty($this->message)) {
-            return $this->message;
-        }
-
-        return '';
+        /**
+         * Return the body of the post. Return always Message deleted.
+         *
+         * @return string
+         */
+        return function () {
+            return 'Message deleted';
+        };
     }
 }

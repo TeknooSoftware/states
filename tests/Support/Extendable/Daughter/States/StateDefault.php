@@ -34,6 +34,7 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin Daughter
  */
 class StateDefault extends AbstractState
 {

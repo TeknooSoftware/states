@@ -33,6 +33,7 @@ namespace Teknoo\Tests\Support\Article\States;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin Article
  */
 class Extended extends Promoted
 {

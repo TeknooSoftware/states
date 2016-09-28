@@ -22,6 +22,12 @@
 namespace Teknoo\Tests\Support\Article;
 
 use Teknoo\States\Proxy;
+use Teknoo\Tests\Support\Article\States\Archived;
+use Teknoo\Tests\Support\Article\States\Draft;
+use Teknoo\Tests\Support\Article\States\Extended;
+use Teknoo\Tests\Support\Article\States\Promoted;
+use Teknoo\Tests\Support\Article\States\Published;
+use Teknoo\Tests\Support\Article\States\StateDefault;
 
 /**
  * Proxy Article
@@ -36,7 +42,7 @@ use Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Article extends Proxy\Integrated
+class Article extends Proxy\Standard
 {
     /**
      * Article's data.
@@ -44,6 +50,18 @@ class Article extends Proxy\Integrated
      * @var array
      */
     protected $data = array();
+
+    public static function listAvailableStates(): array
+    {
+        return [
+            Archived::class,
+            Draft::class,
+            Extended::class,
+            Promoted::class,
+            Published::class,
+            StateDefault::class
+        ];
+    }
 
     /**
      * Get an article's attribute.

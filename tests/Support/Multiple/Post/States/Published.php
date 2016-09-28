@@ -19,13 +19,13 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-namespace Teknoo\Tests\Support\Multiple\User\States;
+namespace Teknoo\Tests\Support\Multiple\Post\States;
 
 use Teknoo\States\State\AbstractState;
 
 /**
- * State Moderator
- * State for an user with moderator right
+ * State Published
+ * State for a post when a message is published
  * Copy from Demo for functional tests.
  *
  *
@@ -35,16 +35,23 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin Post
  */
-class Moderator extends AbstractState
+class Published extends AbstractState
 {
-    /**
-     * To know if this user is a moderator.
-     *
-     * @return bool
-     */
-    public function isModerator()
+    public function getMessage()
     {
-        return $this->isModerator;
+        /**
+         * Return the body of the post.
+         *
+         * @return string
+         */
+        return function () {
+            if (!empty($this->message)) {
+                return $this->message;
+            }
+
+            return '';
+        };
     }
 }

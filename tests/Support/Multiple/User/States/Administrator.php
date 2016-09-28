@@ -19,13 +19,14 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-namespace Teknoo\Tests\Support\Multiple\Post\States;
+namespace Teknoo\Tests\Support\Multiple\User\States;
 
 use Teknoo\States\State\AbstractState;
+use Teknoo\Tests\Support\Multiple\User\User;
 
 /**
- * State Deleted
- * Default State for a post message
+ * State Administrator
+ * State for an user with admin right
  * Copy from Demo for functional tests.
  *
  *
@@ -35,46 +36,19 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin User
  */
-class StateDefault extends AbstractState
+class Administrator extends AbstractState
 {
-    /**
-     * Return the name of the post, or empty if no body has been defined.
-     *
-     * @return string
-     */
-    public function getTitle()
+    public function setModerator()
     {
-        if (!empty($this->title)) {
-            return $this->title;
-        }
-
-        return '';
-    }
-
-    /**
-     * Define the title of this post.
-     *
-     * @param string $title
-     *
-     * @return $this
-     */
-    public function setTitle($title)
-    {
-        $this->title = $title;
-
-        return $this;
-    }
-
-    /**
-     * Define the body of this post.
-     *
-     * @param string $body
-     *
-     * @return $this
-     */
-    public function setBody($body)
-    {
-        $this->body = $body;
+        /**
+         * Transform an user has moderator.
+         *
+         * @param User $user
+         */
+        return function (User $user) {
+            $user->setModerator(true);
+        };
     }
 }

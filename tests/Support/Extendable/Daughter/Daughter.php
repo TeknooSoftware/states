@@ -21,6 +21,9 @@
  */
 namespace Teknoo\Tests\Support\Extendable\Daughter;
 
+use Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault;
+use Teknoo\Tests\Support\Extendable\Daughter\States\StateOne;
+use Teknoo\Tests\Support\Extendable\Daughter\States\StateThree;
 use Teknoo\Tests\Support\Extendable\Mother\Mother;
 
 /**
@@ -38,6 +41,15 @@ use Teknoo\Tests\Support\Extendable\Mother\Mother;
  */
 class Daughter extends Mother
 {
+    public static function listAvailableStates(): array
+    {
+        return [
+            StateDefault::class,
+            StateOne::class,
+            StateThree::class
+        ];
+    }
+
     /**
      * Return the list of available state in this class.
      *

@@ -35,47 +35,57 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin Article
  */
 class Draft extends AbstractState
 {
-    /**
-     * Publish this article.
-     */
     public function publishing()
     {
-        $this->setAttribute('is_published', true);
-        //Switch to Published State, so this state will be not available for next operations
-        $this->disableState('Draft');
-        $this->enableState(Published::class);
+        /**
+         * Publish this article.
+         */
+        return function() {
+            $this->setAttribute('is_published', true);
+            //Switch to Published State, so this state will be not available for next operations
+            $this->disableState(Draft::class);
+            $this->enableState(Published::class);
+        };
     }
 
-    /**
-     * Define the title of this article.
-     *
-     * @param string $title
-     */
-    public function setTitle($title)
+    public function setTitle()
     {
-        $this->setAttribute('title', $title);
+        /**
+         * Define the title of this article.
+         *
+         * @param string $title
+         */
+        return function($title) {
+            $this->setAttribute('title', $title);
+        };
     }
 
-    /**
-     * Define the body of this article.
-     *
-     * @param string $body
-     */
-    public function setBody($body)
+    public function setBody()
     {
-        $this->setAttribute('body', $body);
+        /**
+         * Define the body of this article.
+         *
+         * @param string $body
+         */
+        return function($body) {
+            $this->setAttribute('body', $body);
+        };
     }
 
-    /**
-     * Get the body source.
-     *
-     * @return string
-     */
+
     public function getBodySource()
     {
-        return $this->getAttribute('body');
+        /**
+         * Get the body source.
+         *
+         * @return string
+         */
+        return function () {
+            return $this->getAttribute('body');
+        };
     }
 }

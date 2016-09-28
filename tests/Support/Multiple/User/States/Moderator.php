@@ -22,11 +22,10 @@
 namespace Teknoo\Tests\Support\Multiple\User\States;
 
 use Teknoo\States\State\AbstractState;
-use Teknoo\Tests\Support\Multiple\User\User;
 
 /**
- * State Administrator
- * State for an user with admin right
+ * State Moderator
+ * State for an user with moderator right
  * Copy from Demo for functional tests.
  *
  *
@@ -36,16 +35,19 @@ use Teknoo\Tests\Support\Multiple\User\User;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin User
  */
-class Administrator extends AbstractState
+class Moderator extends AbstractState
 {
-    /**
-     * Transform an user has moderator.
-     *
-     * @param User $user
-     */
-    public function setModerator(User $user)
+    public function isModerator()
     {
-        $user->setModerator(true);
+        /**
+         * To know if this user is a moderator.
+         *
+         * @return bool
+         */
+        return function () {
+            return $this->isModerator;
+        };
     }
 }

@@ -22,6 +22,9 @@
 namespace Teknoo\Tests\Support\Multiple\Post;
 
 use Teknoo\States\Proxy;
+use Teknoo\Tests\Support\Multiple\Post\States\Deleted;
+use Teknoo\Tests\Support\Multiple\Post\States\Published;
+use Teknoo\Tests\Support\Multiple\Post\States\StateDefault;
 
 /**
  * Proxy Class
@@ -36,6 +39,14 @@ use Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Post extends Proxy\Integrated
+class Post extends Proxy\Standard
 {
+    public static function listAvailableStates(): array
+    {
+        return [
+            Deleted::class,
+            Published::class,
+            StateDefault::class
+        ];
+    }
 }

@@ -19,13 +19,13 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-namespace Teknoo\Tests\Support\Extendable\Mother;
+namespace Teknoo\Tests\Support\Multiple\User\States;
 
-use Teknoo\States\Factory\Integrated;
+use Teknoo\States\State\AbstractState;
 
 /**
- * Class FactoryClass
- * Factory of the stated class Mother
+ * State StateDefault
+ * Default State for an user
  * Copy from Demo for functional tests.
  *
  *
@@ -35,7 +35,35 @@ use Teknoo\States\Factory\Integrated;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin User
  */
-class Factory extends Integrated
+class StateDefault extends AbstractState
 {
+    public function getName()
+    {
+        /**
+         * Return the user name of this user.
+         *
+         * @return string
+         */
+        return function() {
+            return $this->userName;
+        };
+    }
+
+    protected function setModerator()
+    {
+        /**
+         * Transform this user as moderator.
+         *
+         * @param bool $value
+         */
+        return function ($value) {
+            $this->isModerator = $value;
+
+            if (!empty($this->isModerator)) {
+                $this->enableState(Moderator::class);
+            }
+        };
+    }
 }

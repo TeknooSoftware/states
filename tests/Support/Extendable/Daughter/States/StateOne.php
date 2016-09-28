@@ -34,22 +34,28 @@ use Teknoo\States\State\AbstractState;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin GrandDaughter
  */
 class StateOne extends AbstractState
 {
-    /**
-     * @return int
-     */
+
     public function method3()
     {
-        return 321;
+        /**
+         * @return int
+         */
+        return function() {
+            return 321;
+        };
     }
 
-    /**
-     * @return int
-     */
     public function method4()
     {
-        return 654;
+        /**
+         * @return int
+         */
+        return function() {
+            return 654;
+        };
     }
 }

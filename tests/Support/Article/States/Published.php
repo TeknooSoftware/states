@@ -36,39 +36,43 @@ use Teknoo\States\State\StateTrait;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin Article
  */
 class Published implements StateInterface
 {
     use StateTrait;
 
-    /**
-     * Get the body and transform BBCode to HTML.
-     *
-     * @return string
-     */
     public function getFormattedBody()
     {
-        $body = $this->getAttribute('body');
+        /**
+         * Get the body and transform BBCode to HTML.
+         *
+         * @return string
+         */
+        return function() {
+            $body = $this->getAttribute('body');
 
-        return str_replace(
-            array(
-                '[br]',
-                '[b]',
-                '[/b]',
-            ),
-            array(
-                '<br/>',
-                '<strong>',
-                '</strong>',
-            ),
-            $body
-        );
+            return str_replace(
+                array(
+                    '[br]',
+                    '[b]',
+                    '[/b]',
+                ),
+                array(
+                    '<br/>',
+                    '<strong>',
+                    '</strong>',
+                ),
+                $body
+            );
+        };
     }
 
-    /**
-     * Fake method not callable in public scope.
-     */
     protected function getDate()
     {
+        /**
+         * Fake method not callable in public scope.
+         */
+        return function() {};
     }
 }
