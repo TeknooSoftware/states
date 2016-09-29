@@ -79,12 +79,12 @@ class User extends Proxy\Standard
         parent::__construct();
         //Load states
         if (!empty($this->isAdmin)) {
-            $this->enableState('Administrator');
-            $this->enableState('Moderator');
+            $this->enableState(Administrator::class);
+            $this->enableState(Moderator::class);
         }
 
         if (!empty($this->isModerator)) {
-            $this->enableState('Moderator');
+            $this->enableState(Moderator::class);
         }
     }
 

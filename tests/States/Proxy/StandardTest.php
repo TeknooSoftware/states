@@ -36,12 +36,12 @@ use Teknoo\Tests\Support;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
- * @covers Teknoo\States\Proxy\ProxyTrait
- * @covers Teknoo\States\Proxy\Standard
- * @covers Teknoo\States\Proxy\ArrayAccessTrait
- * @covers Teknoo\States\Proxy\IteratorTrait
- * @covers Teknoo\States\Proxy\MagicCallTrait
- * @covers Teknoo\States\Proxy\SerializableTrait
+ * @covers \Teknoo\States\Proxy\ProxyTrait
+ * @covers \Teknoo\States\Proxy\Standard
+ * @covers \Teknoo\States\Proxy\ArrayAccessTrait
+ * @covers \Teknoo\States\Proxy\IteratorTrait
+ * @covers \Teknoo\States\Proxy\MagicCallTrait
+ * @covers \Teknoo\States\Proxy\SerializableTrait
  */
 class StandardTest extends AbstractProxyTest
 {

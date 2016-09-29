@@ -43,6 +43,7 @@ class MockOnlyPrivate extends AbstractState
      */
     final private function finalMethod9()
     {
+        return function () {};
     }
 
     /**
@@ -50,13 +51,16 @@ class MockOnlyPrivate extends AbstractState
      */
     private function standardMethod10()
     {
+        return function () {};
     }
 
     final private function finalMethod11()
     {
+        return function () {};
     }
 
     private static function _staticMethod12()
     {
+        return function () {};
     }
 }

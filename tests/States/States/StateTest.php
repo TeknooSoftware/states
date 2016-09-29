@@ -37,8 +37,8 @@ use Teknoo\Tests\Support;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
- * @covers Teknoo\States\State\StateTrait
- * @covers Teknoo\States\State\AbstractState
+ * @covers \Teknoo\States\State\StateTrait
+ * @covers \Teknoo\States\State\AbstractState
  */
 class StateTest extends AbstractStatesTest
 {
@@ -82,15 +82,5 @@ class StateTest extends AbstractStatesTest
     protected function getPrivateClassObject(bool $privateMode, string $statedClassName, array $aliases = [])
     {
         return new Support\MockOnlyPrivate($privateMode, $statedClassName, $aliases);
-    }
-
-    /**
-     * Build a virtual proxy for test.
-     *
-     * @return Proxy\ProxyInterface
-     */
-    protected function getMockProxy()
-    {
-        return new Support\MockProxy(array());
     }
 }

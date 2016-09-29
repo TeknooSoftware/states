@@ -43,6 +43,7 @@ class MockOnlyPublic extends AbstractState
      */
     public function standardMethod1()
     {
+        return function (){};
     }
 
     /**
@@ -50,13 +51,16 @@ class MockOnlyPublic extends AbstractState
      */
     final public function finalMethod2()
     {
+        return function (){};
     }
 
     public static function staticMethod3()
     {
+        return function (){};
     }
 
     public function standardMethod4()
     {
+        return function (){};
     }
 }

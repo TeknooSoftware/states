@@ -21,12 +21,14 @@
  */
 namespace Teknoo\Tests\Support;
 
-use Teknoo\States\State\AbstractState;
+use Teknoo\States\Proxy;
+use Teknoo\States\State;
+use Teknoo\States\State\Exception;
+use Teknoo\States\State\StateInterface;
 
 /**
- * Class MockOnlyProtected
- * Mock class to test the default trait State behavior with protected methods.
- * All methods have not a description to check the state's behavior with these methods.
+ * Class MockState
+ * Mock state to check behavior of factory, finder and proxy.
  *
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
@@ -36,44 +38,7 @@ use Teknoo\States\State\AbstractState;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class MockOnlyProtected extends AbstractState
+class MockState3 extends MockState
 {
-    protected static function _staticMethod5()
-    {
-        return function (){};
-    }
-
-    /**
-     * Standard Method 6.
-     *
-     * @param $a
-     * @param $b
-     *
-     * @return mixed
-     */
-    protected function standardMethod6()
-    {
-        /**
-         * @param $a
-         * @param $b
-         *
-         * @return mixed
-         */
-        return function ($a, $b) {
-            return $a + $b;
-        };
-    }
-
-    /**
-     * Final Method 7.
-     */
-    final protected function finalMethod7()
-    {
-        return function() {};
-    }
-
-    protected function standardMethod8()
-    {
-        return function() {};
-    }
+    
 }

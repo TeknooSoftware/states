@@ -20,6 +20,8 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 namespace Teknoo\Tests\States\Proxy;
+use Teknoo\States\State\AbstractState;
+use Teknoo\Tests\Support\MockState1;
 
 /**
  * Class PrivateTestTrait
@@ -32,18 +34,23 @@ namespace Teknoo\Tests\States\Proxy;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin AbstractState
  */
 trait PrivateTestTrait
 {
     /**
      * Test behavior of magic method during a state's methode calling (scope is not initialized).
-     *
-     * @expectedException \Throwable
      */
     public function testGetPrivateGetMethodChildren()
     {
-        $this->initializeProxy('state1', true);
-        $this->proxy->getChildrenPriProperty();
+        $this->initializeProxy(MockState1::class, true);
+        try {
+            $this->proxy->getChildrenPriProperty();
+        } catch (\Throwable $e) {
+            return;
+        }
+
+        $this->fail('Error, exception must be throw');
     }
 
     /**
@@ -51,7 +58,7 @@ trait PrivateTestTrait
      */
     public function testIssetPrivateIssetMethodChildren()
     {
-        $this->initializeProxy('state1', true);
+        $this->initializeProxy(MockState1::class, true);
         $this->assertFalse($this->proxy->issetChildrenPriProperty());
         $this->assertFalse($this->proxy->issetChildrenMissingPriProperty());
     }
@@ -61,7 +68,7 @@ trait PrivateTestTrait
      */
     public function testSetUnsetPrivateMethodChildren()
     {
-        $this->initializeProxy('state1', true);
+        $this->initializeProxy(MockState1::class, true);
         $this->proxy->setChildrenPriProperty('value2');
         $this->assertEquals('value2', $this->proxy->getChildrenPriProperty());
     }
@@ -71,7 +78,7 @@ trait PrivateTestTrait
      */
     public function testUnsetPrivateMethodChildren()
     {
-        $this->initializeProxy('state1', true);
+        $this->initializeProxy(MockState1::class, true);
         $this->proxy->unsetChildrenPriProperty();
     }
 
@@ -80,7 +87,7 @@ trait PrivateTestTrait
      */
     public function testGetIssetSetUnsetPrivateViaMethodChildren()
     {
-        $this->initializeProxy('state1', true);
+        $this->initializeProxy(MockState1::class, true);
         $this->assertEquals('value1', $this->proxy->getPriProperty());
         $this->assertTrue($this->proxy->issetPriProperty());
         $this->assertFalse($this->proxy->issetMissingPriProperty());
@@ -95,7 +102,7 @@ trait PrivateTestTrait
      */
     public function testCallPrivateFromState()
     {
-        $this->initializeProxy('state1', true);
+        $this->initializeProxy(MockState1::class, true);
         $this->assertEquals('fooBar', $this->proxy->callPriMethod());
     }
 
@@ -116,7 +123,7 @@ trait PrivateTestTrait
      */
     public function testCallPrivateChildrenFromState()
     {
-        $this->initializeProxy('state1', true);
+        $this->initializeProxy(MockState1::class, true);
         $this->proxy->callChildrenPriMethod();
     }
 }
