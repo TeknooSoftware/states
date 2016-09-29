@@ -112,4 +112,9 @@ class StandardTraitProxy extends MotherProxy implements Proxy\ProxyInterface,
     {
         return 'fooBar';
     }
+
+    public static function statesListDeclaration(): array
+    {
+        return [];
+    }
 }

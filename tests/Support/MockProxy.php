@@ -79,6 +79,11 @@ class MockProxy implements ProxyInterface
      *** States Management *
      ***********************/
 
+    public static function statesListDeclaration(): array
+    {
+        return [];
+    }
+
     /**
      * {@inheritdoc}
      */
