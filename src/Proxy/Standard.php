@@ -57,7 +57,7 @@ abstract class Standard implements ProxyInterface
         $this->initializeProxy();
     }
 
-    public static function listAvailableStates(): array
+    public static function statesListDeclaration(): array
     {
         return [];
     }

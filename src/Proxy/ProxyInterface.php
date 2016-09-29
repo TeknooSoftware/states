@@ -62,6 +62,8 @@ interface ProxyInterface
      *** States Management *
      ***********************/
 
+    public static function statesListDeclaration(): array;
+
     /**
      * To register dynamically a new state for this stated class instance.
      *
@@ -147,7 +149,7 @@ interface ProxyInterface
      *
      * @return string[]
      */
-    public static function listAvailableStates(): array;
+    public function listAvailableStates();
 
     /**
      * To list all enable states for this object.

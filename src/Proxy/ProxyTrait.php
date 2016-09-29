@@ -132,7 +132,7 @@ trait ProxyTrait
         $currentClassName = static::class;
         $loadedStatesList = [];
 
-        $this->initializeStates(static::listAvailableStates(), false, $currentClassName, $loadedStatesList);
+        $this->initializeStates(static::statesListDeclaration(), false, $currentClassName, $loadedStatesList);
 
         $parentClassName = \get_class($this);
         do {
@@ -141,7 +141,7 @@ trait ProxyTrait
                     && \is_subclass_of($parentClassName, ProxyInterface::class)) {
 
                 $this->initializeStates(
-                    $parentClassName::listAvailableStates(),
+                    $parentClassName::statesListDeclaration(),
                     true,
                     $parentClassName,
                     $loadedStatesList
@@ -612,6 +612,22 @@ trait ProxyTrait
     }
 
     /**
+     * To list all currently available states for this object.
+     *
+     * @api
+     *
+     * @return string[]
+     */
+    public function listAvailableStates()
+    {
+        if ($this->states instanceof \ArrayAccess) {
+            return \array_keys($this->states->getArrayCopy());
+        } else {
+            return [];
+        }
+    }
+
+    /**
      * To list all enable states for this object.
      *
      * @api
@@ -657,17 +673,17 @@ trait ProxyTrait
         $this->validateName($stateName);
         $enabledStatesList = $this->listEnabledStates();
 
-        if (\is_array($enabledStatesList) && !empty($enabledStatesList)) {
-            //array_flip + isset is more efficient than in_array
-            $stateName = \strtr(\strtolower($stateName), '_', '');
-            $enabledStatesList = \array_flip(
-                \array_map('strtolower', $enabledStatesList)
-            );
-
-            return isset($enabledStatesList[$stateName]);
-        } else {
-            return false;
+        if (\is_array($enabledStatesList) && isset(\array_flip($enabledStatesList)[$stateName])) {
+            return true;
+        } elseif (\is_array($enabledStatesList)) {
+            foreach ($enabledStatesList as $enableStateName) {
+                if (\is_subclass_of($enableStateName, $stateName)) {
+                    return true;
+                }
+            }
         }
+
+        return false;
     }
 
     /**
