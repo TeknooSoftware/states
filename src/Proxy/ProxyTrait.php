@@ -249,7 +249,7 @@ trait ProxyTrait
         /**
          * @var ProxyInterface|ProxyTrait $this
          */
-        $callingClosure = $state->getClosure($this, $methodName, $scopeVisibility, $callerStatedClassName);
+        $callingClosure = $state->getClosure($methodName, $scopeVisibility, $callerStatedClassName);
 
         //Call it
         try {
