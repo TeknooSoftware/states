@@ -40,7 +40,7 @@ use Teknoo\States\Proxy;
  */
 class Mother extends Proxy\Standard
 {
-    public static function listAvailableStates(): array
+    public static function statesListDeclaration(): array
     {
         return [
             StateDefault::class,
