@@ -29,8 +29,6 @@
  */
 namespace Teknoo\States\State;
 
-use Teknoo\States\Proxy\ProxyInterface;
-
 /**
  * Class StateTrait
  * Default implementation of the state interface, representing states entities in stated class.
@@ -400,7 +398,6 @@ trait StateTrait
      *  Protected method : Method available only for this stated class's methods (method present in this state or another state) and its children
      *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children.
      *
-     * @param ProxyInterface $proxy
      * @param string         $methodName
      * @param string         $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null    $statedClassOriginName
@@ -410,7 +407,6 @@ trait StateTrait
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
      */
     public function getClosure(
-        ProxyInterface $proxy,
         string $methodName,
         string $scope = StateInterface::VISIBILITY_PUBLIC,
         string $statedClassOriginName = null
@@ -420,12 +416,7 @@ trait StateTrait
             $this->closuresObjects = new \ArrayObject();
         }
 
-        $proxyIdentifier = \spl_object_hash($proxy);
-        if (!isset($this->closuresObjects[$proxyIdentifier])) {
-            $this->closuresObjects[$proxyIdentifier] = new \ArrayObject();
-        }
-
-        if (!isset($this->closuresObjects[$proxyIdentifier][$methodName])) {
+        if (!isset($this->closuresObjects[$methodName])) {
             $description = $this->getMethodDescription($methodName);
             //$description->setAccessible(true);
             $closureBuilder = $description->getClosure($this);
@@ -437,7 +428,7 @@ trait StateTrait
                 );
             }
 
-            $this->closuresObjects[$proxyIdentifier][$methodName] = $closure;
+            $this->closuresObjects[$methodName] = $closure;
         }
 
         //Check visibility scope
@@ -447,6 +438,6 @@ trait StateTrait
             );
         }
 
-        return $this->closuresObjects[$proxyIdentifier][$methodName];
+        return $this->closuresObjects[$methodName];
     }
 }

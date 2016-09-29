@@ -158,7 +158,6 @@ interface StateInterface
      *  Protected method : Method available only for this stated class's methods (method present in this state or another state) and its children
      *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children.
      *
-     * @param ProxyInterface $proxy
      * @param string         $methodName
      * @param string         $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null    $statedClassOriginName
@@ -168,7 +167,6 @@ interface StateInterface
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
      */
     public function getClosure(
-        ProxyInterface $proxy,
         string $methodName,
         string $scope = self::VISIBILITY_PUBLIC,
         string $statedClassOriginName = null
