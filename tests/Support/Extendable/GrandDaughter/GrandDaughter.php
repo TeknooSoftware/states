@@ -39,7 +39,7 @@ use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree;
  */
 class GrandDaughter extends Daughter
 {
-    public static function listAvailableStates(): array
+    public static function statesListDeclaration(): array
     {
         return [
             StateThree::class

@@ -51,7 +51,7 @@ class Article extends Proxy\Standard
      */
     protected $data = array();
 
-    public static function listAvailableStates(): array
+    public static function statesListDeclaration(): array
     {
         return [
             Archived::class,
@@ -101,9 +101,9 @@ class Article extends Proxy\Standard
         parent::__construct();
         //If the article is published, load the state Published, else load the state Draft
         if (false === $this->isPublished()) {
-            $this->enableState('Draft');
+            $this->enableState(Draft::class);
         } else {
-            $this->enableState('Published');
+            $this->enableState(Published::class);
         }
     }
 }

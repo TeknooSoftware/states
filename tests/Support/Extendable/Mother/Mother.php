@@ -41,7 +41,7 @@ use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
  */
 class Mother extends Standard
 {
-    public static function listAvailableStates(): array
+    public static function statesListDeclaration(): array
     {
         return [
             StateDefault::class,

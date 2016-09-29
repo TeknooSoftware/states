@@ -41,7 +41,7 @@ use Teknoo\Tests\Support\Extendable\Mother\Mother;
  */
 class Daughter extends Mother
 {
-    public static function listAvailableStates(): array
+    public static function statesListDeclaration(): array
     {
         return [
             StateDefault::class,
