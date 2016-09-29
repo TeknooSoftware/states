@@ -30,6 +30,8 @@ use Teknoo\Tests\Support\Extendable\Daughter\States\StateThree;
 use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree as StateThreeGD;
 use Teknoo\Tests\Support\Extendable\GrandDaughter\GrandDaughter;
 use Teknoo\Tests\Support\Extendable\Mother\Mother;
+use Teknoo\Tests\Support\Extendable\Mother\States\StateDefault;
+use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
 
 /**
  * Class ArticleTest
@@ -46,34 +48,6 @@ use Teknoo\Tests\Support\Extendable\Mother\Mother;
 class ExtendableTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Loader of the states library.
-     *
-     * @var \Teknoo\States\Loader\LoaderInterface
-     */
-    protected $loader = null;
-
-    /**
-     * Factory registry.
-     *
-     * @var Di\Container
-     */
-    protected static $factoryRegistry = null;
-
-    /**
-     * Load the library State and retrieve its default loader from its bootstrap.
-     *
-     * @return \Teknoo\States\Loader\LoaderInterface
-     */
-    protected function getLoader()
-    {
-        if (null === $this->loader) {
-            $this->loader = include __DIR__.'/../../../../../src/Teknoo/States/bootstrap.php';
-        }
-
-        return $this->loader;
-    }
-
-    /**
      * Check if the list of states for the mother contains only its states and not states of its children classes.
      */
     public function testListAvailablesStatesMother()
@@ -82,23 +56,9 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $statesList = $motherInstance->listAvailableStates();
         sort($statesList);
         $this->assertEquals(
-            ['StateDefault', 'StateOne', 'StateTwo'],
+            [StateDefault::class, \Teknoo\Tests\Support\Extendable\Mother\States\StateOne::class, StateTwo::class],
             $statesList
         );
-    }
-
-    /**
-     * Unload the loader from SPL Autoload to not interfere with others tests.
-     */
-    protected function tearDown()
-    {
-        if ($this->loader instanceof Loader\LoaderInterface) {
-            spl_autoload_unregister(
-                array($this->loader, 'loadClass')
-            );
-        }
-
-        parent::tearDown();
     }
 
     /**
@@ -111,7 +71,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $statesList = $daughterInstance->listAvailableStates();
         sort($statesList);
         $this->assertEquals(
-            ['StateDefault', 'StateOne', 'StateThree', 'StateTwo'],
+            [\Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class, StateOne::class, StateThree::class, StateTwo::class],
             $statesList
         );
     }
@@ -125,7 +85,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $statesList = $grandDaughterInstance->listAvailableStates();
         sort($statesList);
         $this->assertEquals(
-            ['StateDefault', 'StateOne', 'StateThree', 'StateTwo'],
+            [\Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class, StateOne::class, \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class, StateTwo::class],
             $statesList
         );
     }
@@ -138,9 +98,9 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $motherInstance = new Mother();
         $this->assertEquals(
             [
-                'StateDefault' => [],
-                'StateOne' => ['method1', 'method2'],
-                'StateTwo' => ['methodPublic', 'methodProtected', 'methodPrivate', 'methodRecallPrivate'],
+                StateDefault::class => [],
+                \Teknoo\Tests\Support\Extendable\Mother\States\StateOne::class => ['method1', 'method2'],
+                StateTwo::class => ['methodPublic', 'methodProtected', 'methodPrivate', 'methodRecallPrivate'],
             ],
             $motherInstance->listMethodsByStates()
         );
@@ -155,10 +115,10 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $daughterInstance = new Daughter();
         $this->assertEquals(
             [
-                'StateDefault' => [],
-                'StateOne' => ['method3', 'method4'],
-                'StateThree' => ['method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
-                'StateTwo' => ['methodPublic', 'methodProtected', 'methodRecallPrivate'],
+                \Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class => [],
+                StateOne::class => ['method3', 'method4'],
+                StateThree::class => ['method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
+                StateTwo::class => ['methodPublic', 'methodProtected', 'methodRecallPrivate'],
             ],
             $daughterInstance->listMethodsByStates()
         );
@@ -173,10 +133,10 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $grandDaughterInstance = new GrandDaughter();
         $this->assertEquals(
             [
-                'StateDefault' => [],
-                'StateOne' => ['method3', 'method4'],
-                'StateThree' => ['method7', 'method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
-                'StateTwo' => ['methodPublic', 'methodProtected', 'methodRecallPrivate'],
+                \Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class => [],
+                StateOne::class => ['method3', 'method4'],
+                \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class => ['method7', 'method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
+                StateTwo::class => ['methodPublic', 'methodProtected', 'methodRecallPrivate'],
             ],
             $grandDaughterInstance->listMethodsByStates()
         );
@@ -188,33 +148,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testOverloadedState()
     {
         $motherInstance = new Mother();
-        $motherInstance->enableState('StateOne');
-        $this->assertEquals(123, $motherInstance->method1());
-        $this->assertEquals(456, $motherInstance->method2());
-        $daughterInstance = new Daughter();
-        $daughterInstance->enableState('StateOne');
-        $this->assertEquals(321, $daughterInstance->method3());
-        $this->assertEquals(654, $daughterInstance->method4());
-        try {
-            $daughterInstance->method1();
-        } catch (MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-            $this->fail($e->getMessage());
-
-            return;
-        }
-
-        $this->fail('Error, the daughter class overload the StateOne, Mother\'s methods must not be available');
-    }
-
-    /**
-     * Test behavior of overloaded states.
-     */
-    public function testOverloadedStateWithCanonicalStateName()
-    {
-        $motherInstance = new Mother();
-        $motherInstance->enableState('StateOne');
+        $motherInstance->enableState(\Teknoo\Tests\Support\Extendable\Mother\States\StateOne::class);
         $this->assertEquals(123, $motherInstance->method1());
         $this->assertEquals(456, $motherInstance->method2());
         $daughterInstance = new Daughter();
@@ -240,28 +174,13 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testExtendedState()
     {
         $daughterInstance = new Daughter();
-        $daughterInstance->enableState('StateThree');
-        $this->assertEquals(666, $daughterInstance->method6());
-
-        $grandDaughterInstace = new GrandDaughter();
-        $grandDaughterInstace->enableState('StateThree');
-        $this->assertEquals(666, $grandDaughterInstace->method6());
-        $this->assertEquals(777, $grandDaughterInstace->method7());
-    }
-
-    /**
-     * Test behavior of overloaded states.
-     */
-    public function testExtendedStateWithCanonicalStateName()
-    {
-        $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateThree::class);
         $this->assertEquals(666, $daughterInstance->method6());
 
-        $grandDaughterInstace = new GrandDaughter();
-        $grandDaughterInstace->enableState(StateThreeGD::class);
-        $this->assertEquals(666, $grandDaughterInstace->method6());
-        $this->assertEquals(777, $grandDaughterInstace->method7());
+        $grandDaughterInstance = new GrandDaughter();
+        $grandDaughterInstance->enableState(StateThreeGD::class);
+        $this->assertEquals(666, $grandDaughterInstance->method6());
+        $this->assertEquals(777, $grandDaughterInstance->method7());
     }
 
     /**
@@ -270,7 +189,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testMotherCanCallPrivate()
     {
         $motherInstance = new Mother();
-        $motherInstance->enableState('StateTwo');
+        $motherInstance->enableState(StateTwo::class);
         $this->assertEquals(2 * 789, $motherInstance->methodRecallPrivate());
     }
 
@@ -281,7 +200,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testDaughterCanCallPrivateViaMotherMethod()
     {
         $daughterInstance = new Daughter();
-        $daughterInstance->enableState('StateTwo');
+        $daughterInstance->enableState(StateTwo::class);
         $this->assertEquals(2 * 789, $daughterInstance->methodRecallPrivate());
     }
 
@@ -292,8 +211,8 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testDaughterCanCallMotherProtected()
     {
         $daughterInstance = new Daughter();
-        $daughterInstance->enableState('StateTwo')
-            ->enableState('StateThree');
+        $daughterInstance->enableState(StateTwo::class)
+            ->enableState(StateThree::class);
         $this->assertEquals(3 * 456, $daughterInstance->methodRecallMotherProtected());
     }
 
@@ -304,8 +223,8 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testDaughterCanNotCallMotherPrivate()
     {
         $daughterInstance = new Daughter();
-        $daughterInstance->enableState('StateTwo')
-            ->enableState('StateThree');
+        $daughterInstance->enableState(StateTwo::class)
+            ->enableState(StateThree::class);
 
         try {
             $daughterInstance->methodRecallMotherPrivate();

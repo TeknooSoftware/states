@@ -22,7 +22,11 @@
 namespace Teknoo\Tests\States\Functional;
 
 use Teknoo\Tests\Support\Article\Article;
+use Teknoo\Tests\Support\Article\States\Archived;
+use Teknoo\Tests\Support\Article\States\Draft;
 use Teknoo\Tests\Support\Article\States\Extended;
+use Teknoo\Tests\Support\Article\States\Promoted;
+use Teknoo\Tests\Support\Article\States\Published;
 use Teknoo\Tests\Support\Article\States\StateDefault;
 
 /**
@@ -40,41 +44,14 @@ use Teknoo\Tests\Support\Article\States\StateDefault;
 class ArticleTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * Loader of the states library.
-     *
-     * @var \Teknoo\States\Loader\LoaderInterface
-     */
-    protected $loader = null;
-
-    /**
-     * Load the library State and retrieve its default loader from its bootstrap.
-     *
-     * @return \Teknoo\States\Loader\LoaderInterface
-     */
-    protected function getLoader()
-    {
-        if (null === $this->loader) {
-            $this->loader = include __DIR__.'/../../../src/bootstrap.php';
-        }
-
-        return $this->loader;
-    }
-
-    /**
      * Functional test on article.
      */
     public function testArticle()
     {
-        defined('DS')
-            || define('DS', DIRECTORY_SEPARATOR);
-
-        //Register demo namespace
-        $this->getLoader()->registerNamespace('\\Teknoo\\Tests\\Support', TK_STATES_TEST_PATH.DS.'Support');
-
-        $article = new \Teknoo\Tests\Support\Article();
+        $article = new Article();
 
         //It is a new article, not published, the constructor load the state 'Draft'
-        $this->assertEquals(array('StateDefault', 'Draft'), $article->listEnabledStates());
+        $this->assertEquals([StateDefault::class, Draft::class], $article->listEnabledStates());
         //Empty article, getTitle return nothing
         $this->assertEquals('', $article->getTitle());
         //Call method of state "Draft" to update the article
@@ -85,13 +62,13 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('Lorem [b]Ipsum[/b]', $article->getBodySource());
         //Publishing method available into Draft state to switch to Published state
         $article->publishing();
-        $this->assertEquals(array('StateDefault', 'Published'), $article->listEnabledStates());
+        $this->assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
         $this->assertEquals('Hello world', $article->getTitle());
         //Method available into Published state
         $this->assertEquals('Lorem <strong>Ipsum</strong>', $article->getFormattedBody());
 
         //Open a published article
-        $article = new \Teknoo\Tests\Support\Article(
+        $article = new Article(
             array(
                 'is_published' => true,
                 'title' => 'title 2',
@@ -100,7 +77,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         );
 
         //Already published, so constructor enable state "Default" and "Published"
-        $this->assertEquals(array('StateDefault', 'Published'), $article->listEnabledStates());
+        $this->assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
         $this->assertEquals('title 2', $article->getTitle());
 
         //Method not available, because state Draft is not enabled
@@ -153,7 +130,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
             $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
-        $this->assertEquals(array('StateDefault', 'Published'), $article->listEnabledStates());
+        $this->assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
         $this->assertEquals('title 2', $article->getTitle());
         $this->assertEquals('body 2', $article->getFormattedBody());
 
@@ -171,68 +148,62 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
 
     public function testStatesCanonicalClassName()
     {
-        defined('DS')
-            || define('DS', DIRECTORY_SEPARATOR);
-
-        //Register demo namespace
-        $this->getLoader()->registerNamespace('\\Teknoo\\Tests\\Support', TK_STATES_TEST_PATH.DS.'Support');
-
         $article = new Article();
         $statesList = $article->listAvailableStates();
         sort($statesList);
         $this->assertEquals(
-            ['Archived', 'Draft', 'Extended', 'Promoted', 'Published', 'StateDefault'],
+            [Archived::class, Draft::class, Extended::class, Promoted::class, Published::class, StateDefault::class],
             $statesList
         );
 
         $statesList = $article->listEnabledStates();
         sort($statesList);
-        $this->assertEquals(['Draft', 'StateDefault'], $statesList);
-        $this->assertFalse($article->inState('Archived'));
-        $this->assertTrue($article->inState('Draft'));
-        $this->assertFalse($article->inState('Extended'));
-        $this->assertFalse($article->inState('Promoted'));
-        $this->assertFalse($article->inState('Published'));
-        $this->assertTrue($article->inState('StateDefault'));
+        $this->assertEquals([Draft::class, StateDefault::class], $statesList);
+        $this->assertFalse($article->inState(Archived::class));
+        $this->assertTrue($article->inState(Draft::class));
+        $this->assertFalse($article->inState(Extended::class));
+        $this->assertFalse($article->inState(Promoted::class));
+        $this->assertFalse($article->inState(Published::class));
+        $this->assertTrue($article->inState(StateDefault::class));
 
-        $article->switchState('Published');
+        $article->switchState(Published::class);
 
-        $this->assertEquals(['Published'], $article->listEnabledStates());
-        $this->assertFalse($article->inState('Archived'));
-        $this->assertFalse($article->inState('Draft'));
-        $this->assertFalse($article->inState('Extended'));
-        $this->assertFalse($article->inState('Promoted'));
-        $this->assertTrue($article->inState('Published'));
-        $this->assertFalse($article->inState('StateDefault'));
+        $this->assertEquals([Published::class], $article->listEnabledStates());
+        $this->assertFalse($article->inState(Archived::class));
+        $this->assertFalse($article->inState(Draft::class));
+        $this->assertFalse($article->inState(Extended::class));
+        $this->assertFalse($article->inState(Promoted::class));
+        $this->assertTrue($article->inState(Published::class));
+        $this->assertFalse($article->inState(StateDefault::class));
 
-        $article->switchState('Promoted');
+        $article->switchState(Promoted::class);
 
-        $this->assertEquals(['Promoted'], $article->listEnabledStates());
-        $this->assertFalse($article->inState('Archived'));
-        $this->assertFalse($article->inState('Draft'));
-        $this->assertFalse($article->inState('Extended'));
-        $this->assertTrue($article->inState('Promoted'));
-        $this->assertTrue($article->inState('Published'));
-        $this->assertFalse($article->inState('StateDefault'));
+        $this->assertEquals([Promoted::class], $article->listEnabledStates());
+        $this->assertFalse($article->inState(Archived::class));
+        $this->assertFalse($article->inState(Draft::class));
+        $this->assertFalse($article->inState(Extended::class));
+        $this->assertTrue($article->inState(Promoted::class));
+        $this->assertTrue($article->inState(Published::class));
+        $this->assertFalse($article->inState(StateDefault::class));
 
-        $article->switchState('Archived');
+        $article->switchState(Archived::class);
 
-        $this->assertEquals(['Archived'], $article->listEnabledStates());
-        $this->assertTrue($article->inState('Archived'));
-        $this->assertFalse($article->inState('Draft'));
-        $this->assertFalse($article->inState('Extended'));
-        $this->assertFalse($article->inState('Promoted'));
-        $this->assertTrue($article->inState('Published'));
-        $this->assertFalse($article->inState('StateDefault'));
+        $this->assertEquals([Archived::class], $article->listEnabledStates());
+        $this->assertTrue($article->inState(Archived::class));
+        $this->assertFalse($article->inState(Draft::class));
+        $this->assertFalse($article->inState(Extended::class));
+        $this->assertFalse($article->inState(Promoted::class));
+        $this->assertTrue($article->inState(Published::class));
+        $this->assertFalse($article->inState(StateDefault::class));
 
         $article->switchState(Extended::class);
 
-        $this->assertEquals(['Extended'], $article->listEnabledStates());
-        $this->assertFalse($article->inState('Archived'));
-        $this->assertFalse($article->inState('Draft'));
-        $this->assertTrue($article->inState('Extended'));
-        $this->assertTrue($article->inState('Promoted'));
-        $this->assertTrue($article->inState('Published'));
+        $this->assertEquals([Extended::class], $article->listEnabledStates());
+        $this->assertFalse($article->inState(Archived::class));
+        $this->assertFalse($article->inState(Draft::class));
+        $this->assertTrue($article->inState(Extended::class));
+        $this->assertTrue($article->inState(Promoted::class));
+        $this->assertTrue($article->inState(Published::class));
         $this->assertFalse($article->inState(StateDefault::class));
     }
 }
