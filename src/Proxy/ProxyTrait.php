@@ -117,6 +117,9 @@ trait ProxyTrait
             if (\class_exists($parentClassName)
                     && \is_subclass_of($parentClassName, ProxyInterface::class)) {
 
+                /**
+                 * @var ProxyInterface $parentClassName
+                 */
                 $this->initializeStates(
                     $parentClassName::statesListDeclaration(),
                     true,

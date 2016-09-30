@@ -21,8 +21,6 @@
  */
 namespace Teknoo\States\State;
 
-use Teknoo\States\Proxy\ProxyInterface;
-
 /**
  * Interface StateInterface
  * Interface to define class representing states entities in stated class.
