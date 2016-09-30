@@ -21,8 +21,8 @@
  */
 namespace Teknoo\States\Proxy;
 
+use Teknoo\States\State\Exception\MethodNotImplemented;
 use Teknoo\States\State\StateInterface;
-use Teknoo\States\State\Exception\MethodNotImplemented as StateMethodNotImplemented;
 
 /**
  * Trait ProxyTrait
@@ -64,29 +64,6 @@ trait ProxyTrait
      * @var string[]|\SplStack
      */
     private $callerStatedClassesStack;
-
-    /**
-     * List all methods available in the proxy, with all states, get the list available in the current scope,
-     * unlike method_exists is not dependant about the scope and return unavailable privates methods.
-     *
-     * @var string[]
-     */
-    private $globalMethodsList;
-
-    /**
-     * @var \ReflectionObject
-     */
-    private $thisReflection;
-
-    /**
-     * @var null|array
-     */
-    private $publicPropertiesList = [];
-
-    public function __construct()
-    {
-        $this->loadStates();
-    }
 
     /**
      * Method to initialize a list of states class in this proxy. Is a state have a same name of a previous loaded state
@@ -150,35 +127,6 @@ trait ProxyTrait
         } while (false !== $parentClassName);
 
         return $this;
-    }
-
-    /**
-     * List all methods available in the proxy, with all states, get the list available in the current scope,
-     * unlike method_exists is not dependant about the scope and return unavailable privates methods.
-     *
-     * @return array|string[]
-     */
-    private function getGlobalMethodsList()
-    {
-        if (null === $this->globalMethodsList) {
-            $this->globalMethodsList = \array_flip(\get_class_methods($this));
-        }
-
-        return $this->globalMethodsList;
-    }
-
-    /**
-     * Check if a method exist in the current scope for this proxy.
-     * unlike method_exists is not dependant about the scope and return unavailable privates methods
-     * unlike is_callable, this check is not influenced by __call().
-     *
-     * @param string $methodName
-     *
-     * @return bool
-     */
-    private function checkMethodExist(string $methodName)
-    {
-        return isset($this->getGlobalMethodsList()[$methodName]);
     }
 
     /**
@@ -673,12 +621,14 @@ trait ProxyTrait
         $this->validateName($stateName);
         $enabledStatesList = $this->listEnabledStates();
 
-        if (\is_array($enabledStatesList) && isset(\array_flip($enabledStatesList)[$stateName])) {
-            return true;
-        } elseif (\is_array($enabledStatesList)) {
-            foreach ($enabledStatesList as $enableStateName) {
-                if (\is_subclass_of($enableStateName, $stateName)) {
-                    return true;
+        if (\is_array($enabledStatesList)) {
+            if (isset(\array_flip($enabledStatesList)[$stateName])) {
+                return true;
+            } else {
+                foreach ($enabledStatesList as $enableStateName) {
+                    if (\is_subclass_of($enableStateName, $stateName)) {
+                        return true;
+                    }
                 }
             }
         }
@@ -701,12 +651,6 @@ trait ProxyTrait
      */
     public function __call(string $name, array $arguments)
     {
-        if (!$this->callerStatedClassesStack->isEmpty()) {
-            if ($this->checkMethodExist($name)) {
-                return $this->{$name}(...$arguments);
-            }
-        }
-
         return $this->findMethodToCall($name, $arguments);
     }
 
@@ -728,30 +672,23 @@ trait ProxyTrait
      */
     public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {
-        //Retrieve the visibility scope
-        try {
-            if (null === $stateName) {
-                //Browse all state to find the method
-                foreach ($this->states as $stateObject) {
-                    return $stateObject->getMethodDescription($methodName);
-                }
-            }
+        if (!empty($stateName)) {
+            $this->validateName($stateName);
 
-            if (null !== $stateName && isset($this->states[$stateName])) {
-                //Retrieve description from the required state
-                return $this->states[$stateName]->getMethodDescription($methodName);
-            } elseif (null !== $stateName) {
+            if (!isset($this->states[$stateName])) {
                 throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
             }
-        } catch (StateMethodNotImplemented $e) {
-            //Catch MethodNotImplemented from state entity to surround in a proxy exception
-            throw new Exception\MethodNotImplemented(
-                $e->getMessage(),
-                $e->getCode(),
-                $e
-            );
-        } catch (\Throwable $e) {
-            throw $e;
+        }
+
+        //Browse all state to find the method
+        foreach ($this->states as $stateObject) {
+            if (null !== $stateName && \get_class($stateObject) !== $stateName) {
+                continue;
+            }
+
+            try {
+                return $stateObject->getMethodDescription($methodName);
+            } catch (MethodNotImplemented $e) {}
         }
 
         //Method not found

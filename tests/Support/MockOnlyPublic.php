@@ -63,4 +63,9 @@ class MockOnlyPublic extends AbstractState
     {
         return function (){};
     }
+
+    public function methodBuilderNoReturnClosure()
+    {
+
+    }
 }

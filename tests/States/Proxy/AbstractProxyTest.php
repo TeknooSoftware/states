@@ -214,6 +214,16 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Proxy must throw an exception if the state name is not a valid string.
+     *
+     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
+     */
+    public function testUnRegisterStateClassExistStateNotFound()
+    {
+        $this->proxy->unregisterState(\DateTime::class);
+    }
+
+    /**
      * Test proxy behavior to unregister a state.
      */
     public function testUnRegisterState()
@@ -293,6 +303,16 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
+     * Proxy must throw an exception if the state name is not a valid string.
+     *
+     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
+     */
+    public function testEnableStateClassExistStateNotFound()
+    {
+        $this->proxy->enableState(\DateTime::class);
+    }
+
+    /**
      * Proxy must throw an exception if the state is not available when we want enable a state.
      */
     public function testEnableStateNonExistentName()
@@ -336,6 +356,16 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testDisableStateInvalidName()
     {
         $this->proxy->disableState(array());
+    }
+
+    /**
+     * Proxy must throw an exception if the state name is not a valid string.
+     *
+     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
+     */
+    public function testDisableStateClassExistStateNotFound()
+    {
+        $this->proxy->disableState(\DateTime::class);
     }
 
     /**
@@ -622,18 +652,22 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the proxy behavior when hen we want a description of a method and the required state does not exist.
+     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testGetMethodDescriptionInvalidState()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->getMethodDescription('NonExistentMethod', 'NonExistentState');
-        } catch (Exception\StateNotFound $e) {
-            return;
-        } catch (\Exception $e) {
-        }
+        $this->proxy->getMethodDescription('NonExistentMethod', 'NonExistentState');
+    }
 
-        $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the required state does not exist');
+    /**
+     * Test the proxy behavior when hen we want a description of a method and the required state does not exist.
+     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
+     */
+    public function testGetMethodDescriptionNonExistantState()
+    {
+        $this->initializeProxy();
+        $this->proxy->getMethodDescription('NonExistentMethod', \DateTime::class);
     }
 
     /////////////////////////////////////////////////////////////////////////////////////////

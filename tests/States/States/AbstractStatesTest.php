@@ -83,6 +83,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'standardMethod1',
                 'finalMethod2',
                 'standardMethod4',
+                'methodBuilderNoReturnClosure'
             ),
             $this->getPublicClassObject(false,  'My\Stated\Class')->listMethods()->getArrayCopy()
         );
@@ -1086,5 +1087,14 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
         $statePrivateMock->setStatedClassName('Its\A\Stated\ClassNamePrivate');
         $this->assertEquals('Its\A\Stated\ClassNamePrivate', $statePrivateMock->getStatedClassName());
+    }
+
+    /**
+     * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
+     */
+    public function testExceptionOnBadBuilder()
+    {
+        $statePublicMock = $this->getPublicClassObject(false,  'My\Stated\Class');
+        $statePublicMock->getClosure('methodBuilderNoReturnClosure');
     }
 }
