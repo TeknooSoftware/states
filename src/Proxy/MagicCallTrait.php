@@ -23,8 +23,9 @@ namespace Teknoo\States\Proxy;
 
 /**
  * Trait MagicCallTrait
- * Trait to use PHP magic's calls (http://php.net/manual/en/language.oop5.magic.php) with stated classes.
- *
+ * Trait to use PHP magic's calls (http://php.net/manual/en/language.oop5.magic.php) with stated class.
+ * It must be used with the trait ProxyTrait. This trait forwards call to __invoke() and __toString in methods
+ * defined in states of the class.
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -54,7 +55,7 @@ trait MagicCallTrait
      */
     public function __invoke(...$args)
     {
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findMethodToCall('invoke', $args);
     }
 
     /**
@@ -70,7 +71,7 @@ trait MagicCallTrait
         try {
             $args = [];
 
-            return $this->findMethodToCall(__FUNCTION__, $args);
+            return $this->findMethodToCall('toString', $args);
         } catch (\Throwable $e) {
             return '';
         }

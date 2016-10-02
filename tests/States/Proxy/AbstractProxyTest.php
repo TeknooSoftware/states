@@ -1628,7 +1628,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $proxy('foo', 'bar');
 
         $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertEquals('__invoke', $this->state1->getMethodNameCalled());
+        $this->assertEquals('invoke', $this->state1->getMethodNameCalled());
         $this->assertEquals(array('foo', 'bar'), $this->state1->getCalledArguments());
     }
 
@@ -1879,7 +1879,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $s = (string) $this->proxy;
 
         $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('__toString', $this->state1->getMethodNameCalled());
+        $this->assertSame('toString', $this->state1->getMethodNameCalled());
         $this->assertSame(array(), $this->state1->getCalledArguments());
     }
 
