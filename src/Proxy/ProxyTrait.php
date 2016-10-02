@@ -67,7 +67,8 @@ trait ProxyTrait
 
     /**
      * Method to initialize a list of states class in this proxy. Is a state have a same name of a previous loaded state
-     * (from its daughters) it's skipped
+     * (defined in previously in this class) it's skipped.
+     *
      * @param array $statesList
      * @param bool $enablePrivateMode
      * @param string $selfClassName
@@ -100,7 +101,8 @@ trait ProxyTrait
     }
 
     /**
-     * To initialize the proxy instance with all declared states
+     * To initialize the proxy instance with all declared states. This method fetch all states defined for this class,
+     * (states returned by `statesListDeclaration()`), but checks also parent's states.
      *
      * @return ProxyInterface
      */
@@ -109,6 +111,7 @@ trait ProxyTrait
         $currentClassName = static::class;
         $loadedStatesList = [];
 
+        //Private mode is only enable for states directly defined in this stated class.
         $this->initializeStates(static::statesListDeclaration(), false, $currentClassName, $loadedStatesList);
 
         $parentClassName = \get_class($this);
@@ -117,6 +120,7 @@ trait ProxyTrait
             if (\class_exists($parentClassName)
                     && \is_subclass_of($parentClassName, ProxyInterface::class)) {
 
+                //Private mode is disable for states directly defined in parent class.
                 /**
                  * @var ProxyInterface $parentClassName
                  */
@@ -196,10 +200,6 @@ trait ProxyTrait
         $callerStatedClassName = $this->getCallerStatedClassName();
         $this->pushCallerStatedClassName($state);
 
-        //Method found, extract it
-        /**
-         * @var ProxyInterface|ProxyTrait $this
-         */
         $callingClosure = $state->getClosure($methodName, $scopeVisibility, $callerStatedClassName);
 
         //Call it
@@ -219,7 +219,7 @@ trait ProxyTrait
     }
 
     /**
-     * Internal method to find, in enabled stated, the closure required by caller to call it.
+     * Internal method to find, in enabled stated, the method/closure required by caller to call it.
      *
      * @api
      *
@@ -271,8 +271,6 @@ trait ProxyTrait
      * Convert also canonical states name (aka state's class name) to its identifier (kepp only the class name without
      * its namespace)
      *
-     * @api
-     *
      * @param string $name
      *
      * @return bool
@@ -311,6 +309,8 @@ trait ProxyTrait
      * To determine the caller visibility scope to not grant to call protected or private method from an external object.
      * getVisibilityScope() uses debug_backtrace() to get last entries in the calling stack.
      *  (PHP does not provide a method to get this, but the cost of to call the debug_backtrace is very light).
+     * This method is used to restore the default PHP's behavior, skipped with __call() method : PHP is naturally not
+     * able to detect it : because __call, like all class's methods can access to all private and protected methods.
      *
      * Called from the main block : Public scope
      * Called from a global function : Public scope
@@ -544,11 +544,7 @@ trait ProxyTrait
     }
 
     /**
-     * To return the list of all states entity available for this object.
-     *
-     * @api
-     *
-     * @return StateInterface[]
+     * {@inheritdoc}
      */
     public function getStatesList() : array
     {
@@ -560,13 +556,7 @@ trait ProxyTrait
     }
 
     /**
-     * Check if this stated class instance is in the required state defined by $stateName.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function inState(string $stateName): bool
     {
@@ -589,17 +579,7 @@ trait ProxyTrait
     }
 
     /**
-     * To call a method of the this stated class instance not defined in the proxy.
-     *
-     * @api
-     *
-     * @param string $name
-     * @param array  $arguments
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * {@inheritdoc}
      */
     public function __call(string $name, array $arguments)
     {
@@ -607,20 +587,7 @@ trait ProxyTrait
     }
 
     /**
-     * To return the description of a method present in a state of this stated class instance.
-     * This method no checks if the method is available in the current scope by the called.
-     *
-     * @api
-     *
-     * @param string $methodName
-     * @param string $stateName  : Return the description for a specific state of the object,
-     *                           if null, use the current state
-     *
-     * @return \ReflectionMethod
-     *
-     * @throws Exception\StateNotFound        is the state required is not available
-     * @throws Exception\MethodNotImplemented when the method is not currently available
-     * @throws \Throwable                     to rethrows unknown exceptions
+     * {@inheritdoc}
      */
     public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {

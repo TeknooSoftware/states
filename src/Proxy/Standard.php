@@ -23,19 +23,19 @@ namespace Teknoo\States\Proxy;
 
 /**
  * Class Standard
- * Default implementation of the proxy class in stated classes. It can not be instantiate directly by the developer,
- * it must use the factory to create a new instance of this stated class.
- * It is also used in this library to create stated class instance.
+ * Default implementation of the proxy class in stated classes. Unlike previous major versions of States, It can not be
+ * instantiate directly, factories are not needed, States are directly defined in the proxy class in the static method
+ * statesListDeclaration.
  *
- * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
  * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
- * $this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy instance.
+ * $this and self keyword in all methods of the stated class instance (in proxy's method and states' methods)
+ * represent the proxy instance.
  *
- * By default, this library creates an alias with the canonical proxy class name and the stated class name
- * to simulate a real class with the stated class name.
+ * The proxy class is mandatory. States 3.0 has no factories, no loader. Proxies embedded directly theirs states
+ * configurations. Since 3.0, states's methods are a builder, returning a real closure to use. The state does not use
+ * the Reflection API to extract the closure (not bindable with new $this since 7.1).
  *
- * If a stated class has no proxy, an another alias is create from this standard proxy with the proxyless stated class name.
- *
+ * This new architecture is more efficient and is simpler.
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -49,7 +49,7 @@ abstract class Standard implements ProxyInterface
     use ProxyTrait;
 
     /**
-     * Initialize the proxy.
+     * Initialize the proxy by calling the method initializeProxy
      */
     public function __construct()
     {
@@ -57,6 +57,9 @@ abstract class Standard implements ProxyInterface
         $this->initializeProxy();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public static function statesListDeclaration(): array
     {
         return [];

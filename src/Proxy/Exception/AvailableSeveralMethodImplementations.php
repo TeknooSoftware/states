@@ -25,9 +25,7 @@ namespace Teknoo\States\Proxy\Exception;
 use Teknoo\States\Exception;
 
 /**
- * Class AvailableSeveralMethodImplementations
- * Exception threw when a stated class instance is having several implementations a the calling method
- * in different enabled states.
+ * {@inheritdoc}
  *
  * @category    Exception
  *

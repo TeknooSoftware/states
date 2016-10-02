@@ -23,8 +23,11 @@ namespace Teknoo\States\Proxy;
 
 /**
  * Trait IteratorTrait
- * Trait to use the interface \Iterator (http://php.net/manual/en/class.iterator.php) with stated classes.
+ * Trait to use the interface \Iterator (http://php.net/manual/en/class.iterator.php) with stated class.
+ * It must be used with the trait ProxyTrait. This trait forwards all methods defined in \Iterator in methods
+ * defined in states of the class.
  *
+ * @see http://php.net/manual/en/class.iterator.php
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -37,18 +40,11 @@ namespace Teknoo\States\Proxy;
  */
 trait IteratorTrait
 {
-    /************
-     * Iterator *
-     ************/
-
     /**
-     * Returns the current element.
-     *
+     * {@inheritdoc}
      * @api
-     *
-     * @return mixed
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @see http://php.net/manual/en/class.iterator.php
      */
     public function current()
     {
@@ -58,13 +54,10 @@ trait IteratorTrait
     }
 
     /**
-     * Returns the key of the current element.
-     *
+     * {@inheritdoc}
      * @api
-     *
-     * @return mixed
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @see http://php.net/manual/en/class.iterator.php
      */
     public function key()
     {
@@ -74,11 +67,10 @@ trait IteratorTrait
     }
 
     /**
-     * Moves the current position to the next element.
-     *
+     * {@inheritdoc}
      * @api
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @see http://php.net/manual/en/class.iterator.php
      */
     public function next()
     {
@@ -88,11 +80,10 @@ trait IteratorTrait
     }
 
     /**
-     * Rewinds back to the first element of the Iterator.
-     *
+     * {@inheritdoc}
      * @api
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @see http://php.net/manual/en/class.iterator.php
      */
     public function rewind()
     {
@@ -102,13 +93,9 @@ trait IteratorTrait
     }
 
     /**
-     * Seeks to a given position in the iterator.
-     *
-     * @api
-     *
-     * @param int $position
-     *
+     * {@inheritdoc}
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @see http://php.net/manual/en/class.iterator.php
      */
     public function seek($position)
     {
@@ -117,13 +104,10 @@ trait IteratorTrait
     }
 
     /**
-     * This method is called after Iterator::rewind() and Iterator::next() to check if the current position is valid.
-     *
+     * {@inheritdoc}
      * @api
-     *
-     * @return bool
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @see http://php.net/manual/en/class.iterator.php
      */
     public function valid()
     {
@@ -133,13 +117,10 @@ trait IteratorTrait
     }
 
     /**
-     * Returns an external iterator.
-     *
+     * {@inheritdoc}
      * @api
-     *
-     * @return \Traversable
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @see http://php.net/manual/en/class.iterator.php
      */
     public function getIterator(): \Traversable
     {

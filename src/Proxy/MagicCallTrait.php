@@ -27,6 +27,8 @@ namespace Teknoo\States\Proxy;
  * It must be used with the trait ProxyTrait. This trait forwards call to __invoke() and __toString in methods
  * defined in states of the class.
  *
+ * @see http://php.net/manual/en/language.oop5.magic.php
+ *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -38,20 +40,12 @@ namespace Teknoo\States\Proxy;
  */
 trait MagicCallTrait
 {
-    /*******************
-     * Methods Calling *
-     *******************/
-
     /**
      * To invoke an object as a function.
-     *
+     * Warning : This method forwards the call the state's methode "invoke" and not "__invoke"
      * @api
-     *
-     * @param mixed ...$args
-     *
-     * @return mixed
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @see http://php.net/manual/en/language.oop5.magic.php#object.invoke
      */
     public function __invoke(...$args)
     {
@@ -61,10 +55,10 @@ trait MagicCallTrait
     /**
      * To transform the object to a string
      * You cannot throw an exception from within a __toString() method. Doing so will result in a fatal error.
-     *
+     * Warning : This method forwards the call the state's methode "toString" and not '__toString"
      * @api
-     *
-     * @return mixed
+     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
      */
     public function __toString(): string
     {

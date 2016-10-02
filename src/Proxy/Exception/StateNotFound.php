@@ -25,8 +25,7 @@ namespace Teknoo\States\Proxy\Exception;
 use Teknoo\States\Exception;
 
 /**
- * Class StateNotFound
- * Exception thew when the requiring state is not available for the stated class instance.
+ * {@inheritdoc}
  *
  * @category    Exception
  *
