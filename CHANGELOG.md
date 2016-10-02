@@ -22,6 +22,7 @@
 * Loader feature, they become useless because states must be directly declared in the proxy.
 * CLI Command, the States 3.x need less operations to be started.
 * Integrated proxies, Standard proxies can be now directly instantiate by PHP.  
+* bootstrap.php file
 
 ##[2.1.1]
 ###Fixed

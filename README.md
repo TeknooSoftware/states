@@ -114,10 +114,6 @@ Quick How-to to implement your first stated class
 -------------------------------------------------
 Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.md).    
 
-Details
--------
-Description about components of this library : [Startup](docs/howto/details.md).
-
 Behavior Documentation
 ----------------------
 Documentation to explain how this library works : [Behavior](docs/howto/behavior.md).
@@ -133,7 +129,7 @@ From the version 3.0, this library has been redesigned to
 * States's method are now builders of closure : They must return a closure, bindable with \Closure::call(). 
   The Reflection API is no longer used to get a closure.
 * The library use \Closure::call() instead of \Closure::rebindTo(), more efficient.  
-* States's class must be referenced declared in the proxy class, via the static method statesListDeclaration().
+* States's class must be referenced declared in the proxy class, via the static method `statesListDeclaration()`.
 * Factories and Loaders are removed, they are become useless.
 * Proxy standard can be now directly instantiate. Integrated proxy are also removed.
 
