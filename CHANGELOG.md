@@ -1,5 +1,33 @@
 #Teknoo Software - States library - Change Log
 
+###[3.0.0-alpha1]
+###Added/Changed
+* State identifier must be a valid class name or a valid interface name. The state object must implements, 
+  instantiates or inherits this class/interface name.
+* States must be now directly declared into the proxy via the static method statesListDeclaration.
+  
+###Changed
+* Standard proxies can be directly instantiate by PHP.
+* States's method are now builders of closure : They must return a closure, bindable with \Closure::call(). 
+  The Reflection API is no longer used to get a closure.
+* The library use \Closure::call() instead of \Closure::rebindTo(), more efficient.  
+* The library use now native array instead of \ArrayObject. Array's performances are good with PHP7+ and 
+    using array forbid change in proxy without using API.
+* MagicCallTrait forward `__toString()` call to the method `toString()` and `__invoke()` call to the method `invoke()`.
+
+###Removed
+* Useless state alias feature.
+* Registration of states via theirs short name.
+* State's factories, they become useless because states must be directly declared in the proxy.
+* Loader feature, they become useless because states must be directly declared in the proxy.
+* CLI Command, the States 3.x need less operations to be started.
+* Integrated proxies, Standard proxies can be now directly instantiate by PHP.  
+
+##[2.1.1]
+###Fixed
+- Remove support of PHP 7.1+ of State 2.* because PHP 7.1 introduce a major BC Break on the Reflection API and forbid
+rebind $this in closure created from the Reflection API.
+
 ##[2.1.0] - 2016-08-23
 ###Added
 - Can use the canonical state'name (full state' class name, with its namespace) instead its identifier (class name only)
