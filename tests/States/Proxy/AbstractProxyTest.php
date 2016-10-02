@@ -23,6 +23,7 @@ namespace Teknoo\Tests\States\Proxy;
 
 use Teknoo\States\Proxy;
 use Teknoo\States\Proxy\Exception;
+use Teknoo\States\State\StateInterface;
 use Teknoo\Tests\Support\MockState1;
 use Teknoo\Tests\Support\MockState2;
 use Teknoo\Tests\Support\MockState3;
@@ -177,6 +178,31 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         }
 
         $this->fail('Error, the proxy must throw an Exception\IllegalName exception when the stateName does not respect the regex [a-zA-Z][a-zA-Z0-9_\\]+');
+    }
+
+    /**
+     * Proxy must throw an exception if the registering state name is not a valid string.
+     */
+    public function testRegisterStateClassNotImplementing()
+    {
+        try {
+            $this->proxy->registerState(\DateTime::class, $this->state1);
+        } catch (Exception\IllegalName $e) {
+            return;
+        } catch (\Exception $e) {
+            $this->fail($e->getMessage());
+        }
+
+        $this->fail('Error, the proxy must throw an Exception\IllegalName exception when the stateName does not respect the regex [a-zA-Z][a-zA-Z0-9_\\]+');
+    }
+
+    /**
+     * Check behavior of the proxy when we add a new state.
+     */
+    public function testRegisterStateWithInterface()
+    {
+        $this->proxy->registerState(StateInterface::class, $this->state1);
+        $this->assertEquals(array(StateInterface::class), $this->proxy->listAvailableStates());
     }
 
     /**

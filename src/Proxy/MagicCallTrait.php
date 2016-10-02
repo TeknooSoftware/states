@@ -44,6 +44,8 @@ trait MagicCallTrait
      * To invoke an object as a function.
      * Warning : This method forwards the call the state's methode "invoke" and not "__invoke"
      * @api
+     * @param array ...$args
+     * @return mixed
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @see http://php.net/manual/en/language.oop5.magic.php#object.invoke
      */
@@ -57,6 +59,7 @@ trait MagicCallTrait
      * You cannot throw an exception from within a __toString() method. Doing so will result in a fatal error.
      * Warning : This method forwards the call the state's methode "toString" and not '__toString"
      * @api
+     * @return string
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
      */

@@ -284,7 +284,7 @@ trait ProxyTrait
             throw new Exception\IllegalName('Error, the identifier is not a valid string');
         }
 
-        if (!\class_exists($name)) {
+        if (!\class_exists($name) && !\interface_exists($name)) {
             throw new Exception\StateNotFound("Error, the state $name is not available");
         }
 
