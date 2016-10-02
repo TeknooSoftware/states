@@ -46,16 +46,16 @@ trait ProxyTrait
     /**
      * List of currently enabled states in this proxy.
      *
-     * @var \ArrayObject|StateInterface[]
+     * @var StateInterface[]
      */
-    private $activesStates;
+    private $activesStates = [];
 
     /**
      * List of available states for this stated class instance.
      *
-     * @var \ArrayObject|StateInterface[]
+     * @var StateInterface[]
      */
-    private $states;
+    private $states = [];
 
     /**
      * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
@@ -93,7 +93,7 @@ trait ProxyTrait
             $this->registerState($stateClassName, new $stateClassName($enablePrivateMode, $selfClassName));
 
             //If the state is the default
-            if ($shortStateName == StateInterface::STATE_DEFAULT_NAME) {
+            if ($shortStateName == ProxyInterface::DEFAULT_STATE_NAME) {
                 $this->enableState($stateClassName);
             }
         }
@@ -300,8 +300,8 @@ trait ProxyTrait
     protected function initializeProxy()
     {
         //Initialize internal vars
-        $this->states = new \ArrayObject();
-        $this->activesStates = new \ArrayObject();
+        $this->states = [];
+        $this->activesStates = [];
         $this->callerStatedClassesStack = new \SplStack();
         //Creates
         $this->loadStates();
@@ -391,17 +391,13 @@ trait ProxyTrait
     }
 
     /**
-     * Called to clone this stated class instance, clone states entities and the current state of this instance.
-     *
-     * @api
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function __clone()
     {
         //Clone states stack
-        if ($this->states instanceof \ArrayAccess) {
-            $clonedStatesArray = new \ArrayObject();
+        if (!empty($this->states)) {
+            $clonedStatesArray = [];
             foreach ($this->states as $key => $state) {
                 //Clone each stated class instance
                 $clonedState = clone $state;
@@ -412,9 +408,9 @@ trait ProxyTrait
         }
 
         //Enabling states
-        if ($this->activesStates instanceof \ArrayAccess) {
-            $activesStates = \array_keys($this->activesStates->getArrayCopy());
-            $this->activesStates = new \ArrayObject();
+        if (!empty($this->activesStates)) {
+            $activesStates = \array_keys($this->activesStates);
+            $this->activesStates = [];
             foreach ($activesStates as $stateName) {
                 $this->enableState($stateName);
             }
@@ -428,20 +424,20 @@ trait ProxyTrait
      ***********************/
 
     /**
-     * To register dynamically a new state for this stated class instance.
-     *
-     * @api
-     *
-     * @param string         $stateName
-     * @param StateInterface $stateObject
-     *
-     * @return ProxyInterface
-     *
-     * @throws Exception\IllegalName when the identifier is not an non empty string
+     * {@inheritdoc}
      */
     public function registerState(string $stateName, StateInterface $stateObject): ProxyInterface
     {
         $this->validateName($stateName);
+
+        if (!\is_a($stateObject, $stateName) && !\is_subclass_of($stateObject, $stateName)) {
+            throw new Exception\IllegalName(
+                sprintf(
+                    'Error, the state does not implement the class or interface "%s"',
+                    $stateName
+                )
+            );
+        }
 
         $this->states[$stateName] = $stateObject;
 
@@ -449,16 +445,7 @@ trait ProxyTrait
     }
 
     /**
-     * To remove dynamically a state from this stated class instance.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
-     *
-     * @throws Exception\StateNotFound when the state was not found
-     * @throws Exception\IllegalName   when the identifier is not an non empty string
+     * {@inheritdoc}
      */
     public function unregisterState(string $stateName): ProxyInterface
     {
@@ -478,15 +465,7 @@ trait ProxyTrait
     }
 
     /**
-     * To disable all enabled states and enable the required states.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
-     *
-     * @throws Exception\IllegalName when the identifier is not an non empty string
+     * {@inheritdoc}
      */
     public function switchState(string $stateName): ProxyInterface
     {
@@ -499,16 +478,7 @@ trait ProxyTrait
     }
 
     /**
-     * To enable a loaded states.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
-     *
-     * @throws Exception\StateNotFound if $stateName does not exist
-     * @throws Exception\IllegalName   when the identifier is not an non empty string
+     * {@inheritdoc}
      */
     public function enableState(string $stateName): ProxyInterface
     {
@@ -524,16 +494,7 @@ trait ProxyTrait
     }
 
     /**
-     * To disable an enabled state.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
-     *
-     * @throws Exception\StateNotFound when the state was not found
-     * @throws Exception\IllegalName   when the identifier is not an non empty string
+     * {@inheritdoc}
      */
     public function disableState(string $stateName): ProxyInterface
     {
@@ -549,46 +510,34 @@ trait ProxyTrait
     }
 
     /**
-     * To disable all actives states.
-     *
-     * @api
-     *
-     * @return ProxyInterface
+     * {@inheritdoc}
      */
     public function disableAllStates(): ProxyInterface
     {
-        $this->activesStates = new \ArrayObject();
+        $this->activesStates = [];
 
         return $this;
     }
 
     /**
-     * To list all currently available states for this object.
-     *
-     * @api
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
-    public function listAvailableStates()
+    public function listAvailableStates(): array
     {
-        if ($this->states instanceof \ArrayAccess) {
-            return \array_keys($this->states->getArrayCopy());
+        if (!empty($this->states) && \is_array($this->states)) {
+            return \array_keys($this->states);
         } else {
             return [];
         }
     }
 
     /**
-     * To list all enable states for this object.
-     *
-     * @api
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
-    public function listEnabledStates()
+    public function listEnabledStates(): array
     {
-        if ($this->activesStates instanceof \ArrayAccess) {
-            return \array_keys($this->activesStates->getArrayCopy());
+        if (!empty($this->activesStates) && \is_array($this->activesStates)) {
+            return \array_keys($this->activesStates);
         } else {
             return [];
         }
@@ -599,15 +548,15 @@ trait ProxyTrait
      *
      * @api
      *
-     * @return \ArrayAccess|StateInterface[]
+     * @return StateInterface[]
      */
-    public function getStatesList()
+    public function getStatesList() : array
     {
-        if ($this->states instanceof \ArrayAccess) {
+        if (!empty($this->states)) {
             return $this->states;
         }
 
-        return new \ArrayObject();
+        return [];
     }
 
     /**
