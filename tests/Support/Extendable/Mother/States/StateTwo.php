@@ -21,7 +21,8 @@
  */
 namespace Teknoo\Tests\Support\Extendable\Mother\States;
 
-use Teknoo\States\State\AbstractState;
+use Teknoo\States\State\StateInterface;
+use Teknoo\States\State\StateTrait;
 
 /**
  * State StateTwo
@@ -36,8 +37,10 @@ use Teknoo\States\State\AbstractState;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  * @mixin Mother
  */
-class StateTwo extends AbstractState
+class StateTwo implements StateInterface
 {
+    use StateTrait;
+
     public function methodPublic()
     {
         /**

@@ -22,6 +22,8 @@
 namespace Teknoo\Tests\Support;
 
 use Teknoo\States\State\AbstractState;
+use Teknoo\States\State\StateInterface;
+use Teknoo\States\State\StateTrait;
 
 /**
  * Class MockOnlyPrivate
@@ -36,8 +38,10 @@ use Teknoo\States\State\AbstractState;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class MockOnlyPrivate extends AbstractState
+class MockOnlyPrivate implements StateInterface
 {
+    use StateTrait;
+
     /**
      * Final Method 9.
      */

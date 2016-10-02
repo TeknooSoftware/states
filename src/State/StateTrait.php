@@ -417,10 +417,11 @@ trait StateTrait
         }
 
         if (!isset($this->closuresObjects[$methodName])) {
-            $description = $this->getMethodDescription($methodName);
-            //$description->setAccessible(true);
-            $closureBuilder = $description->getClosure($this);
-            $closure = $closureBuilder();
+            //Check if the method exist and prepare description for checkVisibility methods
+            $this->getMethodDescription($methodName);
+
+            //Call directly the closure builder, more efficient
+            $closure = $this->{$methodName}();
 
             if (!$closure instanceof \Closure) {
                 throw new Exception\MethodNotImplemented(
