@@ -55,7 +55,7 @@ class GrandDaughter extends Daughter
     {
         $methodsList = array();
         foreach ($this->getStatesList() as $stateName => $stateContainer) {
-            $methodsList[$stateName] = $stateContainer->listMethods()->getArrayCopy();
+            $methodsList[$stateName] = $stateContainer->listMethods();
         }
 
         ksort($methodsList);

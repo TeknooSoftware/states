@@ -151,7 +151,7 @@ class MockState implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function listMethods()
+    public function listMethods(): array
     {
         return array();
     }

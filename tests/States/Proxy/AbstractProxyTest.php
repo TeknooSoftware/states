@@ -438,7 +438,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatesListEmpty()
     {
-        $this->assertEmpty($this->proxy->getStatesList()->getArrayCopy());
+        $this->assertEmpty($this->proxy->getStatesList());
     }
 
     /**
@@ -448,7 +448,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $proxyReflectionClass = new \ReflectionClass($this->proxy);
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        $this->assertEmpty($proxy->getStatesList()->getArrayCopy());
+        $this->assertEmpty($proxy->getStatesList());
     }
 
     /**
@@ -459,7 +459,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->proxy->registerState(MockState1::class, $this->state1);
         $this->proxy->registerState(MockState3::class, $this->state3);
         $statesList = $this->proxy->getStatesList();
-        $this->assertEquals(2, $statesList->count());
+        $this->assertEquals(2, count($statesList));
         $this->assertInstanceOf('Teknoo\States\State\StateInterface', $statesList[MockState1::class]);
         $this->assertInstanceOf('Teknoo\States\State\StateInterface', $statesList[MockState3::class]);
     }

@@ -34,6 +34,29 @@ namespace Teknoo\States\State;
  * Default implementation of the state interface, representing states entities in stated class.
  * A trait implementation has been chosen to allow developer to write theirs owns factory, extendable from any class.
  *
+ * Objects implementing this interface must
+ * return a usable closure via the method getClosure() for the required method. This method must able to be rebinded
+ * by the Closure api (The proxy use \Closure::call() to rebind self and $this). These objects must also provide a
+ * \ReflectionMethod instance for theirs state's methods and check also if the proxy instance can access to a private
+ * or protected method.
+ *
+ * State's methods are not directly used by the proxy instance. They are a builder to create the closure, they must
+ * return them self the closure. So, writing state differs from previous version, example :
+ *
+ *      <method visibility> function <method name>(): \Closure
+ *      {
+ *          return function() {
+ *              //your code
+ *          };
+ *      }
+ *      method visibility : public/protected/private, visibility used in the proxy instance, for your method
+ *      method name: a string, used in the proxy, for your method.
+ *
+ * Contrary to previous versions of this library, methods of states's object are not directly converted into a \Closure.
+ * Since 7.0, \Closure created from the Reflection Api can not be rebinded to an another class (only rebind of $this
+ * is permitted), so the feature \Closure::call() was not usable. Since 7.1, rebind $this for this special closure
+ * is also forbidden.
+ *
  * @api
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
@@ -49,9 +72,9 @@ trait StateTrait
     /**
      * List of methods available for this state.
      *
-     * @var \ArrayObject
+     * @var string[]
      */
-    private $methodsListArray;
+    private $methodsListArray = null;
 
     /**
      * Reflection class object of this state to extract closures and description.
@@ -65,14 +88,14 @@ trait StateTrait
      *
      * @var \ReflectionMethod[]
      */
-    private $reflectionsMethods;
+    private $reflectionsMethods = [];
 
     /**
      * List of closures already extracted and set into Injection Closure Container.
      *
      * @var \Closure[]
      */
-    private $closuresObjects;
+    private $closuresObjects = [];
 
     /**
      * Methods to not return into descriptions.
@@ -110,10 +133,7 @@ trait StateTrait
 
 
     /**
-     * To initialize this state.
-     *
-     * @param bool     $privateMode     : To know if the private mode is enable or not for this state (see isPrivateMode()).
-     * @param string   $statedClassName : To know the canonical stated class name of the object owning this state container.
+     * {@inheritdoc}
      */
     public function __construct(bool $privateMode, string $statedClassName)
     {
@@ -138,9 +158,7 @@ trait StateTrait
     }
 
     /**
-     * To get the canonical stated class name associated to this state.
-     *
-     * @return string
+     * {@inheritdoc}
      */
     public function getStatedClassName(): string
     {
@@ -148,11 +166,7 @@ trait StateTrait
     }
 
     /**
-     * To set the canonical stated class name associated to this state.
-     *
-     * @param string $statedClassName
-     *
-     * @return StateInterface
+     * {@inheritdoc}
      */
     public function setStatedClassName(string $statedClassName): StateInterface
     {
@@ -162,11 +176,7 @@ trait StateTrait
     }
 
     /**
-     * To know if the mode Private is enabled : private method are only accessible from
-     * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable.
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function isPrivateMode(): bool
     {
@@ -174,14 +184,7 @@ trait StateTrait
     }
 
     /**
-     * To enable or disable the private mode of this state :
-     * If the mode Private is enable, private method are only accessible from
-     * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable.
-     *
-     * @param bool $enable
-     *
-     * @return StateInterface
+     * {@inheritdoc}
      */
     public function setPrivateMode(bool $enable): StateInterface
     {
@@ -191,16 +194,9 @@ trait StateTrait
     }
 
     /**
-     * To return an array of string listing all methods available in the state : public, protected and private.
-     * Ignore static method, because there are incompatible with the stated behavior :
-     * State can be only applied on instances entities like object,
-     * and not on static entities which by nature have no states.
-     *
-     * @api
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
-    public function listMethods()
+    public function listMethods(): array
     {
         if (null === $this->methodsListArray) {
             //Extract methods available in this states (all methods, public, protected and private)
@@ -209,7 +205,7 @@ trait StateTrait
             $methodsArray = $thisReflectionClass->getMethods($flags);
 
             //Extract methods' names
-            $methodsFinalArray = new \ArrayObject();
+            $methodsFinalArray = [];
             foreach ($methodsArray as $methodReflection) {
                 //We ignore all static methods, there are incompatible with stated behavior :
                 //State can be only applied on instances entities like object,
@@ -234,8 +230,10 @@ trait StateTrait
     /**
      * To check if the method is available in the required scope (check from the visibility of the method) :
      *  Public method : Method always available
-     *  Protected method : Method available only for this stated class's methods (method present in this state or another state) and its children
-     *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children.
+     *  Protected method : Method available only for this stated class's methods (method present in this state
+     *      or another state) and its children
+     *  Private method : Method available only for this stated class's method (method present in this state or
+     *      another state) and not for its children.
      *
      * @param string      $methodName
      * @param string      $scope
@@ -248,7 +246,7 @@ trait StateTrait
     private function checkVisibility(
         string $methodName,
         string $scope,
-        string $statedClassOriginName = null
+        string $statedClassOriginName
     ): bool {
         $visible = false;
         if (isset($this->reflectionsMethods[$methodName])) {
@@ -272,7 +270,10 @@ trait StateTrait
                     break;
                 case StateInterface::VISIBILITY_PROTECTED:
                     //Can not access to private methods
-                    if (false === $this->reflectionsMethods[$methodName]->isPrivate()) {
+                    if (false === $this->reflectionsMethods[$methodName]->isPrivate()
+                        && !empty($statedClassOriginName)
+                        && ($statedClassOriginName === $this->statedClassName
+                            || \is_subclass_of($statedClassOriginName, $this->statedClassName))) {
                         //It's a private method, do like if there is no method
                         $visible = true;
                     }
@@ -295,23 +296,12 @@ trait StateTrait
     }
 
     /**
-     * To test if a method exists for this state in the required scope (check from the visibility of the method) :
-     *  Public method : Method always available
-     *  Protected method : Method available only for this stated class's methods (method present in this state or another state) and its children
-     *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children.
-     *
-     * @param string      $methodName
-     * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null $statedClassOriginName
-     *
-     * @return bool
-     *
-     * @throws Exception\InvalidArgument when the method name is not a string
+     * {@inheritdoc}
      */
     public function testMethod(
         string $methodName,
-        string $scope = StateInterface::VISIBILITY_PUBLIC,
-        string $statedClassOriginName = null
+        string $scope,
+        string $statedClassOriginName
     ): bool {
         //Method is already extracted
         if (isset($this->reflectionsMethods[$methodName])) {
@@ -337,20 +327,7 @@ trait StateTrait
     }
 
     /**
-     * To return the description of a method to configure the behavior of the proxy. Return also description of private
-     * methods : getMethodDescription() does not check if the caller is allowed to call the required method.
-     *
-     * getMethodDescription() ignores static method, because there are incompatible with the stated behavior :
-     * State can be only applied on instances entities like object,
-     * and not on static entities which by nature have no states
-     *
-     * @api
-     *
-     * @param string $methodName
-     *
-     * @return \ReflectionMethod
-     *
-     * @throws Exception\MethodNotImplemented is the method does not exist
+     * {@inheritdoc}
      */
     public function getMethodDescription(string $methodName): \ReflectionMethod
     {
@@ -359,11 +336,6 @@ trait StateTrait
         }
 
         $thisReflectionClass = $this->getReflectionClass();
-
-        //Initialize ArrayObject to store Reflection Methods
-        if (!($this->reflectionsMethods instanceof \ArrayObject)) {
-            $this->reflectionsMethods = new \ArrayObject();
-        }
 
         try {
             //Load Reflection Method if it is not already done
@@ -393,29 +365,13 @@ trait StateTrait
     }
 
     /**
-     * To return a closure of the required method to use in the proxy, in the required scope (check from the visibility of the method) :
-     *  Public method : Method always available
-     *  Protected method : Method available only for this stated class's methods (method present in this state or another state) and its children
-     *  Private method : Method available only for this stated class's method (method present in this state or another state) and not for its children.
-     *
-     * @param string         $methodName
-     * @param string         $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null    $statedClassOriginName
-     *
-     * @return \Closure
-     *
-     * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
+     * {@inheritdoc}
      */
     public function getClosure(
         string $methodName,
-        string $scope = StateInterface::VISIBILITY_PUBLIC,
-        string $statedClassOriginName = null
+        string $scope,
+        string $statedClassOriginName
     ): \Closure {
-        if (!($this->closuresObjects instanceof \ArrayObject)) {
-            //Initialize locale closure cache
-            $this->closuresObjects = new \ArrayObject();
-        }
-
         if (!isset($this->closuresObjects[$methodName])) {
             //Check if the method exist and prepare description for checkVisibility methods
             $this->getMethodDescription($methodName);
