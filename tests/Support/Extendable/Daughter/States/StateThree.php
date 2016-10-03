@@ -40,17 +40,17 @@ class StateThree extends AbstractState
 {
     public function method6()
     {
-        /**
+        /*
          * @return int
          */
-        return function() {
+        return function () {
             return 666;
         };
     }
 
     public function methodRecallMotherPrivate()
     {
-        /**
+        /*
          * @return int
          */
         return function () {
@@ -60,7 +60,7 @@ class StateThree extends AbstractState
 
     public function methodRecallMotherProtected()
     {
-        /**
+        /*
          * @return int
          */
         return function () {

@@ -41,12 +41,12 @@ class StateDefault extends AbstractState
 {
     public function getTitle()
     {
-        /**
+        /*
          * Return the name of the post, or empty if no body has been defined.
          *
          * @return string
          */
-        return function() {
+        return function () {
             if (!empty($this->title)) {
                 return $this->title;
             }
@@ -57,7 +57,7 @@ class StateDefault extends AbstractState
 
     public function setTitle()
     {
-        /**
+        /*
          * Define the title of this post.
          *
          * @param string $title
@@ -73,7 +73,7 @@ class StateDefault extends AbstractState
 
     public function setBody()
     {
-        /**
+        /*
          * Define the body of this post.
          *
          * @param string $body

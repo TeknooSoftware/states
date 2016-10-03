@@ -277,6 +277,7 @@ class MockState implements StateInterface
             $rm = new \ReflectionMethod($this, $methodName);
             $rm->setAccessible(true);
             $rmcBuilder = $rm->getClosure($this);
+
             return $rmcBuilder();
         } else {
             return $this->closure;

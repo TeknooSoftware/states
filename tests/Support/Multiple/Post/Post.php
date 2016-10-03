@@ -46,7 +46,7 @@ class Post extends Proxy\Standard
         return [
             Deleted::class,
             Published::class,
-            StateDefault::class
+            StateDefault::class,
         ];
     }
 }

@@ -23,8 +23,6 @@ namespace Teknoo\Tests\Support;
 
 use Teknoo\States\Proxy;
 use Teknoo\States\State;
-use Teknoo\States\State\Exception;
-use Teknoo\States\State\StateInterface;
 
 /**
  * Class MockState
@@ -40,5 +38,4 @@ use Teknoo\States\State\StateInterface;
  */
 class MockState3 extends MockState
 {
-    
 }

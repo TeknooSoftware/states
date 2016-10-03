@@ -41,7 +41,7 @@ class Moderator extends AbstractState
 {
     public function isModerator()
     {
-        /**
+        /*
          * To know if this user is a moderator.
          *
          * @return bool

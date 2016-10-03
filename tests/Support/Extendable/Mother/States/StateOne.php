@@ -40,7 +40,7 @@ class StateOne extends AbstractState
 {
     public function method1()
     {
-        /**
+        /*
          * @return int
          */
         return function () {
@@ -50,7 +50,7 @@ class StateOne extends AbstractState
 
     public function method2()
     {
-        /**
+        /*
          * @return int
          */
         return function () {

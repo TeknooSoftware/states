@@ -21,7 +21,6 @@
  */
 namespace Teknoo\Tests\Support;
 
-use Teknoo\States\State\AbstractState;
 use Teknoo\States\State\StateInterface;
 use Teknoo\States\State\StateTrait;
 
@@ -44,7 +43,8 @@ class MockOnlyProtected implements StateInterface
 
     protected static function _staticMethod5()
     {
-        return function (){};
+        return function () {
+        };
     }
 
     /**
@@ -57,7 +57,7 @@ class MockOnlyProtected implements StateInterface
      */
     protected function standardMethod6()
     {
-        /**
+        /*
          * @param $a
          * @param $b
          *
@@ -73,11 +73,13 @@ class MockOnlyProtected implements StateInterface
      */
     final protected function finalMethod7()
     {
-        return function() {};
+        return function () {
+        };
     }
 
     protected function standardMethod8()
     {
-        return function() {};
+        return function () {
+        };
     }
 }

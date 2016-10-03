@@ -19,24 +19,20 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-
 namespace My\Parent {
     class ClassName
     {
-
     }
 }
 
 namespace My\Stated {
     class ClassName extends \My\Parent\ClassName
     {
-
     }
 }
 
 namespace Its\Inherited {
     class ClassName extends \My\Stated\ClassName
     {
-
     }
 }

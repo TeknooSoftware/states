@@ -60,9 +60,11 @@ interface StateInterface
 
     /**
      * To initialize this state.
+     *
      * @api
-     * @param bool     $privateMode     : To know if the private mode is enable or not for this state (see isPrivateMode()).
-     * @param string   $statedClassName : To know the canonical stated class name of the object owning this state container.
+     *
+     * @param bool   $privateMode     : To know if the private mode is enable or not for this state (see isPrivateMode())
+     * @param string $statedClassName : To know the canonical stated class name of the object owning this state container
      */
     public function __construct(bool $privateMode, string $statedClassName);
 
@@ -164,9 +166,9 @@ interface StateInterface
      *  Private method : Method available only for this stated class's method (method present in this state or another
      *      state) and not for its children.
      *
-     * @param string         $methodName
-     * @param string         $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null    $statedClassOriginName
+     * @param string      $methodName
+     * @param string      $scope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string|null $statedClassOriginName
      *
      * @return \Closure
      *

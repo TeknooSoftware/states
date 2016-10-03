@@ -44,12 +44,12 @@ class Published implements StateInterface
 
     public function getFormattedBody()
     {
-        /**
+        /*
          * Get the body and transform BBCode to HTML.
          *
          * @return string
          */
-        return function() {
+        return function () {
             $body = $this->getAttribute('body');
 
             return str_replace(
@@ -70,9 +70,10 @@ class Published implements StateInterface
 
     protected function getDate()
     {
-        /**
+        /*
          * Fake method not callable in public scope.
          */
-        return function() {};
+        return function () {
+        };
     }
 }

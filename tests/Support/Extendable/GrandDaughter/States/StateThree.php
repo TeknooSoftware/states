@@ -40,7 +40,7 @@ class StateThree extends Daughter\StateThree
 {
     public function method7()
     {
-        /**
+        /*
          * @return int
          */
         return function () {

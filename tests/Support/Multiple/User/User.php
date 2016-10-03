@@ -93,7 +93,7 @@ class User extends Proxy\Standard
         return [
             Administrator::class,
             Moderator::class,
-            StateDefault::class
+            StateDefault::class,
         ];
     }
 }

@@ -41,7 +41,8 @@ use Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class StandardTraitProxy extends MotherProxy implements Proxy\ProxyInterface,
+class StandardTraitProxy extends MotherProxy implements
+Proxy\ProxyInterface,
     \Serializable,
     \ArrayAccess,
     \SeekableIterator,

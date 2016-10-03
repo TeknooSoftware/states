@@ -42,7 +42,7 @@ class Administrator extends AbstractState
 {
     public function setModerator()
     {
-        /**
+        /*
          * Transform an user has moderator.
          *
          * @param User $user

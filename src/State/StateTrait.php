@@ -114,7 +114,7 @@ trait StateTrait
         'setPrivateMode' => 'setPrivateMode',
         'isPrivateMode' => 'isPrivateMode',
         'getStatedClassName' => 'getStatedClassName',
-        'setStatedClassName' => 'setStatedClassName'
+        'setStatedClassName' => 'setStatedClassName',
     );
 
     /**
@@ -130,7 +130,6 @@ trait StateTrait
      * @var string
      */
     private $statedClassName;
-
 
     /**
      * {@inheritdoc}

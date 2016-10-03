@@ -46,7 +46,7 @@ class Daughter extends Mother
         return [
             StateDefault::class,
             StateOne::class,
-            StateThree::class
+            StateThree::class,
         ];
     }
 

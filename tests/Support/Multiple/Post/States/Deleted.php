@@ -41,7 +41,7 @@ class Deleted extends AbstractState
 {
     public function getMessage()
     {
-        /**
+        /*
          * Return the body of the post. Return always Message deleted.
          *
          * @return string

@@ -69,10 +69,10 @@ trait ProxyTrait
      * Method to initialize a list of states class in this proxy. Is a state have a same name of a previous loaded state
      * (defined in previously in this class) it's skipped.
      *
-     * @param array $statesList
-     * @param bool $enablePrivateMode
+     * @param array  $statesList
+     * @param bool   $enablePrivateMode
      * @param string $selfClassName
-     * @param array &$loadedStatesList
+     * @param array  &$loadedStatesList
      */
     private function initializeStates(
         array $statesList,
@@ -82,7 +82,7 @@ trait ProxyTrait
     ) {
         foreach ($statesList as $stateClassName) {
             //Extract short class name and check if this state is not already loaded
-            $shortStateName = \substr($stateClassName, \strrpos($stateClassName, '\\')+1);
+            $shortStateName = \substr($stateClassName, \strrpos($stateClassName, '\\') + 1);
             if (isset($loadedStatesList[$shortStateName])) {
                 continue;
             }
@@ -121,7 +121,7 @@ trait ProxyTrait
                     && \is_subclass_of($parentClassName, ProxyInterface::class)) {
 
                 //Private mode is disable for states directly defined in parent class.
-                /**
+                /*
                  * @var ProxyInterface $parentClassName
                  */
                 $this->initializeStates(
@@ -269,13 +269,13 @@ trait ProxyTrait
     /**
      * To test if the identifier is an non empty string.
      * Convert also canonical states name (aka state's class name) to its identifier (kepp only the class name without
-     * its namespace)
+     * its namespace).
      *
      * @param string $name
      *
      * @return bool
      *
-     * @throws Exception\IllegalName when the identifier is not an non empty string
+     * @throws Exception\IllegalName   when the identifier is not an non empty string
      * @throws Exception\StateNotFound when the state class name does not exist
      */
     protected function validateName(string &$name): bool
@@ -607,7 +607,8 @@ trait ProxyTrait
 
             try {
                 return $stateObject->getMethodDescription($methodName);
-            } catch (MethodNotImplemented $e) {}
+            } catch (MethodNotImplemented $e) {
+            }
         }
 
         //Method not found

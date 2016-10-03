@@ -59,7 +59,7 @@ class Article extends Proxy\Standard
             Extended::class,
             Promoted::class,
             Published::class,
-            StateDefault::class
+            StateDefault::class,
         ];
     }
 

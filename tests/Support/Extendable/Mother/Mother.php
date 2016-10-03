@@ -46,7 +46,7 @@ class Mother extends Standard
         return [
             StateDefault::class,
             StateOne::class,
-            StateTwo::class
+            StateTwo::class,
         ];
     }
 

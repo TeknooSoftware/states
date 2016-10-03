@@ -150,6 +150,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\IllegalName
      */
     public function testRegisterStateBadName()
@@ -159,6 +160,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
+     *
      * @expectedException @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testRegisterStateBadClass()
@@ -168,6 +170,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\IllegalName
      */
     public function testRegisterStateClassNotImplementing()
@@ -205,6 +208,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state to remove is not registered.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testUnRegisterStateNonExistentState()
@@ -257,6 +261,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state does not exist in switch state method.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testSwitchStateNonExistentName()
@@ -307,6 +312,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state is not available when we want enable a state.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testEnableStateNonExistentName()
@@ -357,6 +363,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state is not available when we want enable a state.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testDisableStateNonExistentName()
@@ -515,6 +522,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test proxy behavior when the required method is not implemented in anything active state.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCallNonImplementedWithoutState()
@@ -524,6 +532,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test proxy behavior when the required method is not implemented in the required state.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCallNonImplementedWithState()
@@ -534,6 +543,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test proxy behavior when the required method is implemented in several active state.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\AvailableSeveralMethodImplementations
      */
     public function testCallMultipleImplementation()
@@ -561,6 +571,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the proxy behavior when hen we want a description of a non existent method.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testGetMethodDescriptionNonExistentName()
@@ -571,6 +582,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the proxy behavior when hen we want a description of a non existent method in the required state.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testGetMethodDescriptionNonExistentNameByState()
@@ -603,6 +615,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the proxy behavior when hen we want a description of a method and the required state does not exist.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testGetMethodDescriptionInvalidState()
@@ -613,6 +626,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test the proxy behavior when hen we want a description of a method and the required state does not exist.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testGetMethodDescriptionNonExistantState()
@@ -1554,6 +1568,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when __invoke is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testInvokeNonImplemented()
@@ -1859,6 +1874,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when offsetExist is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetExistNonImplemented()
@@ -1882,6 +1898,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when offsetGet is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetGetNonImplemented()
@@ -1905,6 +1922,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when offsetSet is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetSetNonImplemented()
@@ -1928,6 +1946,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when offsetUnset is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetUnsetNonImplemented()
@@ -1951,6 +1970,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when current is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCurrentNonImplemented()
@@ -1974,6 +1994,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when key is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testKeyNonImplemented()
@@ -1997,6 +2018,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when next is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testNextNonImplemented()
@@ -2020,6 +2042,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when rewind is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testRewindNonImplemented()
@@ -2043,6 +2066,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when seek is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testSeekNonImplemented()
@@ -2066,6 +2090,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when valid is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testValidNonImplemented()
@@ -2089,6 +2114,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when getIterator is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testGetIteratorNonImplemented()
@@ -2105,13 +2131,14 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $iterator = new \ArrayIterator([1, 2, 3]);
         $this->state1->setClosure(function () use ($iterator) {
-           return $iterator;
+            return $iterator;
         });
         self::assertSame($iterator, $this->proxy->getIterator());
     }
 
     /**
      * Test exception behavior of the proxy when serialize is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testSerializeNonImplemented()
@@ -2135,6 +2162,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when unserialize is not implemented into in actives states.
+     *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testUnSerializeNonImplemented()

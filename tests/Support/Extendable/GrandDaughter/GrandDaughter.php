@@ -42,7 +42,7 @@ class GrandDaughter extends Daughter
     public static function statesListDeclaration(): array
     {
         return [
-            StateThree::class
+            StateThree::class,
         ];
     }
 

@@ -49,7 +49,7 @@ abstract class Standard implements ProxyInterface
     use ProxyTrait;
 
     /**
-     * Initialize the proxy by calling the method initializeProxy
+     * Initialize the proxy by calling the method initializeProxy.
      */
     public function __construct()
     {

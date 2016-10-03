@@ -38,23 +38,22 @@ use Teknoo\States\State\AbstractState;
  */
 class StateOne extends AbstractState
 {
-
     public function method3()
     {
-        /**
+        /*
          * @return int
          */
-        return function() {
+        return function () {
             return 321;
         };
     }
 
     public function method4()
     {
-        /**
+        /*
          * @return int
          */
-        return function() {
+        return function () {
             return 654;
         };
     }

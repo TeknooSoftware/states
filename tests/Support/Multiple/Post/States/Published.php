@@ -41,7 +41,7 @@ class Published extends AbstractState
 {
     public function getMessage()
     {
-        /**
+        /*
          * Return the body of the post.
          *
          * @return string

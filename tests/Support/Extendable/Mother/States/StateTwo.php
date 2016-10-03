@@ -43,7 +43,7 @@ class StateTwo implements StateInterface
 
     public function methodPublic()
     {
-        /**
+        /*
          * @return int
          */
         return function () {
@@ -53,7 +53,7 @@ class StateTwo implements StateInterface
 
     protected function methodProtected()
     {
-        /**
+        /*
          * @return int
          */
         return function () {
@@ -63,7 +63,7 @@ class StateTwo implements StateInterface
 
     private function methodPrivate()
     {
-        /**
+        /*
          * @return int
          */
         return function () {
@@ -73,7 +73,7 @@ class StateTwo implements StateInterface
 
     public function methodRecallPrivate()
     {
-        /**
+        /*
          * @return int
          */
         return function () {

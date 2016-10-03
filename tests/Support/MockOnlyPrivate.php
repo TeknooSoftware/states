@@ -21,7 +21,6 @@
  */
 namespace Teknoo\Tests\Support;
 
-use Teknoo\States\State\AbstractState;
 use Teknoo\States\State\StateInterface;
 use Teknoo\States\State\StateTrait;
 
@@ -47,7 +46,8 @@ class MockOnlyPrivate implements StateInterface
      */
     final private function finalMethod9()
     {
-        return function () {};
+        return function () {
+        };
     }
 
     /**
@@ -55,16 +55,19 @@ class MockOnlyPrivate implements StateInterface
      */
     private function standardMethod10()
     {
-        return function () {};
+        return function () {
+        };
     }
 
     final private function finalMethod11()
     {
-        return function () {};
+        return function () {
+        };
     }
 
     private static function _staticMethod12()
     {
-        return function () {};
+        return function () {
+        };
     }
 }

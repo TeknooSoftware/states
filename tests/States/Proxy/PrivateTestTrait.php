@@ -20,6 +20,7 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 namespace Teknoo\Tests\States\Proxy;
+
 use Teknoo\States\State\AbstractState;
 use Teknoo\Tests\Support\MockState1;
 

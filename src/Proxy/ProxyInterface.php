@@ -124,7 +124,7 @@ interface ProxyInterface
      *
      * @return ProxyInterface
      *
-     * @throws Exception\IllegalName when the identifier is not an non empty string
+     * @throws Exception\IllegalName   when the identifier is not an non empty string
      * @throws Exception\StateNotFound if $stateName does not exist
      */
     public function switchState(string $stateName): ProxyInterface;
@@ -223,7 +223,7 @@ interface ProxyInterface
      *
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws InvalidArgument when the method name is not a string
+     * @throws InvalidArgument                when the method name is not a string
      */
     public function __call(string $name, array $arguments);
 

@@ -40,7 +40,7 @@ class StateDefault extends AbstractState
 {
     public function getTitle()
     {
-        /**
+        /*
          * Return the title of this article.
          *
          * @return string
@@ -57,12 +57,12 @@ class StateDefault extends AbstractState
      */
     public function isPublished()
     {
-        /**
+        /*
          * Return the title of this article.
          *
          * @return string
          */
-        return function() {
+        return function () {
             $isPublished = $this->getAttribute('is_published');
 
             return !empty($isPublished);

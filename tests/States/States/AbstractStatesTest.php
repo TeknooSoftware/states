@@ -28,7 +28,7 @@ use Teknoo\Tests\Support;
 /**
  * Class AbstractStatesTest
  * Set of tests to test the excepted behaviors of all implementations of \Teknoo\States\State\StateInterface *.
- 
+
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -89,7 +89,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 'standardMethod1',
                 'finalMethod2',
                 'standardMethod4',
-                'methodBuilderNoReturnClosure'
+                'methodBuilderNoReturnClosure',
             ),
             $this->getPublicClassObject(false, 'My\Stated\ClassName')->listMethods()
         );
@@ -137,6 +137,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test if exception when we get a description of a non-existent method.
+     *
      * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
      */
     public function testGetBadMethodDescription()
@@ -146,6 +147,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test if exception when we get a description of an ignored method, the behavior must like non-existent method.
+     *
      * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
      */
     public function testGetIgnoredMethodDescriptionUsedByTrait()
@@ -362,6 +364,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception through by state if the closure method does not exist.
+     *
      * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
      */
     public function testGetBadClosure()
@@ -371,6 +374,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception through by state if the closure method is static.
+     *
      * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
      */
     public function testGetStaticClosure()
@@ -390,6 +394,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception through by state if the scope is invalid.
+     *
      * @expectedException \Teknoo\States\State\Exception\InvalidArgument
      */
     public function testGetClosureWithInvalidScope()
@@ -489,7 +494,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
                 ->getClosure('standardMethod10', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
         } catch (StateException\MethodNotImplemented $e) {
             $fail = true;
-        } catch (\Exception $e) {}
+        } catch (\Exception $e) {
+        }
 
         self::assertTrue($fail, 'Error, in Protected scope, private methods are not available');
 

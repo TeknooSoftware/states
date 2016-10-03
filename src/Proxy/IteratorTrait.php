@@ -42,8 +42,11 @@ trait IteratorTrait
 {
     /**
      * {@inheritdoc}
+     *
      * @api
+     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
      * @see http://php.net/manual/en/class.iterator.php
      */
     public function current()
@@ -55,8 +58,11 @@ trait IteratorTrait
 
     /**
      * {@inheritdoc}
+     *
      * @api
+     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
      * @see http://php.net/manual/en/class.iterator.php
      */
     public function key()
@@ -68,8 +74,11 @@ trait IteratorTrait
 
     /**
      * {@inheritdoc}
+     *
      * @api
+     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
      * @see http://php.net/manual/en/class.iterator.php
      */
     public function next()
@@ -81,8 +90,11 @@ trait IteratorTrait
 
     /**
      * {@inheritdoc}
+     *
      * @api
+     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
      * @see http://php.net/manual/en/class.iterator.php
      */
     public function rewind()
@@ -94,7 +106,9 @@ trait IteratorTrait
 
     /**
      * {@inheritdoc}
+     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
      * @see http://php.net/manual/en/class.iterator.php
      */
     public function seek($position)
@@ -105,8 +119,11 @@ trait IteratorTrait
 
     /**
      * {@inheritdoc}
+     *
      * @api
+     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
      * @see http://php.net/manual/en/class.iterator.php
      */
     public function valid()
@@ -118,8 +135,11 @@ trait IteratorTrait
 
     /**
      * {@inheritdoc}
+     *
      * @api
+     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
      * @see http://php.net/manual/en/class.iterator.php
      */
     public function getIterator(): \Traversable

@@ -21,7 +21,6 @@
  */
 namespace Teknoo\Tests\States\States;
 
-use Teknoo\States\Proxy;
 use Teknoo\Tests\Support;
 
 /**

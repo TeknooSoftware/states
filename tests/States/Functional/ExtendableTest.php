@@ -21,9 +21,7 @@
  */
 namespace Teknoo\Tests\States\Functional;
 
-use Teknoo\States\Di;
 use Teknoo\States\Exception\MethodNotImplemented;
-use Teknoo\States\Loader;
 use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateOne;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateThree;

@@ -41,19 +41,19 @@ class StateDefault extends AbstractState
 {
     public function getName()
     {
-        /**
+        /*
          * Return the user name of this user.
          *
          * @return string
          */
-        return function() {
+        return function () {
             return $this->userName;
         };
     }
 
     protected function setModerator()
     {
-        /**
+        /*
          * Transform this user as moderator.
          *
          * @param bool $value
