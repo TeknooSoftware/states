@@ -1,6 +1,6 @@
 #Teknoo Software - States library - Change Log
 
-###[3.0.0-alpha1]
+###[3.0.0-alpha1] - 2016-10-03
 ###Added/Changed
 * State identifier must be a valid class name or a valid interface name. The state object must implements, 
   instantiates or inherits this class/interface name.
@@ -24,7 +24,7 @@
 * Integrated proxies, Standard proxies can be now directly instantiate by PHP.  
 * bootstrap.php file
 
-##[2.1.1]
+##[2.1.1] - 2016-10-03
 ###Fixed
 - Remove support of PHP 7.1+ of State 2.* because PHP 7.1 introduce a major BC Break on the Reflection API and forbid
 rebind $this in closure created from the Reflection API.
