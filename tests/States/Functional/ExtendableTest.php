@@ -55,7 +55,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $motherInstance = new Mother();
         $statesList = $motherInstance->listAvailableStates();
         sort($statesList);
-        $this->assertEquals(
+        self::assertEquals(
             [StateDefault::class, \Teknoo\Tests\Support\Extendable\Mother\States\StateOne::class, StateTwo::class],
             $statesList
         );
@@ -70,7 +70,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $daughterInstance = new Daughter();
         $statesList = $daughterInstance->listAvailableStates();
         sort($statesList);
-        $this->assertEquals(
+        self::assertEquals(
             [\Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class, StateOne::class, StateThree::class, StateTwo::class],
             $statesList
         );
@@ -84,7 +84,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $grandDaughterInstance = new GrandDaughter();
         $statesList = $grandDaughterInstance->listAvailableStates();
         sort($statesList);
-        $this->assertEquals(
+        self::assertEquals(
             [\Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class, StateOne::class, \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class, StateTwo::class],
             $statesList
         );
@@ -96,7 +96,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testListMethodsByStatesMother()
     {
         $motherInstance = new Mother();
-        $this->assertEquals(
+        self::assertEquals(
             [
                 StateDefault::class => [],
                 \Teknoo\Tests\Support\Extendable\Mother\States\StateOne::class => ['method1', 'method2'],
@@ -113,7 +113,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testListMethodsByStatesDaughter()
     {
         $daughterInstance = new Daughter();
-        $this->assertEquals(
+        self::assertEquals(
             [
                 \Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class => [],
                 StateOne::class => ['method3', 'method4'],
@@ -131,7 +131,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     public function testListMethodsByStatesGrandDaughter()
     {
         $grandDaughterInstance = new GrandDaughter();
-        $this->assertEquals(
+        self::assertEquals(
             [
                 \Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class => [],
                 StateOne::class => ['method3', 'method4'],
@@ -149,23 +149,23 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     {
         $motherInstance = new Mother();
         $motherInstance->enableState(\Teknoo\Tests\Support\Extendable\Mother\States\StateOne::class);
-        $this->assertEquals(123, $motherInstance->method1());
-        $this->assertEquals(456, $motherInstance->method2());
+        self::assertEquals(123, $motherInstance->method1());
+        self::assertEquals(456, $motherInstance->method2());
         $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateOne::class);
-        $this->assertEquals(321, $daughterInstance->method3());
-        $this->assertEquals(654, $daughterInstance->method4());
+        self::assertEquals(321, $daughterInstance->method3());
+        self::assertEquals(654, $daughterInstance->method4());
         try {
             $daughterInstance->method1();
         } catch (MethodNotImplemented $e) {
             return;
         } catch (\Exception $e) {
-            $this->fail($e->getMessage());
+            self::fail($e->getMessage());
 
             return;
         }
 
-        $this->fail('Error, the daughter class overload the StateOne, Mother\'s methods must not be available');
+        self::fail('Error, the daughter class overload the StateOne, Mother\'s methods must not be available');
     }
 
     /**
@@ -175,12 +175,12 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     {
         $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateThree::class);
-        $this->assertEquals(666, $daughterInstance->method6());
+        self::assertEquals(666, $daughterInstance->method6());
 
         $grandDaughterInstance = new GrandDaughter();
         $grandDaughterInstance->enableState(StateThreeGD::class);
-        $this->assertEquals(666, $grandDaughterInstance->method6());
-        $this->assertEquals(777, $grandDaughterInstance->method7());
+        self::assertEquals(666, $grandDaughterInstance->method6());
+        self::assertEquals(777, $grandDaughterInstance->method7());
     }
 
     /**
@@ -190,7 +190,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     {
         $motherInstance = new Mother();
         $motherInstance->enableState(StateTwo::class);
-        $this->assertEquals(2 * 789, $motherInstance->methodRecallPrivate());
+        self::assertEquals(2 * 789, $motherInstance->methodRecallPrivate());
     }
 
     /**
@@ -201,7 +201,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     {
         $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateTwo::class);
-        $this->assertEquals(2 * 789, $daughterInstance->methodRecallPrivate());
+        self::assertEquals(2 * 789, $daughterInstance->methodRecallPrivate());
     }
 
     /**
@@ -213,7 +213,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateTwo::class)
             ->enableState(StateThree::class);
-        $this->assertEquals(3 * 456, $daughterInstance->methodRecallMotherProtected());
+        self::assertEquals(3 * 456, $daughterInstance->methodRecallMotherProtected());
     }
 
     /**
@@ -232,11 +232,11 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
             //Good behavior
             return;
         } catch (\Exception $e) {
-            $this->fail($e->getMessage());
+            self::fail($e->getMessage());
 
             return;
         }
 
-        $this->fail('Error privates methods must not be available for daughter methods');
+        self::fail('Error privates methods must not be available for daughter methods');
     }
 }

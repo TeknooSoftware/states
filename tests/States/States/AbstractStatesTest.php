@@ -84,7 +84,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testListMethodsPublic()
     {
-        $this->assertEquals(
+        self::assertEquals(
             array(
                 'standardMethod1',
                 'finalMethod2',
@@ -100,7 +100,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testListMethodsProtected()
     {
-        $this->assertEquals(
+        self::assertEquals(
             array(
                 'standardMethod6',
                 'finalMethod7',
@@ -115,7 +115,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testListMethodsPrivate()
     {
-        $this->assertEquals(
+        self::assertEquals(
             array(
                 'finalMethod9',
                 'standardMethod10',
@@ -137,30 +137,20 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test if exception when we get a description of a non-existent method.
+     * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
      */
     public function testGetBadMethodDescription()
     {
-        try {
-            $this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('badMethod');
-        } catch (StateException\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) { }
-
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of non-existent method');
+        $this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('badMethod');
     }
 
     /**
      * Test if exception when we get a description of an ignored method, the behavior must like non-existent method.
+     * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
      */
     public function testGetIgnoredMethodDescriptionUsedByTrait()
     {
-        try {
-            $this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('getMethodDescription');
-        } catch (StateException\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) { }
-
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if we require a description of internal method of the trait');
+        $this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('getMethodDescription');
     }
 
     /**
@@ -182,14 +172,14 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetMethodDescription()
     {
-        $this->assertSame('Final Method 9.', $this->formatDescription($this->getPrivateClassObject(false, 'My\Stated\ClassName')->getMethodDescription('finalMethod9')));
-        $this->assertSame('Standard Method 10.', $this->formatDescription($this->getPrivateClassObject(false, 'My\Stated\ClassName')->getMethodDescription('standardMethod10')));
+        self::assertSame('Final Method 9.', $this->formatDescription($this->getPrivateClassObject(false, 'My\Stated\ClassName')->getMethodDescription('finalMethod9')));
+        self::assertSame('Standard Method 10.', $this->formatDescription($this->getPrivateClassObject(false, 'My\Stated\ClassName')->getMethodDescription('standardMethod10')));
 
-        $this->assertSame('Standard Method 6.           @param $a      @param $b           @return mixed', $this->formatDescription($this->getProtectedClassObject(false, 'My\Stated\ClassName')->getMethodDescription('standardMethod6')));
-        $this->assertSame('Final Method 7.', $this->formatDescription($this->getProtectedClassObject(false, 'My\Stated\ClassName')->getMethodDescription('finalMethod7')));
+        self::assertSame('Standard Method 6.           @param $a      @param $b           @return mixed', $this->formatDescription($this->getProtectedClassObject(false, 'My\Stated\ClassName')->getMethodDescription('standardMethod6')));
+        self::assertSame('Final Method 7.', $this->formatDescription($this->getProtectedClassObject(false, 'My\Stated\ClassName')->getMethodDescription('finalMethod7')));
 
-        $this->assertSame('Standard Method 1.', $this->formatDescription($this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('standardMethod1')));
-        $this->assertSame('Final Method 2.', $this->formatDescription($this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('finalMethod2')));
+        self::assertSame('Standard Method 1.', $this->formatDescription($this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('standardMethod1')));
+        self::assertSame('Final Method 2.', $this->formatDescription($this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('finalMethod2')));
     }
 
     /**
@@ -200,15 +190,12 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $this->getPublicClassObject(false, 'My\Stated\ClassName')->testMethod(array(), StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
     }
 
+    /**
+     * @expectedException \Teknoo\States\State\Exception\InvalidArgument
+     */
     public function testTestMethodExceptionWithInvalidScope()
     {
-        try {
-            $this->getPublicClassObject(false, 'My\Stated\ClassName')->testMethod('standardMethod1', 'badScope', 'My\Stated\ClassName');
-        } catch (StateException\InvalidArgument $e) {
-            return;
-        } catch (\Exception $e) { }
-
-        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if we require a description with an invalid scope name');
+        $this->getPublicClassObject(false, 'My\Stated\ClassName')->testMethod('standardMethod1', 'badScope', 'My\Stated\ClassName');
     }
 
     /**
@@ -218,24 +205,24 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testTestMethodFromPrivateScope()
     {
         $private = $this->getPrivateClassObject(false, 'My\Stated\ClassName');
-        $this->assertTrue($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
 
         $protected = $this->getProtectedClassObject(false, 'My\Stated\ClassName');
-        $this->assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
 
         $public = $this->getPublicClassObject(false, 'My\Stated\ClassName');
-        $this->assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
     }
 
     /**
@@ -245,24 +232,24 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testTestMethodFromProtectedScope()
     {
         $private = $this->getPrivateClassObject(false, 'My\Stated\ClassName');
-        $this->assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
 
         $protected = $this->getProtectedClassObject(false, 'My\Stated\ClassName');
-        $this->assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertTrue($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertTrue($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertTrue($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
 
         $public = $this->getPublicClassObject(false, 'My\Stated\ClassName');
-        $this->assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
     }
 
     /**
@@ -272,24 +259,24 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testTestMethodFromPublicScope()
     {
         $private = $this->getPrivateClassObject(false, 'My\Stated\ClassName');
-        $this->assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
 
         $protected = $this->getProtectedClassObject(false, 'My\Stated\ClassName');
-        $this->assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
 
         $public = $this->getPublicClassObject(false, 'My\Stated\ClassName');
-        $this->assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
     }
 
     /**
@@ -299,24 +286,24 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testTestMethodOfParentFromPrivateScope()
     {
         $private = $this->getPrivateClassObject(true, 'My\Parent\ClassName');
-        $this->assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertFalse($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertFalse($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
 
         $protected = $this->getProtectedClassObject(true, 'My\Parent\ClassName');
-        $this->assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
 
         $public = $this->getPublicClassObject(true, 'My\Parent\ClassName');
-        $this->assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
-        $this->assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName'));
     }
 
     /**
@@ -326,24 +313,24 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testTestMethodOfParentFromProtectedScope()
     {
         $private = $this->getPrivateClassObject(true, 'My\Parent\ClassName');
-        $this->assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
 
         $protected = $this->getProtectedClassObject(true, 'My\Parent\ClassName');
-        $this->assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertTrue($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertTrue($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertTrue($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
 
         $public = $this->getPublicClassObject(true, 'My\Parent\ClassName');
-        $this->assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
-        $this->assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName'));
     }
 
     /**
@@ -353,54 +340,42 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     public function testTestMethodOfParentFromPublicScope()
     {
         $private = $this->getPrivateClassObject(false, 'My\Parent\ClassName');
-        $this->assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod9', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('standardMethod10', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('finalMethod11', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($private->testMethod('staticMethod12', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
 
         $protected = $this->getProtectedClassObject(false, 'My\Parent\ClassName');
-        $this->assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($protected->testMethod('staticMethod5', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($protected->testMethod('standardMethod6', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($protected->testMethod('finalMethod7', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($protected->testMethod('standardMethod8', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
 
         $public = $this->getPublicClassObject(false, 'My\Parent\ClassName');
-        $this->assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
-        $this->assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod1', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertTrue($public->testMethod('finalMethod2', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertFalse($public->testMethod('staticMethod3', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
+        self::assertTrue($public->testMethod('standardMethod4', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName'));
     }
 
     /**
      * Test exception through by state if the closure method does not exist.
+     * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
      */
     public function testGetBadClosure()
     {
-        try {
-            $this->getPublicClassObject(false, 'My\Stated\ClassName')->getClosure('badMethod', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
-        } catch (StateException\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if the method does not exist');
+        $this->getPublicClassObject(false, 'My\Stated\ClassName')->getClosure('badMethod', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
     }
 
     /**
      * Test exception through by state if the closure method is static.
+     * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
      */
     public function testGetStaticClosure()
     {
-        try {
-            $this->getPublicClassObject(false, 'My\Stated\ClassName')->getClosure('staticMethod3', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
-        } catch (StateException\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the state must throws an Exception\MethodNotImplemented exception if the method is static');
+        $this->getPublicClassObject(false, 'My\Stated\ClassName')->getClosure('staticMethod3', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
     }
 
     /**
@@ -415,17 +390,11 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception through by state if the scope is invalid.
+     * @expectedException \Teknoo\States\State\Exception\InvalidArgument
      */
     public function testGetClosureWithInvalidScope()
     {
-        try {
-            $this->getPublicClassObject(false, 'My\Stated\ClassName')->getClosure('standardMethod1', 'badScope', 'My\Stated\ClassName');
-        } catch (StateException\InvalidArgument $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the state must throws an Exception\InvalidArgument exception if the scope is invalid');
+        $this->getPublicClassObject(false, 'My\Stated\ClassName')->getClosure('standardMethod1', 'badScope', 'My\Stated\ClassName');
     }
 
     /**
@@ -436,17 +405,17 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $closure = $this->getPrivateClassObject(false, 'My\Stated\ClassName')
             ->getClosure('standardMethod10', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
 
         $closure = $this->getProtectedClassObject(false, 'My\Stated\ClassName')
             ->getClosure('standardMethod6', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
 
         $closure = $this->getPublicClassObject(false, 'My\Stated\ClassName')
             ->getClosure('standardMethod1', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
     }
 
     /**
@@ -463,17 +432,17 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) {
         }
 
-        $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
+        self::assertTrue($fail, 'Error, in Protected scope, private methods are not available');
 
         $closure = $this->getProtectedClassObject(false, 'My\Stated\ClassName')
             ->getClosure('standardMethod6', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
 
         $closure = $this->getPublicClassObject(false, 'My\Stated\ClassName')
             ->getClosure('standardMethod1', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
     }
 
     /**
@@ -490,7 +459,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) {
         }
 
-        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
+        self::assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
         $fail = false;
         try {
@@ -501,12 +470,12 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) {
         }
 
-        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
+        self::assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
         $closure = $this->getPublicClassObject(false, 'My\Stated\ClassName')
             ->getClosure('standardMethod1', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
     }
 
     /**
@@ -522,17 +491,17 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {}
 
-        $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
+        self::assertTrue($fail, 'Error, in Protected scope, private methods are not available');
 
         $closure = $this->getProtectedClassObject(true, 'My\Parent\ClassName')
             ->getClosure('standardMethod6', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
 
         $closure = $this->getPublicClassObject(true, 'My\Parent\ClassName')
             ->getClosure('standardMethod1', StateInterface::VISIBILITY_PRIVATE, 'My\Stated\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
     }
 
     /**
@@ -549,17 +518,17 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) {
         }
 
-        $this->assertTrue($fail, 'Error, in Protected scope, private methods are not available');
+        self::assertTrue($fail, 'Error, in Protected scope, private methods are not available');
 
         $closure = $this->getProtectedClassObject(true, 'My\Parent\ClassName')
             ->getClosure('standardMethod6', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
 
         $closure = $this->getPublicClassObject(true, 'My\Parent\ClassName')
             ->getClosure('standardMethod1', StateInterface::VISIBILITY_PROTECTED, 'Its\Inherited\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
     }
 
     /**
@@ -576,7 +545,7 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) {
         }
 
-        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
+        self::assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
         $fail = false;
         try {
@@ -587,12 +556,12 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) {
         }
 
-        $this->assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
+        self::assertTrue($fail, 'Error, in Public scope, private and protected methods are not available');
 
         $closure = $this->getPublicClassObject(true, 'My\Parent\ClassName')
             ->getClosure('standardMethod1', StateInterface::VISIBILITY_PUBLIC, 'Its\Another\ClassName');
 
-        $this->assertInstanceOf('\Closure', $closure);
+        self::assertInstanceOf(\Closure::class, $closure);
     }
 
     /**
@@ -606,8 +575,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             'My\Stated\ClassName'
         );
 
-        $this->assertInstanceOf('\Closure', $closure);
-        $this->assertEquals(4, $closure(1, 3));
+        self::assertInstanceOf(\Closure::class, $closure);
+        self::assertEquals(4, $closure(1, 3));
     }
 
     /**
@@ -640,9 +609,9 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             'My\Stated\ClassName'
         );
 
-        $this->assertSame($closure1, $closure3);
-        $this->assertNotSame($closure1, $closure2);
-        $this->assertSame($closure1, $closure4);
+        self::assertSame($closure1, $closure3);
+        self::assertNotSame($closure1, $closure2);
+        self::assertSame($closure1, $closure4);
     }
 
     /**
@@ -668,8 +637,8 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
             'My\Stated\ClassName'
         );
 
-        $this->assertNotSame($closure1, $closure3);
-        $this->assertNotSame($closure1, $closure2);
+        self::assertNotSame($closure1, $closure3);
+        self::assertNotSame($closure1, $closure2);
     }
 
     /**
@@ -677,9 +646,9 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
      */
     public function testPrivateModeIsDisableByDefault()
     {
-        $this->assertFalse($this->getPublicClassObject(false, 'My\Stated\ClassName')->isPrivateMode());
-        $this->assertFalse($this->getProtectedClassObject(false, 'My\Stated\ClassName')->isPrivateMode());
-        $this->assertFalse($this->getPrivateClassObject(false, 'My\Stated\ClassName')->isPrivateMode());
+        self::assertFalse($this->getPublicClassObject(false, 'My\Stated\ClassName')->isPrivateMode());
+        self::assertFalse($this->getProtectedClassObject(false, 'My\Stated\ClassName')->isPrivateMode());
+        self::assertFalse($this->getPrivateClassObject(false, 'My\Stated\ClassName')->isPrivateMode());
     }
 
     /**
@@ -692,13 +661,13 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $statePrivateMock = $this->getPrivateClassObject(false, 'My\Stated\ClassName');
 
         $statePublicMock->setPrivateMode(true);
-        $this->assertTrue($statePublicMock->isPrivateMode());
+        self::assertTrue($statePublicMock->isPrivateMode());
 
         $stateProtectedMock->setPrivateMode(true);
-        $this->assertTrue($stateProtectedMock->isPrivateMode());
+        self::assertTrue($stateProtectedMock->isPrivateMode());
 
         $statePrivateMock->setPrivateMode(true);
-        $this->assertTrue($statePrivateMock->isPrivateMode());
+        self::assertTrue($statePrivateMock->isPrivateMode());
     }
 
     /**
@@ -711,13 +680,13 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $statePrivateMock = $this->getPrivateClassObject(false, 'My\Stated\ClassName');
 
         $statePublicMock->setPrivateMode(false);
-        $this->assertFalse($statePublicMock->isPrivateMode());
+        self::assertFalse($statePublicMock->isPrivateMode());
 
         $stateProtectedMock->setPrivateMode(false);
-        $this->assertFalse($stateProtectedMock->isPrivateMode());
+        self::assertFalse($stateProtectedMock->isPrivateMode());
 
         $statePrivateMock->setPrivateMode(false);
-        $this->assertFalse($statePrivateMock->isPrivateMode());
+        self::assertFalse($statePrivateMock->isPrivateMode());
     }
 
     /**
@@ -730,13 +699,13 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $statePrivateMock = $this->getPrivateClassObject(false, 'My\Stated\ClassName');
 
         $statePublicMock->setStatedClassName('Its\A\Stated\ClassNamePublic');
-        $this->assertEquals('Its\A\Stated\ClassNamePublic', $statePublicMock->getStatedClassName());
+        self::assertEquals('Its\A\Stated\ClassNamePublic', $statePublicMock->getStatedClassName());
 
         $stateProtectedMock->setStatedClassName('Its\A\Stated\ClassNameProtected');
-        $this->assertEquals('Its\A\Stated\ClassNameProtected', $stateProtectedMock->getStatedClassName());
+        self::assertEquals('Its\A\Stated\ClassNameProtected', $stateProtectedMock->getStatedClassName());
 
         $statePrivateMock->setStatedClassName('Its\A\Stated\ClassNamePrivate');
-        $this->assertEquals('Its\A\Stated\ClassNamePrivate', $statePrivateMock->getStatedClassName());
+        self::assertEquals('Its\A\Stated\ClassNamePrivate', $statePrivateMock->getStatedClassName());
     }
 
     /**

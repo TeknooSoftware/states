@@ -150,50 +150,29 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
+     * @expectedException \Teknoo\States\Proxy\Exception\IllegalName
      */
     public function testRegisterStateBadName()
     {
-        try {
-            $this->proxy->registerState('', $this->state1);
-        } catch (Exception\IllegalName $e) {
-            return;
-        } catch (\Exception $e) {
-            $this->fail($e->getMessage());
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalName exception when the stateName does not respect the regex [a-zA-Z][a-zA-Z0-9_\\]+');
+        $this->proxy->registerState('', $this->state1);
     }
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
+     * @expectedException @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testRegisterStateBadClass()
     {
-        try {
-            $this->proxy->registerState('fooBar', $this->state1);
-        } catch (Exception\StateNotFound $e) {
-            return;
-        } catch (\Exception $e) {
-            $this->fail($e->getMessage());
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalName exception when the stateName does not respect the regex [a-zA-Z][a-zA-Z0-9_\\]+');
+        $this->proxy->registerState('fooBar', $this->state1);
     }
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
+     * @expectedException \Teknoo\States\Proxy\Exception\IllegalName
      */
     public function testRegisterStateClassNotImplementing()
     {
-        try {
-            $this->proxy->registerState(\DateTime::class, $this->state1);
-        } catch (Exception\IllegalName $e) {
-            return;
-        } catch (\Exception $e) {
-            $this->fail($e->getMessage());
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\IllegalName exception when the stateName does not respect the regex [a-zA-Z][a-zA-Z0-9_\\]+');
+        $this->proxy->registerState(\DateTime::class, $this->state1);
     }
 
     /**
@@ -202,7 +181,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testRegisterStateWithInterface()
     {
         $this->proxy->registerState(StateInterface::class, $this->state1);
-        $this->assertEquals(array(StateInterface::class), $this->proxy->listAvailableStates());
+        self::assertEquals(array(StateInterface::class), $this->proxy->listAvailableStates());
     }
 
     /**
@@ -211,7 +190,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testRegisterState()
     {
         $this->proxy->registerState(MockState1::class, $this->state1);
-        $this->assertEquals(array(MockState1::class), $this->proxy->listAvailableStates());
+        self::assertEquals(array(MockState1::class), $this->proxy->listAvailableStates());
     }
 
     /**
@@ -226,17 +205,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state to remove is not registered.
+     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testUnRegisterStateNonExistentState()
     {
-        try {
-            $this->proxy->unregisterState('NonExistentState');
-        } catch (Exception\StateNotFound $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the stateName is not register');
+        $this->proxy->unregisterState('NonExistentState');
     }
 
     /**
@@ -256,7 +229,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeProxy();
         $this->proxy->unregisterState(MockState2::class);
-        $this->assertEquals(array(MockState1::class, MockState3::class), $this->proxy->listAvailableStates());
+        self::assertEquals(array(MockState1::class, MockState3::class), $this->proxy->listAvailableStates());
     }
 
     /**
@@ -266,10 +239,10 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeProxy();
         $this->proxy->enableState(MockState3::class);
-        $this->assertEquals(array(MockState1::class, MockState3::class), $this->proxy->listEnabledStates());
+        self::assertEquals(array(MockState1::class, MockState3::class), $this->proxy->listEnabledStates());
         $this->proxy->unregisterState(MockState3::class);
-        $this->assertEquals(array(MockState1::class, MockState2::class), $this->proxy->listAvailableStates());
-        $this->assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
+        self::assertEquals(array(MockState1::class, MockState2::class), $this->proxy->listAvailableStates());
+        self::assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
     }
 
     /**
@@ -284,17 +257,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state does not exist in switch state method.
+     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testSwitchStateNonExistentName()
     {
-        try {
-            $this->proxy->switchState('NonExistentState');
-        } catch (Exception\StateNotFound $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the stateName is not register');
+        $this->proxy->switchState('NonExistentState');
     }
 
     /**
@@ -304,7 +271,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeProxy();
         $this->proxy->switchState(MockState3::class);
-        $this->assertEquals(array(MockState3::class), $this->proxy->listEnabledStates());
+        self::assertEquals(array(MockState3::class), $this->proxy->listEnabledStates());
     }
 
     /**
@@ -315,7 +282,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy();
         $this->proxy->enableState(MockState2::class);
         $this->proxy->switchState(MockState2::class);
-        $this->assertEquals(array(MockState2::class), $this->proxy->listEnabledStates());
+        self::assertEquals(array(MockState2::class), $this->proxy->listEnabledStates());
     }
 
     /**
@@ -340,17 +307,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state is not available when we want enable a state.
+     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testEnableStateNonExistentName()
     {
-        try {
-            $this->proxy->enableState('NonExistentState');
-        } catch (Exception\StateNotFound $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the stateName is not register');
+        $this->proxy->enableState('NonExistentState');
     }
 
     /**
@@ -361,7 +322,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy();
         $this->proxy->disableState(MockState1::class);
         $this->proxy->enableState(MockState2::class);
-        $this->assertEquals(array(MockState2::class), $this->proxy->listEnabledStates());
+        self::assertEquals(array(MockState2::class), $this->proxy->listEnabledStates());
     }
 
     /**
@@ -371,7 +332,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeProxy();
         $this->proxy->enableState(MockState2::class);
-        $this->assertEquals(array(MockState1::class, MockState2::class), $this->proxy->listEnabledStates());
+        self::assertEquals(array(MockState1::class, MockState2::class), $this->proxy->listEnabledStates());
     }
 
     /**
@@ -396,17 +357,11 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Proxy must throw an exception if the state is not available when we want enable a state.
+     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testDisableStateNonExistentName()
     {
-        try {
-            $this->proxy->disableState('NonExistentState');
-        } catch (Exception\StateNotFound $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\StateNotFound exception when the stateName is not register');
+        $this->proxy->disableState('NonExistentState');
     }
 
     /**
@@ -417,7 +372,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy();
         $this->proxy->enableState(MockState2::class);
         $this->proxy->disableState(MockState1::class);
-        $this->assertEquals(array(MockState2::class), $this->proxy->listEnabledStates());
+        self::assertEquals(array(MockState2::class), $this->proxy->listEnabledStates());
     }
 
     /**
@@ -428,7 +383,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy();
         $this->proxy->enableState(MockState2::class);
         $this->proxy->disableAllStates();
-        $this->assertEquals(array(), $this->proxy->listEnabledStates());
+        self::assertEquals(array(), $this->proxy->listEnabledStates());
     }
 
     /**
@@ -436,7 +391,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testListAvailableStatesOfEmpty()
     {
-        $this->assertEquals(array(), $this->proxy->listAvailableStates());
+        self::assertEquals(array(), $this->proxy->listAvailableStates());
     }
 
     /**
@@ -446,7 +401,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $proxyReflectionClass = new \ReflectionClass($this->proxy);
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        $this->assertEquals(array(), $proxy->listAvailableStates());
+        self::assertEquals(array(), $proxy->listAvailableStates());
     }
 
     /**
@@ -456,7 +411,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->registerState(MockState1::class, $this->state1);
         $this->proxy->registerState(MockState3::class, $this->state3);
-        $this->assertEquals(array(MockState1::class, MockState3::class), $this->proxy->listAvailableStates());
+        self::assertEquals(array(MockState1::class, MockState3::class), $this->proxy->listAvailableStates());
     }
 
     /**
@@ -464,7 +419,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetStatesListEmpty()
     {
-        $this->assertEmpty($this->proxy->getStatesList());
+        self::assertEmpty($this->proxy->getStatesList());
     }
 
     /**
@@ -474,7 +429,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $proxyReflectionClass = new \ReflectionClass($this->proxy);
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        $this->assertEmpty($proxy->getStatesList());
+        self::assertEmpty($proxy->getStatesList());
     }
 
     /**
@@ -485,9 +440,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->proxy->registerState(MockState1::class, $this->state1);
         $this->proxy->registerState(MockState3::class, $this->state3);
         $statesList = $this->proxy->getStatesList();
-        $this->assertEquals(2, count($statesList));
-        $this->assertInstanceOf('Teknoo\States\State\StateInterface', $statesList[MockState1::class]);
-        $this->assertInstanceOf('Teknoo\States\State\StateInterface', $statesList[MockState3::class]);
+        self::assertEquals(2, count($statesList));
+        self::assertInstanceOf(StateInterface::class, $statesList[MockState1::class]);
+        self::assertInstanceOf(StateInterface::class, $statesList[MockState3::class]);
     }
 
     /**
@@ -497,7 +452,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $proxyReflectionClass = new \ReflectionClass($this->proxy);
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        $this->assertEquals(array(), $proxy->listEnabledStates());
+        self::assertEquals(array(), $proxy->listEnabledStates());
     }
 
     /**
@@ -507,7 +462,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->proxy->registerState(MockState1::class, $this->state1);
         $this->proxy->registerState(MockState3::class, $this->state3);
-        $this->assertEquals(array(), $this->proxy->listEnabledStates());
+        self::assertEquals(array(), $this->proxy->listEnabledStates());
     }
 
     /**
@@ -516,7 +471,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testListEnabledStates()
     {
         $this->initializeProxy();
-        $this->assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
+        self::assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
     }
 
     /**
@@ -526,7 +481,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $proxyReflectionClass = new \ReflectionClass($this->buildProxy());
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        $this->assertFalse($proxy->inState(\DateTime::class));
+        self::assertFalse($proxy->inState(\DateTime::class));
     }
 
     /**
@@ -543,8 +498,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             ->withAnyParameters()
             ->willReturn(array(\DateTime::class, 'Bar'));
 
-        $this->assertFalse($proxy->inState(\stdClass::class));
-        $this->assertTrue($proxy->inState(\DateTime::class));
+        self::assertFalse($proxy->inState(\stdClass::class));
+        self::assertTrue($proxy->inState(\DateTime::class));
         $proxy = $this->buildProxy();
     }
 
@@ -560,37 +515,26 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test proxy behavior when the required method is not implemented in anything active state.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCallNonImplementedWithoutState()
     {
-        try {
-            $this->proxy->test();
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when no state are available');
+        $this->proxy->test();
     }
 
     /**
      * Test proxy behavior when the required method is not implemented in the required state.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCallNonImplementedWithState()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->testOfState1();
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when no state are available');
+        $this->proxy->testOfState1();
     }
 
     /**
      * Test proxy behavior when the required method is implemented in several active state.
+     * @expectedException \Teknoo\States\Proxy\Exception\AvailableSeveralMethodImplementations
      */
     public function testCallMultipleImplementation()
     {
@@ -599,14 +543,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->state1->allowMethod();
         $this->state2->allowMethod();
 
-        try {
-            $this->proxy->test();
-        } catch (Exception\AvailableSeveralMethodImplementations $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\AvailableSeveralMethodImplementations when there are multiples implementations of a method in several enabled states');
+        $this->proxy->test();
     }
 
     /**
@@ -617,42 +554,30 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->myCustomMethod('foo', 'bar');
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('myCustomMethod', $this->state1->getMethodNameCalled());
-        $this->assertSame(array('foo', 'bar'), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('myCustomMethod', $this->state1->getMethodNameCalled());
+        self::assertSame(array('foo', 'bar'), $this->state1->getCalledArguments());
     }
 
     /**
      * Test the proxy behavior when hen we want a description of a non existent method.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testGetMethodDescriptionNonExistentName()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->getMethodDescription('NonExistentMethod');
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when the method was not found');
+        $this->proxy->getMethodDescription('NonExistentMethod');
     }
 
     /**
      * Test the proxy behavior when hen we want a description of a non existent method in the required state.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testGetMethodDescriptionNonExistentNameByState()
     {
         $this->initializeProxy(MockState1::class, true);
         $this->state1->simulateFailureInGetMethodDescription();
-        try {
-            $this->proxy->getMethodDescription('NonExistentMethod');
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when the method was not found');
+        $this->proxy->getMethodDescription('NonExistentMethod');
     }
 
     /**
@@ -717,15 +642,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a private method
-        $this->assertInstanceOf('\ReflectionMethod', testGetMethodDescriptionFromFunctionPrivate());
+        self::assertInstanceOf(\ReflectionMethod::class, testGetMethodDescriptionFromFunctionPrivate());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a protected method
-        $this->assertInstanceOf('\ReflectionMethod', testGetMethodDescriptionFromFunctionProtected());
+        self::assertInstanceOf(\ReflectionMethod::class, testGetMethodDescriptionFromFunctionProtected());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a public method
-        $this->assertInstanceOf('\ReflectionMethod', testGetMethodDescriptionFromFunctionPublic());
+        self::assertInstanceOf(\ReflectionMethod::class, testGetMethodDescriptionFromFunctionPublic());
     }
 
     /**
@@ -746,17 +671,17 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of private methods
         $object = new \testGetMethodDescriptionFromOtherObject();
-        $this->assertInstanceOf('\ReflectionMethod', $object->privateMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $object->privateMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
         $object = new \testGetMethodDescriptionFromOtherObject();
-        $this->assertInstanceOf('\ReflectionMethod', $object->protectedMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $object->protectedMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
         $object = new \testGetMethodDescriptionFromOtherObject();
-        $this->assertInstanceOf('\ReflectionMethod', $object->publicMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $object->publicMethod());
     }
 
     /**
@@ -784,17 +709,17 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of private methods
         $object = new $childClassName();
-        $this->assertInstanceOf('\ReflectionMethod', $object->privateMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $object->privateMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
         $object = new $childClassName();
-        $this->assertInstanceOf('\ReflectionMethod', $object->protectedMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $object->protectedMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
         $object = new $childClassName();
-        $this->assertInstanceOf('\ReflectionMethod', $object->publicMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $object->publicMethod());
     }
 
     /**
@@ -830,15 +755,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class object to get a description of private methods
         $proxy2 = new $childClassName();
-        $this->assertInstanceOf('\ReflectionMethod', $proxy2->privateMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $proxy2->privateMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class object to get a description of protected methods
-        $this->assertInstanceOf('\ReflectionMethod', $proxy2->protectedMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $proxy2->protectedMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class object to get a description of public methods
-        $this->assertInstanceOf('\ReflectionMethod', $proxy2->publicMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $proxy2->publicMethod());
     }
 
     /**
@@ -873,15 +798,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from $this to get a description of private methods
-        $this->assertInstanceOf('\ReflectionMethod', $proxy->privateMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $proxy->privateMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from $this to get a description of protected methods
-        $this->assertInstanceOf('\ReflectionMethod', $proxy->protectedMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $proxy->protectedMethod());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from $this to get a description of public methods
-        $this->assertInstanceOf('\ReflectionMethod', $proxy->publicMethod());
+        self::assertInstanceOf(\ReflectionMethod::class, $proxy->publicMethod());
     }
 
     /**
@@ -901,15 +826,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of private methods
-        $this->assertInstanceOf('\ReflectionMethod', \testGetMethodDescriptionFromOtherObject::privateMethodStatic());
+        self::assertInstanceOf(\ReflectionMethod::class, \testGetMethodDescriptionFromOtherObject::privateMethodStatic());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of protected methods
-        $this->assertInstanceOf('\ReflectionMethod', \testGetMethodDescriptionFromOtherObject::protectedMethodStatic());
+        self::assertInstanceOf(\ReflectionMethod::class, \testGetMethodDescriptionFromOtherObject::protectedMethodStatic());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of public methods
-        $this->assertInstanceOf('\ReflectionMethod', \testGetMethodDescriptionFromOtherObject::publicMethodStatic());
+        self::assertInstanceOf(\ReflectionMethod::class, \testGetMethodDescriptionFromOtherObject::publicMethodStatic());
     }
 
     /**
@@ -936,15 +861,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of private methods
-        $this->assertInstanceOf('\ReflectionMethod', $childClassName::privateMethodStatic());
+        self::assertInstanceOf(\ReflectionMethod::class, $childClassName::privateMethodStatic());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
-        $this->assertInstanceOf('\ReflectionMethod', $childClassName::protectedMethodStatic());
+        self::assertInstanceOf(\ReflectionMethod::class, $childClassName::protectedMethodStatic());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
-        $this->assertInstanceOf('\ReflectionMethod', $childClassName::publicMethodStatic());
+        self::assertInstanceOf(\ReflectionMethod::class, $childClassName::publicMethodStatic());
     }
 
     /**
@@ -979,15 +904,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class to get a description of private methods
-        $this->assertInstanceOf('\ReflectionMethod', $childClassName::privateMethodStatic());
+        self::assertInstanceOf(\ReflectionMethod::class, $childClassName::privateMethodStatic());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class to get a description of protected methods
-        $this->assertInstanceOf('\ReflectionMethod', $childClassName::protectedMethodStatic());
+        self::assertInstanceOf(\ReflectionMethod::class, $childClassName::protectedMethodStatic());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class to get a description of public methods
-        $this->assertInstanceOf('\ReflectionMethod', $childClassName::publicMethodStatic());
+        self::assertInstanceOf(\ReflectionMethod::class, $childClassName::publicMethodStatic());
     }
 
     /**
@@ -1007,21 +932,21 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $closure = function () use ($proxy) {
             return $proxy->getMethodDescription('privateTest');
         };
-        $this->assertInstanceOf('\ReflectionMethod', $closure());
+        self::assertInstanceOf(\ReflectionMethod::class, $closure());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a closure to get a description of a protected method
         $closure = function () use ($proxy) {
             return $proxy->getMethodDescription('protectedTest');
         };
-        $this->assertInstanceOf('\ReflectionMethod', $closure());
+        self::assertInstanceOf(\ReflectionMethod::class, $closure());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a closure to get a description of a public method
         $closure = function () use ($proxy) {
             return $proxy->getMethodDescription('publicTest');
         };
-        $this->assertInstanceOf('\ReflectionMethod', $closure());
+        self::assertInstanceOf(\ReflectionMethod::class, $closure());
     }
 
     /**
@@ -1042,7 +967,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             return $proxy->getMethodDescription('privateTest');
         };
         $closure = \Closure::bind($closureOriginal, $this->proxy);
-        $this->assertInstanceOf('\ReflectionMethod', $closure());
+        self::assertInstanceOf(\ReflectionMethod::class, $closure());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a bound closure to get a description of a protected method
@@ -1050,7 +975,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             return $proxy->getMethodDescription('protectedTest');
         };
         $closure = \Closure::bind($closureOriginal, $this->proxy);
-        $this->assertInstanceOf('\ReflectionMethod', $closure());
+        self::assertInstanceOf(\ReflectionMethod::class, $closure());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a bound closure to get a description of a public method
@@ -1058,7 +983,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             return $proxy->getMethodDescription('publicTest');
         };
         $closure = \Closure::bind($closureOriginal, $this->proxy);
-        $this->assertInstanceOf('\ReflectionMethod', $closure());
+        self::assertInstanceOf(\ReflectionMethod::class, $closure());
     }
 
     /////////////////////////////////////////////////////////////////////////////////
@@ -1072,7 +997,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         $this->initializeProxy(MockState1::class, true);
         $this->state2->allowMethod();
-        $this->assertInstanceOf('\ReflectionMethod', $this->proxy->getMethodDescription('test', MockState2::class));
+        self::assertInstanceOf(\ReflectionMethod::class, $this->proxy->getMethodDescription('test', MockState2::class));
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1103,7 +1028,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {
         }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        self::assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a protected method
@@ -1114,14 +1039,14 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {
         }
-        $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
+        self::assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a public method
         testCallFromFunctionPublic();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1149,7 +1074,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {
         }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        self::assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
@@ -1161,15 +1086,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {
         }
-        $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
+        self::assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
         $object = new \testCallFromOtherObject();
         $object->publicMethod();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1204,23 +1129,23 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {
         }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        self::assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
         $object = new $childClassName();
         $object->protectedMethod();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('protectedTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
         $object = new $childClassName();
         $object->publicMethod();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1257,23 +1182,23 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         //from a same class object to get a description of private methods
         $proxy2 = new $childClassName();
         $proxy2->privateMethod();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('privateTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('privateTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class object to get a description of protected methods
         $proxy2->protectedMethod();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('protectedTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class object to get a description of public methods
         $proxy2->publicMethod();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1309,23 +1234,23 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         //Build temp functions to test proxy behavior with different scope visibility
         //from $this to get a description of private methods
         $proxy->privateMethod();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('privateTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('privateTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from $this to get a description of protected methods
         $proxy->protectedMethod();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('protectedTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from $this to get a description of public methods
         $proxy->publicMethod();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1361,23 +1286,23 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         //Build temp functions to test proxy behavior with different scope visibility
         //from $this to get a description of private methods
         $proxy->recallMethod('privateMethod');
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('privateTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('privateTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from $this to get a description of protected methods
         $proxy->recallMethod('protectedMethod');
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('protectedTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from $this to get a description of public methods
         $proxy->recallMethod('publicMethod');
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1404,7 +1329,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {
         }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        self::assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of protected methods
@@ -1415,14 +1340,14 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {
         }
-        $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
+        self::assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of public methods
         \testCallFromOtherObject::publicMethodStatic();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1456,21 +1381,21 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {
         }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        self::assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of protected methods
         $childClassName::protectedMethodStatic();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('protectedTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of public methods
         $childClassName::publicMethodStatic();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1506,23 +1431,23 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class to get a description of private methods
         $childClassName::privateMethodStatic();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('privateTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('privateTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class to get a description of protected methods
         $childClassName::protectedMethodStatic();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('protectedTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a same class to get a description of public methods
         $childClassName::publicMethodStatic();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1549,7 +1474,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {
         }
-        $this->assertTrue($fail, 'It is a public scope, private methods are not available here');
+        self::assertTrue($fail, 'It is a public scope, private methods are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a closure to get a description of a protected method
@@ -1563,7 +1488,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         } catch (\Exception $e) {
         }
-        $this->assertTrue($fail, 'It is a public scope, protected method are not available here');
+        self::assertTrue($fail, 'It is a public scope, protected method are not available here');
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a closure to get a description of a public method
@@ -1571,9 +1496,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             return $proxy->publicTest();
         };
         $closure();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1595,9 +1520,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         };
         $closure = \Closure::bind($closureOriginal, $this->proxy);
         $closure();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('privateTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('privateTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a bound closure to get a description of a protected method
@@ -1606,9 +1531,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         };
         $closure = \Closure::bind($closureOriginal, $this->proxy);
         $closure();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('protectedTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a bound closure to get a description of a public method
@@ -1617,9 +1542,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         };
         $closure = \Closure::bind($closureOriginal, $this->proxy);
         $closure();
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     ////////////////////////////////////////////////////////////////////////////////////
@@ -1629,19 +1554,13 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when __invoke is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testInvokeNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $proxy = $this->proxy;
-            $proxy();
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when __invoke is not implemented into in actives states');
+        $proxy = $this->proxy;
+        $proxy();
     }
 
     /**
@@ -1653,9 +1572,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $proxy = $this->proxy;
         $proxy('foo', 'bar');
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertEquals('invoke', $this->state1->getMethodNameCalled());
-        $this->assertEquals(array('foo', 'bar'), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertEquals('invoke', $this->state1->getMethodNameCalled());
+        self::assertEquals(array('foo', 'bar'), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1664,15 +1583,15 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testGetIssetSetUnsetPublic()
     {
         //Test defined property
-        $this->assertEquals('value1', $this->proxy->publicProperty);
-        $this->assertTrue(isset($this->proxy->publicProperty));
+        self::assertEquals('value1', $this->proxy->publicProperty);
+        self::assertTrue(isset($this->proxy->publicProperty));
         $this->proxy->publicProperty = 'value2';
-        $this->assertEquals('value2', $this->proxy->publicProperty);
+        self::assertEquals('value2', $this->proxy->publicProperty);
         unset($this->proxy->publicProperty);
-        $this->assertFalse(isset($this->proxy->publicProperty));
+        self::assertFalse(isset($this->proxy->publicProperty));
 
         //Test missing property
-        $this->assertFalse(isset($this->proxy->missingPublicProperty));
+        self::assertFalse(isset($this->proxy->missingPublicProperty));
         $fail = false;
         try {
             $a = $this->proxy->missingPublicProperty;
@@ -1680,14 +1599,14 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         }
         if (false === $fail) {
-            $this->fail('Error __get must throw an exception for missing property');
+            self::fail('Error __get must throw an exception for missing property');
         }
 
         $this->proxy->missingPublicProperty = 'fooBar';
-        $this->assertTrue(isset($this->proxy->missingPublicProperty));
-        $this->assertEquals('fooBar', $this->proxy->missingPublicProperty);
+        self::assertTrue(isset($this->proxy->missingPublicProperty));
+        self::assertEquals('fooBar', $this->proxy->missingPublicProperty);
         unset($this->proxy->missingPublicProperty);
-        $this->assertFalse(isset($this->proxy->missingPublicProperty));
+        self::assertFalse(isset($this->proxy->missingPublicProperty));
 
         $fail = false;
         try {
@@ -1696,7 +1615,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         }
         if (false === $fail) {
-            $this->fail('Error __get must throw an exception for missing property');
+            self::fail('Error __get must throw an exception for missing property');
         }
     }
 
@@ -1707,14 +1626,14 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     {
         //Test defined property
         $this->initializeProxy(MockState1::class, true);
-        $this->assertEquals('value1', $this->proxy->getPublicProperty());
-        $this->assertTrue($this->proxy->issetPublicProperty());
+        self::assertEquals('value1', $this->proxy->getPublicProperty());
+        self::assertTrue($this->proxy->issetPublicProperty());
         $this->proxy->setPublicProperty('value2');
-        $this->assertEquals('value2', $this->proxy->getPublicProperty());
+        self::assertEquals('value2', $this->proxy->getPublicProperty());
         $this->proxy->unsetPublicProperty();
 
         //Test missing property
-        $this->assertFalse($this->proxy->issetMissingPublicProperty());
+        self::assertFalse($this->proxy->issetMissingPublicProperty());
         $fail = false;
         try {
             $a = $this->proxy->getOnMissingPublicProperty();
@@ -1722,14 +1641,14 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         }
         if (false === $fail) {
-            $this->fail('Error __get must throw an exception for missing property');
+            self::fail('Error __get must throw an exception for missing property');
         }
 
         $this->proxy->setOnMissingPublicProperty('fooBar');
-        $this->assertTrue($this->proxy->issetMissingPublicProperty());
-        $this->assertEquals('fooBar', $this->proxy->getOnMissingPublicProperty());
+        self::assertTrue($this->proxy->issetMissingPublicProperty());
+        self::assertEquals('fooBar', $this->proxy->getOnMissingPublicProperty());
         $this->proxy->unsetOnMissingPublicProperty();
-        $this->assertFalse($this->proxy->issetMissingPublicProperty());
+        self::assertFalse($this->proxy->issetMissingPublicProperty());
         $fail = false;
         try {
             $a = $this->proxy->getOnMissingPublicProperty();
@@ -1737,7 +1656,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
             $fail = true;
         }
         if (false === $fail) {
-            $this->fail('Error __get must throw an exception for missing property');
+            self::fail('Error __get must throw an exception for missing property');
         }
     }
 
@@ -1748,7 +1667,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetProtectedGet()
     {
-        $this->assertEquals('value1', $this->proxy->protectedProperty);
+        self::assertEquals('value1', $this->proxy->protectedProperty);
     }
 
     /**
@@ -1756,8 +1675,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testIssetProtectedIsset()
     {
-        $this->assertFalse(isset($this->proxy->protectedProperty));
-        $this->assertFalse(isset($this->proxy->missingProtectedProperty));
+        self::assertFalse(isset($this->proxy->protectedProperty));
+        self::assertFalse(isset($this->proxy->missingProtectedProperty));
     }
 
     /**
@@ -1786,13 +1705,13 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testGetIssetSetUnsetProtectedViaMethod()
     {
         $this->initializeProxy(MockState1::class, true);
-        $this->assertEquals('value1', $this->proxy->getProProperty());
-        $this->assertTrue($this->proxy->issetProProperty());
-        $this->assertFalse($this->proxy->issetMissingProProperty());
+        self::assertEquals('value1', $this->proxy->getProProperty());
+        self::assertTrue($this->proxy->issetProProperty());
+        self::assertFalse($this->proxy->issetMissingProProperty());
         $this->proxy->setProProperty('value2');
-        $this->assertEquals('value2', $this->proxy->getProProperty());
+        self::assertEquals('value2', $this->proxy->getProProperty());
         $this->proxy->unsetProProperty();
-        $this->assertFalse($this->proxy->issetProProperty());
+        self::assertFalse($this->proxy->issetProProperty());
     }
 
     /**
@@ -1802,7 +1721,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetPrivateGet()
     {
-        $this->assertEquals('value1', $this->proxy->privateProperty);
+        self::assertEquals('value1', $this->proxy->privateProperty);
     }
 
     /**
@@ -1810,8 +1729,8 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testIssetPrivateIsset()
     {
-        $this->assertFalse(isset($this->proxy->privateProperty));
-        $this->assertFalse(isset($this->proxy->missingPrivateProperty));
+        self::assertFalse(isset($this->proxy->privateProperty));
+        self::assertFalse(isset($this->proxy->missingPrivateProperty));
     }
 
     /**
@@ -1839,7 +1758,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
      */
     public function testCallPublicFromOutside()
     {
-        $this->assertEquals('fooBar', $this->proxy->publicMethodToCall());
+        self::assertEquals('fooBar', $this->proxy->publicMethodToCall());
     }
 
     /**
@@ -1868,7 +1787,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testCallPublicFromState()
     {
         $this->initializeProxy(MockState1::class, true);
-        $this->assertEquals('fooBar', $this->proxy->callPublicMethod());
+        self::assertEquals('fooBar', $this->proxy->callPublicMethod());
     }
 
     /**
@@ -1877,7 +1796,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
     public function testCallProtectedFromState()
     {
         $this->initializeProxy(MockState1::class, true);
-        $this->assertEquals('fooBar', $this->proxy->callProMethod());
+        self::assertEquals('fooBar', $this->proxy->callProMethod());
     }
 
     /**
@@ -1890,10 +1809,10 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         try {
             $s = (string) $this->proxy;
         } catch (\Exception $e) {
-            $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when __toString is not implemented into in actives states');
+            self::fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when __toString is not implemented into in actives states');
         }
 
-        $this->assertEquals('', $s);
+        self::assertEquals('', $s);
     }
 
     /**
@@ -1904,9 +1823,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $s = (string) $this->proxy;
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('toString', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('toString', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
@@ -1922,7 +1841,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         } catch (\Exception $e) {
         }
 
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when count is not implemented into in actives states');
+        self::fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when count is not implemented into in actives states');
     }
 
     /**
@@ -1933,25 +1852,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->count();
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('count', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('count', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when offsetExist is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetExistNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $a = isset($this->proxy[2]);
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when offsetExist is not implemented into in actives states');
+        $a = isset($this->proxy[2]);
     }
 
     /**
@@ -1962,25 +1875,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $a = isset($this->proxy[2]);
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('offsetExists', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(2), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('offsetExists', $this->state1->getMethodNameCalled());
+        self::assertSame(array(2), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when offsetGet is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetGetNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $value = $this->proxy[2];
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when offsetGet is not implemented into in actives states');
+        $value = $this->proxy[2];
     }
 
     /**
@@ -1991,25 +1898,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy[2];
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('offsetGet', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(2), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('offsetGet', $this->state1->getMethodNameCalled());
+        self::assertSame(array(2), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when offsetSet is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetSetNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy[2] = 'foo';
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when offsetSet is not implemented into in actives states');
+        $this->proxy[2] = 'foo';
     }
 
     /**
@@ -2020,25 +1921,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy[2] = 'foo';
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('offsetSet', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(2, 'foo'), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('offsetSet', $this->state1->getMethodNameCalled());
+        self::assertSame(array(2, 'foo'), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when offsetUnset is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetUnsetNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            unset($this->proxy[2]);
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when offsetUnset is not implemented into in actives states');
+        unset($this->proxy[2]);
     }
 
     /**
@@ -2049,25 +1944,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         unset($this->proxy[2]);
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('offsetUnset', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(2), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('offsetUnset', $this->state1->getMethodNameCalled());
+        self::assertSame(array(2), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when current is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCurrentNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->current();
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when current is not implemented into in actives states');
+        $this->proxy->current();
     }
 
     /**
@@ -2078,25 +1967,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->current();
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('current', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('current', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when key is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testKeyNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->key();
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when key is not implemented into in actives states');
+        $this->proxy->key();
     }
 
     /**
@@ -2107,25 +1990,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->key();
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('key', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('key', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when next is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testNextNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->next();
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when next is not implemented into in actives states');
+        $this->proxy->next();
     }
 
     /**
@@ -2136,25 +2013,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->next();
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('next', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('next', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when rewind is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testRewindNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->rewind();
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when rewind is not implemented into in actives states');
+        $this->proxy->rewind();
     }
 
     /**
@@ -2165,25 +2036,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->rewind();
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('rewind', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('rewind', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when seek is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testSeekNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->seek(1);
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when seek is not implemented into in actives states');
+        $this->proxy->seek(1);
     }
 
     /**
@@ -2194,25 +2059,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->seek(2);
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('seek', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(2), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('seek', $this->state1->getMethodNameCalled());
+        self::assertSame(array(2), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when valid is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testValidNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->valid();
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when valid is not implemented into in actives states');
+        $this->proxy->valid();
     }
 
     /**
@@ -2223,25 +2082,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->valid();
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('valid', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('valid', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when getIterator is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testGetIteratorNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->getIterator();
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when getIterator is not implemented into in actives states');
+        $this->proxy->getIterator();
     }
 
     /**
@@ -2254,23 +2107,17 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->state1->setClosure(function () use ($iterator) {
            return $iterator;
         });
-        $this->assertSame($iterator, $this->proxy->getIterator());
+        self::assertSame($iterator, $this->proxy->getIterator());
     }
 
     /**
      * Test exception behavior of the proxy when serialize is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testSerializeNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            serialize($this->proxy);
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when serialize is not implemented into in actives states');
+        serialize($this->proxy);
     }
 
     /**
@@ -2281,25 +2128,19 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->serialize();
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('serialize', $this->state1->getMethodNameCalled());
-        $this->assertSame(array(), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('serialize', $this->state1->getMethodNameCalled());
+        self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
     /**
      * Test exception behavior of the proxy when unserialize is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testUnSerializeNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->unserialize('');
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        $this->fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when unserialize is not implemented into in actives states');
+        $this->proxy->unserialize('');
     }
 
     /**
@@ -2310,9 +2151,9 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->unserialize('foo');
 
-        $this->assertTrue($this->state1->methodWasCalled());
-        $this->assertSame('unserialize', $this->state1->getMethodNameCalled());
-        $this->assertSame(array('foo'), $this->state1->getCalledArguments());
+        self::assertTrue($this->state1->methodWasCalled());
+        self::assertSame('unserialize', $this->state1->getMethodNameCalled());
+        self::assertSame(array('foo'), $this->state1->getCalledArguments());
     }
 
     /**
@@ -2331,18 +2172,18 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $clonedProxy = clone $this->proxy;
 
         //States must be independently
-        $this->assertEquals(array(MockState1::class, MockState2::class, MockState3::class), $this->proxy->listAvailableStates());
-        $this->assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
-        $this->assertEquals(array(MockState1::class, MockState2::class, MockState3::class), $clonedProxy->listAvailableStates());
-        $this->assertEquals(array(MockState1::class), $clonedProxy->listEnabledStates());
+        self::assertEquals(array(MockState1::class, MockState2::class, MockState3::class), $this->proxy->listAvailableStates());
+        self::assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
+        self::assertEquals(array(MockState1::class, MockState2::class, MockState3::class), $clonedProxy->listAvailableStates());
+        self::assertEquals(array(MockState1::class), $clonedProxy->listEnabledStates());
 
         //List must perform independently
         $clonedProxy->switchState(MockState2::class);
         $clonedProxy->unregisterState(MockState3::class);
-        $this->assertEquals(array(MockState1::class, MockState2::class, MockState3::class), $this->proxy->listAvailableStates());
-        $this->assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
-        $this->assertEquals(array(MockState1::class, MockState2::class), $clonedProxy->listAvailableStates());
-        $this->assertEquals(array(MockState2::class), $clonedProxy->listEnabledStates());
+        self::assertEquals(array(MockState1::class, MockState2::class, MockState3::class), $this->proxy->listAvailableStates());
+        self::assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
+        self::assertEquals(array(MockState1::class, MockState2::class), $clonedProxy->listAvailableStates());
+        self::assertEquals(array(MockState2::class), $clonedProxy->listEnabledStates());
     }
 
     /**
@@ -2361,7 +2202,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         try {
             $proxyCloned = clone $proxyNotInitialized;
         } catch (\Exception $e) {
-            $this->fail('Error, __clone must manage when the proxy was not initialized via the constructor');
+            self::fail('Error, __clone must manage when the proxy was not initialized via the constructor');
         }
     }
 }

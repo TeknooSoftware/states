@@ -51,21 +51,21 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         $article = new Article();
 
         //It is a new article, not published, the constructor load the state 'Draft'
-        $this->assertEquals([StateDefault::class, Draft::class], $article->listEnabledStates());
+        self::assertEquals([StateDefault::class, Draft::class], $article->listEnabledStates());
         //Empty article, getTitle return nothing
-        $this->assertEquals('', $article->getTitle());
+        self::assertEquals('', $article->getTitle());
         //Call method of state "Draft" to update the article
         $article->setTitle('Hello world');
         $article->setBody('Lorem [b]Ipsum[/b]');
         //Now article is fulled
-        $this->assertEquals('Hello world', $article->getTitle());
-        $this->assertEquals('Lorem [b]Ipsum[/b]', $article->getBodySource());
+        self::assertEquals('Hello world', $article->getTitle());
+        self::assertEquals('Lorem [b]Ipsum[/b]', $article->getBodySource());
         //Publishing method available into Draft state to switch to Published state
         $article->publishing();
-        $this->assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
-        $this->assertEquals('Hello world', $article->getTitle());
+        self::assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
+        self::assertEquals('Hello world', $article->getTitle());
         //Method available into Published state
-        $this->assertEquals('Lorem <strong>Ipsum</strong>', $article->getFormattedBody());
+        self::assertEquals('Lorem <strong>Ipsum</strong>', $article->getFormattedBody());
 
         //Open a published article
         $article = new Article(
@@ -77,8 +77,8 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         );
 
         //Already published, so constructor enable state "Default" and "Published"
-        $this->assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
-        $this->assertEquals('title 2', $article->getTitle());
+        self::assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
+        self::assertEquals('title 2', $article->getTitle());
 
         //Method not available, because state Draft is not enabled
         $fail = false;
@@ -89,7 +89,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
+            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
         //Method not available, because state Draft is not enabled
@@ -101,10 +101,10 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
+            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
-        $this->assertEquals('title 2', $article->getTitle());
+        self::assertEquals('title 2', $article->getTitle());
 
         //Method not available, because state Draft is not enabled
         $fail = false;
@@ -115,7 +115,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
+            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
         //Method not available, because state Draft is not enabled
@@ -127,12 +127,12 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
+            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
-        $this->assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
-        $this->assertEquals('title 2', $article->getTitle());
-        $this->assertEquals('body 2', $article->getFormattedBody());
+        self::assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
+        self::assertEquals('title 2', $article->getTitle());
+        self::assertEquals('body 2', $article->getFormattedBody());
 
         $fail = false;
         try {
@@ -142,7 +142,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
+            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
     }
 
@@ -151,59 +151,59 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         $article = new Article();
         $statesList = $article->listAvailableStates();
         sort($statesList);
-        $this->assertEquals(
+        self::assertEquals(
             [Archived::class, Draft::class, Extended::class, Promoted::class, Published::class, StateDefault::class],
             $statesList
         );
 
         $statesList = $article->listEnabledStates();
         sort($statesList);
-        $this->assertEquals([Draft::class, StateDefault::class], $statesList);
-        $this->assertFalse($article->inState(Archived::class));
-        $this->assertTrue($article->inState(Draft::class));
-        $this->assertFalse($article->inState(Extended::class));
-        $this->assertFalse($article->inState(Promoted::class));
-        $this->assertFalse($article->inState(Published::class));
-        $this->assertTrue($article->inState(StateDefault::class));
+        self::assertEquals([Draft::class, StateDefault::class], $statesList);
+        self::assertFalse($article->inState(Archived::class));
+        self::assertTrue($article->inState(Draft::class));
+        self::assertFalse($article->inState(Extended::class));
+        self::assertFalse($article->inState(Promoted::class));
+        self::assertFalse($article->inState(Published::class));
+        self::assertTrue($article->inState(StateDefault::class));
 
         $article->switchState(Published::class);
 
-        $this->assertEquals([Published::class], $article->listEnabledStates());
-        $this->assertFalse($article->inState(Archived::class));
-        $this->assertFalse($article->inState(Draft::class));
-        $this->assertFalse($article->inState(Extended::class));
-        $this->assertFalse($article->inState(Promoted::class));
-        $this->assertTrue($article->inState(Published::class));
-        $this->assertFalse($article->inState(StateDefault::class));
+        self::assertEquals([Published::class], $article->listEnabledStates());
+        self::assertFalse($article->inState(Archived::class));
+        self::assertFalse($article->inState(Draft::class));
+        self::assertFalse($article->inState(Extended::class));
+        self::assertFalse($article->inState(Promoted::class));
+        self::assertTrue($article->inState(Published::class));
+        self::assertFalse($article->inState(StateDefault::class));
 
         $article->switchState(Promoted::class);
 
-        $this->assertEquals([Promoted::class], $article->listEnabledStates());
-        $this->assertFalse($article->inState(Archived::class));
-        $this->assertFalse($article->inState(Draft::class));
-        $this->assertFalse($article->inState(Extended::class));
-        $this->assertTrue($article->inState(Promoted::class));
-        $this->assertTrue($article->inState(Published::class));
-        $this->assertFalse($article->inState(StateDefault::class));
+        self::assertEquals([Promoted::class], $article->listEnabledStates());
+        self::assertFalse($article->inState(Archived::class));
+        self::assertFalse($article->inState(Draft::class));
+        self::assertFalse($article->inState(Extended::class));
+        self::assertTrue($article->inState(Promoted::class));
+        self::assertTrue($article->inState(Published::class));
+        self::assertFalse($article->inState(StateDefault::class));
 
         $article->switchState(Archived::class);
 
-        $this->assertEquals([Archived::class], $article->listEnabledStates());
-        $this->assertTrue($article->inState(Archived::class));
-        $this->assertFalse($article->inState(Draft::class));
-        $this->assertFalse($article->inState(Extended::class));
-        $this->assertFalse($article->inState(Promoted::class));
-        $this->assertTrue($article->inState(Published::class));
-        $this->assertFalse($article->inState(StateDefault::class));
+        self::assertEquals([Archived::class], $article->listEnabledStates());
+        self::assertTrue($article->inState(Archived::class));
+        self::assertFalse($article->inState(Draft::class));
+        self::assertFalse($article->inState(Extended::class));
+        self::assertFalse($article->inState(Promoted::class));
+        self::assertTrue($article->inState(Published::class));
+        self::assertFalse($article->inState(StateDefault::class));
 
         $article->switchState(Extended::class);
 
-        $this->assertEquals([Extended::class], $article->listEnabledStates());
-        $this->assertFalse($article->inState(Archived::class));
-        $this->assertFalse($article->inState(Draft::class));
-        $this->assertTrue($article->inState(Extended::class));
-        $this->assertTrue($article->inState(Promoted::class));
-        $this->assertTrue($article->inState(Published::class));
-        $this->assertFalse($article->inState(StateDefault::class));
+        self::assertEquals([Extended::class], $article->listEnabledStates());
+        self::assertFalse($article->inState(Archived::class));
+        self::assertFalse($article->inState(Draft::class));
+        self::assertTrue($article->inState(Extended::class));
+        self::assertTrue($article->inState(Promoted::class));
+        self::assertTrue($article->inState(Published::class));
+        self::assertFalse($article->inState(StateDefault::class));
     }
 }

@@ -59,8 +59,8 @@ trait PrivateTestTrait
     public function testIssetPrivateIssetMethodChildren()
     {
         $this->initializeProxy(MockState1::class, true);
-        $this->assertFalse($this->proxy->issetChildrenPriProperty());
-        $this->assertFalse($this->proxy->issetChildrenMissingPriProperty());
+        self::assertFalse($this->proxy->issetChildrenPriProperty());
+        self::assertFalse($this->proxy->issetChildrenMissingPriProperty());
     }
 
     /**
@@ -70,7 +70,7 @@ trait PrivateTestTrait
     {
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->setChildrenPriProperty('value2');
-        $this->assertEquals('value2', $this->proxy->getChildrenPriProperty());
+        self::assertEquals('value2', $this->proxy->getChildrenPriProperty());
     }
 
     /**
@@ -88,13 +88,13 @@ trait PrivateTestTrait
     public function testGetIssetSetUnsetPrivateViaMethodChildren()
     {
         $this->initializeProxy(MockState1::class, true);
-        $this->assertEquals('value1', $this->proxy->getPriProperty());
-        $this->assertTrue($this->proxy->issetPriProperty());
-        $this->assertFalse($this->proxy->issetMissingPriProperty());
+        self::assertEquals('value1', $this->proxy->getPriProperty());
+        self::assertTrue($this->proxy->issetPriProperty());
+        self::assertFalse($this->proxy->issetMissingPriProperty());
         $this->proxy->setPriProperty('value2');
-        $this->assertEquals('value2', $this->proxy->getPriProperty());
+        self::assertEquals('value2', $this->proxy->getPriProperty());
         $this->proxy->unsetPriProperty();
-        $this->assertFalse($this->proxy->issetPriProperty());
+        self::assertFalse($this->proxy->issetPriProperty());
     }
 
     /**
@@ -103,7 +103,7 @@ trait PrivateTestTrait
     public function testCallPrivateFromState()
     {
         $this->initializeProxy(MockState1::class, true);
-        $this->assertEquals('fooBar', $this->proxy->callPriMethod());
+        self::assertEquals('fooBar', $this->proxy->callPriMethod());
     }
 
     /**

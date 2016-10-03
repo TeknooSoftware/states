@@ -41,13 +41,13 @@ class MultipleTest extends \PHPUnit_Framework_TestCase
     {
         //Initialize user
         $simpleUser = new User('simple 1');
-        $this->assertEquals('simple 1', $simpleUser->getName());
+        self::assertEquals('simple 1', $simpleUser->getName());
         //Initialize moderator
         $moderator = new User('modo', false, true);
-        $this->assertEquals('modo', $moderator->getName());
+        self::assertEquals('modo', $moderator->getName());
         //Initialize admin
         $administrator = new User('admin', true, true);
-        $this->assertEquals('admin', $administrator->getName());
+        self::assertEquals('admin', $administrator->getName());
 
         //Method not available, because state Moderator is not enabled
         $fail = false;
@@ -58,14 +58,14 @@ class MultipleTest extends \PHPUnit_Framework_TestCase
         }
 
         if (!$fail) {
-            $this->fail('Error, the lib must throw an exception because the method is not available in enabled states');
+            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
-        $this->assertTrue($moderator->isModerator());
-        $this->assertTrue($administrator->isModerator());
+        self::assertTrue($moderator->isModerator());
+        self::assertTrue($administrator->isModerator());
 
         //admin transforms the user as modo
         $administrator->setModerator($simpleUser);
-        $this->assertTrue($simpleUser->isModerator());
+        self::assertTrue($simpleUser->isModerator());
     }
 }
