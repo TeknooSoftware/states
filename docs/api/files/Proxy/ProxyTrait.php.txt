@@ -21,20 +21,17 @@
  */
 namespace Teknoo\States\Proxy;
 
+use Teknoo\States\State\Exception\MethodNotImplemented;
 use Teknoo\States\State\StateInterface;
-use Teknoo\States\State\Exception\MethodNotImplemented as StateMethodNotImplemented;
 
 /**
  * Trait ProxyTrait
  * Default implementation of the proxy class in stated class. It is used in this library to create stated class instance.
  *
- * A stated class instance is a proxy instance, configured from the stated class's factory, with different states instance.
- * The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
- * $this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy instance.
- *
- * By default, this library creates an alias with the canonical proxy class name and the stated class name
- * to simulate a real class with the stated class name
- *
+ * A stated class instance is a proxy instance, configured from the stated class's factory, with different states
+ * instance.  The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
+ * $this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy
+ * instance.
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -42,29 +39,23 @@ use Teknoo\States\State\Exception\MethodNotImplemented as StateMethodNotImplemen
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ * @mixin ProxyInterface
  */
 trait ProxyTrait
 {
     /**
      * List of currently enabled states in this proxy.
      *
-     * @var \ArrayObject|StateInterface[]
+     * @var StateInterface[]
      */
-    private $activesStates;
-
-    /**
-     * List aliases of currently enabled stated in this proxy.
-     *
-     * @var string[]
-     */
-    private $activesStatesAlias = [];
+    private $activesStates = [];
 
     /**
      * List of available states for this stated class instance.
      *
-     * @var \ArrayObject|StateInterface[]
+     * @var StateInterface[]
      */
-    private $states;
+    private $states = [];
 
     /**
      * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
@@ -75,50 +66,74 @@ trait ProxyTrait
     private $callerStatedClassesStack;
 
     /**
-     * List all methods available in the proxy, with all states, get the list available in the current scope,
-     * unlike method_exists is not dependant about the scope and return unavailable privates methods.
+     * Method to initialize a list of states class in this proxy. Is a state have a same name of a previous loaded state
+     * (defined in previously in this class) it's skipped.
      *
-     * @var string[]
+     * @param array  $statesList
+     * @param bool   $enablePrivateMode
+     * @param string $selfClassName
+     * @param array  &$loadedStatesList
      */
-    private $globalMethodsList;
+    private function initializeStates(
+        array $statesList,
+        bool $enablePrivateMode,
+        string $selfClassName,
+        array &$loadedStatesList
+    ) {
+        foreach ($statesList as $stateClassName) {
+            //Extract short class name and check if this state is not already loaded
+            $shortStateName = \substr($stateClassName, \strrpos($stateClassName, '\\') + 1);
+            if (isset($loadedStatesList[$shortStateName])) {
+                continue;
+            }
 
-    /**
-     * @var \ReflectionObject
-     */
-    private $thisReflection;
+            //Register it
+            $loadedStatesList[$shortStateName] = $stateClassName;
 
-    /**
-     * @var null|array
-     */
-    private $publicPropertiesList = [];
+            //Load and Register
+            $this->registerState($stateClassName, new $stateClassName($enablePrivateMode, $selfClassName));
 
-    /**
-     * List all methods available in the proxy, with all states, get the list available in the current scope,
-     * unlike method_exists is not dependant about the scope and return unavailable privates methods.
-     *
-     * @return array|string[]
-     */
-    private function getGlobalMethodsList()
-    {
-        if (null === $this->globalMethodsList) {
-            $this->globalMethodsList = array_flip(get_class_methods($this));
+            //If the state is the default
+            if ($shortStateName == ProxyInterface::DEFAULT_STATE_NAME) {
+                $this->enableState($stateClassName);
+            }
         }
-
-        return $this->globalMethodsList;
     }
 
     /**
-     * Check if a method exist in the current scope for this proxy.
-     * unlike method_exists is not dependant about the scope and return unavailable privates methods
-     * unlike is_callable, this check is not influenced by __call().
+     * To initialize the proxy instance with all declared states. This method fetch all states defined for this class,
+     * (states returned by `statesListDeclaration()`), but checks also parent's states.
      *
-     * @param string $methodName
-     *
-     * @return bool
+     * @return ProxyInterface
      */
-    private function checkMethodExist(string $methodName)
+    private function loadStates(): ProxyInterface
     {
-        return isset($this->getGlobalMethodsList()[$methodName]);
+        $currentClassName = static::class;
+        $loadedStatesList = [];
+
+        //Private mode is only enable for states directly defined in this stated class.
+        $this->initializeStates(static::statesListDeclaration(), false, $currentClassName, $loadedStatesList);
+
+        $parentClassName = \get_class($this);
+        do {
+            $parentClassName = \get_parent_class($parentClassName);
+            if (\class_exists($parentClassName)
+                    && \is_subclass_of($parentClassName, ProxyInterface::class)) {
+
+                //Private mode is disable for states directly defined in parent class.
+                /*
+                 * @var ProxyInterface $parentClassName
+                 */
+                $this->initializeStates(
+                    $parentClassName::statesListDeclaration(),
+                    true,
+                    $parentClassName,
+                    $loadedStatesList
+                );
+            }
+        } while (false !== $parentClassName);
+
+        return $this;
     }
 
     /**
@@ -185,15 +200,11 @@ trait ProxyTrait
         $callerStatedClassName = $this->getCallerStatedClassName();
         $this->pushCallerStatedClassName($state);
 
-        //Method found, extract it
-        /*
-         * @var ProxyInterface|ProxyTrait $this
-         */
-        $callingClosure = $state->getClosure($this, $methodName, $scopeVisibility, $callerStatedClassName);
+        $callingClosure = $state->getClosure($methodName, $scopeVisibility, $callerStatedClassName);
 
         //Call it
         try {
-            $returnValues = $callingClosure(...$arguments);
+            $returnValues = $callingClosure->call($this, ...$arguments);
         } catch (\Throwable $e) {
             //Restore stated class name stack
             $this->popCallerStatedClassName();
@@ -208,7 +219,7 @@ trait ProxyTrait
     }
 
     /**
-     * Internal method to find, in enabled stated, the closure required by caller to call it.
+     * Internal method to find, in enabled stated, the method/closure required by caller to call it.
      *
      * @api
      *
@@ -227,21 +238,6 @@ trait ProxyTrait
 
         $callerStatedClassName = $this->getCallerStatedClassName();
 
-        $methodsWithStatesArray = explode('Of', $methodName);
-        if (1 < count($methodsWithStatesArray)) {
-            //A specific state is required for this call
-            $statesName = lcfirst(array_pop($methodsWithStatesArray));
-            if (isset($this->activesStates[$statesName])) {
-                //Get the state name
-                $methodName = implode('Of', $methodsWithStatesArray);
-
-                $activeStateObject = $this->activesStates[$statesName];
-                if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
-                    return $this->callInState($activeStateObject, $methodName, $arguments, $scopeVisibility);
-                }
-            }
-        }
-
         $activeStateFound = null;
         //No specific state required, browse all enabled state to find the method
         foreach ($this->activesStates as $activeStateObject) {
@@ -252,7 +248,7 @@ trait ProxyTrait
                 } else {
                     //Else, throw an exception
                     throw new Exception\AvailableSeveralMethodImplementations(
-                        sprintf(
+                        \sprintf(
                             'Method "%s" has several implementations in different states',
                             $methodName
                         )
@@ -266,25 +262,30 @@ trait ProxyTrait
         }
 
         throw new Exception\MethodNotImplemented(
-            sprintf('Method "%s" is not available with actives states', $methodName)
+            \sprintf('Method "%s" is not available with actives states', $methodName)
         );
     }
 
     /**
      * To test if the identifier is an non empty string.
-     *
-     * @api
+     * Convert also canonical states name (aka state's class name) to its identifier (kepp only the class name without
+     * its namespace).
      *
      * @param string $name
      *
      * @return bool
      *
-     * @throws Exception\IllegalName when the identifier is not an non empty string
+     * @throws Exception\IllegalName   when the identifier is not an non empty string
+     * @throws Exception\StateNotFound when the state class name does not exist
      */
-    protected function validateName(string $name): bool
+    protected function validateName(string &$name): bool
     {
         if (empty($name)) {
             throw new Exception\IllegalName('Error, the identifier is not a valid string');
+        }
+
+        if (!\class_exists($name) && !\interface_exists($name)) {
+            throw new Exception\StateNotFound("Error, the state $name is not available");
         }
 
         return true;
@@ -297,21 +298,26 @@ trait ProxyTrait
     protected function initializeProxy()
     {
         //Initialize internal vars
-        $this->states = new \ArrayObject();
-        $this->activesStates = new \ArrayObject();
+        $this->states = [];
+        $this->activesStates = [];
         $this->callerStatedClassesStack = new \SplStack();
+        //Creates
+        $this->loadStates();
     }
 
     /**
      * To determine the caller visibility scope to not grant to call protected or private method from an external object.
      * getVisibilityScope() uses debug_backtrace() to get last entries in the calling stack.
      *  (PHP does not provide a method to get this, but the cost of to call the debug_backtrace is very light).
+     * This method is used to restore the default PHP's behavior, skipped with __call() method : PHP is naturally not
+     * able to detect it : because __call, like all class's methods can access to all private and protected methods.
      *
      * Called from the main block : Public scope
      * Called from a global function : Public scope
      * Called from another class (not a child class), via a static method or an instance of this class : Public scope
      * Called from a child class, via a static method or an instance of this class : Protected scope
-     * Called from a static method of this stated class, or from a method of this stated class (but not this instance) : Private scope
+     * Called from a static method of this stated class, or from a method of this stated class (but not this instance) :
+     *  Private scope
      * Called from a method of this stated class instance : Private state
      *
      * @param int $limit To define the caller into the calling stack
@@ -330,10 +336,10 @@ trait ProxyTrait
             --$limit;
         }
 
-        if (count($callingStack) >= $limit) {
+        if (\count($callingStack) >= $limit) {
             //If size of the calling stack is less : called from main php file, or corrupted stack :
             //apply default behavior : Public
-            $callerLine = array_pop($callingStack);
+            $callerLine = \array_pop($callingStack);
 
             if (!empty($callerLine['object']) && \is_object($callerLine['object'])) {
                 //It is an object
@@ -344,7 +350,7 @@ trait ProxyTrait
                     return StateInterface::VISIBILITY_PRIVATE;
                 }
 
-                if (get_class($this) === get_class($callerObject)) {
+                if (\get_class($this) === \get_class($callerObject)) {
                     //It's a brother (another instance of this same stated class, not a child), So Private scope too
                     return StateInterface::VISIBILITY_PRIVATE;
                 }
@@ -360,7 +366,7 @@ trait ProxyTrait
 
             if (!empty($callerLine['class'])
                 && \is_string($callerLine['class'])
-                && class_exists($callerLine['class'], false)) {
+                && \class_exists($callerLine['class'], false)) {
 
                 //It is a class
                 $callerName = $callerLine['class'];
@@ -385,17 +391,13 @@ trait ProxyTrait
     }
 
     /**
-     * Called to clone this stated class instance, clone states entities and the current state of this instance.
-     *
-     * @api
-     *
-     * @return $this
+     * {@inheritdoc}
      */
     public function __clone()
     {
         //Clone states stack
-        if ($this->states instanceof \ArrayAccess) {
-            $clonedStatesArray = new \ArrayObject();
+        if (!empty($this->states)) {
+            $clonedStatesArray = [];
             foreach ($this->states as $key => $state) {
                 //Clone each stated class instance
                 $clonedState = clone $state;
@@ -406,9 +408,9 @@ trait ProxyTrait
         }
 
         //Enabling states
-        if ($this->activesStates instanceof \ArrayAccess) {
-            $activesStates = array_keys($this->activesStates->getArrayCopy());
-            $this->activesStates = new \ArrayObject();
+        if (!empty($this->activesStates)) {
+            $activesStates = \array_keys($this->activesStates);
+            $this->activesStates = [];
             foreach ($activesStates as $stateName) {
                 $this->enableState($stateName);
             }
@@ -422,20 +424,20 @@ trait ProxyTrait
      ***********************/
 
     /**
-     * To register dynamically a new state for this stated class instance.
-     *
-     * @api
-     *
-     * @param string         $stateName
-     * @param StateInterface $stateObject
-     *
-     * @return ProxyInterface
-     *
-     * @throws Exception\IllegalName when the identifier is not an non empty string
+     * {@inheritdoc}
      */
     public function registerState(string $stateName, StateInterface $stateObject): ProxyInterface
     {
         $this->validateName($stateName);
+
+        if (!\is_a($stateObject, $stateName) && !\is_subclass_of($stateObject, $stateName)) {
+            throw new Exception\IllegalName(
+                sprintf(
+                    'Error, the state does not implement the class or interface "%s"',
+                    $stateName
+                )
+            );
+        }
 
         $this->states[$stateName] = $stateObject;
 
@@ -443,16 +445,7 @@ trait ProxyTrait
     }
 
     /**
-     * To remove dynamically a state from this stated class instance.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
-     *
-     * @throws Exception\StateNotFound when the state was not found
-     * @throws Exception\IllegalName   when the identifier is not an non empty string
+     * {@inheritdoc}
      */
     public function unregisterState(string $stateName): ProxyInterface
     {
@@ -465,41 +458,14 @@ trait ProxyTrait
                 unset($this->activesStates[$stateName]);
             }
         } else {
-            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
+            throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
     }
 
     /**
-     * To build the aliases list of actives states.
-     *
-     * @return ProxyInterface
-     */
-    private function buildAliasesListOfActivesStates(): ProxyInterface
-    {
-        $activesStatesAlias = [];
-
-        foreach ($this->activesStates as $a => $state) {
-            $activesStatesAlias += $state->getStateAliases();
-        }
-
-        $activesStatesAlias = array_map('strtolower', $activesStatesAlias);
-        $this->activesStatesAlias = array_combine($activesStatesAlias, $activesStatesAlias);
-
-        return $this;
-    }
-
-    /**
-     * To disable all enabled states and enable the required states.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
-     *
-     * @throws Exception\IllegalName when the identifier is not an non empty string
+     * {@inheritdoc}
      */
     public function switchState(string $stateName): ProxyInterface
     {
@@ -508,22 +474,11 @@ trait ProxyTrait
         $this->disableAllStates();
         $this->enableState($stateName);
 
-        $this->buildAliasesListOfActivesStates();
-
         return $this;
     }
 
     /**
-     * To enable a loaded states.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
-     *
-     * @throws Exception\StateNotFound if $stateName does not exist
-     * @throws Exception\IllegalName   when the identifier is not an non empty string
+     * {@inheritdoc}
      */
     public function enableState(string $stateName): ProxyInterface
     {
@@ -531,25 +486,15 @@ trait ProxyTrait
 
         if (isset($this->states[$stateName])) {
             $this->activesStates[$stateName] = $this->states[$stateName];
-            $this->buildAliasesListOfActivesStates();
         } else {
-            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
+            throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
     }
 
     /**
-     * To disable an enabled state.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
-     *
-     * @throws Exception\StateNotFound when the state was not found
-     * @throws Exception\IllegalName   when the identifier is not an non empty string
+     * {@inheritdoc}
      */
     public function disableState(string $stateName): ProxyInterface
     {
@@ -557,335 +502,119 @@ trait ProxyTrait
 
         if (isset($this->activesStates[$stateName])) {
             unset($this->activesStates[$stateName]);
-            $this->buildAliasesListOfActivesStates();
         } else {
-            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
+            throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
     }
 
     /**
-     * To disable all actives states.
-     *
-     * @api
-     *
-     * @return ProxyInterface
+     * {@inheritdoc}
      */
     public function disableAllStates(): ProxyInterface
     {
-        $this->activesStates = new \ArrayObject();
-
-        $this->buildAliasesListOfActivesStates();
+        $this->activesStates = [];
 
         return $this;
     }
 
     /**
-     * To list all currently available states for this object.
-     *
-     * @api
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
-    public function listAvailableStates()
+    public function listAvailableStates(): array
     {
-        if ($this->states instanceof \ArrayAccess) {
-            return array_keys($this->states->getArrayCopy());
+        if (!empty($this->states) && \is_array($this->states)) {
+            return \array_keys($this->states);
         } else {
             return [];
         }
     }
 
     /**
-     * To list all enable states for this object.
-     *
-     * @api
-     *
-     * @return string[]
+     * {@inheritdoc}
      */
-    public function listEnabledStates()
+    public function listEnabledStates(): array
     {
-        if ($this->activesStates instanceof \ArrayAccess) {
-            return array_keys($this->activesStates->getArrayCopy());
+        if (!empty($this->activesStates) && \is_array($this->activesStates)) {
+            return \array_keys($this->activesStates);
         } else {
             return [];
         }
     }
 
     /**
-     * To return the list of all states entity available for this object.
-     *
-     * @api
-     *
-     * @return \ArrayAccess|StateInterface[]
+     * {@inheritdoc}
      */
-    public function getStatesList()
+    public function getStatesList() : array
     {
-        if ($this->states instanceof \ArrayAccess) {
+        if (!empty($this->states)) {
             return $this->states;
         }
 
-        return new \ArrayObject();
+        return [];
     }
 
     /**
-     * Check if this stated class instance is in the required state defined by $stateName.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return bool
+     * {@inheritdoc}
      */
     public function inState(string $stateName): bool
     {
-        $stateName = (string) $stateName;
+        $this->validateName($stateName);
         $enabledStatesList = $this->listEnabledStates();
 
-        if (\is_array($enabledStatesList) && !empty($enabledStatesList)) {
-            //array_flip + isset is more efficient than in_array
-            $stateName = strtr(strtolower($stateName), '_', '');
-            $enabledStatesList = array_flip(
-                array_map('strtolower', $enabledStatesList)
-            );
-
-            return isset($enabledStatesList[$stateName]) || isset($this->activesStatesAlias[$stateName]);
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * To call a method of the this stated class instance not defined in the proxy.
-     *
-     * @api
-     *
-     * @param string $name
-     * @param array  $arguments
-     *
-     * @return mixed
-     *
-     * @throws \Exception
-     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     */
-    public function __call(string $name, array $arguments)
-    {
-        if (!$this->callerStatedClassesStack->isEmpty()) {
-            if ($this->checkMethodExist($name)) {
-                return $this->{$name}(...$arguments);
+        if (\is_array($enabledStatesList)) {
+            if (isset(\array_flip($enabledStatesList)[$stateName])) {
+                return true;
+            } else {
+                foreach ($enabledStatesList as $enableStateName) {
+                    if (\is_subclass_of($enableStateName, $stateName)) {
+                        return true;
+                    }
+                }
             }
         }
 
+        return false;
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function __call(string $name, array $arguments)
+    {
         return $this->findMethodToCall($name, $arguments);
     }
 
     /**
-     * To return the description of a method present in a state of this stated class instance.
-     * This method no checks if the method is available in the current scope by the called.
-     *
-     * @api
-     *
-     * @param string $methodName
-     * @param string $stateName  : Return the description for a specific state of the object,
-     *                           if null, use the current state
-     *
-     * @return \ReflectionMethod
-     *
-     * @throws Exception\StateNotFound        is the state required is not available
-     * @throws Exception\MethodNotImplemented when the method is not currently available
-     * @throws \Throwable                     to rethrows unknown exceptions
+     * {@inheritdoc}
      */
     public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
     {
-        //Retrieve the visibility scope
-        try {
-            if (null === $stateName) {
-                //Browse all state to find the method
-                foreach ($this->states as $stateObject) {
-                    return $stateObject->getMethodDescription($methodName);
-                }
+        if (!empty($stateName)) {
+            $this->validateName($stateName);
+
+            if (!isset($this->states[$stateName])) {
+                throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
+            }
+        }
+
+        //Browse all state to find the method
+        foreach ($this->states as $stateObject) {
+            if (null !== $stateName && \get_class($stateObject) !== $stateName) {
+                continue;
             }
 
-            if (null !== $stateName && isset($this->states[$stateName])) {
-                //Retrieve description from the required state
-                return $this->states[$stateName]->getMethodDescription($methodName);
-            } elseif (null !== $stateName) {
-                throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
+            try {
+                return $stateObject->getMethodDescription($methodName);
+            } catch (MethodNotImplemented $e) {
             }
-        } catch (StateMethodNotImplemented $e) {
-            //Catch MethodNotImplemented from state entity to surround in a proxy exception
-            throw new Exception\MethodNotImplemented(
-                $e->getMessage(),
-                $e->getCode(),
-                $e
-            );
-        } catch (\Throwable $e) {
-            throw $e;
         }
 
         //Method not found
         throw new Exception\MethodNotImplemented(
-            sprintf('Method "%s" is not available for this state', $methodName)
+            \sprintf('Method "%s" is not available for this state', $methodName)
         );
-    }
-
-    /**
-     * Get a reflection instance about this object.
-     *
-     * @return \ReflectionObject
-     */
-    private function getThisReflection(): \ReflectionObject
-    {
-        if (!$this->thisReflection instanceof \ReflectionObject) {
-            $this->thisReflection = new \ReflectionObject($this);
-        }
-
-        return $this->thisReflection;
-    }
-
-    /**
-     * To check if the required property is an public accessible or not.
-     *
-     * @param string $name
-     *
-     * @return bool
-     */
-    private function isPublicProperty(string $name): bool
-    {
-        if (!isset($this->publicPropertiesList[$name])) {
-            $tr = $this->getThisReflection();
-            $this->publicPropertiesList[$name] = (!$tr->hasProperty($name) || $tr->getProperty($name)->isPublic());
-        }
-
-        return $this->publicPropertiesList[$name];
-    }
-
-    /**
-     * To get a property of the instance.
-     *
-     * Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
-     * can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
-     * error due to compilation pass with self::
-     *
-     * Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
-     * or method are not available in this closure (the scope differ).
-     *
-     * So we use magic call to restore this behavior during a calling
-     *
-     * @param string $name
-     *
-     * @return mixed
-     *
-     * @throws \ErrorException of the property is not accessible
-     */
-    public function __get(string $name)
-    {
-        if (!$this->callerStatedClassesStack->isEmpty()) {
-            if (property_exists($this, $name)) {
-                return $this->{$name};
-            }
-
-            throw new \ErrorException('Undefined property '.get_class($this).'::'.$name);
-        }
-
-        if ($this->isPublicProperty($name)) {
-            return $this->{$name};
-        }
-
-        throw new \ErrorException('Error: Cannot access private property '.get_class($this).'::'.$name);
-    }
-
-    /**
-     * To test if a property is set for the instance.
-     *
-     * Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
-     * can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
-     * error due to compilation pass with self::
-     *
-     * Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
-     * or method are not available in this closure (the scope differ).
-     *
-     * So we use magic call to restore this behavior during a calling
-     *
-     * @param string $name
-     *
-     * @return mixed
-     */
-    public function __isset(string $name)
-    {
-        if (!$this->callerStatedClassesStack->isEmpty()) {
-            return isset($this->{$name});
-        }
-
-        return $this->isPublicProperty($name) && isset($this->{$name});
-    }
-
-    /**
-     * To update a property of the instance.
-     *
-     * Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
-     * can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
-     * error due to compilation pass with self::
-     *
-     * Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
-     * or method are not available in this closure (the scope differ).
-     *
-     * So we use magic call to restore this behavior during a calling
-     *
-     * @param string $name
-     * @param string $value
-     *
-     * @throws \ErrorException of the property is not accessible
-     */
-    public function __set(string $name, $value)
-    {
-        if (!$this->callerStatedClassesStack->isEmpty()) {
-            $this->{$name} = $value;
-
-            return;
-        }
-
-        if ($this->isPublicProperty($name)) {
-            $this->{$name} = $value;
-
-            return;
-        }
-
-        throw new \ErrorException('Error: Cannot access private property '.get_class($this).'::'.$name);
-    }
-
-    /**
-     * To remove a property from the instance.
-     *
-     * Data management : In PHP7, \Closure::bind(), \Closure::bindTo() and \Closure::call()
-     * can not change the scope about non real closure (all closures obtained by \ReflectionMethod::getClosure()) to avoid
-     * error due to compilation pass with self::
-     *
-     * Thise change does not impact rebinding of $this, but the scope stay unchanged, and private or protected attributes
-     * or method are not available in this closure (the scope differ).
-     *
-     * So we use magic call to restore this behavior during a calling
-     *
-     * @param string $name
-     *
-     * @throws \ErrorException of the property is not accessible
-     */
-    public function __unset(string $name)
-    {
-        if (!$this->callerStatedClassesStack->isEmpty() && property_exists($this, $name)) {
-            unset($this->{$name});
-
-            return;
-        }
-
-        if ($this->isPublicProperty($name)) {
-            unset($this->{$name});
-
-            return;
-        }
-
-        throw new \ErrorException('Error: Cannot access private property '.get_class($this).'::'.$name);
     }
 }
 

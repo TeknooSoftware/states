@@ -23,8 +23,11 @@ namespace Teknoo\States\Proxy;
 
 /**
  * Trait SerializableTrait
- * Trait to use the interface \Serializable (http://php.net/manual/en/class.serializable.php) with stated classes.
+ * Trait to use the interface \Serializable (http://php.net/manual/en/class.serializable.php) with stated class.
+ * It must be used with the trait ProxyTrait. This trait forwards all methods defined in \Serializable in methods
+ * defined in states of the class.
  *
+ * @see http://php.net/manual/en/class.serializable.php
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -37,20 +40,14 @@ namespace Teknoo\States\Proxy;
  */
 trait SerializableTrait
 {
-    /*****************
-     * Serialization *
-     *****************/
-
     /**
-     * To serialize the object.
+     * {@inheritdoc}
      *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      *
-     * @return string
-     *
-     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @see http://php.net/manual/en/class.serializable.php
      */
     public function serialize(): string
     {
@@ -60,13 +57,13 @@ trait SerializableTrait
     }
 
     /**
-     * To wake up the object.
+     * {@inheritdoc}
      *
      * @api
      *
-     * @param string $serialized
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
+     * @see http://php.net/manual/en/class.serializable.php
      */
     public function unserialize($serialized)
     {

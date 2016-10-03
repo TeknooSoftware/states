@@ -25,8 +25,7 @@ namespace Teknoo\States\Proxy\Exception;
 use Teknoo\States\Exception;
 
 /**
- * Class IllegalName
- * Exception threw when the argument's value, used to called an element has not respected a defined pattern.
+ * {@inheritdoc}
  *
  * @category    Exception
  *

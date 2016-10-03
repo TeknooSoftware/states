@@ -23,8 +23,11 @@ namespace Teknoo\States\Proxy;
 
 /**
  * Trait ArrayAccessTrait
- * Trait to use the interface \ArrayAccess (http://php.net/manual/en/class.arrayaccess.php) with stated classes.
+ * Trait to use the interface \ArrayAccess (http://php.net/manual/en/class.arrayaccess.php) with a stated class.
+ * It must be used with the trait ProxyTrait. This trait forwards all methods defined in \ArrayAccess in methods
+ * defined in states of the class.
  *
+ * @see http://php.net/manual/en/class.arrayaccess.php
  *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -33,22 +36,19 @@ namespace Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
- * @method mixed findMethodToCall($name, $args)
+ * @mixin \ArrayAccess
+ * @mixin ProxyTrait
  */
 trait ArrayAccessTrait
 {
-    /****************
-     * Array Access *
-     ****************/
-
     /**
-     * This method is executed when using the count() function on an object implementing Countable.
+     * {@inheritdoc}
      *
      * @api
      *
-     * @return int
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
+     * @see http://php.net/manual/en/class.arrayaccess.php
      */
     public function count(): int
     {
@@ -58,16 +58,13 @@ trait ArrayAccessTrait
     }
 
     /**
-     * Whether or not an offset exists.
-     * This method is executed when using isset() or empty() on states implementing ArrayAccess.
+     * {@inheritdoc}
      *
      * @api
      *
-     * @param string|int $offset
-     *
-     * @return bool
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
+     * @see http://php.net/manual/en/class.arrayaccess.php
      */
     public function offsetExists($offset)
     {
@@ -77,16 +74,13 @@ trait ArrayAccessTrait
     }
 
     /**
-     * Returns the value at specified offset.
-     * This method is executed when checking if offset is empty().
+     * {@inheritdoc}
      *
      * @api
      *
-     * @param string|int $offset
-     *
-     * @return mixed
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
+     * @see http://php.net/manual/en/class.arrayaccess.php
      */
     public function offsetGet($offset)
     {
@@ -96,16 +90,13 @@ trait ArrayAccessTrait
     }
 
     /**
-     * Assigns a value to the specified offset.
+     * {@inheritdoc}
      *
      * @api
      *
-     * @param string|int $offset
-     * @param mixed      $value
-     *
-     * @return mixed
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
+     * @see http://php.net/manual/en/class.arrayaccess.php
      */
     public function offsetSet($offset, $value)
     {
@@ -115,13 +106,13 @@ trait ArrayAccessTrait
     }
 
     /**
-     * Unset an offset.
+     * {@inheritdoc}
      *
      * @api
      *
-     * @param string|int $offset
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     *
+     * @see http://php.net/manual/en/class.arrayaccess.php
      */
     public function offsetUnset($offset)
     {
