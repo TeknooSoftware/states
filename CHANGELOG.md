@@ -10,8 +10,8 @@
 * Standard proxies can be directly instantiate by PHP.
 * States's method are now builders of closure : They must return a closure, bindable with \Closure::call(). 
   The Reflection API is no longer used to get a closure.
-* The library use \Closure::call() instead of \Closure::rebindTo(), more efficient.  
-* The library use now native array instead of \ArrayObject. Array's performances are good with PHP7+ and 
+* The library uses \Closure::call() instead of \Closure::rebindTo(), more efficient.  
+* The library uses now native array instead of \ArrayObject. Array's performances are good with PHP7+ and 
     using array forbid change in proxy without using API.
 * MagicCallTrait forward `__toString()` call to the method `toString()` and `__invoke()` call to the method `invoke()`.
 
@@ -20,7 +20,7 @@
 * Registration of states via theirs short name.
 * State's factories, they become useless because states must be directly declared in the proxy.
 * Loader feature, they become useless because states must be directly declared in the proxy.
-* CLI Command, the States 3.x need less operations to be started.
+* CLI Command, the States 3.x needs less operations to be started.
 * Integrated proxies, Standard proxies can be now directly instantiate by PHP.  
 * bootstrap.php file
 

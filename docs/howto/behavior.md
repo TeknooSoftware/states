@@ -16,4 +16,4 @@ standard PHP classes :
     $this referencing these proxy.
 *   Each state class must be declared into the proxy class, via the static method `statesListDeclaration()`.
 
-During proxy instantiating, the proxy find and load all states declared.
+During proxy instantiating, the proxy finds and loads all states declared.

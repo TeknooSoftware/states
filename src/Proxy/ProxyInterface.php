@@ -32,7 +32,7 @@ use Teknoo\States\State\StateInterface;
  * $this and self keyword in all methods of the stated class instance (in proxy's method and states' methods)
  * represent the proxy instance.
  *
- * The proxy class is mandatory. States 3.0 has no factories, no loader. Proxies embedded directly theirs states
+ * The proxy class is mandatory. States 3.0 has no factories, no loader. Proxies embedded directly theirs states'
  * configurations. Since 3.0, states's methods are a builder, returning a real closure to use. The state does not use
  * the Reflection API to extract the closure (not bindable with new $this since 7.1).
  *
