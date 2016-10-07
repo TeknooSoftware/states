@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+###[3.0.0-alpha2] - 2016-10-07
+###Fixed
+* Fix a bug in loading service without namespace
+
 ###[3.0.0-alpha1] - 2016-10-03
 ###Added/Changed
 * State identifier must be a valid class name or a valid interface name. The state object must implements, 
