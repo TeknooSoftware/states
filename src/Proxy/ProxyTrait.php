@@ -82,7 +82,7 @@ trait ProxyTrait
     ) {
         foreach ($statesList as $stateClassName) {
             //Extract short class name and check if this state is not already loaded
-            $shortStateName = \substr($stateClassName, \strrpos($stateClassName, '\\') + 1);
+            $shortStateName = \ltrim(\substr($stateClassName, \strrpos($stateClassName, '\\')),'\\');
             if (isset($loadedStatesList[$shortStateName])) {
                 continue;
             }

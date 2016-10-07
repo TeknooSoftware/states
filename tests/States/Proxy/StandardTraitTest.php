@@ -57,4 +57,27 @@ class StandardTraitTest extends AbstractProxyTest
 
         return $this->proxy;
     }
+
+    public function testLoadDefaultStateWithoutNamespace()
+    {
+        include_once dirname(dirname(__DIR__)).'/Support/TestStateDefaultNotInNamesapce.php';
+        $proxy = new class implements Proxy\ProxyInterface {
+            use Proxy\ProxyTrait;
+
+            public function __construct()
+            {
+                //Call the method of the trait to initialize local attributes of the proxy
+                $this->initializeProxy();
+            }
+
+            public static function statesListDeclaration(): array
+            {
+                return [\StateDefault::class];
+            }
+        };
+
+        $this->proxy->registerState(\StateDefault::class, new \StateDefault(false, get_class($this->proxy)));
+        self::assertEquals([\StateDefault::class], $proxy->listAvailableStates());
+        self::assertEquals([\StateDefault::class], $proxy->listEnabledStates());
+    }
 }
