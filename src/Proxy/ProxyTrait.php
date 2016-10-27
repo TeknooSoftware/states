@@ -67,6 +67,14 @@ trait ProxyTrait
     private $states = [];
 
     /**
+     * To keep the list of full qualified state in parent classes to allow enable overload/redefined state with
+     * original full qualified state name.
+     *
+     * @var array|string[]
+     */
+    private $statesAliasesList = [];
+
+    /**
      * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
      * private method access.
      *
@@ -93,6 +101,8 @@ trait ProxyTrait
             //Extract non qualified class name and check if this state is not already loaded
             $shortStateName = \ltrim(\substr($stateClassName, \strrpos($stateClassName, '\\')),'\\');
             if (isset($loadedStatesList[$shortStateName])) {
+                $this->statesAliasesList[$stateClassName] = $loadedStatesList[$shortStateName];
+
                 continue;
             }
 
@@ -295,6 +305,10 @@ trait ProxyTrait
 
         if (!\class_exists($name) && !\interface_exists($name)) {
             throw new Exception\StateNotFound("Error, the state $name is not available");
+        }
+
+        if (isset($this->statesAliasesList[$name])) {
+            $name = $this->statesAliasesList[$name];
         }
 
         return true;

@@ -3,6 +3,8 @@
 ##[3.0.0-alpha3] - 2016-10-27
 ###Fixed
 * Documentation
+* Can use original full qualified state name for redefined/overloaded state by children stated class.
+
 ###Removed
 * getMethodDescription() to get a description about a method. Conflict between \ReflecionMethod of closure builder
   and the \ReflectionFunction of the final closure. 

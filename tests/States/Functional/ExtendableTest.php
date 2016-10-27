@@ -149,10 +149,41 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $motherInstance->enableState(\Teknoo\Tests\Support\Extendable\Mother\States\StateOne::class);
         self::assertEquals(123, $motherInstance->method1());
         self::assertEquals(456, $motherInstance->method2());
+
         $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateOne::class);
         self::assertEquals(321, $daughterInstance->method3());
         self::assertEquals(654, $daughterInstance->method4());
+
+        $fail = false;
+        try {
+            $daughterInstance->method1();
+        } catch (MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {
+            self::fail($e->getMessage());
+
+            return;
+        }
+
+        self::assertTrue($fail, 'Error, the method 3 are currently not available in enabled states');
+
+        $daughterInstance->disableAllStates();
+        $fail = false;
+        try {
+            $daughterInstance->method3();
+        } catch (MethodNotImplemented $e) {
+            $fail = true;
+        } catch (\Exception $e) {
+            self::fail($e->getMessage());
+        }
+
+        self::assertTrue($fail, 'Error, the method 3 are currently not available in enabled states');
+
+        $daughterInstance->enableState(\Teknoo\Tests\Support\Extendable\Mother\States\StateOne::class);
+        self::assertEquals(321, $daughterInstance->method3());
+        self::assertEquals(654, $daughterInstance->method4());
+
         try {
             $daughterInstance->method1();
         } catch (MethodNotImplemented $e) {
