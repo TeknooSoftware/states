@@ -25,6 +25,9 @@ namespace Teknoo\States\State;
  * Class AbstractState
  * Standard  implementation of the state interface, representing states entities in stated class.
  *
+ * Default implementation of the state interface, representing states entities in stated class.
+ * A trait implementation has been chosen to allow developer to write theirs owns factory, extendable from any class.
+ *
  * Objects implementing this interface must
  * return a usable closure via the method getClosure() for the required method. This method must able to be rebinded
  * by the Closure api (The proxy use \Closure::call() to rebind self and $this). These objects must also provide a
@@ -36,7 +39,7 @@ namespace Teknoo\States\State;
  *
  *      <method visibility> function <method name>(): \Closure
  *      {
- *          return function() {
+ *          return function($arg1, $arg2) {
  *              //your code
  *          };
  *      }
@@ -48,10 +51,7 @@ namespace Teknoo\States\State;
  * is permitted), so the feature \Closure::call() was not usable. Since 7.1, rebind $this for this special closure
  * is also forbidden.
  *
- * WARNING: The AbstractState can not acccess to private method in state (Because parent classes can not access to
- * privates methods of child classes, and vice versa). To allow access to private, you must create a class implementing
- * directly the StateInterface and use directly the StateTrait.
- *
+ * @see StateInterface
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website

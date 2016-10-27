@@ -45,7 +45,7 @@ namespace Teknoo\States\State;
  *
  *      <method visibility> function <method name>(): \Closure
  *      {
- *          return function() {
+ *          return function($arg1, $arg2) {
  *              //your code
  *          };
  *      }
@@ -58,7 +58,7 @@ namespace Teknoo\States\State;
  * is also forbidden.
  *
  * @api
- *
+ * @see StateInterface
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -125,7 +125,7 @@ trait StateTrait
     private $privateModeStatus = false;
 
     /**
-     * To know the canonical stated class name of the object owning this state container.
+     * To know the full qualified stated class name of the object owning this state container.
      *
      * @var string
      */
@@ -235,7 +235,7 @@ trait StateTrait
      *      another state) and not for its children.
      *
      * @param string      $methodName
-     * @param string      $scope
+     * @param string      $requiredScope
      * @param string|null $statedClassOriginName
      *
      * @return bool
@@ -244,13 +244,13 @@ trait StateTrait
      */
     private function checkVisibility(
         string $methodName,
-        string $scope,
+        string $requiredScope,
         string $statedClassOriginName
     ): bool {
         $visible = false;
         if (isset($this->reflectionsMethods[$methodName])) {
             //Check visibility scope
-            switch ($scope) {
+            switch ($requiredScope) {
                 case StateInterface::VISIBILITY_PRIVATE:
                     //To check if the caller method can be accessible by the method caller :
                     //The called method is protected or public (skip to next test)
@@ -268,19 +268,19 @@ trait StateTrait
                     $visible = $privateMethodIsAvailable;
                     break;
                 case StateInterface::VISIBILITY_PROTECTED:
-                    //Can not access to private methods
+                    //Can not access to private methods, only public and protected
                     if (false === $this->reflectionsMethods[$methodName]->isPrivate()
                         && !empty($statedClassOriginName)
                         && ($statedClassOriginName === $this->statedClassName
                             || \is_subclass_of($statedClassOriginName, $this->statedClassName))) {
-                        //It's a private method, do like if there is no method
+                        //It's a public or protected method, do like if there is no method
                         $visible = true;
                     }
                     break;
                 case StateInterface::VISIBILITY_PUBLIC:
                     //Can not access to protect and private method.
                     if (true === $this->reflectionsMethods[$methodName]->isPublic()) {
-                        //It's not a public method, do like if there is no method
+                        //It's a public method, do like if there is no method
                         $visible = true;
                     }
                     break;
@@ -299,18 +299,19 @@ trait StateTrait
      */
     public function testMethod(
         string $methodName,
-        string $scope,
+        string $requiredScope,
         string $statedClassOriginName
     ): bool {
         //Method is already extracted
         if (isset($this->reflectionsMethods[$methodName])) {
             if ($this->reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
-                return $this->checkVisibility($methodName, $scope, $statedClassOriginName);
+                return $this->checkVisibility($methodName, $requiredScope, $statedClassOriginName);
             } else {
                 return false;
             }
         }
 
+        //Method not already extraced, perform it before check its visibility.
         try {
             //Try extract description
             $this->getMethodDescription($methodName);
@@ -322,18 +323,27 @@ trait StateTrait
         }
 
         //Return the result according with the visibility
-        return $this->checkVisibility($methodName, $scope, $statedClassOriginName);
+        return $this->checkVisibility($methodName, $requiredScope, $statedClassOriginName);
     }
 
     /**
-     * {@inheritdoc}
+     * To return the description of a method to configure the behavior of the proxy. Return also description of private
+     * methods : getMethodDescription() does not check if the caller is allowed to call the required method.
+     *
+     * getMethodDescription() ignores static method, because there are incompatible with the stated behavior :
+     * State can be only applied on instances entities like object,
+     * and not on static entities which by nature have no states
+     *
+     * @api
+     *
+     * @param string $methodName
+     *
+     * @return \ReflectionMethod
+     *
+     * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    public function getMethodDescription(string $methodName): \ReflectionMethod
+    private function getMethodDescription(string $methodName): \ReflectionMethod
     {
-        if (isset($this->methodsNamesToIgnoreArray[$methodName])) {
-            throw new Exception\MethodNotImplemented('Error, this method is not implemented by this state');
-        }
-
         $thisReflectionClass = $this->getReflectionClass();
 
         try {
@@ -368,7 +378,7 @@ trait StateTrait
      */
     public function getClosure(
         string $methodName,
-        string $scope,
+        string $requiredScope,
         string $statedClassOriginName
     ): \Closure {
         if (!isset($this->closuresObjects[$methodName])) {
@@ -388,7 +398,7 @@ trait StateTrait
         }
 
         //Check visibility scope
-        if (false === $this->checkVisibility($methodName, $scope, $statedClassOriginName)) {
+        if (false === $this->checkVisibility($methodName, $requiredScope, $statedClassOriginName)) {
             throw new Exception\MethodNotImplemented(
                 \sprintf('Method "%s" is not available for this state', $methodName)
             );

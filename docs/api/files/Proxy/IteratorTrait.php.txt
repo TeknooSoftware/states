@@ -23,7 +23,7 @@ namespace Teknoo\States\Proxy;
 
 /**
  * Trait IteratorTrait
- * Trait to use the interface \Iterator (http://php.net/manual/en/class.iterator.php) with stated class.
+ * Trait to use the interface \Iterator (http://php.net/manual/en/class.iterator.php) with stated classes.
  * It must be used with the trait ProxyTrait. This trait forwards all methods defined in \Iterator in methods
  * defined in states of the class.
  *

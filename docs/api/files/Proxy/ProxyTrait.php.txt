@@ -28,11 +28,20 @@ use Teknoo\States\State\StateInterface;
  * Trait ProxyTrait
  * Default implementation of the proxy class in stated class. It is used in this library to create stated class instance.
  *
- * A stated class instance is a proxy instance, configured from the stated class's factory, with different states
- * instance.  The proxy, by default, redirect all calls, on non defined methods in the proxy, to enabled states.
- * $this in all methods of the stated class instance (in proxy's method and states' methods) represent the proxy
- * instance.
+ * The proxy, by default, redirect all calls, of non defined methods in the proxy, to enabled states.
+ * $this, static and self keywords in all methods the stated class instance (aka in proxy's method and states' methods)
+ * represent the proxy instance.
  *
+ * The proxy class is mandatory. States 3.0 has no factories or no loader : proxies embedded directly theirs states'
+ * configurations.
+ *
+ * States can be overload by children of a stated class : The overloading uses only the non qualified name.
+ *
+ * Since 3.0, states's methods are a builder, returning a real closure to use. The state must not use
+ * the Reflection API to extract the closure (Closure from Reflection are not bindable on a new scope since 7.1).
+ * States can be also an anonymous class, it's name must be defined by an interface, implementing by this state.
+ *
+ * @see ProxyInterface
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -58,7 +67,15 @@ trait ProxyTrait
     private $states = [];
 
     /**
-     * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
+     * To keep the list of full qualified state in parent classes to allow enable overload/redefined state with
+     * original full qualified state name.
+     *
+     * @var array|string[]
+     */
+    private $statesAliasesList = [];
+
+    /**
+     * Stack to know the caller full qualified stated class when an internal method call a parent method to forbid
      * private method access.
      *
      * @var string[]|\SplStack
@@ -66,8 +83,8 @@ trait ProxyTrait
     private $callerStatedClassesStack;
 
     /**
-     * Method to initialize a list of states class in this proxy. Is a state have a same name of a previous loaded state
-     * (defined in previously in this class) it's skipped.
+     * To instantiate a state class defined in this proxy. Is a state have a same non fullqualified class name of
+     * a previous loaded state (defined in previously in this class or in children) it's skipped.
      *
      * @param array  $statesList
      * @param bool   $enablePrivateMode
@@ -81,9 +98,11 @@ trait ProxyTrait
         array &$loadedStatesList
     ) {
         foreach ($statesList as $stateClassName) {
-            //Extract short class name and check if this state is not already loaded
-            $shortStateName = \substr($stateClassName, \strrpos($stateClassName, '\\') + 1);
+            //Extract non qualified class name and check if this state is not already loaded
+            $shortStateName = \ltrim(\substr($stateClassName, \strrpos($stateClassName, '\\')),'\\');
             if (isset($loadedStatesList[$shortStateName])) {
+                $this->statesAliasesList[$stateClassName] = $loadedStatesList[$shortStateName];
+
                 continue;
             }
 
@@ -102,7 +121,8 @@ trait ProxyTrait
 
     /**
      * To initialize the proxy instance with all declared states. This method fetch all states defined for this class,
-     * (states returned by `statesListDeclaration()`), but checks also parent's states.
+     * (states returned by `statesListDeclaration()`), but checks also parent's states by calling theirs static methods
+     * `statesListDeclaration`
      *
      * @return ProxyInterface
      */
@@ -121,7 +141,7 @@ trait ProxyTrait
                     && \is_subclass_of($parentClassName, ProxyInterface::class)) {
 
                 //Private mode is disable for states directly defined in parent class.
-                /*
+                /**
                  * @var ProxyInterface $parentClassName
                  */
                 $this->initializeStates(
@@ -180,7 +200,7 @@ trait ProxyTrait
     }
 
     /**
-     * Prepare the execution's context and execute a method available in a state passed in args with the closure.
+     * Prepare the execution's context and execute a method in a state passed in args with the closure.
      *
      * @param StateInterface $state
      * @param string         $methodName
@@ -219,12 +239,13 @@ trait ProxyTrait
     }
 
     /**
-     * Internal method to find, in enabled stated, the method/closure required by caller to call it.
+     * Internal method to find, in enabled stated, the method/closure required by caller to call it. It can be directly
+     * called by children class. (Protected method)
      *
      * @api
      *
      * @param string $methodName
-     * @param array  $arguments  of the call
+     * @param array  $arguments  of the callmethod
      *
      * @return mixed
      *
@@ -239,7 +260,7 @@ trait ProxyTrait
         $callerStatedClassName = $this->getCallerStatedClassName();
 
         $activeStateFound = null;
-        //No specific state required, browse all enabled state to find the method
+        //browse all enabled state to find the method
         foreach ($this->activesStates as $activeStateObject) {
             if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
                 if (null === $activeStateFound) {
@@ -267,15 +288,13 @@ trait ProxyTrait
     }
 
     /**
-     * To test if the identifier is an non empty string.
-     * Convert also canonical states name (aka state's class name) to its identifier (kepp only the class name without
-     * its namespace).
+     * To test if the identifier is an non empty string and a valif full qualified class/interface name
      *
      * @param string $name
      *
      * @return bool
      *
-     * @throws Exception\IllegalName   when the identifier is not an non empty string
+     * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      * @throws Exception\StateNotFound when the state class name does not exist
      */
     protected function validateName(string &$name): bool
@@ -286,6 +305,10 @@ trait ProxyTrait
 
         if (!\class_exists($name) && !\interface_exists($name)) {
             throw new Exception\StateNotFound("Error, the state $name is not available");
+        }
+
+        if (isset($this->statesAliasesList[$name])) {
+            $name = $this->statesAliasesList[$name];
         }
 
         return true;
@@ -584,37 +607,6 @@ trait ProxyTrait
     public function __call(string $name, array $arguments)
     {
         return $this->findMethodToCall($name, $arguments);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
-    {
-        if (!empty($stateName)) {
-            $this->validateName($stateName);
-
-            if (!isset($this->states[$stateName])) {
-                throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
-            }
-        }
-
-        //Browse all state to find the method
-        foreach ($this->states as $stateObject) {
-            if (null !== $stateName && \get_class($stateObject) !== $stateName) {
-                continue;
-            }
-
-            try {
-                return $stateObject->getMethodDescription($methodName);
-            } catch (MethodNotImplemented $e) {
-            }
-        }
-
-        //Method not found
-        throw new Exception\MethodNotImplemented(
-            \sprintf('Method "%s" is not available for this state', $methodName)
-        );
     }
 }
 
