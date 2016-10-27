@@ -58,7 +58,9 @@ namespace Teknoo\States\State;
  * is also forbidden.
  *
  * @api
+ *
  * @see StateInterface
+ *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website

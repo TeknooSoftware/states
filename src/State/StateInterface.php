@@ -123,7 +123,7 @@ interface StateInterface
      *      another state) and not for its children.
      *
      * @param string      $methodName
-     * @param string      $requiredScope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string      $requiredScope         self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null $statedClassOriginName
      *
      * @return bool
@@ -146,7 +146,7 @@ interface StateInterface
      *      state) and not for its children.
      *
      * @param string      $methodName
-     * @param string      $requiredScope                 self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string      $requiredScope         self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null $statedClassOriginName
      *
      * @return \Closure

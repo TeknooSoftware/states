@@ -117,7 +117,7 @@ interface ProxyInterface
      * @return ProxyInterface
      *
      * @throws Exception\StateNotFound when the state was not found
-     * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
+     * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
      */
     public function unregisterState(string $stateName): ProxyInterface;
 
@@ -131,7 +131,7 @@ interface ProxyInterface
      *
      * @return ProxyInterface
      *
-     * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
+     * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
      * @throws Exception\StateNotFound if $stateName does not exist
      */
     public function switchState(string $stateName): ProxyInterface;
@@ -147,7 +147,7 @@ interface ProxyInterface
      * @return ProxyInterface
      *
      * @throws Exception\StateNotFound if $stateName does not exist
-     * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
+     * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
      */
     public function enableState(string $stateName): ProxyInterface;
 
@@ -162,7 +162,7 @@ interface ProxyInterface
      * @return ProxyInterface
      *
      * @throws Exception\StateNotFound when the state was not found
-     * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
+     * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
      */
     public function disableState(string $stateName): ProxyInterface;
 
@@ -213,6 +213,7 @@ interface ProxyInterface
      * @param string $stateName
      *
      * @return bool
+     *
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      */
     public function inState(string $stateName): bool;

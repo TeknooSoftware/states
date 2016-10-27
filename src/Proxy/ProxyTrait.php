@@ -41,6 +41,7 @@ use Teknoo\States\State\StateInterface;
  * States can be also an anonymous class, it's name must be defined by an interface, implementing by this state.
  *
  * @see ProxyInterface
+ *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -98,7 +99,7 @@ trait ProxyTrait
     ) {
         foreach ($statesList as $stateClassName) {
             //Extract non qualified class name and check if this state is not already loaded
-            $shortStateName = \ltrim(\substr($stateClassName, \strrpos($stateClassName, '\\')),'\\');
+            $shortStateName = \ltrim(\substr($stateClassName, \strrpos($stateClassName, '\\')), '\\');
             if (isset($loadedStatesList[$shortStateName])) {
                 $this->statesAliasesList[$stateClassName] = $loadedStatesList[$shortStateName];
 
@@ -121,7 +122,7 @@ trait ProxyTrait
     /**
      * To initialize the proxy instance with all declared states. This method fetch all states defined for this class,
      * (states returned by `statesListDeclaration()`), but checks also parent's states by calling theirs static methods
-     * `statesListDeclaration`
+     * `statesListDeclaration`.
      *
      * @return ProxyInterface
      */
@@ -239,7 +240,7 @@ trait ProxyTrait
 
     /**
      * Internal method to find, in enabled stated, the method/closure required by caller to call it. It can be directly
-     * called by children class. (Protected method)
+     * called by children class. (Protected method).
      *
      * @api
      *
@@ -287,13 +288,13 @@ trait ProxyTrait
     }
 
     /**
-     * To test if the identifier is an non empty string and a valif full qualified class/interface name
+     * To test if the identifier is an non empty string and a valif full qualified class/interface name.
      *
      * @param string $name
      *
      * @return bool
      *
-     * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
+     * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
      * @throws Exception\StateNotFound when the state class name does not exist
      */
     protected function validateName(string &$name): bool
