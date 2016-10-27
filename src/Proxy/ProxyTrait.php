@@ -21,7 +21,6 @@
  */
 namespace Teknoo\States\Proxy;
 
-use Teknoo\States\State\Exception\MethodNotImplemented;
 use Teknoo\States\State\StateInterface;
 
 /**
