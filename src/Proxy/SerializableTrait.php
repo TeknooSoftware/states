@@ -23,7 +23,7 @@ namespace Teknoo\States\Proxy;
 
 /**
  * Trait SerializableTrait
- * Trait to use the interface \Serializable (http://php.net/manual/en/class.serializable.php) with stated class.
+ * Trait to use the interface \Serializable (http://php.net/manual/en/class.serializable.php) with stated classes.
  * It must be used with the trait ProxyTrait. This trait forwards all methods defined in \Serializable in methods
  * defined in states of the class.
  *

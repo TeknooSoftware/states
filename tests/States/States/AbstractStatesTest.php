@@ -126,36 +126,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * Test if exception when the name is not a valid string.
-     *
-     * @expectedException \TypeError
-     */
-    public function testGetBadNameMethodDescription()
-    {
-        $this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription(array());
-    }
-
-    /**
-     * Test if exception when we get a description of a non-existent method.
-     *
-     * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
-     */
-    public function testGetBadMethodDescription()
-    {
-        $this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('badMethod');
-    }
-
-    /**
-     * Test if exception when we get a description of an ignored method, the behavior must like non-existent method.
-     *
-     * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
-     */
-    public function testGetIgnoredMethodDescriptionUsedByTrait()
-    {
-        $this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('getMethodDescription');
-    }
-
-    /**
      * Clean description text to simplify tests.
      *
      * @param \ReflectionMethod $text
@@ -167,21 +137,6 @@ abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
         $s = trim(str_replace(array('*', '/'), '', $text->getDocComment()));
 
         return preg_replace('~[[:cntrl:]]~', '', $s);
-    }
-
-    /**
-     * Test get method description.
-     */
-    public function testGetMethodDescription()
-    {
-        self::assertSame('Final Method 9.', $this->formatDescription($this->getPrivateClassObject(false, 'My\Stated\ClassName')->getMethodDescription('finalMethod9')));
-        self::assertSame('Standard Method 10.', $this->formatDescription($this->getPrivateClassObject(false, 'My\Stated\ClassName')->getMethodDescription('standardMethod10')));
-
-        self::assertSame('Standard Method 6.           @param $a      @param $b           @return mixed', $this->formatDescription($this->getProtectedClassObject(false, 'My\Stated\ClassName')->getMethodDescription('standardMethod6')));
-        self::assertSame('Final Method 7.', $this->formatDescription($this->getProtectedClassObject(false, 'My\Stated\ClassName')->getMethodDescription('finalMethod7')));
-
-        self::assertSame('Standard Method 1.', $this->formatDescription($this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('standardMethod1')));
-        self::assertSame('Final Method 2.', $this->formatDescription($this->getPublicClassObject(false, 'My\Stated\ClassName')->getMethodDescription('finalMethod2')));
     }
 
     /**

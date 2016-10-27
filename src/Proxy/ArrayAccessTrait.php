@@ -23,7 +23,7 @@ namespace Teknoo\States\Proxy;
 
 /**
  * Trait ArrayAccessTrait
- * Trait to use the interface \ArrayAccess (http://php.net/manual/en/class.arrayaccess.php) with a stated class.
+ * Trait to use the interface \ArrayAccess (http://php.net/manual/en/class.arrayaccess.php) with a stated classes.
  * It must be used with the trait ProxyTrait. This trait forwards all methods defined in \ArrayAccess in methods
  * defined in states of the class.
  *

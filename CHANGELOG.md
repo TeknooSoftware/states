@@ -1,10 +1,17 @@
 #Teknoo Software - States library - Change Log
 
-###[3.0.0-alpha2] - 2016-10-07
+##[3.0.0-alpha3] - 2016-10-27
+###Fixed
+* Documentation
+###Removed
+* getMethodDescription() to get a description about a method. Conflict between \ReflecionMethod of closure builder
+  and the \ReflectionFunction of the final closure. 
+
+##[3.0.0-alpha2] - 2016-10-07
 ###Fixed
 * Fix a bug in loading service without namespace
 
-###[3.0.0-alpha1] - 2016-10-03
+##[3.0.0-alpha1] - 2016-10-03
 ###Added/Changed
 * State identifier must be a valid class name or a valid interface name. The state object must implements, 
   instantiates or inherits this class/interface name.
@@ -27,6 +34,7 @@
 * CLI Command, the States 3.x needs less operations to be started.
 * Integrated proxies, Standard proxies can be now directly instantiate by PHP.  
 * bootstrap.php file
+* Joker "Of[SateName]" to specify the state to use to call a method.
 
 ##[2.1.1] - 2016-10-03
 ###Fixed
