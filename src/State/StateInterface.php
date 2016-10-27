@@ -61,7 +61,7 @@ interface StateInterface
      * @api
      *
      * @param bool   $privateMode     : To know if the private mode is enable or not for this state (see isPrivateMode())
-     * @param string $statedClassName : To know the canonical stated class name of the object owning this state container
+     * @param string $statedClassName : To know the full qualified stated class name of the object owning this state container
      */
     public function __construct(bool $privateMode, string $statedClassName);
 

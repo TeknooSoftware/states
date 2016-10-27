@@ -67,6 +67,11 @@ echo PHP_EOL.'Call method2 of mother object : '.GREEN_COLOR.$motherInstance->met
 $daughterInstance->enableState(\Acme\Extendable\Daughter\States\StateOne::class);
 echo PHP_EOL.'Call method3 of daughter object : '.GREEN_COLOR.$daughterInstance->method3().RESET_COLOR;
 echo PHP_EOL.'Call method4 of daughter object : '.GREEN_COLOR.$daughterInstance->method4().RESET_COLOR.PHP_EOL;
+$daughterInstance->disableAllStates();
+$daughterInstance->enableState(StateOne::class);
+echo PHP_EOL.'Call method3 of daughter object from mother state\'s name : '.GREEN_COLOR.$daughterInstance->method3().RESET_COLOR;
+echo PHP_EOL.'Call method4 of daughter object from mother state\'s name : '.GREEN_COLOR.$daughterInstance->method4().RESET_COLOR.PHP_EOL;
+
 echo PHP_EOL.'Forbid call of mother method 1 from daughter object (StateOne is overloaded in Daughter class and method1 has not been defined here) : ';
 try {
     $daughterInstance->method1();

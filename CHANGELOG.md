@@ -45,7 +45,7 @@ rebind $this in closure created from the Reflection API.
 
 ##[2.1.0] - 2016-08-23
 ###Added
-- Can use the canonical state'name (full state' class name, with its namespace) instead its identifier (class name only)
+- Can use the full qualified state'name (full state' class name, with its namespace) instead its identifier (class name only)
  for proxy's methods:  
     * registerState
     * unregisterState

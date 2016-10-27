@@ -146,7 +146,7 @@ class ArticleTest extends \PHPUnit_Framework_TestCase
         }
     }
 
-    public function testStatesCanonicalClassName()
+    public function testStatesFullQualifiedClassName()
     {
         $article = new Article();
         $statesList = $article->listAvailableStates();

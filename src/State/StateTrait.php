@@ -125,7 +125,7 @@ trait StateTrait
     private $privateModeStatus = false;
 
     /**
-     * To know the canonical stated class name of the object owning this state container.
+     * To know the full qualified stated class name of the object owning this state container.
      *
      * @var string
      */

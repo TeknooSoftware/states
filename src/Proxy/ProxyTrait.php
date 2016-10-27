@@ -75,7 +75,7 @@ trait ProxyTrait
     private $statesAliasesList = [];
 
     /**
-     * Stack to know the caller canonical stated class when an internal method call a parent method to forbid
+     * Stack to know the caller full qualified stated class when an internal method call a parent method to forbid
      * private method access.
      *
      * @var string[]|\SplStack
