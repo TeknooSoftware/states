@@ -48,13 +48,6 @@ class MockState implements StateInterface
     protected $methodAllowed = false;
 
     /**
-     * To simulate a failure of the getMethodDescription, return an exception method not implemented, but testMethod return true..
-     *
-     * @var bool
-     */
-    protected $simulateMethodDescriptionFailure = false;
-
-    /**
      * To check if a method has been called or not.
      *
      * @var bool
@@ -133,14 +126,6 @@ class MockState implements StateInterface
     }
 
     /**
-     * To simulate a failure of the getMethodDescription, return an exception method not implemented, but testMethod return true..
-     */
-    public function simulateFailureInGetMethodDescription()
-    {
-        $this->simulateMethodDescriptionFailure = true;
-    }
-
-    /**
      * To forbid all call of testMethod and getClosure and return a fake closure.
      */
     public function disallowMethod()
@@ -213,20 +198,6 @@ class MockState implements StateInterface
         }
 
         return $this->methodAllowed;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getMethodDescription(string $methodName): \ReflectionMethod
-    {
-        if (false === $this->methodAllowed || true === $this->simulateMethodDescriptionFailure) {
-            throw new Exception\MethodNotImplemented();
-        }
-
-        $classReflection = new \ReflectionClass($this);
-
-        return $classReflection->getMethod('testMethod');
     }
 
     /**

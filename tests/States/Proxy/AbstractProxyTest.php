@@ -1116,11 +1116,6 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
-    ////////////////////////////////////////////////////////////////////////////////////
-    // End tests for the method getMethodDescription in different visibility scope    //
-    // For all other magics methods : PHP and interface define these methods as public//
-    ////////////////////////////////////////////////////////////////////////////////////
-
     /**
      * Test exception behavior of the proxy when __invoke is not implemented into in actives states.
      *

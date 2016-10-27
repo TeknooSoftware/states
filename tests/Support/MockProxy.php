@@ -203,14 +203,6 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function getMethodDescription(string $methodName, string $stateName = null): \ReflectionMethod
-    {
-        //Not used in tests
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function __invoke(...$args)
     {
         //Not used in tests
