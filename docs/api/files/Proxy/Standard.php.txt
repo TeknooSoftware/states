@@ -41,6 +41,7 @@ namespace Teknoo\States\Proxy;
  * States can be also an anonymous class, it's name must be defined by an interface, implementing by this state.
  *
  * @see ProxyInterface
+ *
  * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
