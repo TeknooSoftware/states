@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[3.0.0-alpha4] - 2016-10-31
+###Fixed
+* Fix code style
+
 ##[3.0.0-alpha3] - 2016-10-27
 ###Fixed
 * Documentation
