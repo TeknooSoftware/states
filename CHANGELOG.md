@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+###[3.0.0-beta1] - 2016-12-21
+###Release
+- First beta
+
 ##[3.0.0-alpha4] - 2016-10-31
 ###Fixed
 * Fix code style

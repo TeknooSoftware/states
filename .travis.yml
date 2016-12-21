@@ -4,6 +4,7 @@ sudo: false
 
 php:
   - 7
+  - 7.1
 
 install:
   - composer self-update
