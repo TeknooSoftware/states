@@ -12,7 +12,7 @@
  * to richarddeloge@gmail.com so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
@@ -36,7 +36,7 @@ use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
  * Functional test number 1, from demo article.
  *
  *
- * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *

@@ -12,7 +12,7 @@
  * to richarddeloge@gmail.com so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
@@ -23,7 +23,7 @@
 /**
  * @category    States
  *
- * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
@@ -62,7 +62,7 @@ namespace Teknoo\States\State;
  *
  * @see StateInterface
  *
- * @copyright   Copyright (c) 2009-2016 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
