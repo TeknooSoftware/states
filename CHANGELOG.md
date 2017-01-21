@@ -1,6 +1,6 @@
 #Teknoo Software - States library - Change Log
 
-###[3.0.0] - 2016-01-06
+###[3.0.0] - 2017-01-06
 ###Release
 - Final release
 
