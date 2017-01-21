@@ -6,10 +6,6 @@ Teknoo Software - States library
 States allows you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
 This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability.
 
-New major alpha version
------------------------
-[States 3.0 alpha 1](https://github.com/TeknooSoftware/states/tree/states-3.0) is available. It's compatible with PHP7.1 and lighter than States 2.0
-
 Short Example
 ------------
     /**
