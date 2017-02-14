@@ -26,7 +26,7 @@ use Teknoo\States\State\StateInterface;
 
 /**
  * Trait ProxyTrait
- * Default implementation of the proxy class in stated class. It is used in this library to create stated class instance.
+ * Implementation of the proxy class in stated class. It is used in this library to create stated class instance.
  *
  * The proxy, by default, redirect all calls, of non defined methods in the proxy, to enabled states.
  * $this, static and self keywords in all methods the stated class instance (aka in proxy's method and states' methods)
@@ -140,7 +140,6 @@ trait ProxyTrait
             $parentClassName = \get_parent_class($parentClassName);
             if (\class_exists($parentClassName)
                     && \is_subclass_of($parentClassName, ProxyInterface::class)) {
-
                 //Private mode is disable for states directly defined in parent class.
                 /**
                  * @var ProxyInterface $parentClassName
@@ -206,7 +205,9 @@ trait ProxyTrait
      * @param StateInterface $state
      * @param string         $methodName
      * @param array          $arguments
-     * @param string         $scopeVisibility self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string         $scopeVisibility self::VISIBILITY_PUBLIC
+     *                                        self::VISIBILITY_PROTECTED
+     *                                        self::VISIBILITY_PRIVATE
      *
      * @return mixed
      *
@@ -330,7 +331,7 @@ trait ProxyTrait
     }
 
     /**
-     * To compute the visibility scope from the object instance of the caller
+     * To compute the visibility scope from the object instance of the caller.
      *
      * Called from another class (not a child class), via a static method or an instance of this class : Public scope
      * Called from a child class, via a static method or an instance of this class : Protected scope
@@ -339,6 +340,7 @@ trait ProxyTrait
      * Called from a method of this stated class instance : Private state
      *
      * @param object $callerObject
+     *
      * @return string
      */
     private function extractVisibilityScopeFromObject($callerObject)
@@ -363,13 +365,14 @@ trait ProxyTrait
     }
 
     /**
-     * To compute the visibility scope from the class name of the caller :
+     * To compute the visibility scope from the class name of the caller :.
      *
      * Called from a child class, via a static method or an instance of this class : Protected scope
      * Called from a static method of this stated class, or from a method of this stated class (but not this instance)
      *  Private scope
      *
      * @param string $callerName
+     *
      * @return string
      */
     private function extractVisibilityScopeFromClass(string $callerName)
@@ -391,7 +394,8 @@ trait ProxyTrait
     }
 
     /**
-     * To determine the caller visibility scope to not grant to call protected or private method from an external object.
+     * To determine the caller visibility scope to not grant to call protected or private method from an external
+     * object.
      * getVisibilityScope() uses debug_backtrace() to get last entries in the calling stack.
      *  (PHP does not provide a method to get this, but the cost of to call the debug_backtrace is very light).
      * This method is used to restore the default PHP's behavior, skipped with __call() method : PHP is naturally not
@@ -436,7 +440,6 @@ trait ProxyTrait
             if (!empty($callerLine['class'])
                 && \is_string($callerLine['class'])
                 && \class_exists($callerLine['class'], false)) {
-
                 //It is a class
                 $callerName = $callerLine['class'];
 

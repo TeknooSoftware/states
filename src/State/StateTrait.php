@@ -231,25 +231,38 @@ trait StateTrait
         return $this->methodsListArray;
     }
 
+    /**
+     * To check if the caller method can be accessible by the method caller :
+     * The called method is protected or public (skip to next test)
+     * The private mode is disable for this state (state is not defined is a parent class)
+     * The caller method is in the same stated class that the called method.
+     *
+     * @param string $methodName
+     * @param string $statedClassOrigin
+     *
+     * @return bool
+     */
     private function checkVisibilityPrivate(string $methodName, string $statedClassOrigin)
     {
-        //To check if the caller method can be accessible by the method caller :
-        //The called method is protected or public (skip to next test)
-        //The private mode is disable for this state (state is not defined is a parent class)
-        //The caller method is in the same stated class that the called method
         if (true === $this->privateModeStatus
             && $statedClassOrigin !== $this->statedClassName
             && true === $this->reflectionsMethods[$methodName]->isPrivate()) {
-
             return false;
         }
 
         return true;
     }
 
+    /**
+     * Can not access to private methods, only public and protected.
+     *
+     * @param string $methodName
+     * @param string $statedClassOrigin
+     *
+     * @return bool
+     */
     private function checkVisibilityProtected(string $methodName, string $statedClassOrigin)
     {
-        //Can not access to private methods, only public and protected
         if (false === $this->reflectionsMethods[$methodName]->isPrivate()
             && !empty($statedClassOrigin)
             && ($statedClassOrigin === $this->statedClassName
@@ -261,9 +274,15 @@ trait StateTrait
         return false;
     }
 
+    /**
+     * Can not access to protect and private method.
+     *
+     * @param string $methodName
+     *
+     * @return bool
+     */
     private function checkVisibilityPublic(string $methodName)
     {
-        //Can not access to protect and private method.
         if (true === $this->reflectionsMethods[$methodName]->isPublic()) {
             //It's a public method, do like if there is no method
             return true;

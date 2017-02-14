@@ -61,8 +61,8 @@ interface StateInterface
      *
      * @api
      *
-     * @param bool   $privateMode     : To know if the private mode is enable or not for this state (see isPrivateMode())
-     * @param string $statedClassName : To know the full qualified stated class name of the object owning this state container
+     * @param bool   $privateMode     : To know if the private mode is enable or not for this state, see isPrivateMode
+     * @param string $statedClassName : To know the full qualified stated class name of the object owning this container
      */
     public function __construct(bool $privateMode, string $statedClassName);
 
@@ -124,7 +124,9 @@ interface StateInterface
      *      another state) and not for its children.
      *
      * @param string      $methodName
-     * @param string      $requiredScope         self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string      $requiredScope     self::VISIBILITY_PUBLIC
+     *                                       self::VISIBILITY_PROTECTED
+     *                                       self::VISIBILITY_PRIVATE
      * @param string|null $statedClassOrigin
      *
      * @return bool
@@ -147,7 +149,7 @@ interface StateInterface
      *      state) and not for its children.
      *
      * @param string      $methodName
-     * @param string      $requiredScope         self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string      $requiredScope     self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null $statedClassOrigin
      *
      * @return \Closure
