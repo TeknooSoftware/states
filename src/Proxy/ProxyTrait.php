@@ -218,10 +218,10 @@ trait ProxyTrait
         array &$arguments,
         string $scopeVisibility
     ) {
-        $callerStatedClassName = $this->getCallerStatedClassName();
+        $callerStatedClass = $this->getCallerStatedClassName();
         $this->pushCallerStatedClassName($state);
 
-        $callingClosure = $state->getClosure($methodName, $scopeVisibility, $callerStatedClassName);
+        $callingClosure = $state->getClosure($methodName, $scopeVisibility, $callerStatedClass);
 
         //Call it
         try {
@@ -258,12 +258,12 @@ trait ProxyTrait
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
         $scopeVisibility = $this->getVisibilityScope(4);
 
-        $callerStatedClassName = $this->getCallerStatedClassName();
+        $callerStatedClass = $this->getCallerStatedClassName();
 
         $activeStateFound = null;
         //browse all enabled state to find the method
         foreach ($this->activesStates as $activeStateObject) {
-            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $callerStatedClassName)) {
+            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $callerStatedClass)) {
                 if (null === $activeStateFound) {
                     //Check if there are only one enabled state whom implements this method
                     $activeStateFound = $activeStateObject;
@@ -330,6 +330,67 @@ trait ProxyTrait
     }
 
     /**
+     * To compute the visibility scope from the object instance of the caller
+     *
+     * Called from another class (not a child class), via a static method or an instance of this class : Public scope
+     * Called from a child class, via a static method or an instance of this class : Protected scope
+     * Called from a static method of this stated class, or from a method of this stated class (but not this instance) :
+     *  Private scope
+     * Called from a method of this stated class instance : Private state
+     *
+     * @param object $callerObject
+     * @return string
+     */
+    private function extractVisibilityScopeFromObject($callerObject)
+    {
+        if ($this === $callerObject) {
+            //It's me ! Mario ! So Private scope
+            return StateInterface::VISIBILITY_PRIVATE;
+        }
+
+        if (\get_class($this) === \get_class($callerObject)) {
+            //It's a brother (another instance of this same stated class, not a child), So Private scope too
+            return StateInterface::VISIBILITY_PRIVATE;
+        }
+
+        if ($callerObject instanceof $this) {
+            //It's a child class, so Protected.
+            return StateInterface::VISIBILITY_PROTECTED;
+        }
+
+        //All another case (not same class), public scope
+        return StateInterface::VISIBILITY_PUBLIC;
+    }
+
+    /**
+     * To compute the visibility scope from the class name of the caller :
+     *
+     * Called from a child class, via a static method or an instance of this class : Protected scope
+     * Called from a static method of this stated class, or from a method of this stated class (but not this instance)
+     *  Private scope
+     *
+     * @param string $callerName
+     * @return string
+     */
+    private function extractVisibilityScopeFromClass(string $callerName)
+    {
+        $thisClassName = \get_class($this);
+
+        if (\is_subclass_of($callerName, $thisClassName, true)) {
+            //It's a child class, so protected scope
+            return StateInterface::VISIBILITY_PROTECTED;
+        }
+
+        if (\is_a($callerName, $thisClassName, true)) {
+            //It's this class, so private scope
+            return StateInterface::VISIBILITY_PRIVATE;
+        }
+
+        //All another case (not same class), public scope
+        return StateInterface::VISIBILITY_PUBLIC;
+    }
+
+    /**
      * To determine the caller visibility scope to not grant to call protected or private method from an external object.
      * getVisibilityScope() uses debug_backtrace() to get last entries in the calling stack.
      *  (PHP does not provide a method to get this, but the cost of to call the debug_backtrace is very light).
@@ -369,23 +430,7 @@ trait ProxyTrait
                 //It is an object
                 $callerObject = $callerLine['object'];
 
-                if ($this === $callerObject) {
-                    //It's me ! Mario ! So Private scope
-                    return StateInterface::VISIBILITY_PRIVATE;
-                }
-
-                if (\get_class($this) === \get_class($callerObject)) {
-                    //It's a brother (another instance of this same stated class, not a child), So Private scope too
-                    return StateInterface::VISIBILITY_PRIVATE;
-                }
-
-                if ($callerObject instanceof $this) {
-                    //It's a child class, so Protected.
-                    return StateInterface::VISIBILITY_PROTECTED;
-                }
-
-                //All another case (not same class), public scope
-                return StateInterface::VISIBILITY_PUBLIC;
+                return $this->extractVisibilityScopeFromObject($callerObject);
             }
 
             if (!empty($callerLine['class'])
@@ -394,17 +439,8 @@ trait ProxyTrait
 
                 //It is a class
                 $callerName = $callerLine['class'];
-                $thisClassName = \get_class($this);
 
-                if (\is_subclass_of($callerName, $thisClassName, true)) {
-                    //It's a child class, so protected scope
-                    return StateInterface::VISIBILITY_PROTECTED;
-                }
-
-                if (\is_a($callerName, $thisClassName, true)) {
-                    //It's this class, so private scope
-                    return StateInterface::VISIBILITY_PRIVATE;
-                }
+                return $this->extractVisibilityScopeFromClass($callerName);
             }
         }
 

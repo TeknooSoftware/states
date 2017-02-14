@@ -125,7 +125,7 @@ interface StateInterface
      *
      * @param string      $methodName
      * @param string      $requiredScope         self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null $statedClassOriginName
+     * @param string|null $statedClassOrigin
      *
      * @return bool
      *
@@ -134,7 +134,7 @@ interface StateInterface
     public function testMethod(
         string $methodName,
         string $requiredScope,
-        string $statedClassOriginName
+        string $statedClassOrigin
     ): bool;
 
     /**
@@ -148,7 +148,7 @@ interface StateInterface
      *
      * @param string      $methodName
      * @param string      $requiredScope         self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null $statedClassOriginName
+     * @param string|null $statedClassOrigin
      *
      * @return \Closure
      *
@@ -157,6 +157,6 @@ interface StateInterface
     public function getClosure(
         string $methodName,
         string $requiredScope,
-        string $statedClassOriginName
+        string $statedClassOrigin
     ): \Closure;
 }

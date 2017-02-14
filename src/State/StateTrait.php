@@ -1,5 +1,4 @@
 <?php
-
 /**
  * States.
  *
@@ -109,6 +108,9 @@ trait StateTrait
         '__construct' => '__construct',
         '__destruct' => '__destruct',
         'getReflectionClass' => 'getReflectionClass',
+        'checkVisibilityPrivate' => 'checkVisibilityPrivate',
+        'checkVisibilityProtected' => 'checkVisibilityProtected',
+        'checkVisibilityPublic' => 'checkVisibilityPublic',
         'checkVisibility' => 'checkVisibility',
         'listMethods' => 'listMethods',
         'testMethod' => 'testMethod',
@@ -229,6 +231,47 @@ trait StateTrait
         return $this->methodsListArray;
     }
 
+    private function checkVisibilityPrivate(string $methodName, string $statedClassOrigin)
+    {
+        //To check if the caller method can be accessible by the method caller :
+        //The called method is protected or public (skip to next test)
+        //The private mode is disable for this state (state is not defined is a parent class)
+        //The caller method is in the same stated class that the called method
+        if (true === $this->privateModeStatus
+            && $statedClassOrigin !== $this->statedClassName
+            && true === $this->reflectionsMethods[$methodName]->isPrivate()) {
+
+            return false;
+        }
+
+        return true;
+    }
+
+    private function checkVisibilityProtected(string $methodName, string $statedClassOrigin)
+    {
+        //Can not access to private methods, only public and protected
+        if (false === $this->reflectionsMethods[$methodName]->isPrivate()
+            && !empty($statedClassOrigin)
+            && ($statedClassOrigin === $this->statedClassName
+                || \is_subclass_of($statedClassOrigin, $this->statedClassName))) {
+            //It's a public or protected method, do like if there is no method
+            return true;
+        }
+
+        return false;
+    }
+
+    private function checkVisibilityPublic(string $methodName)
+    {
+        //Can not access to protect and private method.
+        if (true === $this->reflectionsMethods[$methodName]->isPublic()) {
+            //It's a public method, do like if there is no method
+            return true;
+        }
+
+        return false;
+    }
+
     /**
      * To check if the method is available in the required scope (check from the visibility of the method) :
      *  Public method : Method always available
@@ -239,7 +282,7 @@ trait StateTrait
      *
      * @param string      $methodName
      * @param string      $requiredScope
-     * @param string|null $statedClassOriginName
+     * @param string|null $statedClassOrigin
      *
      * @return bool
      *
@@ -248,53 +291,26 @@ trait StateTrait
     private function checkVisibility(
         string $methodName,
         string $requiredScope,
-        string $statedClassOriginName
+        string $statedClassOrigin
     ): bool {
-        $visible = false;
-        if (isset($this->reflectionsMethods[$methodName])) {
-            //Check visibility scope
-            switch ($requiredScope) {
-                case StateInterface::VISIBILITY_PRIVATE:
-                    //To check if the caller method can be accessible by the method caller :
-                    //The called method is protected or public (skip to next test)
-                    //The private mode is disable for this state (state is not defined is a parent class)
-                    //The caller method is in the same stated class that the called method
-                    $privateMethodIsAvailable = true;
-                    if (true === $this->privateModeStatus) {
-                        if ($statedClassOriginName !== $this->statedClassName) {
-                            if (true === $this->reflectionsMethods[$methodName]->isPrivate()) {
-                                $privateMethodIsAvailable = false;
-                            }
-                        }
-                    }
-
-                    $visible = $privateMethodIsAvailable;
-                    break;
-                case StateInterface::VISIBILITY_PROTECTED:
-                    //Can not access to private methods, only public and protected
-                    if (false === $this->reflectionsMethods[$methodName]->isPrivate()
-                        && !empty($statedClassOriginName)
-                        && ($statedClassOriginName === $this->statedClassName
-                            || \is_subclass_of($statedClassOriginName, $this->statedClassName))) {
-                        //It's a public or protected method, do like if there is no method
-                        $visible = true;
-                    }
-                    break;
-                case StateInterface::VISIBILITY_PUBLIC:
-                    //Can not access to protect and private method.
-                    if (true === $this->reflectionsMethods[$methodName]->isPublic()) {
-                        //It's a public method, do like if there is no method
-                        $visible = true;
-                    }
-                    break;
-                default:
-                    //Bad parameter, throws exception
-                    throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
-                    break;
-            }
+        //Check visibility scope
+        switch ($requiredScope) {
+            case StateInterface::VISIBILITY_PRIVATE:
+                return $this->checkVisibilityPrivate($methodName, $statedClassOrigin);
+                break;
+            case StateInterface::VISIBILITY_PROTECTED:
+                //Can not access to private methods, only public and protected
+                return $this->checkVisibilityProtected($methodName, $statedClassOrigin);
+                break;
+            case StateInterface::VISIBILITY_PUBLIC:
+                //Can not access to protect and private method.
+                return $this->checkVisibilityPublic($methodName);
+                break;
+            default:
+                //Bad parameter, throws exception
+                throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
+                break;
         }
-
-        return $visible;
     }
 
     /**
@@ -303,12 +319,12 @@ trait StateTrait
     public function testMethod(
         string $methodName,
         string $requiredScope,
-        string $statedClassOriginName
+        string $statedClassOrigin
     ): bool {
         //Method is already extracted
         if (isset($this->reflectionsMethods[$methodName])) {
             if ($this->reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
-                return $this->checkVisibility($methodName, $requiredScope, $statedClassOriginName);
+                return $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin);
             } else {
                 return false;
             }
@@ -326,7 +342,7 @@ trait StateTrait
         }
 
         //Return the result according with the visibility
-        return $this->checkVisibility($methodName, $requiredScope, $statedClassOriginName);
+        return $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin);
     }
 
     /**
@@ -382,7 +398,7 @@ trait StateTrait
     public function getClosure(
         string $methodName,
         string $requiredScope,
-        string $statedClassOriginName
+        string $statedClassOrigin
     ): \Closure {
         if (!isset($this->closuresObjects[$methodName])) {
             //Check if the method exist and prepare description for checkVisibility methods
@@ -401,7 +417,7 @@ trait StateTrait
         }
 
         //Check visibility scope
-        if (false === $this->checkVisibility($methodName, $requiredScope, $statedClassOriginName)) {
+        if (false === $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin)) {
             throw new Exception\MethodNotImplemented(
                 \sprintf('Method "%s" is not available for this state', $methodName)
             );
