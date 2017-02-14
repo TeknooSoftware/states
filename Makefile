@@ -27,7 +27,7 @@ phpmd:
 	vendor/bin/phpmd --suffixes php src/ text codesize,design,naming,unusedcode,controversial
 
 phpcs:
-	vendor/bin/phpcs --standard=PSR2 --extensions=php src/ tests/
+	vendor/bin/phpcs --standard=PSR2 --extensions=php src/
 
 phpcpd:
 	vendor/bin/phpcpd src/
