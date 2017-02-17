@@ -8,6 +8,9 @@
 - Update Travis to use this tool
 - Fix QA Errors
 
+###Remove
+- Support of PHP 5.4 and PHP 5.5
+
 ###[3.0.0] - 2017-01-06
 ###Release
 - Final release
