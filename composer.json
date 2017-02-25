@@ -28,7 +28,6 @@
         "phpmd/phpmd": "~2.6",
         "sebastian/phpcpd": "~3.0",
         "phploc/phploc": "~3.0",
-        "covex-nn/phpcb": "~1.0",
         "phpunit/phpunit": "~5.4"
     },
     "minimum-stability": "stable",
