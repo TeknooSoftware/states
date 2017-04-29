@@ -78,11 +78,11 @@ Short Example
     }
     
     $frenchMan = new MyClass();
-    $frenchMan->switchState('French');
+    $frenchMan->switchState(French::class);
     $frenchMan->setName('Roger');
     
     $englishMan = new MyClass();
-    $englishMan->switchState('Enflish');
+    $englishMan->switchState(English::class);
     $englishMan->setName('Richard');
     
     $now = new \DateTime('2016-07-01');
@@ -115,7 +115,7 @@ This library requires :
     
 Quick How-to to implement your first stated class
 -------------------------------------------------
-Quick How-to to learn how use this library : [Startup](docs/howto/quick-startup.md).    
+Quick How-to to learn how to use this library : [Startup](docs/howto/quick-startup.md).
 
 Behavior Documentation
 ----------------------
@@ -150,7 +150,7 @@ Teknoo Software - <http://teknoo.software>
 About Teknoo Software
 ---------------------
 **Teknoo Software** is a PHP software editor, founded by Richard Déloge. 
-Teknoo Software's DNA is simple : Provide to our partners and to the community a set of high quality services or software,
+Teknoo Software's goals : Provide to our partners and to the community a set of high quality services or software,
  sharing knowledge and skills.
 
 License
