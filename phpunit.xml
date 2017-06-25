@@ -12,12 +12,14 @@
     <testsuites>
         <testsuite name="Teknoo Software/States Test Suite">
             <directory suffix="Test.php">tests/States</directory>
+            <directory suffix="Test.php">tests/package</directory>
         </testsuite>
     </testsuites>
 
     <filter>
         <whitelist>
             <directory>src</directory>
+            <directory>package</directory>
             <exclude>
                 <directory>docs</directory>
                 <directory>demo</directory>

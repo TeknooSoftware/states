@@ -23,25 +23,30 @@
         "php": "~7.0"
     },
     "require-dev": {
+        "phpunit/phpunit": "~5.4",
         "squizlabs/php_codesniffer": "~2.8",
         "pdepend/pdepend": "~2.5",
         "phpmd/phpmd": "~2.6",
         "sebastian/phpcpd": "~3.0",
         "phploc/phploc": "~3.0",
-        "phpunit/phpunit": "~5.4"
+        "doctrine/orm": "~2.2",
+        "doctrine/mongodb-odm": "^1.0.0"
     },
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
             "Teknoo\\States\\": ["src/"],
+            "Teknoo\\UniversalPackage\\States\\": "package/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
             "Teknoo\\Tests\\States\\": ["tests/States/"],
-            "Teknoo\\Tests\\Support\\": ["tests/Support/"]
+            "Teknoo\\Tests\\Support\\": ["tests/Support/"],
+            "Teknoo\\Tests\\UniversalPackage\\States\\": "tests/package/"
         }
     },
     "archive": {
         "exclude": ["demo", "vendor", ".idea"]
-    },
-    "scripts": {
-      "test":"phpunit"
     }
 }
