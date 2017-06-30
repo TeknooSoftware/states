@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+###[3.1.0-beta1] - 2017-06-30
+###Add
+- Migrate code from the package `statesBundle` to this package to limit number of packages to require / uses. (Since 3.0, the
+ `StatesBundle` is not mandatory and not very usefull.
+
 ###[3.0.1] - 2017-02-15
 ###Fix
 - Code style fix
