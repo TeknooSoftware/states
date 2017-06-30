@@ -6,8 +6,7 @@ Teknoo Software - States library
 States allows you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
 This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability.
 
-[Lifecycable extension](https://github.com/TeknooSoftware/states-life-cycle) : To automate states changes according to business rules
-[Universal package + Symfony bundle](https://github.com/TeknooSoftware/statesBundle) : To use the library with Doctrine.
+[Lifecycable extension](https://github.com/TeknooSoftware/states-life-cycle) : To automate states changes according to business rules.
 
 Short Example
 ------------
