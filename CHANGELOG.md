@@ -1,11 +1,11 @@
 #Teknoo Software - States library - Change Log
 
-###[3.1.0-beta1] - 2017-06-30
+##[3.1.0-beta1] - 2017-06-30
 ###Add
 - Migrate code from the package `statesBundle` to this package to limit number of packages to require / uses. (Since 3.0, the
  `StatesBundle` is not mandatory and not very usefull.
 
-###[3.0.1] - 2017-02-15
+##[3.0.1] - 2017-02-15
 ###Fix
 - Code style fix
 - License file follow Github specs
@@ -16,11 +16,11 @@
 ###Remove
 - Support of PHP 5.4 and PHP 5.5
 
-###[3.0.0] - 2017-01-06
+##[3.0.0] - 2017-01-06
 ###Release
 - Final release
 
-###[3.0.0-beta1] - 2016-12-21
+##[3.0.0-beta1] - 2016-12-21
 ###Release
 - First beta
 
