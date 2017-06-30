@@ -1,7 +1,7 @@
 <?php
 
 /**
- * StatesBundle.
+ * States.
  *
  * LICENSE
  *
@@ -19,6 +19,7 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
+
 namespace Teknoo\Tests\UniversalPackage\States\Support;
 
 use Teknoo\UniversalPackage\States\Entity\AbstractStandardEntity;
