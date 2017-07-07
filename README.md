@@ -110,6 +110,7 @@ To install this library with composer, run this command :
 This library requires :
 
     * PHP 7+
+    * A PHP autoloader (Composer is recommanded)
     
 Quick How-to to implement your first stated class
 -------------------------------------------------
