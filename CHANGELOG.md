@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[3.1.0-beta2] - 2017-07-25
+###Updated
+- Update dev libraries used for this project and use now PHPUnit 6.2 for tests.
+
 ##[3.1.0-beta1] - 2017-06-30
 ###Add
 - Migrate code from the package `statesBundle` to this package to limit number of packages to require / uses. (Since 3.0, the
