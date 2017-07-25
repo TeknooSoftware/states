@@ -41,7 +41,7 @@ use Teknoo\Tests\Support\Article\States\StateDefault;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class ArticleTest extends \PHPUnit_Framework_TestCase
+class ArticleTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Functional test on article.

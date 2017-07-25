@@ -41,7 +41,7 @@ use Teknoo\Tests\Support\MockState3;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Mock state 1, used in these tests.
@@ -499,7 +499,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         /*
          * @var Proxy\ProxyInterface
          */
-        $proxy = $this->getMockObjectGenerator()->getMock(get_class($this->buildProxy()), array('listEnabledStates'), array(), '', false);
+        $proxy = $this->getMockBuilder(get_class($this->buildProxy()))->setMethods(array('listEnabledStates'))->getMock();
         $proxy->expects($this->any())
             ->method('listEnabledStates')
             ->withAnyParameters()
@@ -1395,18 +1395,12 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
 
     /**
      * Test exception behavior of the proxy when count is not implemented into in actives states.
+     * @expectedException \Teknoo\States\Exception\MethodNotImplemented
      */
     public function testCountNonImplemented()
     {
         $this->initializeProxy();
-        try {
-            $this->proxy->count();
-        } catch (Exception\MethodNotImplemented $e) {
-            return;
-        } catch (\Exception $e) {
-        }
-
-        self::fail('Error, the proxy must throw an Exception\MethodNotImplemented exception when count is not implemented into in actives states');
+        $this->proxy->count();
     }
 
     /**
@@ -1777,10 +1771,7 @@ abstract class AbstractProxyTest extends \PHPUnit_Framework_TestCase
         $this->initializeProxy(MockState1::class, true);
         $reflectionClassProxyObject = new \ReflectionClass($this->proxy);
         $proxyNotInitialized = $reflectionClassProxyObject->newInstanceWithoutConstructor();
-        try {
-            $proxyCloned = clone $proxyNotInitialized;
-        } catch (\Exception $e) {
-            self::fail('Error, __clone must manage when the proxy was not initialized via the constructor');
-        }
+        $proxyCloned = clone $proxyNotInitialized;
+        self::assertNotSame($proxyCloned,$proxyNotInitialized);
     }
 }

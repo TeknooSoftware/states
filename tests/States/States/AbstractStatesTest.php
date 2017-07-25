@@ -37,7 +37,7 @@ use Teknoo\Tests\Support;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-abstract class AbstractStatesTest extends \PHPUnit_Framework_TestCase
+abstract class AbstractStatesTest extends \PHPUnit\Framework\TestCase
 {
     public static function setUpBeforeClass()
     {

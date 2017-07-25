@@ -43,7 +43,7 @@ use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class ExtendableTest extends \PHPUnit_Framework_TestCase
+class ExtendableTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * Check if the list of states for the mother contains only its states and not states of its children classes.
@@ -248,6 +248,7 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
     /**
      * Test if the php behavior on private method in parent class
      * is keeped with an extending stated class (can not call).
+     * @expectedException \Teknoo\States\Exception\MethodNotImplemented
      */
     public function testDaughterCanNotCallMotherPrivate()
     {
@@ -255,17 +256,6 @@ class ExtendableTest extends \PHPUnit_Framework_TestCase
         $daughterInstance->enableState(StateTwo::class)
             ->enableState(StateThree::class);
 
-        try {
-            $daughterInstance->methodRecallMotherPrivate();
-        } catch (MethodNotImplemented $e) {
-            //Good behavior
-            return;
-        } catch (\Exception $e) {
-            self::fail($e->getMessage());
-
-            return;
-        }
-
-        self::fail('Error privates methods must not be available for daughter methods');
+        $daughterInstance->methodRecallMotherPrivate();
     }
 }

@@ -35,7 +35,7 @@ use Teknoo\Tests\Support\Multiple\User\User;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class MultipleTest extends \PHPUnit_Framework_TestCase
+class MultipleTest extends \PHPUnit\Framework\TestCase
 {
     public function testMultiple()
     {
