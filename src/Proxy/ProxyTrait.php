@@ -144,12 +144,8 @@ trait ProxyTrait
                 /**
                  * @var ProxyInterface $parentClassName
                  */
-                $this->initializeStates(
-                    $parentClassName::statesListDeclaration(),
-                    true,
-                    $parentClassName,
-                    $loadedStatesList
-                );
+                $statesList = $parentClassName::statesListDeclaration();
+                $this->initializeStates($statesList, true, $parentClassName, $loadedStatesList);
             }
         } while (false !== $parentClassName);
 
