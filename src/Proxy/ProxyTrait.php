@@ -454,6 +454,17 @@ trait ProxyTrait
      */
     public function __clone()
     {
+        $this->cloneProxy();
+
+        return $this;
+    }
+
+    /**
+     * Helper to clone proxy's values, callable easily if the Proxy class implements it's own
+     * __clone() method without do a conflict traits resolution / renaming.
+     */
+    public function cloneProxy()
+    {
         //Clone states stack
         if (!empty($this->states)) {
             $clonedStatesArray = [];

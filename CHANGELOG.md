@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[3.1.0-beta3] - 2017-10-01
+###Updated
+- Helper to clone proxy's values, callable easily if the Proxy class implements it's own
+  __clone() method without do a conflict traits resolution / renaming.
+
 ##[3.1.0-beta2] - 2017-07-25
 ###Updated
 - Update dev libraries used for this project and use now PHPUnit 6.2 for tests.
