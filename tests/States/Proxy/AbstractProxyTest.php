@@ -1772,6 +1772,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $reflectionClassProxyObject = new \ReflectionClass($this->proxy);
         $proxyNotInitialized = $reflectionClassProxyObject->newInstanceWithoutConstructor();
         $proxyCloned = clone $proxyNotInitialized;
-        self::assertNotSame($proxyCloned,$proxyNotInitialized);
+        self::assertNotSame($proxyCloned, $proxyNotInitialized);
     }
 }

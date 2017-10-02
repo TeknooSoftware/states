@@ -22,6 +22,5 @@
 if (!class_exists('StateDefault')) {
     class StateDefault extends \Teknoo\States\State\AbstractState
     {
-
     }
 }
