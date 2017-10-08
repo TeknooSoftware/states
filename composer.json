@@ -23,7 +23,7 @@
         "php": "~7.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "~6.4",
+        "phpunit/phpunit": "~6.2",
         "squizlabs/php_codesniffer": "~3.1",
         "pdepend/pdepend": "~2.5",
         "phpmd/phpmd": "~2.6",
