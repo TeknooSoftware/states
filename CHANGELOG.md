@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[3.1.0-rc1] - 2017-10-12
+###Release
+- First RC.
+- Update QA Tools
+
 ##[3.1.0-beta3] - 2017-10-01
 ###Updated
 - Helper to clone proxy's values, callable easily if the Proxy class implements it's own
