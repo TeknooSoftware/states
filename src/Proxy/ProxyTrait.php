@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * States.
  *
@@ -100,7 +102,7 @@ trait ProxyTrait
     ) {
         foreach ($statesList as $stateClassName) {
             //Extract non qualified class name and check if this state is not already loaded
-            $shortStateName = \ltrim(\substr($stateClassName, \strrpos($stateClassName, '\\')), '\\');
+            $shortStateName = \ltrim(\substr($stateClassName, (int) \strrpos($stateClassName, '\\')), '\\');
             if (isset($loadedStatesList[$shortStateName])) {
                 $this->statesAliasesList[$stateClassName] = $loadedStatesList[$shortStateName];
 
@@ -138,7 +140,7 @@ trait ProxyTrait
         $parentClassName = \get_class($this);
         do {
             $parentClassName = \get_parent_class($parentClassName);
-            if (\class_exists($parentClassName)
+            if (\is_string($parentClassName) && \class_exists($parentClassName)
                     && \is_subclass_of($parentClassName, ProxyInterface::class)) {
                 //Private mode is disable for states directly defined in parent class.
                 /**
