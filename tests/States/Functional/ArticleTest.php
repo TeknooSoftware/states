@@ -51,7 +51,6 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $article = new Article();
 
         //It is a new article, not published, the constructor load the state 'Draft'
-        self::assertEquals([StateDefault::class, Draft::class], $article->listEnabledStates());
         //Empty article, getTitle return nothing
         self::assertEquals('', $article->getTitle());
         //Call method of state "Draft" to update the article
@@ -62,7 +61,6 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         self::assertEquals('Lorem [b]Ipsum[/b]', $article->getBodySource());
         //Publishing method available into Draft state to switch to Published state
         $article->publishing();
-        self::assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
         self::assertEquals('Hello world', $article->getTitle());
         //Method available into Published state
         self::assertEquals('Lorem <strong>Ipsum</strong>', $article->getFormattedBody());
@@ -77,7 +75,6 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         );
 
         //Already published, so constructor enable state "Default" and "Published"
-        self::assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
         self::assertEquals('title 2', $article->getTitle());
 
         //Method not available, because state Draft is not enabled
@@ -130,7 +127,6 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
             self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
         }
 
-        self::assertEquals([StateDefault::class, Published::class], $article->listEnabledStates());
         self::assertEquals('title 2', $article->getTitle());
         self::assertEquals('body 2', $article->getFormattedBody());
 
@@ -149,61 +145,194 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
     public function testStatesFullQualifiedClassName()
     {
         $article = new Article();
-        $statesList = $article->listAvailableStates();
-        sort($statesList);
-        self::assertEquals(
-            [Archived::class, Draft::class, Extended::class, Promoted::class, Published::class, StateDefault::class],
-            $statesList
-        );
 
-        $statesList = $article->listEnabledStates();
-        sort($statesList);
-        self::assertEquals([Draft::class, StateDefault::class], $statesList);
-        self::assertFalse($article->inState(Archived::class));
-        self::assertTrue($article->inState(Draft::class));
-        self::assertFalse($article->inState(Extended::class));
-        self::assertFalse($article->inState(Promoted::class));
-        self::assertFalse($article->inState(Published::class));
-        self::assertTrue($article->inState(StateDefault::class));
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Archived::class], function () { self::fail(); })
+        );
+        $called = false;
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Draft::class], function($states) use (&$called) {
+                self::assertEquals([Draft::class, StateDefault::class], $states);
+                $called = true;
+            })
+        );
+        self::assertTrue($called);
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Extended::class], function () { self::fail(); })
+        );
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Promoted::class], function () { self::fail(); })
+        );
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Published::class], function () { self::fail(); })
+        );
+        $called = false;
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([StateDefault::class], function($states) use (&$called) {
+                self::assertEquals([Draft::class, StateDefault::class], $states);
+                $called = true;
+            })
+        );
+        self::assertTrue($called);
 
         $article->switchState(Published::class);
 
-        self::assertEquals([Published::class], $article->listEnabledStates());
-        self::assertFalse($article->inState(Archived::class));
-        self::assertFalse($article->inState(Draft::class));
-        self::assertFalse($article->inState(Extended::class));
-        self::assertFalse($article->inState(Promoted::class));
-        self::assertTrue($article->inState(Published::class));
-        self::assertFalse($article->inState(StateDefault::class));
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Archived::class], function () { self::fail(); })
+        );
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Draft::class], function () { self::fail(); })
+        );
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Extended::class], function () { self::fail(); })
+        );
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Promoted::class], function () { self::fail(); })
+        );
+        $called = false;
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Published::class], function($states) use (&$called) {
+                self::assertEquals([Published::class], $states);
+                $called = true;
+            })
+        );
+        self::assertTrue($called);
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([StateDefault::class], function () { self::fail(); })
+        );
+
 
         $article->switchState(Promoted::class);
 
-        self::assertEquals([Promoted::class], $article->listEnabledStates());
-        self::assertFalse($article->inState(Archived::class));
-        self::assertFalse($article->inState(Draft::class));
-        self::assertFalse($article->inState(Extended::class));
-        self::assertTrue($article->inState(Promoted::class));
-        self::assertTrue($article->inState(Published::class));
-        self::assertFalse($article->inState(StateDefault::class));
+
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Archived::class], function () { self::fail(); })
+        );
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Draft::class], function () { self::fail(); })
+        );
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Extended::class], function () { self::fail(); })
+        );
+        $called = false;
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Promoted::class], function($states) use (&$called) {
+                self::assertEquals([Promoted::class], $states);
+                $called = true;
+            })
+        );
+        self::assertTrue($called);
+        $called = false;
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Published::class], function($states) use (&$called) {
+                self::assertEquals([Promoted::class], $states);
+                $called = true;
+            })
+        );
+        self::assertTrue($called);
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([StateDefault::class], function () { self::fail(); })
+        );
+
 
         $article->switchState(Archived::class);
 
-        self::assertEquals([Archived::class], $article->listEnabledStates());
-        self::assertTrue($article->inState(Archived::class));
-        self::assertFalse($article->inState(Draft::class));
-        self::assertFalse($article->inState(Extended::class));
-        self::assertFalse($article->inState(Promoted::class));
-        self::assertTrue($article->inState(Published::class));
-        self::assertFalse($article->inState(StateDefault::class));
+
+        $called = false;
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Archived::class], function($states) use (&$called) {
+                self::assertEquals([Archived::class], $states);
+                $called = true;
+            })
+        );
+        self::assertTrue($called);
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Draft::class], function () { self::fail(); })
+        );
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Extended::class], function () { self::fail(); })
+        );
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Promoted::class], function () { self::fail(); })
+        );
+        $called = false;
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Published::class], function($states) use (&$called) {
+                self::assertEquals([Archived::class], $states);
+                $called = true;
+            })
+        );
+        self::assertTrue($called);
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([StateDefault::class], function () { self::fail(); })
+        );
+
 
         $article->switchState(Extended::class);
 
-        self::assertEquals([Extended::class], $article->listEnabledStates());
-        self::assertFalse($article->inState(Archived::class));
-        self::assertFalse($article->inState(Draft::class));
-        self::assertTrue($article->inState(Extended::class));
-        self::assertTrue($article->inState(Promoted::class));
-        self::assertTrue($article->inState(Published::class));
-        self::assertFalse($article->inState(StateDefault::class));
+
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Archived::class], function () { self::fail(); })
+        );
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Draft::class], function () { self::fail(); })
+        );
+        $called = false;
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Extended::class], function($states) use (&$called) {
+                self::assertEquals([Extended::class], $states);
+                $called = true;
+            })
+        );
+        self::assertTrue($called);
+        $called = false;
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Promoted::class], function($states) use (&$called) {
+                self::assertEquals([Extended::class], $states);
+                $called = true;
+            })
+        );
+        self::assertTrue($called);
+        $called = false;
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([Published::class], function($states) use (&$called) {
+                self::assertEquals([Extended::class], $states);
+                $called = true;
+            })
+        );
+        self::assertTrue($called);
+        self::assertInstanceOf(
+            Article::class,
+            $article->isInState([StateDefault::class], function () { self::fail(); })
+        );
     }
 }

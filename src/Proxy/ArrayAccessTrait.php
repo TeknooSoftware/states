@@ -57,7 +57,7 @@ trait ArrayAccessTrait
     {
         $args = [];
 
-        return (int) $this->findMethodToCall(__FUNCTION__, $args);
+        return (int) $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -73,7 +73,7 @@ trait ArrayAccessTrait
     {
         $args = [$offset];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -89,7 +89,7 @@ trait ArrayAccessTrait
     {
         $args = [$offset];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -105,7 +105,7 @@ trait ArrayAccessTrait
     {
         $args = [$offset, $value];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -120,6 +120,6 @@ trait ArrayAccessTrait
     public function offsetUnset($offset)
     {
         $args = [$offset];
-        $this->findMethodToCall(__FUNCTION__, $args);
+        $this->findAndCall(__FUNCTION__, $args);
     }
 }

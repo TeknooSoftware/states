@@ -143,7 +143,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \TypeError
      */
-    public function testRegisterStateInvalidName()
+    public function testExceptionOnRegisterAStateWithInvalidName()
     {
         $this->proxy->registerState(array(), $this->state1);
     }
@@ -153,7 +153,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\IllegalName
      */
-    public function testRegisterStateBadName()
+    public function testExceptionOnRegisterAStateWithAnEmptyName()
     {
         $this->proxy->registerState('', $this->state1);
     }
@@ -163,7 +163,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function testRegisterStateBadClass()
+    public function testExceptionOnRegisterAStateWithANonExistentClassName()
     {
         $this->proxy->registerState('fooBar', $this->state1);
     }
@@ -173,7 +173,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\IllegalName
      */
-    public function testRegisterStateClassNotImplementing()
+    public function testExceptionOnRegisterAStateWithAClassNameNotImplementingTheState()
     {
         $this->proxy->registerState(\DateTime::class, $this->state1);
     }
@@ -183,17 +183,23 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      */
     public function testRegisterStateWithInterface()
     {
-        $this->proxy->registerState(StateInterface::class, $this->state1);
-        self::assertEquals(array(StateInterface::class), $this->proxy->listAvailableStates());
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->registerState(StateInterface::class, $this->state1)
+        );
+        //FIXME
     }
 
     /**
      * Check behavior of the proxy when we add a new state.
      */
-    public function testRegisterState()
+    public function testRegisterStateWithCanonicalName()
     {
-        $this->proxy->registerState(MockState1::class, $this->state1);
-        self::assertEquals(array(MockState1::class), $this->proxy->listAvailableStates());
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->registerState(MockState1::class, $this->state1)
+        );
+        //FIXME
     }
 
     /**
@@ -201,7 +207,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \TypeError
      */
-    public function testUnRegisterStateInvalidName()
+    public function testExceptionOnUnRegisterAStateWithInvalidString()
     {
         $this->proxy->unregisterState(array());
     }
@@ -211,7 +217,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function testUnRegisterStateNonExistentState()
+    public function testExceptionOnUnRegisterAStateWithNonExistentClass()
     {
         $this->proxy->unregisterState('NonExistentState');
     }
@@ -221,7 +227,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function testUnRegisterStateClassExistStateNotFound()
+    public function testExceptionOnUnRegisterAStateWithNonRegisteredState()
     {
         $this->proxy->unregisterState(\DateTime::class);
     }
@@ -232,21 +238,30 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     public function testUnRegisterState()
     {
         $this->initializeProxy();
-        $this->proxy->unregisterState(MockState2::class);
-        self::assertEquals(array(MockState1::class, MockState3::class), $this->proxy->listAvailableStates());
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->unregisterState(MockState2::class)
+        );
+        //FIXME
     }
 
     /**
      * Test proxy behavior to unregister an active state.
      */
-    public function testUnRegisterEnableState()
+    public function testUnRegisterAnEnabledState()
     {
         $this->initializeProxy();
-        $this->proxy->enableState(MockState3::class);
-        self::assertEquals(array(MockState1::class, MockState3::class), $this->proxy->listEnabledStates());
-        $this->proxy->unregisterState(MockState3::class);
-        self::assertEquals(array(MockState1::class, MockState2::class), $this->proxy->listAvailableStates());
-        self::assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->enableState(MockState3::class)
+        );
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->unregisterState(MockState3::class)
+        );
+
+        //FIXME
     }
 
     /**
@@ -254,7 +269,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \TypeError
      */
-    public function testSwitchStateInvalidName()
+    public function testExceptionOnSwitchOnStateInvalidString()
     {
         $this->proxy->switchState(array());
     }
@@ -264,7 +279,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function testSwitchStateNonExistentName()
+    public function testExceptionOnSwitchToNonRegisteredState()
     {
         $this->proxy->switchState('NonExistentState');
     }
@@ -275,19 +290,28 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     public function testSwitchState()
     {
         $this->initializeProxy();
-        $this->proxy->switchState(MockState3::class);
-        self::assertEquals(array(MockState3::class), $this->proxy->listEnabledStates());
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->switchState(MockState3::class)
+        );
+        //FIXME
     }
 
     /**
      * Test proxy behavior when we switch to already enable state.
      */
-    public function testSwitchAlreadyLoadedState()
+    public function testSwitchToAnAlreadyEnabledState()
     {
         $this->initializeProxy();
-        $this->proxy->enableState(MockState2::class);
-        $this->proxy->switchState(MockState2::class);
-        self::assertEquals(array(MockState2::class), $this->proxy->listEnabledStates());
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->enableState(MockState2::class)
+        );
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->switchState(MockState2::class)
+        );
+        //FIXME
     }
 
     /**
@@ -295,7 +319,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \TypeError
      */
-    public function testEnableStateInvalidName()
+    public function testExceptionOnEnableStateWithInvalidString()
     {
         $this->proxy->enableState(array());
     }
@@ -305,7 +329,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function testEnableStateClassExistStateNotFound()
+    public function testExceptionOnEnableStateWithNonRegisteredState()
     {
         $this->proxy->enableState(\DateTime::class);
     }
@@ -315,7 +339,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function testEnableStateNonExistentName()
+    public function testExceptionOnEnableStateWithNonExistentClass()
     {
         $this->proxy->enableState('NonExistentState');
     }
@@ -326,9 +350,17 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     public function testEnableState()
     {
         $this->initializeProxy();
-        $this->proxy->disableState(MockState1::class);
-        $this->proxy->enableState(MockState2::class);
-        self::assertEquals(array(MockState2::class), $this->proxy->listEnabledStates());
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->disableState(MockState1::class)
+        );
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->enableState(MockState2::class)
+        );
+
+        //FIXME
     }
 
     /**
@@ -337,8 +369,11 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     public function testEnableMultipleState()
     {
         $this->initializeProxy();
-        $this->proxy->enableState(MockState2::class);
-        self::assertEquals(array(MockState1::class, MockState2::class), $this->proxy->listEnabledStates());
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->enableState(MockState2::class)
+        );
+        //FIXME
     }
 
     /**
@@ -346,7 +381,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \TypeError
      */
-    public function testDisableStateInvalidName()
+    public function testExceptionOnDisableStateWithInvalidString()
     {
         $this->proxy->disableState(array());
     }
@@ -356,7 +391,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function testDisableStateClassExistStateNotFound()
+    public function testExceptionOnDisableStateWithNonRegisteredState()
     {
         $this->proxy->disableState(\DateTime::class);
     }
@@ -366,7 +401,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function testDisableStateNonExistentName()
+    public function testExceptionOnDisableStateWithNonExistentClass()
     {
         $this->proxy->disableState('NonExistentState');
     }
@@ -377,9 +412,16 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     public function testDisableState()
     {
         $this->initializeProxy();
-        $this->proxy->enableState(MockState2::class);
-        $this->proxy->disableState(MockState1::class);
-        self::assertEquals(array(MockState2::class), $this->proxy->listEnabledStates());
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->enableState(MockState2::class)
+        );
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->disableState(MockState1::class)
+        );
+        //FIXME
     }
 
     /**
@@ -388,126 +430,79 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     public function testDisableAllStates()
     {
         $this->initializeProxy();
-        $this->proxy->enableState(MockState2::class);
-        $this->proxy->disableAllStates();
-        self::assertEquals(array(), $this->proxy->listEnabledStates());
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->enableState(MockState2::class)
+        );
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->disableAllStates()
+        );
+        //FIXME
     }
 
     /**
-     * Check the proxy's method listAvailableStates behavior when there are no registered state.
+     * @expectedException \TypeError
      */
-    public function testListAvailableStatesOfEmpty()
+    public function testExceptionOnIsInStateWithInvalidArray()
     {
-        self::assertEquals(array(), $this->proxy->listAvailableStates());
+        $this->buildProxy()->isInState('', function() {});
     }
 
     /**
-     * Check the proxy's method listAvailableStates behavior when there are no registered state.
+     * @expectedException \TypeError
      */
-    public function testListAvailableStatesNotInit()
+    public function testExceptionOnIsInStateWithInvalidCallable()
     {
-        $proxyReflectionClass = new \ReflectionClass($this->proxy);
-        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        self::assertEquals(array(), $proxy->listAvailableStates());
-    }
-
-    /**
-     * Check the proxy's method listAvailableStates behavior.
-     */
-    public function testListAvailableStates()
-    {
-        $this->proxy->registerState(MockState1::class, $this->state1);
-        $this->proxy->registerState(MockState3::class, $this->state3);
-        self::assertEquals(array(MockState1::class, MockState3::class), $this->proxy->listAvailableStates());
-    }
-
-    /**
-     * Check the proxy's method getStatesList behavior when there are no registered state.
-     */
-    public function testGetStatesListEmpty()
-    {
-        self::assertEmpty($this->proxy->getStatesList());
-    }
-
-    /**
-     * Check the proxy's method getStatesList behavior when there are no registered state.
-     */
-    public function testGetStatesListNoInit()
-    {
-        $proxyReflectionClass = new \ReflectionClass($this->proxy);
-        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        self::assertEmpty($proxy->getStatesList());
-    }
-
-    /**
-     * Check the proxy's method getStatesList behavior.
-     */
-    public function testGetStatesList()
-    {
-        $this->proxy->registerState(MockState1::class, $this->state1);
-        $this->proxy->registerState(MockState3::class, $this->state3);
-        $statesList = $this->proxy->getStatesList();
-        self::assertEquals(2, count($statesList));
-        self::assertInstanceOf(StateInterface::class, $statesList[MockState1::class]);
-        self::assertInstanceOf(StateInterface::class, $statesList[MockState3::class]);
-    }
-
-    /**
-     * Check the proxy's method listEnabledStates behavior when there are no enable state.
-     */
-    public function testListEnabledStatesNotInit()
-    {
-        $proxyReflectionClass = new \ReflectionClass($this->proxy);
-        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        self::assertEquals(array(), $proxy->listEnabledStates());
-    }
-
-    /**
-     * Check the proxy's method listEnabledStates behavior when there are no enable state.
-     */
-    public function testListEnabledStatesOfEmpty()
-    {
-        $this->proxy->registerState(MockState1::class, $this->state1);
-        $this->proxy->registerState(MockState3::class, $this->state3);
-        self::assertEquals(array(), $this->proxy->listEnabledStates());
-    }
-
-    /**
-     * Check the proxy's method listEnabledStates behavior.
-     */
-    public function testListEnabledStates()
-    {
-        $this->initializeProxy();
-        self::assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
+        $this->buildProxy()->isInState(['foo'], []);
     }
 
     /**
      * Test behavior of the proxy when it was not initialized.
      */
-    public function testInStateNotInitialized()
+    public function testInStateCallBehaviorOnNonInitialized()
     {
         $proxyReflectionClass = new \ReflectionClass($this->buildProxy());
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        self::assertFalse($proxy->inState(\DateTime::class));
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isInState([\DateTime::class], function () {
+                $this->fail();
+            })
+        );
     }
 
     /**
      * Test behavior of the proxy method inState.
      */
-    public function testInState()
+    public function testIsInStateCallbackOnActiveState()
     {
         /*
          * @var Proxy\ProxyInterface
          */
-        $proxy = $this->getMockBuilder(get_class($this->buildProxy()))->setMethods(array('listEnabledStates'))->getMock();
-        $proxy->expects($this->any())
-            ->method('listEnabledStates')
-            ->withAnyParameters()
-            ->willReturn(array(\DateTime::class, 'Bar'));
-
-        self::assertFalse($proxy->inState(\stdClass::class));
-        self::assertTrue($proxy->inState(\DateTime::class));
         $proxy = $this->buildProxy();
+        $proxy->registerState(MockState1::class, new MockState1(false, "It/A/StatedClass"));
+        $proxy->registerState(MockState2::class, new MockState2(false, "It/A/StatedClass"));
+        $proxy->enableState(MockState1::class);
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isInState([MockState2::class], function () {
+                $this->fail();
+            })
+        );
+
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isInState([MockState1::class], function ($statesList) use (&$called) {
+                $called = true;
+                self::assertEquals([MockState1::class], $statesList);
+            })
+        );
+
+        self::assertTrue($called);
     }
 
     /**
@@ -515,7 +510,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \TypeError
      */
-    public function testCallInvalidName()
+    public function testExceptionWhenCallAMethodWithAnInvalidString()
     {
         $this->proxy->__call(array(), array());
     }
@@ -525,20 +520,9 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
-    public function testCallNonImplementedWithoutState()
+    public function testExceptionOnCallWithAnNotExistentMethod()
     {
         $this->proxy->test();
-    }
-
-    /**
-     * Test proxy behavior when the required method is not implemented in the required state.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
-     */
-    public function testCallNonImplementedWithState()
-    {
-        $this->initializeProxy();
-        $this->proxy->testOfState1();
     }
 
     /**
@@ -546,7 +530,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
      *
      * @expectedException \Teknoo\States\Proxy\Exception\AvailableSeveralMethodImplementations
      */
-    public function testCallMultipleImplementation()
+    public function testExceptionWhenCallAMethodAvailableOnMultipleEnabledStates()
     {
         $this->initializeProxy();
         $this->proxy->enableState(MockState2::class);
@@ -1744,18 +1728,53 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $clonedProxy = clone $this->proxy;
 
         //States must be independently
-        self::assertEquals(array(MockState1::class, MockState2::class, MockState3::class), $this->proxy->listAvailableStates());
-        self::assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
-        self::assertEquals(array(MockState1::class, MockState2::class, MockState3::class), $clonedProxy->listAvailableStates());
-        self::assertEquals(array(MockState1::class), $clonedProxy->listEnabledStates());
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->isInState([MockState1::class], function ($statesList) use (&$called) {
+                $called = true;
+                self::assertEquals([MockState1::class], $statesList);
+            })
+        );
+
+        self::assertTrue($called);
+
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $clonedProxy->isInState([MockState1::class], function ($statesList) use (&$called) {
+                $called = true;
+                self::assertEquals([MockState1::class], $statesList);
+            })
+        );
+
+        self::assertTrue($called);
 
         //List must perform independently
         $clonedProxy->switchState(MockState2::class);
         $clonedProxy->unregisterState(MockState3::class);
-        self::assertEquals(array(MockState1::class, MockState2::class, MockState3::class), $this->proxy->listAvailableStates());
-        self::assertEquals(array(MockState1::class), $this->proxy->listEnabledStates());
-        self::assertEquals(array(MockState1::class, MockState2::class), $clonedProxy->listAvailableStates());
-        self::assertEquals(array(MockState2::class), $clonedProxy->listEnabledStates());
+
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $this->proxy->isInState([MockState1::class], function ($statesList) use (&$called) {
+                $called = true;
+                self::assertEquals([MockState1::class], $statesList);
+            })
+        );
+
+        self::assertTrue($called);
+
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $clonedProxy->isInState([MockState2::class], function ($statesList) use (&$called) {
+                $called = true;
+                self::assertEquals([MockState2::class], $statesList);
+            })
+        );
+
+        self::assertTrue($called);
     }
 
     /**

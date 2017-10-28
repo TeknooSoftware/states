@@ -39,7 +39,7 @@ namespace Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
- * @method mixed findMethodToCall($name, $args)
+ * @method mixed findAndCall($name, $args)
  */
 trait SerializableTrait
 {
@@ -56,7 +56,7 @@ trait SerializableTrait
     {
         $args = [];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -71,6 +71,6 @@ trait SerializableTrait
     public function unserialize($serialized)
     {
         $args = [$serialized];
-        $this->findMethodToCall(__FUNCTION__, $args);
+        $this->findAndCall(__FUNCTION__, $args);
     }
 }

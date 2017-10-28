@@ -22,6 +22,7 @@
 
 namespace Teknoo\UniversalPackage\States\Document;
 
+use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\Proxy\ProxyTrait;
 use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
@@ -47,12 +48,14 @@ trait StandardTrait
      *
      * @MongoDB\PostLoad()
      */
-    public function postLoadDoctrine()
+    public function postLoadDoctrine(): ProxyInterface
     {
         //Call the method of the trait to initialize local attributes of the proxy
         $this->initializeProxy();
         //Update states
         $this->updateState();
+
+        return $this;
     }
 
     /**
@@ -61,7 +64,7 @@ trait StandardTrait
      *
      * {@inheritdoc}
      */
-    public function updateState()
+    public function updateState(): ProxyInterface
     {
         return $this;
     }

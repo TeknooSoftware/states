@@ -61,8 +61,7 @@ class StandardEntityTest extends StandardTest
     {
         $proxyReflectionClass = new \ReflectionClass(Support\StandardEntity::class);
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        $proxy->postLoadDoctrine();
-        $this->assertSame(array(), $proxy->listAvailableStates());
+        self::assertInstanceOf(ProxyInterface::class, $proxy->postLoadDoctrine());
 
         return;
     }

@@ -22,6 +22,7 @@
 namespace Teknoo\Tests\Support;
 
 use Teknoo\States\Proxy;
+use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State;
 use Teknoo\States\State\Exception;
 use Teknoo\States\State\StateInterface;
@@ -99,8 +100,8 @@ class MockState implements StateInterface
      */
     public function __construct(bool $privateMode, string $statedClassName, $closure = null)
     {
-        $this->setPrivateMode($privateMode)
-            ->setStatedClassName($statedClassName);
+        $this->privateModeEnable = $privateMode;
+        $this->statedClassName = $statedClassName;
         if ($closure instanceof \Closure) {
             //Use as testing closure the passed closure
             $this->closure = $closure;
@@ -134,14 +135,6 @@ class MockState implements StateInterface
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function listMethods(): array
-    {
-        return array();
-    }
-
-    /**
      * To update the closure to use in this mock.
      *
      * @param \Closure $closure
@@ -158,58 +151,32 @@ class MockState implements StateInterface
     /**
      * {@inheritdoc}
      */
-    public function testMethod(
-        string $methodName,
-        string $scope = StateInterface::VISIBILITY_PUBLIC,
-        string $statedClassOriginName = null
-    ): bool {
-        //Simulate real behavior from the name of the method,
-        //if the method name contains private, its a private method
-        //if the method name contains protected, its a protected method
-        //else its a public method
-        switch ($scope) {
-            case StateInterface::VISIBILITY_PRIVATE:
-                //Private, can access all
-                if ('parentPrivateMethodToCall' === $methodName) {
-                    //Ignore this method
-                    return false;
-                }
-                break;
-            case StateInterface::VISIBILITY_PROTECTED:
-                //Can not access to private methods
-                if (false !== stripos($methodName, 'private')) {
-                    return false;
-                }
-                break;
-            case StateInterface::VISIBILITY_PUBLIC:
-                //Can not access to protected and private method.
-                if (false !== stripos($methodName, 'private')) {
-                    return false;
-                }
+    public function executeClosure(
+        ProxyInterface $object ,
+        string $methodName ,
+        array $arguments ,
+        string $requiredScope ,
+        string $statedClassOrigin ,
+        callable $returnCallback
+    )
+    {
+        $closure = $this->getClosure($methodName, $requiredScope, $statedClassOrigin);
 
-                if (false !== stripos($methodName, 'protected')) {
-                    return false;
-                }
-                break;
-            default:
-                //Bad parameter, throws exception
-                throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
-                break;
+        if ($closure instanceof \Closure) {
+            $returnValue = $closure->call($object, ...$arguments);
+            $returnCallback($returnValue);
         }
 
-        return $this->methodAllowed;
+        return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getClosure(
+    private function getClosure(
         string $methodName,
         string $scope = StateInterface::VISIBILITY_PUBLIC,
         string $statedClassOriginName = null
-    ): \Closure {
+    ) {
         if (false === $this->methodAllowed) {
-            throw new Exception\MethodNotImplemented();
+            return null;
         }
 
         //Simulate real behavior from the name of the method,
@@ -223,17 +190,17 @@ class MockState implements StateInterface
             case StateInterface::VISIBILITY_PROTECTED:
                 //Can not access to private methods
                 if (false !== stripos($methodName, 'private')) {
-                    throw new Exception\MethodNotImplemented();
+                    return null;
                 }
                 break;
             case StateInterface::VISIBILITY_PUBLIC:
                 //Can not access to protected and private method.
                 if (false !== stripos($methodName, 'private')) {
-                    throw new Exception\MethodNotImplemented();
+                    return null;
                 }
 
                 if (false !== stripos($methodName, 'protected')) {
-                    throw new Exception\MethodNotImplemented();
+                    return null;
                 }
                 break;
             default:
@@ -317,45 +284,6 @@ class MockState implements StateInterface
         return $methodName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function getStatedClassName(): string
-    {
-        return $this->statedClassName;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStatedClassName(string $statedClassName): StateInterface
-    {
-        $this->statedClassName = $statedClassName;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPrivateMode(): bool
-    {
-        return $this->privateModeEnable;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPrivateMode(bool $enable): StateInterface
-    {
-        $this->privateModeEnable = !empty($enable);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function recallMethod()
     {
         return function ($methodName) {

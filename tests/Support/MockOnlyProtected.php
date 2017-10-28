@@ -43,7 +43,8 @@ class MockOnlyProtected implements StateInterface
 
     protected static function _staticMethod5()
     {
-        return function () {
+        return function ($a=0, $b=0) {
+            return $a+$b;
         };
     }
 
@@ -73,13 +74,15 @@ class MockOnlyProtected implements StateInterface
      */
     final protected function finalMethod7()
     {
-        return function () {
+        return function ($a=0, $b=0) {
+            return $a+$b;
         };
     }
 
     protected function standardMethod8()
     {
-        return function () {
+        return function ($a=0, $b=0) {
+            return $a+$b;
         };
     }
 }

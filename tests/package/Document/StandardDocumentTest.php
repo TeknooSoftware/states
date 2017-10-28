@@ -61,8 +61,7 @@ class StandardDocumentTest extends StandardTest
     {
         $proxyReflectionClass = new \ReflectionClass(Support\StandardDocument::class);
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        $proxy->postLoadDoctrine();
-        $this->assertSame(array(), $proxy->listAvailableStates());
+        self::assertInstanceOf(ProxyInterface::class, $proxy->postLoadDoctrine());
 
         return;
     }

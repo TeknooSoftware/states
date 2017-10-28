@@ -31,6 +31,7 @@ declare(strict_types=1);
  */
 
 namespace Teknoo\States\State;
+use Teknoo\States\Proxy\ProxyInterface;
 
 /**
  * Class StateTrait
@@ -75,13 +76,6 @@ namespace Teknoo\States\State;
 trait StateTrait
 {
     /**
-     * List of methods available for this state.
-     *
-     * @var string[]
-     */
-    private $methodsListArray = null;
-
-    /**
      * Reflection class object of this state to extract closures and description.
      *
      * @var \ReflectionClass
@@ -109,20 +103,13 @@ trait StateTrait
      */
     protected $methodsNamesToIgnoreArray = array(
         '__construct' => '__construct',
-        '__destruct' => '__destruct',
         'getReflectionClass' => 'getReflectionClass',
         'checkVisibilityPrivate' => 'checkVisibilityPrivate',
         'checkVisibilityProtected' => 'checkVisibilityProtected',
         'checkVisibilityPublic' => 'checkVisibilityPublic',
         'checkVisibility' => 'checkVisibility',
-        'listMethods' => 'listMethods',
-        'testMethod' => 'testMethod',
-        'getMethodDescription' => 'getMethodDescription',
+        'loadMethodDescription' => 'loadMethodDescription',
         'getClosure' => 'getClosure',
-        'setPrivateMode' => 'setPrivateMode',
-        'isPrivateMode' => 'isPrivateMode',
-        'getStatedClassName' => 'getStatedClassName',
-        'setStatedClassName' => 'setStatedClassName',
     );
 
     /**
@@ -144,8 +131,8 @@ trait StateTrait
      */
     public function __construct(bool $privateMode, string $statedClassName)
     {
-        $this->setPrivateMode($privateMode);
-        $this->setStatedClassName($statedClassName);
+        $this->privateModeStatus = $privateMode;
+        $this->statedClassName = $statedClassName;
     }
 
     /**
@@ -162,76 +149,6 @@ trait StateTrait
         }
 
         return $this->reflectionClass;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStatedClassName(): string
-    {
-        return $this->statedClassName;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setStatedClassName(string $statedClassName): StateInterface
-    {
-        $this->statedClassName = $statedClassName;
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function isPrivateMode(): bool
-    {
-        return $this->privateModeStatus;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function setPrivateMode(bool $enable): StateInterface
-    {
-        $this->privateModeStatus = !empty($enable);
-
-        return $this;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function listMethods(): array
-    {
-        if (null === $this->methodsListArray) {
-            //Extract methods available in this states (all methods, public, protected and private)
-            $thisReflectionClass = $this->getReflectionClass();
-            $flags = \ReflectionMethod::IS_PUBLIC | \ReflectionMethod::IS_PROTECTED | \ReflectionMethod::IS_PRIVATE;
-            $methodsArray = $thisReflectionClass->getMethods($flags);
-
-            //Extract methods' names
-            $methodsFinalArray = [];
-            foreach ($methodsArray as $methodReflection) {
-                //We ignore all static methods, there are incompatible with stated behavior :
-                //State can be only applied on instances entities like object,
-                // and not on static entities which by nature have no states
-                if (false === $methodReflection->isStatic()
-                    && (false === $this->privateModeStatus || false === $methodReflection->isPrivate())) {
-                    //Store reflection into the local cache
-                    $methodNameString = $methodReflection->getName();
-                    if (!isset($this->methodsNamesToIgnoreArray[$methodNameString])) {
-                        $methodsFinalArray[] = $methodNameString;
-                        $this->reflectionsMethods[$methodNameString] = $methodReflection;
-                    }
-                }
-            }
-
-            $this->methodsListArray = $methodsFinalArray;
-        }
-
-        return $this->methodsListArray;
     }
 
     /**
@@ -336,38 +253,6 @@ trait StateTrait
     }
 
     /**
-     * {@inheritdoc}
-     */
-    public function testMethod(
-        string $methodName,
-        string $requiredScope,
-        string $statedClassOrigin
-    ): bool {
-        //Method is already extracted
-        if (isset($this->reflectionsMethods[$methodName])) {
-            if ($this->reflectionsMethods[$methodName] instanceof \ReflectionMethod) {
-                return $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin);
-            } else {
-                return false;
-            }
-        }
-
-        //Method not already extraced, perform it before check its visibility.
-        try {
-            //Try extract description
-            $this->getMethodDescription($methodName);
-        } catch (\Throwable $e) {
-            //Method not found, store locally the result
-            $this->reflectionsMethods[$methodName] = false;
-
-            return false;
-        }
-
-        //Return the result according with the visibility
-        return $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin);
-    }
-
-    /**
      * To return the description of a method to configure the behavior of the proxy. Return also description of private
      * methods : getMethodDescription() does not check if the caller is allowed to call the required method.
      *
@@ -379,31 +264,35 @@ trait StateTrait
      *
      * @param string $methodName
      *
-     * @return \ReflectionMethod
+     * @return bool
      *
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    private function getMethodDescription(string $methodName): \ReflectionMethod
+    private function loadMethodDescription(string $methodName): bool
     {
-        $thisReflectionClass = $this->getReflectionClass();
+        if (isset($this->reflectionsMethods[$methodName])) {
+            return $this->reflectionsMethods[$methodName] instanceof \ReflectionMethod;
+        }
 
         try {
-            //Load Reflection Method if it is not already done
-            if (!isset($this->reflectionsMethods[$methodName])) {
-                $methodDescription = $thisReflectionClass->getMethod($methodName);
-                if (false !== $methodDescription->isStatic()) {
-                    //Ignores static method, because there are incompatible with the stated behavior :
-                    // State can be only applied on instances entities like object,
-                    // and not on static entities which by nature have no states
-                    throw new Exception\MethodNotImplemented(
-                        \sprintf('Method "%s" is not available for this state', $methodName)
-                    );
-                }
+            $thisReflectionClass = $this->getReflectionClass();
+            if (!$thisReflectionClass->hasMethod($methodName)) {
+                $this->reflectionsMethods[$methodName] = false;
 
-                $this->reflectionsMethods[$methodName] = $methodDescription;
+                return false;
             }
 
-            return $this->reflectionsMethods[$methodName];
+            //Load Reflection Method if it is not already done
+            $methodDescription = $thisReflectionClass->getMethod($methodName);
+            if (false !== $methodDescription->isStatic()) {
+                $this->reflectionsMethods[$methodName] = false;
+
+                return false;
+            }
+
+            $this->reflectionsMethods[$methodName] = $methodDescription;
+
+            return true;
         } catch (\Throwable $e) {
             //Method not found
             throw new Exception\MethodNotImplemented(
@@ -415,36 +304,68 @@ trait StateTrait
     }
 
     /**
-     * {@inheritdoc}
+     * To return a closure of the required method to use in the proxy, in the required scope (check from the visibility
+     * of the method) :
+     *  Public method : Method always available
+     *  Protected method : Method available only for this stated class's methods (method present in this state or
+     *      another state) and its children
+     *  Private method : Method available only for this stated class's method (method present in this state or another
+     *      state) and not for its children.
+     *
+     * @param string      $methodName
+     *
+     * @return mixed (value of the stated method called)
+     *
+     * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    public function getClosure(
-        string $methodName,
-        string $requiredScope,
-        string $statedClassOrigin
-    ): \Closure {
-        if (!isset($this->closuresObjects[$methodName])) {
-            //Check if the method exist and prepare description for checkVisibility methods
-            $this->getMethodDescription($methodName);
-
-            //Call directly the closure builder, more efficient
-            $closure = $this->{$methodName}();
-
-            if (!$closure instanceof \Closure) {
-                throw new Exception\MethodNotImplemented(
-                    \sprintf('Method "%s" is not a valid Closure', $methodName)
-                );
-            }
-
-            $this->closuresObjects[$methodName] = $closure;
+    private function getClosure(
+        string $methodName
+    ): ?\Closure {
+        if (isset($this->closuresObjects[$methodName])) {
+            return $this->closuresObjects[$methodName];
         }
 
-        //Check visibility scope
-        if (false === $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin)) {
+        //Check if the method exist and prepare description for checkVisibility methods
+        if (!$this->loadMethodDescription($methodName)) {
+            return null;
+        }
+
+        //Call directly the closure builder, more efficient
+        $closure = $this->{$methodName}();
+
+        if (!$closure instanceof \Closure) {
             throw new Exception\MethodNotImplemented(
-                \sprintf('Method "%s" is not available for this state', $methodName)
+                \sprintf('Method "%s" is not a valid Closure', $methodName)
             );
         }
 
+        $this->closuresObjects[$methodName] = $closure;
+
         return $this->closuresObjects[$methodName];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function executeClosure(
+        ProxyInterface $object,
+        string $methodName,
+        array $arguments,
+        string $requiredScope,
+        string $statedClassOrigin,
+        callable $returnCallback
+    ): StateInterface {
+       $closure = $this->getClosure($methodName);
+
+       //Check visibility scope
+       if (!$closure instanceof \Closure
+           || false === $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin)) {
+           return $this;
+       }
+
+       $returnValue = $closure->call($object, ...$arguments);
+       $returnCallback($returnValue);
+
+       return $this;
     }
 }

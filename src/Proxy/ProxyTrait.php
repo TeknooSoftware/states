@@ -86,6 +86,23 @@ trait ProxyTrait
     private $callerStatedClassesStack;
 
     /**
+     * List all states's classes available in this state. It's not mandatory to redefine states of parent's class,
+     * They are automatically loaded by the proxy. Warning, if you redeclare a state of a parent's class with its full
+     * qualified class name, you can access to its private method: this declaration overloads the parent's state and
+     * the state is owned by the child class.
+     *
+     * Example:
+     * return [
+     *  myFirstState::class,
+     *  mySecondState::class
+     * ];
+     *
+     * @internal
+     * @return array|string[]
+     */
+    abstract protected static function statesListDeclaration(): array;
+
+    /**
      * To instantiate a state class defined in this proxy. Is a state have a same non fullqualified class name of
      * a previous loaded state (defined in previously in this class or in children) it's skipped.
      *
@@ -135,7 +152,12 @@ trait ProxyTrait
         $loadedStatesList = [];
 
         //Private mode is only enable for states directly defined in this stated class.
-        $this->initializeStates(static::statesListDeclaration(), false, $currentClassName, $loadedStatesList);
+        $this->initializeStates(
+            static::statesListDeclaration(),
+            false,
+            $currentClassName,
+            $loadedStatesList
+        );
 
         $parentClassName = \get_class($this);
         do {
@@ -144,7 +166,7 @@ trait ProxyTrait
                     && \is_subclass_of($parentClassName, ProxyInterface::class)) {
                 //Private mode is disable for states directly defined in parent class.
                 /**
-                 * @var ProxyInterface $parentClassName
+                 * @var ProxyInterface|ProxyTrait $parentClassName
                  */
                 $statesList = $parentClassName::statesListDeclaration();
                 $this->initializeStates($statesList, true, $parentClassName, $loadedStatesList);
@@ -178,7 +200,7 @@ trait ProxyTrait
      */
     private function pushCallerStatedClassName(StateInterface $state): ProxyInterface
     {
-        $this->callerStatedClassesStack->push($state->getStatedClassName());
+        $this->callerStatedClassesStack->push(\get_class($state));
 
         return $this;
     }
@@ -206,25 +228,25 @@ trait ProxyTrait
      * @param string         $scopeVisibility self::VISIBILITY_PUBLIC
      *                                        self::VISIBILITY_PROTECTED
      *                                        self::VISIBILITY_PRIVATE
+     * @param callable $callback
      *
-     * @return mixed
+     * @return self|ProxyInterface
      *
      * @throws \Throwable
      */
-    private function callInState(
+    private function callMethod(
         StateInterface $state,
         string $methodName,
         array &$arguments,
-        string $scopeVisibility
-    ) {
+        string $scopeVisibility,
+        callable $callback
+    ) : ProxyInterface {
         $callerStatedClass = $this->getCallerStatedClassName();
         $this->pushCallerStatedClassName($state);
 
-        $callingClosure = $state->getClosure($methodName, $scopeVisibility, $callerStatedClass);
-
         //Call it
         try {
-            $returnValues = $callingClosure->call($this, ...$arguments);
+            $state->executeClosure($this, $methodName, $arguments, $scopeVisibility, $callerStatedClass, $callback);
         } catch (\Throwable $e) {
             //Restore stated class name stack
             $this->popCallerStatedClassName();
@@ -235,7 +257,7 @@ trait ProxyTrait
         //Restore stated class name stack
         $this->popCallerStatedClassName();
 
-        return $returnValues;
+        return $this;
     }
 
     /**
@@ -252,34 +274,32 @@ trait ProxyTrait
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws \Exception
      */
-    protected function findMethodToCall(string $methodName, array &$arguments)
+    protected function findAndCall(string $methodName, array &$arguments)
     {
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
         $scopeVisibility = $this->getVisibilityScope(4);
 
-        $callerStatedClass = $this->getCallerStatedClassName();
+        $activeStateFound = false;
+        $returnValue = null;
 
-        $activeStateFound = null;
+        $callback = function (&$value) use (&$returnValue, &$activeStateFound, $methodName) {
+            if (true === $activeStateFound) {
+                throw new Exception\AvailableSeveralMethodImplementations(
+                    "Method \"$methodName\" has several implementations in different states"
+                );
+            }
+
+            $returnValue = $value;
+            $activeStateFound = true;
+        };
+
         //browse all enabled state to find the method
         foreach ($this->activesStates as $activeStateObject) {
-            if (true === $activeStateObject->testMethod($methodName, $scopeVisibility, $callerStatedClass)) {
-                if (null === $activeStateFound) {
-                    //Check if there are only one enabled state whom implements this method
-                    $activeStateFound = $activeStateObject;
-                } else {
-                    //Else, throw an exception
-                    throw new Exception\AvailableSeveralMethodImplementations(
-                        \sprintf(
-                            'Method "%s" has several implementations in different states',
-                            $methodName
-                        )
-                    );
-                }
-            }
+            $this->callMethod($activeStateObject, $methodName, $arguments, $scopeVisibility, $callback);
         }
 
-        if ($activeStateFound instanceof StateInterface) {
-            return $this->callInState($activeStateFound, $methodName, $arguments, $scopeVisibility);
+        if (true === $activeStateFound) {
+            return $returnValue;
         }
 
         throw new Exception\MethodNotImplemented(
@@ -341,7 +361,7 @@ trait ProxyTrait
      *
      * @return string
      */
-    private function extractVisibilityScopeFromObject($callerObject)
+    private function extractVisibilityScopeFromObject($callerObject): string
     {
         if ($this === $callerObject) {
             //It's me ! Mario ! So Private scope
@@ -373,7 +393,7 @@ trait ProxyTrait
      *
      * @return string
      */
-    private function extractVisibilityScopeFromClass(string $callerName)
+    private function extractVisibilityScopeFromClass(string $callerName): string
     {
         $thisClassName = \get_class($this);
 
@@ -465,7 +485,7 @@ trait ProxyTrait
      * Helper to clone proxy's values, callable easily if the Proxy class implements it's own
      * __clone() method without do a conflict traits resolution / renaming.
      */
-    public function cloneProxy()
+    public function cloneProxy(): ProxyInterface
     {
         //Clone states stack
         if (!empty($this->states)) {
@@ -591,22 +611,11 @@ trait ProxyTrait
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function listAvailableStates(): array
-    {
-        if (!empty($this->states) && \is_array($this->states)) {
-            return \array_keys($this->states);
-        } else {
-            return [];
-        }
-    }
 
     /**
      * {@inheritdoc}
      */
-    public function listEnabledStates(): array
+    protected function listEnabledStates(): array
     {
         if (!empty($this->activesStates) && \is_array($this->activesStates)) {
             return \array_keys($this->activesStates);
@@ -618,36 +627,33 @@ trait ProxyTrait
     /**
      * {@inheritdoc}
      */
-    public function getStatesList() : array
+    public function isInState(array $statesNames, callable $callback): ProxyInterface
     {
-        if (!empty($this->states)) {
-            return $this->states;
+        $enabledStatesList = $this->listEnabledStates();
+        if (!\is_array($enabledStatesList)) {
+            return $this;
         }
 
-        return [];
-    }
+        sort($enabledStatesList);
+        $enabledStatesListKeys = \array_flip($enabledStatesList);
 
-    /**
-     * {@inheritdoc}
-     */
-    public function inState(string $stateName): bool
-    {
-        $this->validateName($stateName);
-        $enabledStatesList = $this->listEnabledStates();
+        foreach ($statesNames as $stateName) {
+            $this->validateName($stateName);
 
-        if (\is_array($enabledStatesList)) {
-            if (isset(\array_flip($enabledStatesList)[$stateName])) {
-                return true;
-            } else {
-                foreach ($enabledStatesList as $enableStateName) {
-                    if (\is_subclass_of($enableStateName, $stateName)) {
-                        return true;
-                    }
+            if (isset($enabledStatesListKeys[$stateName])) {
+                $callback($enabledStatesList);
+                break;
+            }
+
+            foreach ($enabledStatesList as $enableStateName) {
+                if (\is_subclass_of($enableStateName , $stateName)) {
+                    $callback($enabledStatesList);
+                    return $this;
                 }
             }
         }
 
-        return false;
+        return $this;
     }
 
     /**
@@ -655,6 +661,6 @@ trait ProxyTrait
      */
     public function __call(string $name, array $arguments)
     {
-        return $this->findMethodToCall($name, $arguments);
+        return $this->findAndCall($name, $arguments);
     }
 }

@@ -22,6 +22,7 @@
 
 namespace Teknoo\UniversalPackage\States\Entity;
 
+use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\Proxy\ProxyTrait;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -47,19 +48,21 @@ trait StandardTrait
      *
      * @ORM\PostLoad()
      */
-    public function postLoadDoctrine()
+    public function postLoadDoctrine(): ProxyInterface
     {
         //Call the method of the trait to initialize local attributes of the proxy
         $this->initializeProxy();
         //Select good state
         $this->updateState();
+
+        return $this;
     }
 
     /**
      * Method overloaded by States Lifecycle to update automatically states from
      * configuration.
      */
-    public function updateState()
+    public function updateState(): ProxyInterface
     {
         return $this;
     }

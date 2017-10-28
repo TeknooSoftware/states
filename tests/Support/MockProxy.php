@@ -21,6 +21,7 @@
  */
 namespace Teknoo\Tests\Support;
 
+use Teknoo\States\Proxy\Exception;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
@@ -157,35 +158,13 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function listAvailableStates()
+    public function isInState(array $statesNames , callable $callback): ProxyInterface
     {
-        //Simulate real behavior
-        return array_keys($this->states);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function listEnabledStates()
-    {
-        //Simulate real behavior
-        return array_keys($this->actives);
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function getStatesList()
-    {
-        return $this->states;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
-    public function inState(string $stateName): bool
-    {
-        return in_array(strtolower(str_replace('_', '', $stateName)), $this->actives);
+        foreach ($statesNames as $stateName) {
+            if (in_array(strtolower(str_replace('_', '', $stateName)), $this->actives)) {
+                $callback($this->actives);
+            }
+        }
     }
 
     /*******************

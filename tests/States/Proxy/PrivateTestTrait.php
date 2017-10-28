@@ -44,7 +44,7 @@ trait PrivateTestTrait
      * @expectedException \PHPUnit\Framework\Exception
      * @expectedException \Throwable
      */
-    public function testGetPrivateGetMethodChildren()
+    public function testGetPrivateGetMethodFromChildrenClass()
     {
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->getChildrenPriProperty();
@@ -115,12 +115,11 @@ trait PrivateTestTrait
 
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
-     *
-     * @expectedException \Throwable
      */
     public function testCallPrivateChildrenFromState()
     {
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->callChildrenPriMethod();
+        self::assertTrue($this->state1->methodWasCalled());
     }
 }

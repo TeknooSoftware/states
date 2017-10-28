@@ -42,8 +42,10 @@ use Teknoo\Tests\Support\Article\States\StateDefault;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Article extends Proxy\Standard
+class Article implements Proxy\ProxyInterface
 {
+    use Proxy\ProxyTrait;
+
     /**
      * Article's data.
      *
@@ -98,7 +100,10 @@ class Article extends Proxy\Standard
     public function __construct($data = array())
     {
         $this->data = $data;
-        parent::__construct();
+
+        //Call the method of the trait to initialize local attributes of the proxy
+        $this->initializeProxy();
+
         //If the article is published, load the state Published, else load the state Draft
         if (false === $this->isPublished()) {
             $this->enableState(Draft::class);

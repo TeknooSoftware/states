@@ -75,22 +75,6 @@ interface ProxyInterface
      ***********************/
 
     /**
-     * List all states's classes available in this state. It's not mandatory to redefine states of parent's class,
-     * They are automatically loaded by the proxy. Warning, if you redeclare a state of a parent's class with its full
-     * qualified class name, you can access to its private method: this declaration overloads the parent's state and
-     * the state is owned by the child class.
-     *
-     * Example:
-     * return [
-     *  myFirstState::class,
-     *  mySecondState::class
-     * ];
-     *
-     * @return array|string[]
-     */
-    public static function statesListDeclaration(): array;
-
-    /**
      * To register dynamically a new state for this stated class instance. The stateName must be a valid full qualified
      * class name or a valid full qualified interface name. $stateObject must implements, inherits or instantiate the
      * class name passed by $stateName, so $stateObject can be an anonymous class.
@@ -177,47 +161,19 @@ interface ProxyInterface
     public function disableAllStates(): ProxyInterface;
 
     /**
-     * To list all currently available states for this object. The method must return valid state's full qualified
-     * class/interface name used for registering.
+     * Check if this stated class instance is in the required state defined by $stateName and call the callback function
+     * if it's true. The list of actives states (array of string) is passed to the callback
      *
      * @api
      *
-     * @return string[]
-     */
-    public function listAvailableStates(): array;
-
-    /**
-     * To list all enable states for this object. The method must return valid state's full qualified
-     * class/interface name used for registering.
+     * @param string[]|array $statesNames
+     * @param callable $callback
      *
-     * @api
-     *
-     * @return string[]
-     */
-    public function listEnabledStates(): array;
-
-    /**
-     * To return the list of all states instance available for this object.
-     *
-     * @api
-     *
-     * @return StateInterface[]
-     */
-    public function getStatesList(): array;
-
-    /**
-     * Check if this stated class instance is in the required state defined by $stateName.The method must return valid
-     * state's full qualified class/interface name used for registering.
-     *
-     * @api
-     *
-     * @param string $stateName
-     *
-     * @return bool
+     * @return ProxyInterface
      *
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      */
-    public function inState(string $stateName): bool;
+    public function isInState(array $statesNames, callable $callback): ProxyInterface;
 
     /*******************
      * Methods Calling *
@@ -231,7 +187,7 @@ interface ProxyInterface
      * @param string $name
      * @param array  $arguments
      *
-     * @return mixed
+     * @return mixed (value of the stated method called)
      *
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method

@@ -45,21 +45,4 @@ class GrandDaughter extends Daughter
             StateThree::class,
         ];
     }
-
-    /**
-     * Return the list of available state in this class.
-     *
-     * @return array
-     */
-    public function listMethodsByStates()
-    {
-        $methodsList = array();
-        foreach ($this->getStatesList() as $stateName => $stateContainer) {
-            $methodsList[$stateName] = $stateContainer->listMethods();
-        }
-
-        ksort($methodsList);
-
-        return $methodsList;
-    }
 }

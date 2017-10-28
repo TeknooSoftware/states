@@ -56,7 +56,7 @@ trait IteratorTrait
     {
         $args = [];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -72,7 +72,7 @@ trait IteratorTrait
     {
         $args = [];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -88,7 +88,7 @@ trait IteratorTrait
     {
         $args = [];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -104,7 +104,7 @@ trait IteratorTrait
     {
         $args = [];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -117,7 +117,7 @@ trait IteratorTrait
     public function seek($position)
     {
         $args = [$position];
-        $this->findMethodToCall(__FUNCTION__, $args);
+        $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -133,7 +133,7 @@ trait IteratorTrait
     {
         $args = [];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findAndCall(__FUNCTION__, $args);
     }
 
     /**
@@ -149,6 +149,6 @@ trait IteratorTrait
     {
         $args = [];
 
-        return $this->findMethodToCall(__FUNCTION__, $args);
+        return $this->findAndCall(__FUNCTION__, $args);
     }
 }

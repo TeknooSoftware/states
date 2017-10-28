@@ -24,6 +24,8 @@ declare(strict_types=1);
 
 namespace Teknoo\States\State;
 
+use Teknoo\States\Proxy\ProxyInterface;
+
 /**
  * Interface StateInterface
  * Interface to define class representing states entities for a stated class.
@@ -69,79 +71,6 @@ interface StateInterface
     public function __construct(bool $privateMode, string $statedClassName);
 
     /**
-     * To get the full qualified stated class name associated to this state.
-     *
-     * @return string
-     */
-    public function getStatedClassName(): string;
-
-    /**
-     * To set the full qualified stated class name associated to this state.
-     *
-     * @param string $statedClassName
-     *
-     * @return StateInterface
-     */
-    public function setStatedClassName(string $statedClassName): StateInterface;
-
-    /**
-     * To know if the mode Private is enabled : private method are only accessible from
-     * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable.
-     *
-     * @return bool
-     */
-    public function isPrivateMode(): bool;
-
-    /**
-     * To enable or disable the private mode of this state :
-     * If the mode Private is enable, private method are only accessible from
-     * method present in the same stated class and not from methods of children of this class.
-     * By default this mode is disable.
-     *
-     * @param bool $enable
-     *
-     * @return StateInterface
-     */
-    public function setPrivateMode(bool $enable): StateInterface;
-
-    /**
-     * To return an array of string listing all methods available in the state : public, protected and private.
-     * Ignore static method, because there are incompatible with the stated behavior :
-     * State can be only applied on instances entities like object,
-     * and not on static entities which by nature have no states.
-     *
-     * @api
-     *
-     * @return string[]
-     */
-    public function listMethods(): array;
-
-    /**
-     * To test if a method exists for this state in the required scope (check from the visibility of the method) :
-     *  Public method : Method always available
-     *  Protected method : Method available only for this stated class's methods (method present in this state or
-     *      another state) and its children
-     *  Private method : Method available only for this stated class's method (method present in this state or
-     *      another state) and not for its children.
-     *
-     * @param string      $methodName
-     * @param string      $requiredScope     self::VISIBILITY_PUBLIC
-     *                                       self::VISIBILITY_PROTECTED
-     *                                       self::VISIBILITY_PRIVATE
-     * @param string|null $statedClassOrigin
-     *
-     * @return bool
-     *
-     * @throws Exception\InvalidArgument when the method name is not a string
-     */
-    public function testMethod(
-        string $methodName,
-        string $requiredScope,
-        string $statedClassOrigin
-    ): bool;
-
-    /**
      * To return a closure of the required method to use in the proxy, in the required scope (check from the visibility
      * of the method) :
      *  Public method : Method always available
@@ -150,17 +79,21 @@ interface StateInterface
      *  Private method : Method available only for this stated class's method (method present in this state or another
      *      state) and not for its children.
      *
+     * @param ProxyInterface $object
      * @param string      $methodName
+     * @param array $arguments
      * @param string      $requiredScope     self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string|null $statedClassOrigin
+     * @param callable $returnCallback Method to call if the closure has been found and called, to pass the result
      *
-     * @return \Closure
-     *
-     * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
+     * @return StateInterface
      */
-    public function getClosure(
+    public function executeClosure(
+        ProxyInterface $object,
         string $methodName,
+        array $arguments,
         string $requiredScope,
-        string $statedClassOrigin
-    ): \Closure;
+        string $statedClassOrigin,
+        callable $returnCallback
+    );
 }

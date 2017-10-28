@@ -46,7 +46,8 @@ class MockOnlyPrivate implements StateInterface
      */
     final private function finalMethod9()
     {
-        return function () {
+        return function ($a=0, $b=0) {
+            return $a+$b;
         };
     }
 
@@ -55,19 +56,22 @@ class MockOnlyPrivate implements StateInterface
      */
     private function standardMethod10()
     {
-        return function () {
+        return function ($a=0, $b=0) {
+            return $a+$b;
         };
     }
 
     final private function finalMethod11()
     {
-        return function () {
+        return function ($a=0, $b=0) {
+            return $a+$b;
         };
     }
 
     private static function _staticMethod12()
     {
-        return function () {
+        return function ($a=0, $b=0) {
+            return $a+$b;
         };
     }
 }
