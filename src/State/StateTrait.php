@@ -166,6 +166,8 @@ trait StateTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function getStatedClassName(): string
     {
@@ -174,6 +176,8 @@ trait StateTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function setStatedClassName(string $statedClassName): StateInterface
     {
@@ -184,6 +188,8 @@ trait StateTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function isPrivateMode(): bool
     {
@@ -192,6 +198,8 @@ trait StateTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function setPrivateMode(bool $enable): StateInterface
     {
@@ -202,6 +210,8 @@ trait StateTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function listMethods(): array
     {
@@ -337,6 +347,8 @@ trait StateTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function testMethod(
         string $methodName,
@@ -416,6 +428,8 @@ trait StateTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function getClosure(
         string $methodName,

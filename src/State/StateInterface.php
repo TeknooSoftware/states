@@ -72,6 +72,8 @@ interface StateInterface
      * To get the full qualified stated class name associated to this state.
      *
      * @return string
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function getStatedClassName(): string;
 
@@ -81,6 +83,8 @@ interface StateInterface
      * @param string $statedClassName
      *
      * @return StateInterface
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function setStatedClassName(string $statedClassName): StateInterface;
 
@@ -90,6 +94,8 @@ interface StateInterface
      * By default this mode is disable.
      *
      * @return bool
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function isPrivateMode(): bool;
 
@@ -102,6 +108,8 @@ interface StateInterface
      * @param bool $enable
      *
      * @return StateInterface
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function setPrivateMode(bool $enable): StateInterface;
 
@@ -114,6 +122,8 @@ interface StateInterface
      * @api
      *
      * @return string[]
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function listMethods(): array;
 
@@ -134,6 +144,8 @@ interface StateInterface
      * @return bool
      *
      * @throws Exception\InvalidArgument when the method name is not a string
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function testMethod(
         string $methodName,
@@ -157,6 +169,8 @@ interface StateInterface
      * @return \Closure
      *
      * @throws Exception\MethodNotImplemented is the method does not exist or not available in this scope
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function getClosure(
         string $methodName,

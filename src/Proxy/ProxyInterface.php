@@ -183,6 +183,8 @@ interface ProxyInterface
      * @api
      *
      * @return string[]
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function listAvailableStates(): array;
 
@@ -193,6 +195,8 @@ interface ProxyInterface
      * @api
      *
      * @return string[]
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function listEnabledStates(): array;
 
@@ -202,6 +206,8 @@ interface ProxyInterface
      * @api
      *
      * @return StateInterface[]
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function getStatesList(): array;
 
@@ -216,6 +222,8 @@ interface ProxyInterface
      * @return bool
      *
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function inState(string $stateName): bool;
 

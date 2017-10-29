@@ -593,6 +593,8 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function listAvailableStates(): array
     {
@@ -605,6 +607,8 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function listEnabledStates(): array
     {
@@ -617,6 +621,8 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function getStatesList() : array
     {
@@ -629,6 +635,8 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     *
+     * @deprecated Will be remove in 3.2
      */
     public function inState(string $stateName): bool
     {
