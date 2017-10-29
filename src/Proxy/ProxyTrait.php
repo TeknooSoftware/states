@@ -70,7 +70,7 @@ trait ProxyTrait
     private $states = [];
 
     /**
-     * To register the list original classes names (mother class name if needed) for each state
+     * To register for each state, the proxy class owning it.
      *
      * @var string[]|array
      */

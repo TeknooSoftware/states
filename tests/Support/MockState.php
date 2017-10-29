@@ -77,6 +77,13 @@ class MockState implements StateInterface
     protected $methodName = null;
 
     /**
+     * Return the stated class name who own the state
+     *
+     * @var string
+     */
+    protected $statedClassOrigin = null;
+
+    /**
      * @var \Closure
      */
     protected $virtualInjection = null;
@@ -210,6 +217,7 @@ class MockState implements StateInterface
         }
 
         $this->methodName = $methodName;
+        $this->statedClassOrigin = $statedClassOriginName;
 
         if (method_exists($this, $methodName)) {
             $rm = new \ReflectionMethod($this, $methodName);
@@ -282,6 +290,20 @@ class MockState implements StateInterface
         $this->methodName = null;
 
         return $methodName;
+    }
+
+    /**
+     * Return the called method name
+     * Method added for test to check different behavior in calling method.
+     *
+     * @return string
+     */
+    public function getStatedClassOrigin()
+    {
+        $statedClassOrigin = $this->statedClassOrigin;
+        $this->statedClassOrigin = null;
+
+        return $statedClassOrigin;
     }
 
     public function recallMethod()

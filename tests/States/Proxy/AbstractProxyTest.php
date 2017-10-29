@@ -550,6 +550,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('myCustomMethod', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array('foo', 'bar'), $this->state1->getCalledArguments());
     }
 
@@ -599,6 +600,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         testCallFromFunctionPublic();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
@@ -647,6 +649,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $object->publicMethod();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
@@ -690,6 +693,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $object->protectedMethod();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -698,6 +702,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $object->publicMethod();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
@@ -737,6 +742,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $proxy2->privateMethod();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('privateTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -744,6 +750,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $proxy2->protectedMethod();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -751,6 +758,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $proxy2->publicMethod();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
@@ -789,6 +797,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $proxy->privateMethod();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('privateTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -796,6 +805,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $proxy->protectedMethod();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -803,6 +813,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $proxy->publicMethod();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
@@ -841,6 +852,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $proxy->recallMethod('privateMethod');
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('privateTest', $this->state1->getMethodNameCalled());
+        self::assertSame($childClassName, $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -848,6 +860,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $proxy->recallMethod('protectedMethod');
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame($childClassName, $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -855,6 +868,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $proxy->recallMethod('publicMethod');
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame($childClassName, $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
@@ -900,6 +914,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         \testCallFromOtherObject::publicMethodStatic();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
@@ -941,6 +956,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $childClassName::protectedMethodStatic();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -948,6 +964,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $childClassName::publicMethodStatic();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
@@ -986,6 +1003,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $childClassName::privateMethodStatic();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('privateTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -993,6 +1011,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $childClassName::protectedMethodStatic();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1000,6 +1019,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $childClassName::publicMethodStatic();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
@@ -1051,6 +1071,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
@@ -1075,6 +1096,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('privateTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1086,6 +1108,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1097,6 +1120,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
+        self::assertSame('', $this->state1->getStatedClassOrigin());
         self::assertSame(array(), $this->state1->getCalledArguments());
     }
 
