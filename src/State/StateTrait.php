@@ -31,6 +31,7 @@ declare(strict_types=1);
  */
 
 namespace Teknoo\States\State;
+
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
@@ -346,17 +347,17 @@ trait StateTrait
         string $statedClassOrigin,
         callable $returnCallback
     ): StateInterface {
-       $closure = $this->getClosure($methodName);
+        $closure = $this->getClosure($methodName);
 
-       //Check visibility scope
-       if (!$closure instanceof \Closure
-           || false === $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin)) {
-           return $this;
-       }
+        //Check visibility scope
+        if (!$closure instanceof \Closure
+            || false === $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin)) {
+            return $this;
+        }
 
-       $returnValue = $closure->call($object, ...$arguments);
-       $returnCallback($returnValue);
+        $returnValue = $closure->call($object, ...$arguments);
+        $returnCallback($returnValue);
 
-       return $this;
+        return $this;
     }
 }

@@ -70,11 +70,11 @@ trait ProxyTrait
     private $states = [];
 
     /**
-     * To register the list original classes names for each state
+     * To register the list original classes names (mother class name if needed) for each state
      *
      * @var string[]|array
      */
-    private $originalClassesByStates = [];
+    private $classesByStates = [];
 
     /**
      * To keep the list of full qualified state in parent classes to allow enable overload/redefined state with
@@ -129,7 +129,7 @@ trait ProxyTrait
             $shortStateName = \ltrim(\substr($stateClassName, (int) \strrpos($stateClassName, '\\')), '\\');
             if (isset($loadedStatesList[$shortStateName])) {
                 $this->statesAliasesList[$stateClassName] = $loadedStatesList[$shortStateName];
-                $this->originalClassesByStates[$stateClassName] = $selfClassName;
+                $this->classesByStates[$stateClassName] = $selfClassName;
 
                 continue;
             }
@@ -214,11 +214,11 @@ trait ProxyTrait
     {
         $stateClass = \get_class($state);
 
-        if (!isset($this->originalClassesByStates[$stateClass])) {
+        if (!isset($this->classesByStates[$stateClass])) {
             throw new \RuntimeException("Error, no original class name defined for $stateClass");
         }
 
-        $this->callerStatedClassesStack->push($this->originalClassesByStates[$stateClass]);
+        $this->callerStatedClassesStack->push($this->classesByStates[$stateClass]);
 
         return $this;
     }
@@ -558,7 +558,7 @@ trait ProxyTrait
             $originalClassName = \get_class($this);
         }
 
-        $this->originalClassesByStates[$stateName] = $originalClassName;
+        $this->classesByStates[$stateName] = $originalClassName;
 
         return $this;
     }
@@ -580,8 +580,8 @@ trait ProxyTrait
             unset($this->activesStates[$stateName]);
         }
 
-        if (isset($this->originalClassesByStates[$stateName])) {
-            unset($this->originalClassesByStates[$stateName]);
+        if (isset($this->classesByStates[$stateName])) {
+            unset($this->classesByStates[$stateName]);
         }
 
         return $this;
@@ -663,18 +663,18 @@ trait ProxyTrait
         $enabledStatesList = $this->listEnabledStates();
 
         sort($enabledStatesList);
-        $enabledStatesListKeys = \array_flip($enabledStatesList);
+        $statesNamesList = \array_flip($enabledStatesList);
 
         foreach ($statesNames as $stateName) {
             $this->validateName($stateName);
 
-            if (isset($enabledStatesListKeys[$stateName])) {
+            if (isset($statesNamesList[$stateName])) {
                 $callback($enabledStatesList);
                 break;
             }
 
             foreach ($enabledStatesList as $enableStateName) {
-                if (\is_subclass_of($enableStateName , $stateName)) {
+                if (\is_subclass_of($enableStateName, $stateName)) {
                     $callback($enabledStatesList);
                     return $this;
                 }
