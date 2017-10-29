@@ -123,7 +123,7 @@ trait ProxyTrait
         bool $enablePrivateMode,
         string $selfClassName,
         array &$loadedStatesList
-    ) {
+    ): void {
         foreach ($statesList as $stateClassName) {
             //Extract non qualified class name and check if this state is not already loaded
             $shortStateName = \ltrim(\substr($stateClassName, (int) \strrpos($stateClassName, '\\')), '\\');
@@ -356,7 +356,7 @@ trait ProxyTrait
      * Method to call into the constructor to initialize proxy's vars.
      * Externalized from the constructor to allow developers to write their own constructors into theirs classes.
      */
-    protected function initializeProxy()
+    protected function initializeProxy(): void
     {
         //Initialize internal vars
         $this->states = [];

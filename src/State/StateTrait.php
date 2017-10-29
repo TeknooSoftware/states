@@ -163,7 +163,7 @@ trait StateTrait
      *
      * @return bool
      */
-    private function checkVisibilityPrivate(string $methodName, string $statedClassOrigin)
+    private function checkVisibilityPrivate(string $methodName, string $statedClassOrigin): bool
     {
         if (true === $this->privateModeStatus
             && $statedClassOrigin !== $this->statedClassName
@@ -182,7 +182,7 @@ trait StateTrait
      *
      * @return bool
      */
-    private function checkVisibilityProtected(string $methodName, string $statedClassOrigin)
+    private function checkVisibilityProtected(string $methodName, string $statedClassOrigin): bool
     {
         if (false === $this->reflectionsMethods[$methodName]->isPrivate()
             && !empty($statedClassOrigin)
@@ -202,7 +202,7 @@ trait StateTrait
      *
      * @return bool
      */
-    private function checkVisibilityPublic(string $methodName)
+    private function checkVisibilityPublic(string $methodName): bool
     {
         if (true === $this->reflectionsMethods[$methodName]->isPublic()) {
             //It's a public method, do like if there is no method
