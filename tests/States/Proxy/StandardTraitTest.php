@@ -49,12 +49,23 @@ class StandardTraitTest extends AbstractProxyTest
     /**
      * Build a proxy object, into $this->proxy to test it.
      *
-     * @return Proxy\ProxyInterface
+     * @return Proxy\ProxyInterface|Support\StandardTraitProxy
      */
     protected function buildProxy()
     {
         $this->proxy = new Support\StandardTraitProxy();
 
         return $this->proxy;
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testExceptionWhenStateIsNotCorrectlyInitializedWithItsAssociatedClassName()
+    {
+        $proxy = $this->buildProxy();
+        $proxy->registerStateWithoutOriginal('badState', new Support\MockState1(false, Support\StandardTraitProxy::class));
+
+        $this->proxy->test();
     }
 }

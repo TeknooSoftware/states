@@ -22,6 +22,7 @@
 namespace Teknoo\Tests\Support;
 
 use Teknoo\States\Proxy;
+use Teknoo\States\State\StateInterface;
 
 /**
  * Class StandardTraitProxy
@@ -117,5 +118,19 @@ Proxy\ProxyInterface,
     public static function statesListDeclaration(): array
     {
         return [];
+    }
+
+    /**
+     * To test a bad state injection
+     * @param string $stateName
+     * @param StateInterface $state
+     * @return Proxy\ProxyInterface
+     */
+    public function registerStateWithoutOriginal(string $stateName, StateInterface $state): Proxy\ProxyInterface
+    {
+        $this->states[$stateName] = $state;
+        $this->activesStates[$stateName] = $state;
+
+        return $this;
     }
 }
