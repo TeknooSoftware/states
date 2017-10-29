@@ -1,5 +1,25 @@
 #Teknoo Software - States library - Change Log
 
+##[3.1.0] - 2017-10-29
+###Release
+- Final release of 3.1.0
+
+###Deprecated
+- To prepare redesign of the library to follow East Oriented programming rules, and forbid information about states of object outside them:
+    * ProxyInterface::listAvailableStates()
+    * ProxyInterface::listEnabledStates()
+    * ProxyInterface::getStatesList()
+    * ProxyInterface::inState()
+    * StateInterface::getStatedClassName()
+    * StateInterface::setStatedClassName()
+    * StateInterface::isPrivateMode()
+    * StateInterface::setPrivateMode()
+    * StateInterface::listMethods()
+    * StateInterface::testMethod()
+    * StateInterface::getClosure()
+
+**There are only BC Break for lib interacting with the internal behavior of this lib, not with project using this lib.**
+
 ##[3.1.0-rc1] - 2017-10-12
 ###Release
 - First RC.
