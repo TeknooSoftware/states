@@ -70,6 +70,13 @@ trait ProxyTrait
     private $states = [];
 
     /**
+     * To register the list original classes names for each state
+     *
+     * @var string[]|array
+     */
+    private $originalClassesByStates = [];
+
+    /**
      * To keep the list of full qualified state in parent classes to allow enable overload/redefined state with
      * original full qualified state name.
      *
@@ -122,6 +129,7 @@ trait ProxyTrait
             $shortStateName = \ltrim(\substr($stateClassName, (int) \strrpos($stateClassName, '\\')), '\\');
             if (isset($loadedStatesList[$shortStateName])) {
                 $this->statesAliasesList[$stateClassName] = $loadedStatesList[$shortStateName];
+                $this->originalClassesByStates[$stateClassName] = $selfClassName;
 
                 continue;
             }
@@ -130,7 +138,11 @@ trait ProxyTrait
             $loadedStatesList[$shortStateName] = $stateClassName;
 
             //Load and Register
-            $this->registerState($stateClassName, new $stateClassName($enablePrivateMode, $selfClassName));
+            $this->registerState(
+                $stateClassName,
+                new $stateClassName($enablePrivateMode, $selfClassName),
+                $selfClassName
+            );
 
             //If the state is the default
             if ($shortStateName == ProxyInterface::DEFAULT_STATE_NAME) {
@@ -200,7 +212,13 @@ trait ProxyTrait
      */
     private function pushCallerStatedClassName(StateInterface $state): ProxyInterface
     {
-        $this->callerStatedClassesStack->push(\get_class($state));
+        $stateClass = \get_class($state);
+
+        if (!isset($this->originalClassesByStates[$stateClass])) {
+            throw new \RuntimeException("Error, no original class name defined for $stateClass");
+        }
+
+        $this->callerStatedClassesStack->push($this->originalClassesByStates[$stateClass]);
 
         return $this;
     }
@@ -518,8 +536,11 @@ trait ProxyTrait
     /**
      * {@inheritdoc}
      */
-    public function registerState(string $stateName, StateInterface $stateObject): ProxyInterface
-    {
+    public function registerState(
+        string $stateName,
+        StateInterface $stateObject,
+        string $originalClassName = ''
+    ): ProxyInterface {
         $this->validateName($stateName);
 
         if (!\is_a($stateObject, $stateName) && !\is_subclass_of($stateObject, $stateName)) {
@@ -533,6 +554,12 @@ trait ProxyTrait
 
         $this->states[$stateName] = $stateObject;
 
+        if (empty($originalClassName)) {
+            $originalClassName = \get_class($this);
+        }
+
+        $this->originalClassesByStates[$stateName] = $originalClassName;
+
         return $this;
     }
 
@@ -543,14 +570,18 @@ trait ProxyTrait
     {
         $this->validateName($stateName);
 
-        if (isset($this->states[$stateName])) {
-            unset($this->states[$stateName]);
-
-            if (isset($this->activesStates[$stateName])) {
-                unset($this->activesStates[$stateName]);
-            }
-        } else {
+        if (!isset($this->states[$stateName])) {
             throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
+        }
+
+        unset($this->states[$stateName]);
+
+        if (isset($this->activesStates[$stateName])) {
+            unset($this->activesStates[$stateName]);
+        }
+
+        if (isset($this->originalClassesByStates[$stateName])) {
+            unset($this->originalClassesByStates[$stateName]);
         }
 
         return $this;
@@ -630,9 +661,6 @@ trait ProxyTrait
     public function isInState(array $statesNames, callable $callback): ProxyInterface
     {
         $enabledStatesList = $this->listEnabledStates();
-        if (!\is_array($enabledStatesList)) {
-            return $this;
-        }
 
         sort($enabledStatesList);
         $enabledStatesListKeys = \array_flip($enabledStatesList);

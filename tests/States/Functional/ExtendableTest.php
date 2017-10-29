@@ -116,7 +116,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
                 \Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class => [],
                 StateOne::class => ['method3', 'method4'],
                 StateThree::class => ['method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
-                StateTwo::class => ['methodPublic', 'methodProtected', 'methodRecallPrivate'],
+                StateTwo::class => ['methodPublic', 'methodProtected', 'methodPrivate', 'methodRecallPrivate'],
             ],
             $daughterInstance->listMethodsByStates()
         );
@@ -134,7 +134,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
                 \Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class => [],
                 StateOne::class => ['method3', 'method4'],
                 \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class => ['method7', 'method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
-                StateTwo::class => ['methodPublic', 'methodProtected', 'methodRecallPrivate'],
+                StateTwo::class => ['methodPublic', 'methodProtected', 'methodPrivate', 'methodRecallPrivate'],
             ],
             $grandDaughterInstance->listMethodsByStates()
         );

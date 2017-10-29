@@ -274,33 +274,24 @@ trait StateTrait
             return $this->reflectionsMethods[$methodName] instanceof \ReflectionMethod;
         }
 
-        try {
-            $thisReflectionClass = $this->getReflectionClass();
-            if (!$thisReflectionClass->hasMethod($methodName)) {
-                $this->reflectionsMethods[$methodName] = false;
+        $thisReflectionClass = $this->getReflectionClass();
+        if (!$thisReflectionClass->hasMethod($methodName)) {
+            $this->reflectionsMethods[$methodName] = false;
 
-                return false;
-            }
-
-            //Load Reflection Method if it is not already done
-            $methodDescription = $thisReflectionClass->getMethod($methodName);
-            if (false !== $methodDescription->isStatic()) {
-                $this->reflectionsMethods[$methodName] = false;
-
-                return false;
-            }
-
-            $this->reflectionsMethods[$methodName] = $methodDescription;
-
-            return true;
-        } catch (\Throwable $e) {
-            //Method not found
-            throw new Exception\MethodNotImplemented(
-                \sprintf('Method "%s" is not available for this state', $methodName),
-                $e->getCode(),
-                $e
-            );
+            return false;
         }
+
+        //Load Reflection Method if it is not already done
+        $methodDescription = $thisReflectionClass->getMethod($methodName);
+        if (false !== $methodDescription->isStatic()) {
+            $this->reflectionsMethods[$methodName] = false;
+
+            return false;
+        }
+
+        $this->reflectionsMethods[$methodName] = $methodDescription;
+
+        return true;
     }
 
     /**

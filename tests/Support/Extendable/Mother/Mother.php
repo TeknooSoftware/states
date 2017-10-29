@@ -83,6 +83,7 @@ class Mother  implements ProxyInterface
 
         $methodsList = array();
         foreach ($this->getStatesList() as $stateName => $stateContainer) {
+            $methodsList[$stateName] = [];
             foreach ((new \ReflectionObject($stateContainer))->getMethods() as $method) {
                 $methodName = $method->getName();
                 if (!\in_array($methodName, $ignoreMethods)) {
