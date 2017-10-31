@@ -1,5 +1,14 @@
 #Teknoo Software - States library - Change Log
 
+##[3.2.0-beta2] - 2017-11-01
+###Added
+- Import from States Life Cyclable the feature automated
+- The feature automated is now in main library
+- Redesign feature Automated to follow east programming rules
+
+###Fixed
+- Fix visibility of the method statesListDeclaration in the standard implementation of the proxy
+
 ##[3.2.0-beta1] - 2017-10-29
 - Redesign the library to follow East Oriented programming rules
 
