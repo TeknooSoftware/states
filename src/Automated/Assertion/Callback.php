@@ -70,6 +70,7 @@ class Callback extends AbstractAssertion implements AssertionInterface
             throw new \RuntimeException('Error the callback is not callable');
         }
 
-        ($this->callback)($proxy, $this);
+        $callback = ($this->callback);
+        $callback($proxy, $this);
     }
 }
