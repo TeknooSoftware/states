@@ -30,6 +30,7 @@ use Teknoo\States\Automated\Assertion\Property\IsGreaterOrEqualThan;
  * Class IsGreaterOrEqualThanTest.
  *
  * @covers \Teknoo\States\Automated\Assertion\Property\IsGreaterOrEqualThan
+ * @covers \Teknoo\States\Automated\Assertion\Property\AbstractConstraint
  *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -38,12 +39,12 @@ use Teknoo\States\Automated\Assertion\Property\IsGreaterOrEqualThan;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsGreatedOrEqualThanTest extends \PHPUnit\Framework\TestCase
+class IsGreatedOrEqualThanTest extends AbstractConstraintTest
 {
     /**
-     * @return IsGreaterOrEqualThan
+     * @return IsGreaterOrEqualThan|ConstraintInterface
      */
-    public function buildInstance()
+    public function buildInstance(): ConstraintInterface
     {
         return new IsGreaterOrEqualThan(10);
     }

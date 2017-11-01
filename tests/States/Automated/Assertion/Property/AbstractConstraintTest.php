@@ -24,14 +24,9 @@ namespace Teknoo\Tests\States\Automated\Assertion\Property;
 
 use Teknoo\States\Automated\Assertion\Property\ConstraintInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
-use Teknoo\States\Automated\Assertion\Property\IsNotNull;
+use Teknoo\States\Automated\Assertion\Property\IsEqual;
 
 /**
- * Class IsNotNullTest.
- *
- * @covers \Teknoo\States\Automated\Assertion\Property\IsNotNull
- * @covers \Teknoo\States\Automated\Assertion\Property\AbstractConstraint
- *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -39,36 +34,39 @@ use Teknoo\States\Automated\Assertion\Property\IsNotNull;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsNotNullTest extends AbstractConstraintTest
+abstract class AbstractConstraintTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @return IsNotNull|ConstraintInterface
+     * @return ConstraintInterface
      */
-    public function buildInstance(): ConstraintInterface
+    abstract  public function buildInstance(): ConstraintInterface;
+
+    /**
+     * @expectedException \TypeError
+     */
+    public function testInConstraintSetInstanceNotImplement()
     {
-        return new IsNotNull();
+        $this->buildInstance()->inConstraintSet(new \stdClass());
     }
 
-    public function testNotNullProperty()
+    public function testInConstraintSet()
     {
-        $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::once())->method('isValid')->with($value = '')->willReturnSelf();
+        $instance = $this->buildInstance();
+        $instanceWithSet = $instance->inConstraintSet($this->createMock(ConstraintsSetInterface::class));
 
         self::assertInstanceOf(
             ConstraintInterface::class,
-            $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
+            $instance
         );
-    }
 
-    public function testNullProperty()
-    {
-        $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::never())->method('isValid');
-
-        $value = null;
         self::assertInstanceOf(
             ConstraintInterface::class,
-            $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
+            $instanceWithSet
+        );
+
+        self::assertNotSame(
+            $instance,
+            $instanceWithSet
         );
     }
 }

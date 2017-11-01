@@ -30,6 +30,7 @@ use Teknoo\States\Automated\Assertion\Property\IsSame;
  * Class IsSameTest.
  *
  * @covers \Teknoo\States\Automated\Assertion\Property\IsSame
+ * @covers \Teknoo\States\Automated\Assertion\Property\AbstractConstraint
  *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -38,12 +39,12 @@ use Teknoo\States\Automated\Assertion\Property\IsSame;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsSameTest extends \PHPUnit\Framework\TestCase
+class IsSameTest extends AbstractConstraintTest
 {
     /**
-     * @return IsSame
+     * @return IsSame|ConstraintInterface
      */
-    public function buildInstance()
+    public function buildInstance(): ConstraintInterface
     {
         return new IsSame(10);
     }

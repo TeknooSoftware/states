@@ -30,6 +30,7 @@ use Teknoo\States\Automated\Assertion\Property\IsLessThan;
  * Class IsLessThanTest.
  *
  * @covers \Teknoo\States\Automated\Assertion\Property\IsLessThan
+ * @covers \Teknoo\States\Automated\Assertion\Property\AbstractConstraint
  *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -38,12 +39,12 @@ use Teknoo\States\Automated\Assertion\Property\IsLessThan;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsLessThanTest extends \PHPUnit\Framework\TestCase
+class IsLessThanTest extends AbstractConstraintTest
 {
     /**
-     * @return IsLessThan
+     * @return IsLessThan|ConstraintInterface
      */
-    public function buildInstance()
+    public function buildInstance(): ConstraintInterface
     {
         return new IsLessThan(10);
     }

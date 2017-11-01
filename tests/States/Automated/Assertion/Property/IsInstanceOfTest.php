@@ -30,6 +30,7 @@ use Teknoo\States\Automated\Assertion\Property\IsInstanceOf;
  * Class IsInstanceOfTest.
  *
  * @covers \Teknoo\States\Automated\Assertion\Property\IsInstanceOf
+ * @covers \Teknoo\States\Automated\Assertion\Property\AbstractConstraint
  *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -38,12 +39,12 @@ use Teknoo\States\Automated\Assertion\Property\IsInstanceOf;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsInstanceOfTest extends \PHPUnit\Framework\TestCase
+class IsInstanceOfTest extends AbstractConstraintTest
 {
     /**
-     * @return IsInstanceOf
+     * @return IsInstanceOf|ConstraintInterface
      */
-    public function buildInstance()
+    public function buildInstance(): ConstraintInterface
     {
         return new IsInstanceOf('\DateTime');
     }

@@ -22,7 +22,9 @@
 
 namespace Teknoo\Tests\States\Automated\Assertion;
 
+use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Callback;
+use Teknoo\States\Automated\AutomatedInterface;
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
@@ -41,7 +43,7 @@ use Teknoo\States\Proxy\ProxyInterface;
 class CallbackTest extends AbstractAssertionTest
 {
     /**
-     * @return Callback
+     * @return Callback|AssertionInterface
      */
     public function buildInstance()
     {
@@ -71,5 +73,67 @@ class CallbackTest extends AbstractAssertionTest
     public function testBadCallable()
     {
         $this->buildInstance()->call('badFunctionName');
+    }
+
+    /**
+     * @expectedException \RuntimeException
+     */
+    public function testExceptionWhenCheckAssertionWithNoCallbackDefined()
+    {
+        $this->buildInstance()->check($this->createMock(AutomatedInterface::class));
+    }
+
+    public function testCheckCallbackIsValid()
+    {
+        $assertion = $this->buildInstance();
+        $proxy = $this->createMock(AutomatedInterface::class);
+        $proxy->expects(self::exactly(2))
+            ->method('enableState')
+            ->withConsecutive(['state1'], ['state2'])
+            ->willReturnSelf();
+
+        $assertion->call(function ($proxy, $callback) {
+            self::assertInstanceOf(AutomatedInterface::class, $proxy);
+            self::assertInstanceOf(Callback::class, $callback);
+
+            self::assertInstanceOf(Callback::class, $callback->isValid());
+        });
+
+        $assertion2 = $assertion->check($proxy);
+
+        self::assertInstanceOf(
+            Callback::class,
+            $assertion2
+        );
+
+        self::assertNotSame(
+            $assertion,
+            $assertion2
+        );
+    }
+
+    public function testCheckCallbackIsNotValid()
+    {
+        $assertion = $this->buildInstance();
+        $proxy = $this->createMock(AutomatedInterface::class);
+        $proxy->expects(self::never())
+            ->method('enableState');
+
+        $assertion->call(function ($proxy, $callback) {
+            self::assertInstanceOf(AutomatedInterface::class, $proxy);
+            self::assertInstanceOf(Callback::class, $callback);
+        });
+
+        $assertion2 = $assertion->check($proxy);
+
+        self::assertInstanceOf(
+            Callback::class,
+            $assertion2
+        );
+
+        self::assertNotSame(
+            $assertion,
+            $assertion2
+        );
     }
 }

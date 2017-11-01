@@ -30,6 +30,7 @@ use Teknoo\States\Automated\Assertion\Property\IsNotEqual;
  * Class IsNotEqualTest.
  *
  * @covers \Teknoo\States\Automated\Assertion\Property\IsNotEqual
+ * @covers \Teknoo\States\Automated\Assertion\Property\AbstractConstraint
  *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -38,12 +39,12 @@ use Teknoo\States\Automated\Assertion\Property\IsNotEqual;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsNotEqualTest extends \PHPUnit\Framework\TestCase
+class IsNotEqualTest extends AbstractConstraintTest
 {
     /**
-     * @return IsNotEqual
+     * @return IsNotEqual|ConstraintInterface
      */
-    public function buildInstance()
+    public function buildInstance(): ConstraintInterface
     {
         return new IsNotEqual(10);
     }

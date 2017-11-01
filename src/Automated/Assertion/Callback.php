@@ -66,6 +66,10 @@ class Callback extends AbstractAssertion implements AssertionInterface
      */
     protected function process(AutomatedInterface $proxy): void
     {
+        if (!\is_callable($this->callback)) {
+            throw new \RuntimeException('Error the callback is not callable');
+        }
+
         ($this->callback)($proxy, $this);
     }
 }

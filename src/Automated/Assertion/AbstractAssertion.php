@@ -95,6 +95,10 @@ abstract class AbstractAssertion implements AssertionInterface
      */
     public function isValid(): AssertionInterface
     {
+        if (!$this->proxy instanceof AutomatedInterface) {
+            throw new \RuntimeException('Error, the proxy is not a valid AutomatedInterface instance');
+        }
+
         foreach ($this->statesList as $state) {
             $this->proxy->enableState($state);
         }

@@ -58,9 +58,10 @@ class Property extends AbstractAssertion implements AssertionInterface
      */
     public function with(string $property, ConstraintInterface $exceptedValue): Property
     {
-        $this->constraints[$property][] = $exceptedValue;
+        $that = clone $this;
+        $that->constraints[$property][] = $exceptedValue;
 
-        return $this;
+        return $that;
     }
 
     /**
