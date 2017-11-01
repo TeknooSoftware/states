@@ -39,6 +39,9 @@ use Teknoo\States\Automated\AutomatedInterface;
 interface AssertionInterface extends ImmutableInterface
 {
     /**
+     * To check the assertion's rules with the passed proxy. All assertions must be immutable, so this method must
+     * return a cloned object if it's states has been changed.
+     *
      * @param AutomatedInterface $proxy
      *
      * @return AssertionInterface
@@ -46,6 +49,8 @@ interface AssertionInterface extends ImmutableInterface
     public function check(AutomatedInterface $proxy): AssertionInterface;
 
     /**
+     * Called to set the assertion as valid and enable linked state.
+     *
      * @return AssertionInterface
      */
     public function isValid(): AssertionInterface;

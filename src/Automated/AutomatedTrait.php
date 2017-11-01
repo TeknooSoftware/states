@@ -45,12 +45,15 @@ trait AutomatedTrait
 {
     /**
      * To get all validations rules needed by instances.
+     * (Internal getter)
      *
      * @return AssertionInterface[]
      */
     abstract protected function listAssertions(): array;
 
     /**
+     * To iterate defined assertions and check if they implements the interface AssertionInterface.
+     *
      * @return \Generator|AssertionInterface[]
      */
     private function iterateAssertions()

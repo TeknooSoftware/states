@@ -27,8 +27,7 @@ namespace Teknoo\States\Automated\Assertion\Property;
 use Teknoo\Immutable\ImmutableTrait;
 
 /**
- * class IsEqual
- * Invokable class to use with Teknoo\States\Automated\Assertion to check if a propery is equal
+ * Constraint to use with Teknoo\States\Automated\Property to check if a property is equal
  * to of $this->exceptedValue. (Perform == checks).
  *
  *

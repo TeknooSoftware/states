@@ -32,6 +32,7 @@ use Teknoo\States\Automated\AutomatedInterface;
  * Class Assertion
  * Implementation of AssertionInterface to determine states list from stated class instance's values.
  * All assertions defined with the method with() must be valid to get the assertion as valid.
+ * Constraints on value must be defined by ConstraintInterface instance via the method "with".
  *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -48,8 +49,8 @@ class Property extends AbstractAssertion implements AssertionInterface
     private $constraints = [];
 
     /**
-     * To register an assertion on a property. $exceptedValue can be the excepted value or a invokable object
-     * Some invokable class are available in Teknoo\States\Automated\Assertion\Property.
+     * To register a constraint on a property. $exceptedValue must be a ConstraintInstance value.
+     * Several constraints types are already defined into Teknoo\States\Automated\Assertion\Property.
      *
      * @param string $property
      * @param ConstraintInterface $exceptedValue

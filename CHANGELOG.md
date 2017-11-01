@@ -8,6 +8,7 @@
 
 ###Fixed
 - Fix visibility of the method statesListDeclaration in the standard implementation of the proxy
+- Documentation
 
 ##[3.2.0-beta1] - 2017-10-29
 - Redesign the library to follow East Oriented programming rules

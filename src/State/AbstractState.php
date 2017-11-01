@@ -31,13 +31,20 @@ namespace Teknoo\States\State;
  * Default implementation of the state interface, representing states entities in stated class.
  * A trait implementation has been chosen to allow developer to write theirs owns factory, extendable from any class.
  *
- * Objects implementing this interface must
- * return a usable closure via the method getClosure() for the required method. This method must able to be rebinded
- * by the Closure api (The proxy use \Closure::call() to rebind self and $this). These objects must also provide a
- * \ReflectionMethod instance for theirs state's methods and check also if the proxy instance can access to a private
- * or protected method.
+ * Objects implementing this interface must find, bind and execute closure via the method executeClosure() for the
+ * required method. (Rebind must use \Closure::call() to rebind static, self and $this or rebindTo()).
  *
- * State's methods are not directly used by the proxy instance. They are a builder to create the closure, they must
+ * Objects must follow instruction passed to executeClosure() and manage the visibility of the method and not allow
+ * executing a private method from an outside call.
+ *
+ * Result must be injected to the proxy by using the callback passed to executeClosure(). It's allowed to execute a
+ * method without inject the result into the proxy instance to allow developers to call several methods. But you can
+ * only inject one result by call. (Several implementations available at a same time is forbidden by the proxy
+ * interface).
+ *
+ * Static method are not managed (a class can not have a state, only it's instance).
+ *
+ * State's methods are not directly executed. They are a builder to create the closure, they must
  * return them self the closure. So, writing state differs from previous version, example :
  *
  *      <method visibility> function <method name>(): \Closure

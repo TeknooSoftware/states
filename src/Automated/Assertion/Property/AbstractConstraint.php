@@ -25,24 +25,26 @@ declare(strict_types=1);
 namespace Teknoo\States\Automated\Assertion\Property;
 
 /**
+ * Abstract class to build constraint to create an instance with a ConstraintSet injected and dispatch isValid() to it.
+ *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
- *
  */
 abstract class AbstractConstraint implements ConstraintInterface
 {
     /**
+     * Instance to allow this constraint to return the success of this constraint.
+     *
      * @var ConstraintsSetInterface
      */
     private $constraintsSet;
 
     /**
-     * @param ConstraintsSetInterface $constraintsSet
-     * @return ConstraintInterface
+     * {@inheritdoc}
      */
     public function inConstraintSet(ConstraintsSetInterface $constraintsSet): ConstraintInterface
     {
@@ -54,6 +56,8 @@ abstract class AbstractConstraint implements ConstraintInterface
     }
 
     /**
+     * To return the success of the check to the ConstraintSet and continue the workflow
+     *
      * @param mixed $value
      *
      * @return ConstraintInterface

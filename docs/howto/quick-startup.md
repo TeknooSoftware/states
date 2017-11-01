@@ -3,7 +3,7 @@
 ##Presentation
 
 ###Requirements
-This library works with PHP 7 and newer. It does not require external library except a Composer.
+This library works with PHP 7.1 and newer. It does not require external library except a Composer.
 
 ##Write your first stated class
 **All following instructions are illustrated in the demo available in the folder `demo` at the root of this library.**

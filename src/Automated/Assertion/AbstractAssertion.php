@@ -65,6 +65,8 @@ abstract class AbstractAssertion implements AssertionInterface
     }
 
     /**
+     * Return the proxy linked to the check of this assertions.
+     *
      * @return AutomatedInterface
      */
     protected function getProxy(): AutomatedInterface
@@ -73,6 +75,8 @@ abstract class AbstractAssertion implements AssertionInterface
     }
 
     /**
+     * Abstract method to implement into final class to proccess to the check of this assertions.
+     *
      * @param AutomatedInterface $proxy
      */
     abstract protected function process(AutomatedInterface $proxy): void;
@@ -91,7 +95,7 @@ abstract class AbstractAssertion implements AssertionInterface
     }
 
     /**
-     * @return AssertionInterface
+     * {@inheritdoc}
      */
     public function isValid(): AssertionInterface
     {

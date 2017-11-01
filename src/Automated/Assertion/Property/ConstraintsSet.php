@@ -27,6 +27,14 @@ namespace Teknoo\States\Automated\Assertion\Property;
 use Teknoo\Immutable\ImmutableTrait;
 use Teknoo\States\Automated\Assertion\Property;
 
+/**
+ * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
+ *
+ * @link        http://teknoo.software/states Project website
+ *
+ * @license     http://teknoo.software/license/mit         MIT License
+ * @author      Richard Déloge <richarddeloge@gmail.com>
+ */
 class ConstraintsSet implements ConstraintsSetInterface
 {
     use ImmutableTrait;

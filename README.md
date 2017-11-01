@@ -6,14 +6,12 @@ Teknoo Software - States library
 States allows you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
 This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability.
 
-[Lifecycable extension](https://github.com/TeknooSoftware/states-life-cycle) : To automate states changes according to business rules.
-
 Short Example
 ------------
     /**
      * File States/English.php
      */
-    class English extends \Teknoo\States\State\AbstractState 
+    class English extends \Teknoo\States\State\AbstractState
     {
         public function sayHello(): \Closure
         {
@@ -21,7 +19,7 @@ Short Example
                 return 'Good morning, '.$this->name;
             };
         }
-    
+
         public function displayDate(\DateTime $now): \Closure
         {
             return function(): string {
@@ -111,6 +109,7 @@ This library requires :
 
     * PHP 7+
     * A PHP autoloader (Composer is recommended)
+    * Teknoo/Immutable (for Automated features).
     
 Quick How-to to implement your first stated class
 -------------------------------------------------
@@ -126,6 +125,18 @@ The API documentation is available at : [API](docs/howto/api/index.index).
 
 Evolutions in 3.x versions
 --------------------------
+
+From the version 3.2, the internal api has been redesigned to
+* Following #East programming rules.
+* Remove all public "getter" able to return the internal state of the object.
+* Clean dead code and simplify the behavior of the library.
+* Method are binded and executed by states managing object instead of object itself, but result is injected into the object.
+* This behavior allows developers to execute several implementations for a called method (but only one result must be injected).
+* Import from the extension teknoo/states-life-cyclable all automated feature. This implementation follows also the #east programming.
+* teknoo/states-life-cyclable is deprecated and not compatible with this library since 3.2.
+
+From the version 3.1, this library provide base implementation for doctrine from teknoo/statesBundle.
+* teknoo/statesBundle is deprecated and not compatible with this library since 3.1.
 
 From the version 3.0, this library has been redesigned to
 * States's method are now builders of closure : They must return a closure, bindable with \Closure::call(). 
@@ -144,7 +155,7 @@ From the version 2.0, this library has been redesigned to
 Credits
 -------
 Richard Déloge - <richarddeloge@gmail.com> - Lead developer.
-Teknoo Software - <http://teknoo.software>
+Teknoo Software - <https://teknoo.software>
 
 About Teknoo Software
 ---------------------

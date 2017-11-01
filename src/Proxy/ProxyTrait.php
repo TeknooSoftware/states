@@ -34,14 +34,20 @@ use Teknoo\States\State\StateInterface;
  * $this, static and self keywords in all methods the stated class instance (aka in proxy's method and states' methods)
  * represent the proxy instance.
  *
- * The proxy class is mandatory. States 3.0 has no factories or no loader : proxies embedded directly theirs states'
- * configurations.
+ * The proxy class is mandatory. Since States 3.0 has no factories or no loader : proxies embedded directly theirs
+ * states' configurations. Since 3.2, states configurations must be returned by the protected method
+ * statesListDeclaration(), required by this trait.
  *
  * States can be overload by children of a stated class : The overloading uses only the non qualified name.
  *
  * Since 3.0, states's methods are a builder, returning a real closure to use. The state must not use
  * the Reflection API to extract the closure (Closure from Reflection are not bindable on a new scope since 7.1).
  * States can be also an anonymous class, it's name must be defined by an interface, implementing by this state.
+ *
+ * Since 3.2, the library following #east programming rules, all methods designed to know the state of the object are
+ * been removed. Closures are now binded (with the proxy) and called by states's managing object and not directly by
+ * the proxy. Result are then injected into proxy. This behavior allows developers to call several methods before return
+ * the result. (But only one result is granted).
  *
  * @see ProxyInterface
  *

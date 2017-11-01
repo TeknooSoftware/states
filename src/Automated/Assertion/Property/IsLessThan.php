@@ -27,10 +27,8 @@ namespace Teknoo\States\Automated\Assertion\Property;
 use Teknoo\Immutable\ImmutableTrait;
 
 /**
- * class IsLessThan
- * Invokable class to use with Teknoo\States\Automated\Assertion to check if a propery is less
+ * Constraint to use with Teknoo\States\Automated\Property to check if a propery is less
  * to of $this->exceptedValue. (Perform > checks).
- *
  *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *

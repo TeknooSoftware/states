@@ -27,6 +27,9 @@ namespace Teknoo\States\Automated\Assertion\Property;
 use Teknoo\Immutable\ImmutableInterface;
 
 /**
+ * Interface to define a set of constraints, passed to automated object to check the value from the defined property
+ * and validate the assertions and enabled linked states.
+ *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
@@ -37,12 +40,17 @@ use Teknoo\Immutable\ImmutableInterface;
 interface ConstraintsSetInterface extends ImmutableInterface
 {
     /**
+     * First call, by the AutomatedInterface instance to start check on the property's value passed by the Property
+     * assertion instance.
+     *
      * @param mixed $value
      * @return ConstraintsSetInterface
      */
     public function check(&$value): ConstraintsSetInterface;
 
     /**
+     * Called by the constraint to check the next constraint or validate the property's value.
+     *
      * @param mixed $value
      * @return ConstraintsSetInterface
      */

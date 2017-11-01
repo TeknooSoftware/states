@@ -28,7 +28,8 @@ use Teknoo\Immutable\ImmutableInterface;
 
 /**
  * Interface ConstraintInterface
- * Interface to implement constraint about property to check in the object.
+ * Interface to implement constraint about property to check in the object. A constraint must be immutable. All change
+ * must be performed on a clone and will be returned.
  *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -40,12 +41,18 @@ use Teknoo\Immutable\ImmutableInterface;
 interface ConstraintInterface extends ImmutableInterface
 {
     /**
+     * Clone this constraint and inject the Constrain set. This object is not updated, only its clone, to avoid issues
+     * on multiples checks.
+     *
      * @param ConstraintsSetInterface $constraintsSet
      * @return ConstraintInterface
      */
     public function inConstraintSet(ConstraintsSetInterface $constraintsSet): ConstraintInterface;
 
     /**
+     * Method to call to check if the value, passed by the stated object to this constraint is valid according to rules
+     * of this constraint.
+     *
      * @param mixed &$value
      *
      * @return ConstraintInterface
