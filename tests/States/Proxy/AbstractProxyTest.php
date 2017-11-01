@@ -187,7 +187,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             Proxy\ProxyInterface::class,
             $this->proxy->registerState(StateInterface::class, $this->state1)
         );
-        //FIXME
     }
 
     /**
@@ -199,7 +198,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             Proxy\ProxyInterface::class,
             $this->proxy->registerState(MockState1::class, $this->state1)
         );
-        //FIXME
     }
 
     /**
@@ -242,7 +240,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             Proxy\ProxyInterface::class,
             $this->proxy->unregisterState(MockState2::class)
         );
-        //FIXME
     }
 
     /**
@@ -260,8 +257,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             Proxy\ProxyInterface::class,
             $this->proxy->unregisterState(MockState3::class)
         );
-
-        //FIXME
     }
 
     /**
@@ -294,7 +289,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             Proxy\ProxyInterface::class,
             $this->proxy->switchState(MockState3::class)
         );
-        //FIXME
     }
 
     /**
@@ -311,7 +305,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             Proxy\ProxyInterface::class,
             $this->proxy->switchState(MockState2::class)
         );
-        //FIXME
     }
 
     /**
@@ -359,8 +352,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             Proxy\ProxyInterface::class,
             $this->proxy->enableState(MockState2::class)
         );
-
-        //FIXME
     }
 
     /**
@@ -373,7 +364,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             Proxy\ProxyInterface::class,
             $this->proxy->enableState(MockState2::class)
         );
-        //FIXME
     }
 
     /**
@@ -421,7 +411,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             Proxy\ProxyInterface::class,
             $this->proxy->disableState(MockState1::class)
         );
-        //FIXME
     }
 
     /**
@@ -439,7 +428,6 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             Proxy\ProxyInterface::class,
             $this->proxy->disableAllStates()
         );
-        //FIXME
     }
 
     /**
