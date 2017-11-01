@@ -94,8 +94,8 @@ interface StateInterface
      * only inject one result by call. (Several implementations available at a same time is forbidden by the proxy
      * interface).
      *
-     * Warning, you can not use the Reflection API to extract closure from a class's method, rebind is forbidden since 7.1
-     * for self and $this, only for self for 7.0.
+     * Warning, you can not use the Reflection API to extract closure from a class's method, rebind is forbidden since
+     * 7.1 for self and $this, only for self for 7.0.
      *
      * Static method are not managed (a class can not have a state, only it's instance).
      *
