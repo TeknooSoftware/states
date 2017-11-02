@@ -38,7 +38,7 @@ use Acme\Extendable\GrandDaughter\States\StateThree;
  */
 class GrandDaughter extends Daughter
 {
-    public static function statesListDeclaration(): array
+    protected static function statesListDeclaration(): array
     {
         return [
             StateThree::class

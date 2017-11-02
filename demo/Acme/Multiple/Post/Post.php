@@ -40,7 +40,7 @@ use Teknoo\States\Proxy;
  */
 class Post extends Proxy\Standard
 {
-    public static function statesListDeclaration(): array
+    protected static function statesListDeclaration(): array
     {
         return [
             Deleted::class,

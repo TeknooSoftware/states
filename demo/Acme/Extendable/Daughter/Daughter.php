@@ -40,7 +40,7 @@ use Acme\Extendable\Mother\Mother;
  */
 class Daughter extends Mother
 {
-    public static function statesListDeclaration(): array
+    protected static function statesListDeclaration(): array
     {
         return [
             StateDefault::class,

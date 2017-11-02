@@ -30,8 +30,6 @@ echo 'Start with an empty article'.PHP_EOL;
 $article = new Acme\Article\Article();
 
 //It is a new article, not published, the constructor load the state 'Draft'
-echo 'Enabled states : ';
-echo GREEN_COLOR.implode(', ', $article->listEnabledStates()).RESET_COLOR.PHP_EOL;
 //Empty article, getTitle return nothing
 echo 'Title : '.$article->getTitle().PHP_EOL;
 //Call method of state "Draft" to update the article
@@ -44,8 +42,6 @@ echo 'Body : '.$article->getBodySource().PHP_EOL;
 //Publishing method available into Draft state to switch to Published state
 echo SEPARATOR.'Publishing...'.PHP_EOL.PHP_EOL;
 $article->publishing();
-echo 'Enabled states :';
-echo GREEN_COLOR.implode(', ', $article->listEnabledStates()).RESET_COLOR.PHP_EOL;
 echo $article->getTitle().PHP_EOL;
 //Method available into Published state
 echo $article->getFormattedBody().PHP_EOL;
@@ -61,8 +57,6 @@ $article = new Acme\Article\Article(
 );
 
 //Already published, so constructor enable state "Default" and "Published"
-echo PHP_EOL.'Enabled states : ';
-echo GREEN_COLOR.implode(', ', $article->listEnabledStates()).RESET_COLOR.PHP_EOL;
 echo 'title : '.$article->getTitle().PHP_EOL;
 echo 'set some data'.PHP_EOL;
 
@@ -97,8 +91,6 @@ try {
     echo 'Excepted Error : '.RED_COLOR.$e->getMessage().GREEN_COLOR.' GOOD'.RESET_COLOR.PHP_EOL;
 }
 
-echo 'Enabled states : ';
-echo GREEN_COLOR.implode(', ', $article->listEnabledStates()).RESET_COLOR.PHP_EOL;
 echo $article->getTitle().PHP_EOL;
 echo $article->getFormattedBody().PHP_EOL;
 

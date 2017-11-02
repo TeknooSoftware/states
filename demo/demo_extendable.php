@@ -46,20 +46,6 @@ echo implode(', ', $daughterInstance->listAvailableStates());
 echo RESET_COLOR.PHP_EOL.'List states available for the grand daughter class, include parents\' states, overloaded and extended states : '.GREEN_COLOR;
 echo implode(', ', $grandDaughterInstance->listAvailableStates());
 
-echo RESET_COLOR.PHP_EOL.PHP_EOL.'List methods available for the mother class : '.GREEN_COLOR;
-foreach ($motherInstance->listMethodsByStates() as $stateName => $methodsList) {
-    echo PHP_EOL."\t".$stateName.' : '.implode(', ', $methodsList);
-}
-echo RESET_COLOR.PHP_EOL.'List methods available for the daughter class, include mother\'s states and overloaded states : '.GREEN_COLOR;
-foreach ($daughterInstance->listMethodsByStates() as $stateName => $methodsList) {
-    echo PHP_EOL."\t".$stateName.' : '.implode(', ', $methodsList);
-}
-echo RESET_COLOR.PHP_EOL.'List methods available for the grand daughter class, include parents\' states, overloaded and extended states : '.GREEN_COLOR;
-foreach ($grandDaughterInstance->listMethodsByStates() as $stateName => $methodsList) {
-    echo PHP_EOL."\t".$stateName.' : '.implode(', ', $methodsList);
-}
-echo RESET_COLOR.PHP_EOL;
-
 $motherInstance->enableState(StateOne::class);
 echo PHP_EOL.'Call method1 of mother object : '.GREEN_COLOR.$motherInstance->method1().RESET_COLOR;
 echo PHP_EOL.'Call method2 of mother object : '.GREEN_COLOR.$motherInstance->method2().RESET_COLOR;

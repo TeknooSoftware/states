@@ -38,9 +38,16 @@ use Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Mother extends Proxy\Standard
+class Mother implements Proxy\ProxyInterface
 {
-    public static function statesListDeclaration(): array
+    use Proxy\ProxyTrait;
+
+    public function __construct()
+    {
+        $this->initializeProxy();
+    }
+
+    protected static function statesListDeclaration(): array
     {
         return [
             StateDefault::class,
@@ -50,19 +57,14 @@ class Mother extends Proxy\Standard
     }
 
     /**
-     * Return the list of available state in this class.
-     *
-     * @return array
+     * Return the list of registered states. Present only for debug and tests
      */
-    public function listMethodsByStates()
+    public function listAvailableStates(): array
     {
-        $methodsList = array();
-        foreach ($this->getStatesList() as $stateName => $stateContainer) {
-            $methodsList[$stateName] = $stateContainer->listMethods();
+        if (!empty($this->states) && \is_array($this->states)) {
+            return \array_keys($this->states);
+        } else {
+            return [];
         }
-
-        ksort($methodsList);
-
-        return $methodsList;
     }
 }
