@@ -49,7 +49,7 @@ class Published implements StateInterface
          *
          * @return string
          */
-        return function() {
+        return function () {
             $body = $this->getAttribute('body');
 
             return str_replace(
@@ -73,6 +73,7 @@ class Published implements StateInterface
         /**
          * Fake method not callable in public scope.
          */
-        return function() {};
+        return function () {
+        };
     }
 }

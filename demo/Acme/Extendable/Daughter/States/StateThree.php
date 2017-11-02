@@ -43,7 +43,7 @@ class StateThree extends AbstractState
         /**
          * @return int
          */
-        return function() {
+        return function () {
             return 666;
         };
     }

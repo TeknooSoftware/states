@@ -46,7 +46,7 @@ class StateDefault extends AbstractState
          *
          * @return string
          */
-        return function() {
+        return function () {
             if (!empty($this->title)) {
                 return $this->title;
             }

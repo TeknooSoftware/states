@@ -20,6 +20,7 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 namespace demo\Acme\Article\States;
+
 use demo\Acme\Article\Article;
 
 /**
