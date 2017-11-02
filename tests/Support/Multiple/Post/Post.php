@@ -41,7 +41,7 @@ use Teknoo\Tests\Support\Multiple\Post\States\StateDefault;
  */
 class Post extends Proxy\Standard
 {
-    public static function statesListDeclaration(): array
+    protected static function statesListDeclaration(): array
     {
         return [
             Deleted::class,

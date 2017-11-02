@@ -115,7 +115,7 @@ Proxy\ProxyInterface,
         return 'fooBar';
     }
 
-    public static function statesListDeclaration(): array
+    protected static function statesListDeclaration(): array
     {
         return [];
     }

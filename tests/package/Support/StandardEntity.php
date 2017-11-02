@@ -126,7 +126,7 @@ class StandardEntity extends AbstractStandardEntity implements
         return 'fooBar';
     }
 
-    public static function statesListDeclaration(): array
+    protected static function statesListDeclaration(): array
     {
         return [];
     }

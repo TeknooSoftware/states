@@ -53,7 +53,7 @@ class Mother  implements ProxyInterface
         $this->initializeProxy();
     }
 
-    public static function statesListDeclaration(): array
+    protected static function statesListDeclaration(): array
     {
         return [
             StateDefault::class,

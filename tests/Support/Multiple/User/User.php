@@ -88,7 +88,7 @@ class User extends Proxy\Standard
         }
     }
 
-    public static function statesListDeclaration(): array
+    protected static function statesListDeclaration(): array
     {
         return [
             Administrator::class,

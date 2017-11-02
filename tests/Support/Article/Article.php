@@ -53,7 +53,7 @@ class Article implements Proxy\ProxyInterface
      */
     protected $data = array();
 
-    public static function statesListDeclaration(): array
+    protected static function statesListDeclaration(): array
     {
         return [
             Archived::class,
