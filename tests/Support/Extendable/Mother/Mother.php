@@ -44,6 +44,8 @@ class Mother  implements ProxyInterface
 {
     use ProxyTrait;
 
+    private $motherVariable;
+
     /**
      * Initialize the proxy by calling the method initializeProxy.
      */
@@ -131,5 +133,10 @@ class Mother  implements ProxyInterface
         } else {
             return [];
         }
+    }
+
+    public function classicGetMotherVariable()
+    {
+        return $this->motherVariable;
     }
 }

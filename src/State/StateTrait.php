@@ -362,7 +362,9 @@ trait StateTrait
             return $this;
         }
 
-        $returnValue = $closure->call($object, ...$arguments);
+        $closure = $closure->bindTo($object, $this->statedClassName);
+        $returnValue = $closure(...$arguments);
+
         $returnCallback($returnValue);
 
         return $this;

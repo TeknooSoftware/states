@@ -80,4 +80,18 @@ class StateTwo implements StateInterface
             return $this->methodPrivate() * 2;
         };
     }
+
+    public function updateVariable()
+    {
+        return function ($value) {
+            $this->motherVariable = $value;
+        };
+    }
+
+    public function getMotherVariable()
+    {
+        return function () {
+            return $this->motherVariable;
+        };
+    }
 }
