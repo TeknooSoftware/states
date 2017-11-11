@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[3.2.0-beta3] - 2017-11-11
+###Fixed
+- Fix an issue : When a stated object call a inherited private method defined in a state, the scope of the method is
+bound on the final class and not of the inherited class. (But $this is correctly bound to stated object instance).
+
 ##[3.2.0-beta2] - 2017-11-02
 ###Added
 - Import from States Life Cyclable the feature automated
