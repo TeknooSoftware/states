@@ -362,8 +362,12 @@ trait StateTrait
             return $this;
         }
 
-        $closure = $closure->bindTo($object, $this->statedClassName);
-        $returnValue = $closure(...$arguments);
+        if ($this->privateModeStatus) {
+            $closure = $closure->bindTo($object, $this->statedClassName);
+            $returnValue = $closure(...$arguments);
+        } else {
+            $returnValue = $closure->call($object, ...$arguments);
+        }
 
         $returnCallback($returnValue);
 
