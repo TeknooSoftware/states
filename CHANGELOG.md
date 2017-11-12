@@ -4,6 +4,7 @@
 ###Updated
 - Improve fix added in 3.2.0-beta3 to use \Closure::call() when scope of the execution is the same of $this
 and not the scope of a parent class.
+- Use Teknoo/immutable 1.0
 
 ##[3.2.0-beta3] - 2017-11-11
 ###Fixed
