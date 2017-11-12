@@ -2,7 +2,7 @@
 
 This library is built on two specifics features introducing in PHP 7 :
  
-*   `Closure::call()` To rebind the closure to reference $this to the object instance.
+*   `Closure::call()` or `Closure::rebindTo()` To rebind the closure to reference $this to the object instance.
 *   The new operator `...` to unpack quickly argument passed by `__call()`    
 
 Used collectively, these two methods allow developers to add dynamically methods on objects, rebind the variable `$this`
