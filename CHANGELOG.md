@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[3.2.0-beta4] - 2017-11-12
+###Updated
+- Improve fix added in 3.2.0-beta3 to use \Closure::call() when scope of the execution is the same of $this
+and not the scope of a parent class.
+
 ##[3.2.0-beta3] - 2017-11-11
 ###Fixed
 - Fix an issue : When a stated object call a inherited private method defined in a state, the scope of the method is
