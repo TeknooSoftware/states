@@ -45,7 +45,7 @@ use Teknoo\States\State\StateInterface;
  * States can be also an anonymous class, it's name must be defined by an interface, implementing by this state.
  *
  * Since 3.2, the library following #east programming rules, all methods designed to know the state of the object are
- * been removed. Closures are now binded (with the proxy) and called by states's managing object and not directly by
+ * been removed. Closures are now bound (with the proxy) and called by states's managing object and not directly by
  * the proxy. Result are then injected into proxy. This behavior allows developers to call several methods before return
  * the result. (But only one result is granted).
  *

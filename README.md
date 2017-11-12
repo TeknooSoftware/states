@@ -58,7 +58,7 @@ Short Example
          */
         private $name;
         
-        public static function statesListDeclaration(): array
+        protected static function statesListDeclaration(): array
         {
             return [
                 English::class,
@@ -107,7 +107,7 @@ To install this library with composer, run this command :
 
 This library requires :
 
-    * PHP 7+
+    * PHP 7.1+
     * A PHP autoloader (Composer is recommended)
     * Teknoo/Immutable (for Automated features).
     
@@ -130,7 +130,7 @@ From the version 3.2, the internal api has been redesigned to
 * Following #East programming rules.
 * Remove all public "getter" able to return the internal state of the object.
 * Clean dead code and simplify the behavior of the library.
-* Method are binded and executed by states managing object instead of object itself, but result is injected into the object.
+* Method are bound and executed by states managing object instead of object itself, but result is injected into the object.
 * This behavior allows developers to execute several implementations for a called method (but only one result must be injected).
 * Import from the extension teknoo/states-life-cyclable all automated feature. This implementation follows also the #east programming.
 * teknoo/states-life-cyclable is deprecated and not compatible with this library since 3.2.

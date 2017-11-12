@@ -65,7 +65,7 @@ use Teknoo\States\Proxy\ProxyInterface;
  *      method name: a string, used in the proxy, for your method.
  *
  * Contrary to previous versions of this library, methods of states's object are not directly converted into a \Closure.
- * Since 7.0, \Closure created from the Reflection Api can not be rebinded to an another class (only rebind of $this
+ * Since 7.0, \Closure created from the Reflection Api can not be bound to an another class (only rebind of $this
  * is permitted), so the feature \Closure::call() was not usable. Since 7.1, rebind $this for this special closure
  * is also forbidden.
  *

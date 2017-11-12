@@ -284,12 +284,12 @@ rebind $this in closure created from the Reflection API.
 ###Added
 - Add test to support a possible change in behavior with PHP \ Closure :: call ()
 - Support of the new PHP7 behavior (since PHP 7.0RC5) with ReflectionFunctionAbstract::getClosure().
-    (Their scope can not be change by \Closure::bind(), but $this can be rebinded to another object)
+    (Their scope can not be change by \Closure::bind(), but $this can be rebound to another object)
 
 ##[1.2.0-rc3] - 2015-10-15
 ###Removed
 - Support of PHP7 because of PHP7 behavior has changed since PHP 7.0RC5 with ReflectionFunctionAbstract::getClosure().
-    (Their scope can not be change by \Closure::bind(), but $this can be rebinded to another object)
+    (Their scope can not be change by \Closure::bind(), but $this can be rebound to another object)
 
 ##[2.0.0-beta14] - 2015-10-07 - Available on the branch "next"
 ###Changed
