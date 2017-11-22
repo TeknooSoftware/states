@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[3.2.0-beta5] - 2017-11-22
+###Updated
+- Fix bug in implementation for doctrines with automated methods : Missing 's' in name of method "updateStates"
+
 ##[3.2.0-beta4] - 2017-11-12
 ###Updated
 - Improve fix added in 3.2.0-beta3 to use \Closure::call() when scope of the execution is the same of $this
