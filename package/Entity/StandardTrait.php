@@ -53,7 +53,7 @@ trait StandardTrait
         //Call the method of the trait to initialize local attributes of the proxy
         $this->initializeProxy();
         //Select good state
-        $this->updateState();
+        $this->updateStates();
 
         return $this;
     }
@@ -62,7 +62,7 @@ trait StandardTrait
      * Method overloaded by States Lifecycle to update automatically states from
      * configuration.
      */
-    public function updateState(): ProxyInterface
+    public function updateStates(): ProxyInterface
     {
         return $this;
     }

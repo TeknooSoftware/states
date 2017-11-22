@@ -53,7 +53,7 @@ trait StandardTrait
         //Call the method of the trait to initialize local attributes of the proxy
         $this->initializeProxy();
         //Update states
-        $this->updateState();
+        $this->updateStates();
 
         return $this;
     }
@@ -64,7 +64,7 @@ trait StandardTrait
      *
      * {@inheritdoc}
      */
-    public function updateState(): ProxyInterface
+    public function updateStates(): ProxyInterface
     {
         return $this;
     }
