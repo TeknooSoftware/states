@@ -8,10 +8,23 @@ This can be a cleaner way for an object to change its behavior at runtime withou
 
 Short Example
 ------------
+    <?php
+
+    require 'vendor/autoload.php';
+
+    use \Teknoo\States\Automated\AutomatedInterface;
+    use \Teknoo\States\Automated\AutomatedTrait;
+    use Teknoo\States\Automated\Assertion\AssertionInterface;
+    use Teknoo\States\Automated\Assertion\Property;
+    use Teknoo\States\Automated\Assertion\Property\IsEqual;
+    use \Teknoo\States\Proxy\ProxyInterface;
+    use \Teknoo\States\Proxy\ProxyTrait;
+    use \Teknoo\States\State\AbstractState;
+
     /**
      * File States/English.php
      */
-    class English extends \Teknoo\States\State\AbstractState
+    class English extends AbstractState
     {
         public function sayHello(): \Closure
         {
@@ -23,15 +36,15 @@ Short Example
         public function displayDate(): \Closure
         {
             return function(\DateTime $now): string {
-                return $now->format('%m %d, %Y');
+                return $now->format('m d, Y');
             };
         }
     }
-    
+
     /**
      * File States/French.php
      */
-    class French extends \Teknoo\States\State\AbstractState 
+    class French extends AbstractState
     {
         public function sayHello(): \Closure
         {
@@ -39,25 +52,36 @@ Short Example
                 return 'Bonjour, '.$this->name;
             };
         }
-    
+
         public function displayDate(): \Closure
         {
             return function(\DateTime $now): string {
-                return $now->format('%d %m %Y');
+                return $now->format('d m Y');
             };
         }
     }
-    
-    /**
-     * File MyClass.php
-     */
-    class MyClass extends \Teknoo\States\Proxy\Standard
+
+
+    class Person implements ProxyInterface, AutomatedInterface
     {
+        use ProxyTrait,
+            AutomatedTrait;
+
         /**
          * @var string
          */
         private $name;
-        
+
+        /**
+         * @var string
+         */
+        private $country;
+
+        public function __construct()
+        {
+            $this->initializeProxy();
+        }
+
         protected static function statesListDeclaration(): array
         {
             return [
@@ -65,35 +89,57 @@ Short Example
                 French::class
             ];
         }
-        
-        public function setName(string $name): MyClass
+
+        /**
+         * @return AssertionInterface[]
+         */
+        protected function listAssertions(): array
+        {
+            return [
+                (new Property([English::class]))
+                    ->with('country', new IsEqual('en')),
+                (new Property([French::class]))
+                    ->with('country', new IsEqual('fr')),
+            ];
+        }
+
+        public function setName(string $name): Person
         {
             $this->name = $name;
-            
+
+            return $this;
+        }
+
+        public function setCountry(string $country): Person
+        {
+            $this->country = $country;
+
+            $this->updateStates();
+
             return $this;
         }
     }
-    
-    $frenchMan = new MyClass();
-    $frenchMan->switchState(French::class);
+
+    $frenchMan = new Person();
+    $frenchMan->setCountry('fr');
     $frenchMan->setName('Roger');
-    
-    $englishMan = new MyClass();
-    $englishMan->switchState(English::class);
+
+    $englishMan = new Person();
+    $englishMan->setCountry('en');
     $englishMan->setName('Richard');
-    
+
     $now = new \DateTime('2016-07-01');
-    
+
     foreach ([$frenchMan, $englishMan] as $man) {
         echo $man->sayHello().PHP_EOL;
-        echo 'Date: '.$man->displayDate($now);
+        echo 'Date: '.$man->displayDate($now).PHP_EOL;
     }
-    
+
     //Display
-    Bonjour Roger
-    Date: 01 07 2016
-    Good morning Richard
-    Date: 07 01, 2016
+    //Bonjour, Roger
+    //Date: 01 07 2016
+    //Good morning, Richard
+    //Date: 07 01, 2016
  
 Full Example
 ------------
