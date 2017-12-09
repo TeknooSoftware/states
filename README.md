@@ -21,9 +21,6 @@ Short Example
     use \Teknoo\States\Proxy\ProxyTrait;
     use \Teknoo\States\State\AbstractState;
 
-    /**
-     * File States/English.php
-     */
     class English extends AbstractState
     {
         public function sayHello(): \Closure
@@ -41,9 +38,6 @@ Short Example
         }
     }
 
-    /**
-     * File States/French.php
-     */
     class French extends AbstractState
     {
         public function sayHello(): \Closure
@@ -61,20 +55,15 @@ Short Example
         }
     }
 
-
     class Person implements ProxyInterface, AutomatedInterface
     {
         use ProxyTrait,
             AutomatedTrait;
 
-        /**
-         * @var string
-         */
+        /** @var string */
         private $name;
 
-        /**
-         * @var string
-         */
+        /** @var string */
         private $country;
 
         public function __construct()
@@ -113,7 +102,6 @@ Short Example
         public function setCountry(string $country): Person
         {
             $this->country = $country;
-
             $this->updateStates();
 
             return $this;
