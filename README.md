@@ -20,9 +20,9 @@ Short Example
             };
         }
 
-        public function displayDate(\DateTime $now): \Closure
+        public function displayDate(): \Closure
         {
-            return function(): string {
+            return function(\DateTime $now): string {
                 return $now->format('%m %d, %Y');
             };
         }
@@ -40,9 +40,9 @@ Short Example
             };
         }
     
-        public function displayDate(\DateTime $now): \Closure
+        public function displayDate(): \Closure
         {
-            return function(): string {
+            return function(\DateTime $now): string {
                 return $now->format('%d %m %Y');
             };
         }
