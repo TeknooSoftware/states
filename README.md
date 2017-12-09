@@ -79,9 +79,6 @@ Short Example
             ];
         }
 
-        /**
-         * @return AssertionInterface[]
-         */
         protected function listAssertions(): array
         {
             return [
