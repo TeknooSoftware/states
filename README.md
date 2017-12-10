@@ -6,8 +6,16 @@ Teknoo Software - States library
 States allows you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
 This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability.
 
-Short Example
-------------
+Features
+--------
+
+* **Create Several States** : Split classes in states to avoid ununderstable large monolithic statements.
+* **Inherit States and Classes** : Complete and factorize states thanks to inheritance. Stated classes can be also inherited.
+* **Automate States Switching** : Define states switching rules based on object's properties.
+* **Implement Every Where**: Thanks to traits and interfaces, use this pattern on your existant code. Compatible with Doctrine.
+
+Quick Example
+-------------
     <?php
 
     require 'vendor/autoload.php';
