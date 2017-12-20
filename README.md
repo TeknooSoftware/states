@@ -158,10 +158,6 @@ Behavior Documentation
 ----------------------
 Documentation to explain how this library works : [Behavior](docs/howto/behavior.md).
 
-API Documentation
------------------
-The API documentation is available at : [API](docs/howto/api/index.index).
-
 Evolutions in 3.x versions
 --------------------------
 
