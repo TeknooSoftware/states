@@ -58,17 +58,17 @@ interface StateInterface
     /**
      * Const to get a closure into a public scope.
      */
-    const VISIBILITY_PUBLIC = 'public';
+    const VISIBILITY_PUBLIC = 'u';
 
     /**
      * Const to get a closure into a protected scope.
      */
-    const VISIBILITY_PROTECTED = 'protected';
+    const VISIBILITY_PROTECTED = 'r';
 
     /**
      * Const to get a closure into a private scope.
      */
-    const VISIBILITY_PRIVATE = 'private';
+    const VISIBILITY_PRIVATE = 'i';
 
     /**
      * To initialize this state.
