@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[3.2.0-beta6] - 2017-12-23
+###Updated
+- Optimise States by using references instead copy for internal methods.
+- Optimize visibility const to limit cpu computes.
+
 ##[3.2.0-beta5] - 2017-11-22
 ###Updated
 - Fix bug in implementation for doctrines with automated methods : Missing 's' in name of method "updateStates"
