@@ -119,15 +119,17 @@ trait ProxyTrait
      * To instantiate a state class defined in this proxy. Is a state have a same non fullqualified class name of
      * a previous loaded state (defined in previously in this class or in children) it's skipped.
      *
-     * @param array  $statesList
-     * @param bool   $enablePrivateMode
-     * @param string $selfClassName
-     * @param array  &$loadedStatesList
+     * @param array $statesList
+     * @param bool $enablePrivateMode
+     * @param string &$selfClassName
+     * @param array &$loadedStatesList
+     *
+     * @throws Exception\StateNotFound
      */
     private function initializeStates(
         array $statesList,
         bool $enablePrivateMode,
-        string $selfClassName,
+        string &$selfClassName,
         array &$loadedStatesList
     ): void {
         foreach ($statesList as $stateClassName) {
@@ -163,6 +165,8 @@ trait ProxyTrait
      * `statesListDeclaration`.
      *
      * @return ProxyInterface
+     *
+     * @throws Exception\StateNotFound
      */
     private function loadStates(): ProxyInterface
     {
@@ -260,10 +264,10 @@ trait ProxyTrait
      */
     private function callMethod(
         StateInterface $state,
-        string $methodName,
+        string &$methodName,
         array &$arguments,
-        string $scopeVisibility,
-        callable $callback
+        string &$scopeVisibility,
+        callable &$callback
     ) : ProxyInterface {
         $callerStatedClass = $this->getCallerStatedClassName();
         $this->pushCallerStatedClassName($state);
@@ -291,14 +295,15 @@ trait ProxyTrait
      * @api
      *
      * @param string $methodName
-     * @param array  $arguments  of the callmethod
+     * @param array $arguments of the callmethod
      *
      * @return mixed
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws \Exception
+     * @throws \Throwable
      */
-    protected function findAndCall(string $methodName, array &$arguments)
+    protected function findAndCall(string &$methodName, array &$arguments)
     {
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
         $scopeVisibility = $this->getVisibilityScope(4);
@@ -361,6 +366,8 @@ trait ProxyTrait
     /**
      * Method to call into the constructor to initialize proxy's vars.
      * Externalized from the constructor to allow developers to write their own constructors into theirs classes.
+     *
+     * @throws Exception\StateNotFound
      */
     protected function initializeProxy(): void
     {
@@ -385,7 +392,7 @@ trait ProxyTrait
      *
      * @return string
      */
-    private function extractVisibilityScopeFromObject($callerObject): string
+    private function extractVisibilityScopeFromObject(&$callerObject): string
     {
         if ($this === $callerObject) {
             //It's me ! Mario ! So Private scope
@@ -417,7 +424,7 @@ trait ProxyTrait
      *
      * @return string
      */
-    private function extractVisibilityScopeFromClass(string $callerName): string
+    private function extractVisibilityScopeFromClass(string &$callerName): string
     {
         $thisClassName = \get_class($this);
 
@@ -508,6 +515,8 @@ trait ProxyTrait
     /**
      * Helper to clone proxy's values, callable easily if the Proxy class implements it's own
      * __clone() method without do a conflict traits resolution / renaming.
+     *
+     * @throws Exception\StateNotFound
      */
     public function cloneProxy(): ProxyInterface
     {

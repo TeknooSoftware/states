@@ -53,13 +53,15 @@ trait MagicCallTrait
      *
      * @return mixed
      *
-     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     *
+     * @throws \Exception
+     * @throws \Throwable
      * @see http://php.net/manual/en/language.oop5.magic.php#object.invoke
      */
     public function __invoke(...$args)
     {
-        return $this->findAndCall('invoke', $args);
+        $methodName = 'invoke';
+
+        return $this->findAndCall($methodName, $args);
     }
 
     /**
@@ -79,8 +81,9 @@ trait MagicCallTrait
     {
         try {
             $args = [];
+            $methodName = 'toString';
 
-            return $this->findAndCall('toString', $args);
+            return $this->findAndCall($methodName, $args);
         } catch (\Throwable $e) {
             return '';
         }

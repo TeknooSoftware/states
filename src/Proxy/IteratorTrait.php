@@ -55,8 +55,9 @@ trait IteratorTrait
     public function current()
     {
         $args = [];
+        $methodName = __FUNCTION__;
 
-        return $this->findAndCall(__FUNCTION__, $args);
+        return $this->findAndCall($methodName, $args);
     }
 
     /**
@@ -71,8 +72,9 @@ trait IteratorTrait
     public function key()
     {
         $args = [];
+        $methodName = __FUNCTION__;
 
-        return $this->findAndCall(__FUNCTION__, $args);
+        return $this->findAndCall($methodName, $args);
     }
 
     /**
@@ -87,8 +89,9 @@ trait IteratorTrait
     public function next()
     {
         $args = [];
+        $methodName = __FUNCTION__;
 
-        return $this->findAndCall(__FUNCTION__, $args);
+        return $this->findAndCall($methodName, $args);
     }
 
     /**
@@ -103,8 +106,9 @@ trait IteratorTrait
     public function rewind()
     {
         $args = [];
+        $methodName = __FUNCTION__;
 
-        return $this->findAndCall(__FUNCTION__, $args);
+        return $this->findAndCall($methodName, $args);
     }
 
     /**
@@ -117,7 +121,9 @@ trait IteratorTrait
     public function seek($position)
     {
         $args = [$position];
-        $this->findAndCall(__FUNCTION__, $args);
+        $methodName = __FUNCTION__;
+
+        $this->findAndCall($methodName, $args);
     }
 
     /**
@@ -132,8 +138,9 @@ trait IteratorTrait
     public function valid()
     {
         $args = [];
+        $methodName = __FUNCTION__;
 
-        return $this->findAndCall(__FUNCTION__, $args);
+        return $this->findAndCall($methodName, $args);
     }
 
     /**
@@ -148,7 +155,8 @@ trait IteratorTrait
     public function getIterator(): \Traversable
     {
         $args = [];
+        $methodName = __FUNCTION__;
 
-        return $this->findAndCall(__FUNCTION__, $args);
+        return $this->findAndCall($methodName, $args);
     }
 }

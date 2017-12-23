@@ -55,8 +55,9 @@ trait SerializableTrait
     public function serialize(): string
     {
         $args = [];
+        $methodName = __FUNCTION__;
 
-        return $this->findAndCall(__FUNCTION__, $args);
+        return $this->findAndCall($methodName, $args);
     }
 
     /**
@@ -71,6 +72,8 @@ trait SerializableTrait
     public function unserialize($serialized)
     {
         $args = [$serialized];
-        $this->findAndCall(__FUNCTION__, $args);
+        $methodName = __FUNCTION__;
+
+        return $this->findAndCall($methodName, $args);
     }
 }

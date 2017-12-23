@@ -170,7 +170,7 @@ trait StateTrait
      *
      * @return bool
      */
-    private function checkVisibilityPrivate(string $methodName, string $statedClassOrigin): bool
+    private function checkVisibilityPrivate(string &$methodName, string &$statedClassOrigin): bool
     {
         if (true === $this->privateModeStatus
             && $statedClassOrigin !== $this->statedClassName
@@ -189,7 +189,7 @@ trait StateTrait
      *
      * @return bool
      */
-    private function checkVisibilityProtected(string $methodName, string $statedClassOrigin): bool
+    private function checkVisibilityProtected(string &$methodName, string &$statedClassOrigin): bool
     {
         if (false === $this->reflectionsMethods[$methodName]->isPrivate()
             && !empty($statedClassOrigin)
@@ -209,7 +209,7 @@ trait StateTrait
      *
      * @return bool
      */
-    private function checkVisibilityPublic(string $methodName): bool
+    private function checkVisibilityPublic(string &$methodName): bool
     {
         if (true === $this->reflectionsMethods[$methodName]->isPublic()) {
             //It's a public method, do like if there is no method
@@ -236,9 +236,9 @@ trait StateTrait
      * @throws Exception\InvalidArgument
      */
     private function checkVisibility(
-        string $methodName,
-        string $requiredScope,
-        string $statedClassOrigin
+        string &$methodName,
+        string &$requiredScope,
+        string &$statedClassOrigin
     ): bool {
         //Check visibility scope
         switch ($requiredScope) {
@@ -276,7 +276,7 @@ trait StateTrait
      *
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
-    private function loadMethodDescription(string $methodName): bool
+    private function loadMethodDescription(string &$methodName): bool
     {
         if (isset($this->reflectionsMethods[$methodName])) {
             return $this->reflectionsMethods[$methodName] instanceof \ReflectionMethod;
@@ -318,7 +318,7 @@ trait StateTrait
      * @throws Exception\MethodNotImplemented is the method does not exist
      */
     private function getClosure(
-        string $methodName
+        string &$methodName
     ): ?\Closure {
         if (isset($this->closuresObjects[$methodName])) {
             return $this->closuresObjects[$methodName];
@@ -348,11 +348,11 @@ trait StateTrait
      */
     public function executeClosure(
         ProxyInterface $object,
-        string $methodName,
-        array $arguments,
-        string $requiredScope,
-        string $statedClassOrigin,
-        callable $returnCallback
+        string &$methodName,
+        array &$arguments,
+        string &$requiredScope,
+        string &$statedClassOrigin,
+        callable &$returnCallback
     ): StateInterface {
         $closure = $this->getClosure($methodName);
 

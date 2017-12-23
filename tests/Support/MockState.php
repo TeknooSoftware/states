@@ -160,11 +160,11 @@ class MockState implements StateInterface
      */
     public function executeClosure(
         ProxyInterface $object ,
-        string $methodName ,
-        array $arguments ,
-        string $requiredScope ,
-        string $statedClassOrigin ,
-        callable $returnCallback
+        string &$methodName ,
+        array &$arguments ,
+        string &$requiredScope ,
+        string &$statedClassOrigin ,
+        callable &$returnCallback
     )
     {
         $closure = $this->getClosure($methodName, $requiredScope, $statedClassOrigin);
