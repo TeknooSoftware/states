@@ -1,5 +1,51 @@
 #Teknoo Software - States library - Change Log
 
+##[3.2.0] - 2018-01-01
+###Stable release
+- Final release 3.2.0,
+
+###Updated
+- Optimise States by using references instead copy for internal methods.
+- Optimize visibility const to limit cpu computes.
+- Fix bug in implementation for doctrines with automated methods : Missing 's' in name of method "updateStates"
+- Improve fix added in 3.2.0-beta3 to use \Closure::call() when scope of the execution is the same of $this
+and not the scope of a parent class.
+- Use Teknoo/immutable 1.0
+
+###All changes :
+
+###Added
+- Import from States Life Cyclable the feature automated
+- The feature automated is now in main library
+- Redesign feature Automated to follow east programming rules
+
+###Remove
+* ProxyInterface::listAvailableStates()
+* ProxyInterface::listEnabledStates()
+* ProxyInterface::getStatesList()
+* ProxyInterface::inState()
+* StateInterface::getStatedClassName()
+* StateInterface::setStatedClassName()
+* StateInterface::isPrivateMode()
+* StateInterface::setPrivateMode()
+* StateInterface::listMethods()
+* StateInterface::testMethod()
+* StateInterface::getClosure()
+* ProxyInterface::statesListDeclaration() (only mandatory with the ProxyTrait implementation).
+
+###Added
+* StateInterface::executeClosure() : To execute, for the proxy instance, the closure and return the result via a callback (not mandatory to allow multiple call).
+* ProxyInterface::isInState() : To execute the callable if the object in of a required states passed in first arguments (not mandatory to forbid exposition of state outside the object).
+* ProxyTrait::statesListDeclaration() : Replace ProxyInterface::statesListDeclaration(), now is protected
+
+###Updated
+* StateTrait::getClosure() is now private
+* ProxyTrait::findMethodToCall() is renamed to ProxyTrait::findAndCall()
+* ProxyTrait::callInState() foo no longer retrieves the closure from the state then execute them. Now it ask the state to execute them directly and return the result via a callable function.
+* ProxyTrait::findMethodToCall() loop directly on each enabled state without test them, the state instance pushs results to proxy if the closure is available and executed.
+* ProxyTrait::findMethodToCall() throws the exception AvailableSeveralMethodImplementations only if two enabled states push a results.
+* With this new behavior, several methods (one by enabled state) can be called, but only one can push a result.
+
 ##[3.2.0-beta6] - 2017-12-23
 ###Updated
 - Optimise States by using references instead copy for internal methods.
