@@ -149,6 +149,8 @@ trait StateTrait
      * @api
      *
      * @return \ReflectionClass
+     *
+     * @throws \ReflectionException
      */
     private function getReflectionClass(): \ReflectionClass
     {
@@ -275,6 +277,7 @@ trait StateTrait
      * @return bool
      *
      * @throws Exception\MethodNotImplemented is the method does not exist
+     * @throws \ReflectionException
      */
     private function loadMethodDescription(string &$methodName): bool
     {
@@ -311,11 +314,12 @@ trait StateTrait
      *  Private method : Method available only for this stated class's method (method present in this state or another
      *      state) and not for its children.
      *
-     * @param string      $methodName
+     * @param string $methodName
      *
      * @return mixed (value of the stated method called)
      *
      * @throws Exception\MethodNotImplemented is the method does not exist
+     * @throws \ReflectionException
      */
     private function getClosure(
         string &$methodName
