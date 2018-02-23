@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[3.2.1] - 2018-02-23
+###Added
+- Add some property assertion for automated : IsEmpty, IsNotEmpty and Callback
+
 ##[3.2.0] - 2018-01-01
 ###Stable release
 - Final release 3.2.0,
