@@ -27,7 +27,7 @@ namespace Teknoo\States\Automated\Assertion\Property;
 use Teknoo\Immutable\ImmutableTrait;
 
 /**
- * Constraint to use with Teknoo\States\Automated\Property to check if a propery
+ * Constraint to use with Teknoo\States\Automated\Property to check if a property
  * is an instance of the excepted class name. *
  *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)

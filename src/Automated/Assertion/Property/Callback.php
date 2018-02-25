@@ -63,7 +63,8 @@ class Callback extends AbstractConstraint implements ConstraintInterface
      */
     public function check(&$value): ConstraintInterface
     {
-        ($this->callback)($value, $this);
+        $callback = $this->callback;
+        $callback($value, $this);
 
         return $this;
     }

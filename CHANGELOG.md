@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[3.2.2] - 2018-02-25
+###Added
+- Add some property assertion for automated : CountsEquals, CountsMore, CountsLess
+
 ##[3.2.1] - 2018-02-23
 ###Added
 - Add some property assertion for automated : IsEmpty, IsNotEmpty and Callback

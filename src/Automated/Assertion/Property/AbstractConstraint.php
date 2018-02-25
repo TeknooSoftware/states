@@ -33,6 +33,8 @@ namespace Teknoo\States\Automated\Assertion\Property;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ *
+ * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class AbstractConstraint implements ConstraintInterface
 {

@@ -28,7 +28,7 @@ use Teknoo\Immutable\ImmutableTrait;
 
 /**
  * Constraint to use with Teknoo\States\Automated\Property to check if a property
- * is not an instance of the excepted class name. *
+ * is a countable or an array and has count of elements set in parameter
  *
  * @copyright   Copyright (c) 2009-2017 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -37,25 +37,25 @@ use Teknoo\Immutable\ImmutableTrait;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsNotInstanceOf extends AbstractConstraint implements ConstraintInterface
+class CountsEqual extends AbstractConstraint implements ConstraintInterface
 {
     use ImmutableTrait;
 
     /**
-     * @var string
+     * @var int
      */
-    private $exceptedClassName;
+    private $exceptedCount;
 
     /**
-     * IsNotInstanceOf constructor.
+     * CountsEqual constructor.
      *
-     * @param string $exceptedClassName
+     * @param int $exceptedCount
      */
-    public function __construct(string $exceptedClassName)
+    public function __construct(int $exceptedCount)
     {
         $this->uniqueConstructorCheck();
 
-        $this->exceptedClassName = $exceptedClassName;
+        $this->exceptedCount = $exceptedCount;
     }
 
     /**
@@ -63,7 +63,13 @@ class IsNotInstanceOf extends AbstractConstraint implements ConstraintInterface
      */
     public function check(&$value): ConstraintInterface
     {
-        if (!$value instanceof $this->exceptedClassName) {
+        if ($value instanceof \Countable
+            && $value->count() === $this->exceptedCount) {
+            $this->isValid($value);
+        }
+
+        if (\is_array($value)
+            && \count($value) === $this->exceptedCount) {
             $this->isValid($value);
         }
 
