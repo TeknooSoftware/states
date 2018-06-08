@@ -1,8 +1,8 @@
 {
     "name": "teknoo/states",
     "type": "library",
-    "description": "Library to create PHP classes following the State pattern in PHP. This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability.",
-    "keywords": ["states","class","state pattern","pattern","behavioral software design pattern"],
+    "description": "Library to create PHP classes following the State pattern in PHP. This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability and and workflows writing.",
+    "keywords": ["states","class","state pattern","pattern","behavioral software design pattern","workflow"],
     "homepage": "http://teknoo.software/states",
     "license": ["MIT"],
     "authors": [
