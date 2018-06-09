@@ -504,6 +504,7 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     * @throws Exception\StateNotFound
      */
     public function __clone()
     {
@@ -550,6 +551,7 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     * @throws Exception\StateNotFound
      */
     public function registerState(
         string $stateName,
@@ -580,6 +582,7 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     * @throws Exception\StateNotFound
      */
     public function unregisterState(string $stateName): ProxyInterface
     {
@@ -604,6 +607,7 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     * @throws Exception\StateNotFound
      */
     public function switchState(string $stateName): ProxyInterface
     {
@@ -617,6 +621,7 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     * @throws Exception\StateNotFound
      */
     public function enableState(string $stateName): ProxyInterface
     {
@@ -633,6 +638,7 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     * @throws Exception\StateNotFound
      */
     public function disableState(string $stateName): ProxyInterface
     {
@@ -672,6 +678,7 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     * @throws Exception\StateNotFound
      */
     public function isInState(array $statesNames, callable $callback): ProxyInterface
     {
@@ -701,6 +708,7 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     * @throws \Throwable
      */
     public function __call(string $name, array $arguments)
     {

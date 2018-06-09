@@ -349,6 +349,7 @@ trait StateTrait
 
     /**
      * {@inheritdoc}
+     * @throws \ReflectionException
      */
     public function executeClosure(
         ProxyInterface $object,

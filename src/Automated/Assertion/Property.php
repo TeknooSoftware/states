@@ -67,6 +67,7 @@ class Property extends AbstractAssertion implements AssertionInterface
 
     /**
      * {@inheritdoc}
+     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     protected function process(AutomatedInterface $proxy): void
     {
@@ -83,6 +84,7 @@ class Property extends AbstractAssertion implements AssertionInterface
 
     /**
      * @return AssertionInterface
+     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function isValid(): AssertionInterface
     {

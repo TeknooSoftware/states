@@ -50,6 +50,7 @@ trait ArrayAccessTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
@@ -67,6 +68,7 @@ trait ArrayAccessTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
@@ -84,6 +86,7 @@ trait ArrayAccessTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
@@ -101,6 +104,7 @@ trait ArrayAccessTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
@@ -118,6 +122,7 @@ trait ArrayAccessTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */

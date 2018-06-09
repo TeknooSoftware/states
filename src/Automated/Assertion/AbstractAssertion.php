@@ -96,6 +96,7 @@ abstract class AbstractAssertion implements AssertionInterface
 
     /**
      * {@inheritdoc}
+     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function isValid(): AssertionInterface
     {

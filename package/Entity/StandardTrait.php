@@ -47,6 +47,7 @@ trait StandardTrait
      * This callback reinitialize proxy.
      *
      * @ORM\PostLoad()
+     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function postLoadDoctrine(): ProxyInterface
     {

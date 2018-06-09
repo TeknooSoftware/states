@@ -49,6 +49,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -66,6 +67,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -83,6 +85,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -100,6 +103,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -115,6 +119,7 @@ trait IteratorTrait
      * {@inheritdoc}
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -132,6 +137,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -149,6 +155,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
+     * @throws \Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
