@@ -677,31 +677,62 @@ trait ProxyTrait
     }
 
     /**
-     * {@inheritdoc}
+     * @param array $statesNames
+     * @param callable $callback
+     * @param bool $mustActive
      * @throws Exception\StateNotFound
      */
-    public function isInState(array $statesNames, callable $callback): ProxyInterface
+    private function checkInState(array $statesNames, callable $callback, bool $mustActive): void
     {
         $enabledStatesList = $this->listEnabledStates();
 
-        sort($enabledStatesList);
+        \sort($enabledStatesList);
         $statesNamesList = \array_flip($enabledStatesList);
 
-        foreach ($statesNames as $stateName) {
+        $inState = false;
+        do {
+            $stateName = \current($statesNames);
+
             $this->validateName($stateName);
 
             if (isset($statesNamesList[$stateName])) {
-                $callback($enabledStatesList);
+                $inState = true;
                 break;
             }
 
             foreach ($enabledStatesList as $enableStateName) {
                 if (\is_subclass_of($enableStateName, $stateName)) {
-                    $callback($enabledStatesList);
-                    return $this;
+                    $inState = true;
+                    break;
                 }
             }
+        } while (null === \current($statesNames) && false === $inState);
+
+        if ($inState === $mustActive) {
+            $callback($enabledStatesList);
         }
+
+        return;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws Exception\StateNotFound
+     */
+    public function isInState(array $statesNames, callable $callback): ProxyInterface
+    {
+        $this->checkInState($statesNames, $callback, true);
+
+        return $this;
+    }
+
+    /**
+     * {@inheritdoc}
+     * @throws Exception\StateNotFound
+     */
+    public function isNotInState(array $statesNames, callable $callback): ProxyInterface
+    {
+        $this->checkInState($statesNames, $callback, false);
 
         return $this;
     }

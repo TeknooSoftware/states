@@ -456,7 +456,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         self::assertInstanceOf(
             Proxy\ProxyInterface::class,
             $proxy->isInState([\DateTime::class], function () {
-                $this->fail();
+                self::fail();
             })
         );
     }
@@ -477,7 +477,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         self::assertInstanceOf(
             Proxy\ProxyInterface::class,
             $proxy->isInState([MockState2::class], function () {
-                $this->fail();
+                self::fail();
             })
         );
 
@@ -485,6 +485,72 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         self::assertInstanceOf(
             Proxy\ProxyInterface::class,
             $proxy->isInState([MockState1::class], function ($statesList) use (&$called) {
+                $called = true;
+                self::assertEquals([MockState1::class], $statesList);
+            })
+        );
+
+        self::assertTrue($called);
+    }
+
+    /**
+     * @expectedException \TypeError
+     */
+    public function testExceptionOnIsNotInStateWithInvalidArray()
+    {
+        $this->buildProxy()->isNotInState('', function() {});
+    }
+
+    /**
+     * @expectedException \TypeError
+     */
+    public function testExceptionOnIsNotInStateWithInvalidCallable()
+    {
+        $this->buildProxy()->isNotInState(['foo'], []);
+    }
+
+    /**
+     * Test behavior of the proxy when it was not initialized.
+     */
+    public function testNotInStateCallBehaviorOnNonInitialized()
+    {
+        $proxyReflectionClass = new \ReflectionClass($this->buildProxy());
+        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isNotInState([\DateTime::class], function () use (&$called) {
+                $called = true;
+            })
+        );
+
+        self::assertTrue($called);
+    }
+
+    /**
+     * Test behavior of the proxy method inState.
+     */
+    public function testIsNotInStateCallbackOnActiveState()
+    {
+        /*
+         * @var Proxy\ProxyInterface
+         */
+        $proxy = $this->buildProxy();
+        $proxy->registerState(MockState1::class, new MockState1(false, "It/A/StatedClass"));
+        $proxy->registerState(MockState2::class, new MockState2(false, "It/A/StatedClass"));
+        $proxy->enableState(MockState1::class);
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isNotInState([MockState1::class], function () {
+                self::fail();
+            })
+        );
+
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isNotInState([MockState2::class], function ($statesList) use (&$called) {
                 $called = true;
                 self::assertEquals([MockState1::class], $statesList);
             })

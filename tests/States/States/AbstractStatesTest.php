@@ -103,7 +103,7 @@ abstract class AbstractStatesTest extends TestCase
             StateInterface::VISIBILITY_PRIVATE,
             'My\Stated\ClassName',
             function () {
-                $this->fail();
+                self::fail();
             }
         ];
 
@@ -128,7 +128,7 @@ abstract class AbstractStatesTest extends TestCase
             StateInterface::VISIBILITY_PRIVATE,
             'My\Stated\ClassName',
             function () {
-                $this->fail();
+                self::fail();
             }
         ];
 
@@ -156,7 +156,7 @@ abstract class AbstractStatesTest extends TestCase
             StateInterface::VISIBILITY_PRIVATE,
             'My\Stated\ClassName',
             function () {
-                $this->fail();
+                self::fail();
             }
         ];
 
@@ -178,7 +178,7 @@ abstract class AbstractStatesTest extends TestCase
             'badScope',
             'My\Stated\ClassName',
             function () {
-                $this->fail();
+                self::fail();
             }
         ];
 

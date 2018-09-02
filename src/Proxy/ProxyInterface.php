@@ -179,6 +179,21 @@ interface ProxyInterface
      */
     public function isInState(array $statesNames, callable $callback): ProxyInterface;
 
+    /**
+     * Check if this stated class instance is not in the required state defined by $stateName and call the callback
+     * function if it's true. The list of actives states (array of string) is passed to the callback
+     *
+     * @api
+     *
+     * @param string[]|array $statesNames
+     * @param callable $callback
+     *
+     * @return ProxyInterface
+     *
+     * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
+     */
+    public function isNotInState(array $statesNames, callable $callback): ProxyInterface;
+
     /*******************
      * Methods Calling *
      *******************/

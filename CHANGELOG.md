@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[3.3.0] - 2018-09-02
+###Added
+- Add method "isNotInState" into ProxyInterface to check if an object is not in any passed states.
+
 ##[3.2.2] - 2018-02-25
 ###Added
 - Add some property assertion for automated : CountsEquals, CountsMore, CountsLess
