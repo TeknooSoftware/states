@@ -697,7 +697,7 @@ trait ProxyTrait
                     break;
                 }
             }
-        } while (false !== \next($statesNames) && (true === empty($inStates) || true == $allStates));
+        } while (!(false === \next($statesNames)) && (true === empty($inStates) || true == $allStates));
 
         return $inStates;
     }
