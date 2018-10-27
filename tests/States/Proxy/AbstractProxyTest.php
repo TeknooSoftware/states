@@ -494,6 +494,69 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * Test behavior of the proxy method inState.
+     */
+    public function testIsInStateCallbackOnActiveStateWhenAllRequired()
+    {
+        /*
+         * @var Proxy\ProxyInterface
+         */
+        $proxy = $this->buildProxy();
+        $proxy->registerState(MockState1::class, new MockState1(false, "It/A/StatedClass"));
+        $proxy->registerState(MockState2::class, new MockState2(false, "It/A/StatedClass"));
+        $proxy->enableState(MockState1::class);
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isInState([MockState2::class], function () { self::fail(); }, true)
+        );
+
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isInState([MockState1::class], function ($statesList) use (&$called) {
+                $called = true;
+                self::assertEquals([MockState1::class], $statesList);
+            }, true)
+        );
+
+        self::assertTrue($called);
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isInState([MockState1::class, MockState2::class], function () { self::fail(); }, true)
+        );
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isInState([MockState2::class, MockState1::class], function () { self::fail(); }, true)
+        );
+
+        $proxy->enableState(MockState2::class);
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isInState([MockState1::class, MockState2::class], function ($statesList) use (&$called) {
+                $called = true;
+                self::assertEquals([MockState1::class, MockState2::class], $statesList);
+            }, true)
+        );
+
+        self::assertTrue($called);
+
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isInState([MockState2::class, MockState1::class], function ($statesList) use (&$called) {
+                $called = true;
+                self::assertEquals([MockState1::class, MockState2::class], $statesList);
+            }, true)
+        );
+
+        self::assertTrue($called);
+    }
+
+    /**
      * @expectedException \TypeError
      */
     public function testExceptionOnIsNotInStateWithInvalidArray()
@@ -557,6 +620,35 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         );
 
         self::assertTrue($called);
+    }
+
+    /**
+     * Test behavior of the proxy method inState.
+     */
+    public function testIsNotInStateCallbackOnActiveStateAllForbidden()
+    {
+        /*
+         * @var Proxy\ProxyInterface
+         */
+        $proxy = $this->buildProxy();
+        $proxy->registerState(MockState1::class, new MockState1(false, "It/A/StatedClass"));
+        $proxy->registerState(MockState2::class, new MockState2(false, "It/A/StatedClass"));
+        $proxy->enableState(MockState1::class);
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isNotInState([MockState1::class], function () { self::fail(); }, true)
+        );
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isNotInState([MockState2::class, MockState1::class], function () { self::fail(); }, true)
+        );
+
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isNotInState([MockState1::class, MockState2::class], function () { self::fail(); }, true)
+        );
     }
 
     /**

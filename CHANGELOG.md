@@ -1,5 +1,13 @@
 #Teknoo Software - States library - Change Log
 
+##[3.3.1] - 2018-09-02
+###Fix
+- Fix behavior of `isInState` and `isNotInState`, had a bug with not firsts states in the required list
+
+###Add
+- Add options to `isInState` and `isNotInState` to force the test on all states (all states must be active
+ or all states must not be active).
+
 ##[3.3.0] - 2018-09-02
 ###Added
 - Add method "isNotInState" into ProxyInterface to check if an object is not in any passed states.

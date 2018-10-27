@@ -172,12 +172,13 @@ interface ProxyInterface
      *
      * @param string[]|array $statesNames
      * @param callable $callback
+     * @param bool $allRequired
      *
      * @return ProxyInterface
      *
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      */
-    public function isInState(array $statesNames, callable $callback): ProxyInterface;
+    public function isInState(array $statesNames, callable $callback, bool $allRequired = false): ProxyInterface;
 
     /**
      * Check if this stated class instance is not in the required state defined by $stateName and call the callback
@@ -187,12 +188,13 @@ interface ProxyInterface
      *
      * @param string[]|array $statesNames
      * @param callable $callback
+     * @param bool $allForbidden
      *
      * @return ProxyInterface
      *
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      */
-    public function isNotInState(array $statesNames, callable $callback): ProxyInterface;
+    public function isNotInState(array $statesNames, callable $callback, bool $allForbidden= false): ProxyInterface;
 
     /*******************
      * Methods Calling *
