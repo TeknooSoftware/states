@@ -194,7 +194,7 @@ interface ProxyInterface
      *
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      */
-    public function isNotInState(array $statesNames, callable $callback, bool $allForbidden= false): ProxyInterface;
+    public function isNotInState(array $statesNames, callable $callback, bool $allForbidden = false): ProxyInterface;
 
     /*******************
      * Methods Calling *

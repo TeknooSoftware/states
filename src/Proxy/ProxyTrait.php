@@ -676,21 +676,11 @@ trait ProxyTrait
         }
     }
 
-    /**
-     * @param array $statesNames
-     * @param callable $callback
-     * @param bool $mustActive
-     * @param bool $allStates
-     * @throws Exception\StateNotFound
-     */
-    private function checkInState(array $statesNames, callable $callback, bool $mustActive, bool $allStates): void
+    private function statesIntersect(array $enabledStatesList, array $statesNames, bool $allStates): array
     {
-        $enabledStatesList = $this->listEnabledStates();
-
-        \sort($enabledStatesList);
+        $inStates = [];
         $list = \array_flip($enabledStatesList);
 
-        $inStates = [];
         do {
             $stateName = \current($statesNames);
 
@@ -707,8 +697,25 @@ trait ProxyTrait
                     break;
                 }
             }
-
         } while (false !== \next($statesNames) && (empty($inStates) || true == $allStates));
+
+        return $inStates;
+    }
+
+    /**
+     * @param array $statesNames
+     * @param callable $callback
+     * @param bool $mustActive
+     * @param bool $allStates
+     * @throws Exception\StateNotFound
+     */
+    private function checkInState(array $statesNames, callable $callback, bool $mustActive, bool $allStates): void
+    {
+        $enabledStatesList = $this->listEnabledStates();
+
+        \sort($enabledStatesList);
+
+        $inStates = $this->statesIntersect($enabledStatesList, $statesNames, $allStates);
 
         if ((((!$allStates && !empty($inStates)) || \count($inStates) == \count($statesNames)) && $mustActive)
             || ((empty($inStates) || (!$allStates && \count($inStates) < \count($statesNames))) && !$mustActive)) {
@@ -733,7 +740,7 @@ trait ProxyTrait
      * {@inheritdoc}
      * @throws Exception\StateNotFound
      */
-    public function isNotInState(array $statesNames, callable $callback, bool $allForbidden= false): ProxyInterface
+    public function isNotInState(array $statesNames, callable $callback, bool $allForbidden = false): ProxyInterface
     {
         $this->checkInState($statesNames, $callback, false, $allForbidden);
 
