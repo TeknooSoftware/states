@@ -37,7 +37,7 @@ use Teknoo\Immutable\ImmutableTrait;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class CountsMore extends AbstractConstraint implements ConstraintInterface
+class CountsMore extends AbstractConstraint
 {
     use ImmutableTrait;
 

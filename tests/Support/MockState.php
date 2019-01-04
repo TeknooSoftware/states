@@ -165,7 +165,7 @@ class MockState implements StateInterface
         string &$requiredScope ,
         string &$statedClassOrigin ,
         callable &$returnCallback
-    )
+    ): StateInterface
     {
         $closure = $this->getClosure($methodName, $requiredScope, $statedClassOrigin);
 

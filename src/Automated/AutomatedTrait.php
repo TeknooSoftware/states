@@ -87,10 +87,7 @@ trait AutomatedTrait
         string $property,
         ConstraintsSetInterface $constraints
     ): AutomatedInterface {
-        $value = null;
-        if (isset($this->{$property})) {
-            $value = $this->{$property};
-        }
+        $value = $this->{$property} ?? null;
 
         $constraints->check($value);
 

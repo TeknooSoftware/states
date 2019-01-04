@@ -105,22 +105,6 @@ trait StateTrait
     private $closuresObjects = [];
 
     /**
-     * Methods to not return into descriptions.
-     *
-     * @var array
-     */
-    protected $methodsNamesToIgnoreArray = array(
-        '__construct' => '__construct',
-        'getReflectionClass' => 'getReflectionClass',
-        'checkVisibilityPrivate' => 'checkVisibilityPrivate',
-        'checkVisibilityProtected' => 'checkVisibilityProtected',
-        'checkVisibilityPublic' => 'checkVisibilityPublic',
-        'checkVisibility' => 'checkVisibility',
-        'loadMethodDescription' => 'loadMethodDescription',
-        'getClosure' => 'getClosure',
-    );
-
-    /**
      * To know if the private mode is enable or not for this state (see isPrivateMode()).
      *
      * @var bool

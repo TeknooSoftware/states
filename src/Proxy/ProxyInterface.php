@@ -59,7 +59,7 @@ interface ProxyInterface
     /**
      * Name of the default state to load automatically in the construction.
      */
-    const DEFAULT_STATE_NAME = 'StateDefault';
+    public const DEFAULT_STATE_NAME = 'StateDefault';
 
     /**************************
      *** Container Management *

@@ -37,7 +37,7 @@ use Teknoo\Immutable\ImmutableTrait;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsInstanceOf extends AbstractConstraint implements ConstraintInterface
+class IsInstanceOf extends AbstractConstraint
 {
     use ImmutableTrait;
 

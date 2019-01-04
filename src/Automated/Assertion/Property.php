@@ -41,7 +41,7 @@ use Teknoo\States\Automated\AutomatedInterface;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Property extends AbstractAssertion implements AssertionInterface
+class Property extends AbstractAssertion
 {
     /**
      * @var array|callable

@@ -46,6 +46,7 @@ abstract class AbstractStandardDocument implements ProxyInterface
 
     /**
      * Default constructor used to initialize the stated object with its factory.
+     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function __construct()
     {

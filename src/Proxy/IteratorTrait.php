@@ -123,7 +123,7 @@ trait IteratorTrait
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
-    public function seek($position)
+    public function seek($position): void
     {
         $args = [$position];
         $methodName = __FUNCTION__;

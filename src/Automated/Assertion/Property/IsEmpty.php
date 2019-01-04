@@ -36,7 +36,7 @@ use Teknoo\Immutable\ImmutableTrait;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsEmpty extends AbstractConstraint implements ConstraintInterface
+class IsEmpty extends AbstractConstraint
 {
     use ImmutableTrait;
 

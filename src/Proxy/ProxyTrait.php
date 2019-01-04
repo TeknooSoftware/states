@@ -153,7 +153,7 @@ trait ProxyTrait
             );
 
             //If the state is the default
-            if ($shortStateName == ProxyInterface::DEFAULT_STATE_NAME) {
+            if ($shortStateName === ProxyInterface::DEFAULT_STATE_NAME) {
                 $this->enableState($stateClassName);
             }
         }
@@ -256,7 +256,7 @@ trait ProxyTrait
      * @param string         $scopeVisibility self::VISIBILITY_PUBLIC
      *                                        self::VISIBILITY_PROTECTED
      *                                        self::VISIBILITY_PRIVATE
-     * @param callable $callback
+     * @param callable &$callback
      *
      * @return self|ProxyInterface
      *
@@ -467,7 +467,7 @@ trait ProxyTrait
     private function getVisibilityScope(int $limit): string
     {
         //Get the calling stack
-        $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, (int) $limit);
+        $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
 
         if (isset($callingStack[2]['function']) && '__call' !== $callingStack[2]['function']) {
             //Magic method __call adds a line into calling stack, but not other magic method
@@ -509,8 +509,6 @@ trait ProxyTrait
     public function __clone()
     {
         $this->cloneProxy();
-
-        return $this;
     }
 
     /**
@@ -671,11 +669,18 @@ trait ProxyTrait
     {
         if (!empty($this->activesStates) && \is_array($this->activesStates)) {
             return \array_keys($this->activesStates);
-        } else {
-            return [];
         }
+
+        return [];
     }
 
+    /**
+     * @param array $enabledStatesList
+     * @param array $statesNames
+     * @param bool $allStates
+     * @return array
+     * @throws Exception\StateNotFound
+     */
     private function statesIntersect(array $enabledStatesList, array $statesNames, bool $allStates): array
     {
         $inStates = [];
@@ -717,12 +722,10 @@ trait ProxyTrait
 
         $inStates = $this->statesIntersect($enabledStatesList, $statesNames, $allStates);
 
-        if ((((!$allStates && !empty($inStates)) || \count($inStates) == \count($statesNames)) && $mustActive)
+        if ((((!$allStates && !empty($inStates)) || \count($inStates) === \count($statesNames)) && $mustActive)
             || ((empty($inStates) || (!$allStates && \count($inStates) < \count($statesNames))) && !$mustActive)) {
             $callback($enabledStatesList);
         }
-
-        return;
     }
 
     /**

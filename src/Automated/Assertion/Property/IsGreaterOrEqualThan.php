@@ -39,7 +39,7 @@ use Teknoo\Immutable\ImmutableTrait;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsGreaterOrEqualThan extends AbstractConstraint implements ConstraintInterface
+class IsGreaterOrEqualThan extends AbstractConstraint
 {
     use ImmutableTrait;
 

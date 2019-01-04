@@ -64,6 +64,7 @@ abstract class Standard implements ProxyInterface
 
     /**
      * Initialize the proxy by calling the method initializeProxy.
+     * @throws Exception\StateNotFound
      */
     public function __construct()
     {

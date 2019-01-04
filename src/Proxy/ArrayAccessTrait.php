@@ -126,7 +126,7 @@ trait ArrayAccessTrait
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         $args = [$offset];
         $methodName = __FUNCTION__;

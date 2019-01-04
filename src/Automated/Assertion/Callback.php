@@ -38,7 +38,7 @@ use Teknoo\States\Automated\AutomatedInterface;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Callback extends AbstractAssertion implements AssertionInterface
+class Callback extends AbstractAssertion
 {
     /**
      * Callable (callback or closure) to execute to determine if this assertio is valid or not.
@@ -70,7 +70,6 @@ class Callback extends AbstractAssertion implements AssertionInterface
             throw new \RuntimeException('Error the callback is not callable');
         }
 
-        $callback = ($this->callback);
-        $callback($proxy, $this);
+        ($this->callback)($proxy, $this);
     }
 }

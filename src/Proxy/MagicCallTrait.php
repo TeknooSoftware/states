@@ -83,7 +83,7 @@ trait MagicCallTrait
             $args = [];
             $methodName = 'toString';
 
-            return $this->findAndCall($methodName, $args);
+            return (string) $this->findAndCall($methodName, $args);
         } catch (\Throwable $e) {
             return '';
         }

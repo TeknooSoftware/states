@@ -76,6 +76,7 @@ class ConstraintsSet implements ConstraintsSetInterface
 
     /**
      * @param $value
+     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     private function processConstraint($value): void
     {
@@ -91,6 +92,7 @@ class ConstraintsSet implements ConstraintsSetInterface
 
     /**
      * {@inheritdoc}
+     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function check(&$value): ConstraintsSetInterface
     {
@@ -101,6 +103,7 @@ class ConstraintsSet implements ConstraintsSetInterface
 
     /**
      * {@inheritdoc}
+     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function isValid(&$value): ConstraintsSetInterface
     {
