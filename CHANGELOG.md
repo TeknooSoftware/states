@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[3.3.2] - 2019-01-04
+###Fix
+- QA - check technical debt 
+
 ##[3.3.1] - 2018-09-02
 ###Fix
 - Fix behavior of `isInState` and `isNotInState`, had a bug with not firsts states in the required list
