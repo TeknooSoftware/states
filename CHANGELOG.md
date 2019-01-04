@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[3.3.3] - 2019-01-04
+###Fix
+- Add support to PHP 7.3 
+
 ##[3.3.2] - 2019-01-04
 ###Fix
 - QA - check technical debt 
