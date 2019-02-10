@@ -60,19 +60,15 @@ class PropertyTest extends AbstractAssertionTest
         );
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testWithBadPropertyName()
     {
+        $this->expectException(\TypeError::class);
         $this->buildInstance()->with(new \stdClass(), 42);
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testWithBadConstraint()
     {
+        $this->expectException(\TypeError::class);
         $this->buildInstance()->with('fooBar', new \stdClass());
     }
 

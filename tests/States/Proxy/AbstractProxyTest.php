@@ -74,7 +74,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     /**
      * Initialize objects for tests.
      */
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->state1 = new MockState1(false, 'my\Stated\Class');
@@ -83,7 +83,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $this->buildProxy();
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         $this->proxy = null;
         parent::tearDown();
@@ -141,40 +141,38 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
      *
-     * @expectedException \TypeError
      */
     public function testExceptionOnRegisterAStateWithInvalidName()
     {
+        $this->expectException(\TypeError::class);
         $this->proxy->registerState(array(), $this->state1);
     }
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
      *
-     * @expectedException \Teknoo\States\Proxy\Exception\IllegalName
      */
     public function testExceptionOnRegisterAStateWithAnEmptyName()
     {
+        $this->expectException(Exception\IllegalName::class);
         $this->proxy->registerState('', $this->state1);
     }
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
-     *
-     * @expectedException @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testExceptionOnRegisterAStateWithANonExistentClassName()
     {
+        $this->expectException(Exception\StateNotFound::class);
         $this->proxy->registerState('fooBar', $this->state1);
     }
 
     /**
      * Proxy must throw an exception if the registering state name is not a valid string.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\IllegalName
      */
     public function testExceptionOnRegisterAStateWithAClassNameNotImplementingTheState()
     {
+        $this->expectException(Exception\IllegalName::class);
         $this->proxy->registerState(\DateTime::class, $this->state1);
     }
 
@@ -202,31 +200,28 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Proxy must throw an exception if the state name is not a valid string.
-     *
-     * @expectedException \TypeError
      */
     public function testExceptionOnUnRegisterAStateWithInvalidString()
     {
+        $this->expectException(\TypeError::class);
         $this->proxy->unregisterState(array());
     }
 
     /**
      * Proxy must throw an exception if the state to remove is not registered.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testExceptionOnUnRegisterAStateWithNonExistentClass()
     {
+        $this->expectException(Exception\StateNotFound::class);
         $this->proxy->unregisterState('NonExistentState');
     }
 
     /**
      * Proxy must throw an exception if the state name is not a valid string.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testExceptionOnUnRegisterAStateWithNonRegisteredState()
     {
+        $this->expectException(Exception\StateNotFound::class);
         $this->proxy->unregisterState(\DateTime::class);
     }
 
@@ -261,21 +256,19 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Proxy must throw an exception if the state name is not a valid string in switch state method.
-     *
-     * @expectedException \TypeError
      */
     public function testExceptionOnSwitchOnStateInvalidString()
     {
+        $this->expectException(\TypeError::class);
         $this->proxy->switchState(array());
     }
 
     /**
      * Proxy must throw an exception if the state does not exist in switch state method.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testExceptionOnSwitchToNonRegisteredState()
     {
+        $this->expectException(Exception\StateNotFound::class);
         $this->proxy->switchState('NonExistentState');
     }
 
@@ -309,31 +302,28 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Proxy must throw an exception if the state name is not a valid string when we want enable a state.
-     *
-     * @expectedException \TypeError
      */
     public function testExceptionOnEnableStateWithInvalidString()
     {
+        $this->expectException(\TypeError::class);
         $this->proxy->enableState(array());
     }
 
     /**
      * Proxy must throw an exception if the state name is not a valid string.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testExceptionOnEnableStateWithNonRegisteredState()
     {
+        $this->expectException(Exception\StateNotFound::class);
         $this->proxy->enableState(\DateTime::class);
     }
 
     /**
      * Proxy must throw an exception if the state is not available when we want enable a state.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testExceptionOnEnableStateWithNonExistentClass()
     {
+        $this->expectException(Exception\StateNotFound::class);
         $this->proxy->enableState('NonExistentState');
     }
 
@@ -368,31 +358,28 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Proxy must throw an exception if the state name is not a valid string when we want disable a state.
-     *
-     * @expectedException \TypeError
      */
     public function testExceptionOnDisableStateWithInvalidString()
     {
+        $this->expectException(\TypeError::class);
         $this->proxy->disableState(array());
     }
 
     /**
      * Proxy must throw an exception if the state name is not a valid string.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testExceptionOnDisableStateWithNonRegisteredState()
     {
+        $this->expectException(Exception\StateNotFound::class);
         $this->proxy->disableState(\DateTime::class);
     }
 
     /**
      * Proxy must throw an exception if the state is not available when we want enable a state.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function testExceptionOnDisableStateWithNonExistentClass()
     {
+        $this->expectException(Exception\StateNotFound::class);
         $this->proxy->disableState('NonExistentState');
     }
 
@@ -430,19 +417,15 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testExceptionOnIsInStateWithInvalidArray()
     {
+        $this->expectException(\TypeError::class);
         $this->buildProxy()->isInState('', function() {});
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testExceptionOnIsInStateWithInvalidCallable()
     {
+        $this->expectException(\TypeError::class);
         $this->buildProxy()->isInState(['foo'], []);
     }
 
@@ -556,19 +539,15 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         self::assertTrue($called);
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testExceptionOnIsNotInStateWithInvalidArray()
     {
+        $this->expectException(\TypeError::class);
         $this->buildProxy()->isNotInState('', function() {});
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testExceptionOnIsNotInStateWithInvalidCallable()
     {
+        $this->expectException(\TypeError::class);
         $this->buildProxy()->isNotInState(['foo'], []);
     }
 
@@ -653,31 +632,28 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test proxy behavior when the called method name is not a string.
-     *
-     * @expectedException \TypeError
      */
     public function testExceptionWhenCallAMethodWithAnInvalidString()
     {
+        $this->expectException(\TypeError::class);
         $this->proxy->__call(array(), array());
     }
 
     /**
      * Test proxy behavior when the required method is not implemented in anything active state.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testExceptionOnCallWithAnNotExistentMethod()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->proxy->test();
     }
 
     /**
      * Test proxy behavior when the required method is implemented in several active state.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\AvailableSeveralMethodImplementations
      */
     public function testExceptionWhenCallAMethodAvailableOnMultipleEnabledStates()
     {
+        $this->expectException(Exception\AvailableSeveralMethodImplementations::class);
         $this->initializeProxy();
         $this->proxy->enableState(MockState2::class);
         $this->state1->allowMethod();
@@ -1272,11 +1248,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when __invoke is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testInvokeNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $proxy = $this->proxy;
         $proxy();
@@ -1381,11 +1356,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test behavior of magic method during outside calling.
-     *
-     * @expectedException \Throwable
      */
     public function testGetProtectedGet()
     {
+        $this->expectException(\Throwable::class);
         self::assertEquals('value1', $this->proxy->protectedProperty);
     }
 
@@ -1400,21 +1374,19 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test behavior of magic method during outside calling.
-     *
-     * @expectedException \Throwable
      */
     public function testSetProtected()
     {
+        $this->expectException(\Throwable::class);
         $this->proxy->protectedProperty = 'value2';
     }
 
     /**
      * Test behavior of magic method during a state's method calling.
-     *
-     * @expectedException \Throwable
      */
     public function testUnsetProtected()
     {
+        $this->expectException(\Throwable::class);
         unset($this->proxy->protectedProperty);
     }
 
@@ -1435,11 +1407,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test behavior of magic method during a state's method calling.
-     *
-     * @expectedException \Throwable
      */
     public function testGetPrivateGet()
     {
+        $this->expectException(\Throwable::class);
         self::assertEquals('value1', $this->proxy->privateProperty);
     }
 
@@ -1454,21 +1425,19 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test behavior of magic method during a state's method calling.
-     *
-     * @expectedException \Throwable
      */
     public function testSetUnsetPrivate()
     {
+        $this->expectException(\Throwable::class);
         $this->proxy->privateProperty = 'value2';
     }
 
     /**
      * Test behavior of magic method during outside calling.
-     *
-     * @expectedException \Throwable
      */
     public function testUnsetPrivate()
     {
+        $this->expectException(\Throwable::class);
         unset($this->proxy->privateProperty);
     }
 
@@ -1482,21 +1451,19 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test behavior of magic method __call about a protected method during outside calling.
-     *
-     * @expectedException \Throwable
      */
     public function testCallProtectedFromOutside()
     {
+        $this->expectException(\Throwable::class);
         $this->proxy->protectedMethodToCall();
     }
 
     /**
      * Test behavior of magic method __call about a protected method during outside calling.
-     *
-     * @expectedException \Throwable
      */
     public function testCallPrivateFromOutside()
     {
+        $this->expectException(\Throwable::class);
         $this->proxy->privateMethodToCall();
     }
 
@@ -1549,10 +1516,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when count is not implemented into in actives states.
-     * @expectedException \Teknoo\States\Exception\MethodNotImplemented
      */
     public function testCountNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $this->proxy->count();
     }
@@ -1572,11 +1539,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when offsetExist is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetExistNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $a = isset($this->proxy[2]);
     }
@@ -1596,11 +1562,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when offsetGet is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetGetNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $value = $this->proxy[2];
     }
@@ -1620,11 +1585,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when offsetSet is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetSetNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $this->proxy[2] = 'foo';
     }
@@ -1644,11 +1608,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when offsetUnset is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testOffsetUnsetNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         unset($this->proxy[2]);
     }
@@ -1668,11 +1631,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when current is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testCurrentNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $this->proxy->current();
     }
@@ -1692,11 +1654,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when key is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testKeyNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $this->proxy->key();
     }
@@ -1716,11 +1677,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when next is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testNextNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $this->proxy->next();
     }
@@ -1740,11 +1700,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when rewind is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testRewindNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $this->proxy->rewind();
     }
@@ -1764,11 +1723,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when seek is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testSeekNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $this->proxy->seek(1);
     }
@@ -1788,11 +1746,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when valid is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testValidNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $this->proxy->valid();
     }
@@ -1812,11 +1769,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when getIterator is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testGetIteratorNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $this->proxy->getIterator();
     }
@@ -1836,11 +1792,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when serialize is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testSerializeNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         serialize($this->proxy);
     }
@@ -1860,11 +1815,10 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
     /**
      * Test exception behavior of the proxy when unserialize is not implemented into in actives states.
-     *
-     * @expectedException \Teknoo\States\Proxy\Exception\MethodNotImplemented
      */
     public function testUnSerializeNonImplemented()
     {
+        $this->expectException(Exception\MethodNotImplemented::class);
         $this->initializeProxy();
         $this->proxy->unserialize('');
     }

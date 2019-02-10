@@ -23,6 +23,8 @@ namespace Teknoo\Tests\States\States;
 
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\Proxy\ProxyInterface;
+use Teknoo\States\State\Exception\InvalidArgument;
+use Teknoo\States\State\Exception\MethodNotImplemented;
 use Teknoo\States\State\StateInterface;
 use Teknoo\Tests\Support;
 
@@ -40,7 +42,7 @@ use Teknoo\Tests\Support;
  */
 abstract class AbstractStatesTest extends TestCase
 {
-    public static function setUpBeforeClass()
+    public static function setUpBeforeClass(): void
     {
         parent::setUpBeforeClass();
 
@@ -144,11 +146,9 @@ abstract class AbstractStatesTest extends TestCase
         self::assertFalse($called, "Error, if a method does not exist the callback must be never called");
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testAnExceptionMustBeThrewWhenTheMethodNameToExecuteIsNotAString()
     {
+        $this->expectException(\TypeError::class);
         $args = [
             $this->createMock(ProxyInterface::class),
             [],
@@ -166,11 +166,9 @@ abstract class AbstractStatesTest extends TestCase
             );
     }
 
-    /**
-     * @expectedException \Teknoo\States\State\Exception\InvalidArgument
-     */
     public function testAnExceptionMustBeThrewWhenTheScopeToExecuteIsNotAString()
     {
+        $this->expectException(InvalidArgument::class);
         $args = [
             $this->createMock(ProxyInterface::class),
             'standardMethod1',
@@ -631,11 +629,9 @@ abstract class AbstractStatesTest extends TestCase
         self::assertTrue($called, 'Error, the parent public method standardMethod1 has not been called in a public scope');
     }
 
-    /**
-     * @expectedException \Teknoo\States\State\Exception\MethodNotImplemented
-     */
     public function testExceptionWhenExecutingAMethodWithABadBuilderNotReturningAClosure()
     {
+        $this->expectException(MethodNotImplemented::class);
         $args = [
             $this->createMock(ProxyInterface::class),
             'methodBuilderNoReturnClosure',

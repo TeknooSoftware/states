@@ -41,11 +41,9 @@ abstract class AbstractConstraintTest extends \PHPUnit\Framework\TestCase
      */
     abstract  public function buildInstance(): ConstraintInterface;
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testInConstraintSetInstanceNotImplement()
     {
+        $this->expectException(\TypeError::class);
         $this->buildInstance()->inConstraintSet(new \stdClass());
     }
 

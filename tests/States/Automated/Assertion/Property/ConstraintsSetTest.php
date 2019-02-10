@@ -45,19 +45,15 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
         return new ConstraintsSet($constraints, $propery);
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testConstructorWithBadConstraintsArray()
     {
+        $this->expectException(\TypeError::class);
         $this->buildInstance(new \stdClass(), $this->createMock(Property::class));
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testConstructorWithBadProperty()
     {
+        $this->expectException(\TypeError::class);
         $this->buildInstance([$this->createMock(Property\ConstraintInterface::class)], new \stdClass());
     }
 

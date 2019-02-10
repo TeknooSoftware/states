@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[3.3.4] - 2019-02-10
+###Release
+- Remove support of PHP 7.1
+- Switch to PHPUnit 8.0 
+
 ##[3.3.3] - 2019-01-04
 ###Fix
 - Add support to PHP 7.3 

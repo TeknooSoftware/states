@@ -67,19 +67,15 @@ class CallbackTest extends AbstractAssertionTest
         );
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testBadCallable()
     {
+        $this->expectException(\TypeError::class);
         $this->buildInstance()->call('badFunctionName');
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testExceptionWhenCheckAssertionWithNoCallbackDefined()
     {
+        $this->expectException(\RuntimeException::class);
         $this->buildInstance()->check($this->createMock(AutomatedInterface::class));
     }
 

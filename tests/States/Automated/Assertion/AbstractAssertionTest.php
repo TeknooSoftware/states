@@ -43,19 +43,15 @@ abstract class AbstractAssertionTest extends \PHPUnit\Framework\TestCase
      */
     abstract public function buildInstance();
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testCheckWithBadProxy()
     {
+        $this->expectException(\TypeError::class);
         $this->buildInstance()->check(new \stdClass());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testIsValidWithoutProxyThrowAnException()
     {
+        $this->expectException(\RuntimeException::class);
         $this->buildInstance()->isValid();
     }
 }

@@ -248,10 +248,11 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
     /**
      * Test if the php behavior on private method in parent class
      * is keeped with an extending stated class (can not call).
-     * @expectedException \Teknoo\States\Exception\MethodNotImplemented
      */
     public function testDaughterCanNotCallMotherPrivate()
     {
+        $this->expectException(\Teknoo\States\Proxy\Exception\MethodNotImplemented::class);
+
         $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateTwo::class)
             ->enableState(StateThree::class);

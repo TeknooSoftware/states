@@ -58,11 +58,9 @@ class StandardTraitTest extends AbstractProxyTest
         return $this->proxy;
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testExceptionWhenStateIsNotCorrectlyInitializedWithItsAssociatedClassName()
     {
+        $this->expectException(\RuntimeException::class);
         $proxy = $this->buildProxy();
         $proxy->registerStateWithoutOriginal('badState', new Support\MockState1(false, Support\StandardTraitProxy::class));
 

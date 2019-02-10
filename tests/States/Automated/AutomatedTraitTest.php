@@ -74,11 +74,9 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testBadAssertions()
     {
+        $this->expectException(\RuntimeException::class);
         $this->buildProxy([new \stdClass()])->updateStates();
     }
 
@@ -95,20 +93,16 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testExceptionOnCheckPropertyWithBadProperty()
     {
+        $this->expectException(\TypeError::class);
         $this->buildProxy([])
             ->checkProperty(new \stdClass(), $this->createMock(ConstraintsSetInterface::class));
     }
 
-    /**
-     * @expectedException \TypeError
-     */
     public function testExceptionOnCheckPropertyWithBadConstraintSet()
     {
+        $this->expectException(\TypeError::class);
         $this->buildProxy([])
             ->checkProperty('name', new \stdClass());
     }

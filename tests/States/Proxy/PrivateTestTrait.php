@@ -21,6 +21,7 @@
  */
 namespace Teknoo\Tests\States\Proxy;
 
+use Teknoo\States\Proxy\Exception\MethodNotImplemented;
 use Teknoo\States\State\AbstractState;
 use Teknoo\Tests\Support\MockState1;
 
@@ -40,18 +41,18 @@ use Teknoo\Tests\Support\MockState1;
 trait PrivateTestTrait
 {
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized).
-     * @expectedException \PHPUnit\Framework\Exception
-     * @expectedException \Throwable
+     * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
     public function testPHPExceptionWhenAChildCanAccessToPrivatePropertyOfMother()
     {
+        //PHPUnit intercepts the Notice exception ;)
+        $this->expectException(\PHPUnit\Framework\Exception::class);
         $this->initializeProxy(MockState1::class, true);
         $this->proxy->getChildrenPriProperty();
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
     public function testIssetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother()
     {
@@ -61,7 +62,7 @@ trait PrivateTestTrait
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
     public function testSetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother()
     {
@@ -71,7 +72,7 @@ trait PrivateTestTrait
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
     public function testUnsetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother()
     {
@@ -80,7 +81,7 @@ trait PrivateTestTrait
     }
 
     /**
-     * Test behavior of magic method during a state's methode calling (scope is not initialized).
+     * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
     public function testGetIssetSetUnsetPrivateViaMethodChildren()
     {
@@ -105,11 +106,10 @@ trait PrivateTestTrait
 
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
-     *
-     * @expectedException \Throwable
      */
     public function testCallPrivateChildrenFromOutside()
     {
+        $this->expectException(MethodNotImplemented::class);
         $this->proxy->parentPrivateMethodToCall();
     }
 
