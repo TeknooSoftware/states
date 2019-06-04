@@ -30,8 +30,8 @@ phpmd:
 	vendor/bin/phpmd --suffixes php package/ text codesize,design,naming,unusedcode,controversial
 
 phpcs:
-	vendor/bin/phpcs --standard=PSR2 --extensions=php src/
-	vendor/bin/phpcs --standard=PSR2 --extensions=php package/
+	vendor/bin/phpcs --standard=PSR12 --extensions=php src/
+	vendor/bin/phpcs --standard=PSR12 --extensions=php package/
 
 phpcpd:
 	vendor/bin/phpcpd src/
