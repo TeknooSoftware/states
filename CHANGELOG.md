@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[3.3.5] - 2019-06-09
+###Release
+- Maintenance release, upgrade composer dev requirement and libs
+
 ##[3.3.4] - 2019-02-10
 ###Release
 - Remove support of PHP 7.1
