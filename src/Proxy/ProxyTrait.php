@@ -184,8 +184,11 @@ trait ProxyTrait
         $parentClassName = \get_class($this);
         do {
             $parentClassName = \get_parent_class($parentClassName);
-            if (\is_string($parentClassName) && \class_exists($parentClassName)
-                    && \is_subclass_of($parentClassName, ProxyInterface::class)) {
+            if (
+                \is_string($parentClassName)
+                && \class_exists($parentClassName)
+                && \is_subclass_of($parentClassName, ProxyInterface::class)
+            ) {
                 //Private mode is disable for states directly defined in parent class.
                 /**
                  * @var ProxyInterface|ProxyTrait $parentClassName
@@ -268,7 +271,7 @@ trait ProxyTrait
         array &$arguments,
         string &$scopeVisibility,
         callable &$callback
-    ) : ProxyInterface {
+    ): ProxyInterface {
         $callerStatedClass = $this->getCallerStatedClassName();
         $this->pushCallerStatedClassName($state);
 
@@ -486,9 +489,11 @@ trait ProxyTrait
                 return $this->extractVisibilityScopeFromObject($callerObject);
             }
 
-            if (!empty($callerLine['class'])
+            if (
+                !empty($callerLine['class'])
                 && \is_string($callerLine['class'])
-                && \class_exists($callerLine['class'], false)) {
+                && \class_exists($callerLine['class'], false)
+            ) {
                 //It is a class
                 $callerName = $callerLine['class'];
 
@@ -722,8 +727,9 @@ trait ProxyTrait
 
         $inStates = $this->statesIntersect($enabledStatesList, $statesNames, $allStates);
 
-        if ((((!$allStates && !empty($inStates)) || \count($inStates) === \count($statesNames)) && $mustActive)
-            || ((empty($inStates) || (!$allStates && \count($inStates) < \count($statesNames))) && !$mustActive)) {
+        if (((!$allStates && !empty($inStates)) || \count($inStates) === \count($statesNames)) && $mustActive) {
+            $callback($enabledStatesList);
+        } elseif ((empty($inStates) || (!$allStates && \count($inStates) < \count($statesNames))) && !$mustActive) {
             $callback($enabledStatesList);
         }
     }

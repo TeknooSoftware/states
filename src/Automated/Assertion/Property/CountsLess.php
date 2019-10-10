@@ -63,13 +63,17 @@ class CountsLess extends AbstractConstraint
      */
     public function check(&$value): ConstraintInterface
     {
-        if ($value instanceof \Countable
-            && $value->count() < $this->exceptedCount) {
+        if (
+            $value instanceof \Countable
+            && $value->count() < $this->exceptedCount
+        ) {
             $this->isValid($value);
         }
 
-        if (\is_array($value)
-            && \count($value) < $this->exceptedCount) {
+        if (
+            \is_array($value)
+            && \count($value) < $this->exceptedCount
+        ) {
             $this->isValid($value);
         }
 

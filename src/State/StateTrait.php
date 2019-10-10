@@ -158,9 +158,11 @@ trait StateTrait
      */
     private function checkVisibilityPrivate(string &$methodName, string &$statedClassOrigin): bool
     {
-        if (true === $this->privateModeStatus
+        if (
+            true === $this->privateModeStatus
             && $statedClassOrigin !== $this->statedClassName
-            && true === $this->reflectionsMethods[$methodName]->isPrivate()) {
+            && true === $this->reflectionsMethods[$methodName]->isPrivate()
+        ) {
             return false;
         }
 
@@ -177,10 +179,12 @@ trait StateTrait
      */
     private function checkVisibilityProtected(string &$methodName, string &$statedClassOrigin): bool
     {
-        if (false === $this->reflectionsMethods[$methodName]->isPrivate()
+        if (
+            false === $this->reflectionsMethods[$methodName]->isPrivate()
             && !empty($statedClassOrigin)
             && ($statedClassOrigin === $this->statedClassName
-                || \is_subclass_of($statedClassOrigin, $this->statedClassName))) {
+                || \is_subclass_of($statedClassOrigin, $this->statedClassName))
+        ) {
             //It's a public or protected method, do like if there is no method
             return true;
         }
@@ -346,8 +350,10 @@ trait StateTrait
         $closure = $this->getClosure($methodName);
 
         //Check visibility scope
-        if (!$closure instanceof \Closure
-            || false === $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin)) {
+        if (
+            !$closure instanceof \Closure
+            || false === $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin)
+        ) {
             return $this;
         }
 
