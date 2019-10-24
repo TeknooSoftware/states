@@ -20,6 +20,8 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
+declare(strict_types=1);
+
 namespace Teknoo\States\Automated\Assertion;
 
 use Teknoo\Immutable\ImmutableInterface;

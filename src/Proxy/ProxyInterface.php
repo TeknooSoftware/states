@@ -20,6 +20,8 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
+declare(strict_types=1);
+
 namespace Teknoo\States\Proxy;
 
 use Teknoo\States\State\Exception\InvalidArgument;
