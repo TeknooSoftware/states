@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[3.3.7] - 2019-10-24
+###Release
+- Add support of Doctrine MongoDB 2.0
+
 ##[3.3.6] - 2019-10-24
 ###Release
 - Maintenance release, QA and update dev vendors requirements
