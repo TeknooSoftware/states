@@ -20,7 +20,7 @@
         "optimize-autoloader": true
     },
     "require":{
-        "php": "~7.2",
+        "php": "~7.4",
         "teknoo/immutable": "^1.0.2"
     },
     "require-dev": {

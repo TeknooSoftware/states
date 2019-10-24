@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -41,16 +41,8 @@ class IsInstanceOf extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    /**
-     * @var string
-     */
-    private $exceptedClassName;
+    private string $exceptedClassName;
 
-    /**
-     * IsInstanceOf constructor.
-     *
-     * @param string $exceptedClassName
-     */
     public function __construct(string $exceptedClassName)
     {
         $this->uniqueConstructorCheck();

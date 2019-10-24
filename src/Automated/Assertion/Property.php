@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -44,9 +44,9 @@ use Teknoo\States\Automated\AutomatedInterface;
 class Property extends AbstractAssertion
 {
     /**
-     * @var array|callable
+     * @var array|callable[]
      */
-    private $constraints = [];
+    private array $constraints = [];
 
     /**
      * To register a constraint on a property. $exceptedValue must be a ConstraintInstance value.

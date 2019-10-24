@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -38,12 +38,7 @@ namespace Teknoo\States\Automated\Assertion\Property;
  */
 abstract class AbstractConstraint implements ConstraintInterface
 {
-    /**
-     * Instance to allow this constraint to return the success of this constraint.
-     *
-     * @var ConstraintsSetInterface
-     */
-    private $constraintsSet;
+    private ?ConstraintsSetInterface $constraintsSet = null;
 
     /**
      * {@inheritdoc}

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -85,38 +85,32 @@ trait StateTrait
 {
     /**
      * Reflection class object of this state to extract closures and description.
-     *
-     * @var \ReflectionClass
      */
-    private $reflectionClass;
+    private ?\ReflectionClass $reflectionClass = null;
 
     /**
      * Reflections methods of this state to extract description and closures.
      *
      * @var \ReflectionMethod[]
      */
-    private $reflectionsMethods = [];
+    private array $reflectionsMethods = [];
 
     /**
      * List of closures already extracted and set into Injection Closure Container.
      *
      * @var \Closure[]
      */
-    private $closuresObjects = [];
+    private array $closuresObjects = [];
 
     /**
      * To know if the private mode is enable or not for this state (see isPrivateMode()).
-     *
-     * @var bool
      */
-    private $privateModeStatus = false;
+    private bool $privateModeStatus = false;
 
     /**
      * To know the full qualified stated class name of the object owning this state container.
-     *
-     * @var string
      */
-    private $statedClassName;
+    private string $statedClassName;
 
     /**
      * {@inheritdoc}

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -66,21 +66,21 @@ trait ProxyTrait
      *
      * @var StateInterface[]
      */
-    private $activesStates = [];
+    private array $activesStates = [];
 
     /**
      * List of available states for this stated class instance.
      *
      * @var StateInterface[]
      */
-    private $states = [];
+    private array $states = [];
 
     /**
      * To register for each state, the proxy class owning it.
      *
      * @var string[]|array
      */
-    private $classesByStates = [];
+    private array $classesByStates = [];
 
     /**
      * To keep the list of full qualified state in parent classes to allow enable overload/redefined state with
@@ -88,15 +88,15 @@ trait ProxyTrait
      *
      * @var array|string[]
      */
-    private $statesAliasesList = [];
+    private array $statesAliasesList = [];
 
     /**
      * Stack to know the caller full qualified stated class when an internal method call a parent method to forbid
      * private method access.
      *
-     * @var string[]|\SplStack
+     * @var \SplStack|string[]
      */
-    private $callerStatedClassesStack;
+    private \SplStack $callerStatedClassesStack;
 
     /**
      * List all states's classes available in this state. It's not mandatory to redefine states of parent's class,

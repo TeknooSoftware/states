@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -46,11 +46,6 @@ class IsLessOrEqualThan extends AbstractConstraint
      */
     private $exceptedValue;
 
-    /**
-     * IsLessOrEqualThan constructor.
-     *
-     * @param mixed $exceptedValue
-     */
     public function __construct($exceptedValue)
     {
         $this->uniqueConstructorCheck();

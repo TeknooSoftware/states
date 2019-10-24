@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -47,7 +47,6 @@ abstract class AbstractStandardDocument implements ProxyInterface
     use StandardTrait;
 
     /**
-     * Default constructor used to initialize the stated object with its factory.
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function __construct()

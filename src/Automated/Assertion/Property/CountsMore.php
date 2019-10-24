@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -41,16 +41,8 @@ class CountsMore extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    /**
-     * @var int
-     */
-    private $exceptedCount;
+    private int $exceptedCount;
 
-    /**
-     * CountsMore constructor.
-     *
-     * @param int $exceptedCount
-     */
     public function __construct(int $exceptedCount)
     {
         $this->uniqueConstructorCheck();

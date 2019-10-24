@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -47,8 +47,6 @@ class IsNotSame extends AbstractConstraint
     private $exceptedValue;
 
     /**
-     * IsNotSame constructor.
-     *
      * @param mixed $exceptedValue
      */
     public function __construct($exceptedValue)

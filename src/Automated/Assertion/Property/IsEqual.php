@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -48,8 +48,6 @@ class IsEqual extends AbstractConstraint
     private $exceptedValue;
 
     /**
-     * IsEqual constructor.
-     *
      * @param mixed $exceptedValue
      */
     public function __construct($exceptedValue)

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -46,11 +46,6 @@ class Callback extends AbstractConstraint
      */
     private $callback;
 
-    /**
-     * IsGreaterOrEqualThan constructor.
-     *
-     * @param callable $callback
-     */
     public function __construct(callable $callback)
     {
         $this->uniqueConstructorCheck();

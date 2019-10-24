@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -47,8 +47,6 @@ class IsLessThan extends AbstractConstraint
     private $exceptedValue;
 
     /**
-     * IsLessThan constructor.
-     *
      * @param mixed $exceptedValue
      */
     public function __construct($exceptedValue)

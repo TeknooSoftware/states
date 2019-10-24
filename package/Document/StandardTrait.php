@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -62,9 +62,6 @@ trait StandardTrait
     }
 
     /**
-     * Method overloaded by States Lifecycle to update automatically states from
-     * configuration.
-     *
      * {@inheritdoc}
      */
     public function updateStates(): ProxyInterface

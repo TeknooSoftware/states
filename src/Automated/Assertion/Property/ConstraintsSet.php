@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -42,18 +42,10 @@ class ConstraintsSet implements ConstraintsSetInterface
     /**
      * @var ConstraintInterface[]
      */
-    private $constraints = [];
+    private array $constraints = [];
 
-    /**
-     * @var Property
-     */
-    private $property;
+    private Property $property;
 
-    /**
-     * ConstraintsSet constructor.
-     * @param ConstraintInterface[] $constraints
-     * @param Property $property
-     */
     public function __construct(array $constraints, Property $property)
     {
         $this->uniqueConstructorCheck();
@@ -62,9 +54,6 @@ class ConstraintsSet implements ConstraintsSetInterface
         $this->property = $property;
     }
 
-    /**
-     * @return null|ConstraintInterface
-     */
     private function nextConstraint(): ?ConstraintInterface
     {
         if (!empty($this->constraints)) {
@@ -75,7 +64,6 @@ class ConstraintsSet implements ConstraintsSetInterface
     }
 
     /**
-     * @param $value
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     private function processConstraint($value): void

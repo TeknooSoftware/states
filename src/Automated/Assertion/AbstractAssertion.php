@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -44,15 +44,10 @@ abstract class AbstractAssertion implements AssertionInterface
 
     /**
      * List of stated to enable if the assertion is valid.
-     *
-     * @var string[]
      */
-    private $statesList;
+    private array $statesList = [];
 
-    /**
-     * @var AutomatedInterface
-     */
-    private $proxy;
+    private ?AutomatedInterface $proxy = null;
 
     /**
      * @param string|string[] $statesList
