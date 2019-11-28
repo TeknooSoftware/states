@@ -20,14 +20,6 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
-/**
- * @category    States
- *
- * @copyright   Copyright (c) 2009-2019 Richard Déloge (richarddeloge@gmail.com)
- * @license     http://teknoo.software/license/mit         MIT License
- * @author      Richard Déloge <richarddeloge@gmail.com>
- */
-
 declare(strict_types=1);
 
 namespace Teknoo\States\State;

@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.0-beta2] - 2019-11-28
+###Change
+- Most methods have been updated to include type hints where applicable. Please check your extension points to make sure the function signatures are correct.
+_ All files use strict typing. Please make sure to not rely on type coercion.
+
 ##[4.0.0-beta1] - 2019-11-27
 ###Change
 - PHP 7.4 is the minimum required
