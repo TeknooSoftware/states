@@ -53,7 +53,7 @@ interface ConstraintInterface extends ImmutableInterface
      * Method to call to check if the value, passed by the stated object to this constraint is valid according to rules
      * of this constraint.
      *
-     * @param mixed &$value
+     * @param mixed $value
      *
      * @return ConstraintInterface
      */

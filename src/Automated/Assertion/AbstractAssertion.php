@@ -64,7 +64,7 @@ abstract class AbstractAssertion implements AssertionInterface
      *
      * @return AutomatedInterface
      */
-    protected function getProxy(): AutomatedInterface
+    protected function getProxy(): ?AutomatedInterface
     {
         return $this->proxy;
     }

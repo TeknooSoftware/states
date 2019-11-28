@@ -15,7 +15,7 @@ depend:
 .PHONY: depend
 
 ### QA
-qa: lint phpmd phpcs phpcpd
+qa: lint phpmd phpstan phpcs phpcpd
 
 lint:
 	find ./src -name "*.php" -exec /usr/bin/env php -l {} \; | grep "Parse error" > /dev/null && exit 1 || exit 0
@@ -28,6 +28,9 @@ phploc:
 phpmd:
 	vendor/bin/phpmd --suffixes php src/ text codesize,design,naming,unusedcode,controversial
 	vendor/bin/phpmd --suffixes php package/ text codesize,design,naming,unusedcode,controversial
+
+phpstan:
+	vendor/bin/phpstan analyse src package --level max
 
 phpcs:
 	vendor/bin/phpcs --standard=PSR12 --extensions=php src/

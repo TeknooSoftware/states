@@ -83,7 +83,7 @@ trait StateTrait
     /**
      * Reflections methods of this state to extract description and closures.
      *
-     * @var \ReflectionMethod[]
+     * @var \ReflectionMethod[]|bool[]
      */
     private array $reflectionsMethods = [];
 
@@ -205,7 +205,7 @@ trait StateTrait
      *
      * @param string      $methodName
      * @param string      $requiredScope
-     * @param string|null $statedClassOrigin
+     * @param string      $statedClassOrigin
      *
      * @return bool
      *
@@ -290,7 +290,7 @@ trait StateTrait
      *
      * @param string $methodName
      *
-     * @return mixed (value of the stated method called)
+     * @return \Closure|null
      *
      * @throws Exception\MethodNotImplemented is the method does not exist
      * @throws \ReflectionException

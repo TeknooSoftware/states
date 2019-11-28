@@ -25,6 +25,7 @@ namespace Teknoo\Tests\States\Automated\Assertion;
 use Teknoo\States\Automated\Assertion\Property;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 use Teknoo\States\Automated\AutomatedInterface;
+use Teknoo\States\Exception\IllegalArgument;
 
 /**
  * Class AssertionTest.
@@ -85,6 +86,14 @@ class PropertyTest extends AbstractAssertionTest
 
         self::assertInstanceOf(Property::class, $assertionChecked);
         self::assertNotSame($assertion, $assertionChecked);
+    }
+
+    public function testCheckWithInvalidPropertyNameInConstraint()
+    {
+        $assertion = $this->buildInstance();
+
+        $this->expectException(IllegalArgument::class);
+        $assertion->with('123', new Property\IsNotNull());
     }
 
     public function testCheckOneConstraintIsValid()

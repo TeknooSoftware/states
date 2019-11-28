@@ -27,6 +27,7 @@ namespace Teknoo\States\Automated\Assertion;
 use Teknoo\States\Automated\Assertion\Property\ConstraintInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSet;
 use Teknoo\States\Automated\AutomatedInterface;
+use Teknoo\States\Exception\IllegalArgument;
 
 /**
  * Class Assertion
@@ -59,6 +60,10 @@ class Property extends AbstractAssertion
      */
     public function with(string $property, ConstraintInterface $exceptedValue): Property
     {
+        if (!\is_string($property) || \is_numeric($property)) {
+            throw new IllegalArgument("Property $property is not a valid property name");
+        }
+
         $that = clone $this;
         $that->constraints[$property][] = $exceptedValue;
 
@@ -77,9 +82,9 @@ class Property extends AbstractAssertion
         }
 
         [$property] = \array_keys($this->constraints);
-        $constraints = \array_shift($this->constraints);
+        $constraints = (array) \array_shift($this->constraints);
 
-        $proxy->checkProperty($property, new ConstraintsSet($constraints, $this));
+        $proxy->checkProperty((string) $property, new ConstraintsSet($constraints, $this));
     }
 
     /**
@@ -88,11 +93,15 @@ class Property extends AbstractAssertion
      */
     public function isValid(): AssertionInterface
     {
+        if (null === ($proxy = $this->getProxy())) {
+            throw new \RuntimeException('The method "check" with a valid proxy was not called before');
+        }
+
         if (empty($this->constraints)) {
             return parent::isValid();
         }
 
-        $this->process($this->getProxy());
+        $this->process($proxy);
 
         return $this;
     }

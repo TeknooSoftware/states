@@ -121,8 +121,8 @@ trait ProxyTrait
      *
      * @param array $statesList
      * @param bool $enablePrivateMode
-     * @param string &$selfClassName
-     * @param array &$loadedStatesList
+     * @param string $selfClassName
+     * @param array $loadedStatesList
      *
      * @throws Exception\StateNotFound
      */
@@ -259,7 +259,7 @@ trait ProxyTrait
      * @param string         $scopeVisibility self::VISIBILITY_PUBLIC
      *                                        self::VISIBILITY_PROTECTED
      *                                        self::VISIBILITY_PRIVATE
-     * @param callable &$callback
+     * @param callable $callback
      *
      * @return self|ProxyInterface
      *
@@ -541,7 +541,7 @@ trait ProxyTrait
             $activesStates = \array_keys($this->activesStates);
             $this->activesStates = [];
             foreach ($activesStates as $stateName) {
-                $this->enableState($stateName);
+                $this->enableState((string) $stateName);
             }
         }
 
@@ -563,12 +563,9 @@ trait ProxyTrait
     ): ProxyInterface {
         $this->validateName($stateName);
 
-        if (!\is_a($stateObject, $stateName) && !\is_subclass_of($stateObject, $stateName)) {
+        if (!\is_a($stateObject, $stateName)) {
             throw new Exception\IllegalName(
-                sprintf(
-                    'Error, the state does not implement the class or interface "%s"',
-                    $stateName
-                )
+                "Error, the state does not implement the class or interface '$stateName'"
             );
         }
 

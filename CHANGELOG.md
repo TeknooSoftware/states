@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.0-beta3] - 2019-11-28
+###Change
+- Enable PHPStan in QA Tools
+- Fix QA issues spotted by PHPStan
+
 ##[4.0.0-beta2] - 2019-11-28
 ###Change
 - Most methods have been updated to include type hints where applicable. Please check your extension points to make sure the function signatures are correct.

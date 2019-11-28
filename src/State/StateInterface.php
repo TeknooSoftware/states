@@ -103,8 +103,8 @@ interface StateInterface
      * @param string      $methodName
      * @param array       $arguments to pass to the closure
      * @param string      $requiredScope     self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string|null $statedClassOrigin
-     * @param callable $returnCallback Method to call if the closure has been found and called, to pass the result
+     * @param string      $statedClassOrigin
+     * @param callable    $returnCallback Method to call if the closure has been found and called, to pass the result
      *
      * @return StateInterface
      */
