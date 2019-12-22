@@ -1,0 +1,6 @@
+parameters:
+    checkGenericClassInNonGenericObjectType: false
+    checkMissingIterableValueType: false
+    ignoreErrors:
+        - '#Call to an undefined static method [a-zA-Z0-9\\_]+::statesListDeclaration\(\)#'
+        - '#Method [a-zA-Z0-9\\_]+::listEnabledStates\(\) should return array<string> but returns array<int, int|string>.#'

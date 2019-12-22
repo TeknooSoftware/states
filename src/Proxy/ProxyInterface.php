@@ -172,7 +172,7 @@ interface ProxyInterface
      *
      * @api
      *
-     * @param string[]|array $statesNames
+     * @param array<string> $statesNames
      * @param callable $callback
      * @param bool $allRequired
      *
@@ -188,7 +188,7 @@ interface ProxyInterface
      *
      * @api
      *
-     * @param string[]|array $statesNames
+     * @param array<string> $statesNames
      * @param callable $callback
      * @param bool $allForbidden
      *
@@ -208,7 +208,7 @@ interface ProxyInterface
      * @api
      *
      * @param string $name
-     * @param array  $arguments
+     * @param array<mixed>  $arguments
      *
      * @return mixed (value of the stated method called)
      *

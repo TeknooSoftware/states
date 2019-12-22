@@ -56,7 +56,7 @@ abstract class AbstractStandardEntity implements ProxyInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @return array<string>
      */
     protected static function statesListDeclaration(): array
     {

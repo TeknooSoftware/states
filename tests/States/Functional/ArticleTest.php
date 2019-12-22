@@ -22,12 +22,12 @@
 namespace Teknoo\Tests\States\Functional;
 
 use Teknoo\Tests\Support\Article\Article;
-use Teknoo\Tests\Support\Article\States\Archived;
-use Teknoo\Tests\Support\Article\States\Draft;
-use Teknoo\Tests\Support\Article\States\Extended;
-use Teknoo\Tests\Support\Article\States\Promoted;
-use Teknoo\Tests\Support\Article\States\Published;
-use Teknoo\Tests\Support\Article\States\StateDefault;
+use Teknoo\Tests\Support\Article\Article\Archived;
+use Teknoo\Tests\Support\Article\Article\Draft;
+use Teknoo\Tests\Support\Article\Article\Extended;
+use Teknoo\Tests\Support\Article\Article\Promoted;
+use Teknoo\Tests\Support\Article\Article\Published;
+use Teknoo\Tests\Support\Article\Article\StateDefault;
 
 /**
  * Class ArticleTest

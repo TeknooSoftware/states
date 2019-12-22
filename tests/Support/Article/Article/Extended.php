@@ -19,14 +19,11 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-namespace Teknoo\Tests\Support\Article\States;
-
-use Teknoo\States\State\StateInterface;
-use Teknoo\States\State\StateTrait;
+namespace Teknoo\Tests\Support\Article\Article;
 
 /**
- * State Published
- * State for a published article
+ * State Extended
+ * State for a extended article
  * Copy from Demo for functional tests.
  *
  *
@@ -38,42 +35,6 @@ use Teknoo\States\State\StateTrait;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  * @mixin Article
  */
-class Published implements StateInterface
+class Extended extends Promoted
 {
-    use StateTrait;
-
-    public function getFormattedBody()
-    {
-        /*
-         * Get the body and transform BBCode to HTML.
-         *
-         * @return string
-         */
-        return function () {
-            $body = $this->getAttribute('body');
-
-            return str_replace(
-                array(
-                    '[br]',
-                    '[b]',
-                    '[/b]',
-                ),
-                array(
-                    '<br/>',
-                    '<strong>',
-                    '</strong>',
-                ),
-                $body
-            );
-        };
-    }
-
-    protected function getDate()
-    {
-        /*
-         * Fake method not callable in public scope.
-         */
-        return function () {
-        };
-    }
 }

@@ -19,11 +19,12 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-namespace Teknoo\Tests\Support\Article\States;
+namespace Teknoo\Tests\Support\Article\Article;
+
+use Teknoo\States\State\AbstractState;
 
 /**
- * State Promoted
- * State for a promoted article
+ * State StateDefault
  * Copy from Demo for functional tests.
  *
  *
@@ -35,6 +36,36 @@ namespace Teknoo\Tests\Support\Article\States;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  * @mixin Article
  */
-class Promoted extends Published
+class StateDefault extends AbstractState
 {
+    public function getTitle()
+    {
+        /*
+         * Return the title of this article.
+         *
+         * @return string
+         */
+        return function () {
+            return $this->getAttribute('title');
+        };
+    }
+
+    /**
+     * To know if the article is published.
+     *
+     * @return bool
+     */
+    public function isPublished()
+    {
+        /*
+         * Return the title of this article.
+         *
+         * @return string
+         */
+        return function () {
+            $isPublished = $this->getAttribute('is_published');
+
+            return !empty($isPublished);
+        };
+    }
 }

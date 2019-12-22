@@ -46,6 +46,9 @@ class IsLessOrEqualThan extends AbstractConstraint
      */
     private $exceptedValue;
 
+    /**
+     * @param int|float $exceptedValue
+     */
     public function __construct($exceptedValue)
     {
         $this->uniqueConstructorCheck();

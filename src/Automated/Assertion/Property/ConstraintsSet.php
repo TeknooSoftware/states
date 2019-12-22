@@ -46,6 +46,10 @@ class ConstraintsSet implements ConstraintsSetInterface
 
     private Property $property;
 
+    /**
+     * @param array<ConstraintInterface> $constraints
+     * @param Property $property
+     */
     public function __construct(array $constraints, Property $property)
     {
         $this->uniqueConstructorCheck();
@@ -64,6 +68,7 @@ class ConstraintsSet implements ConstraintsSetInterface
     }
 
     /**
+     * @param mixed $value
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     private function processConstraint($value): void

@@ -19,11 +19,11 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-namespace Teknoo\Tests\Support\Article\States;
+namespace Teknoo\Tests\Support\Article\Article;
 
 /**
- * State Extended
- * State for a extended article
+ * State Promoted
+ * State for a promoted article
  * Copy from Demo for functional tests.
  *
  *
@@ -35,6 +35,6 @@ namespace Teknoo\Tests\Support\Article\States;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  * @mixin Article
  */
-class Extended extends Promoted
+class Promoted extends Published
 {
 }

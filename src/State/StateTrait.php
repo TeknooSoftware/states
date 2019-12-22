@@ -147,6 +147,7 @@ trait StateTrait
         if (
             true === $this->privateModeStatus
             && $statedClassOrigin !== $this->statedClassName
+            && $this->reflectionsMethods[$methodName] instanceof \ReflectionMethod
             && true === $this->reflectionsMethods[$methodName]->isPrivate()
         ) {
             return false;
@@ -166,7 +167,8 @@ trait StateTrait
     private function checkVisibilityProtected(string &$methodName, string &$statedClassOrigin): bool
     {
         if (
-            false === $this->reflectionsMethods[$methodName]->isPrivate()
+            $this->reflectionsMethods[$methodName] instanceof \ReflectionMethod
+            && false === $this->reflectionsMethods[$methodName]->isPrivate()
             && !empty($statedClassOrigin)
             && ($statedClassOrigin === $this->statedClassName
                 || \is_subclass_of($statedClassOrigin, $this->statedClassName))
@@ -187,7 +189,10 @@ trait StateTrait
      */
     private function checkVisibilityPublic(string &$methodName): bool
     {
-        if (true === $this->reflectionsMethods[$methodName]->isPublic()) {
+        if (
+            $this->reflectionsMethods[$methodName] instanceof \ReflectionMethod
+            && true === $this->reflectionsMethods[$methodName]->isPublic()
+        ) {
             //It's a public method, do like if there is no method
             return true;
         }
@@ -220,19 +225,15 @@ trait StateTrait
         switch ($requiredScope) {
             case StateInterface::VISIBILITY_PRIVATE:
                 return $this->checkVisibilityPrivate($methodName, $statedClassOrigin);
-                break;
             case StateInterface::VISIBILITY_PROTECTED:
                 //Can not access to private methods, only public and protected
                 return $this->checkVisibilityProtected($methodName, $statedClassOrigin);
-                break;
             case StateInterface::VISIBILITY_PUBLIC:
                 //Can not access to protect and private method.
                 return $this->checkVisibilityPublic($methodName);
-                break;
             default:
                 //Bad parameter, throws exception
                 throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
-                break;
         }
     }
 

@@ -100,11 +100,11 @@ interface StateInterface
      * Static method are not managed (a class can not have a state, only it's instance).
      *
      * @param ProxyInterface $object the instance to use to bind with an object's scope the closure
-     * @param string      $methodName
-     * @param array       $arguments to pass to the closure
-     * @param string      $requiredScope     self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
-     * @param string      $statedClassOrigin
-     * @param callable    $returnCallback Method to call if the closure has been found and called, to pass the result
+     * @param string         $methodName
+     * @param array<mixed>   $arguments to pass to the closure
+     * @param string         $requiredScope     self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string         $statedClassOrigin
+     * @param callable       $returnCallback Method to call if the closure has been found and called, to pass the result
      *
      * @return StateInterface
      */

@@ -64,21 +64,21 @@ trait ProxyTrait
     /**
      * List of currently enabled states in this proxy.
      *
-     * @var StateInterface[]
+     * @var array<string, StateInterface>
      */
     private array $activesStates = [];
 
     /**
      * List of available states for this stated class instance.
      *
-     * @var StateInterface[]
+     * @var array<string, StateInterface>
      */
     private array $states = [];
 
     /**
      * To register for each state, the proxy class owning it.
      *
-     * @var string[]|array
+     * @var array<string, string>
      */
     private array $classesByStates = [];
 
@@ -86,7 +86,7 @@ trait ProxyTrait
      * To keep the list of full qualified state in parent classes to allow enable overload/redefined state with
      * original full qualified state name.
      *
-     * @var array|string[]
+     * @var array<string, string>
      */
     private array $statesAliasesList = [];
 
@@ -94,7 +94,7 @@ trait ProxyTrait
      * Stack to know the caller full qualified stated class when an internal method call a parent method to forbid
      * private method access.
      *
-     * @var \SplStack|string[]
+     * @var \SplStack<string>
      */
     private \SplStack $callerStatedClassesStack;
 
@@ -111,7 +111,7 @@ trait ProxyTrait
      * ];
      *
      * @internal
-     * @return array|string[]
+     * @return array<string>
      */
     abstract protected static function statesListDeclaration(): array;
 
@@ -119,10 +119,10 @@ trait ProxyTrait
      * To instantiate a state class defined in this proxy. Is a state have a same non fullqualified class name of
      * a previous loaded state (defined in previously in this class or in children) it's skipped.
      *
-     * @param array $statesList
+     * @param array<string> $statesList
      * @param bool $enablePrivateMode
      * @param string $selfClassName
-     * @param array $loadedStatesList
+     * @param array<string> $loadedStatesList
      *
      * @throws Exception\StateNotFound
      */
@@ -185,16 +185,18 @@ trait ProxyTrait
         do {
             $parentClassName = \get_parent_class($parentClassName);
             if (
-                \is_string($parentClassName)
-                && \class_exists($parentClassName)
+                false !== $parentClassName
+                && \is_callable([$parentClassName, 'statesListDeclaration'])
                 && \is_subclass_of($parentClassName, ProxyInterface::class)
             ) {
                 //Private mode is disable for states directly defined in parent class.
-                /**
-                 * @var ProxyInterface|ProxyTrait $parentClassName
-                 */
                 $statesList = $parentClassName::statesListDeclaration();
-                $this->initializeStates($statesList, true, $parentClassName, $loadedStatesList);
+                $this->initializeStates(
+                    $statesList,
+                    true,
+                    $parentClassName,
+                    $loadedStatesList
+                );
             }
         } while (false !== $parentClassName);
 
@@ -255,11 +257,11 @@ trait ProxyTrait
      *
      * @param StateInterface $state
      * @param string         $methodName
-     * @param array          $arguments
+     * @param array<mixed>   $arguments
      * @param string         $scopeVisibility self::VISIBILITY_PUBLIC
      *                                        self::VISIBILITY_PROTECTED
      *                                        self::VISIBILITY_PRIVATE
-     * @param callable $callback
+     * @param callable       $callback
      *
      * @return self|ProxyInterface
      *
@@ -298,7 +300,7 @@ trait ProxyTrait
      * @api
      *
      * @param string $methodName
-     * @param array $arguments of the callmethod
+     * @param array<mixed> $arguments of the callmethod
      *
      * @return mixed
      *
@@ -665,7 +667,7 @@ trait ProxyTrait
 
 
     /**
-     * {@inheritdoc}
+     * @return array<string>
      */
     protected function listEnabledStates(): array
     {
@@ -677,10 +679,10 @@ trait ProxyTrait
     }
 
     /**
-     * @param array $enabledStatesList
-     * @param array $statesNames
+     * @param array<string> $enabledStatesList
+     * @param array<string> $statesNames
      * @param bool $allStates
-     * @return array
+     * @return array<string>
      * @throws Exception\StateNotFound
      */
     private function statesIntersect(array $enabledStatesList, array $statesNames, bool $allStates): array
@@ -710,7 +712,7 @@ trait ProxyTrait
     }
 
     /**
-     * @param array $statesNames
+     * @param array<string> $statesNames
      * @param callable $callback
      * @param bool $mustActive
      * @param bool $allStates
@@ -755,6 +757,7 @@ trait ProxyTrait
 
     /**
      * {@inheritdoc}
+     * @param array<mixed> $arguments
      * @throws \Throwable
      */
     public function __call(string $name, array $arguments)

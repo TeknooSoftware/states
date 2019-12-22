@@ -44,6 +44,7 @@ abstract class AbstractAssertion implements AssertionInterface
 
     /**
      * List of stated to enable if the assertion is valid.
+     * @var array<string>
      */
     private array $statesList = [];
 

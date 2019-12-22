@@ -19,7 +19,7 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-namespace Teknoo\Tests\Support\Article\States;
+namespace Teknoo\Tests\Support\Article\Article;
 
 /**
  * State Archived

@@ -19,12 +19,14 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-namespace Teknoo\Tests\Support\Article\States;
+namespace Teknoo\Tests\Support\Article\Article;
 
-use Teknoo\States\State\AbstractState;
+use Teknoo\States\State\StateInterface;
+use Teknoo\States\State\StateTrait;
 
 /**
- * State StateDefault
+ * State Published
+ * State for a published article
  * Copy from Demo for functional tests.
  *
  *
@@ -36,36 +38,42 @@ use Teknoo\States\State\AbstractState;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  * @mixin Article
  */
-class StateDefault extends AbstractState
+class Published implements StateInterface
 {
-    public function getTitle()
+    use StateTrait;
+
+    public function getFormattedBody()
     {
         /*
-         * Return the title of this article.
+         * Get the body and transform BBCode to HTML.
          *
          * @return string
          */
         return function () {
-            return $this->getAttribute('title');
+            $body = $this->getAttribute('body');
+
+            return str_replace(
+                array(
+                    '[br]',
+                    '[b]',
+                    '[/b]',
+                ),
+                array(
+                    '<br/>',
+                    '<strong>',
+                    '</strong>',
+                ),
+                $body
+            );
         };
     }
 
-    /**
-     * To know if the article is published.
-     *
-     * @return bool
-     */
-    public function isPublished()
+    protected function getDate()
     {
         /*
-         * Return the title of this article.
-         *
-         * @return string
+         * Fake method not callable in public scope.
          */
         return function () {
-            $isPublished = $this->getAttribute('is_published');
-
-            return !empty($isPublished);
         };
     }
 }

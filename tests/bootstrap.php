@@ -28,7 +28,7 @@ defined('PHPUNIT')
 defined('TK_STATES_TEST_PATH')
     || define('TK_STATES_TEST_PATH', __DIR__);
 
-ini_set('memory_limit', '20M');
+ini_set('memory_limit', '32M');
 
 require_once __DIR__.'/../vendor/autoload.php';
 
