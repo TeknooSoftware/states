@@ -84,7 +84,7 @@ class Scope extends PHPStanScope
             $explodedClass = \explode('\\', $proxyClass);
             \array_pop($explodedClass);
             $proxyClass = \implode('\\', $explodedClass);
-        } while(!empty($proxyClass) && !\class_exists($proxyClass));
+        } while (!empty($proxyClass) && !\class_exists($proxyClass));
 
         if (empty($proxyClass) || !\class_exists($proxyClass)) {
             throw new ShouldNotHappenException("Proxy class was not found for $stateClass");
@@ -92,7 +92,9 @@ class Scope extends PHPStanScope
 
         $nativeReflectionProxy = new \ReflectionClass($proxyClass);
         if (!$nativeReflectionProxy->implementsInterface(ProxyInterface::class)) {
-            throw new ShouldNotHappenException("$proxyClass must implements the interface Teknoo\States\Proxy\ProxyInterface to be a valid Stated Class");
+            throw new ShouldNotHappenException(
+                "$proxyClass must implements the interface " . ProxyInterface::class . " to be a valid Stated Class"
+            );
         }
 
         $variablesTypes['this'] = VariableTypeHolder::createYes(new ThisType($proxyClass));

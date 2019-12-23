@@ -107,7 +107,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
             $explodedClass = \explode('\\', $proxyClass);
             \array_pop($explodedClass);
             $proxyClass = \implode('\\', $explodedClass);
-        } while(!empty($proxyClass) && !\class_exists($proxyClass));
+        } while (!empty($proxyClass) && !\class_exists($proxyClass));
 
         if (empty($proxyClass) || !\class_exists($proxyClass)) {
             return false;

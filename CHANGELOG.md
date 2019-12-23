@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.0-beta4] - 2019-12-23
+###Change
+- Fix QA issues spotted by PHPStan
+- Add PHPStan extension dedicated to support Stated classes analyze and avoid false positive.
+
 ##[4.0.0-beta3] - 2019-11-28
 ###Change
 - Enable PHPStan in QA Tools

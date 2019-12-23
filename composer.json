@@ -21,7 +21,7 @@
     },
     "require":{
         "php": "~7.4",
-        "teknoo/immutable": "^2.0.0-beta1"
+        "teknoo/immutable": "^2.0.0-beta4"
     },
     "require-dev": {
         "phpunit/phpunit": "~8.4",

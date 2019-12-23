@@ -102,7 +102,7 @@ interface StateInterface
      * @param ProxyInterface $object the instance to use to bind with an object's scope the closure
      * @param string         $methodName
      * @param array<mixed>   $arguments to pass to the closure
-     * @param string         $requiredScope     self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
+     * @param string         $requiredScope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string         $statedClassOrigin
      * @param callable       $returnCallback Method to call if the closure has been found and called, to pass the result
      *
