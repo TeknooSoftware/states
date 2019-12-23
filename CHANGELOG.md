@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.0-beta5] - 2019-12-23
+###Change
+- Fix Make definitions tools
+
 ##[4.0.0-beta4] - 2019-12-23
 ###Change
 - Fix QA issues spotted by PHPStan
