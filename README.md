@@ -138,6 +138,13 @@ Full Example
 ------------
 An example of using this library is available in the folder : [Demo](demo/demo_article.php).
 
+Support this project
+---------------------
+
+This project is free and will remain free, but it is developed on my personal time. 
+If you like it and help me maintain it and evolve it, don't hesitate to support me on [Patreon](https://patreon.com/teknoo_software).
+Thanks :) Richard. 
+
 Installation & Requirements
 ---------------------------
 To install this library with composer, run this command :
@@ -146,9 +153,24 @@ To install this library with composer, run this command :
 
 This library requires :
 
-    * PHP 7.2+
+    * PHP 7.4+
     * A PHP autoloader (Composer is recommended)
     * Teknoo/Immutable (for Automated features).
+    
+
+News from Teknoo State 4.0
+----------------------------
+
+This library requires PHP 7.4 or newer. Some change causes bc breaks :
+    
+- PHP 7.4 is the minimum required
+- Most methods have been updated to include type hints where applicable. Please check your extension points to make sure the function signatures are correct.
+_ All files use strict typing. Please make sure to not rely on type coercion.
+- Switch to typed properties
+- Remove some PHP useless DockBlocks
+- Replace array_merge by "..." operators
+- Enable PHPStan in QA Tools and disable PHPMd
+- Add PHPStan extension dedicated to support Stated classes analyze and avoid false positive.
     
 Quick How-to to implement your first stated class
 -------------------------------------------------
