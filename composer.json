@@ -48,6 +48,12 @@
         }
     },
     "archive": {
-        "exclude": ["demo", "vendor", ".idea"]
+        "exclude": ["demo", "docs", "vendor", "tests", ".idea"]
+    },
+    "extra": {
+        "thanks": {
+            "name": "teknoo/immutable",
+            "url": "https://github.com/TeknooSoftware/immutable"
+        }
     }
 }
