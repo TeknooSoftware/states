@@ -12,7 +12,7 @@
  * to richarddeloge@gmail.com so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2019 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
@@ -35,7 +35,7 @@ use Teknoo\States\Exception\IllegalArgument;
  * All assertions defined with the method with() must be valid to get the assertion as valid.
  * Constraints on value must be defined by ConstraintInterface instance via the method "with".
  *
- * @copyright   Copyright (c) 2009-2019 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *

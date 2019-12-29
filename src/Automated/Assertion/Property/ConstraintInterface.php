@@ -12,7 +12,7 @@
  * to richarddeloge@gmail.com so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2019 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
@@ -31,7 +31,7 @@ use Teknoo\Immutable\ImmutableInterface;
  * Interface to implement constraint about property to check in the object. A constraint must be immutable. All change
  * must be performed on a clone and will be returned.
  *
- * @copyright   Copyright (c) 2009-2019 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *

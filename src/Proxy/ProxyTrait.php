@@ -12,7 +12,7 @@
  * to richarddeloge@gmail.com so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2019 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
@@ -51,7 +51,7 @@ use Teknoo\States\State\StateInterface;
  *
  * @see ProxyInterface
  *
- * @copyright   Copyright (c) 2009-2019 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *

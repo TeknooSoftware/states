@@ -12,7 +12,7 @@
  * to richarddeloge@gmail.com so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2019 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
@@ -32,7 +32,7 @@ namespace Teknoo\Tests\Support;
  * You must implement these interface, according to your needs, in your derived proxies like in this class.
  *
  *
- * @copyright   Copyright (c) 2009-2019 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
  *
  * @link        http://teknoo.software/states Project website
  *
