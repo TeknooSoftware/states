@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.0-beta6] - 2019-12-30
+###Change
+- Update copyright
+
 ##[4.0.0-beta5] - 2019-12-23
 ###Change
 - Fix Make definitions tools
