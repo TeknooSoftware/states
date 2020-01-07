@@ -29,6 +29,9 @@ use PHPStan\Analyser\ScopeContext;
 use PHPStan\Analyser\ScopeFactory;
 use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\Analyser\VariableTypeHolder;
+use PHPStan\Reflection\ReflectionProvider;
+use PHPStan\Type\DynamicReturnTypeExtensionRegistry;
+use PHPStan\Type\OperatorTypeSpecifyingExtensionRegistry;
 use PHPStan\Broker\Broker;
 use PHPStan\Broker\ClassNotFoundException;
 use PHPStan\Reflection\ClassReflection;
@@ -67,7 +70,7 @@ class Scope extends PHPStanScope
         ClassReflection $classReflection,
         ScopeContext $initialContext,
         array &$variablesTypes,
-        Broker $broker
+        ReflectionProvider $reflectionProvider
     ): ScopeContext {
         $nativeReflection = $classReflection->getNativeReflection();
 
@@ -99,7 +102,7 @@ class Scope extends PHPStanScope
 
         $variablesTypes['this'] = VariableTypeHolder::createYes(new ThisType($proxyClass));
 
-        return ScopeContext::create($initialContext->getFile())->enterClass($broker->getClass($proxyClass));
+        return ScopeContext::create($initialContext->getFile())->enterClass($reflectionProvider->getClass($proxyClass));
     }
 
     /**
@@ -114,7 +117,9 @@ class Scope extends PHPStanScope
      */
     public function __construct(
         ScopeFactory $scopeFactory,
-        Broker $broker,
+        ReflectionProvider $reflectionProvider,
+        DynamicReturnTypeExtensionRegistry $dynamicReturnTypeExtensionRegistry,
+        OperatorTypeSpecifyingExtensionRegistry $operatorTypeSpecifyingExtensionRegistry,
         Standard $printer,
         TypeSpecifier $typeSpecifier,
         PropertyReflectionFinder $propertyReflectionFinder,
@@ -132,12 +137,14 @@ class Scope extends PHPStanScope
     ) {
         $classReflection = $context->getClassReflection();
         if (null !== $anonymousFunctionReflection && $classReflection instanceof ClassReflection) {
-            $context = $this->updateScopeIfStateClass($classReflection, $context, $variablesTypes, $broker);
+            $context = $this->updateScopeIfStateClass($classReflection, $context, $variablesTypes, $reflectionProvider);
         }
 
         parent::__construct(
             $scopeFactory,
-            $broker,
+            $reflectionProvider,
+            $dynamicReturnTypeExtensionRegistry,
+            $operatorTypeSpecifyingExtensionRegistry,
             $printer,
             $typeSpecifier,
             $propertyReflectionFinder,

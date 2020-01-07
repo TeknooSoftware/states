@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.0-beta7] - 2020-01-07
+###Change
+- Change to support PHPStan 0.12.4
+
 ##[4.0.0-beta6] - 2019-12-30
 ###Change
 - Update copyright
