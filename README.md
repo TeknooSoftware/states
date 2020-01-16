@@ -1,7 +1,11 @@
 Teknoo Software - States library
 ================================
 
-[![SensioLabsInsight](https://insight.sensiolabs.com/projects/119ff38f-0b64-4100-8e1f-ff55d7be857a/mini.png)](https://insight.sensiolabs.com/projects/119ff38f-0b64-4100-8e1f-ff55d7be857a) [![Build Status](https://travis-ci.org/TeknooSoftware/states.svg?branch=next)](https://travis-ci.org/TeknooSoftware/states)
+[![Build Status](https://travis-ci.com/TeknooSoftware/states.svg?branch=master)](https://travis-ci.com/TeknooSoftware/states)
+[![Latest Stable Version](https://poser.pugx.org/teknoo/states/v/stable)](https://packagist.org/packages/teknoo/states)
+[![Total Downloads](https://poser.pugx.org/teknoo/states/downloads)](https://packagist.org/packages/teknoo/states)
+[![License](https://poser.pugx.org/teknoo/states/license)](https://packagist.org/packages/teknoo/states)
+[![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
 
 States allows you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
 This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability and workflows writing.
