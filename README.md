@@ -3,6 +3,7 @@ Teknoo Software - States library
 
 [![Build Status](https://travis-ci.com/TeknooSoftware/states.svg?branch=master)](https://travis-ci.com/TeknooSoftware/states)
 [![Latest Stable Version](https://poser.pugx.org/teknoo/states/v/stable)](https://packagist.org/packages/teknoo/states)
+[![Latest Unstable Version](https://poser.pugx.org/teknoo/states/v/unstable)](https://packagist.org/packages/teknoo/states)
 [![Total Downloads](https://poser.pugx.org/teknoo/states/downloads)](https://packagist.org/packages/teknoo/states)
 [![License](https://poser.pugx.org/teknoo/states/license)](https://packagist.org/packages/teknoo/states)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
