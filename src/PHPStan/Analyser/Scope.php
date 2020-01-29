@@ -32,7 +32,6 @@ use PHPStan\Analyser\VariableTypeHolder;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Type\DynamicReturnTypeExtensionRegistry;
 use PHPStan\Type\OperatorTypeSpecifyingExtensionRegistry;
-use PHPStan\Broker\Broker;
 use PHPStan\Broker\ClassNotFoundException;
 use PHPStan\Reflection\ClassReflection;
 use PhpParser\PrettyPrinter\Standard;
@@ -41,6 +40,7 @@ use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\Rules\Properties\PropertyReflectionFinder;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\ThisType;
+use PHPStan\Type\Type;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateTrait;
 
@@ -110,7 +110,9 @@ class Scope extends PHPStanScope
      * @param \PHPStan\Analyser\VariableTypeHolder[] $variablesTypes
      * @param \PHPStan\Analyser\VariableTypeHolder[] $moreSpecificTypes
      * @param array<string, true> $currentlyAssignedExpressions
+     * @param array<string, Type> $nativeExpressionTypes
      * @param string[] $dynamicConstantNames
+     * @paarm bool $treatPhpDocTypesAsCertain
      * @throws ShouldNotHappenException
      * @throws ClassNotFoundException
      * @throws \ReflectionException
@@ -133,7 +135,9 @@ class Scope extends PHPStanScope
         ?ParametersAcceptor $anonymousFunctionReflection = null,
         bool $inFirstLevelStatement = \true,
         array $currentlyAssignedExpressions = [],
-        array $dynamicConstantNames = []
+        array $nativeExpressionTypes = [],
+        array $dynamicConstantNames = [],
+        bool $treatPhpDocTypesAsCertain = \true
     ) {
         $classReflection = $context->getClassReflection();
         if (null !== $anonymousFunctionReflection && $classReflection instanceof ClassReflection) {
@@ -158,7 +162,9 @@ class Scope extends PHPStanScope
             $anonymousFunctionReflection,
             $inFirstLevelStatement,
             $currentlyAssignedExpressions,
-            $dynamicConstantNames
+            $nativeExpressionTypes,
+            $dynamicConstantNames,
+            $treatPhpDocTypesAsCertain
         );
     }
 }

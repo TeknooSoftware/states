@@ -45,7 +45,7 @@ use Teknoo\States\Exception\IllegalArgument;
 class Property extends AbstractAssertion
 {
     /**
-     * @var array|callable[]
+     * @var array<string, array<ConstraintInterface>>
      */
     private array $constraints = [];
 

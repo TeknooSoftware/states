@@ -682,7 +682,7 @@ trait ProxyTrait
      * @param array<string> $enabledStatesList
      * @param array<string> $statesNames
      * @param bool $allStates
-     * @return array<string>
+     * @return array<string, true>
      * @throws Exception\StateNotFound
      */
     private function statesIntersect(array $enabledStatesList, array $statesNames, bool $allStates): array
@@ -696,13 +696,13 @@ trait ProxyTrait
             $this->validateName($stateName);
 
             if (isset($list[$stateName])) {
-                $inStates[$stateName] = true;
+                $inStates[(string) $stateName] = true;
                 continue;
             }
 
             foreach ($enabledStatesList as $enableStateName) {
                 if (\is_subclass_of($enableStateName, $stateName)) {
-                    $inStates[$stateName] = true;
+                    $inStates[(string) $stateName] = true;
                     break;
                 }
             }
