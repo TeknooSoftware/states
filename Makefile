@@ -40,7 +40,7 @@ phpcpd:
 
 ### Testing
 test:
-	php -dxdebug.coverage_enable=1 vendor/bin/phpunit -c phpunit.xml -v --colors --coverage-text
+	php -dzend_extension=xdebug.so -dxdebug.coverage_enable=1 vendor/bin/phpunit -c phpunit.xml -v --colors --coverage-text
 
 .PHONY: test
 
