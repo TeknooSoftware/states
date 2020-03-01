@@ -40,7 +40,8 @@
         "psr-4": {
             "Teknoo\\States\\": ["src/"],
             "Teknoo\\States\\Doctrine\\Document\\": "infrastructures/doctrine/odm/",
-            "Teknoo\\States\\Doctrine\\Entity\\": "infrastructures/doctrine/orm/"
+            "Teknoo\\States\\Doctrine\\Entity\\": "infrastructures/doctrine/orm/",
+            "Teknoo\\States\\PHPStan\\": "infrastructures/PHPStan/"
         }
     },
     "autoload-dev": {
@@ -48,7 +49,8 @@
             "Teknoo\\Tests\\States\\": ["tests/States/"],
             "Teknoo\\Tests\\Support\\": ["tests/Support/"],
             "Teknoo\\Tests\\States\\Doctrine\\Document\\": "tests/infrastructures/doctrine/odm/",
-            "Teknoo\\Tests\\States\\Doctrine\\Entity\\": "tests/infrastructures/doctrine/orm/"
+            "Teknoo\\Tests\\States\\Doctrine\\Entity\\": "tests/infrastructures/doctrine/orm/",
+            "Teknoo\\Tests\\States\\PHPStan\\": "tests/infrastructures/PHPStan/"
         }
     },
     "archive": {
