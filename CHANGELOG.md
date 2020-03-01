@@ -1,5 +1,13 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.2] - 2020-04-01
+###Stable Release
+###Change
+- Update dev tools, migrate to PHPUnit 9.0, phploc 6.0, phpcpd 5.0
+- Migrate "Universal Package" (dedicated to doctrine) to infrastructures folder.
+  `Namespace Teknoo\UniversalPackage\States` migrate to `Teknoo\States\Doctrine\Entity` and `Teknoo\States\Doctrine\Document`
+- Migrate PHPStan extension from src folder to infrastructures folder (namespace stay unchanged)
+
 ##[4.0.1] - 2020-01-29
 ###Stable Release
 ###Change
