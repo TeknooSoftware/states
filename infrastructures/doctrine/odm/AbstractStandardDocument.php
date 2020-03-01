@@ -22,14 +22,14 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\UniversalPackage\States\Entity;
+namespace Teknoo\States\Doctrine\Document;
 
-use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
- * Class StandardEntity.
- * Default Stated class implementation with a doctrine entity class.
+ * Class StandardDocument.
+ * Default Stated class implementation with a doctrine document.
  *
  *
  * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
@@ -39,15 +39,14 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
- * @ORM\MappedSuperclass
- * @ORM\HasLifecycleCallbacks
+ * @MongoDB\MappedSuperclass
+ * @MongoDB\HasLifecycleCallbacks
  */
-abstract class AbstractStandardEntity implements ProxyInterface
+abstract class AbstractStandardDocument implements ProxyInterface
 {
     use StandardTrait;
 
     /**
-     * Default constructor used to initialize the stated object with its factory.
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function __construct()

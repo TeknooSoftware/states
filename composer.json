@@ -21,7 +21,8 @@
     },
     "require":{
         "php": "~7.4",
-        "teknoo/immutable": "^2.0.0"
+        "teknoo/immutable": "^2.0.0",
+        "typo3/class-alias-loader": "~1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "~9.0",
@@ -38,14 +39,16 @@
     "autoload": {
         "psr-4": {
             "Teknoo\\States\\": ["src/"],
-            "Teknoo\\UniversalPackage\\States\\": "package/"
+            "Teknoo\\States\\Doctrine\\Document\\": "infrastructures/doctrine/odm/",
+            "Teknoo\\States\\Doctrine\\Entity\\": "infrastructures/doctrine/orm/"
         }
     },
     "autoload-dev": {
         "psr-4": {
             "Teknoo\\Tests\\States\\": ["tests/States/"],
             "Teknoo\\Tests\\Support\\": ["tests/Support/"],
-            "Teknoo\\Tests\\UniversalPackage\\States\\": "tests/package/"
+            "Teknoo\\Tests\\States\\Doctrine\\Document\\": "tests/infrastructures/doctrine/odm/",
+            "Teknoo\\Tests\\States\\Doctrine\\Entity\\": "tests/infrastructures/doctrine/orm/"
         }
     },
     "archive": {
@@ -55,6 +58,11 @@
         "thanks": {
             "name": "teknoo/immutable",
             "url": "https://github.com/TeknooSoftware/immutable"
+        },
+        "typo3/class-alias-loader": {
+            "class-alias-maps": [
+                "class_alias_map.php"
+            ]
         }
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -20,14 +20,16 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
-namespace Teknoo\Tests\UniversalPackage\States\Document;
+declare(strict_types=1);
 
+namespace Teknoo\States\Doctrine\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
 use Teknoo\States\Proxy\ProxyInterface;
-use Teknoo\Tests\UniversalPackage\States\Support;
-use Teknoo\Tests\States\Proxy\StandardTest;
 
 /**
- * Class StandardDocumentTest.
+ * Class StandardEntity.
+ * Default Stated class implementation with a doctrine entity class.
  *
  *
  * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
@@ -37,32 +39,27 @@ use Teknoo\Tests\States\Proxy\StandardTest;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
- * @covers \Teknoo\UniversalPackage\States\Document\AbstractStandardDocument
- * @covers \Teknoo\UniversalPackage\States\Document\StandardTrait
+ * @ORM\MappedSuperclass
+ * @ORM\HasLifecycleCallbacks
  */
-class StandardDocumentTest extends StandardTest
+abstract class AbstractStandardEntity implements ProxyInterface
 {
-    /**
-     * Build a proxy object, into $this->_proxy to test it.
-     *
-     * @return ProxyInterface
-     */
-    protected function buildProxy()
-    {
-        $this->proxy = new Support\StandardDocument();
+    use StandardTrait;
 
-        return $this->proxy;
+    /**
+     * Default constructor used to initialize the stated object with its factory.
+     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
+     */
+    public function __construct()
+    {
+        $this->postLoadDoctrine();
     }
 
     /**
-     * Test if the class initialize its vars from the trait constructor.
+     * @return array<string>
      */
-    public function testPostLoadDoctrine()
+    protected static function statesListDeclaration(): array
     {
-        $proxyReflectionClass = new \ReflectionClass(Support\StandardDocument::class);
-        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        self::assertInstanceOf(ProxyInterface::class, $proxy->postLoadDoctrine());
-
-        return;
+        return [];
     }
 }

@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
@@ -20,14 +20,17 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
-namespace Teknoo\Tests\UniversalPackage\States\Entity;
+declare(strict_types=1);
+
+namespace Teknoo\States\Doctrine\Entity;
 
 use Teknoo\States\Proxy\ProxyInterface;
-use Teknoo\Tests\UniversalPackage\States\Support;
-use Teknoo\Tests\States\Proxy\StandardTest;
+use Teknoo\States\Proxy\ProxyTrait;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Class StandardEntityTest.
+ * Trait StandardTrait
+ * Trait adapt standard proxies to doctrine.
  *
  *
  * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
@@ -36,33 +39,34 @@ use Teknoo\Tests\States\Proxy\StandardTest;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
- *
- * @covers \Teknoo\UniversalPackage\States\Entity\AbstractStandardEntity
- * @covers \Teknoo\UniversalPackage\States\Entity\StandardTrait
  */
-class StandardEntityTest extends StandardTest
+trait StandardTrait
 {
-    /**
-     * Build a proxy object, into $this->_proxy to test it.
-     *
-     * @return ProxyInterface
-     */
-    protected function buildProxy()
-    {
-        $this->proxy = new Support\StandardEntity();
+    use ProxyTrait;
 
-        return $this->proxy;
+    /**
+     * Doctrine does not call the construction and create a new instance without it.
+     * This callback reinitialize proxy.
+     *
+     * @ORM\PostLoad()
+     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
+     */
+    public function postLoadDoctrine(): ProxyInterface
+    {
+        //Call the method of the trait to initialize local attributes of the proxy
+        $this->initializeProxy();
+        //Select good state
+        $this->updateStates();
+
+        return $this;
     }
 
     /**
-     * Test if the class initialize its vars from the trait constructor.
+     * Method overloaded by States Lifecycle to update automatically states from
+     * configuration.
      */
-    public function testPostLoadDoctrine()
+    public function updateStates(): ProxyInterface
     {
-        $proxyReflectionClass = new \ReflectionClass(Support\StandardEntity::class);
-        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        self::assertInstanceOf(ProxyInterface::class, $proxy->postLoadDoctrine());
-
-        return;
+        return $this;
     }
 }

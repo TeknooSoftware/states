@@ -20,7 +20,7 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
-namespace Teknoo\Tests\UniversalPackage\States\Support;
+namespace Teknoo\Tests\States\Doctrine\Entity;
 
 use Closure;
 use Teknoo\Tests\Support\MockProxy;

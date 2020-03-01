@@ -20,17 +20,17 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
-namespace Teknoo\Tests\UniversalPackage\States\Support;
+namespace Teknoo\Tests\States\Doctrine\Entity;
 
-use Teknoo\UniversalPackage\States\Document\AbstractStandardDocument;
+use Teknoo\States\Doctrine\Entity\AbstractStandardEntity;
 use Teknoo\States\Proxy\ArrayAccessTrait;
 use Teknoo\States\Proxy\IteratorTrait;
 use Teknoo\States\Proxy\MagicCallTrait;
 use Teknoo\States\Proxy\SerializableTrait;
 
 /**
- * Class StandardDocument
- * To build an specific instance of the class StandardDocument to test this default class.
+ * Class StandardEntity
+ * To build an specific instance of the class StandardEntity to test this default class.
  * By default, the class Proxy\Standard uses '\Teknoo\States\Factory\StandardStartupFactory' as startup factory.
  * But, in the test, we will use '\Teknoo\Tests\Support\MockStartupFactory' to unit testing only the proxy.
  *
@@ -46,7 +46,7 @@ use Teknoo\States\Proxy\SerializableTrait;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class StandardDocument extends AbstractStandardDocument implements
+class StandardEntity extends AbstractStandardEntity implements
     \Serializable,
     \ArrayAccess,
     \SeekableIterator,

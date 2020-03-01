@@ -19,22 +19,22 @@ qa: lint phpstan phpcs phpcpd
 
 lint:
 	find ./src -name "*.php" -exec /usr/bin/env php -l {} \; | grep "Parse error" > /dev/null && exit 1 || exit 0
-	find ./package -name "*.php" -exec /usr/bin/env php -l {} \; | grep "Parse error" > /dev/null && exit 1 || exit 0
+	find ./infrastructures -name "*.php" -exec /usr/bin/env php -l {} \; | grep "Parse error" > /dev/null && exit 1 || exit 0
 
 phploc:
 	vendor/bin/phploc src
-	vendor/bin/phploc package
+	vendor/bin/phploc infrastructures
 
 phpstan:
-	vendor/bin/phpstan analyse src package --level max
+	vendor/bin/phpstan analyse src infrastructures --level max
 
 phpcs:
 	vendor/bin/phpcs --standard=PSR12 --extensions=php src/
-	vendor/bin/phpcs --standard=PSR12 --extensions=php package/
+	vendor/bin/phpcs --standard=PSR12 --extensions=php infrastructures/
 
 phpcpd:
 	vendor/bin/phpcpd src/
-	vendor/bin/phpcpd package/
+	vendor/bin/phpcpd infrastructures/
 
 .PHONY: qa lint phploc phpstan phpcs phpcpd
 
