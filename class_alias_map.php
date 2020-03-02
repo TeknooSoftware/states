@@ -28,8 +28,8 @@ use Teknoo\States\Doctrine\Document\AbstractStandardDocument;
 use Teknoo\States\Doctrine\Entity\StandardTrait as StandardDocumentTrait;
 
 return [
-    'Teknoo\UniversalPackage\States\AbstractStandardEntity' => AbstractStandardEntity::class,
-    'Teknoo\UniversalPackage\States\StandardEntityTrait' => StandardEntityTrait::class,
-    'Teknoo\UniversalPackage\States\AbstractStandardDocument' => AbstractStandardDocument::class,
-    'Teknoo\UniversalPackage\States\StandardDocumentTrait' => StandardDocumentTrait::class,
+    'Teknoo\UniversalPackage\States\Entity\AbstractStandardEntity' => AbstractStandardEntity::class,
+    'Teknoo\UniversalPackage\States\Entity\StandardEntityTrait' => StandardEntityTrait::class,
+    'Teknoo\UniversalPackage\States\Document\AbstractStandardDocument' => AbstractStandardDocument::class,
+    'Teknoo\UniversalPackage\States\Document\StandardTrait' => StandardDocumentTrait::class,
 ];

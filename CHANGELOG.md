@@ -1,11 +1,16 @@
 #Teknoo Software - States library - Change Log
 
-##[4.0.2] - 2020-04-01
+##[4.0.3] - 2020-03-02
+###Stable Release
+###Change
+- Fix issue into Class alias mapping to avoid BC Error about `Teknoo\UniversalPackage\States`.
+
+##[4.0.2] - 2020-03-01
 ###Stable Release
 ###Change
 - Update dev tools, migrate to PHPUnit 9.0, phploc 6.0, phpcpd 5.0
 - Migrate "Universal Package" (dedicated to doctrine) to infrastructures folder.
-  `Namespace Teknoo\UniversalPackage\States` migrate to `Teknoo\States\Doctrine\Entity` and `Teknoo\States\Doctrine\Document`
+  `Teknoo\UniversalPackage\States` migrate to `Teknoo\States\Doctrine\Entity` and `Teknoo\States\Doctrine\Document`
 - Migrate PHPStan extension from src folder to infrastructures folder (namespace stay unchanged)
 
 ##[4.0.1] - 2020-01-29
