@@ -24,7 +24,6 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Doctrine\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
@@ -38,9 +37,6 @@ use Teknoo\States\Proxy\ProxyInterface;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
- *
- * @ORM\MappedSuperclass
- * @ORM\HasLifecycleCallbacks
  */
 abstract class AbstractStandardEntity implements ProxyInterface
 {

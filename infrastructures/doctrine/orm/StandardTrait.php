@@ -26,7 +26,6 @@ namespace Teknoo\States\Doctrine\Entity;
 
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\Proxy\ProxyTrait;
-use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Trait StandardTrait
@@ -48,7 +47,6 @@ trait StandardTrait
      * Doctrine does not call the construction and create a new instance without it.
      * This callback reinitialize proxy.
      *
-     * @ORM\PostLoad()
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function postLoadDoctrine(): ProxyInterface

@@ -26,7 +26,6 @@ namespace Teknoo\States\Doctrine\Document;
 
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\Proxy\ProxyTrait;
-use Doctrine\ODM\MongoDB\Mapping\Annotations as MongoDB;
 
 /**
  * Trait StandardTrait
@@ -48,7 +47,6 @@ trait StandardTrait
      * Doctrine does not call the construction and create a new instance without it.
      * This callback reinitialize proxy.
      *
-     * @MongoDB\PostLoad()
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function postLoadDoctrine(): ProxyInterface
