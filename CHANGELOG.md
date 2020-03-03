@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.4] - 2020-03-03
+###Stable Release
+###Change
+- Remove PHP Mapping about Doctrine in `infrastructures/doctrine`.
+
 ##[4.0.3] - 2020-03-02
 ###Stable Release
 ###Change
