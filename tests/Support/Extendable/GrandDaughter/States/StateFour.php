@@ -19,15 +19,12 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-namespace Teknoo\Tests\Support\Extendable\GrandDaughter;
+namespace Teknoo\Tests\Support\Extendable\GrandDaughter\States;
 
-use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
-use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateFour;
-use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree;
+use Teknoo\States\State\AbstractState;
 
 /**
- * Proxy GrandDaughter
- * Proxy class of the stated class GrandDaughter
+ * State StateThree
  * Copy from Demo for functional tests.
  *
  *
@@ -38,15 +35,11 @@ use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class GrandDaughter extends Daughter
+class StateFour extends AbstractState
 {
-    private $privateValueOfGrandGauther = 42;
-
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            StateThree::class,
-            StateFour::class,
-        ];
+    public function getPrivateValueOfGrandGauther() {
+        return function () {
+            return $this->privateValueOfGrandGauther;
+        };
     }
 }

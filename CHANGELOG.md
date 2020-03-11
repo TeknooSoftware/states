@@ -1,5 +1,12 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.5] - 2020-03-11
+###Stable Release
+###Change
+- Fix issue in `ProxyTrait::loadStates()` to manage proxies without owns definitions of `statesListDeclaration` and 
+  avoid issues in inheritances (States and methods of parent's classes was loaded as method of final or current 
+  checked class). 
+
 ##[4.0.4] - 2020-03-03
 ###Stable Release
 ###Change

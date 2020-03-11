@@ -25,8 +25,10 @@ use Teknoo\States\Exception\MethodNotImplemented;
 use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateOne;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateThree;
+use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateFour;
 use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree as StateThreeGD;
 use Teknoo\Tests\Support\Extendable\GrandDaughter\GrandDaughter;
+use Teknoo\Tests\Support\Extendable\GrandGrandDaughter\GrandGrandDaughter;
 use Teknoo\Tests\Support\Extendable\Mother\Mother;
 use Teknoo\Tests\Support\Extendable\Mother\States\StateDefault;
 use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
@@ -83,7 +85,33 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
         $statesList = $grandDaughterInstance->listAvailableStates();
         sort($statesList);
         self::assertEquals(
-            [\Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class, StateOne::class, \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class, StateTwo::class],
+            [
+                \Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class,
+                 StateOne::class,
+                 StateFour::class,
+                 \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class,
+                 StateTwo::class
+            ],
+            $statesList
+        );
+    }
+
+    /**
+     * Check if the list of states for the grand dauther contains its states, and non overloaded parents'states.
+     */
+    public function testListAvailableStatesGrandGrandDaughter()
+    {
+        $grandGrandDaughterInstance = new GrandGrandDaughter();
+        $statesList = $grandGrandDaughterInstance->listAvailableStates();
+        sort($statesList);
+        self::assertEquals(
+            [
+                \Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class,
+                StateOne::class,
+                StateFour::class,
+                \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class,
+                StateTwo::class
+            ],
             $statesList
         );
     }
@@ -135,8 +163,28 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
                 StateOne::class => ['method3', 'method4'],
                 \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class => ['method7', 'method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
                 StateTwo::class => ['methodPublic', 'methodProtected', 'methodPrivate', 'methodRecallPrivate','updateVariable', 'getMotherVariable'],
+                StateFour::class => ['getPrivateValueOfGrandGauther'],
             ],
             $grandDaughterInstance->listMethodsByStates()
+        );
+    }
+
+    /**
+     * Check if methods in states are only public and protected methods availables from the mother
+     * (of non overloaded states) and its owned methods. Check inheritance state from a state in parent classe.
+     */
+    public function testListMethodsByStatesGrandGrandDaughter()
+    {
+        $grandGrandDaughterInstance = new GrandGrandDaughter();
+        self::assertEquals(
+            [
+                \Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault::class => [],
+                StateOne::class => ['method3', 'method4'],
+                \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class => ['method7', 'method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
+                StateTwo::class => ['methodPublic', 'methodProtected', 'methodPrivate', 'methodRecallPrivate','updateVariable', 'getMotherVariable'],
+                StateFour::class => ['getPrivateValueOfGrandGauther'],
+            ],
+            $grandGrandDaughterInstance->listMethodsByStates()
         );
     }
 
@@ -210,6 +258,11 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
         $grandDaughterInstance->enableState(StateThreeGD::class);
         self::assertEquals(666, $grandDaughterInstance->method6());
         self::assertEquals(777, $grandDaughterInstance->method7());
+
+        $grandGrandDaughterInstance = new GrandGrandDaughter();
+        $grandGrandDaughterInstance->enableState(StateThreeGD::class);
+        self::assertEquals(666, $grandGrandDaughterInstance->method6());
+        self::assertEquals(777, $grandGrandDaughterInstance->method7());
     }
 
     /**
@@ -294,5 +347,34 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
             'fooBar',
             $daughterInstance->getMotherVariable()
         );
+    }
+
+    public function testAccessToPrivateAttributeWithBindOfClosureFromGrandGrandDaughter()
+    {
+        $daughterInstance = new GrandGrandDaughter();
+        $daughterInstance->enableState(StateTwo::class);
+
+        $daughterInstance->updateVariable('fooBar');
+
+        self::assertEquals(
+            'fooBar',
+            $daughterInstance->classicGetMotherVariable()
+        );
+
+        self::assertEquals(
+            'fooBar',
+            $daughterInstance->getMotherVariable()
+        );
+    }
+
+    public function testStatesLoadingWhenStatesListDeclarationIsNotImplementedInClass()
+    {
+        $gdIinstance = new GrandDaughter();
+        $gdIinstance->enableState(StateFour::class);
+        self::assertEquals(42, $gdIinstance->getPrivateValueOfGrandGauther());
+
+        $gddInstance = new GrandGrandDaughter();
+        $gddInstance->enableState(StateFour::class);
+        self::assertEquals(42, $gddInstance->getPrivateValueOfGrandGauther());
     }
 }

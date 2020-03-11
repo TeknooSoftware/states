@@ -120,8 +120,6 @@ trait ProxyTrait
      * a previous loaded state (defined in previously in this class or in children) it's skipped.
      *
      * @param array<string> $statesList
-     * @param bool $enablePrivateMode
-     * @param string $selfClassName
      * @param array<string> $loadedStatesList
      *
      * @throws Exception\StateNotFound
@@ -164,8 +162,6 @@ trait ProxyTrait
      * (states returned by `statesListDeclaration()`), but checks also parent's states by calling theirs static methods
      * `statesListDeclaration`.
      *
-     * @return ProxyInterface
-     *
      * @throws Exception\StateNotFound
      */
     private function loadStates(): ProxyInterface
@@ -173,13 +169,20 @@ trait ProxyTrait
         $currentClassName = static::class;
         $loadedStatesList = [];
 
-        //Private mode is only enable for states directly defined in this stated class.
-        $this->initializeStates(
-            static::statesListDeclaration(),
-            false,
-            $currentClassName,
-            $loadedStatesList
-        );
+        $initializesStates = function ($className, $privateMode, &$loadedStatesList) {
+            $rfm = new \ReflectionMethod($className, 'statesListDeclaration');
+            if ($rfm->getDeclaringClass()->getName() === $className) {
+                //Private mode is only enable for states directly defined in this stated class.
+                $this->initializeStates(
+                    $className::statesListDeclaration(),
+                    $privateMode,
+                    $className,
+                    $loadedStatesList
+                );
+            }
+        };
+
+        $initializesStates($currentClassName, false, $loadedStatesList);
 
         $parentClassName = \get_class($this);
         do {
@@ -189,14 +192,7 @@ trait ProxyTrait
                 && \is_callable([$parentClassName, 'statesListDeclaration'])
                 && \is_subclass_of($parentClassName, ProxyInterface::class)
             ) {
-                //Private mode is disable for states directly defined in parent class.
-                $statesList = $parentClassName::statesListDeclaration();
-                $this->initializeStates(
-                    $statesList,
-                    true,
-                    $parentClassName,
-                    $loadedStatesList
-                );
+                $initializesStates($parentClassName, true, $loadedStatesList);
             }
         } while (false !== $parentClassName);
 
@@ -205,8 +201,6 @@ trait ProxyTrait
 
     /**
      * To get the class name of the caller according to scope visibility.
-     *
-     * @return string
      */
     private function getCallerStatedClassName(): string
     {
@@ -220,10 +214,6 @@ trait ProxyTrait
     /**
      * To push in the caller stated classes name stack
      * the class of the current object.
-     *
-     * @param StateInterface $state
-     *
-     * @return ProxyInterface
      */
     private function pushCallerStatedClassName(StateInterface $state): ProxyInterface
     {
@@ -240,8 +230,6 @@ trait ProxyTrait
 
     /**
      * To pop the current caller in the stated class name stack.
-     *
-     * @return ProxyInterface
      */
     private function popCallerStatedClassName(): ProxyInterface
     {
@@ -255,15 +243,10 @@ trait ProxyTrait
     /**
      * Prepare the execution's context and execute a method in a state passed in args with the closure.
      *
-     * @param StateInterface $state
-     * @param string         $methodName
      * @param array<mixed>   $arguments
      * @param string         $scopeVisibility self::VISIBILITY_PUBLIC
      *                                        self::VISIBILITY_PROTECTED
      *                                        self::VISIBILITY_PRIVATE
-     * @param callable       $callback
-     *
-     * @return self|ProxyInterface
      *
      * @throws \Throwable
      */
@@ -299,7 +282,6 @@ trait ProxyTrait
      *
      * @api
      *
-     * @param string $methodName
      * @param array<mixed> $arguments of the callmethod
      *
      * @return mixed
@@ -343,10 +325,6 @@ trait ProxyTrait
 
     /**
      * To test if the identifier is an non empty string and a valif full qualified class/interface name.
-     *
-     * @param string $name
-     *
-     * @return bool
      *
      * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
      * @throws Exception\StateNotFound when the state class name does not exist
@@ -394,8 +372,6 @@ trait ProxyTrait
      * Called from a method of this stated class instance : Private state
      *
      * @param object $callerObject
-     *
-     * @return string
      */
     private function extractVisibilityScopeFromObject(&$callerObject): string
     {
@@ -424,10 +400,6 @@ trait ProxyTrait
      * Called from a child class, via a static method or an instance of this class : Protected scope
      * Called from a static method of this stated class, or from a method of this stated class (but not this instance)
      *  Private scope
-     *
-     * @param string $callerName
-     *
-     * @return string
      */
     private function extractVisibilityScopeFromClass(string &$callerName): string
     {
@@ -462,8 +434,6 @@ trait ProxyTrait
      * Called from a static method of this stated class, or from a method of this stated class (but not this instance) :
      *  Private scope
      * Called from a method of this stated class instance : Private state
-     *
-     * @param int $limit To define the caller into the calling stack
      *
      * @return string Return :  StateInterface::VISIBILITY_PUBLIC
      *                StateInterface::VISIBILITY_PROTECTED
@@ -713,9 +683,6 @@ trait ProxyTrait
 
     /**
      * @param array<string> $statesNames
-     * @param callable $callback
-     * @param bool $mustActive
-     * @param bool $allStates
      * @throws Exception\StateNotFound
      */
     private function checkInState(array $statesNames, callable $callback, bool $mustActive, bool $allStates): void

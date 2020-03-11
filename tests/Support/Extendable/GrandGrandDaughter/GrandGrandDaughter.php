@@ -19,17 +19,13 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-namespace Teknoo\Tests\Support\Extendable\GrandDaughter;
+namespace Teknoo\Tests\Support\Extendable\GrandGrandDaughter;
 
-use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
-use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateFour;
-use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree;
+use Teknoo\Tests\Support\Extendable\GrandDaughter\GrandDaughter;
 
 /**
- * Proxy GrandDaughter
- * Proxy class of the stated class GrandDaughter
- * Copy from Demo for functional tests.
- *
+ * Proxy GrandGrandDaughter
+ * Has not implementation of static method statesListDeclaration, check if all state are in private mode
  *
  * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
  *
@@ -38,15 +34,6 @@ use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class GrandDaughter extends Daughter
+class GrandGrandDaughter extends GrandDaughter
 {
-    private $privateValueOfGrandGauther = 42;
-
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            StateThree::class,
-            StateFour::class,
-        ];
-    }
 }
