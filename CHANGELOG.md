@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.6] - 2020-04-20
+###Stable Release
+###Change
+- Update Scope class dedicated to PHPStan 0.12.19.
+
 ##[4.0.5] - 2020-03-11
 ###Stable Release
 ###Change

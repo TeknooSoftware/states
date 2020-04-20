@@ -29,6 +29,7 @@ use PHPStan\Analyser\ScopeContext;
 use PHPStan\Analyser\ScopeFactory;
 use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\Analyser\VariableTypeHolder;
+use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Type\DynamicReturnTypeExtensionRegistry;
 use PHPStan\Type\OperatorTypeSpecifyingExtensionRegistry;
@@ -111,6 +112,7 @@ class Scope extends PHPStanScope
      * @param \PHPStan\Analyser\VariableTypeHolder[] $moreSpecificTypes
      * @param array<string, true> $currentlyAssignedExpressions
      * @param array<string, Type> $nativeExpressionTypes
+     * @param array<MethodReflection|FunctionReflection> $inFunctionCallsStack
      * @param string[] $dynamicConstantNames
      * @paarm bool $treatPhpDocTypesAsCertain
      * @throws ShouldNotHappenException
@@ -136,6 +138,7 @@ class Scope extends PHPStanScope
         bool $inFirstLevelStatement = \true,
         array $currentlyAssignedExpressions = [],
         array $nativeExpressionTypes = [],
+        array $inFunctionCallsStack = [],
         array $dynamicConstantNames = [],
         bool $treatPhpDocTypesAsCertain = \true
     ) {
@@ -163,6 +166,7 @@ class Scope extends PHPStanScope
             $inFirstLevelStatement,
             $currentlyAssignedExpressions,
             $nativeExpressionTypes,
+            $inFunctionCallsStack,
             $dynamicConstantNames,
             $treatPhpDocTypesAsCertain
         );
