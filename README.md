@@ -22,9 +22,11 @@ Features
 Quick Example
 -------------
     <?php
-
+    
+    declare(strict_types=1);
+    
     require 'vendor/autoload.php';
-
+    
     use Teknoo\States\Automated\AutomatedInterface;
     use Teknoo\States\Automated\AutomatedTrait;
     use Teknoo\States\Automated\Assertion\Property;
@@ -32,7 +34,7 @@ Quick Example
     use Teknoo\States\Proxy\ProxyInterface;
     use Teknoo\States\Proxy\ProxyTrait;
     use Teknoo\States\State\AbstractState;
-
+    
     class English extends AbstractState
     {
         public function sayHello(): \Closure
@@ -41,7 +43,7 @@ Quick Example
                 return 'Good morning, '.$this->name;
             };
         }
-
+    
         public function displayDate(): \Closure
         {
             return function(\DateTime $now): string {
@@ -49,7 +51,7 @@ Quick Example
             };
         }
     }
-
+    
     class French extends AbstractState
     {
         public function sayHello(): \Closure
@@ -58,7 +60,7 @@ Quick Example
                 return 'Bonjour, '.$this->name;
             };
         }
-
+    
         public function displayDate(): \Closure
         {
             return function(\DateTime $now): string {
@@ -66,23 +68,21 @@ Quick Example
             };
         }
     }
-
+    
     class Person implements ProxyInterface, AutomatedInterface
     {
-        use ProxyTrait,
-            AutomatedTrait;
-
-        /** @var string */
-        private $name;
-
-        /** @var string */
-        private $country;
-
+        use ProxyTrait;
+        use AutomatedTrait;
+    
+        private string $name;
+    
+        private string $country;
+    
         public function __construct()
         {
             $this->initializeProxy();
         }
-
+    
         protected static function statesListDeclaration(): array
         {
             return [
@@ -90,7 +90,7 @@ Quick Example
                 French::class
             ];
         }
-
+    
         protected function listAssertions(): array
         {
             return [
@@ -100,38 +100,38 @@ Quick Example
                     ->with('country', new IsEqual('fr')),
             ];
         }
-
+    
         public function setName(string $name): Person
         {
             $this->name = $name;
-
+    
             return $this;
         }
-
+    
         public function setCountry(string $country): Person
         {
             $this->country = $country;
             $this->updateStates();
-
+    
             return $this;
         }
     }
-
+    
     $frenchMan = new Person();
     $frenchMan->setCountry('fr');
     $frenchMan->setName('Roger');
-
+    
     $englishMan = new Person();
     $englishMan->setCountry('en');
     $englishMan->setName('Richard');
-
+    
     $now = new \DateTime('2016-07-01');
-
+    
     foreach ([$frenchMan, $englishMan] as $man) {
         echo $man->sayHello().PHP_EOL;
         echo 'Date: '.$man->displayDate($now).PHP_EOL;
     }
-
+    
     //Display
     //Bonjour, Roger
     //Date: 01 07 2016
