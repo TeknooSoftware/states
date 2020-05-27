@@ -352,7 +352,7 @@ trait ProxyTrait
      *
      * @throws Exception\StateNotFound
      */
-    protected function initializeProxy(): void
+    protected function initializeStateProxy(): void
     {
         //Initialize internal vars
         $this->states = [];

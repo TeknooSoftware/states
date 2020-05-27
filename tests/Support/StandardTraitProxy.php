@@ -82,7 +82,7 @@ Proxy\ProxyInterface,
     public function __construct()
     {
         //Call the method of the trait to initialize local attributes of the proxy
-        $this->initializeProxy();
+        $this->initializeStateProxy();
     }
 
     /**

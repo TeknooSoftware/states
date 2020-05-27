@@ -44,7 +44,7 @@ class Mother implements Proxy\ProxyInterface
 
     public function __construct()
     {
-        $this->initializeProxy();
+        $this->initializeStateProxy();
     }
 
     protected static function statesListDeclaration(): array

@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.7] - 2020-05-28
+###Stable Release
+###Change
+- Replace initializeProxy by initializeStateProxy to avoid collision with other libs
+
 ##[4.0.6] - 2020-04-20
 ###Stable Release
 ###Change

@@ -52,7 +52,7 @@ trait StandardTrait
     public function postLoadDoctrine(): ProxyInterface
     {
         //Call the method of the trait to initialize local attributes of the proxy
-        $this->initializeProxy();
+        $this->initializeStateProxy();
         //Select good state
         $this->updateStates();
 

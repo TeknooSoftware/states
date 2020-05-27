@@ -73,7 +73,7 @@ class AutomatedAcme implements ProxyInterface, AutomatedInterface
      */
     public function __construct()
     {
-        $this->initializeProxy();
+        $this->initializeStateProxy();
     }
 
     /**

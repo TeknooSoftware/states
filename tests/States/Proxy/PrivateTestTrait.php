@@ -47,7 +47,7 @@ trait PrivateTestTrait
     {
         //PHPUnit intercepts the Notice exception ;)
         $this->expectException(\PHPUnit\Framework\Exception::class);
-        $this->initializeProxy(MockState1::class, true);
+        $this->initializeStateProxy(MockState1::class, true);
         $this->proxy->getChildrenPriProperty();
     }
 
@@ -56,7 +56,7 @@ trait PrivateTestTrait
      */
     public function testIssetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother()
     {
-        $this->initializeProxy(MockState1::class, true);
+        $this->initializeStateProxy(MockState1::class, true);
         self::assertFalse($this->proxy->issetChildrenPriProperty());
         self::assertFalse($this->proxy->issetChildrenMissingPriProperty());
     }
@@ -66,7 +66,7 @@ trait PrivateTestTrait
      */
     public function testSetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother()
     {
-        $this->initializeProxy(MockState1::class, true);
+        $this->initializeStateProxy(MockState1::class, true);
         $this->proxy->setChildrenPriProperty('value2');
         self::assertEquals('value2', $this->proxy->getChildrenPriProperty());
     }
@@ -76,7 +76,7 @@ trait PrivateTestTrait
      */
     public function testUnsetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother()
     {
-        $this->initializeProxy(MockState1::class, true);
+        $this->initializeStateProxy(MockState1::class, true);
         self::assertEmpty($this->proxy->unsetChildrenPriProperty());
     }
 
@@ -85,7 +85,7 @@ trait PrivateTestTrait
      */
     public function testGetIssetSetUnsetPrivateViaMethodChildren()
     {
-        $this->initializeProxy(MockState1::class, true);
+        $this->initializeStateProxy(MockState1::class, true);
         self::assertEquals('value1', $this->proxy->getPriProperty());
         self::assertTrue($this->proxy->issetPriProperty());
         self::assertFalse($this->proxy->issetMissingPriProperty());
@@ -100,7 +100,7 @@ trait PrivateTestTrait
      */
     public function testCallPrivateFromState()
     {
-        $this->initializeProxy(MockState1::class, true);
+        $this->initializeStateProxy(MockState1::class, true);
         self::assertEquals('fooBar', $this->proxy->callPriMethod());
     }
 
@@ -118,7 +118,7 @@ trait PrivateTestTrait
      */
     public function testCallPrivateChildrenFromState()
     {
-        $this->initializeProxy(MockState1::class, true);
+        $this->initializeStateProxy(MockState1::class, true);
         $this->proxy->callChildrenPriMethod();
         self::assertTrue($this->state1->methodWasCalled());
     }

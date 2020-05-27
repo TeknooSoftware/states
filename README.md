@@ -80,7 +80,7 @@ Quick Example
     
         public function __construct()
         {
-            $this->initializeProxy();
+            $this->initializeStateProxy();
         }
     
         protected static function statesListDeclaration(): array

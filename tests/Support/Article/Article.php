@@ -102,7 +102,7 @@ class Article implements Proxy\ProxyInterface
         $this->data = $data;
 
         //Call the method of the trait to initialize local attributes of the proxy
-        $this->initializeProxy();
+        $this->initializeStateProxy();
 
         //If the article is published, load the state Published, else load the state Draft
         if (false === $this->isPublished()) {
