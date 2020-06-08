@@ -184,9 +184,11 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
         $factoryClosure = $factoryReflection->getClosure($stateClassReflection->newInstanceWithoutConstructor());
         $stateClosure = $factoryClosure();
 
+        //To use the original \ReflectionClass api and not "BetterReflectionClass" whome not implements all the api.
+        $realNativeProxyReflection = new \ReflectionClass($nativeProxyReflection->getName());
         $stateClosure = $stateClosure->bindTo(
-            $nativeProxyReflection->newInstanceWithoutConstructor(),
-            $nativeProxyReflection->getName()
+            $realNativeProxyReflection->newInstanceWithoutConstructor(),
+            $realNativeProxyReflection->getName()
         );
 
         $closureReflection = new \ReflectionFunction($stateClosure);

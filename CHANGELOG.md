@@ -1,5 +1,11 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.9] - 2020-06-08
+###Stable Release
+###Change
+- To use the original \ReflectionClass api and not "BetterReflectionClass" whome not implements all the api 
+  in MethodClassExtension about PHPStan. 
+
 ##[4.0.8] - 2020-06-08
 ###Stable Release
 ###Change
