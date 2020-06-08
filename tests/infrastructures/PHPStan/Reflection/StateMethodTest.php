@@ -85,6 +85,11 @@ class StateMethodTest extends TestCase
         self::assertEquals('factory', $this->buildInstance()->getName());
     }
 
+    public function testGetReflection()
+    {
+        self::assertInstanceOf(\ReflectionMethod::class, $this->buildInstance()->getReflection());
+    }
+
     public function testGetFileName()
     {
         self::assertEquals('factory.php', $this->buildInstance()->getFileName());

@@ -29,6 +29,7 @@ use PHPStan\Analyser\ScopeContext;
 use PHPStan\Analyser\ScopeFactory;
 use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\Analyser\VariableTypeHolder;
+use PHPStan\Parser\Parser;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Type\DynamicReturnTypeExtensionRegistry;
@@ -107,6 +108,7 @@ class Scope extends PHPStanScope
     }
 
     /**
+     * @param array<string, Type> $constantTypes
      * @param \PHPStan\Reflection\FunctionReflection|MethodReflection|null $function
      * @param \PHPStan\Analyser\VariableTypeHolder[] $variablesTypes
      * @param \PHPStan\Analyser\VariableTypeHolder[] $moreSpecificTypes
@@ -127,8 +129,10 @@ class Scope extends PHPStanScope
         Standard $printer,
         TypeSpecifier $typeSpecifier,
         PropertyReflectionFinder $propertyReflectionFinder,
+        Parser $parser,
         ScopeContext $context,
         bool $declareStrictTypes = \false,
+        array $constantTypes = [],
         $function = null,
         ?string $namespace = null,
         array $variablesTypes = [],
@@ -155,8 +159,10 @@ class Scope extends PHPStanScope
             $printer,
             $typeSpecifier,
             $propertyReflectionFinder,
+            $parser,
             $context,
             $declareStrictTypes,
+            $constantTypes,
             $function,
             $namespace,
             $variablesTypes,

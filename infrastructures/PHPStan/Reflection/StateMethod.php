@@ -61,6 +61,11 @@ class StateMethod implements BuiltinMethodReflection
         return $this->factoryReflection->getName();
     }
 
+    public function getReflection(): ?\ReflectionMethod
+    {
+        return $this->factoryReflection;
+    }
+
     /**
      * @return string|false
      */

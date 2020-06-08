@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.8] - 2020-06-08
+###Stable Release
+###Change
+- Support changes in PHPStan 0.12.26
+
 ##[4.0.7] - 2020-05-28
 ###Stable Release
 ###Change
