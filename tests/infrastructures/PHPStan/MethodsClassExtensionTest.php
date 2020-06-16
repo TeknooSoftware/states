@@ -261,7 +261,7 @@ class MethodsClassExtensionTest extends TestCase
 
         $classReflection->expects(self::any())->method('getNativeReflection')->willReturn($nativeReflection);
 
-            self::assertFalse($this->buildInstance()->hasMethod($classReflection, 'getAttribute'));
+        self::assertFalse($this->buildInstance()->hasMethod($classReflection, 'getAttribute'));
     }
 
     public function testHasMethodImplementStateMethodNotExist()

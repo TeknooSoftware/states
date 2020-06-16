@@ -39,7 +39,7 @@ abstract class AbstractConstraintTest extends \PHPUnit\Framework\TestCase
     /**
      * @return ConstraintInterface
      */
-    abstract  public function buildInstance(): ConstraintInterface;
+    abstract public function buildInstance(): ConstraintInterface;
 
     public function testInConstraintSetInstanceNotImplement()
     {

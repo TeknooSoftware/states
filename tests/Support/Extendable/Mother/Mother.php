@@ -40,7 +40,7 @@ use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Mother  implements ProxyInterface
+class Mother implements ProxyInterface
 {
     use ProxyTrait;
 

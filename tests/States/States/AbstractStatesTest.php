@@ -111,7 +111,7 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
+            StateInterface::class,
             $this->getPublicClassObject(false, 'My\Stated\ClassName')
                 ->executeClosure(
                     ...$args
@@ -136,7 +136,7 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
+            StateInterface::class,
             $this->getPublicClassObject(false, 'My\Stated\ClassName')
                 ->executeClosure(
                     ...$args
@@ -202,13 +202,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getPrivateClassObject(false , 'My\Stated\ClassName')
+            StateInterface::class,
+            $this->getPrivateClassObject(false, 'My\Stated\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertTrue($called , 'Error, the private method standardMethod10 has not been called in a private scope');
+        self::assertTrue($called, 'Error, the private method standardMethod10 has not been called in a private scope');
     }
 
     public function testExecuteAProtectedMethodInAPrivateScope()
@@ -227,13 +227,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getProtectedClassObject(false , 'My\Stated\ClassName')
+            StateInterface::class,
+            $this->getProtectedClassObject(false, 'My\Stated\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertTrue($called , 'Error, the protected method standardMethod6 has not been called in a private scope');
+        self::assertTrue($called, 'Error, the protected method standardMethod6 has not been called in a private scope');
     }
 
     public function testExecuteAPublicMethodInAPrivateScope()
@@ -276,13 +276,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getPrivateClassObject(false , 'My\Stated\ClassName')
+            StateInterface::class,
+            $this->getPrivateClassObject(false, 'My\Stated\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertFalse($called , 'Error, the private method standardMethod10 has been called in a protected scope');
+        self::assertFalse($called, 'Error, the private method standardMethod10 has been called in a protected scope');
     }
 
     public function testExecuteAProtectedMethodInAProtectedScope()
@@ -301,13 +301,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getProtectedClassObject(false , 'My\Stated\ClassName')
+            StateInterface::class,
+            $this->getProtectedClassObject(false, 'My\Stated\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertTrue($called , 'Error, the protected method standardMethod6 has not been called in a protected scope');
+        self::assertTrue($called, 'Error, the protected method standardMethod6 has not been called in a protected scope');
     }
 
     public function testExecuteAPublicMethodInAProtectedScope()
@@ -350,13 +350,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getPrivateClassObject(false , 'My\Stated\ClassName')
+            StateInterface::class,
+            $this->getPrivateClassObject(false, 'My\Stated\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertFalse($called , 'Error, the private method standardMethod10 has been called in a public scope');
+        self::assertFalse($called, 'Error, the private method standardMethod10 has been called in a public scope');
     }
 
     public function testNonExecutionOfProtectedMethodInAPublicScope()
@@ -374,13 +374,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getProtectedClassObject(false , 'My\Stated\ClassName')
+            StateInterface::class,
+            $this->getProtectedClassObject(false, 'My\Stated\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertFalse($called , 'Error, the protected method standardMethod6 has been called in a public scope');
+        self::assertFalse($called, 'Error, the protected method standardMethod6 has been called in a public scope');
     }
 
     public function testExecutePublicMethodInAPublicScope()
@@ -423,13 +423,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getPrivateClassObject(true , 'My\Parent\ClassName')
+            StateInterface::class,
+            $this->getPrivateClassObject(true, 'My\Parent\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertFalse($called , 'Error, the parent private method standardMethod10 has been called in a private scope');
+        self::assertFalse($called, 'Error, the parent private method standardMethod10 has been called in a private scope');
     }
 
     public function testExecuteParentProtectedMethodInPrivateScope()
@@ -448,13 +448,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getProtectedClassObject(true , 'My\Parent\ClassName')
+            StateInterface::class,
+            $this->getProtectedClassObject(true, 'My\Parent\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertTrue($called , 'Error, the parent protected method standardMethod6 has not been called in a private scope');
+        self::assertTrue($called, 'Error, the parent protected method standardMethod6 has not been called in a private scope');
     }
 
     public function testExecuteParentPublicMethodInPrivateScope()
@@ -497,13 +497,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getPrivateClassObject(true , 'My\Parent\ClassName')
+            StateInterface::class,
+            $this->getPrivateClassObject(true, 'My\Parent\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertFalse($called , 'Error, the parent private method standardMethod10 has been called in a protected scope');
+        self::assertFalse($called, 'Error, the parent private method standardMethod10 has been called in a protected scope');
     }
 
     public function testExecuteParentProtectedMethodInProtectedScope()
@@ -522,13 +522,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getProtectedClassObject(true , 'My\Parent\ClassName')
+            StateInterface::class,
+            $this->getProtectedClassObject(true, 'My\Parent\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertTrue($called , 'Error, the parent protected method standardMethod6 has not been called in a protected scope');
+        self::assertTrue($called, 'Error, the parent protected method standardMethod6 has not been called in a protected scope');
     }
 
     public function testExecuteParentPublicMethodInProtectedScope()
@@ -571,13 +571,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getPrivateClassObject(true , 'My\Parent\ClassName')
+            StateInterface::class,
+            $this->getPrivateClassObject(true, 'My\Parent\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertFalse($called , 'Error, the parent private method standardMethod10 has been called in a public scope');
+        self::assertFalse($called, 'Error, the parent private method standardMethod10 has been called in a public scope');
     }
 
     public function testNonExecutionOfParentProtectedMethodInPublicScope()
@@ -595,13 +595,13 @@ abstract class AbstractStatesTest extends TestCase
 
         $called = false;
         self::assertInstanceOf(
-            StateInterface::class ,
-            $this->getProtectedClassObject(true , 'My\Parent\ClassName')
+            StateInterface::class,
+            $this->getProtectedClassObject(true, 'My\Parent\ClassName')
                 ->executeClosure(
                     ...$args
                 )
         );
-        self::assertFalse($called , 'Error, the parent protected method standardMethod6 has been called in a public scope');
+        self::assertFalse($called, 'Error, the parent protected method standardMethod6 has been called in a public scope');
     }
 
     public function testExecuteParentPublicMethodInPublicScope()
@@ -638,7 +638,8 @@ abstract class AbstractStatesTest extends TestCase
             [],
             StateInterface::VISIBILITY_PUBLIC,
             'My\Stated\ClassName',
-            function () use (&$called) {}
+            function () use (&$called) {
+            }
         ];
 
         $statePublicMock = $this->getPublicClassObject(false, 'My\Stated\ClassName');

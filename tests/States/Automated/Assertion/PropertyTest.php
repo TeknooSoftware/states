@@ -168,9 +168,9 @@ class PropertyTest extends AbstractAssertionTest
             ->method('checkProperty')
             ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy) {
                 if (0 === $counter++) {
-                    self::assertEquals('prop1' , $name);
+                    self::assertEquals('prop1', $name);
                 } else {
-                    self::assertEquals('prop2' , $name);
+                    self::assertEquals('prop2', $name);
                 }
 
                 $value = 123;
@@ -205,9 +205,9 @@ class PropertyTest extends AbstractAssertionTest
             ->method('checkProperty')
             ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy) {
                 if (0 === $counter++) {
-                    self::assertEquals('prop1' , $name);
+                    self::assertEquals('prop1', $name);
                 } else {
-                    self::assertEquals('prop2' , $name);
+                    self::assertEquals('prop2', $name);
                 }
 
                 $var = 456;

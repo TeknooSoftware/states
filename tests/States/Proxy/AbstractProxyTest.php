@@ -420,7 +420,8 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     public function testExceptionOnIsInStateWithInvalidArray()
     {
         $this->expectException(\TypeError::class);
-        $this->buildProxy()->isInState('', function() {});
+        $this->buildProxy()->isInState('', function () {
+        });
     }
 
     public function testExceptionOnIsInStateWithInvalidCallable()
@@ -491,7 +492,9 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
         self::assertInstanceOf(
             Proxy\ProxyInterface::class,
-            $proxy->isInState([MockState2::class], function () { self::fail(); }, true)
+            $proxy->isInState([MockState2::class], function () {
+                self::fail();
+            }, true)
         );
 
         $called = false;
@@ -507,12 +510,16 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
         self::assertInstanceOf(
             Proxy\ProxyInterface::class,
-            $proxy->isInState([MockState1::class, MockState2::class], function () { self::fail(); }, true)
+            $proxy->isInState([MockState1::class, MockState2::class], function () {
+                self::fail();
+            }, true)
         );
 
         self::assertInstanceOf(
             Proxy\ProxyInterface::class,
-            $proxy->isInState([MockState2::class, MockState1::class], function () { self::fail(); }, true)
+            $proxy->isInState([MockState2::class, MockState1::class], function () {
+                self::fail();
+            }, true)
         );
 
         $proxy->enableState(MockState2::class);
@@ -542,7 +549,8 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     public function testExceptionOnIsNotInStateWithInvalidArray()
     {
         $this->expectException(\TypeError::class);
-        $this->buildProxy()->isNotInState('', function() {});
+        $this->buildProxy()->isNotInState('', function () {
+        });
     }
 
     public function testExceptionOnIsNotInStateWithInvalidCallable()
@@ -616,17 +624,23 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
         self::assertInstanceOf(
             Proxy\ProxyInterface::class,
-            $proxy->isNotInState([MockState1::class], function () { self::fail(); }, true)
+            $proxy->isNotInState([MockState1::class], function () {
+                self::fail();
+            }, true)
         );
 
         self::assertInstanceOf(
             Proxy\ProxyInterface::class,
-            $proxy->isNotInState([MockState2::class, MockState1::class], function () { self::fail(); }, true)
+            $proxy->isNotInState([MockState2::class, MockState1::class], function () {
+                self::fail();
+            }, true)
         );
 
         self::assertInstanceOf(
             Proxy\ProxyInterface::class,
-            $proxy->isNotInState([MockState1::class, MockState2::class], function () { self::fail(); }, true)
+            $proxy->isNotInState([MockState1::class, MockState2::class], function () {
+                self::fail();
+            }, true)
         );
     }
 

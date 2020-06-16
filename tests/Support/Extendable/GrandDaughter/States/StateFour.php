@@ -37,7 +37,8 @@ use Teknoo\States\State\AbstractState;
  */
 class StateFour extends AbstractState
 {
-    public function getPrivateValueOfGrandGauther() {
+    public function getPrivateValueOfGrandGauther()
+    {
         return function () {
             return $this->privateValueOfGrandGauther;
         };

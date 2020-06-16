@@ -158,7 +158,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function isInState(array $statesNames , callable $callback): ProxyInterface
+    public function isInState(array $statesNames, callable $callback): ProxyInterface
     {
         foreach ($statesNames as $stateName) {
             if (in_array(strtolower(str_replace('_', '', $stateName)), $this->actives)) {

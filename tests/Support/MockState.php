@@ -159,14 +159,13 @@ class MockState implements StateInterface
      * {@inheritdoc}
      */
     public function executeClosure(
-        ProxyInterface $object ,
-        string &$methodName ,
-        array &$arguments ,
-        string &$requiredScope ,
-        string &$statedClassOrigin ,
+        ProxyInterface $object,
+        string &$methodName,
+        array &$arguments,
+        string &$requiredScope,
+        string &$statedClassOrigin,
         callable &$returnCallback
-    ): StateInterface
-    {
+    ): StateInterface {
         $closure = $this->getClosure($methodName, $requiredScope, $statedClassOrigin);
 
         if ($closure instanceof \Closure) {
