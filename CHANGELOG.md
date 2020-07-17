@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.10] - 2020-07-17
+###Stable Release
+###Change
+- Add travis run also with lowest dependencies.
+
 ##[4.0.9] - 2020-06-08
 ###Stable Release
 ###Change
