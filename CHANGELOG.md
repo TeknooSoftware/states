@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.11] - 2020-07-21
+###Stable Release
+###Change
+- Prevent error with ocramius/proxy-manager that does not properly initialize private properties
+
 ##[4.0.10] - 2020-07-17
 ###Stable Release
 ###Change

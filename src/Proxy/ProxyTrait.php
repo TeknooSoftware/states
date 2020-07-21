@@ -357,6 +357,8 @@ trait ProxyTrait
         //Initialize internal vars
         $this->states = [];
         $this->activesStates = [];
+        $this->classesByStates = [];
+        $this->statesAliasesList  = [];
         $this->callerStatedClassesStack = new \SplStack();
         //Creates
         $this->loadStates();
