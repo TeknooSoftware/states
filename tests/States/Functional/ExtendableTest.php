@@ -21,7 +21,7 @@
  */
 namespace Teknoo\Tests\States\Functional;
 
-use Teknoo\States\Exception\MethodNotImplemented;
+use Teknoo\States\Proxy\Exception\MethodNotImplemented;
 use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateOne;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateThree;
@@ -163,7 +163,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
                 StateOne::class => ['method3', 'method4'],
                 \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class => ['method7', 'method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
                 StateTwo::class => ['methodPublic', 'methodProtected', 'methodPrivate', 'methodRecallPrivate','updateVariable', 'getMotherVariable'],
-                StateFour::class => ['getPrivateValueOfGrandGauther'],
+                StateFour::class => ['getPrivateValueOfGrandGauther', 'thePrivateMethod'],
             ],
             $grandDaughterInstance->listMethodsByStates()
         );
@@ -182,7 +182,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
                 StateOne::class => ['method3', 'method4'],
                 \Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree::class => ['method7', 'method6', 'methodRecallMotherPrivate', 'methodRecallMotherProtected'],
                 StateTwo::class => ['methodPublic', 'methodProtected', 'methodPrivate', 'methodRecallPrivate','updateVariable', 'getMotherVariable'],
-                StateFour::class => ['getPrivateValueOfGrandGauther'],
+                StateFour::class => ['getPrivateValueOfGrandGauther', 'thePrivateMethod'],
             ],
             $grandGrandDaughterInstance->listMethodsByStates()
         );
@@ -376,5 +376,26 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
         $gddInstance = new GrandGrandDaughter();
         $gddInstance->enableState(StateFour::class);
         self::assertEquals(42, $gddInstance->getPrivateValueOfGrandGauther());
+    }
+
+    public function testCallPrivateMethodFromAPublicMethodInParent()
+    {
+        $gddInstance = new GrandGrandDaughter();
+        $gddInstance->enableState(StateFour::class);
+
+        self::assertEquals(
+            42,
+            $gddInstance->callPrivateMethod()
+        );
+    }
+
+    public function testCallPrivateMethodFromAPublicMethod()
+    {
+        $this->expectException(MethodNotImplemented::class);
+
+        $gddInstance = new GrandGrandDaughter();
+        $gddInstance->enableState(StateFour::class);
+
+        $gddInstance->callPrivateMethodSo();
     }
 }

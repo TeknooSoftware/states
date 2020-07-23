@@ -49,4 +49,9 @@ class GrandDaughter extends Daughter
             StateFour::class,
         ];
     }
+
+    public function callPrivateMethod(): int
+    {
+        return $this->thePrivateMethod();
+    }
 }

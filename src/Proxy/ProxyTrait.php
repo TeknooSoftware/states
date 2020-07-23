@@ -99,6 +99,12 @@ trait ProxyTrait
     private \SplStack $callerStatedClassesStack;
 
     /**
+     * Default class name extracted from call stack by extractVisibilityScopeFromObject
+     * @var string
+     */
+    private string $defaultCallerStatedClassName = '';
+
+    /**
      * List all states's classes available in this state. It's not mandatory to redefine states of parent's class,
      * They are automatically loaded by the proxy. Warning, if you redeclare a state of a parent's class with its full
      * qualified class name, you can access to its private method: this declaration overloads the parent's state and
@@ -208,7 +214,7 @@ trait ProxyTrait
             return $this->callerStatedClassesStack->top();
         }
 
-        return '';
+        return $this->defaultCallerStatedClassName;
     }
 
     /**
@@ -460,6 +466,7 @@ trait ProxyTrait
                 //It is an object
                 $callerObject = $callerLine['object'];
 
+                $this->defaultCallerStatedClassName = $callerLine['class'];
                 return $this->extractVisibilityScopeFromObject($callerObject);
             }
 

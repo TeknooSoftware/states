@@ -36,4 +36,9 @@ use Teknoo\Tests\Support\Extendable\GrandDaughter\GrandDaughter;
  */
 class GrandGrandDaughter extends GrandDaughter
 {
+
+    public function callPrivateMethodSo(): int
+    {
+        return $this->thePrivateMethod();
+    }
 }

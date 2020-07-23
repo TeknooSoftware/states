@@ -21,7 +21,8 @@
  */
 namespace Teknoo\Tests\Support\Extendable\GrandDaughter\States;
 
-use Teknoo\States\State\AbstractState;
+use Teknoo\States\State\StateInterface;
+use Teknoo\States\State\StateTrait;
 
 /**
  * State StateThree
@@ -35,12 +36,21 @@ use Teknoo\States\State\AbstractState;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class StateFour extends AbstractState
+class StateFour implements StateInterface
 {
+    use StateTrait;
+
     public function getPrivateValueOfGrandGauther()
     {
         return function () {
             return $this->privateValueOfGrandGauther;
+        };
+    }
+
+    private function thePrivateMethod(): callable
+    {
+        return function (): int {
+            return 42;
         };
     }
 }

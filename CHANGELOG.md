@@ -1,5 +1,11 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.12] - 2020-07-21
+###Stable Release
+###Fix
+- Fix issue when a public method in a parent class call a private method in a state available 
+  by this same parent class nut not by the child class.
+
 ##[4.0.11] - 2020-07-21
 ###Stable Release
 ###Change
