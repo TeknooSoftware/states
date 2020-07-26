@@ -1,6 +1,11 @@
 #Teknoo Software - States library - Change Log
 
-##[4.0.12] - 2020-07-21
+##[4.0.13] - 2020-07-26
+###Stable Release
+###Fix
+- Fix Count* assertions to return self eager.
+
+##[4.0.12] - 2020-07-24
 ###Stable Release
 ###Fix
 - Fix issue when a public method in a parent class call a private method in a state available 

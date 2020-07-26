@@ -60,6 +60,8 @@ class CountsLess extends AbstractConstraint
             && $value->count() < $this->exceptedCount
         ) {
             $this->isValid($value);
+
+            return $this;
         }
 
         if (
