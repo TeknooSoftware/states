@@ -269,15 +269,10 @@ trait ProxyTrait
         //Call it
         try {
             $state->executeClosure($this, $methodName, $arguments, $scopeVisibility, $callerStatedClass, $callback);
-        } catch (\Throwable $e) {
+        } finally {
             //Restore stated class name stack
             $this->popCallerStatedClassName();
-
-            throw $e;
         }
-
-        //Restore stated class name stack
-        $this->popCallerStatedClassName();
 
         return $this;
     }

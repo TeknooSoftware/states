@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.0.14] - 2020-08-20
+###Stable Release
+###Fix
+- Replace catch in ProxyTrait::callMethod by a finally block
+
 ##[4.0.13] - 2020-07-26
 ###Stable Release
 ###Fix
