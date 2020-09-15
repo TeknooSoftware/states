@@ -36,7 +36,7 @@ use Teknoo\Immutable\ImmutableTrait;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class HasNotEmptyValueForKey extends AbstractConstraint
+class HasEmptyValueForKey extends AbstractConstraint
 {
     use ImmutableTrait;
 
@@ -54,7 +54,7 @@ class HasNotEmptyValueForKey extends AbstractConstraint
        */
     public function check(&$value): ConstraintInterface
     {
-        if (\is_array($value) && !empty($value[$this->keyName])) {
+        if (\is_array($value) && \array_key_exists($this->keyName, $value) && empty($value[$this->keyName])) {
             $this->isValid($value);
         }
 

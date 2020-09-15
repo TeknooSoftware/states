@@ -42,16 +42,16 @@ class HasKey extends AbstractConstraint
 
     private string $keyName;
 
-  public function __construct(string $keyName)
-  {
-    $this->uniqueConstructorCheck();
+    public function __construct(string $keyName)
+    {
+        $this->uniqueConstructorCheck();
 
-    $this->keyName = $keyName;
-  }
+        $this->keyName = $keyName;
+    }
 
-  /**
-     * {@inheritdoc}
-     */
+    /**
+       * {@inheritdoc}
+       */
     public function check(&$value): ConstraintInterface
     {
         if (\is_array($value) && \array_key_exists($this->keyName, $value)) {

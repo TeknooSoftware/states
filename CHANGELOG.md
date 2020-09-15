@@ -1,5 +1,16 @@
 #Teknoo Software - States library - Change Log
 
+##[4.1.0] - 2020-09-15
+###Stable Release
+###Add
+- Add more assertions checks for Automated states :
+    * HasEmptyValueForKey
+    * HasKey
+    * HasNotEmptyValueForKey
+    * IsArray
+    * IsScalar
+    * IsString
+
 ##[4.0.15] - 2020-08-25
 ###Stable Release
 ###Update

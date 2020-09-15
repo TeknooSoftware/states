@@ -45,7 +45,7 @@ class IsString extends AbstractConstraint
      */
     public function check(&$value): ConstraintInterface
     {
-        if (\is_array($value)) {
+        if (\is_string($value)) {
             $this->isValid($value);
         }
 
