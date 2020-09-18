@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[4.1.1] - 2020-09-18
+###Stable Release
+- Update QA and CI tools 
+
 ##[4.1.0] - 2020-09-15
 ###Stable Release
 ###Add
