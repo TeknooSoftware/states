@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.1.2] - 2020-10-12
+###Stable Release
+- Prepare library to support also PHP8.
+- Remove deprecations from PHP8.
+
 ##[4.1.1] - 2020-09-18
 ###Stable Release
 - Update QA and CI tools 
