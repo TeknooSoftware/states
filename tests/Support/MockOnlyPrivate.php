@@ -42,26 +42,9 @@ class MockOnlyPrivate implements StateInterface
     use StateTrait;
 
     /**
-     * Final Method 9.
-     */
-    final private function finalMethod9()
-    {
-        return function ($a=0, $b=0) {
-            return $a+$b;
-        };
-    }
-
-    /**
      * Standard Method 10.
      */
     private function standardMethod10()
-    {
-        return function ($a=0, $b=0) {
-            return $a+$b;
-        };
-    }
-
-    final private function finalMethod11()
     {
         return function ($a=0, $b=0) {
             return $a+$b;

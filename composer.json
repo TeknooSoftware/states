@@ -20,7 +20,7 @@
         "optimize-autoloader": true
     },
     "require":{
-        "php": "~7.4",
+        "php": "~7.4||~8.0",
         "teknoo/immutable": "^2.0.2",
         "typo3/class-alias-loader": "~1.1"
     },
