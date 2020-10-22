@@ -1,5 +1,9 @@
 parameters:
     checkGenericClassInNonGenericObjectType: false
     checkMissingIterableValueType: false
+    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         - '#Call to an undefined static method [a-zA-Z0-9\\_]+::statesListDeclaration\(\)#'
+        -
+            message: '#Trying to invoke Closure\|null but it might not be a callable#'
+            path: src/State/StateTrait.php
