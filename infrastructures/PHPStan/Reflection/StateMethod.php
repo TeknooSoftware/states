@@ -47,7 +47,7 @@ use PHPStan\TrinaryLogic;
 class StateMethod implements BuiltinMethodReflection
 {
     private \ReflectionMethod $factoryReflection;
-    
+
     private \ReflectionFunction $closureReflection;
 
     public function __construct(\ReflectionMethod $factoryReflection, \ReflectionFunction $closureReflection)
