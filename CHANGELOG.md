@@ -1,5 +1,11 @@
 #Teknoo Software - States library - Change Log
 
+##[4.1.3] - 2020-10-25
+###Stable Release
+- QA Fixe
+- Remove ProxyInterface::__clone useless method in the interface. 
+  (Clone behavior must not be defined here).
+
 ##[4.1.2] - 2020-10-12
 ###Stable Release
 - Prepare library to support also PHP8.

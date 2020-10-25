@@ -63,19 +63,6 @@ interface ProxyInterface
      */
     public const DEFAULT_STATE_NAME = 'StateDefault';
 
-    /**************************
-     *** Container Management *
-     **************************/
-
-    /**
-     * Called to clone this stated class instance, clone states entities and the current state of this instance.
-     *
-     * @api
-     *
-     * @return ProxyInterface
-     */
-    public function __clone();
-
     /***********************
      *** States Management *
      ***********************/
