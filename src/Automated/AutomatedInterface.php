@@ -12,7 +12,8 @@
  * to richarddeloge@gmail.com so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
  *
  * @link        http://teknoo.software/states Project website
  *
@@ -32,7 +33,8 @@ use Teknoo\States\Proxy\ProxyInterface;
  * Interface to implement automated stated class to enable or disable states according to validation rules defined
  * in your class.
  *
- * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
  *
  * @link        http://teknoo.software/states Project website
  *

@@ -12,7 +12,8 @@
  * to richarddeloge@gmail.com so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
  *
  * @link        http://teknoo.software/states Project website
  *
@@ -39,7 +40,8 @@ use Teknoo\States\Proxy\SerializableTrait;
  * You must implement these interface, according to your needs, in your derived proxies like in this class.
  *
  *
- * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
  *
  * @link        http://teknoo.software/states Project website
  *

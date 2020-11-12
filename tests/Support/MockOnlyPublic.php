@@ -12,7 +12,8 @@
  * to richarddeloge@gmail.com so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
  *
  * @link        http://teknoo.software/states Project website
  *
@@ -30,7 +31,8 @@ use Teknoo\States\State\StateTrait;
  * All methods have not a description to check the state's behavior with these methods.
  *
  *
- * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
  *
  * @link        http://teknoo.software/states Project website
  *
