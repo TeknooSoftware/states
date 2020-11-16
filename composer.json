@@ -16,6 +16,12 @@
         "issues": "https://github.com/TeknooSoftware/states/issues",
         "source": "https://github.com/TeknooSoftware/states"
     },
+    "funding": [
+        {
+            "type": "patreon",
+            "url": "https://www.patreon.com/teknoo_software"
+        }
+    ],
     "config": {
         "optimize-autoloader": true
     },
