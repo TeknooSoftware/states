@@ -14,7 +14,7 @@ apt-get install zip libzip-dev -yqq
 docker-php-ext-install zip
 
 # Install xdebug
-pecl install xdebug-2.8.1 -yqq
+pecl install xdebug -yqq
 docker-php-ext-enable xdebug
 
 #install composer
