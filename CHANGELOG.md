@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[4.1.4] - 2020-12-03
+###Stable Release
+- Official Support of PHP8
+
 ##[4.1.3] - 2020-10-25
 ###Stable Release
 - QA Fixe
