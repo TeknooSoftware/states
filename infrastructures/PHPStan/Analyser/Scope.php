@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan\Analyser;
 
+use PHPStan\Analyser\ConditionalExpressionHolder;
 use PHPStan\Analyser\MutatingScope as PHPStanScope;
 use PHPStan\Analyser\ScopeContext;
 use PHPStan\Analyser\ScopeFactory;
@@ -114,11 +115,12 @@ class Scope extends PHPStanScope
      * @param \PHPStan\Reflection\FunctionReflection|MethodReflection|null $function
      * @param \PHPStan\Analyser\VariableTypeHolder[] $variablesTypes
      * @param \PHPStan\Analyser\VariableTypeHolder[] $moreSpecificTypes
+     * @param array<string, ConditionalExpressionHolder[]> $conditionalExpressions
      * @param array<string, true> $currentlyAssignedExpressions
      * @param array<string, Type> $nativeExpressionTypes
      * @param array<MethodReflection|FunctionReflection> $inFunctionCallsStack
      * @param string[] $dynamicConstantNames
-     * @paarm bool $treatPhpDocTypesAsCertain
+     * @param bool $treatPhpDocTypesAsCertain
      * @throws ShouldNotHappenException
      * @throws ClassNotFoundException
      * @throws \ReflectionException
@@ -139,6 +141,7 @@ class Scope extends PHPStanScope
         ?string $namespace = null,
         array $variablesTypes = [],
         array $moreSpecificTypes = [],
+        array $conditionalExpressions = [],
         ?string $inClosureBindScopeClass = null,
         ?ParametersAcceptor $anonymousFunctionReflection = null,
         bool $inFirstLevelStatement = \true,
@@ -146,7 +149,9 @@ class Scope extends PHPStanScope
         array $nativeExpressionTypes = [],
         array $inFunctionCallsStack = [],
         array $dynamicConstantNames = [],
-        bool $treatPhpDocTypesAsCertain = \true
+        bool $treatPhpDocTypesAsCertain = \true,
+        bool $afterExtractCall = false,
+        ?Scope $parentScope = null
     ) {
         $classReflection = $context->getClassReflection();
         if (null !== $anonymousFunctionReflection && $classReflection instanceof ClassReflection) {
@@ -169,6 +174,7 @@ class Scope extends PHPStanScope
             $namespace,
             $variablesTypes,
             $moreSpecificTypes,
+            $conditionalExpressions,
             $inClosureBindScopeClass,
             $anonymousFunctionReflection,
             $inFirstLevelStatement,
@@ -176,7 +182,9 @@ class Scope extends PHPStanScope
             $nativeExpressionTypes,
             $inFunctionCallsStack,
             $dynamicConstantNames,
-            $treatPhpDocTypesAsCertain
+            $treatPhpDocTypesAsCertain,
+            $afterExtractCall,
+            $parentScope
         );
     }
 }

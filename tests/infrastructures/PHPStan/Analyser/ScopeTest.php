@@ -78,11 +78,12 @@ class ScopeTest extends TestCase
             null, //12: ?string $namespace = null,
             ['foo' => VariableTypeHolder::createYes(new StringType())], //13: array $variablesTypes = [],
             [], //14: array $moreSpecificTypes = [],
-            null, //15: ?string $inClosureBindScopeClass = null,
-            null, //16: ?ParametersAcceptor $anonymousFunctionReflection = null,
-            true, //17: bool $inFirstLevelStatement = \true,
-            [], //18: array $currentlyAssignedExpressions = [],
-            [] //19: array $dynamicConstantNames = []
+            [], //15 : $conditionalExpressions
+            null, //16: ?string $inClosureBindScopeClass = null,
+            null, //17: ?ParametersAcceptor $anonymousFunctionReflection = null,
+            true, //18: bool $inFirstLevelStatement = \true,
+            [], //19: array $currentlyAssignedExpressions = [],
+            [] //20: array $dynamicConstantNames = []
         ];
     }
 
@@ -96,7 +97,7 @@ class ScopeTest extends TestCase
     public function testNoScopeUpdatingWithAnonymousReflectionAndNotClassReflection()
     {
         $arguments = $this->prepareArguments();
-        $arguments[16] = $this->createMock(ParametersAcceptor::class);
+        $arguments[17] = $this->createMock(ParametersAcceptor::class);
         $scope = new Scope(...$arguments);
         self::assertEquals(new StringType(), $scope->getVariableType('foo'));
     }
@@ -104,7 +105,7 @@ class ScopeTest extends TestCase
     public function testNoScopeUpdatingWhenNoStateTraitUsed()
     {
         $arguments = $this->prepareArguments();
-        $arguments[16] = $this->createMock(ParametersAcceptor::class);
+        $arguments[17] = $this->createMock(ParametersAcceptor::class);
         $arguments[8]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
         $nativeReflection = $this->createMock(\ReflectionClass::class);
         $nativeReflection->expects(self::any())->method('getTraitNames')->willReturn([]);
@@ -116,7 +117,7 @@ class ScopeTest extends TestCase
     public function testNoScopeUpdatingWithoutThisDefinedInScope()
     {
         $arguments = $this->prepareArguments();
-        $arguments[16] = $this->createMock(ParametersAcceptor::class);
+        $arguments[17] = $this->createMock(ParametersAcceptor::class);
         $arguments[8]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
         $nativeReflection = $this->createMock(\ReflectionClass::class);
         $nativeReflection->expects(self::any())->method('getTraitNames')->willReturn([StateTrait::class]);
@@ -130,7 +131,7 @@ class ScopeTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $arguments = $this->prepareArguments();
-        $arguments[16] = $this->createMock(ParametersAcceptor::class);
+        $arguments[17] = $this->createMock(ParametersAcceptor::class);
         $arguments[8]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
         $nativeReflection = $this->createMock(\ReflectionClass::class);
         $nativeReflection->expects(self::any())->method('getTraitNames')->willReturn([StateTrait::class]);
@@ -145,7 +146,7 @@ class ScopeTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $arguments = $this->prepareArguments();
-        $arguments[16] = $this->createMock(ParametersAcceptor::class);
+        $arguments[17] = $this->createMock(ParametersAcceptor::class);
         $arguments[8]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
         $nativeReflection = $this->createMock(\ReflectionClass::class);
         $nativeReflection->expects(self::any())->method('getTraitNames')->willReturn([StateTrait::class]);
@@ -158,7 +159,7 @@ class ScopeTest extends TestCase
     public function testScopeUpdating()
     {
         $arguments = $this->prepareArguments();
-        $arguments[16] = $this->createMock(ParametersAcceptor::class);
+        $arguments[17] = $this->createMock(ParametersAcceptor::class);
         $arguments[8]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
         $nativeReflection = $this->createMock(\ReflectionClass::class);
         $nativeReflection->expects(self::any())->method('getTraitNames')->willReturn([StateTrait::class]);
