@@ -27,6 +27,7 @@ namespace Teknoo\States\PHPStan\Analyser;
 
 use PHPStan\Analyser\ConditionalExpressionHolder;
 use PHPStan\Analyser\MutatingScope as PHPStanScope;
+use PHPStan\Analyser\NodeScopeResolver;
 use PHPStan\Analyser\ScopeContext;
 use PHPStan\Analyser\ScopeFactory;
 use PHPStan\Analyser\TypeSpecifier;
@@ -134,6 +135,7 @@ class Scope extends PHPStanScope
         TypeSpecifier $typeSpecifier,
         PropertyReflectionFinder $propertyReflectionFinder,
         Parser $parser,
+        NodeScopeResolver $nodeScopeResolver,
         ScopeContext $context,
         bool $declareStrictTypes = \false,
         array $constantTypes = [],
@@ -167,6 +169,7 @@ class Scope extends PHPStanScope
             $typeSpecifier,
             $propertyReflectionFinder,
             $parser,
+            $nodeScopeResolver,
             $context,
             $declareStrictTypes,
             $constantTypes,

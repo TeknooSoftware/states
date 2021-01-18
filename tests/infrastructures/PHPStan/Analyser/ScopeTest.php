@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan\Analyser;
 
+use PHPStan\Analyser\NodeScopeResolver;
 use PHPStan\Analyser\ScopeContext;
 use PHPStan\Analyser\ScopeFactory;
 use PHPStan\Analyser\TypeSpecifier;
@@ -71,19 +72,20 @@ class ScopeTest extends TestCase
             $this->createMock(TypeSpecifier::class), //5: TypeSpecifier $typeSpecifier,
             $this->createMock(PropertyReflectionFinder::class), //6: PropertyReflectionFinder $propertyReflectionFinder,
             $this->createMock(Parser::class), //7 Parser $parser
-            $this->createMock(ScopeContext::class), //8: ScopeContext $context,
-            false, //9: bool $declareStrictTypes = \false,
-            [], //10: $constantTypes = []
-            null, //11: $function = null,
-            null, //12: ?string $namespace = null,
-            ['foo' => VariableTypeHolder::createYes(new StringType())], //13: array $variablesTypes = [],
-            [], //14: array $moreSpecificTypes = [],
-            [], //15 : $conditionalExpressions
-            null, //16: ?string $inClosureBindScopeClass = null,
-            null, //17: ?ParametersAcceptor $anonymousFunctionReflection = null,
-            true, //18: bool $inFirstLevelStatement = \true,
-            [], //19: array $currentlyAssignedExpressions = [],
-            [] //20: array $dynamicConstantNames = []
+            $this->createMock(NodeScopeResolver::class), //8: NodeScopeResolver $nodeScopeResolver
+            $this->createMock(ScopeContext::class), //9: ScopeContext $context,
+            false, //10: bool $declareStrictTypes = \false,
+            [], //11: $constantTypes = []
+            null, //12: $function = null,
+            null, //13: ?string $namespace = null,
+            ['foo' => VariableTypeHolder::createYes(new StringType())], //14: array $variablesTypes = [],
+            [], //15: array $moreSpecificTypes = [],
+            [], //16 : $conditionalExpressions
+            null, //17: ?string $inClosureBindScopeClass = null,
+            null, //18: ?ParametersAcceptor $anonymousFunctionReflection = null,
+            true, //19: bool $inFirstLevelStatement = \true,
+            [], //20: array $currentlyAssignedExpressions = [],
+            [] //21: array $dynamicConstantNames = []
         ];
     }
 
@@ -97,7 +99,7 @@ class ScopeTest extends TestCase
     public function testNoScopeUpdatingWithAnonymousReflectionAndNotClassReflection()
     {
         $arguments = $this->prepareArguments();
-        $arguments[17] = $this->createMock(ParametersAcceptor::class);
+        $arguments[18] = $this->createMock(ParametersAcceptor::class);
         $scope = new Scope(...$arguments);
         self::assertEquals(new StringType(), $scope->getVariableType('foo'));
     }
@@ -105,8 +107,8 @@ class ScopeTest extends TestCase
     public function testNoScopeUpdatingWhenNoStateTraitUsed()
     {
         $arguments = $this->prepareArguments();
-        $arguments[17] = $this->createMock(ParametersAcceptor::class);
-        $arguments[8]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
+        $arguments[18] = $this->createMock(ParametersAcceptor::class);
+        $arguments[9]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
         $nativeReflection = $this->createMock(\ReflectionClass::class);
         $nativeReflection->expects(self::any())->method('getTraitNames')->willReturn([]);
         $classReflection->expects(self::any())->method('getNativeReflection')->willReturn($nativeReflection);
@@ -117,8 +119,8 @@ class ScopeTest extends TestCase
     public function testNoScopeUpdatingWithoutThisDefinedInScope()
     {
         $arguments = $this->prepareArguments();
-        $arguments[17] = $this->createMock(ParametersAcceptor::class);
-        $arguments[8]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
+        $arguments[18] = $this->createMock(ParametersAcceptor::class);
+        $arguments[9]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
         $nativeReflection = $this->createMock(\ReflectionClass::class);
         $nativeReflection->expects(self::any())->method('getTraitNames')->willReturn([StateTrait::class]);
         $classReflection->expects(self::any())->method('getNativeReflection')->willReturn($nativeReflection);
@@ -131,13 +133,13 @@ class ScopeTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $arguments = $this->prepareArguments();
-        $arguments[17] = $this->createMock(ParametersAcceptor::class);
-        $arguments[8]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
+        $arguments[18] = $this->createMock(ParametersAcceptor::class);
+        $arguments[9]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
         $nativeReflection = $this->createMock(\ReflectionClass::class);
         $nativeReflection->expects(self::any())->method('getTraitNames')->willReturn([StateTrait::class]);
         $nativeReflection->expects(self::any())->method('getName')->willReturn('Foo\Bar\Not\ExistClass');
         $classReflection->expects(self::any())->method('getNativeReflection')->willReturn($nativeReflection);
-        $arguments[13]['this'] = VariableTypeHolder::createYes($this->createMock(ThisType::class));
+        $arguments[14]['this'] = VariableTypeHolder::createYes($this->createMock(ThisType::class));
         $scope = new Scope(...$arguments);
     }
 
@@ -146,26 +148,26 @@ class ScopeTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $arguments = $this->prepareArguments();
-        $arguments[17] = $this->createMock(ParametersAcceptor::class);
-        $arguments[8]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
+        $arguments[18] = $this->createMock(ParametersAcceptor::class);
+        $arguments[9]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
         $nativeReflection = $this->createMock(\ReflectionClass::class);
         $nativeReflection->expects(self::any())->method('getTraitNames')->willReturn([StateTrait::class]);
         $nativeReflection->expects(self::any())->method('getName')->willReturn(\DateTime::class.'\\Foo');
         $classReflection->expects(self::any())->method('getNativeReflection')->willReturn($nativeReflection);
-        $arguments[13]['this'] = VariableTypeHolder::createYes($this->createMock(ThisType::class));
+        $arguments[14]['this'] = VariableTypeHolder::createYes($this->createMock(ThisType::class));
         $scope = new Scope(...$arguments);
     }
 
     public function testScopeUpdating()
     {
         $arguments = $this->prepareArguments();
-        $arguments[17] = $this->createMock(ParametersAcceptor::class);
-        $arguments[8]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
+        $arguments[18] = $this->createMock(ParametersAcceptor::class);
+        $arguments[9]->expects(self::any())->method('getClassReflection')->willReturn($classReflection = $this->createMock(ClassReflection::class));
         $nativeReflection = $this->createMock(\ReflectionClass::class);
         $nativeReflection->expects(self::any())->method('getTraitNames')->willReturn([StateTrait::class]);
         $nativeReflection->expects(self::any())->method('getName')->willReturn(Draft::class);
         $classReflection->expects(self::any())->method('getNativeReflection')->willReturn($nativeReflection);
-        $arguments[13]['this'] = VariableTypeHolder::createYes($this->createMock(ThisType::class));
+        $arguments[14]['this'] = VariableTypeHolder::createYes($this->createMock(ThisType::class));
         $broker = $this->createMock(Broker::class);
         Broker::registerInstance($broker);
         $scope = new Scope(...$arguments);

@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[4.1.6] - 2021-01-18
+###Stable Release
+- Update to PHPStan 0.12.68
+- Update to PHPunit 9.5
+
 ##[4.1.5] - 2020-12-03
 ###Stable Release
 - Update to PHPStan 0.12.64
