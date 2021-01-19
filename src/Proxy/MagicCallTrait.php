@@ -61,9 +61,7 @@ trait MagicCallTrait
      */
     public function __invoke(...$args)
     {
-        $methodName = 'invoke';
-
-        return $this->findAndCall($methodName, $args);
+        return $this->__call('invoke', $args);
     }
 
     /**
@@ -83,9 +81,8 @@ trait MagicCallTrait
     {
         try {
             $args = [];
-            $methodName = 'toString';
 
-            return (string) $this->findAndCall($methodName, $args);
+            return (string) $this->__call('toString', $args);
         } catch (\Throwable $e) {
             return '';
         }

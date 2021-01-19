@@ -249,84 +249,6 @@ trait ProxyTrait
     }
 
     /**
-     * Prepare the execution's context and execute a method in a state passed in args with the closure.
-     *
-     * @param array<mixed>   $arguments
-     * @param string         $scopeVisibility self::VISIBILITY_PUBLIC
-     *                                        self::VISIBILITY_PROTECTED
-     *                                        self::VISIBILITY_PRIVATE
-     *
-     * @throws \Throwable
-     */
-    private function callMethod(
-        StateInterface $state,
-        string &$methodName,
-        array &$arguments,
-        string &$scopeVisibility,
-        callable &$callback
-    ): ProxyInterface {
-        $callerStatedClass = $this->getCallerStatedClassName();
-        $this->pushCallerStatedClassName($state);
-
-        //Call it
-        try {
-            $state->executeClosure($this, $methodName, $arguments, $scopeVisibility, $callerStatedClass, $callback);
-        } finally {
-            //Restore stated class name stack
-            $this->popCallerStatedClassName();
-        }
-
-        return $this;
-    }
-
-    /**
-     * Internal method to find, in enabled stated, the method/closure required by caller to call it. It can be directly
-     * called by children class. (Protected method).
-     *
-     * @api
-     *
-     * @param array<mixed> $arguments of the callmethod
-     *
-     * @return mixed
-     *
-     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Exception
-     * @throws \Throwable
-     */
-    protected function findAndCall(string &$methodName, array &$arguments)
-    {
-        //Get the visibility scope forbidden to call to a protected or private method from not allowed method
-        $scopeVisibility = $this->getVisibilityScope(4);
-
-        $activeStateFound = false;
-        $returnValue = null;
-
-        $callback = function (&$value) use (&$returnValue, &$activeStateFound, $methodName) {
-            if (true === $activeStateFound) {
-                throw new Exception\AvailableSeveralMethodImplementations(
-                    "Method \"$methodName\" has several implementations in different states"
-                );
-            }
-
-            $returnValue = $value;
-            $activeStateFound = true;
-        };
-
-        //browse all enabled state to find the method
-        foreach ($this->activesStates as $activeStateObject) {
-            $this->callMethod($activeStateObject, $methodName, $arguments, $scopeVisibility, $callback);
-        }
-
-        if (true === $activeStateFound) {
-            return $returnValue;
-        }
-
-        throw new Exception\MethodNotImplemented(
-            \sprintf('Method "%s" is not available with actives states', $methodName)
-        );
-    }
-
-    /**
      * To test if the identifier is an non empty string and a valif full qualified class/interface name.
      *
      * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
@@ -733,8 +655,52 @@ trait ProxyTrait
      * @param array<mixed> $arguments
      * @throws \Throwable
      */
-    public function __call(string $name, array $arguments)
+    public function __call(string $methodName, array $arguments)
     {
-        return $this->findAndCall($name, $arguments);
+        //Get the visibility scope forbidden to call to a protected or private method from not allowed method
+        $scopeVisibility = $this->getVisibilityScope(3);
+
+        $activeStateFound = false;
+        $returnValue = null;
+
+        $callback = function (&$value) use (&$returnValue, &$activeStateFound, $methodName) {
+            if (true === $activeStateFound) {
+                throw new Exception\AvailableSeveralMethodImplementations(
+                    "Method \"$methodName\" has several implementations in different states"
+                );
+            }
+
+            $returnValue = $value;
+            $activeStateFound = true;
+        };
+
+        //browse all enabled state to find the method
+        $callerStatedClass = $this->getCallerStatedClassName();
+        foreach ($this->activesStates as $activeStateObject) {
+            $this->pushCallerStatedClassName($activeStateObject);
+
+            //Call it
+            try {
+                $activeStateObject->executeClosure(
+                    $this,
+                    $methodName,
+                    $arguments,
+                    $scopeVisibility,
+                    $callerStatedClass,
+                    $callback
+                );
+            } finally {
+                //Restore stated class name stack
+                $this->popCallerStatedClassName();
+            }
+        }
+
+        if (true === $activeStateFound) {
+            return $returnValue;
+        }
+
+        throw new Exception\MethodNotImplemented(
+            \sprintf('Method "%s" is not available with actives states', $methodName)
+        );
     }
 }

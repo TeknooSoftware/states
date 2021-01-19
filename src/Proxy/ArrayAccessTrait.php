@@ -59,9 +59,8 @@ trait ArrayAccessTrait
     public function count(): int
     {
         $args = [];
-        $methodName = __FUNCTION__;
 
-        return (int) $this->findAndCall($methodName, $args);
+        return (int) $this->__call(__FUNCTION__, $args);
     }
 
     /**
@@ -77,9 +76,8 @@ trait ArrayAccessTrait
     public function offsetExists($offset)
     {
         $args = [$offset];
-        $methodName = __FUNCTION__;
 
-        return $this->findAndCall($methodName, $args);
+        return $this->__call(__FUNCTION__, $args);
     }
 
     /**
@@ -95,9 +93,8 @@ trait ArrayAccessTrait
     public function offsetGet($offset)
     {
         $args = [$offset];
-        $methodName = __FUNCTION__;
 
-        return $this->findAndCall($methodName, $args);
+        return $this->__call(__FUNCTION__, $args);
     }
 
     /**
@@ -113,9 +110,8 @@ trait ArrayAccessTrait
     public function offsetSet($offset, $value)
     {
         $args = [$offset, $value];
-        $methodName = __FUNCTION__;
 
-        return $this->findAndCall($methodName, $args);
+        return $this->__call(__FUNCTION__, $args);
     }
 
     /**
@@ -131,8 +127,7 @@ trait ArrayAccessTrait
     public function offsetUnset($offset): void
     {
         $args = [$offset];
-        $methodName = __FUNCTION__;
 
-        $this->findAndCall($methodName, $args);
+        $this->__call(__FUNCTION__, $args);
     }
 }
