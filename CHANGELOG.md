@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[4.1.7] - 2021-01-19
+###Stable Release
+- implify __call stack to remove two internals calls in the stacks
+
 ##[4.1.6] - 2021-01-18
 ###Stable Release
 - Update to PHPStan 0.12.68
