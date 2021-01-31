@@ -31,8 +31,7 @@
     },
     "require":{
         "php": "~7.4||~8.0",
-        "teknoo/immutable": "^2.0.5",
-        "typo3/class-alias-loader": "~1.1"
+        "teknoo/immutable": "^2.0.5"
     },
     "require-dev": {
         "roave/security-advisories": "dev-master",
@@ -71,11 +70,6 @@
         "thanks": {
             "name": "teknoo/immutable",
             "url": "https://github.com/TeknooSoftware/immutable"
-        },
-        "typo3/class-alias-loader": {
-            "class-alias-maps": [
-                "class_alias_map.php"
-            ]
         }
     }
 }
