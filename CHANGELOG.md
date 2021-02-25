@@ -1,12 +1,16 @@
 #Teknoo Software - States library - Change Log
 
+##[4.1.9] - 2021-02-25
+###Stable Release
+- Support PHPStan 0.12.79
+
 ##[4.1.8] - 2021-01-31
 ###Stable Release
 - Remove deprecated aliases (since 1.2) and Typo3.
 
 ##[4.1.7] - 2021-01-19
 ###Stable Release
-- implify __call stack to remove two internals calls in the stacks
+- simplify __call stack to remove two internals calls in the stacks
 
 ##[4.1.6] - 2021-01-18
 ###Stable Release

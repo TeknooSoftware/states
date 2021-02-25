@@ -152,6 +152,7 @@ class Scope extends PHPStanScope
         array $inFunctionCallsStack = [],
         array $dynamicConstantNames = [],
         bool $treatPhpDocTypesAsCertain = \true,
+        bool $objectFromNewClass = false,
         bool $afterExtractCall = false,
         ?Scope $parentScope = null
     ) {
@@ -186,6 +187,7 @@ class Scope extends PHPStanScope
             $inFunctionCallsStack,
             $dynamicConstantNames,
             $treatPhpDocTypesAsCertain,
+            $objectFromNewClass,
             $afterExtractCall,
             $parentScope
         );
