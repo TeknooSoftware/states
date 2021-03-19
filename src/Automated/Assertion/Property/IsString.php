@@ -27,6 +27,8 @@ namespace Teknoo\States\Automated\Assertion\Property;
 
 use Teknoo\Immutable\ImmutableTrait;
 
+use function is_string;
+
 /**
  * Constraint to use with Teknoo\States\Automated\Property to check if a property is a string
  *
@@ -42,12 +44,9 @@ class IsString extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
-        if (\is_string($value)) {
+        if (is_string($value)) {
             $this->isValid($value);
         }
 

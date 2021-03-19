@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[5.0.0] - 2021-03-19
+###Stable Release
+- Migrate to PHP 8.0
+
 ##[4.1.9] - 2021-02-25
 ###Stable Release
 - Support PHPStan 0.12.79

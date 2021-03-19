@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Exception;
 
+use BadFunctionCallException;
+
 /**
  * Class MethodNotImplemented
  * Exception threw when the calling method is not currently available in the proxy object with enabled states.
@@ -40,6 +42,6 @@ namespace Teknoo\States\Exception;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class MethodNotImplemented extends \BadFunctionCallException
+class MethodNotImplemented extends BadFunctionCallException
 {
 }

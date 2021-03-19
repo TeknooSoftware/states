@@ -52,10 +52,7 @@ class IsNotInstanceOf extends AbstractConstraint
         $this->exceptedClassName = $exceptedClassName;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
         if (!$value instanceof $this->exceptedClassName) {
             $this->isValid($value);

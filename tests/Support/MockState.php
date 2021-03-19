@@ -122,6 +122,14 @@ class MockState implements StateInterface
                 $state->setMethodCalled();
                 $state->setCalledArguments(func_get_args());
 
+                if (false !== \strpos($state->extractMethodCalled(), 'offsetExists')) {
+                    return true;
+                }
+
+                if (false !== \strpos($state->extractMethodCalled(), 'valid')) {
+                    return true;
+                }
+
                 return '';
             };
         }
@@ -291,6 +299,11 @@ class MockState implements StateInterface
         $this->methodName = null;
 
         return $methodName;
+    }
+
+    public function extractMethodCalled()
+    {
+        return $this->methodName;
     }
 
     /**

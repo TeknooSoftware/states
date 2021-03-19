@@ -27,6 +27,8 @@ namespace Teknoo\States\Automated\Assertion\Property;
 
 use Teknoo\Immutable\ImmutableTrait;
 
+use function is_array;
+
 /**
  * Constraint to use with Teknoo\States\Automated\Property to check if a property is an array
  *
@@ -42,12 +44,9 @@ class IsArray extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
-        if (\is_array($value)) {
+        if (is_array($value)) {
             $this->isValid($value);
         }
 

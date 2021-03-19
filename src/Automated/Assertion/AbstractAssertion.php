@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Automated\Assertion;
 
+use RuntimeException;
 use Teknoo\Immutable\ImmutableTrait;
 use Teknoo\States\Automated\AutomatedInterface;
 
@@ -48,14 +49,11 @@ abstract class AbstractAssertion implements AssertionInterface
      * List of stated to enable if the assertion is valid.
      * @var array<string>
      */
-    private array $statesList = [];
+    private array $statesList;
 
     private ?AutomatedInterface $proxy = null;
 
-    /**
-     * @param string|string[] $statesList
-     */
-    public function __construct($statesList)
+    public function __construct(array | string $statesList)
     {
         $this->uniqueConstructorCheck();
 
@@ -64,8 +62,6 @@ abstract class AbstractAssertion implements AssertionInterface
 
     /**
      * Return the proxy linked to the check of this assertions.
-     *
-     * @return AutomatedInterface
      */
     protected function getProxy(): ?AutomatedInterface
     {
@@ -74,14 +70,9 @@ abstract class AbstractAssertion implements AssertionInterface
 
     /**
      * Abstract method to implement into final class to proccess to the check of this assertions.
-     *
-     * @param AutomatedInterface $proxy
      */
     abstract protected function process(AutomatedInterface $proxy): void;
 
-    /**
-     * {@inheritdoc}
-     */
     public function check(AutomatedInterface $proxy): AssertionInterface
     {
         $that = clone $this;
@@ -93,13 +84,12 @@ abstract class AbstractAssertion implements AssertionInterface
     }
 
     /**
-     * {@inheritdoc}
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function isValid(): AssertionInterface
     {
         if (!$this->proxy instanceof AutomatedInterface) {
-            throw new \RuntimeException('Error, the proxy is not a valid AutomatedInterface instance');
+            throw new RuntimeException('Error, the proxy is not a valid AutomatedInterface instance');
         }
 
         foreach ($this->statesList as $state) {

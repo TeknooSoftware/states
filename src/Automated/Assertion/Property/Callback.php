@@ -55,10 +55,7 @@ class Callback extends AbstractConstraint
         $this->callback = $callback;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
         $callback = $this->callback;
         $callback($value, $this);
@@ -66,10 +63,7 @@ class Callback extends AbstractConstraint
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function isValid(&$value): ConstraintInterface
+    public function isValid(mixed &$value): ConstraintInterface
     {
         return parent::isValid($value);
     }

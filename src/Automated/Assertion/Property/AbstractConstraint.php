@@ -42,9 +42,6 @@ abstract class AbstractConstraint implements ConstraintInterface
 {
     private ?ConstraintsSetInterface $constraintsSet = null;
 
-    /**
-     * {@inheritdoc}
-     */
     public function inConstraintSet(ConstraintsSetInterface $constraintsSet): ConstraintInterface
     {
         $that = clone $this;
@@ -56,12 +53,8 @@ abstract class AbstractConstraint implements ConstraintInterface
 
     /**
      * To return the success of the check to the ConstraintSet and continue the workflow
-     *
-     * @param mixed $value
-     *
-     * @return ConstraintInterface
      */
-    protected function isValid(&$value): ConstraintInterface
+    protected function isValid(mixed &$value): ConstraintInterface
     {
         if ($this->constraintsSet instanceof ConstraintsSetInterface) {
             $this->constraintsSet->isValid($value);

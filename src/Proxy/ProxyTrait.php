@@ -25,7 +25,31 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Proxy;
 
+use ReflectionMethod;
+use SplStack;
 use Teknoo\States\State\StateInterface;
+use Throwable;
+
+use function array_flip;
+use function array_keys;
+use function array_pop;
+use function class_exists;
+use function count;
+use function current;
+use function debug_backtrace;
+use function get_parent_class;
+use function is_a;
+use function is_array;
+use function is_callable;
+use function is_object;
+use function is_string;
+use function is_subclass_of;
+use function ltrim;
+use function next;
+use function sort;
+use function sprintf;
+use function strrpos;
+use function substr;
 
 /**
  * Trait ProxyTrait
@@ -96,13 +120,12 @@ trait ProxyTrait
      * Stack to know the caller full qualified stated class when an internal method call a parent method to forbid
      * private method access.
      *
-     * @var \SplStack<string>
+     * @var SplStack<string>
      */
-    private \SplStack $callerStatedClassesStack;
+    private SplStack $callerStatedClassesStack;
 
     /**
      * Default class name extracted from call stack by extractVisibilityScopeFromObject
-     * @var string
      */
     private string $defaultCallerStatedClassName = '';
 
@@ -140,7 +163,7 @@ trait ProxyTrait
     ): void {
         foreach ($statesList as $stateClassName) {
             //Extract non qualified class name and check if this state is not already loaded
-            $shortStateName = \ltrim(\substr($stateClassName, (int) \strrpos($stateClassName, '\\')), '\\');
+            $shortStateName = ltrim(substr($stateClassName, (int) strrpos($stateClassName, '\\')), '\\');
             if (isset($loadedStatesList[$shortStateName])) {
                 $this->statesAliasesList[$stateClassName] = $loadedStatesList[$shortStateName];
                 $this->classesByStates[$stateClassName] = $selfClassName;
@@ -178,7 +201,7 @@ trait ProxyTrait
         $loadedStatesList = [];
 
         $initializesStates = function ($className, $privateMode, &$loadedStatesList) {
-            $rfm = new \ReflectionMethod($className, 'statesListDeclaration');
+            $rfm = new ReflectionMethod($className, 'statesListDeclaration');
             if ($rfm->getDeclaringClass()->getName() === $className) {
                 //Private mode is only enable for states directly defined in this stated class.
                 $this->initializeStates(
@@ -192,13 +215,13 @@ trait ProxyTrait
 
         $initializesStates($currentClassName, false, $loadedStatesList);
 
-        $parentClassName = \get_class($this);
+        $parentClassName = $this::class;
         do {
-            $parentClassName = \get_parent_class($parentClassName);
+            $parentClassName = get_parent_class($parentClassName);
             if (
                 false !== $parentClassName
-                && \is_callable([$parentClassName, 'statesListDeclaration'])
-                && \is_subclass_of($parentClassName, ProxyInterface::class)
+                && is_callable([$parentClassName, 'statesListDeclaration'])
+                && is_subclass_of($parentClassName, ProxyInterface::class)
             ) {
                 $initializesStates($parentClassName, true, $loadedStatesList);
             }
@@ -225,7 +248,7 @@ trait ProxyTrait
      */
     private function pushCallerStatedClassName(StateInterface $state): ProxyInterface
     {
-        $stateClass = \get_class($state);
+        $stateClass = $state::class;
 
         if (!isset($this->classesByStates[$stateClass])) {
             throw new \RuntimeException("Error, no original class name defined for $stateClass");
@@ -260,7 +283,7 @@ trait ProxyTrait
             throw new Exception\IllegalName('Error, the identifier is not a valid string');
         }
 
-        if (!\class_exists($name) && !\interface_exists($name)) {
+        if (!class_exists($name) && !\interface_exists($name)) {
             throw new Exception\StateNotFound("Error, the state $name is not available");
         }
 
@@ -284,7 +307,7 @@ trait ProxyTrait
         $this->activesStates = [];
         $this->classesByStates = [];
         $this->statesAliasesList  = [];
-        $this->callerStatedClassesStack = new \SplStack();
+        $this->callerStatedClassesStack = new SplStack();
         //Creates
         $this->loadStates();
     }
@@ -307,7 +330,7 @@ trait ProxyTrait
             return StateInterface::VISIBILITY_PRIVATE;
         }
 
-        if (\get_class($this) === \get_class($callerObject)) {
+        if ($this::class === $callerObject::class) {
             //It's a brother (another instance of this same stated class, not a child), So Private scope too
             return StateInterface::VISIBILITY_PRIVATE;
         }
@@ -330,14 +353,14 @@ trait ProxyTrait
      */
     private function extractVisibilityScopeFromClass(string &$callerName): string
     {
-        $thisClassName = \get_class($this);
+        $thisClassName = $this::class;
 
-        if (\is_subclass_of($callerName, $thisClassName, true)) {
+        if (is_subclass_of($callerName, $thisClassName, true)) {
             //It's a child class, so protected scope
             return StateInterface::VISIBILITY_PROTECTED;
         }
 
-        if (\is_a($callerName, $thisClassName, true)) {
+        if (is_a($callerName, $thisClassName, true)) {
             //It's this class, so private scope
             return StateInterface::VISIBILITY_PRIVATE;
         }
@@ -369,19 +392,19 @@ trait ProxyTrait
     private function getVisibilityScope(int $limit): string
     {
         //Get the calling stack
-        $callingStack = \debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
+        $callingStack = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
 
         if (isset($callingStack[2]['function']) && '__call' !== $callingStack[2]['function']) {
             //Magic method __call adds a line into calling stack, but not other magic method
             --$limit;
         }
 
-        if (\count($callingStack) >= $limit) {
+        if (count($callingStack) >= $limit) {
             //If size of the calling stack is less : called from main php file, or corrupted stack :
             //apply default behavior : Public
-            $callerLine = \array_pop($callingStack);
+            $callerLine = array_pop($callingStack);
 
-            if (!empty($callerLine['object']) && \is_object($callerLine['object'])) {
+            if (!empty($callerLine['object']) && is_object($callerLine['object'])) {
                 //It is an object
                 $callerObject = $callerLine['object'];
 
@@ -391,8 +414,8 @@ trait ProxyTrait
 
             if (
                 !empty($callerLine['class'])
-                && \is_string($callerLine['class'])
-                && \class_exists($callerLine['class'], false)
+                && is_string($callerLine['class'])
+                && class_exists($callerLine['class'], false)
             ) {
                 //It is a class
                 $callerName = $callerLine['class'];
@@ -408,7 +431,6 @@ trait ProxyTrait
     }
 
     /**
-     * {@inheritdoc}
      * @throws Exception\StateNotFound
      */
     public function __clone()
@@ -438,7 +460,7 @@ trait ProxyTrait
 
         //Enabling states
         if (!empty($this->activesStates)) {
-            $activesStates = \array_keys($this->activesStates);
+            $activesStates = array_keys($this->activesStates);
             $this->activesStates = [];
             foreach ($activesStates as $stateName) {
                 $this->enableState((string) $stateName);
@@ -453,7 +475,6 @@ trait ProxyTrait
      ***********************/
 
     /**
-     * {@inheritdoc}
      * @throws Exception\StateNotFound
      */
     public function registerState(
@@ -463,7 +484,7 @@ trait ProxyTrait
     ): ProxyInterface {
         $this->validateName($stateName);
 
-        if (!\is_a($stateObject, $stateName)) {
+        if (!is_a($stateObject, $stateName)) {
             throw new Exception\IllegalName(
                 "Error, the state does not implement the class or interface '$stateName'"
             );
@@ -472,7 +493,7 @@ trait ProxyTrait
         $this->states[$stateName] = $stateObject;
 
         if (empty($originalClassName)) {
-            $originalClassName = \get_class($this);
+            $originalClassName = $this::class;
         }
 
         $this->classesByStates[$stateName] = $originalClassName;
@@ -481,7 +502,6 @@ trait ProxyTrait
     }
 
     /**
-     * {@inheritdoc}
      * @throws Exception\StateNotFound
      */
     public function unregisterState(string $stateName): ProxyInterface
@@ -489,7 +509,7 @@ trait ProxyTrait
         $this->validateName($stateName);
 
         if (!isset($this->states[$stateName])) {
-            throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
+            throw new Exception\StateNotFound("State '$stateName' is not available");
         }
 
         unset($this->states[$stateName]);
@@ -506,7 +526,6 @@ trait ProxyTrait
     }
 
     /**
-     * {@inheritdoc}
      * @throws Exception\StateNotFound
      */
     public function switchState(string $stateName): ProxyInterface
@@ -520,7 +539,6 @@ trait ProxyTrait
     }
 
     /**
-     * {@inheritdoc}
      * @throws Exception\StateNotFound
      */
     public function enableState(string $stateName): ProxyInterface
@@ -530,14 +548,13 @@ trait ProxyTrait
         if (isset($this->states[$stateName])) {
             $this->activesStates[$stateName] = $this->states[$stateName];
         } else {
-            throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
+            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
     }
 
     /**
-     * {@inheritdoc}
      * @throws Exception\StateNotFound
      */
     public function disableState(string $stateName): ProxyInterface
@@ -547,15 +564,12 @@ trait ProxyTrait
         if (isset($this->activesStates[$stateName])) {
             unset($this->activesStates[$stateName]);
         } else {
-            throw new Exception\StateNotFound(\sprintf('State "%s" is not available', $stateName));
+            throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
 
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function disableAllStates(): ProxyInterface
     {
         $this->activesStates = [];
@@ -569,8 +583,8 @@ trait ProxyTrait
      */
     protected function listEnabledStates(): array
     {
-        if (!empty($this->activesStates) && \is_array($this->activesStates)) {
-            return \array_keys($this->activesStates);
+        if (!empty($this->activesStates) && is_array($this->activesStates)) {
+            return array_keys($this->activesStates);
         }
 
         return [];
@@ -579,17 +593,16 @@ trait ProxyTrait
     /**
      * @param array<string> $enabledStatesList
      * @param array<string> $statesNames
-     * @param bool $allStates
      * @return array<string, true>
      * @throws Exception\StateNotFound
      */
     private function statesIntersect(array $enabledStatesList, array $statesNames, bool $allStates): array
     {
         $inStates = [];
-        $list = \array_flip($enabledStatesList);
+        $list = array_flip($enabledStatesList);
 
         do {
-            $stateName = \current($statesNames);
+            $stateName = current($statesNames);
 
             $this->validateName($stateName);
 
@@ -599,12 +612,12 @@ trait ProxyTrait
             }
 
             foreach ($enabledStatesList as $enableStateName) {
-                if (\is_subclass_of($enableStateName, $stateName)) {
+                if (is_subclass_of($enableStateName, $stateName)) {
                     $inStates[(string) $stateName] = true;
                     break;
                 }
             }
-        } while (false !== \next($statesNames) && (true === empty($inStates) || true === $allStates));
+        } while (false !== next($statesNames) && (true === empty($inStates) || true === $allStates));
 
         return $inStates;
     }
@@ -617,19 +630,18 @@ trait ProxyTrait
     {
         $enabledStatesList = $this->listEnabledStates();
 
-        \sort($enabledStatesList);
+        sort($enabledStatesList);
 
         $inStates = $this->statesIntersect($enabledStatesList, $statesNames, $allStates);
 
-        if (((!$allStates && !empty($inStates)) || \count($inStates) === \count($statesNames)) && $mustActive) {
+        if (((!$allStates && !empty($inStates)) || count($inStates) === count($statesNames)) && $mustActive) {
             $callback($enabledStatesList);
-        } elseif ((empty($inStates) || (!$allStates && \count($inStates) < \count($statesNames))) && !$mustActive) {
+        } elseif ((empty($inStates) || (!$allStates && count($inStates) < count($statesNames))) && !$mustActive) {
             $callback($enabledStatesList);
         }
     }
 
     /**
-     * {@inheritdoc}
      * @throws Exception\StateNotFound
      */
     public function isInState(array $statesNames, callable $callback, bool $allRequired = false): ProxyInterface
@@ -640,7 +652,6 @@ trait ProxyTrait
     }
 
     /**
-     * {@inheritdoc}
      * @throws Exception\StateNotFound
      */
     public function isNotInState(array $statesNames, callable $callback, bool $allForbidden = false): ProxyInterface
@@ -651,11 +662,10 @@ trait ProxyTrait
     }
 
     /**
-     * {@inheritdoc}
      * @param array<mixed> $arguments
-     * @throws \Throwable
+     * @throws Throwable
      */
-    public function __call(string $methodName, array $arguments)
+    public function __call(string $methodName, array $arguments): mixed
     {
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
         $scopeVisibility = $this->getVisibilityScope(3);
@@ -700,7 +710,7 @@ trait ProxyTrait
         }
 
         throw new Exception\MethodNotImplemented(
-            \sprintf('Method "%s" is not available with actives states', $methodName)
+            sprintf('Method "%s" is not available with actives states', $methodName)
         );
     }
 }

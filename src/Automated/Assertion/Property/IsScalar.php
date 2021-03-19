@@ -27,6 +27,8 @@ namespace Teknoo\States\Automated\Assertion\Property;
 
 use Teknoo\Immutable\ImmutableTrait;
 
+use function is_scalar;
+
 /**
  * Constraint to use with Teknoo\States\Automated\Property to check if a property is a scalar
  *
@@ -42,12 +44,9 @@ class IsScalar extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
-        if (\is_scalar($value)) {
+        if (is_scalar($value)) {
             $this->isValid($value);
         }
 

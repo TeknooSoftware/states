@@ -44,13 +44,12 @@ class ConstraintsSet implements ConstraintsSetInterface
     /**
      * @var ConstraintInterface[]
      */
-    private array $constraints = [];
+    private array $constraints;
 
     private Property $property;
 
     /**
      * @param array<ConstraintInterface> $constraints
-     * @param Property $property
      */
     public function __construct(array $constraints, Property $property)
     {
@@ -70,10 +69,9 @@ class ConstraintsSet implements ConstraintsSetInterface
     }
 
     /**
-     * @param mixed $value
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    private function processConstraint($value): void
+    private function processConstraint(mixed $value): void
     {
         $constraint = $this->nextConstraint();
 
@@ -86,10 +84,9 @@ class ConstraintsSet implements ConstraintsSetInterface
     }
 
     /**
-     * {@inheritdoc}
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function check(&$value): ConstraintsSetInterface
+    public function check(mixed &$value): ConstraintsSetInterface
     {
         $this->processConstraint($value);
 
@@ -97,10 +94,9 @@ class ConstraintsSet implements ConstraintsSetInterface
     }
 
     /**
-     * {@inheritdoc}
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function isValid(&$value): ConstraintsSetInterface
+    public function isValid(mixed &$value): ConstraintsSetInterface
     {
         $this->processConstraint($value);
 

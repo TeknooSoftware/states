@@ -46,8 +46,6 @@ namespace Teknoo\States\Proxy;
 trait IteratorTrait
 {
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -55,7 +53,7 @@ trait IteratorTrait
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
-    public function current()
+    public function current(): mixed
     {
         $args = [];
 
@@ -63,8 +61,6 @@ trait IteratorTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -72,7 +68,7 @@ trait IteratorTrait
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
-    public function key()
+    public function key(): mixed
     {
         $args = [];
 
@@ -80,8 +76,6 @@ trait IteratorTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -89,7 +83,7 @@ trait IteratorTrait
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
-    public function next()
+    public function next(): mixed
     {
         $args = [];
 
@@ -97,8 +91,6 @@ trait IteratorTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -106,7 +98,7 @@ trait IteratorTrait
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
-    public function rewind()
+    public function rewind(): mixed
     {
         $args = [];
 
@@ -114,8 +106,6 @@ trait IteratorTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws \Throwable
      *
@@ -129,8 +119,6 @@ trait IteratorTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -138,7 +126,7 @@ trait IteratorTrait
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
-    public function valid()
+    public function valid(): bool
     {
         $args = [];
 
@@ -146,8 +134,6 @@ trait IteratorTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -155,7 +141,7 @@ trait IteratorTrait
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
-    public function getIterator(): \Traversable
+    public function getIterator(): iterable
     {
         $args = [];
 

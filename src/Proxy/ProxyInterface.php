@@ -76,11 +76,6 @@ interface ProxyInterface
      *
      * @api
      *
-     * @param string         $stateName
-     * @param StateInterface $stateObject
-     *
-     * @return ProxyInterface
-     *
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      * @throws Exception\IllegalName when the $stateObject does not implement $stateName
      */
@@ -91,10 +86,6 @@ interface ProxyInterface
      * name or a valid full qualified interface name.
      *
      * @api
-     *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
      *
      * @throws Exception\StateNotFound when the state was not found
      * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
@@ -107,10 +98,6 @@ interface ProxyInterface
      *
      * @api
      *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
-     *
      * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
      * @throws Exception\StateNotFound if $stateName does not exist
      */
@@ -122,10 +109,6 @@ interface ProxyInterface
      *
      * @api
      *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
-     *
      * @throws Exception\StateNotFound if $stateName does not exist
      * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
      */
@@ -136,10 +119,6 @@ interface ProxyInterface
      * interface name.
      *
      * @api
-     *
-     * @param string $stateName
-     *
-     * @return ProxyInterface
      *
      * @throws Exception\StateNotFound when the state was not found
      * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
@@ -161,10 +140,6 @@ interface ProxyInterface
      *
      * @api
      *
-     * @param array<string> $statesNames
-     * @param callable $callback
-     * @param bool $allRequired
-     *
      * @return ProxyInterface
      *
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
@@ -176,10 +151,6 @@ interface ProxyInterface
      * function if it's true. The list of actives states (array of string) is passed to the callback
      *
      * @api
-     *
-     * @param array<string> $statesNames
-     * @param callable $callback
-     * @param bool $allForbidden
      *
      * @return ProxyInterface
      *
@@ -196,14 +167,9 @@ interface ProxyInterface
      *
      * @api
      *
-     * @param string $name
-     * @param array<mixed>  $arguments
-     *
-     * @return mixed (value of the stated method called)
-     *
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws InvalidArgument                when the method name is not a string
      */
-    public function __call(string $name, array $arguments);
+    public function __call(string $name, array $arguments): mixed;
 }

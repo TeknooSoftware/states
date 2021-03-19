@@ -42,10 +42,7 @@ class IsNotEmpty extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
         if (!empty($value)) {
             $this->isValid($value);

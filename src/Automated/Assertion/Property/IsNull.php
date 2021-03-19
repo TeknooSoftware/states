@@ -42,10 +42,7 @@ class IsNull extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    /**
-     * {@inheritdoc}
-     */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
         if (null === $value) {
             $this->isValid($value);

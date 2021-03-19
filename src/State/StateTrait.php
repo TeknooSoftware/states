@@ -25,6 +25,10 @@ declare(strict_types=1);
 
 namespace Teknoo\States\State;
 
+use Closure;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
@@ -80,19 +84,19 @@ trait StateTrait
     /**
      * Reflection class object of this state to extract closures and description.
      */
-    private ?\ReflectionClass $reflectionClass = null;
+    private ?ReflectionClass $reflectionClass = null;
 
     /**
      * Reflections methods of this state to extract description and closures.
      *
-     * @var \ReflectionMethod[]|bool[]
+     * @var ReflectionMethod[]|bool[]
      */
     private array $reflectionsMethods = [];
 
     /**
      * List of closures already extracted and set into Injection Closure Container.
      *
-     * @var \Closure[]
+     * @var Closure[]
      */
     private array $closuresObjects = [];
 
@@ -106,9 +110,6 @@ trait StateTrait
      */
     private string $statedClassName;
 
-    /**
-     * {@inheritdoc}
-     */
     public function __construct(bool $privateMode, string $statedClassName)
     {
         $this->privateModeStatus = $privateMode;
@@ -120,14 +121,12 @@ trait StateTrait
      *
      * @api
      *
-     * @return \ReflectionClass
-     *
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    private function getReflectionClass(): \ReflectionClass
+    private function getReflectionClass(): ReflectionClass
     {
         if (null === $this->reflectionClass) {
-            $this->reflectionClass = new \ReflectionClass(\get_class($this));
+            $this->reflectionClass = new ReflectionClass($this::class);
         }
 
         return $this->reflectionClass;
@@ -149,7 +148,7 @@ trait StateTrait
         if (
             true === $this->privateModeStatus
             && $statedClassOrigin !== $this->statedClassName
-            && $this->reflectionsMethods[$methodName] instanceof \ReflectionMethod
+            && $this->reflectionsMethods[$methodName] instanceof ReflectionMethod
             && true === $this->reflectionsMethods[$methodName]->isPrivate()
         ) {
             return false;
@@ -160,16 +159,11 @@ trait StateTrait
 
     /**
      * Can not access to private methods, only public and protected.
-     *
-     * @param string $methodName
-     * @param string $statedClassOrigin
-     *
-     * @return bool
      */
     private function checkVisibilityProtected(string &$methodName, string &$statedClassOrigin): bool
     {
         if (
-            $this->reflectionsMethods[$methodName] instanceof \ReflectionMethod
+            $this->reflectionsMethods[$methodName] instanceof ReflectionMethod
             && false === $this->reflectionsMethods[$methodName]->isPrivate()
             && !empty($statedClassOrigin)
             && ($statedClassOrigin === $this->statedClassName
@@ -184,15 +178,11 @@ trait StateTrait
 
     /**
      * Can not access to protect and private method.
-     *
-     * @param string $methodName
-     *
-     * @return bool
      */
     private function checkVisibilityPublic(string &$methodName): bool
     {
         if (
-            $this->reflectionsMethods[$methodName] instanceof \ReflectionMethod
+            $this->reflectionsMethods[$methodName] instanceof ReflectionMethod
             && true === $this->reflectionsMethods[$methodName]->isPublic()
         ) {
             //It's a public method, do like if there is no method
@@ -209,12 +199,6 @@ trait StateTrait
      *      or another state) and its children
      *  Private method : Method available only for this stated class's method (method present in this state or
      *      another state) and not for its children.
-     *
-     * @param string      $methodName
-     * @param string      $requiredScope
-     * @param string      $statedClassOrigin
-     *
-     * @return bool
      *
      * @throws Exception\InvalidArgument
      */
@@ -249,17 +233,13 @@ trait StateTrait
      *
      * @api
      *
-     * @param string $methodName
-     *
-     * @return bool
-     *
      * @throws Exception\MethodNotImplemented is the method does not exist
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function loadMethodDescription(string &$methodName): bool
     {
         if (isset($this->reflectionsMethods[$methodName])) {
-            return $this->reflectionsMethods[$methodName] instanceof \ReflectionMethod;
+            return $this->reflectionsMethods[$methodName] instanceof ReflectionMethod;
         }
 
         $thisReflectionClass = $this->getReflectionClass();
@@ -291,16 +271,12 @@ trait StateTrait
      *  Private method : Method available only for this stated class's method (method present in this state or another
      *      state) and not for its children.
      *
-     * @param string $methodName
-     *
-     * @return \Closure|null
-     *
      * @throws Exception\MethodNotImplemented is the method does not exist
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function getClosure(
         string &$methodName
-    ): ?\Closure {
+    ): ?Closure {
         if (isset($this->closuresObjects[$methodName])) {
             return $this->closuresObjects[$methodName];
         }
@@ -313,9 +289,9 @@ trait StateTrait
         //Call directly the closure builder, more efficient
         $closure = $this->{$methodName}();
 
-        if (!$closure instanceof \Closure) {
+        if (!$closure instanceof Closure) {
             throw new Exception\MethodNotImplemented(
-                \sprintf('Method "%s" is not a valid Closure', $methodName)
+                "Method '$methodName' is not a valid Closure"
             );
         }
 
@@ -325,8 +301,7 @@ trait StateTrait
     }
 
     /**
-     * {@inheritdoc}
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function executeClosure(
         ProxyInterface $object,
@@ -340,7 +315,7 @@ trait StateTrait
 
         //Check visibility scope
         if (
-            !$closure instanceof \Closure
+            !$closure instanceof Closure
             || false === $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin)
         ) {
             return $this;

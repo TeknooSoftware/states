@@ -45,18 +45,12 @@ interface AutomatedInterface extends ProxyInterface
 {
     /**
      * Method called by the stated class instance itself to perform states changes according its validations rules.
-     *
-     * @return AutomatedInterface
      */
     public function updateStates(): AutomatedInterface;
 
     /**
      * Method to check the property of the object with the constraint and enable followed states if the constraint has
      * been respected
-     *
-     * @param string $property
-     * @param ConstraintsSetInterface $constraints
-     * @return AutomatedInterface
      */
     public function checkProperty(
         string $property,

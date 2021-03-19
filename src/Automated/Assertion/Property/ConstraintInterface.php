@@ -45,19 +45,12 @@ interface ConstraintInterface extends ImmutableInterface
     /**
      * Clone this constraint and inject the Constrain set. This object is not updated, only its clone, to avoid issues
      * on multiples checks.
-     *
-     * @param ConstraintsSetInterface $constraintsSet
-     * @return ConstraintInterface
      */
     public function inConstraintSet(ConstraintsSetInterface $constraintsSet): ConstraintInterface;
 
     /**
      * Method to call to check if the value, passed by the stated object to this constraint is valid according to rules
      * of this constraint.
-     *
-     * @param mixed $value
-     *
-     * @return ConstraintInterface
      */
-    public function check(&$value): ConstraintInterface;
+    public function check(mixed &$value): ConstraintInterface;
 }

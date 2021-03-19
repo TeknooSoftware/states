@@ -47,8 +47,6 @@ namespace Teknoo\States\Proxy;
 trait ArrayAccessTrait
 {
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -64,8 +62,6 @@ trait ArrayAccessTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -73,7 +69,7 @@ trait ArrayAccessTrait
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
-    public function offsetExists($offset)
+    public function offsetExists(mixed $offset): bool
     {
         $args = [$offset];
 
@@ -81,8 +77,6 @@ trait ArrayAccessTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -90,7 +84,7 @@ trait ArrayAccessTrait
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
-    public function offsetGet($offset)
+    public function offsetGet(mixed $offset): mixed
     {
         $args = [$offset];
 
@@ -98,8 +92,6 @@ trait ArrayAccessTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -107,7 +99,7 @@ trait ArrayAccessTrait
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet(mixed $offset, mixed $value): mixed
     {
         $args = [$offset, $value];
 
@@ -115,8 +107,6 @@ trait ArrayAccessTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -124,7 +114,7 @@ trait ArrayAccessTrait
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
-    public function offsetUnset($offset): void
+    public function offsetUnset(mixed $offset): void
     {
         $args = [$offset];
 

@@ -75,7 +75,6 @@ abstract class Standard implements ProxyInterface
     }
 
     /**
-     * {@inheritdoc}
      * @return array<string>
      */
     protected static function statesListDeclaration(): array

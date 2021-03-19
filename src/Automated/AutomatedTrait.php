@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Automated;
 
+use RuntimeException;
 use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 
@@ -56,22 +57,19 @@ trait AutomatedTrait
     /**
      * To iterate defined assertions and check if they implements the interface AssertionInterface.
      *
-     * @return \Generator|AssertionInterface[]
+     * @return AssertionInterface[]
      */
-    private function iterateAssertions()
+    private function iterateAssertions(): iterable
     {
         foreach ($this->listAssertions() as $assertion) {
             if (!$assertion instanceof AssertionInterface) {
-                throw new \RuntimeException('Error, all assertions must implements AssertionInterface');
+                throw new RuntimeException('Error, all assertions must implements AssertionInterface');
             }
 
             yield $assertion;
         }
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function updateStates(): AutomatedInterface
     {
         $this->disableAllStates();
@@ -82,9 +80,6 @@ trait AutomatedTrait
         return $this;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function checkProperty(
         string $property,
         ConstraintsSetInterface $constraints

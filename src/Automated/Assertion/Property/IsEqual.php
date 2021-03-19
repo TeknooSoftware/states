@@ -44,25 +44,16 @@ class IsEqual extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    /**
-     * @var mixed
-     */
-    private $exceptedValue;
+    private mixed $exceptedValue;
 
-    /**
-     * @param mixed $exceptedValue
-     */
-    public function __construct($exceptedValue)
+    public function __construct(mixed $exceptedValue)
     {
         $this->uniqueConstructorCheck();
 
         $this->exceptedValue = $exceptedValue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
         if ($this->exceptedValue == $value) {
             $this->isValid($value);

@@ -43,25 +43,16 @@ class IsLessOrEqualThan extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    /**
-     * @var mixed
-     */
-    private $exceptedValue;
+    private int | float $exceptedValue;
 
-    /**
-     * @param int|float $exceptedValue
-     */
-    public function __construct($exceptedValue)
+    public function __construct(int | float $exceptedValue)
     {
         $this->uniqueConstructorCheck();
 
         $this->exceptedValue = $exceptedValue;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
         if ($this->exceptedValue >= $value) {
             $this->isValid($value);

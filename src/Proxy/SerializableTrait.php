@@ -46,8 +46,6 @@ namespace Teknoo\States\Proxy;
 trait SerializableTrait
 {
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
@@ -62,15 +60,13 @@ trait SerializableTrait
     }
 
     /**
-     * {@inheritdoc}
-     *
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      *
      * @see http://php.net/manual/en/class.serializable.php
      */
-    public function unserialize($serialized)
+    public function unserialize(string $serialized): mixed
     {
         $args = [$serialized];
 

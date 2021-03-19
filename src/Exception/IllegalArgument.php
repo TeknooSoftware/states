@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Exception;
 
+use InvalidArgumentException;
+
 /**
  * Class IllegalArgument
  * Exception threw when the argument's value has not respected some business rules.
@@ -40,6 +42,6 @@ namespace Teknoo\States\Exception;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IllegalArgument extends \InvalidArgumentException
+class IllegalArgument extends InvalidArgumentException
 {
 }

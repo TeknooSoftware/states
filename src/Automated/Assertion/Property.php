@@ -25,10 +25,16 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Automated\Assertion;
 
+use RuntimeException;
 use Teknoo\States\Automated\Assertion\Property\ConstraintInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSet;
 use Teknoo\States\Automated\AutomatedInterface;
 use Teknoo\States\Exception\IllegalArgument;
+
+use function array_keys;
+use function array_shift;
+use function is_numeric;
+use function is_string;
 
 /**
  * Class Assertion
@@ -54,15 +60,10 @@ class Property extends AbstractAssertion
     /**
      * To register a constraint on a property. $exceptedValue must be a ConstraintInstance value.
      * Several constraints types are already defined into Teknoo\States\Automated\Assertion\Property.
-     *
-     * @param string $property
-     * @param ConstraintInterface $exceptedValue
-     *
-     * @return Property
      */
     public function with(string $property, ConstraintInterface $exceptedValue): Property
     {
-        if (!\is_string($property) || \is_numeric($property)) {
+        if (!is_string($property) || is_numeric($property)) {
             throw new IllegalArgument("Property $property is not a valid property name");
         }
 
@@ -73,7 +74,6 @@ class Property extends AbstractAssertion
     }
 
     /**
-     * {@inheritdoc}
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     protected function process(AutomatedInterface $proxy): void
@@ -83,20 +83,19 @@ class Property extends AbstractAssertion
             return;
         }
 
-        [$property] = \array_keys($this->constraints);
-        $constraints = (array) \array_shift($this->constraints);
+        [$property] = array_keys($this->constraints);
+        $constraints = (array) array_shift($this->constraints);
 
         $proxy->checkProperty((string) $property, new ConstraintsSet($constraints, $this));
     }
 
     /**
-     * @return AssertionInterface
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
     public function isValid(): AssertionInterface
     {
         if (null === ($proxy = $this->getProxy())) {
-            throw new \RuntimeException('The method "check" with a valid proxy was not called before');
+            throw new RuntimeException('The method "check" with a valid proxy was not called before');
         }
 
         if (empty($this->constraints)) {

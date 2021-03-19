@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Exception;
 
+use Exception;
+
 /**
  * Class Standard
  * Default exception.
@@ -40,6 +42,6 @@ namespace Teknoo\States\Exception;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Standard extends \Exception
+class Standard extends Exception
 {
 }

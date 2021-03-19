@@ -51,15 +51,11 @@ trait MagicCallTrait
      *
      * @api
      *
-     * @param array ...$args
-     *
-     * @return mixed
-     *
      * @throws \Exception
      * @throws \Throwable
      * @see http://php.net/manual/en/language.oop5.magic.php#object.invoke
      */
-    public function __invoke(...$args)
+    public function __invoke(...$args): mixed
     {
         return $this->__call('invoke', $args);
     }
@@ -70,8 +66,6 @@ trait MagicCallTrait
      * Warning : This method forwards the call the state's methode "toString" and not '__toString".
      *
      * @api
-     *
-     * @return string
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      *

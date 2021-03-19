@@ -26,6 +26,8 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Exception;
 
+use BadMethodCallException;
+
 /**
  * Class AvailableSeveralMethodImplementations
  * Exception threw when a stated class instance is having several implementations a the calling method
@@ -41,6 +43,6 @@ namespace Teknoo\States\Exception;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class AvailableSeveralMethodImplementations extends \BadMethodCallException
+class AvailableSeveralMethodImplementations extends BadMethodCallException
 {
 }

@@ -44,17 +44,11 @@ interface ConstraintsSetInterface extends ImmutableInterface
     /**
      * First call, by the AutomatedInterface instance to start check on the property's value passed by the Property
      * assertion instance.
-     *
-     * @param mixed $value
-     * @return ConstraintsSetInterface
      */
-    public function check(&$value): ConstraintsSetInterface;
+    public function check(mixed &$value): ConstraintsSetInterface;
 
     /**
      * Called by the constraint to check the next constraint or validate the property's value.
-     *
-     * @param mixed $value
-     * @return ConstraintsSetInterface
      */
-    public function isValid(&$value): ConstraintsSetInterface;
+    public function isValid(mixed &$value): ConstraintsSetInterface;
 }

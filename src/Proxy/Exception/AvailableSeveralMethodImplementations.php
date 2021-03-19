@@ -29,8 +29,6 @@ namespace Teknoo\States\Proxy\Exception;
 use Teknoo\States\Exception;
 
 /**
- * {@inheritdoc}
- *
  * @category    Exception
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)

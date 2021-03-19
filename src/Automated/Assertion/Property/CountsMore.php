@@ -27,6 +27,9 @@ namespace Teknoo\States\Automated\Assertion\Property;
 
 use Teknoo\Immutable\ImmutableTrait;
 
+use function count;
+use function is_array;
+
 /**
  * Constraint to use with Teknoo\States\Automated\Property to check if a property
  * is a countable or an array and has more elements set in parameter
@@ -52,10 +55,7 @@ class CountsMore extends AbstractConstraint
         $this->exceptedCount = $exceptedCount;
     }
 
-    /**
-     * {@inheritdoc}
-     */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
         if (
             $value instanceof \Countable
@@ -67,8 +67,8 @@ class CountsMore extends AbstractConstraint
         }
 
         if (
-            \is_array($value)
-            && \count($value) > $this->exceptedCount
+            is_array($value)
+            && count($value) > $this->exceptedCount
         ) {
             $this->isValid($value);
         }

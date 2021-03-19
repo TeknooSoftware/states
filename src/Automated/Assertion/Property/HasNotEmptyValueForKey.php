@@ -27,6 +27,8 @@ namespace Teknoo\States\Automated\Assertion\Property;
 
 use Teknoo\Immutable\ImmutableTrait;
 
+use function is_array;
+
 /**
  * Constraint to use with Teknoo\States\Automated\Property to check if a property is an array and has a required key
  *
@@ -51,12 +53,9 @@ class HasNotEmptyValueForKey extends AbstractConstraint
         $this->keyName = $keyName;
     }
 
-    /**
-       * {@inheritdoc}
-       */
-    public function check(&$value): ConstraintInterface
+    public function check(mixed &$value): ConstraintInterface
     {
-        if (\is_array($value) && !empty($value[$this->keyName])) {
+        if (is_array($value) && !empty($value[$this->keyName])) {
             $this->isValid($value);
         }
 
