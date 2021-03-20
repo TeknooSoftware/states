@@ -46,8 +46,16 @@ use PHPStan\Rules\Properties\PropertyReflectionFinder;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
+use ReflectionClass;
+use ReflectionException;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateTrait;
+
+use function array_pop;
+use function class_exists;
+use function explode;
+use function implode;
+use function in_array;
 
 /**
  * To overide Scope in PHPStan to manage correctly states class in a stated class :
@@ -70,7 +78,7 @@ class Scope extends PHPStanScope
      * @param array<VariableTypeHolder> $variablesTypes
      * @throws ShouldNotHappenException
      * @throws ClassNotFoundException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function updateScopeIfStateClass(
         ClassReflection $classReflection,
@@ -80,7 +88,7 @@ class Scope extends PHPStanScope
     ): ScopeContext {
         $nativeReflection = $classReflection->getNativeReflection();
 
-        if (!\in_array(StateTrait::class, $nativeReflection->getTraitNames())) {
+        if (!in_array(StateTrait::class, $nativeReflection->getTraitNames())) {
             return $initialContext;
         }
 
@@ -90,16 +98,16 @@ class Scope extends PHPStanScope
 
         $proxyClass = $stateClass = $nativeReflection->getName();
         do {
-            $explodedClass = \explode('\\', $proxyClass);
-            \array_pop($explodedClass);
-            $proxyClass = \implode('\\', $explodedClass);
-        } while (!empty($proxyClass) && !\class_exists($proxyClass));
+            $explodedClass = explode('\\', $proxyClass);
+            array_pop($explodedClass);
+            $proxyClass = implode('\\', $explodedClass);
+        } while (!empty($proxyClass) && !class_exists($proxyClass));
 
-        if (empty($proxyClass) || !\class_exists($proxyClass)) {
+        if (empty($proxyClass) || !class_exists($proxyClass)) {
             throw new ShouldNotHappenException("Proxy class was not found for $stateClass");
         }
 
-        $nativeReflectionProxy = new \ReflectionClass($proxyClass);
+        $nativeReflectionProxy = new ReflectionClass($proxyClass);
         if (!$nativeReflectionProxy->implementsInterface(ProxyInterface::class)) {
             throw new ShouldNotHappenException(
                 "$proxyClass must implements the interface " . ProxyInterface::class . " to be a valid Stated Class"
@@ -124,7 +132,7 @@ class Scope extends PHPStanScope
      * @param bool $treatPhpDocTypesAsCertain
      * @throws ShouldNotHappenException
      * @throws ClassNotFoundException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function __construct(
         ScopeFactory $scopeFactory,

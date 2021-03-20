@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\States\Proxy;
 
 use ReflectionMethod;
+use RuntimeException;
 use SplStack;
 use Teknoo\States\State\StateInterface;
 use Throwable;
@@ -38,6 +39,7 @@ use function count;
 use function current;
 use function debug_backtrace;
 use function get_parent_class;
+use function interface_exists;
 use function is_a;
 use function is_array;
 use function is_callable;
@@ -251,7 +253,7 @@ trait ProxyTrait
         $stateClass = $state::class;
 
         if (!isset($this->classesByStates[$stateClass])) {
-            throw new \RuntimeException("Error, no original class name defined for $stateClass");
+            throw new RuntimeException("Error, no original class name defined for $stateClass");
         }
 
         $this->callerStatedClassesStack->push($this->classesByStates[$stateClass]);
@@ -283,7 +285,7 @@ trait ProxyTrait
             throw new Exception\IllegalName('Error, the identifier is not a valid string');
         }
 
-        if (!class_exists($name) && !\interface_exists($name)) {
+        if (!class_exists($name) && !interface_exists($name)) {
             throw new Exception\StateNotFound("Error, the state $name is not available");
         }
 
@@ -320,10 +322,8 @@ trait ProxyTrait
      * Called from a static method of this stated class, or from a method of this stated class (but not this instance) :
      *  Private scope
      * Called from a method of this stated class instance : Private state
-     *
-     * @param object $callerObject
      */
-    private function extractVisibilityScopeFromObject(&$callerObject): string
+    private function extractVisibilityScopeFromObject(object &$callerObject): string
     {
         if ($this === $callerObject) {
             //It's me ! Mario ! So Private scope

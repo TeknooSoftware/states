@@ -41,7 +41,6 @@ namespace Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
- * @method mixed __call($name, $args)
  */
 trait SerializableTrait
 {

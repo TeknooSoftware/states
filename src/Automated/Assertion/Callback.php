@@ -28,6 +28,8 @@ namespace Teknoo\States\Automated\Assertion;
 use RuntimeException;
 use Teknoo\States\Automated\AutomatedInterface;
 
+use function is_callable;
+
 /**
  * Class Callback
  * Assertion implementation to delegated the validation to a callable (a callback or a closure) and
@@ -62,7 +64,7 @@ class Callback extends AbstractAssertion
 
     protected function process(AutomatedInterface $proxy): void
     {
-        if (!\is_callable($this->callback)) {
+        if (!is_callable($this->callback)) {
             throw new RuntimeException('Error the callback is not callable');
         }
 

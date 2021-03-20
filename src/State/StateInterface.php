@@ -107,8 +107,6 @@ interface StateInterface
      * @param string         $requiredScope self::VISIBILITY_PUBLIC|self::VISIBILITY_PROTECTED|self::VISIBILITY_PRIVATE
      * @param string         $statedClassOrigin
      * @param callable       $returnCallback Method to call if the closure has been found and called, to pass the result
-     *
-     * @return StateInterface
      */
     public function executeClosure(
         ProxyInterface $object,

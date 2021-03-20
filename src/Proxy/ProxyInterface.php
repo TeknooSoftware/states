@@ -129,8 +129,6 @@ interface ProxyInterface
      * To disable all actives states.
      *
      * @api
-     *
-     * @return ProxyInterface
      */
     public function disableAllStates(): ProxyInterface;
 
@@ -139,8 +137,6 @@ interface ProxyInterface
      * if it's true. The list of actives states (array of string) is passed to the callback
      *
      * @api
-     *
-     * @return ProxyInterface
      *
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      */
@@ -151,8 +147,6 @@ interface ProxyInterface
      * function if it's true. The list of actives states (array of string) is passed to the callback
      *
      * @api
-     *
-     * @return ProxyInterface
      *
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      */

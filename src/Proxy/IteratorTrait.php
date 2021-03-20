@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Proxy;
 
+use Throwable;
+
 /**
  * Trait IteratorTrait
  * Trait to use the interface \Iterator (http://php.net/manual/en/class.iterator.php) with stated classes.
@@ -49,7 +51,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -64,7 +66,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -79,7 +81,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -94,7 +96,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -107,7 +109,7 @@ trait IteratorTrait
 
     /**
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -122,7 +124,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
@@ -137,7 +139,7 @@ trait IteratorTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.iterator.php
      */

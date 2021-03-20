@@ -25,6 +25,9 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Proxy;
 
+use ArrayAccess;
+use Throwable;
+
 /**
  * Trait ArrayAccessTrait
  * Trait to use the interface \ArrayAccess (http://php.net/manual/en/class.arrayaccess.php) with a stated classes.
@@ -41,7 +44,7 @@ namespace Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
- * @mixin \ArrayAccess
+ * @mixin ArrayAccess
  * @mixin ProxyTrait
  */
 trait ArrayAccessTrait
@@ -50,7 +53,7 @@ trait ArrayAccessTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
@@ -65,7 +68,7 @@ trait ArrayAccessTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
@@ -80,7 +83,7 @@ trait ArrayAccessTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
@@ -95,7 +98,7 @@ trait ArrayAccessTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
@@ -110,7 +113,7 @@ trait ArrayAccessTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     * @throws \Throwable
+     * @throws Throwable
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */

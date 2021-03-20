@@ -28,6 +28,8 @@ namespace Teknoo\States\Automated\Assertion\Property;
 use Teknoo\Immutable\ImmutableTrait;
 use Teknoo\States\Automated\Assertion\Property;
 
+use function array_shift;
+
 /**
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
  * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
@@ -62,7 +64,7 @@ class ConstraintsSet implements ConstraintsSetInterface
     private function nextConstraint(): ?ConstraintInterface
     {
         if (!empty($this->constraints)) {
-            return \array_shift($this->constraints);
+            return array_shift($this->constraints);
         }
 
         return null;

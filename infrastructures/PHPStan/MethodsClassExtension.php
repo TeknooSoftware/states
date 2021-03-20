@@ -36,9 +36,18 @@ use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\Php\PhpMethodReflection;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\Generic\TemplateTypeMap;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionFunction;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
+
+use function array_pop;
+use function class_exists;
+use function explode;
+use function implode;
+use function is_callable;
 
 /**
  * Extension for PHPStan to support methods defined in states in Stated class when they are called from the proxy
@@ -59,7 +68,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
     private Broker $broker;
 
     /**
-     * @var array<\ReflectionClass>
+     * @var array<ReflectionClass>
      */
     private array $proxyNativeReflection = [];
 
@@ -85,9 +94,9 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    private function checkIfManagedClass(\ReflectionClass $nativeReflection): bool
+    private function checkIfManagedClass(ReflectionClass $nativeReflection): bool
     {
         if ($nativeReflection->isInterface()) {
             return false;
@@ -106,16 +115,16 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
 
         $proxyClass = $className;
         do {
-            $explodedClass = \explode('\\', $proxyClass);
-            \array_pop($explodedClass);
-            $proxyClass = \implode('\\', $explodedClass);
-        } while (!empty($proxyClass) && !\class_exists($proxyClass));
+            $explodedClass = explode('\\', $proxyClass);
+            array_pop($explodedClass);
+            $proxyClass = implode('\\', $explodedClass);
+        } while (!empty($proxyClass) && !class_exists($proxyClass));
 
-        if (empty($proxyClass) || !\class_exists($proxyClass)) {
+        if (empty($proxyClass) || !class_exists($proxyClass)) {
             return false;
         }
 
-        $proxyReflection = new \ReflectionClass($proxyClass);
+        $proxyReflection = new ReflectionClass($proxyClass);
         if (!$proxyReflection->implementsInterface(ProxyInterface::class)) {
             return false;
         }
@@ -127,14 +136,14 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
 
     /**
      * @return array<class-string>
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function listStateClassFor(string $className): array
     {
         $listDeclarationReflection = $this->proxyNativeReflection[$className]->getMethod('statesListDeclaration');
         $listClosure = $listDeclarationReflection->getClosure(null);
 
-        if (!\is_callable($listClosure)) {
+        if (!is_callable($listClosure)) {
             return [];
         }
 
@@ -142,14 +151,14 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
-    private function checkMethod(\ReflectionClass $nativeReflection, string $methodName): bool
+    private function checkMethod(ReflectionClass $nativeReflection, string $methodName): bool
     {
         $className = $nativeReflection->getName();
 
         foreach ($this->listStateClassFor($className) as $stateClass) {
-            $nf = new \ReflectionClass($stateClass);
+            $nf = new ReflectionClass($stateClass);
             if ($nf->hasMethod($methodName)) {
                 return true;
             }
@@ -159,7 +168,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
     }
 
     /**
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
     {
@@ -174,11 +183,11 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
 
     /**
      * @throws \PHPStan\Broker\ClassNotFoundException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     private function getMethodReflection(
-        \ReflectionClass $stateClassReflection,
-        \ReflectionClass $nativeProxyReflection,
+        ReflectionClass $stateClassReflection,
+        ReflectionClass $nativeProxyReflection,
         string $method
     ): MethodReflection {
         $factoryReflection = $stateClassReflection ->getMethod($method);
@@ -187,13 +196,13 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
         $stateClosure = $factoryClosure();
 
         //To use the original \ReflectionClass api and not "BetterReflectionClass" whome not implements all the api.
-        $realNativeProxyReflection = new \ReflectionClass($nativeProxyReflection->getName());
+        $realNativeProxyReflection = new ReflectionClass($nativeProxyReflection->getName());
         $stateClosure = $stateClosure->bindTo(
             $realNativeProxyReflection->newInstanceWithoutConstructor(),
             $realNativeProxyReflection->getName()
         );
 
-        $closureReflection = new \ReflectionFunction($stateClosure);
+        $closureReflection = new ReflectionFunction($stateClosure);
 
         return new PhpMethodReflection(
             $this->broker->getClass($nativeProxyReflection->getName()),
@@ -218,7 +227,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
     /**
      * @throws ShouldNotHappenException
      * @throws \PHPStan\Broker\ClassNotFoundException
-     * @throws \ReflectionException
+     * @throws ReflectionException
      */
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
     {
@@ -232,7 +241,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
         $className = $nativeReflection->getName();
 
         foreach ($this->listStateClassFor($className) as $stateClass) {
-            $stateClassReflection = new \ReflectionClass($stateClass);
+            $stateClassReflection = new ReflectionClass($stateClass);
             if ($stateClassReflection->hasMethod($methodName)) {
                 return $this->getMethodReflection(
                     $stateClassReflection,

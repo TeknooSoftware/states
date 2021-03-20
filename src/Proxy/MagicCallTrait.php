@@ -25,6 +25,9 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Proxy;
 
+use Exception;
+use Throwable;
+
 /**
  * Trait MagicCallTrait
  * Trait to use PHP magic's calls (http://php.net/manual/en/language.oop5.magic.php) with stated classes.
@@ -51,8 +54,8 @@ trait MagicCallTrait
      *
      * @api
      *
-     * @throws \Exception
-     * @throws \Throwable
+     * @throws Exception
+     * @throws Throwable
      * @see http://php.net/manual/en/language.oop5.magic.php#object.invoke
      */
     public function __invoke(...$args): mixed
@@ -77,7 +80,7 @@ trait MagicCallTrait
             $args = [];
 
             return (string) $this->__call('toString', $args);
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             return '';
         }
     }

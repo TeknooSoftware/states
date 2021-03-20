@@ -31,6 +31,8 @@ use ReflectionException;
 use ReflectionMethod;
 use Teknoo\States\Proxy\ProxyInterface;
 
+use function is_subclass_of;
+
 /**
  * Class StateTrait
  * Default implementation of the state interface, representing states entities in stated class.
@@ -137,11 +139,6 @@ trait StateTrait
      * The called method is protected or public (skip to next test)
      * The private mode is disable for this state (state is not defined is a parent class)
      * The caller method is in the same stated class that the called method.
-     *
-     * @param string $methodName
-     * @param string $statedClassOrigin
-     *
-     * @return bool
      */
     private function checkVisibilityPrivate(string &$methodName, string &$statedClassOrigin): bool
     {
@@ -167,7 +164,7 @@ trait StateTrait
             && false === $this->reflectionsMethods[$methodName]->isPrivate()
             && !empty($statedClassOrigin)
             && ($statedClassOrigin === $this->statedClassName
-                || \is_subclass_of($statedClassOrigin, $this->statedClassName))
+                || is_subclass_of($statedClassOrigin, $this->statedClassName))
         ) {
             //It's a public or protected method, do like if there is no method
             return true;

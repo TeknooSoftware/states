@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Automated\Assertion\Property;
 
+use Countable;
 use Teknoo\Immutable\ImmutableTrait;
 
 use function count;
@@ -58,7 +59,7 @@ class CountsLess extends AbstractConstraint
     public function check(mixed &$value): ConstraintInterface
     {
         if (
-            $value instanceof \Countable
+            $value instanceof Countable
             && $value->count() < $this->exceptedCount
         ) {
             $this->isValid($value);

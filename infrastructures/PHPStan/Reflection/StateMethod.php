@@ -27,6 +27,12 @@ namespace Teknoo\States\PHPStan\Reflection;
 
 use PHPStan\Reflection\Php\BuiltinMethodReflection;
 use PHPStan\TrinaryLogic;
+use ReflectionClass;
+use ReflectionFunction;
+use ReflectionMethod;
+use ReflectionParameter;
+use ReflectionType;
+use RuntimeException;
 
 /**
  * To provide a PHPStan reflection for state's methode in a stated class.
@@ -48,11 +54,11 @@ use PHPStan\TrinaryLogic;
  */
 class StateMethod implements BuiltinMethodReflection
 {
-    private \ReflectionMethod $factoryReflection;
+    private ReflectionMethod $factoryReflection;
 
-    private \ReflectionFunction $closureReflection;
+    private ReflectionFunction $closureReflection;
 
-    public function __construct(\ReflectionMethod $factoryReflection, \ReflectionFunction $closureReflection)
+    public function __construct(ReflectionMethod $factoryReflection, ReflectionFunction $closureReflection)
     {
         $this->factoryReflection = $factoryReflection;
         $this->closureReflection = $closureReflection;
@@ -63,7 +69,7 @@ class StateMethod implements BuiltinMethodReflection
         return $this->factoryReflection->getName();
     }
 
-    public function getReflection(): ?\ReflectionMethod
+    public function getReflection(): ?ReflectionMethod
     {
         return $this->factoryReflection;
     }
@@ -76,12 +82,12 @@ class StateMethod implements BuiltinMethodReflection
         return $this->factoryReflection->getFileName();
     }
 
-    public function getDeclaringClass(): \ReflectionClass
+    public function getDeclaringClass(): ReflectionClass
     {
         $reflection = $this->closureReflection->getClosureScopeClass();
 
-        if (!$reflection instanceof \ReflectionClass) {
-            throw new \RuntimeException("Reflection class is not available for the closure");
+        if (!$reflection instanceof ReflectionClass) {
+            throw new RuntimeException("Reflection class is not available for the closure");
         }
 
         return $reflection;
@@ -162,13 +168,13 @@ class StateMethod implements BuiltinMethodReflection
         return $this->closureReflection->isVariadic();
     }
 
-    public function getReturnType(): ?\ReflectionType
+    public function getReturnType(): ?ReflectionType
     {
         return $this->closureReflection->getReturnType();
     }
 
     /**
-     * @return \ReflectionParameter[]
+     * @return ReflectionParameter[]
      */
     public function getParameters(): array
     {
