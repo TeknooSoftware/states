@@ -27,19 +27,16 @@ lint:
 	find ./infrastructures -name "*.php" -exec /usr/bin/env php -l {} \; | grep "Parse error" > /dev/null && exit 1 || exit 0
 
 phploc:
-	vendor/bin/phploc src
-	vendor/bin/phploc infrastructures
+	vendor/bin/phploc src infrastructures
 
 phpstan:
 	php -d memory_limit=256M vendor/bin/phpstan analyse src infrastructures --level max
 
 phpcs:
-	vendor/bin/phpcs --standard=PSR12 --extensions=php src/
-	vendor/bin/phpcs --standard=PSR12 --extensions=php infrastructures/
+	vendor/bin/phpcs --standard=PSR12 --extensions=php src/ infrastructures/
 
 phpcpd:
-	vendor/bin/phpcpd src/
-	vendor/bin/phpcpd infrastructures/
+	vendor/bin/phpcpd src/ infrastructures/
 
 .PHONY: qa lint phploc phpstan phpcs phpcpd
 

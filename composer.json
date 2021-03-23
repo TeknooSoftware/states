@@ -36,7 +36,7 @@
     "require-dev": {
         "roave/security-advisories": "dev-master",
         "phpunit/phpunit": "^9.5.3",
-        "squizlabs/php_codesniffer": "^3.5.8",
+        "squizlabs/php_codesniffer": "dev-master",
         "pdepend/pdepend": "~2.9",
         "sebastian/phpcpd": "^6.0.3",
         "phploc/phploc": "^7.0.2",

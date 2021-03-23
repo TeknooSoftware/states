@@ -102,20 +102,10 @@ trait StateTrait
      */
     private array $closuresObjects = [];
 
-    /**
-     * To know if the private mode is enable or not for this state (see isPrivateMode()).
-     */
-    private bool $privateModeStatus = false;
-
-    /**
-     * To know the full qualified stated class name of the object owning this state container.
-     */
-    private string $statedClassName;
-
-    public function __construct(bool $privateMode, string $statedClassName)
-    {
-        $this->privateModeStatus = $privateMode;
-        $this->statedClassName = $statedClassName;
+    public function __construct(
+        private bool $privateModeStatus,
+        private string $statedClassName,
+    ) {
     }
 
     /**

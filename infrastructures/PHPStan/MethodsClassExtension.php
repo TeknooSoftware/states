@@ -72,20 +72,11 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
      */
     private array $proxyNativeReflection = [];
 
-    private Parser $parser;
-
-    private FunctionCallStatementFinder $functionCallStatementFinder;
-
-    private Cache $cache;
-
     public function __construct(
-        Parser $parser,
-        FunctionCallStatementFinder $functionCallStatementFinder,
-        Cache $cache
+        private Parser $parser,
+        private FunctionCallStatementFinder $functionCallStatementFinder,
+        private Cache $cache
     ) {
-        $this->parser = $parser;
-        $this->functionCallStatementFinder = $functionCallStatementFinder;
-        $this->cache = $cache;
     }
 
     public function setBroker(Broker $broker): void

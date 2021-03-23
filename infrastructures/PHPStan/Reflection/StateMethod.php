@@ -54,14 +54,10 @@ use RuntimeException;
  */
 class StateMethod implements BuiltinMethodReflection
 {
-    private ReflectionMethod $factoryReflection;
-
-    private ReflectionFunction $closureReflection;
-
-    public function __construct(ReflectionMethod $factoryReflection, ReflectionFunction $closureReflection)
-    {
-        $this->factoryReflection = $factoryReflection;
-        $this->closureReflection = $closureReflection;
+    public function __construct(
+        private ReflectionMethod $factoryReflection,
+        private ReflectionFunction $closureReflection,
+    ) {
     }
 
     public function getName(): string

@@ -77,10 +77,13 @@ interface StateInterface
      *
      * @api
      *
-     * @param bool   $privateMode     : To know if the private mode is enable or not for this state, see isPrivateMode
+     * @param bool   $privateModeStatus : To know if the private mode is enable or not for this state, see isPrivateMode
      * @param string $statedClassName : To know the full qualified stated class name of the object owning this container
      */
-    public function __construct(bool $privateMode, string $statedClassName);
+    public function __construct(
+        bool $privateModeStatus,
+        string $statedClassName,
+    );
 
     /**
      * To find, bind (with the passed proxy instance) and execute a closure of the required method, i
