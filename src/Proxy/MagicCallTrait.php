@@ -80,7 +80,7 @@ trait MagicCallTrait
             $args = [];
 
             return (string) $this->__call('toString', $args);
-        } catch (Throwable $e) {
+        } catch (Throwable) {
             return '';
         }
     }
