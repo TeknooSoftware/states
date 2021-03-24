@@ -1,5 +1,10 @@
 #Teknoo Software - States library - Change Log
 
+##[5.0.1] - 2021-03-24
+###Stable Release
+- Constructor Property Promotion
+- Non-capturing catches
+
 ##[5.0.0] - 2021-03-19
 ###Stable Release
 - Migrate to PHP 8.0
