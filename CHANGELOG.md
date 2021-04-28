@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[5.0.2] - 2021-04-28
+###Stable Release
+- Some optimisations on array functions to limit O(n)
+
 ##[5.0.1] - 2021-03-24
 ###Stable Release
 - Constructor Property Promotion

@@ -51,6 +51,7 @@ use ReflectionException;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateTrait;
 
+use function array_flip;
 use function array_pop;
 use function class_exists;
 use function explode;
@@ -88,7 +89,7 @@ class Scope extends PHPStanScope
     ): ScopeContext {
         $nativeReflection = $classReflection->getNativeReflection();
 
-        if (!in_array(StateTrait::class, $nativeReflection->getTraitNames())) {
+        if (!isset(array_flip($nativeReflection->getTraitNames())[StateTrait::class])) {
             return $initialContext;
         }
 
