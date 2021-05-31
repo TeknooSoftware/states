@@ -1,5 +1,9 @@
 #Teknoo Software - States library - Change Log
 
+##[5.0.3] - 2021-05-31
+###Stable Release
+- Minor version about libs requirements
+
 ##[5.0.2] - 2021-04-28
 ###Stable Release
 - Some optimisations on array functions to limit O(n)
