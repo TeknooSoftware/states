@@ -1,29 +1,20 @@
-<phpunit
-        backupGlobals="false"
-        backupStaticAttributes="false"
-        convertErrorsToExceptions="true"
-        convertNoticesToExceptions="true"
-        convertWarningsToExceptions="true"
-        processIsolation="false"
-        stopOnFailure="false"
-        bootstrap="tests/bootstrap.php"
-        colors="true">
-    <testsuites>
-        <testsuite name="Teknoo Software/States Test Suite">
-            <directory suffix="Test.php">tests/States</directory>
-            <directory suffix="Test.php">tests/infrastructures</directory>
-        </testsuite>
-    </testsuites>
-
-    <filter>
-        <whitelist>
-            <directory>src</directory>
-            <directory>infrastructures</directory>
-            <exclude>
-                <directory>docs</directory>
-                <directory>demo</directory>
-                <directory>licences</directory>
-            </exclude>
-        </whitelist>
-    </filter>
+<?xml version="1.0"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" backupGlobals="false" backupStaticAttributes="false" convertErrorsToExceptions="true" convertNoticesToExceptions="true" convertWarningsToExceptions="true" processIsolation="false" stopOnFailure="false" bootstrap="tests/bootstrap.php" colors="true" xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd">
+  <coverage>
+    <include>
+      <directory>src</directory>
+      <directory>infrastructures</directory>
+    </include>
+    <exclude>
+      <directory>docs</directory>
+      <directory>demo</directory>
+      <directory>licences</directory>
+    </exclude>
+  </coverage>
+  <testsuites>
+    <testsuite name="Teknoo Software/States Test Suite">
+      <directory suffix="Test.php">tests/States</directory>
+      <directory suffix="Test.php">tests/infrastructures</directory>
+    </testsuite>
+  </testsuites>
 </phpunit>
