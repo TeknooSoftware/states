@@ -28,9 +28,8 @@ namespace Teknoo\States\Automated\Assertion\Property;
 use Teknoo\Immutable\ImmutableTrait;
 
 /**
- * Constraint to use with Teknoo\States\Automated\Property to check if a property
- * is great or equal
- * to of $this->exceptedValue. (Perform <= checks).
+ * Constraint to use with `Teknoo\States\Automated\Property` to check if a property
+ * is great or equal to of `$this->exceptedValue`. (Perform <= checks).
  *
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)

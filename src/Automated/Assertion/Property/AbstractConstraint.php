@@ -51,7 +51,7 @@ abstract class AbstractConstraint implements ConstraintInterface
         return $that;
     }
 
-    /**
+    /*
      * To return the success of the check to the ConstraintSet and continue the workflow
      */
     protected function isValid(mixed &$value): ConstraintInterface

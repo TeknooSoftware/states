@@ -32,7 +32,7 @@ use function count;
 use function is_array;
 
 /**
- * Constraint to use with Teknoo\States\Automated\Property to check if a property
+ * Constraint to use with `Teknoo\States\Automated\Property` to check if a property
  * is a countable or an array and has less elements set in parameter
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)

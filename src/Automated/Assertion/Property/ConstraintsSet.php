@@ -32,6 +32,9 @@ use function array_pop;
 use function array_reverse;
 
 /**
+ * Set of constraints, passed to automated object to check the value from the defined property
+ * and validate the assertions and enabled linked states.
+ *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
  * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
  *

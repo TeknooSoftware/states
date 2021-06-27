@@ -29,7 +29,6 @@ namespace Teknoo\States\State\Exception;
 use Teknoo\States\Exception;
 
 /**
- * Class MethodNotImplemented
  * Exception threw when the calling method is not currently available in the proxy object with enabled states.
  *
  * @category    Exception

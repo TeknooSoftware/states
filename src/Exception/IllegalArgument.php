@@ -29,7 +29,6 @@ namespace Teknoo\States\Exception;
 use InvalidArgumentException;
 
 /**
- * Class IllegalArgument
  * Exception threw when the argument's value has not respected some business rules.
  *
  * @category    Exception

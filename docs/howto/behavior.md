@@ -11,10 +11,10 @@ to these objects and static to theirs classnames.
 This library reuses this behavior to implement states. A stated class is a extended PHP class, composed of several
 standard PHP classes :
 
-*   One standard PHP class by state, implementing the StateInterface, managing methods available for each state.
-*   A main standard PHP class, called proxy, implementing the ProxyInterface via the ProxyTrait,
+*   One standard PHP class by state, implementing the `StateInterface`, managing methods available for each state.
+*   A main standard PHP class, called proxy, implementing the `ProxyInterface` via the `ProxyTrait`,
     extended to represent stated class instances (from stated classes). $this referencing these proxy.
-*   With the ProxyTrait implementation, each state class must be declared into the proxy class,
+*   With the `ProxyTrait` implementation, each state class must be declared into the proxy class,
     via the protected static method `statesListDeclaration()`.
 
 During proxy instantiating, the proxy finds and loads all states declared.

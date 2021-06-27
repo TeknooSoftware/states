@@ -27,7 +27,6 @@ declare(strict_types=1);
 namespace Teknoo\States\Exception;
 
 /**
- * Class IllegalName
  * Exception threw when the argument's value, used to called an element has not respected a defined pattern.
  *
  * @category    Exception

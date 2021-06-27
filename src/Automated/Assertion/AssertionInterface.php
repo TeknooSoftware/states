@@ -29,7 +29,6 @@ use Teknoo\Immutable\ImmutableInterface;
 use Teknoo\States\Automated\AutomatedInterface;
 
 /**
- * Interface AssertionInterface
  * Interface to build assertion, needed by automated stated class to determine currently active states.
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
@@ -42,13 +41,13 @@ use Teknoo\States\Automated\AutomatedInterface;
  */
 interface AssertionInterface extends ImmutableInterface
 {
-    /**
+    /*
      * To check the assertion's rules with the passed proxy. All assertions must be immutable, so this method must
      * return a cloned object if it's states has been changed.
      */
     public function check(AutomatedInterface $proxy): AssertionInterface;
 
-    /**
+    /*
      * Called to set the assertion as valid and enable linked state.
      */
     public function isValid(): AssertionInterface;

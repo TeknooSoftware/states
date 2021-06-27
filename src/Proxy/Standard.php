@@ -26,7 +26,6 @@ declare(strict_types=1);
 namespace Teknoo\States\Proxy;
 
 /**
- * Class Standard
  * Default implementation of the proxy class in stated classes. Unlike previous major versions of States, It can be
  * instantiate directly, factories are not needed, States are directly defined in the proxy class in the static method
  * statesListDeclaration.

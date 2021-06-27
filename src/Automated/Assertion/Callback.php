@@ -31,7 +31,6 @@ use Teknoo\States\Automated\AutomatedInterface;
 use function is_callable;
 
 /**
- * Class Callback
  * Assertion implementation to delegated the validation to a callable (a callback or a closure) and
  * return enabled states.
  *
@@ -52,7 +51,7 @@ class Callback extends AbstractAssertion
      */
     private $callback;
 
-    /**
+    /*
      * To register the callable (callback or closure) to execute to determine if this assertio is valid or not.
      */
     public function call(callable $callback): self

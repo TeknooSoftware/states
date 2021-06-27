@@ -27,7 +27,6 @@ declare(strict_types=1);
 namespace Teknoo\States\Exception;
 
 /**
- * Class StateNotFound
  * Exception thew when the requiring state is not available for the stated class instance.
  *
  * @category    Exception

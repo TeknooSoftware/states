@@ -29,7 +29,6 @@ use Teknoo\States\State\Exception\InvalidArgument;
 use Teknoo\States\State\StateInterface;
 
 /**
- * Interface ProxyInterface
  * Interface to define proxies classes in stated classes. It represent the main class to instantiate.
  *
  * The proxy, by default, redirect all calls, of non defined methods in the proxy, to enabled states.
@@ -42,7 +41,7 @@ use Teknoo\States\State\StateInterface;
  * States can be overload by children of a stated class : The overloading uses only the non qualified name.
  *
  * Since 3.0, states's methods are a builder, returning a real closure to use. The state must not use
- * the Reflection API to extract the closure (Closure from Reflection are not bindable on a new scope since 7.1).
+ * the Reflection API to extract the closure (`Closure` from `Reflection` are not bindable on a new scope since 7.1).
  * States can be also an anonymous class, it's name must be defined by an interface, implementing by this state.
  *
  * Since 3.2, the library following #east programming rules, all methods designed to know the state of the object are
@@ -60,7 +59,7 @@ use Teknoo\States\State\StateInterface;
  */
 interface ProxyInterface
 {
-    /**
+    /*
      * Name of the default state to load automatically in the construction.
      */
     public const DEFAULT_STATE_NAME = 'StateDefault';

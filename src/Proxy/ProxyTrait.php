@@ -54,7 +54,6 @@ use function strrpos;
 use function substr;
 
 /**
- * Trait ProxyTrait
  * Implementation of the proxy class in stated class. It is used in this library to create stated class instance.
  *
  * The proxy, by default, redirect all calls, of non defined methods in the proxy, to enabled states.
@@ -63,12 +62,12 @@ use function substr;
  *
  * The proxy class is mandatory. Since States 3.0 has no factories or no loader : proxies embedded directly theirs
  * states' configurations. Since 3.2, states configurations must be returned by the protected method
- * statesListDeclaration(), required by this trait.
+ * `statesListDeclaration()`, required by this trait.
  *
  * States can be overload by children of a stated class : The overloading uses only the non qualified name.
  *
  * Since 3.0, states's methods are a builder, returning a real closure to use. The state must not use
- * the Reflection API to extract the closure (Closure from Reflection are not bindable on a new scope since 7.1).
+ * the Reflection API to extract the closure (`Closure` from `Reflection` are not bindable on a new scope since 7.1).
  * States can be also an anonymous class, it's name must be defined by an interface, implementing by this state.
  *
  * Since 3.2, the library following #east programming rules, all methods designed to know the state of the object are

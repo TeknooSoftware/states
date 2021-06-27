@@ -30,7 +30,6 @@ use Teknoo\Immutable\ImmutableTrait;
 use Teknoo\States\Automated\AutomatedInterface;
 
 /**
- * class AbstractAssertion
  * Abstract implementation of AssertionInterface.
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
@@ -60,7 +59,7 @@ abstract class AbstractAssertion implements AssertionInterface
         $this->statesList = (array) $statesList;
     }
 
-    /**
+    /*
      * Return the proxy linked to the check of this assertions.
      */
     protected function getProxy(): ?AutomatedInterface
@@ -68,7 +67,7 @@ abstract class AbstractAssertion implements AssertionInterface
         return $this->proxy;
     }
 
-    /**
+    /*
      * Abstract method to implement into final class to proccess to the check of this assertions.
      */
     abstract protected function process(AutomatedInterface $proxy): void;

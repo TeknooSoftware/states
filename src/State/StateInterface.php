@@ -28,16 +28,15 @@ namespace Teknoo\States\State;
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
- * Interface StateInterface
  * Interface to define class representing states entities for a stated class.
  *
  * Objects implementing this interface must find, bind and execute closure via the method executeClosure() for the
- * required method. (Rebind must use \Closure::call() to rebind static, self and $this or rebindTo()).
+ * required method. (Rebind must use `\Closure::call()` to rebind static, self and `$this` or `rebindTo()`).
  *
- * Objects must follow instruction passed to executeClosure() and manage the visibility of the method and not allow
+ * Objects must follow instruction passed to `executeClosure()` and manage the visibility of the method and not allow
  * executing a private method from an outside call.
  *
- * Result must be injected to the proxy by using the callback passed to executeClosure(). It's allowed to execute a
+ * Result must be injected to the proxy by using the callback passed to `executeClosure()`. It's allowed to execute a
  * method without inject the result into the proxy instance to allow developers to call several methods. But you can
  * only inject one result by call. (Several implementations available at a same time is forbidden by the proxy
  * interface).

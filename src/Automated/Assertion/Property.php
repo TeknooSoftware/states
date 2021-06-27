@@ -37,7 +37,6 @@ use function is_numeric;
 use function is_string;
 
 /**
- * Class Assertion
  * Implementation of AssertionInterface to determine states list from stated class instance's values.
  * All assertions defined with the method with() must be valid to get the assertion as valid.
  * Constraints on value must be defined by ConstraintInterface instance via the method "with".
@@ -57,7 +56,7 @@ class Property extends AbstractAssertion
      */
     private array $constraints = [];
 
-    /**
+    /*
      * To register a constraint on a property. $exceptedValue must be a ConstraintInstance value.
      * Several constraints types are already defined into Teknoo\States\Automated\Assertion\Property.
      */

@@ -36,9 +36,11 @@ use RuntimeException;
 
 /**
  * To provide a PHPStan reflection for state's methode in a stated class.
+ *
  * State's method are cloure binded dynamically to the parent scope, So the PHP's API Reflection provides a
- * \ReflectionFunction instead of \ReflectionMethod and lost method's status about visibilty (private/public),
+ * `\ReflectionFunction` instead of `\ReflectionMethod` and lost method's status about visibility (private/public),
  * static etc..
+ *
  * This class provide a valid PHPStan reflection for these method from the API Reflection on the closure
  * and the closure factory.
  *

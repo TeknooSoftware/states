@@ -28,7 +28,6 @@ namespace Teknoo\States\Doctrine\Document;
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
- * Class StandardDocument.
  * Default Stated class implementation with a doctrine document.
  *
  *

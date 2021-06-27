@@ -29,7 +29,6 @@ use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\Proxy\ProxyTrait;
 
 /**
- * Trait StandardTrait
  * Trait adapt standard proxies to doctrine.
  *
  *
@@ -61,10 +60,6 @@ trait StandardTrait
         return $this;
     }
 
-    /**
-     * Method overloaded by States Lifecycle to update automatically states from
-     * configuration.
-     */
     public function updateStates(): ProxyInterface
     {
         return $this;

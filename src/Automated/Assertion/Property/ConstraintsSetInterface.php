@@ -41,13 +41,13 @@ use Teknoo\Immutable\ImmutableInterface;
  */
 interface ConstraintsSetInterface extends ImmutableInterface
 {
-    /**
+    /*
      * First call, by the AutomatedInterface instance to start check on the property's value passed by the Property
      * assertion instance.
      */
     public function check(mixed &$value): ConstraintsSetInterface;
 
-    /**
+    /*
      * Called by the constraint to check the next constraint or validate the property's value.
      */
     public function isValid(mixed &$value): ConstraintsSetInterface;

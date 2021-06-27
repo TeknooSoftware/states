@@ -26,7 +26,6 @@ declare(strict_types=1);
 namespace Teknoo\States\State;
 
 /**
- * Class AbstractState
  * Standard  implementation of the state interface, representing states entities in stated class.
  *
  * Default implementation of the state interface, representing states entities in stated class.

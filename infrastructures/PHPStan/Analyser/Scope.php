@@ -59,7 +59,7 @@ use function implode;
 use function in_array;
 
 /**
- * To overide Scope in PHPStan to manage correctly states class in a stated class :
+ * To over ride Scope in PHPStan to manage correctly states class in a stated class :
  * Closure written in this states class are executed in the context of the proxy and not of the state class,
  * but PHPStan can not manage this in its native distribution.
  *

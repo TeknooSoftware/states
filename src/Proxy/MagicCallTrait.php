@@ -29,9 +29,8 @@ use Exception;
 use Throwable;
 
 /**
- * Trait MagicCallTrait
  * Trait to use PHP magic's calls (http://php.net/manual/en/language.oop5.magic.php) with stated classes.
- * It must be used with the trait ProxyTrait. This trait forwards call to __invoke() and __toString in methods
+ * It must be used with the trait `ProxyTrait`. This trait forwards call to __invoke() and __toString in methods
  * defined in states of the class.
  *
  * @see http://php.net/manual/en/language.oop5.magic.php

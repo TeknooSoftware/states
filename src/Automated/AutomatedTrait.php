@@ -30,7 +30,6 @@ use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 
 /**
- * Class AutomatedTrait
  * Trait to implement in proxy of your stated classes to add automated behaviors.
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)

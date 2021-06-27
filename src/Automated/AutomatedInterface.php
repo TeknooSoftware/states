@@ -29,7 +29,6 @@ use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
- * Interface AutomatedInterface
  * Interface to implement automated stated class to enable or disable states according to validation rules defined
  * in your class.
  *
@@ -43,12 +42,12 @@ use Teknoo\States\Proxy\ProxyInterface;
  */
 interface AutomatedInterface extends ProxyInterface
 {
-    /**
+    /*
      * Method called by the stated class instance itself to perform states changes according its validations rules.
      */
     public function updateStates(): AutomatedInterface;
 
-    /**
+    /*
      * Method to check the property of the object with the constraint and enable followed states if the constraint has
      * been respected
      */

@@ -28,7 +28,6 @@ namespace Teknoo\States\Doctrine\Entity;
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
- * Class StandardEntity.
  * Default Stated class implementation with a doctrine entity class.
  *
  *

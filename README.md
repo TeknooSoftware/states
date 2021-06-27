@@ -156,13 +156,22 @@ To install this library with composer, run this command :
 
 This library requires :
 
-    * PHP 7.4+
+    * PHP 8.0+
     * A PHP autoloader (Composer is recommended)
     * Teknoo/Immutable (for Automated features).
     
 
+News from Teknoo State 5.0
+--------------------------
+This library requires PHP 8.0 or newer. Some change causes bc breaks :
+
+- Constructor Property Promotion
+- Non-capturing catches
+- Some optimisations on array functions to limit O(n)
+
+
 News from Teknoo State 4.0
-----------------------------
+--------------------------
 
 This library requires PHP 7.4 or newer. Some change causes bc breaks :
     

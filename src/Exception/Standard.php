@@ -29,7 +29,6 @@ namespace Teknoo\States\Exception;
 use Exception;
 
 /**
- * Class Standard
  * Default exception.
  *
  * @category    Exception
