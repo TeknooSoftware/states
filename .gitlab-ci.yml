@@ -1,16 +1,19 @@
 before_script:
   - make
 
-test:8.0-lower:
-  image: registry.teknoo.software/php:8.0
+.abstract_tests:
+  image: $PHP_IMAGE:$PHP_VERSION
   script:
     - make qa
     - make test
+
+test:8.0-lower:
+  extends: .abstract_tests
   variables:
+    PHP_VERSION: '8.0'
     DEPENDENCIES: lowest
 
 test:8.0-upper:
-  image: registry.teknoo.software/php:8.0
-  script:
-    - make qa
-    - make test
+  extends: .abstract_tests
+  variables:
+    PHP_VERSION: '8.0'
