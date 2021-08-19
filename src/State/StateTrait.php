@@ -84,6 +84,7 @@ trait StateTrait
 {
     /**
      * Reflection class object of this state to extract closures and description.
+     * @var ReflectionClass<object>
      */
     private ?ReflectionClass $reflectionClass = null;
 
@@ -112,6 +113,7 @@ trait StateTrait
      *
      * @api
      *
+     * @return ReflectionClass<object>
      * @throws ReflectionException
      */
     private function getReflectionClass(): ReflectionClass

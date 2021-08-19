@@ -1,7 +1,4 @@
 parameters:
-    checkGenericClassInNonGenericObjectType: false
-    checkMissingIterableValueType: false
-    reportUnmatchedIgnoredErrors: false
     ignoreErrors:
         - '#Call to an undefined static method [a-zA-Z0-9\\_]+::statesListDeclaration\(\)#'
         -

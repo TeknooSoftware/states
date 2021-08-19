@@ -641,6 +641,7 @@ trait ProxyTrait
     }
 
     /**
+     * @param array<int|string, class-string> $statesNames
      * @throws Exception\StateNotFound
      */
     public function isInState(array $statesNames, callable $callback, bool $allRequired = false): ProxyInterface
@@ -651,6 +652,7 @@ trait ProxyTrait
     }
 
     /**
+     * @param array<int|string, class-string> $statesNames
      * @throws Exception\StateNotFound
      */
     public function isNotInState(array $statesNames, callable $callback, bool $allForbidden = false): ProxyInterface

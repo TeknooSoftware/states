@@ -137,6 +137,7 @@ interface ProxyInterface
      *
      * @api
      *
+     * @param array<int|string, class-string> $statesNames
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      */
     public function isInState(array $statesNames, callable $callback, bool $allRequired = false): ProxyInterface;
@@ -147,6 +148,7 @@ interface ProxyInterface
      *
      * @api
      *
+     * @param array<int|string, class-string> $statesNames
      * @throws Exception\IllegalName when the identifier is not a valid full qualified class/interface  name
      */
     public function isNotInState(array $statesNames, callable $callback, bool $allForbidden = false): ProxyInterface;
@@ -160,6 +162,7 @@ interface ProxyInterface
      *
      * @api
      *
+     * @param array<int|string, mixed> $arguments
      * @throws \Exception
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws InvalidArgument                when the method name is not a string

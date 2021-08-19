@@ -68,7 +68,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
     private Broker $broker;
 
     /**
-     * @var array<ReflectionClass>
+     * @var array<ReflectionClass<object>>>
      */
     private array $proxyNativeReflection = [];
 
@@ -85,6 +85,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
     }
 
     /**
+     * @param ReflectionClass<object> $nativeReflection
      * @throws ReflectionException
      */
     private function checkIfManagedClass(ReflectionClass $nativeReflection): bool
@@ -142,6 +143,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
     }
 
     /**
+     * @param ReflectionClass<object> $nativeReflection
      * @throws ReflectionException
      */
     private function checkMethod(ReflectionClass $nativeReflection, string $methodName): bool
@@ -173,6 +175,8 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
     }
 
     /**
+     * @param ReflectionClass<object> $stateClassReflection
+     * @param ReflectionClass<object> $nativeProxyReflection
      * @throws \PHPStan\Broker\ClassNotFoundException
      * @throws ReflectionException
      */

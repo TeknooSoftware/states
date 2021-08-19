@@ -33,6 +33,7 @@ use ReflectionMethod;
 use ReflectionParameter;
 use ReflectionType;
 use RuntimeException;
+use Teknoo\States\State\StateInterface;
 
 /**
  * To provide a PHPStan reflection for state's methode in a stated class.
@@ -80,6 +81,9 @@ class StateMethod implements BuiltinMethodReflection
         return $this->factoryReflection->getFileName();
     }
 
+    /**
+     * @return ReflectionClass<StateInterface>
+     */
     public function getDeclaringClass(): ReflectionClass
     {
         $reflection = $this->closureReflection->getClosureScopeClass();

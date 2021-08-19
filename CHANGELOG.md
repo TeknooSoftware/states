@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [5.0.5] - 2021-08-19
+### Stable Release
+- Fix PHPDoc
+
 ## [5.0.4] - 2021-06-27
 ### Stable Release
 - Update documents and dev libs requirements
