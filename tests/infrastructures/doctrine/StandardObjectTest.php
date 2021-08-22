@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
  * States.
  *
  * LICENSE
@@ -21,14 +21,13 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
-declare(strict_types=1);
-
-namespace Teknoo\States\Doctrine\Entity;
+namespace Teknoo\Tests\States\Doctrine;
 
 use Teknoo\States\Proxy\ProxyInterface;
+use Teknoo\Tests\States\Proxy\StandardTest;
 
 /**
- * Default Stated class implementation with a doctrine entity class.
+ * Class StandardObjectTest.
  *
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
@@ -39,26 +38,32 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  *
- * @deprecated Use Teknoo\States\Doctrine\AbstractStandardObject instead
+ * @covers \Teknoo\States\Doctrine\AbstractStandardObject
+ * @covers \Teknoo\States\Doctrine\StandardTrait
  */
-abstract class AbstractStandardEntity implements ProxyInterface
+class StandardObjectTest extends StandardTest
 {
-    use StandardTrait;
-
     /**
-     * Default constructor used to initialize the stated object with its factory.
-     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
+     * Build a proxy object, into $this->_proxy to test it.
+     *
+     * @return ProxyInterface
      */
-    public function __construct()
+    protected function buildProxy()
     {
-        $this->postLoadDoctrine();
+        $this->proxy = new StandardObject();
+
+        return $this->proxy;
     }
 
     /**
-     * @return array<string>
+     * Test if the class initialize its vars from the trait constructor.
      */
-    protected static function statesListDeclaration(): array
+    public function testPostLoadDoctrine()
     {
-        return [];
+        $proxyReflectionClass = new \ReflectionClass(StandardObject::class);
+        $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
+        self::assertInstanceOf(ProxyInterface::class, $proxy->postLoadDoctrine());
+
+        return;
     }
 }

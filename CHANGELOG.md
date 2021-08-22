@@ -1,5 +1,16 @@
 # Teknoo Software - States library - Change Log
 
+## [5.0.6] - 2021-08-22
+### Stable Release
+- Classes factorizations ORM and ODM supports to unique class :
+  - `Teknoo\States\Doctrine\AbstractStandardObject`
+  - `Teknoo\States\Doctrine\StandardTrait`
+- Classes deprecations
+  - `Teknoo\States\Doctrine\Entity\AbstractStandardEntity`
+  - `Teknoo\States\Doctrine\Entity\StandardTrait`
+  - `Teknoo\States\Doctrine\Document\AbstractStandardDocument`
+  - `Teknoo\States\Doctrine\Document\StandardTrait`
+
 ## [5.0.5] - 2021-08-19
 ### Stable Release
 - Fix PHPDoc

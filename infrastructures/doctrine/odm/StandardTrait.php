@@ -25,12 +25,10 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Doctrine\Document;
 
-use Teknoo\States\Proxy\ProxyInterface;
-use Teknoo\States\Proxy\ProxyTrait;
+use Teknoo\States\Doctrine\StandardTrait as BaseTrait;
 
 /**
  * Trait adapt standard proxies to doctrine.
- *
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
  * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
@@ -39,29 +37,11 @@ use Teknoo\States\Proxy\ProxyTrait;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
+ *
+ * @deprecated Use Teknoo\States\Doctrine\StandardTrait instead
+ * @deprecated Use Teknoo\States\Doctrine\StandardTrait instead
  */
 trait StandardTrait
 {
-    use ProxyTrait;
-
-    /**
-     * Doctrine does not call the construction and create a new instance without it.
-     * This callback reinitialize proxy.
-     *
-     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
-     */
-    public function postLoadDoctrine(): ProxyInterface
-    {
-        //Call the method of the trait to initialize local attributes of the proxy
-        $this->initializeStateProxy();
-        //Update states
-        $this->updateStates();
-
-        return $this;
-    }
-
-    public function updateStates(): ProxyInterface
-    {
-        return $this;
-    }
+    use BaseTrait;
 }

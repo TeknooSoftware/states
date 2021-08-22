@@ -50,6 +50,7 @@
             "Teknoo\\States\\": ["src/"],
             "Teknoo\\States\\Doctrine\\Document\\": "infrastructures/doctrine/odm/",
             "Teknoo\\States\\Doctrine\\Entity\\": "infrastructures/doctrine/orm/",
+            "Teknoo\\States\\Doctrine\\": "infrastructures/doctrine/",
             "Teknoo\\States\\PHPStan\\": "infrastructures/PHPStan/"
         }
     },
@@ -59,6 +60,7 @@
             "Teknoo\\Tests\\Support\\": ["tests/Support/"],
             "Teknoo\\Tests\\States\\Doctrine\\Document\\": "tests/infrastructures/doctrine/odm/",
             "Teknoo\\Tests\\States\\Doctrine\\Entity\\": "tests/infrastructures/doctrine/orm/",
+            "Teknoo\\Tests\\States\\Doctrine\\": "tests/infrastructures/doctrine/",
             "Teknoo\\Tests\\States\\PHPStan\\": "tests/infrastructures/PHPStan/"
         }
     },

@@ -23,12 +23,13 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Doctrine\Entity;
+namespace Teknoo\States\Doctrine;
 
 use Teknoo\States\Proxy\ProxyInterface;
+use Teknoo\States\Proxy\ProxyTrait;
 
 /**
- * Default Stated class implementation with a doctrine entity class.
+ * Trait adapt standard proxies to doctrine.
  *
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
@@ -38,27 +39,29 @@ use Teknoo\States\Proxy\ProxyInterface;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
- *
- * @deprecated Use Teknoo\States\Doctrine\AbstractStandardObject instead
  */
-abstract class AbstractStandardEntity implements ProxyInterface
+trait StandardTrait
 {
-    use StandardTrait;
+    use ProxyTrait;
 
     /**
-     * Default constructor used to initialize the stated object with its factory.
+     * Doctrine does not call the construction and create a new instance without it.
+     * This callback reinitialize proxy.
+     *
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    public function __construct()
+    public function postLoadDoctrine(): ProxyInterface
     {
-        $this->postLoadDoctrine();
+        //Call the method of the trait to initialize local attributes of the proxy
+        $this->initializeStateProxy();
+        //Select good state
+        $this->updateStates();
+
+        return $this;
     }
 
-    /**
-     * @return array<string>
-     */
-    protected static function statesListDeclaration(): array
+    public function updateStates(): ProxyInterface
     {
-        return [];
+        return $this;
     }
 }

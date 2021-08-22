@@ -23,13 +23,12 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Doctrine\Entity;
+namespace Teknoo\States\Doctrine;
 
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
- * Default Stated class implementation with a doctrine entity class.
- *
+ * Default Stated class implementation with a doctrine object class.
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
  * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
@@ -38,10 +37,8 @@ use Teknoo\States\Proxy\ProxyInterface;
  *
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
- *
- * @deprecated Use Teknoo\States\Doctrine\AbstractStandardObject instead
  */
-abstract class AbstractStandardEntity implements ProxyInterface
+abstract class AbstractStandardObject implements ProxyInterface
 {
     use StandardTrait;
 
