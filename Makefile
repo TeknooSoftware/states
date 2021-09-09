@@ -3,6 +3,7 @@
 # Applications
 COMPOSER ?= /usr/bin/env composer
 DEPENDENCIES ?= lastest
+PHP ?= /usr/bin/env php
 
 ### Helpers
 all: clean depend
@@ -23,26 +24,26 @@ endif
 qa: lint phpstan phpcs phpcpd
 
 lint:
-	find ./src -name "*.php" -exec /usr/bin/env php -l {} \; | grep "Parse error" > /dev/null && exit 1 || exit 0
-	find ./infrastructures -name "*.php" -exec /usr/bin/env php -l {} \; | grep "Parse error" > /dev/null && exit 1 || exit 0
+	find ./src -name "*.php" -exec ${PHP} -l {} \; | grep "Parse error" > /dev/null && exit 1 || exit 0
+	find ./infrastructures -name "*.php" -exec ${PHP} -l {} \; | grep "Parse error" > /dev/null && exit 1 || exit 0
 
 phploc:
-	vendor/bin/phploc src infrastructures
+	${PHP} vendor/bin/phploc src infrastructures
 
 phpstan:
-	php -d memory_limit=256M vendor/bin/phpstan analyse src infrastructures --level max
+	${PHP} -d memory_limit=256M vendor/bin/phpstan analyse src infrastructures --level max
 
 phpcs:
-	vendor/bin/phpcs --standard=PSR12 --extensions=php src/ infrastructures/
+	${PHP} vendor/bin/phpcs --standard=PSR12 --extensions=php src/ infrastructures/
 
 phpcpd:
-	vendor/bin/phpcpd src/ infrastructures/
+	${PHP} vendor/bin/phpcpd src/ infrastructures/
 
 .PHONY: qa lint phploc phpstan phpcs phpcpd
 
 ### Testing
 test:
-	XDEBUG_MODE=coverage php -dzend_extension=xdebug.so -dxdebug.coverage_enable=1 vendor/bin/phpunit -c phpunit.xml -v --colors --coverage-text
+	XDEBUG_MODE=coverage ${PHP} -dzend_extension=xdebug.so -dxdebug.coverage_enable=1 vendor/bin/phpunit -c phpunit.xml -v --colors --coverage-text
 
 .PHONY: test
 
