@@ -34,6 +34,7 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\Php\PhpMethodReflection;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use ReflectionClass;
@@ -63,10 +64,8 @@ use function is_callable;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAwareExtension
+class MethodsClassExtension implements MethodsClassReflectionExtension
 {
-    private Broker $broker;
-
     /**
      * @var array<ReflectionClass<object>>>
      */
@@ -75,13 +74,9 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
     public function __construct(
         private Parser $parser,
         private FunctionCallStatementFinder $functionCallStatementFinder,
-        private Cache $cache
+        private Cache $cache,
+        private ReflectionProvider $reflectionProvider,
     ) {
-    }
-
-    public function setBroker(Broker $broker): void
-    {
-        $this->broker = $broker;
     }
 
     /**
@@ -200,22 +195,23 @@ class MethodsClassExtension implements MethodsClassReflectionExtension, BrokerAw
         $closureReflection = new ReflectionFunction($stateClosure);
 
         return new PhpMethodReflection(
-            $this->broker->getClass($nativeProxyReflection->getName()),
-            null,
-            new StateMethod($factoryReflection, $closureReflection),
-            $this->broker,
-            $this->parser,
-            $this->functionCallStatementFinder,
-            $this->cache,
-            new TemplateTypeMap([]),
-            [],
-            null,
-            null,
-            null,
-            false,
-            false,
-            false,
-            null
+            $this->reflectionProvider->getClass($nativeProxyReflection->getName()), //ClassReflection $declaringClass,
+            null, // ?ClassReflection $declaringTrait,
+            new StateMethod($factoryReflection, $closureReflection), //BuiltinMethodReflection $reflection,
+            $this->reflectionProvider, //ReflectionProvider $reflectionProvider,
+            $this->parser, //Parser $parser,
+            $this->functionCallStatementFinder, //FunctionCallStatementFinder $functionCallStatementFinder,
+            $this->cache, //Cache $cache,
+            new TemplateTypeMap([]), //TemplateTypeMap $templateTypeMap,
+            [], //array $phpDocParameterTypes,
+            null, //?Type $phpDocReturnType,
+            null, //?Type $phpDocThrowType,
+            null, //?string $deprecatedDescription,
+            false, //bool $isDeprecated,
+            false, //bool $isInternal,
+            false, //bool $isFinal,
+            null, //?string $stubPhpDocString,
+            false, // ?bool $isPure
         );
     }
 

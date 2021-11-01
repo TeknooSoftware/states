@@ -25,13 +25,13 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan;
 
-use PHPStan\Broker\Broker;
 use PHPStan\Cache\Cache;
 use PHPStan\Parser\Parser;
 use PHPStan\Parser\FunctionCallStatementFinder;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
 use Teknoo\States\PHPStan\MethodsClassExtension;
 use Teknoo\States\Proxy\ProxyInterface;
@@ -54,7 +54,7 @@ use Teknoo\Tests\Support\Article\Article\Published;
  */
 class MethodsClassExtensionTest extends TestCase
 {
-    private ?Broker $broker = null;
+    private ?ReflectionProvider $reflectionProvider = null;
 
     private ?Parser $parser = null;
 
@@ -62,13 +62,13 @@ class MethodsClassExtensionTest extends TestCase
 
     private ?Cache $cache = null;
 
-    private function getBrokerMock(): Broker
+    private function getReflectionProviderMock(): ReflectionProvider
     {
-        if (!$this->broker instanceof Broker) {
-            $this->broker = $this->createMock(Broker::class);
+        if (!$this->reflectionProvider instanceof ReflectionProvider) {
+            $this->reflectionProvider = $this->createMock(ReflectionProvider::class);
         }
 
-        return $this->broker;
+        return $this->reflectionProvider;
     }
 
     private function getParserMock(): Parser
@@ -103,10 +103,9 @@ class MethodsClassExtensionTest extends TestCase
         $instance = new MethodsClassExtension(
             $this->getParserMock(),
             $this->getFunctionCallStatementFinderMock(),
-            $this->getCacheMock()
+            $this->getCacheMock(),
+            $this->getReflectionProviderMock()
         );
-
-        $instance->setBroker($this->getBrokerMock());
 
         return $instance;
     }

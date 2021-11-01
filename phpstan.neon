@@ -1,5 +1,6 @@
 parameters:
     ignoreErrors:
+        - '#is not covered by backward compatibility promise#'
         - '#Call to an undefined static method [a-zA-Z0-9\\_]+::statesListDeclaration\(\)#'
         -
             message: '#Trying to invoke Closure\|null but it might not be a callable#'

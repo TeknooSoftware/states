@@ -28,6 +28,7 @@ namespace Teknoo\States\Proxy;
 use ReflectionMethod;
 use RuntimeException;
 use SplStack;
+use Teknoo\States\Proxy\Exception\StateNotFound;
 use Teknoo\States\State\StateInterface;
 use Throwable;
 
@@ -35,6 +36,7 @@ use function array_flip;
 use function array_keys;
 use function array_pop;
 use function class_exists;
+use function class_implements;
 use function count;
 use function current;
 use function debug_backtrace;
@@ -174,6 +176,10 @@ trait ProxyTrait
 
             //Register it
             $loadedStatesList[$shortStateName] = $stateClassName;
+
+            if (!is_subclass_of($stateClassName, StateInterface::class, true)) {
+                throw new StateNotFound("Error, $stateClassName is not a " . StateInterface::class);
+            }
 
             //Load and Register
             $this->registerState(

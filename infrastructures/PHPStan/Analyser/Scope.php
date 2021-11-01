@@ -33,6 +33,7 @@ use PHPStan\Analyser\ScopeFactory;
 use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\Analyser\VariableTypeHolder;
 use PHPStan\Parser\Parser;
+use PHPStan\Php\PhpVersion;
 use PHPStan\Reflection\FunctionReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\Type\DynamicReturnTypeExtensionRegistry;
@@ -56,7 +57,6 @@ use function array_pop;
 use function class_exists;
 use function explode;
 use function implode;
-use function in_array;
 
 /**
  * To over ride Scope in PHPStan to manage correctly states class in a stated class :
@@ -115,9 +115,11 @@ class Scope extends PHPStanScope
             );
         }
 
-        $variablesTypes['this'] = VariableTypeHolder::createYes(new ThisType($proxyClass));
+        $reflecionClass = $reflectionProvider->getClass($proxyClass);
 
-        return ScopeContext::create($initialContext->getFile())->enterClass($reflectionProvider->getClass($proxyClass));
+        $variablesTypes['this'] = VariableTypeHolder::createYes(new ThisType($reflecionClass));
+
+        return ScopeContext::create($initialContext->getFile())->enterClass($reflecionClass);
     }
 
     /**
@@ -146,6 +148,7 @@ class Scope extends PHPStanScope
         Parser $parser,
         NodeScopeResolver $nodeScopeResolver,
         ScopeContext $context,
+        PhpVersion $phpVersion,
         bool $declareStrictTypes = \false,
         array $constantTypes = [],
         $function = null,
@@ -161,7 +164,6 @@ class Scope extends PHPStanScope
         array $inFunctionCallsStack = [],
         array $dynamicConstantNames = [],
         bool $treatPhpDocTypesAsCertain = \true,
-        bool $objectFromNewClass = false,
         bool $afterExtractCall = false,
         ?Scope $parentScope = null
     ) {
@@ -181,6 +183,7 @@ class Scope extends PHPStanScope
             $parser,
             $nodeScopeResolver,
             $context,
+            $phpVersion,
             $declareStrictTypes,
             $constantTypes,
             $function,
@@ -196,7 +199,6 @@ class Scope extends PHPStanScope
             $inFunctionCallsStack,
             $dynamicConstantNames,
             $treatPhpDocTypesAsCertain,
-            $objectFromNewClass,
             $afterExtractCall,
             $parentScope
         );

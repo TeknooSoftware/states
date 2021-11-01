@@ -73,12 +73,13 @@ class StateMethod implements BuiltinMethodReflection
         return $this->factoryReflection;
     }
 
-    /**
-     * @return string|false
-     */
-    public function getFileName()
+    public function getFileName(): ?string
     {
-        return $this->factoryReflection->getFileName();
+        if (empty($fileName = $this->factoryReflection->getFileName())) {
+            return null;
+        }
+
+        return $fileName;
     }
 
     /**
@@ -95,20 +96,22 @@ class StateMethod implements BuiltinMethodReflection
         return $reflection;
     }
 
-    /**
-     * @return int|false
-     */
-    public function getStartLine()
+    public function getStartLine(): ?int
     {
-        return $this->closureReflection->getStartLine();
+        if (empty($startLine = $this->closureReflection->getStartLine())) {
+            return null;
+        }
+
+        return $startLine;
     }
 
-    /**
-     * @return int|false
-     */
-    public function getEndLine()
+    public function getEndLine(): ?int
     {
-        return $this->closureReflection->getEndLine();
+        if (empty($endLine = $this->closureReflection->getEndLine())) {
+            return null;
+        }
+
+        return $endLine;
     }
 
     /**
