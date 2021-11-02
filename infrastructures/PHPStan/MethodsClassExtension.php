@@ -25,11 +25,9 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan;
 
-use PHPStan\Broker\Broker;
 use PHPStan\Cache\Cache;
 use PHPStan\Parser\Parser;
 use PHPStan\Parser\FunctionCallStatementFinder;
-use PHPStan\Reflection\BrokerAwareExtension;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
@@ -211,7 +209,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             false, //bool $isInternal,
             false, //bool $isFinal,
             null, //?string $stubPhpDocString,
-            false, // ?bool $isPure
+            null, // ?bool $isPure
         );
     }
 
