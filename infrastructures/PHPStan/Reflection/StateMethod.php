@@ -178,6 +178,11 @@ class StateMethod implements BuiltinMethodReflection
         return $this->closureReflection->getReturnType();
     }
 
+    public function getTentativeReturnType(): ?ReflectionType
+    {
+        return null;
+    }
+
     /**
      * @return ReflectionParameter[]
      */
