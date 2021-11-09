@@ -97,9 +97,9 @@ class NodeScopeResolver extends BaseNodeScopeResolver
         );
     }
 
-    public function processNodes(array $nodes, MutatingScope $scope, callable $nodeCallback) : void
+    public function processNodes(array $nodes, MutatingScope $scope, callable $nodeCallback): void
     {
-        $traverser= new NodeTraverser();
+        $traverser = new NodeTraverser();
         $traverser->addVisitor($this->astVisitor);
         $traverser->traverse($nodes);
 

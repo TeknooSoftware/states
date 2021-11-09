@@ -160,10 +160,19 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function isInState(array $statesNames, callable $callback): ProxyInterface
+    public function isInState(array $statesNames, callable $callback, bool $allRequired = false): ProxyInterface
     {
         foreach ($statesNames as $stateName) {
             if (in_array(strtolower(str_replace('_', '', $stateName)), $this->actives)) {
+                $callback($this->actives);
+            }
+        }
+    }
+
+    public function isNotInState(array $statesNames, callable $callback, bool $allForbidden = false): ProxyInterface
+    {
+        foreach ($statesNames as $stateName) {
+            if (!in_array(strtolower(str_replace('_', '', $stateName)), $this->actives)) {
                 $callback($this->actives);
             }
         }
@@ -176,7 +185,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function __call(string $name, array $arguments)
+    public function __call(string $name, array $arguments): mixed
     {
         //Not used in tests
     }

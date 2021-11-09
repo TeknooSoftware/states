@@ -25,18 +25,22 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan\Analyser;
 
-use PHPParser\Node;
+use PhpParser\Node;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeVisitorAbstract;
 use PHPStan\Parser\Parser;
 use PHPStan\Parser\ParserErrorsException;
 use PHPStan\Reflection\ReflectionProvider;
+use ReflectionException;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
+use function array_flip;
+use function array_keys;
 use function get_parent_class;
 use function is_array;
+use function array_merge;
 
 /**
  * AST Visitor tp alter the AST returned by PhpParser to remove all method in state class and migrate theirs
@@ -55,31 +59,22 @@ use function is_array;
 class ASTVisitor extends NodeVisitorAbstract
 {
     /**
-     * @var array<string, iterable<ClassMethod>>
+     * @var array<string, array<int, ClassMethod>>
      */
     private array $statesStmts = [];
 
     public function __construct(
-       private ReflectionProvider $reflectionProvider,
-       private Parser $parser,
+        private ReflectionProvider $reflectionProvider,
+        private Parser $parser,
     ) {
     }
 
-    private function listStatesFromProxyClass(string $className): array
+    /**
+     * @param string $proxyClass
+     * @return array<class-string>
+     */
+    private function listStatesFromProxyClass(string $proxyClass): array
     {
-        $proxyClass = $className;
-        while (
-            !empty($proxyClass)
-            && (
-                !class_exists($proxyClass)
-                || !is_subclass_of($proxyClass, ProxyInterface::class)
-            )
-        ) {
-            $explodedClass = explode('\\', $proxyClass);
-            array_pop($explodedClass);
-            $proxyClass = implode('\\', $explodedClass);
-        }
-
         if (
             empty($proxyClass)
             || !class_exists($proxyClass)
@@ -94,10 +89,7 @@ class ASTVisitor extends NodeVisitorAbstract
             $classes = $this->listStatesFromProxyClass($parent);
         }
 
-        $classes = array_unique($classes + $this->extractStatesClassesDeclaration($proxyClass));
-        $classes = array_diff($classes, [$className]);
-
-        return $classes;
+        return $classes + $this->extractStatesClassesDeclaration($proxyClass);
     }
 
     /**
@@ -106,9 +98,15 @@ class ASTVisitor extends NodeVisitorAbstract
      */
     private function extractStatesClassesDeclaration(string $className): array
     {
-        $listDeclarationReflection = $this->reflectionProvider
+        $nativeReflection = $this->reflectionProvider
             ->getClass($className)
-            ->getNativeReflection()
+            ->getNativeReflection();
+
+        if (!$nativeReflection->hasMethod('statesListDeclaration')) {
+            return [];
+        }
+
+        $listDeclarationReflection = $nativeReflection
             ->getMethod('statesListDeclaration');
 
         $listClosure = $listDeclarationReflection->getClosure(null);
@@ -117,7 +115,7 @@ class ASTVisitor extends NodeVisitorAbstract
             return [];
         }
 
-        return $listClosure();
+        return array_flip($listClosure());
     }
 
     /**
@@ -134,8 +132,12 @@ class ASTVisitor extends NodeVisitorAbstract
         $reflection = $this->reflectionProvider->getClass($className);
         $fileName = $reflection->getFileName();
 
+        if (empty($fileName)) {
+            return [];
+        }
+
         $node = $this->parser->parseFile($fileName);
-        $recursiveExtraction = static function(array $stmts, callable $recursiveExtraction): ?array {
+        $recursiveExtraction = static function (array $stmts, callable $recursiveExtraction): ?array {
             foreach ($stmts as $node) {
                 if (
                     !$node instanceof Class_
@@ -147,7 +149,7 @@ class ASTVisitor extends NodeVisitorAbstract
                     if (null !== $return) {
                         return $return;
                     }
-                } elseif($node instanceof Class_) {
+                } elseif ($node instanceof Class_) {
                     $stmts = [];
 
                     foreach ($node->stmts as $stmt) {
@@ -165,13 +167,16 @@ class ASTVisitor extends NodeVisitorAbstract
             return null;
         };
 
-        return $this->statesStmts[$className] = $recursiveExtraction($node, $recursiveExtraction);
+        return $this->statesStmts[$className] = $recursiveExtraction($node, $recursiveExtraction) ?? [];
     }
 
     public function leaveNode(Node $node): ?Node
     {
-        if (!$node instanceof Class_) {
-            return null;
+        if (
+            !$node instanceof Class_
+            || empty($node->implements)
+        ) {
+            return $node;
         }
 
         foreach ($node->implements as $className) {
@@ -179,20 +184,20 @@ class ASTVisitor extends NodeVisitorAbstract
 
             $className = (string) $node->namespacedName;
             if (ProxyInterface::class === $interfaceName) {
-                $classes = $this->listStatesFromProxyClass($className);
+                $classes = array_keys($this->listStatesFromProxyClass($className));
                 foreach ($classes as $class) {
-                    $node->stmts = $node->stmts + $this->getStateStmts($class);
+                    $node->stmts = array_merge($node->stmts, $this->getStateStmts((string) $class));
                 }
             }
 
             if (StateInterface::class === $interfaceName) {
-                $this->$statesStmts[$className] = [];
+                $this->statesStmts[$className] = [];
                 foreach ($node->stmts as $stmt) {
                     if (!$stmt instanceof ClassMethod) {
                         continue;
                     }
 
-                    $this->$statesStmts[$className][] = $stmt;
+                    $this->statesStmts[$className][] = $stmt;
                 }
                 $node->stmts = [];
             }
