@@ -1,5 +1,12 @@
 # Teknoo Software - States library - Change Log
 
+## [5.1.0] - 2021-11-10
+### Stable Release
+- Support PHPStan !.!+
+- Remove State's PHPStan Scope. (Minor BC break, not impact State in production, only on QA. Need to update PHPStan 
+  configuration to fix it [How to](docs/howto/phpstan.md) )
+- Add ASTVisitor to plug into PHPStan to alter proxies's AST with states's AST.
+
 ## [5.0.6] - 2021-08-22
 ### Stable Release
 - Classes factorizations ORM and ODM supports to unique class :
