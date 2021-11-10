@@ -40,13 +40,13 @@ use Teknoo\States\PHPStan\Reflection\StateMethod;
  *
  * @covers      \Teknoo\States\PHPStan\Reflection\StateMethod
  */
-class StateMethodTest extends TestCase
+class StateMethodEmptyTest extends TestCase
 {
     protected function buildInstance($doc = 'factory doc', $closureScopeClass = null)
     {
         $factoryReflection = $this->createMock(\ReflectionMethod::class);
         $factoryReflection->expects(self::any())->method('getName')->willReturn('factory');
-        $factoryReflection->expects(self::any())->method('getFileName')->willReturn('factory.php');
+        $factoryReflection->expects(self::any())->method('getFileName')->willReturn(false);
         $factoryReflection->expects(self::never())->method('getClosureScopeClass');
         $factoryReflection->expects(self::never())->method('getStartLine');
         $factoryReflection->expects(self::never())->method('getEndLine');
@@ -68,8 +68,8 @@ class StateMethodTest extends TestCase
         $closureReflection->expects(self::any())->method('getClosureScopeClass')->willReturn(
             $closureScopeClass ?? $this->createMock(\ReflectionClass::class)
         );
-        $closureReflection->expects(self::any())->method('getStartLine')->willReturn(12);
-        $closureReflection->expects(self::any())->method('getEndLine')->willReturn(34);
+        $closureReflection->expects(self::any())->method('getStartLine')->willReturn(false);
+        $closureReflection->expects(self::any())->method('getEndLine')->willReturn(false);
         $closureReflection->expects(self::never())->method('getDocComment');
         $closureReflection->expects(self::any())->method('isVariadic')->willReturn(false);
         $closureReflection->expects(self::any())->method('getReturnType')->willReturn(
@@ -82,112 +82,18 @@ class StateMethodTest extends TestCase
         return new StateMethod($factoryReflection, $closureReflection);
     }
 
-    public function testGetName()
-    {
-        self::assertEquals('factory', $this->buildInstance()->getName());
-    }
-
-    public function testGetReflection()
-    {
-        self::assertInstanceOf(\ReflectionMethod::class, $this->buildInstance()->getReflection());
-    }
-
     public function testGetFileName()
     {
-        self::assertEquals('factory.php', $this->buildInstance()->getFileName());
-    }
-
-    public function testGetDeclaringClass()
-    {
-        self::assertInstanceOf(\ReflectionClass::class, $this->buildInstance()->getDeclaringClass());
-    }
-
-    public function testGetDeclaringClassError()
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->buildInstance('foo', false)->getDeclaringClass();
+        self::assertNull($this->buildInstance()->getFileName());
     }
 
     public function testGetStartLine()
     {
-        self::assertEquals(12, $this->buildInstance()->getStartLine());
+        self::assertNull($this->buildInstance()->getStartLine());
     }
 
     public function testGetEndLine()
     {
-        self::assertEquals(34, $this->buildInstance()->getEndLine());
-    }
-
-    public function testGetDocComment()
-    {
-        self::assertEquals('factory doc', $this->buildInstance()->getDocComment());
-    }
-
-    public function testGetDocCommentNull()
-    {
-        self::assertNull($this->buildInstance(false)->getDocComment());
-    }
-
-    public function testIsStatic()
-    {
-        self::assertFalse($this->buildInstance()->isStatic());
-    }
-
-    public function testIsPrivate()
-    {
-        self::assertFalse($this->buildInstance()->isPrivate());
-    }
-
-    public function testIsPublic()
-    {
-        self::assertFalse($this->buildInstance()->isPublic());
-    }
-
-    public function testGetPrototype()
-    {
-        self::assertInstanceOf(StateMethod::class, $this->buildInstance()->getPrototype());
-    }
-
-    public function testIsDeprecated()
-    {
-        self::assertEquals(TrinaryLogic::createFromBoolean(false), $this->buildInstance()->isDeprecated());
-    }
-
-    public function testIsFinal()
-    {
-        self::assertFalse($this->buildInstance()->isFinal());
-    }
-
-    public function testIsInternal()
-    {
-        self::assertFalse($this->buildInstance()->isInternal());
-    }
-
-    public function testIsAbstract()
-    {
-        self::assertFalse($this->buildInstance()->isAbstract());
-    }
-
-    public function testIsVariadic()
-    {
-        self::assertFalse($this->buildInstance()->isVariadic());
-    }
-
-    public function testGetReturnType()
-    {
-        self::assertInstanceOf(\ReflectionType::class, $this->buildInstance()->getReturnType());
-    }
-
-    public function testGetTentativeReturnType()
-    {
-        self::assertNull($this->buildInstance()->getTentativeReturnType());
-    }
-
-    public function testGetParameters()
-    {
-        self::assertEquals(
-            [$p1 = $this->createMock(\ReflectionParameter::class)],
-            $this->buildInstance()->getParameters()
-        );
+        self::assertNull($this->buildInstance()->getEndLine());
     }
 }

@@ -24,6 +24,7 @@ namespace Teknoo\Tests\Support\Extendable\Mother;
 
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\Proxy\ProxyTrait;
+use Teknoo\Tests\Support\Extendable\GrandMother\GrandMother;
 use Teknoo\Tests\Support\Extendable\Mother\States\StateDefault;
 use Teknoo\Tests\Support\Extendable\Mother\States\StateOne;
 use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
@@ -42,7 +43,7 @@ use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Mother implements ProxyInterface
+class Mother extends GrandMother implements ProxyInterface
 {
     use ProxyTrait;
 
