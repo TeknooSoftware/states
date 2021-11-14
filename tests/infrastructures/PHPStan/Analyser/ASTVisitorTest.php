@@ -202,7 +202,7 @@ class ASTVisitorTest extends TestCase
             [
                 'stmts' => [
                     $this->createMock(Node::class),
-                    $this->createMock(ClassMethod::class),
+                    new ClassMethod($this->createMock(Node\Identifier::class), []),
                 ],
                 'implements' => [new Name(StateInterface::class)]
             ]
@@ -323,7 +323,50 @@ class ASTVisitorTest extends TestCase
             [
                 'stmts' => [
                     $this->createMock(Node::class),
-                    $this->createMock(ClassMethod::class),
+                    new ClassMethod($this->createMock(Node\Identifier::class), []),
+                ],
+                'implements' => [new Name(StateInterface::class)]
+            ]
+        );
+        $stateClass->namespacedName = StateOne::class;
+
+        $proxyClass = new Class_(
+            Mother::class,
+            [
+                'stmts' => [$this->createMock(Node::class)],
+                'implements' => [new Name(ProxyInterface::class)]
+            ]
+        );
+        $proxyClass->namespacedName = Mother::class;
+
+        $visitor = $this->buildVisitor();
+
+        $this->getParserMock()
+            ->expects(self::any())
+            ->method('parseFile')
+            ->willReturn([
+                $this->createMock(Node::class),
+                new Node\Stmt\Namespace_(new Name('Foo\\Bar'), [$stateClass]),
+                $this->createMock(Node::class),
+            ]);
+
+        self::assertInstanceOf(
+            Node::class,
+            $result = $visitor->leaveNode($proxyClass)
+        );
+
+        self::assertTrue(!empty($result->stmts));
+        self::assertCount(4, $result->stmts);
+    }
+
+    public function testLeaveNodeWithProxyClassNodeWithStateWithSameMethodName()
+    {
+        $stateClass = new Class_(
+            StateOne::class,
+            [
+                'stmts' => [
+                    $this->createMock(Node::class),
+                    new ClassMethod(new Node\Identifier('foo'), []),
                 ],
                 'implements' => [new Name(StateInterface::class)]
             ]
@@ -366,7 +409,7 @@ class ASTVisitorTest extends TestCase
             [
                 'stmts' => [
                     $this->createMock(Node::class),
-                    $this->createMock(ClassMethod::class),
+                    new ClassMethod($this->createMock(Node\Identifier::class), []),
                 ],
                 'implements' => [new Name(StateInterface::class)]
             ]

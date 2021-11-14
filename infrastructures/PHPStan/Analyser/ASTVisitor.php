@@ -26,6 +26,8 @@ declare(strict_types=1);
 namespace Teknoo\States\PHPStan\Analyser;
 
 use PhpParser\Node;
+use PhpParser\Node\Identifier;
+use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeVisitorAbstract;
@@ -38,6 +40,7 @@ use Teknoo\States\State\StateInterface;
 
 use function array_flip;
 use function array_keys;
+use function array_map;
 use function get_parent_class;
 use function is_array;
 use function array_merge;
@@ -166,6 +169,36 @@ class ASTVisitor extends NodeVisitorAbstract
         return $this->statesStmts[$className] = $recursiveExtraction($node, $recursiveExtraction) ?? [];
     }
 
+    /**
+     * @param Stmt[] $proxyStmts
+     * @param ClassMethod[][] $statesStmts
+     * @return Stmt[]
+     */
+    private function mergeStmts(array $proxyStmts, array $statesStmts): array
+    {
+        /** @var array<string, int> $currentMethodsList */
+        $currentMethodsList = [];
+
+        foreach ($statesStmts as $stateStmts) {
+            foreach ($stateStmts as $stmt) {
+                $lowerName = $stmt->name->toLowerString();
+
+                if (isset($currentMethodsList[$lowerName])) {
+                    //The method is renamed and virtualy set a public to avoid false positive about duplicated code.
+                    $stmt->name = new Identifier(((string) $stmt->name) . $currentMethodsList[$lowerName]);
+                    $stmt->flags &= Class_::MODIFIER_PUBLIC & ~Class_::MODIFIER_PROTECTED & ~Class_::MODIFIER_PRIVATE;
+                    $currentMethodsList[$lowerName]++;
+                } else {
+                    $currentMethodsList[$lowerName] = 1;
+                }
+
+                $proxyStmts[] = $stmt;
+            }
+        }
+
+        return $proxyStmts;
+    }
+
     public function leaveNode(Node $node): ?Node
     {
         if (
@@ -181,9 +214,10 @@ class ASTVisitor extends NodeVisitorAbstract
             $className = (string) $node->namespacedName;
             if (ProxyInterface::class === $interfaceName) {
                 $classes = array_keys($this->listStatesFromProxyClass($className));
-                foreach ($classes as $class) {
-                    $node->stmts = array_merge($node->stmts, $this->getStateStmts((string) $class));
-                }
+                $node->stmts = $this->mergeStmts(
+                    $node->stmts,
+                    array_map(fn ($class) => $this->getStateStmts((string) $class), $classes)
+                );
             }
 
             if (StateInterface::class === $interfaceName) {

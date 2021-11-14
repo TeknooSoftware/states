@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [5.1.1] - 2021-11-14
+### Stable Release
+- Update ASTVisitor to rename methods with same name in differents states to avoir false positive about duplication
+  of method in PHPStan's rules. Theses methods will be virtually flagged as public to avoid dead code error 
+
 ## [5.1.0] - 2021-11-10
 ### Stable Release
 - Support PHPStan !.!+
