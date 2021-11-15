@@ -311,12 +311,14 @@ trait StateTrait
 
         if (true === $this->privateModeStatus) {
             $closure = $closure->bindTo($object, $this->statedClassName);
-            $returnValue = $closure(...$arguments);
+            if ($closure instanceof Closure) {
+                $returnValue = $closure(...$arguments);
+                $returnCallback($returnValue);
+            }
         } else {
             $returnValue = $closure->call($object, ...$arguments);
+            $returnCallback($returnValue);
         }
-
-        $returnCallback($returnValue);
 
         return $this;
     }
