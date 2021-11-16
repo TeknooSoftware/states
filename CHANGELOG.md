@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [5.1.2] - 2021-11-16
+### Stable Release
+- QA
+- Prevent potential bug with static closure returned in states
+
 ## [5.1.1] - 2021-11-14
 ### Stable Release
 - Update ASTVisitor to rename methods with same name in differents states to avoir false positive about duplication
