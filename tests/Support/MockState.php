@@ -130,6 +130,10 @@ class MockState implements StateInterface
                     return true;
                 }
 
+                if (false !== \strpos($state->extractMethodCalled(), '__serialize')) {
+                    return ['foo'];
+                }
+
                 return '';
             };
         }

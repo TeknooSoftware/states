@@ -49,7 +49,6 @@ use Teknoo\States\Proxy\SerializableTrait;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class StandardEntity extends AbstractStandardEntity implements
-    \Serializable,
     \ArrayAccess,
     \SeekableIterator,
     \Countable

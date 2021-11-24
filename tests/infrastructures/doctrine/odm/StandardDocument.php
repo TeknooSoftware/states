@@ -49,7 +49,6 @@ use Teknoo\States\Proxy\SerializableTrait;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class StandardDocument extends AbstractStandardDocument implements
-    \Serializable,
     \ArrayAccess,
     \SeekableIterator,
     \Countable

@@ -101,11 +101,11 @@ trait ArrayAccessTrait
      *
      * @see http://php.net/manual/en/class.arrayaccess.php
      */
-    public function offsetSet(mixed $offset, mixed $value): mixed
+    public function offsetSet(mixed $offset, mixed $value): void
     {
         $args = [$offset, $value];
 
-        return $this->__call(__FUNCTION__, $args);
+        $this->__call(__FUNCTION__, $args);
     }
 
     /**

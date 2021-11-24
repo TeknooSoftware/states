@@ -48,7 +48,6 @@ use Teknoo\States\Proxy\SerializableTrait;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class StandardObject extends AbstractStandardObject implements
-    \Serializable,
     \ArrayAccess,
     \SeekableIterator,
     \Countable

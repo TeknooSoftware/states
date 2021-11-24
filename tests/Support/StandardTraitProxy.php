@@ -46,7 +46,6 @@ use Teknoo\States\State\StateInterface;
  */
 class StandardTraitProxy extends MotherProxy implements
     Proxy\ProxyInterface,
-    \Serializable,
     \ArrayAccess,
     \SeekableIterator,
     \Countable

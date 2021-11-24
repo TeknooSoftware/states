@@ -44,7 +44,6 @@ use Teknoo\States\Proxy;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 class StandardProxy extends Proxy\Standard implements
-    \Serializable,
     \ArrayAccess,
     \SeekableIterator,
     \Countable

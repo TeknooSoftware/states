@@ -84,11 +84,11 @@ trait IteratorTrait
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
-    public function next(): mixed
+    public function next(): void
     {
         $args = [];
 
-        return $this->__call(__FUNCTION__, $args);
+        $this->__call(__FUNCTION__, $args);
     }
 
     /**
@@ -99,11 +99,11 @@ trait IteratorTrait
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
-    public function rewind(): mixed
+    public function rewind(): void
     {
         $args = [];
 
-        return $this->__call(__FUNCTION__, $args);
+        $this->__call(__FUNCTION__, $args);
     }
 
     /**

@@ -26,11 +26,11 @@ declare(strict_types=1);
 namespace Teknoo\States\Proxy;
 
 /**
- * Trait to use the interface \Serializable (http://php.net/manual/en/class.serializable.php) with stated classes.
+ * Trait to use the interface \Serializable (https://www.php.net/manual/fr/language.oop5.magic.php#object.serialize) with stated classes.
  * It must be used with the trait ProxyTrait. This trait forwards all methods defined in \Serializable in methods
  * defined in states of the class.
  *
- * @see http://php.net/manual/en/class.serializable.php
+ * @see https://www.php.net/manual/fr/language.oop5.magic.php#object.serialize
  *
  * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (richarddeloge@gmail.com)
  * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software)
@@ -47,26 +47,10 @@ trait SerializableTrait
      * @api
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     *
-     * @see http://php.net/manual/en/class.serializable.php
      */
-    public function serialize(): string
+    public function __serialize(): array
     {
         $args = [];
-
-        return $this->__call(__FUNCTION__, $args);
-    }
-
-    /**
-     * @api
-     *
-     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     *
-     * @see http://php.net/manual/en/class.serializable.php
-     */
-    public function unserialize(string $serialized): mixed
-    {
-        $args = [$serialized];
 
         return $this->__call(__FUNCTION__, $args);
     }

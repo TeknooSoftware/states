@@ -1822,34 +1822,11 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
     public function testSerialize()
     {
         $this->initializeStateProxy(MockState1::class, true);
-        $this->proxy->serialize();
+        $a = serialize($this->proxy);
 
         self::assertTrue($this->state1->methodWasCalled());
-        self::assertSame('serialize', $this->state1->getMethodNameCalled());
+        self::assertSame('__serialize', $this->state1->getMethodNameCalled());
         self::assertSame(array(), $this->state1->getCalledArguments());
-    }
-
-    /**
-     * Test exception behavior of the proxy when unserialize is not implemented into in actives states.
-     */
-    public function testUnSerializeNonImplemented()
-    {
-        $this->expectException(Exception\MethodNotImplemented::class);
-        $this->initializeStateProxy();
-        $this->proxy->unserialize('');
-    }
-
-    /**
-     * Test proxy behavior with the magic method unserialize. If the call is forwarded to the active state.
-     */
-    public function testUnSerialize()
-    {
-        $this->initializeStateProxy(MockState1::class, true);
-        $this->proxy->unserialize('foo');
-
-        self::assertTrue($this->state1->methodWasCalled());
-        self::assertSame('unserialize', $this->state1->getMethodNameCalled());
-        self::assertSame(array('foo'), $this->state1->getCalledArguments());
     }
 
     /**
