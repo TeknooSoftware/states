@@ -368,6 +368,10 @@ class MethodsClassExtensionTest extends TestCase
 
     public function testGetMethodImplementProxystatesListDeclarationNotAVailable()
     {
+        if (PHP_VERSION_ID >= 80100) {
+            self::markTestSkipped('With PHP 8.! ');
+        }
+
         $this->expectException(ShouldNotHappenException::class);
 
         $classReflection = $this->createMock(ClassReflection::class);
@@ -379,11 +383,8 @@ class MethodsClassExtensionTest extends TestCase
         ]);
         $nativeReflection->expects(self::any())->method('getName')->willReturn(Article::class);
 
-        $reflectionMethod = $this->createMock(\ReflectionMethod::class);
-        $reflectionMethod->expects(self::any())->method('getClosure')->willReturn(null);
-        $nativeReflection->expects(self::any())->method('getMethod')->willReturnMap([
-            ['statesListDeclaration', $reflectionMethod]
-        ]);
+        $nativeReflection->expects(self::any())->method('getMethod')->
+            willThrowException(new \ReflectionException());
 
         $classReflection->expects(self::any())->method('getNativeReflection')->willReturn($nativeReflection);
 

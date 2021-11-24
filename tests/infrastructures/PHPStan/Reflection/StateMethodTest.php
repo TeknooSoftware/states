@@ -66,7 +66,7 @@ class StateMethodTest extends TestCase
         $closureReflection->expects(self::never())->method('getName');
         $closureReflection->expects(self::never())->method('getFileName');
         $closureReflection->expects(self::any())->method('getClosureScopeClass')->willReturn(
-            $closureScopeClass ?? $this->createMock(\ReflectionClass::class)
+            null === $closureScopeClass ? $this->createMock(\ReflectionClass::class) : null
         );
         $closureReflection->expects(self::any())->method('getStartLine')->willReturn(12);
         $closureReflection->expects(self::any())->method('getEndLine')->willReturn(34);

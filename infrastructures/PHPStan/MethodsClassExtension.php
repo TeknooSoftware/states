@@ -125,14 +125,14 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
      */
     private function listStateClassFor(string $className): array
     {
-        $listDeclarationReflection = $this->proxyNativeReflection[$className]->getMethod('statesListDeclaration');
-        $listClosure = $listDeclarationReflection->getClosure(null);
+        try {
+            $listDeclarationReflection = $this->proxyNativeReflection[$className]->getMethod('statesListDeclaration');
+            $listClosure = $listDeclarationReflection->getClosure(null);
 
-        if (!is_callable($listClosure)) {
+            return $listClosure();
+        } catch (ReflectionException) {
             return [];
         }
-
-        return $listClosure();
     }
 
     /**

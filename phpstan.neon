@@ -3,5 +3,8 @@ parameters:
         - '#is not covered by backward compatibility promise#'
         - '#Call to an undefined static method [a-zA-Z0-9\\_]+::statesListDeclaration\(\)#'
         -
-            message: '# expects class-string, string given#'
+            message: '#expects class-string, string given#'
             path: infrastructures/PHPStan/Analyser/ASTVisitor.php
+        -
+            message: '#Trying to invoke Closure\|null#'
+            path: infrastructures/PHPStan/MethodsClassExtension.php
