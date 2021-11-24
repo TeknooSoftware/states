@@ -26,9 +26,9 @@ declare(strict_types=1);
 namespace Teknoo\States\Proxy;
 
 /**
- * Trait to use the interface \Serializable (https://www.php.net/manual/fr/language.oop5.magic.php#object.serialize) with stated classes.
- * It must be used with the trait ProxyTrait. This trait forwards all methods defined in \Serializable in methods
- * defined in states of the class.
+ * Trait to use the interface \Serializable (https://www.php.net/manual/fr/language.oop5.magic.php#object.serialize)
+ * with stated classes. It must be used with the trait ProxyTrait. This trait forwards __serialize method to
+ * method defined in states of the class.
  *
  * @see https://www.php.net/manual/fr/language.oop5.magic.php#object.serialize
  *
