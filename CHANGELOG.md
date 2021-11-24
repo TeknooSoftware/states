@@ -1,5 +1,14 @@
 # Teknoo Software - States library - Change Log
 
+## [5.1.3] - 2021-11-24
+### Stable Release
+- Fix deprecation for PHP 8.1
+- Remove Serializable interface support
+- Replace serialize method by __serialize
+- Remove unserialize method, this method must be implemented in the proxy if the serialization is used
+  *(Need to init the proxy' via `initializeStateProxya()`: `__unserialize` is like `__construct` to enable good 
+  states at startup).
+
 ## [5.1.2] - 2021-11-16
 ### Stable Release
 - QA
