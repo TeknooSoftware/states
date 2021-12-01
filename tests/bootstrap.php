@@ -36,13 +36,3 @@ require_once __DIR__.'/../vendor/autoload.php';
 date_default_timezone_set('UTC');
 
 error_reporting(E_ALL | E_STRICT);
-
-//Prevent error
-$iterator = new RecursiveIteratorIterator(
-    new RecursiveDirectoryIterator(__DIR__.'/Support'),
-    RecursiveIteratorIterator::SELF_FIRST
-);
-
-foreach ($iterator as $item) {
-    chmod($item, 0755);
-}
