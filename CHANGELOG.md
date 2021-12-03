@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [5.1.4] - 2021-12-03
+### Stable Release
+- Fix some deprecated with PHP 8.1
+
 ## [5.1.3] - 2021-11-24
 ### Stable Release
 - Fix deprecation for PHP 8.1
