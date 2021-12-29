@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [5.1.6] - 2021-12-29
+### Stable Release
+- Update QA tools
+- Switch to PHPStan 1.3
+
 ## [5.1.5] - 2021-12-12
 ### Stable Release
 - Remove unused QA tool

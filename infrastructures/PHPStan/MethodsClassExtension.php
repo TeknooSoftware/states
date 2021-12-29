@@ -209,7 +209,6 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             false, //bool $isInternal,
             false, //bool $isFinal,
             null, //?string $stubPhpDocString,
-            null, // ?bool $isPure
         );
     }
 
