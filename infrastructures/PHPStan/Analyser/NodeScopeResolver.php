@@ -29,7 +29,7 @@ use PhpParser\NodeTraverser;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\NodeScopeResolver as BaseNodeScopeResolver;
 use PHPStan\Reflection\ReflectionProvider;
-use PHPStan\BetterReflection\Reflector\ClassReflector;
+use PHPStan\BetterReflection\Reflector\Reflector;
 use PHPStan\DependencyInjection\Reflection\ClassReflectionExtensionRegistryProvider;
 use PHPStan\Parser\Parser;
 use PHPStan\Type\FileTypeMapper;
@@ -60,7 +60,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
 {
     public function __construct(
         ReflectionProvider $reflectionProvider,
-        ClassReflector $classReflector,
+        Reflector $reflector,
         ClassReflectionExtensionRegistryProvider $classReflectionExtensionRegistryProvider,
         Parser $parser,
         FileTypeMapper $fileTypeMapper,
@@ -79,7 +79,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
     ) {
         parent::__construct(
             $reflectionProvider,
-            $classReflector,
+            $reflector,
             $classReflectionExtensionRegistryProvider,
             $parser,
             $fileTypeMapper,

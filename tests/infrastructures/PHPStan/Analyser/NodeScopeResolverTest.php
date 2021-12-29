@@ -29,7 +29,7 @@ use PHPUnit\Framework\TestCase;
 use PhpParser\Node;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Reflection\ReflectionProvider;
-use PHPStan\BetterReflection\Reflector\ClassReflector;
+use PHPStan\BetterReflection\Reflector\Reflector;
 use PHPStan\DependencyInjection\Reflection\ClassReflectionExtensionRegistryProvider;
 use PHPStan\Parser\Parser;
 use PHPStan\Type\FileTypeMapper;
@@ -61,7 +61,7 @@ class NodeScopeResolverTest extends TestCase
 
         $nodeScopeResolver = new NodeScopeResolver(
             $this->createMock(ReflectionProvider::class),
-            $this->createMock(ClassReflector::class),
+            $this->createMock(Reflector::class),
             $this->createMock(ClassReflectionExtensionRegistryProvider::class),
             $this->createMock(Parser::class),
             $this->createMock(FileTypeMapper::class),
