@@ -36,7 +36,6 @@ use function array_flip;
 use function array_keys;
 use function array_pop;
 use function class_exists;
-use function class_implements;
 use function count;
 use function current;
 use function debug_backtrace;
