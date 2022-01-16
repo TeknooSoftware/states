@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [5.1.7] - 2022-01-16
+### Stable Release
+- Prevent a hypothetical bug with `ProxyTrait::validateName` if `$this->statesAliasesList` return a non string value.
+
 ## [5.1.6] - 2021-12-29
 ### Stable Release
 - Update QA tools

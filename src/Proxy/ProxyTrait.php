@@ -283,7 +283,7 @@ trait ProxyTrait
      * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
      * @throws Exception\StateNotFound when the state class name does not exist
      */
-    protected function validateName(string &$name): bool
+    protected function &validateName(string &$name): string
     {
         if (empty($name)) {
             throw new Exception\IllegalName('Error, the identifier is not a valid string');
@@ -294,10 +294,10 @@ trait ProxyTrait
         }
 
         if (isset($this->statesAliasesList[$name])) {
-            $name = $this->statesAliasesList[$name];
+            return $this->statesAliasesList[$name];
         }
 
-        return true;
+        return $name;
     }
 
     /**
@@ -486,7 +486,7 @@ trait ProxyTrait
         StateInterface $stateObject,
         string $originalClassName = ''
     ): ProxyInterface {
-        $this->validateName($stateName);
+        $stateName = $this->validateName($stateName);
 
         if (!is_a($stateObject, $stateName)) {
             throw new Exception\IllegalName(
@@ -510,7 +510,7 @@ trait ProxyTrait
      */
     public function unregisterState(string $stateName): ProxyInterface
     {
-        $this->validateName($stateName);
+        $stateName = $this->validateName($stateName);
 
         if (!isset($this->states[$stateName])) {
             throw new Exception\StateNotFound("State '$stateName' is not available");
@@ -534,7 +534,7 @@ trait ProxyTrait
      */
     public function switchState(string $stateName): ProxyInterface
     {
-        $this->validateName($stateName);
+        $stateName = $this->validateName($stateName);
 
         $this->disableAllStates();
         $this->enableState($stateName);
@@ -547,7 +547,7 @@ trait ProxyTrait
      */
     public function enableState(string $stateName): ProxyInterface
     {
-        $this->validateName($stateName);
+        $stateName = $this->validateName($stateName);
 
         if (isset($this->states[$stateName])) {
             $this->activesStates[$stateName] = $this->states[$stateName];
@@ -563,7 +563,7 @@ trait ProxyTrait
      */
     public function disableState(string $stateName): ProxyInterface
     {
-        $this->validateName($stateName);
+        $stateName = $this->validateName($stateName);
 
         if (isset($this->activesStates[$stateName])) {
             unset($this->activesStates[$stateName]);
@@ -608,16 +608,16 @@ trait ProxyTrait
         do {
             $stateName = current($statesNames);
 
-            $this->validateName($stateName);
+            $stateName = $this->validateName($stateName);
 
             if (isset($list[$stateName])) {
-                $inStates[(string) $stateName] = true;
+                $inStates[$stateName] = true;
                 continue;
             }
 
             foreach ($enabledStatesList as $enableStateName) {
                 if (is_subclass_of($enableStateName, $stateName)) {
-                    $inStates[(string) $stateName] = true;
+                    $inStates[$stateName] = true;
                     break;
                 }
             }
