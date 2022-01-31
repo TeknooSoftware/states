@@ -408,7 +408,7 @@ trait ProxyTrait
             //apply default behavior : Public
             $callerLine = array_pop($callingStack);
 
-            if (!empty($callerLine['object']) && is_object($callerLine['object'])) {
+            if (!empty($callerLine['object']) && is_object($callerLine['object']) && isset($callerLine['class'])) {
                 //It is an object
                 $callerObject = $callerLine['object'];
 

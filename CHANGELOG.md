@@ -1,8 +1,12 @@
 # Teknoo Software - States library - Change Log
 
+## [5.1.8] - 2022-01-31
+### Stable Release
+- Prevent a bug in `ProxyTrait` if `debug_backtrace` does not return a class.
+
 ## [5.1.7] - 2022-01-16
 ### Stable Release
-- Prevent a hypothetical bug with `ProxyTrait::validateName` if `$this->statesAliasesList` return a non string value.
+- Prevent a bug with `ProxyTrait::validateName` if `$this->statesAliasesList` return a non string value.
 
 ## [5.1.6] - 2021-12-29
 ### Stable Release
