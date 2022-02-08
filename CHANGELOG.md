@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [5.1.9] - 2022-02-08
+### Stable Release
+- Support Immutable 3.0+
+
 ## [5.1.8] - 2022-01-31
 ### Stable Release
 - Prevent a bug in `ProxyTrait` if `debug_backtrace` does not return a class.
