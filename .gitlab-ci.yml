@@ -1,11 +1,10 @@
-before_script:
-  - make
-
 .abstract_tests:
   image: $PHP_IMAGE:$PHP_VERSION
   script:
+    - make
     - make test
     - make qa
+    - make clean
 
 test:8.0-lower:
   extends: .abstract_tests
