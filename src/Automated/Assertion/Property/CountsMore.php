@@ -47,7 +47,7 @@ class CountsMore extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    private int $exceptedCount;
+    private readonly int $exceptedCount;
 
     public function __construct(int $exceptedCount)
     {

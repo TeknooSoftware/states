@@ -61,12 +61,17 @@ class Callback extends AbstractAssertion
         return $this;
     }
 
-    protected function process(AutomatedInterface $proxy): void
+    public function check(AutomatedInterface $proxy): AssertionInterface
     {
         if (!is_callable($this->callback)) {
             throw new RuntimeException('Error the callback is not callable');
         }
 
-        ($this->callback)($proxy, $this);
+        $that = clone $this;
+        $that->proxy = $proxy;
+
+        ($this->callback)($proxy, $that);
+
+        return $that;
     }
 }

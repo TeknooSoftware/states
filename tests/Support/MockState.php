@@ -176,7 +176,7 @@ class MockState implements StateInterface
         ProxyInterface $object,
         string &$methodName,
         array &$arguments,
-        string &$requiredScope,
+        State\Visibility &$requiredScope,
         string &$statedClassOrigin,
         callable &$returnCallback
     ): StateInterface {
@@ -192,7 +192,7 @@ class MockState implements StateInterface
 
     private function getClosure(
         string $methodName,
-        string $scope = StateInterface::VISIBILITY_PUBLIC,
+        State\Visibility $scope = State\Visibility::Public,
         string $statedClassOriginName = null
     ) {
         if (false === $this->methodAllowed) {
@@ -204,16 +204,16 @@ class MockState implements StateInterface
         //if the method name contains protected, its a protected method
         //else its a public method
         switch ($scope) {
-            case StateInterface::VISIBILITY_PRIVATE:
+            case State\Visibility::Private:
                 //Private, can access all
                 break;
-            case StateInterface::VISIBILITY_PROTECTED:
+            case State\Visibility::Protected:
                 //Can not access to private methods
                 if (false !== stripos($methodName, 'private')) {
                     return null;
                 }
                 break;
-            case StateInterface::VISIBILITY_PUBLIC:
+            case State\Visibility::Public:
                 //Can not access to protected and private method.
                 if (false !== stripos($methodName, 'private')) {
                     return null;
@@ -222,10 +222,6 @@ class MockState implements StateInterface
                 if (false !== stripos($methodName, 'protected')) {
                     return null;
                 }
-                break;
-            default:
-                //Bad parameter, throws exception
-                throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
                 break;
         }
 

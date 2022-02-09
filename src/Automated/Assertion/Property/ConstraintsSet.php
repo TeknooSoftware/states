@@ -28,7 +28,7 @@ namespace Teknoo\States\Automated\Assertion\Property;
 use Teknoo\Immutable\ImmutableTrait;
 use Teknoo\States\Automated\Assertion\Property;
 
-use function array_pop;
+use function end;
 use function array_reverse;
 
 /**
@@ -52,7 +52,7 @@ class ConstraintsSet implements ConstraintsSetInterface
      */
     private array $constraints;
 
-    private Property $property;
+    private readonly Property $property;
 
     /**
      * @param array<ConstraintInterface> $constraints
@@ -61,7 +61,6 @@ class ConstraintsSet implements ConstraintsSetInterface
     {
         $this->uniqueConstructorCheck();
 
-
         $this->constraints = array_reverse($constraints);
         $this->property = $property;
     }
@@ -69,7 +68,7 @@ class ConstraintsSet implements ConstraintsSetInterface
     private function nextConstraint(): ?ConstraintInterface
     {
         if (!empty($this->constraints)) {
-            return array_pop($this->constraints);
+            return end($this->constraints);
         }
 
         return null;
@@ -83,7 +82,11 @@ class ConstraintsSet implements ConstraintsSetInterface
         $constraint = $this->nextConstraint();
 
         if ($constraint instanceof ConstraintInterface) {
-            $constraint = $constraint->inConstraintSet($this);
+            $that = new self(
+                array_slice($this->constraints, 0, -1),
+                $this->property,
+            );
+            $constraint = $constraint->inConstraintSet($that);
             $constraint->check($value);
         } else {
             $this->property->isValid();

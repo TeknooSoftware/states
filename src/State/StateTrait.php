@@ -192,23 +192,15 @@ trait StateTrait
      */
     private function checkVisibility(
         string &$methodName,
-        string &$requiredScope,
+        Visibility &$requiredScope,
         string &$statedClassOrigin
     ): bool {
         //Check visibility scope
-        switch ($requiredScope) {
-            case StateInterface::VISIBILITY_PRIVATE:
-                return $this->checkVisibilityPrivate($methodName, $statedClassOrigin);
-            case StateInterface::VISIBILITY_PROTECTED:
-                //Can not access to private methods, only public and protected
-                return $this->checkVisibilityProtected($methodName, $statedClassOrigin);
-            case StateInterface::VISIBILITY_PUBLIC:
-                //Can not access to protect and private method.
-                return $this->checkVisibilityPublic($methodName);
-            default:
-                //Bad parameter, throws exception
-                throw new Exception\InvalidArgument('Error, the visibility scope is not recognized');
-        }
+        return match ($requiredScope) {
+            Visibility::Private => $this->checkVisibilityPrivate($methodName, $statedClassOrigin),
+            Visibility::Protected => $this->checkVisibilityProtected($methodName, $statedClassOrigin),
+            Visibility::Public => $this->checkVisibilityPublic($methodName),
+        };
     }
 
     /**
@@ -295,7 +287,7 @@ trait StateTrait
         ProxyInterface $object,
         string &$methodName,
         array &$arguments,
-        string &$requiredScope,
+        Visibility &$requiredScope,
         string &$statedClassOrigin,
         callable &$returnCallback
     ): StateInterface {
