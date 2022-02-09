@@ -212,7 +212,10 @@ class ASTVisitor extends NodeVisitorAbstract
             $interfaceName = $className->toString();
 
             $className = (string) $node->namespacedName;
-            if (ProxyInterface::class === $interfaceName) {
+            if (
+                ProxyInterface::class === $interfaceName
+                || is_subclass_of($interfaceName, ProxyInterface::class)
+            ) {
                 $classes = array_keys($this->listStatesFromProxyClass($className));
                 $node->stmts = $this->mergeStmts(
                     $node->stmts,
