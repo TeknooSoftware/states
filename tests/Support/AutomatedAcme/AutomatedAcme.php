@@ -44,7 +44,7 @@ use Teknoo\Tests\Support\AutomatedAcme\States\State2;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class AutomatedAcme implements ProxyInterface, AutomatedInterface
+class AutomatedAcme implements AutomatedInterface
 {
     use ProxyTrait,
         AutomatedTrait;

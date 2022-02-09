@@ -43,7 +43,7 @@ class IsNotInstanceOf extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    private string $exceptedClassName;
+    private readonly string $exceptedClassName;
 
     public function __construct(string $exceptedClassName)
     {

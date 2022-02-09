@@ -43,7 +43,7 @@ class IsLessOrEqualThan extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    private int | float $exceptedValue;
+    private readonly int | float $exceptedValue;
 
     public function __construct(int | float $exceptedValue)
     {

@@ -48,9 +48,9 @@ abstract class AbstractAssertion implements AssertionInterface
      * List of stated to enable if the assertion is valid.
      * @var array<int, string>
      */
-    private array $statesList;
+    private readonly array $statesList;
 
-    private ?AutomatedInterface $proxy = null;
+    protected ?AutomatedInterface $proxy = null;
 
     /**
      * @param array<int, string>|string $statesList
@@ -60,29 +60,6 @@ abstract class AbstractAssertion implements AssertionInterface
         $this->uniqueConstructorCheck();
 
         $this->statesList = (array) $statesList;
-    }
-
-    /*
-     * Return the proxy linked to the check of this assertions.
-     */
-    protected function getProxy(): ?AutomatedInterface
-    {
-        return $this->proxy;
-    }
-
-    /*
-     * Abstract method to implement into final class to proccess to the check of this assertions.
-     */
-    abstract protected function process(AutomatedInterface $proxy): void;
-
-    public function check(AutomatedInterface $proxy): AssertionInterface
-    {
-        $that = clone $this;
-        $that->proxy = $proxy;
-
-        $that->process($proxy);
-
-        return $that;
     }
 
     /**

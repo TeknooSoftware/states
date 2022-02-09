@@ -30,6 +30,7 @@ use RuntimeException;
 use SplStack;
 use Teknoo\States\Proxy\Exception\StateNotFound;
 use Teknoo\States\State\StateInterface;
+use Teknoo\States\State\Visibility;
 use Throwable;
 
 use function array_flip;
@@ -327,25 +328,25 @@ trait ProxyTrait
      *  Private scope
      * Called from a method of this stated class instance : Private state
      */
-    private function extractVisibilityScopeFromObject(object &$callerObject): string
+    private function extractVisibilityScopeFromObject(object &$callerObject): Visibility
     {
         if ($this === $callerObject) {
             //It's me ! Mario ! So Private scope
-            return StateInterface::VISIBILITY_PRIVATE;
+            return Visibility::Private;
         }
 
         if ($this::class === $callerObject::class) {
             //It's a brother (another instance of this same stated class, not a child), So Private scope too
-            return StateInterface::VISIBILITY_PRIVATE;
+            return Visibility::Private;
         }
 
         if ($callerObject instanceof $this) {
             //It's a child class, so Protected.
-            return StateInterface::VISIBILITY_PROTECTED;
+            return Visibility::Protected;
         }
 
         //All another case (not same class), public scope
-        return StateInterface::VISIBILITY_PUBLIC;
+        return Visibility::Public;
     }
 
     /**
@@ -355,22 +356,22 @@ trait ProxyTrait
      * Called from a static method of this stated class, or from a method of this stated class (but not this instance)
      *  Private scope
      */
-    private function extractVisibilityScopeFromClass(string &$callerName): string
+    private function extractVisibilityScopeFromClass(string &$callerName): Visibility
     {
         $thisClassName = $this::class;
 
         if (is_subclass_of($callerName, $thisClassName, true)) {
             //It's a child class, so protected scope
-            return StateInterface::VISIBILITY_PROTECTED;
+            return Visibility::Protected;
         }
 
         if (is_a($callerName, $thisClassName, true)) {
             //It's this class, so private scope
-            return StateInterface::VISIBILITY_PRIVATE;
+            return Visibility::Private;
         }
 
         //All another case (not same class), public scope
-        return StateInterface::VISIBILITY_PUBLIC;
+        return Visibility::Public;
     }
 
     /**
@@ -389,11 +390,9 @@ trait ProxyTrait
      *  Private scope
      * Called from a method of this stated class instance : Private state
      *
-     * @return string Return :  StateInterface::VISIBILITY_PUBLIC
-     *                StateInterface::VISIBILITY_PROTECTED
-     *                StateInterface::VISIBILITY_PRIVATE
+     * @return Visibility
      */
-    private function getVisibilityScope(int $limit): string
+    private function getVisibilityScope(int $limit): Visibility
     {
         //Get the calling stack
         $callingStack = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
@@ -431,7 +430,7 @@ trait ProxyTrait
         //All another case (not same class), public
         //Info, If Calling stack is corrupted or in unknown state (the stack's size is less than the excepted size),
         //use default method : public
-        return StateInterface::VISIBILITY_PUBLIC;
+        return Visibility::Public;
     }
 
     /**

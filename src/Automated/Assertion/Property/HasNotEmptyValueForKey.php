@@ -44,7 +44,7 @@ class HasNotEmptyValueForKey extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    private string $keyName;
+    private readonly string $keyName;
 
     public function __construct(string $keyName)
     {

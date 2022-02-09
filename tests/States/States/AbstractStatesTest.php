@@ -27,6 +27,7 @@ use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\Exception\InvalidArgument;
 use Teknoo\States\State\Exception\MethodNotImplemented;
 use Teknoo\States\State\StateInterface;
+use Teknoo\States\State\Visibility;
 use Teknoo\Tests\Support;
 
 /**
@@ -104,7 +105,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class),
             'badMethod',
             [1,2],
-            StateInterface::VISIBILITY_PRIVATE,
+            Visibility::Private,
             'My\Stated\ClassName',
             function () {
                 self::fail();
@@ -129,7 +130,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class),
             'staticMethod3',
             [],
-            StateInterface::VISIBILITY_PRIVATE,
+            Visibility::Private,
             'My\Stated\ClassName',
             function () {
                 self::fail();
@@ -155,7 +156,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class),
             [],
             [1,2],
-            StateInterface::VISIBILITY_PRIVATE,
+            Visibility::Private,
             'My\Stated\ClassName',
             function () {
                 self::fail();
@@ -170,7 +171,7 @@ abstract class AbstractStatesTest extends TestCase
 
     public function testAnExceptionMustBeThrewWhenTheScopeToExecuteIsNotAString()
     {
-        $this->expectException(InvalidArgument::class);
+        $this->expectException(\TypeError::class);
         $args = [
             $this->createMock(ProxyInterface::class),
             'standardMethod1',
@@ -194,7 +195,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod10' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PRIVATE ,
+            Visibility::Private ,
             'My\Stated\ClassName' ,
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -219,7 +220,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod6' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PRIVATE ,
+            Visibility::Private ,
             'My\Stated\ClassName' ,
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -244,7 +245,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class),
             'standardMethod1',
             [1,2],
-            StateInterface::VISIBILITY_PRIVATE,
+            Visibility::Private,
             'My\Stated\ClassName',
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -269,7 +270,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod10' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PROTECTED ,
+            Visibility::Protected ,
             'Its\Inherited\ClassName' ,
             function () use (&$called) {
                 $called = true;
@@ -293,7 +294,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod6' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PROTECTED ,
+            Visibility::Protected ,
             'Its\Inherited\ClassName' ,
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -318,7 +319,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class),
             'standardMethod1',
             [1,2],
-            StateInterface::VISIBILITY_PROTECTED,
+            Visibility::Protected,
             'Its\Inherited\ClassName',
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -343,7 +344,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod10' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PUBLIC ,
+            Visibility::Public ,
             'Its\Another\ClassName' ,
             function () use (&$called) {
                 $called = true;
@@ -367,7 +368,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod6' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PUBLIC ,
+            Visibility::Public ,
             'Its\Another\ClassName' ,
             function () use (&$called) {
                 $called = true;
@@ -391,7 +392,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class),
             'standardMethod1',
             [1,2],
-            StateInterface::VISIBILITY_PUBLIC,
+            Visibility::Public,
             'Its\Another\ClassName',
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -416,7 +417,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod10' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PRIVATE ,
+            Visibility::Private ,
             'My\Stated\ClassName' ,
             function () use (&$called) {
                 $called = true;
@@ -440,7 +441,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod6' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PRIVATE ,
+            Visibility::Private ,
             'My\Stated\ClassName' ,
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -465,7 +466,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class),
             'standardMethod1',
             [1,2],
-            StateInterface::VISIBILITY_PRIVATE,
+            Visibility::Private,
             'My\Stated\ClassName',
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -490,7 +491,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod10' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PROTECTED ,
+            Visibility::Protected ,
             'Its\Inherited\ClassName' ,
             function () use (&$called) {
                 $called = true;
@@ -514,7 +515,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod6' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PROTECTED ,
+            Visibility::Protected ,
             'Its\Inherited\ClassName' ,
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -539,7 +540,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class),
             'standardMethod1',
             [1,2],
-            StateInterface::VISIBILITY_PROTECTED,
+            Visibility::Protected,
             'Its\Inherited\ClassName',
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -564,7 +565,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod10' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PUBLIC ,
+            Visibility::Public ,
             'Its\Another\ClassName' ,
             function () use (&$called) {
                 $called = true;
@@ -588,7 +589,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class) ,
             'standardMethod6' ,
             [1,2] ,
-            StateInterface::VISIBILITY_PUBLIC ,
+            Visibility::Public ,
             'Its\Another\ClassName' ,
             function () use (&$called) {
                 $called = true;
@@ -612,7 +613,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class),
             'standardMethod1',
             [1,2],
-            StateInterface::VISIBILITY_PUBLIC,
+            Visibility::Public,
             'Its\Another\ClassName',
             function ($result) use (&$called) {
                 self::assertEquals(3, $result);
@@ -638,7 +639,7 @@ abstract class AbstractStatesTest extends TestCase
             $this->createMock(ProxyInterface::class),
             'methodBuilderNoReturnClosure',
             [],
-            StateInterface::VISIBILITY_PUBLIC,
+            Visibility::Public,
             'My\Stated\ClassName',
             function () use (&$called) {
             }

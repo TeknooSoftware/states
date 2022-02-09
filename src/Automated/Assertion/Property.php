@@ -75,17 +75,25 @@ class Property extends AbstractAssertion
     /**
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
-    protected function process(AutomatedInterface $proxy): void
+    public function check(AutomatedInterface $proxy): AssertionInterface
     {
-        if (empty($this->constraints)) {
-            parent::isValid();
-            return;
+        $that = clone $this;
+        $that->proxy = $proxy;
+
+        if (empty($that->constraints)) {
+            return $that->isValid();
         }
 
-        [$property] = array_keys($this->constraints);
-        $constraints = (array) array_shift($this->constraints);
+        //extract first constraint set
+        [$property] = array_keys($that->constraints);
+        $constraints = (array) array_shift($that->constraints);
 
-        $proxy->checkProperty((string) $property, new ConstraintsSet($constraints, $this));
+        $proxy->checkProperty(
+            (string) $property,
+            new ConstraintsSet($constraints, $that)
+        );
+
+        return $that;
     }
 
     /**
@@ -93,7 +101,7 @@ class Property extends AbstractAssertion
      */
     public function isValid(): AssertionInterface
     {
-        if (null === ($proxy = $this->getProxy())) {
+        if (null === $this->proxy) {
             throw new RuntimeException('The method "check" with a valid proxy was not called before');
         }
 
@@ -101,8 +109,6 @@ class Property extends AbstractAssertion
             return parent::isValid();
         }
 
-        $this->process($proxy);
-
-        return $this;
+        return $this->check($this->proxy);
     }
 }

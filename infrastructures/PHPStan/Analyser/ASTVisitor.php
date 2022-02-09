@@ -73,7 +73,6 @@ class ASTVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * @param string $proxyClass
      * @return array<class-string>
      */
     private function listStatesFromProxyClass(string $proxyClass): array

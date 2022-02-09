@@ -1,5 +1,14 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.0] - 2022-02-09
+### Stable Release
+- Remove support of PHP 8.0.
+- Remove test skipped for PHP 8.1.
+- Replace StateInterface::VISIBILITY_* by Enum Visibility in same namespace.
+- Use readonly behavior on immutables objects'classes. 
+- Prevent bug of mutability on automated features with Property and ConstraintsSet.
+- ProxyInterface::DEFAULT_STATE_NAME is now final
+
 ## [5.1.9] - 2022-02-08
 ### Stable Release
 - Support Immutable 3.0+

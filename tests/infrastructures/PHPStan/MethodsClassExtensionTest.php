@@ -160,6 +160,30 @@ class MethodsClassExtensionTest extends TestCase
         self::assertFalse($this->buildInstance()->hasMethod($classReflection, 'getAttribute'));
     }
 
+    public function testStatesListDeclaratoionReflectionError()
+    {
+        $classReflection = $this->createMock(ClassReflection::class);
+        $nativeReflection = $this->createMock(\ReflectionClass::class);
+        $nativeReflection->expects(self::any())->method('isInterface')->willReturn(false);
+        $nativeReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+            [ProxyInterface::class, true],
+            [StateInterface::class, false],
+        ]);
+        $nativeReflection->expects(self::any())->method('getName')->willReturn(Article::class);
+
+        $reflectionMethod = $this->createMock(\ReflectionMethod::class);
+        $reflectionMethod->expects(self::any())->method('getClosure')->willThrowException(new \ReflectionException());
+
+
+        $nativeReflection->expects(self::any())->method('getMethod')->willReturnMap([
+            ['statesListDeclaration', $reflectionMethod]
+        ]);
+
+        $classReflection->expects(self::any())->method('getNativeReflection')->willReturn($nativeReflection);
+
+        self::assertFalse($this->buildInstance()->hasMethod($classReflection, 'aMethod'));
+    }
+
     public function testHasMethodImplementProxyMethodInState()
     {
         $classReflection = $this->createMock(ClassReflection::class);
@@ -365,32 +389,6 @@ class MethodsClassExtensionTest extends TestCase
 
         self::assertInstanceOf(MethodReflection::class, $this->buildInstance()->getMethod($classReflection, 'getFormattedBody'));
     }
-
-    public function testGetMethodImplementProxystatesListDeclarationNotAVailable()
-    {
-        if (PHP_VERSION_ID >= 80100) {
-            self::markTestSkipped('With PHP 8.! ');
-        }
-
-        $this->expectException(ShouldNotHappenException::class);
-
-        $classReflection = $this->createMock(ClassReflection::class);
-        $nativeReflection = $this->createMock(\ReflectionClass::class);
-        $nativeReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $nativeReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
-            [ProxyInterface::class, true],
-            [StateInterface::class, false],
-        ]);
-        $nativeReflection->expects(self::any())->method('getName')->willReturn(Article::class);
-
-        $nativeReflection->expects(self::any())->method('getMethod')->
-            willThrowException(new \ReflectionException());
-
-        $classReflection->expects(self::any())->method('getNativeReflection')->willReturn($nativeReflection);
-
-        $this->buildInstance()->getMethod($classReflection, 'notExistantMethod');
-    }
-
 
     public function testGetMethodImplementProxyMethodNotExist()
     {

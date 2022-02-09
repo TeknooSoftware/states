@@ -43,7 +43,7 @@ class IsSame extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    private mixed $exceptedValue;
+    private readonly mixed $exceptedValue;
 
     public function __construct(mixed $exceptedValue)
     {
