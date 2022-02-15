@@ -124,7 +124,7 @@ Quick Example
     $englishMan->setCountry('en');
     $englishMan->setName('Richard');
     
-    $now = new \DateTime('2016-07-01');
+    $now = new \DateTime('2022-07-01');
     
     foreach ([$frenchMan, $englishMan] as $man) {
         echo $man->sayHello().PHP_EOL;
@@ -133,9 +133,9 @@ Quick Example
     
     //Display
     //Bonjour, Roger
-    //Date: 01 07 2016
+    //Date: 01 07 2022
     //Good morning, Richard
-    //Date: 07 01, 2016
+    //Date: 07 01, 2022
  
 Full Example
 ------------
