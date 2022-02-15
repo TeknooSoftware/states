@@ -5,7 +5,7 @@
 - Remove support of PHP 8.0.
 - Remove test skipped for PHP 8.1.
 - Replace StateInterface::VISIBILITY_* by Enum Visibility in same namespace.
-- Use readonly behavior on immutables objects'classes. 
+- Use readonly behavior on immutables objects' classes. 
 - Prevent bug of mutability on automated features with Property and ConstraintsSet.
 - ProxyInterface::DEFAULT_STATE_NAME is now final
 

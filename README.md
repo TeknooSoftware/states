@@ -161,6 +161,15 @@ This library requires :
     * Teknoo/Immutable (for Automated features).
     
 
+News from Teknoo State 6.0
+--------------------------
+This library requires PHP 8.1 or newer. Some change causes bc breaks :
+
+- Replace `StateInterface::VISIBILITY_*` by `Enum Visibility` in same namespace.
+- Use readonly behavior on immutables objects' classes.
+- Prevent bug of mutability on automated features with `Property` and `ConstraintsSet`.
+- `ProxyInterface::DEFAULT_STATE_NAME` is now final
+
 News from Teknoo State 5.0
 --------------------------
 This library requires PHP 8.0 or newer. Some change causes bc breaks :
