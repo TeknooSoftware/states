@@ -25,6 +25,17 @@ declare(strict_types=1);
 
 namespace Teknoo\States\State;
 
+/**
+ * Enum to list method's visibilities determined by the proxy to compute access of methods in states
+ *
+ * @copyright   Copyright (c) EIRL Richard Déloge (richarddeloge@gmail.com)
+ * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software)
+ *
+ * @link        http://teknoo.software/states Project website
+ *
+ * @license     http://teknoo.software/license/mit         MIT License
+ * @author      Richard Déloge <richarddeloge@gmail.com>
+ */
 enum Visibility: string {
     /**
      * To get a closure into a public scope.
