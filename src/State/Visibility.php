@@ -36,7 +36,8 @@ namespace Teknoo\States\State;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-enum Visibility: string {
+enum Visibility: string
+{
     /**
      * To get a closure into a public scope.
      */
