@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.1] - 2022-03-08
+### Stable Release
+- Require Immutable 3.0.1 or later
+
 ## [6.0.0] - 2022-02-09
 ### Stable Release
 - Remove support of PHP 8.0.
