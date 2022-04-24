@@ -21,7 +21,7 @@ endif
 .PHONY: depend
 
 ### QA
-qa: lint phpstan phpcs phpcpd
+qa: lint phpstan phpcs phpcpd composerunsed
 
 lint:
 	find ./src -name "*.php" -exec ${PHP} -l {} \; | grep "Parse error" > /dev/null && exit 1 || exit 0
@@ -39,7 +39,10 @@ phpcs:
 phpcpd:
 	${PHP} vendor/bin/phpcpd src/ infrastructures/
 
-.PHONY: qa lint phploc phpstan phpcs phpcpd
+composerunsed:
+	${PHP} vendor/bin/composer-unused
+
+.PHONY: qa lint phploc phpstan phpcs phpcpd composerunsed
 
 ### Testing
 test:
