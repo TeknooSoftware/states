@@ -419,6 +419,34 @@ class MethodsClassExtensionTest extends TestCase
         $this->buildInstance()->getMethod($classReflection, 'notExistantMethod');
     }
 
+    public function testGetMethodImplementProxyMethodClosureReturnedIsStatic()
+    {
+        $this->expectException(ShouldNotHappenException::class);
+
+        $classReflection = $this->createMock(ClassReflection::class);
+        $nativeReflection = $this->createMock(\ReflectionClass::class);
+        $nativeReflection->expects(self::any())->method('isInterface')->willReturn(false);
+        $nativeReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+            [ProxyInterface::class, true],
+            [StateInterface::class, false],
+        ]);
+        $nativeReflection->expects(self::any())->method('getName')->willReturn(Article::class);
+
+        $reflectionMethod = $this->createMock(\ReflectionMethod::class);
+        $reflectionMethod->expects(self::any())->method('getClosure')->willReturn(function () {
+            return [
+                Article\BadArticleClass::class,
+            ];
+        });
+        $nativeReflection->expects(self::any())->method('getMethod')->willReturnMap([
+            ['statesListDeclaration', $reflectionMethod]
+        ]);
+
+        $classReflection->expects(self::any())->method('getNativeReflection')->willReturn($nativeReflection);
+
+        $this->buildInstance()->getMethod($classReflection, 'returnStaticClosure');
+    }
+
     public function testGetMethodImplementStateProxyNotFound()
     {
         $this->expectException(ShouldNotHappenException::class);

@@ -41,42 +41,13 @@ use Teknoo\States\State\StateTrait;
  * @author      Richard Déloge <richarddeloge@gmail.com>
  * @mixin Article
  */
-class Published implements StateInterface
+class BadArticleClass implements StateInterface
 {
     use StateTrait;
 
-    public function getFormattedBody()
+    public function returnStaticClosure()
     {
-        /*
-         * Get the body and transform BBCode to HTML.
-         *
-         * @return string
-         */
-        return function () {
-            $body = $this->getAttribute('body');
-
-            return str_replace(
-                array(
-                    '[br]',
-                    '[b]',
-                    '[/b]',
-                ),
-                array(
-                    '<br/>',
-                    '<strong>',
-                    '</strong>',
-                ),
-                $body
-            );
-        };
-    }
-
-    protected function getDate()
-    {
-        /*
-         * Fake method not callable in public scope.
-         */
-        return function () {
+        return static function () {
         };
     }
 }

@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.2] - 2022-05-14
+### Stable Release
+- Detect (in phpstan extension) when a static closure is returned to throw an error to prevent it 
+   (static closure are not bindable)
+
 ## [6.0.1] - 2022-03-08
 ### Stable Release
 - Require Immutable 3.0.1 or later

@@ -185,10 +185,16 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
 
         //To use the original \ReflectionClass api and not "BetterReflectionClass" whome not implements all the api.
         $realNativeProxyReflection = new ReflectionClass($nativeProxyReflection->getName());
-        $stateClosure = $stateClosure->bindTo(
+        $stateClosure = @$stateClosure->bindTo(
             $realNativeProxyReflection->newInstanceWithoutConstructor(),
             $realNativeProxyReflection->getName()
         );
+
+        if (null === $stateClosure) {
+            throw new ShouldNotHappenException(
+                "Closure returned by {$stateClassReflection->getName()}::{$method} must be not static"
+            );
+        }
 
         $closureReflection = new ReflectionFunction($stateClosure);
 
