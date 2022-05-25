@@ -45,8 +45,8 @@
         "phpstan/phpstan": "^1.7.1",
         "icanhazstring/composer-unused": "^0.8.2",
         "nikic/php-parser": "^4.13.2",
-        "doctrine/orm": "^2.11.2",
-        "doctrine/mongodb-odm": "^2.3.2"
+        "doctrine/orm": "^2.12.2",
+        "doctrine/mongodb-odm": "^2.4.2"
     },
     "minimum-stability": "stable",
     "autoload": {
