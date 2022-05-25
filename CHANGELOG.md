@@ -1,5 +1,13 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.4] - 2022-05-25
+### Stable Release
+- Improve support PHPSan 1.7.1+
+- Warning : support of PHPStan may be removed in future to be replaced by another 
+  tools more extendable. PHPStan's extensions become not really usable in lasts versions, since 1.0+ because
+  all reflections tools are replaced by internal non extendable tool.
+  Also Semver is not respected by PHPStan, external interfaces is often broken by minors or fixs updates.
+
 ## [6.0.3] - 2022-05-25
 ### Stable Release
 - Support PHPSan 1.7.1+

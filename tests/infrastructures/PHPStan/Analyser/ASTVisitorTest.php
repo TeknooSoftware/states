@@ -141,7 +141,10 @@ class ASTVisitorTest extends TestCase
         $stateClass = new Class_(
             'state',
             [
-                'stmts' => [$this->createMock(Node::class)],
+                'stmts' => [
+                    $this->createMock(Node::class),
+                    $this->createMock(ClassMethod::class),
+                ],
                 'implements' => [new Name(StateInterface::class)]
             ]
         );
@@ -152,7 +155,7 @@ class ASTVisitorTest extends TestCase
             $result = $this->buildVisitor()->leaveNode($stateClass)
         );
 
-        self::assertTrue(empty($result->stmts));
+        self::assertCount(1, $result->stmts);
     }
 
     public function testLeaveNodeWithProxyClassNodeWithoutState()
@@ -160,7 +163,9 @@ class ASTVisitorTest extends TestCase
         $proxyClass = new Class_(
             MockProxy::class,
             [
-                'stmts' => [$this->createMock(Node::class)],
+                'stmts' => [
+                    $this->createMock(Node::class),
+                ],
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
@@ -212,7 +217,9 @@ class ASTVisitorTest extends TestCase
         $proxyClass = new Class_(
             Mother::class,
             [
-                'stmts' => [$this->createMock(Node::class)],
+                'stmts' => [
+                    $this->createMock(Node::class),
+                ],
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
@@ -234,7 +241,7 @@ class ASTVisitorTest extends TestCase
             $result = $visitor->leaveNode($stateClass)
         );
 
-        self::assertTrue(empty($result->stmts));
+        self::assertCount(1, $result->stmts);
 
         self::assertInstanceOf(
             Node::class,

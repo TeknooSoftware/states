@@ -28,6 +28,7 @@ namespace Teknoo\Tests\States\PHPStan\Reflection;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
 use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
@@ -67,7 +68,7 @@ class StateMethodEmptyTest extends TestCase
         $factoryReflection->expects(self::never())->method('getReturnType');
         $factoryReflection->expects(self::never())->method('getParameters');
 
-        $closureReflection = $this->createMock(BetterReflectionFunction::class);
+        $closureReflection = $this->createMock(\ReflectionFunction::class);
         $closureReflection->expects(self::never())->method('getName');
         $closureReflection->expects(self::never())->method('getFileName');
         $closureReflection->expects(self::any())->method('getStartLine')->willReturn(0);
@@ -81,9 +82,17 @@ class StateMethodEmptyTest extends TestCase
             $p1 = $this->createMock(\ReflectionParameter::class)
         ]);
 
+        $p1->expects(self::any())
+            ->method('getDefaultValue')
+            ->willReturn('foo');
+
+        $p1->expects(self::any())
+            ->method('isOptional')
+            ->willReturn(true);
+
         return new StateMethod(
             $factoryReflection,
-            new ReflectionFunction($closureReflection),
+            $closureReflection,
             new ReflectionClass($this->createMock(BetterReflectionClass::class)),
         );
     }
@@ -106,5 +115,18 @@ class StateMethodEmptyTest extends TestCase
     public function testGetEndLine()
     {
         self::assertNull($this->buildInstance()->getEndLine());
+    }
+
+    public function testGetReturnType()
+    {
+        self::assertNull($this->buildInstance()->getReturnType());
+    }
+
+    public function testGetParameters()
+    {
+        self::assertInstanceOf(
+            ReflectionParameter::class,
+            $this->buildInstance()->getParameters()[0]
+        );
     }
 }

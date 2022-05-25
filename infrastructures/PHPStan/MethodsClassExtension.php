@@ -30,6 +30,7 @@ use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
+use PHPStan\BetterReflection\SourceLocator\Exception\NoClosureOnLine;
 use PHPStan\Cache\Cache;
 use PHPStan\Parser\Parser;
 use PHPStan\Parser\FunctionCallStatementFinder;
@@ -43,6 +44,7 @@ use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionFunction as NatveReflectionFunction;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
@@ -214,14 +216,22 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         }
         //@codeCoverageIgnoreEnd
 
+        try {
+            $closureReflection = new ReflectionFunction(BetterReflectionFunction::createFromClosure($stateClosure));
+            //@codeCoverageIgnoreStart
+        } catch (NoClosureOnLine) {
+            $closureReflection = new NatveReflectionFunction($stateClosure);
+        }
+        //@codeCoverageIgnoreEnd
+
         return new PhpMethodReflection(
             initializerExprTypeResolver: $this->initializerExprTypeResolver,
             declaringClass: $classReflection,
             declaringTrait: null,
             reflection: new StateMethod(
-                $factoryReflection,
-                new ReflectionFunction(BetterReflectionFunction::createFromClosure($stateClosure)),
-                $classReflection->getNativeReflection(),
+                factoryReflection: $factoryReflection,
+                closureReflection: $closureReflection,
+                reflectionClass: $classReflection->getNativeReflection(),
             ),
             reflectionProvider: $this->reflectionProvider,
             parser: $this->parser,

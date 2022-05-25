@@ -9,6 +9,12 @@ parameters:
             message: '#Variable \$listClosure on left side of \?\? always exists and is not nullable#'
             path: infrastructures/PHPStan/Analyser/ASTVisitor.php
         -
+            message: '#createFromNode\(\) expects [A-Za-z\\\| ]+ReflectionMethod#'
+            path: infrastructures/PHPStan/Reflection/StateMethod.php
+        -
+            message: '#string, mixed given#'
+            path: infrastructures/PHPStan/Reflection/StateMethod.php
+        -
             message: '#Trying to invoke Closure\|null#'
             path: infrastructures/PHPStan/MethodsClassExtension.php
         -

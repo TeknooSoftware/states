@@ -224,14 +224,16 @@ class ASTVisitor extends NodeVisitorAbstract
 
             if (StateInterface::class === $interfaceName) {
                 $this->statesStmts[$className] = [];
+                $stmtsToKeep = [];
                 foreach ($node->stmts as $stmt) {
                     if (!$stmt instanceof ClassMethod) {
+                        $stmtsToKeep[] = $stmt;
                         continue;
                     }
 
                     $this->statesStmts[$className][] = $stmt;
                 }
-                $node->stmts = [];
+                $node->stmts = $stmtsToKeep;
             }
         }
 

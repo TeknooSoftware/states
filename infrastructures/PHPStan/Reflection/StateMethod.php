@@ -25,26 +25,36 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan\Reflection;
 
+use PhpParser\Node\Expr;
+use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\Param;
+use PHPStan\BetterReflection\BetterReflection;
+use PHPStan\BetterReflection\SourceLocator\Located\LocatedSource;
+use PHPStan\BetterReflection\Util\Exception\NoNodePosition;
 use PHPStan\Reflection\Php\BuiltinMethodReflection;
 use PHPStan\TrinaryLogic;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionIntersectionType;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
-use ReflectionMethod as NativeReflectionMethod;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionNamedType;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionUnionType;
+use PHPStan\BetterReflection\Reflection\ReflectionParameter as BetterReflectionParameter;
+use ReflectionMethod as NativeReflectionMethod;
+use ReflectionFunction as NativeReflectionFunction;
+use Reflector;
 
 /**
  * To provide a PHPStan reflection for state's methode in a stated class.
  *
- * State's method are cloure binded dynamically to the parent scope, So the PHP's API Reflection provides a
- * `\ReflectionFunction` instead of `\ReflectionMethod` and lost method's status about visibility (private/public),
- * static etc..
+ * State's method are cloure binded dynamically to the parent scope, So the APIs Reflection provides a
+ * `ReflectionFunction` instead of `ReflectionMethod` and lost method's status about visibility (private/public),
+ * static etc.. *
  *
- * This class provide a valid PHPStan reflection for these method from the API Reflection on the closure
- * and the closure factory.
+ * This class provide a valid PHPStan reflection for these method from the PHPStan API Reflection on the closure
+ * and the closure factory. A fallback to native API Reflection is provided when PHPSTan's Reflection is not available
+ * for states classes (disable by AST Visitor of States to avoid anothers false positives)
  *
  * @see http://php.net/manual/en/class.arrayaccess.php
  *
@@ -60,7 +70,7 @@ class StateMethod implements BuiltinMethodReflection
 {
     public function __construct(
         private ReflectionMethod|NativeReflectionMethod $factoryReflection,
-        private ReflectionFunction $closureReflection,
+        private ReflectionFunction|NativeReflectionFunction $closureReflection,
         private ReflectionClass $reflectionClass,
     ) {
     }
@@ -172,6 +182,10 @@ class StateMethod implements BuiltinMethodReflection
 
     public function getReturnType(): ReflectionIntersectionType|ReflectionNamedType|ReflectionUnionType|null
     {
+        if (!$this->closureReflection instanceof ReflectionFunction) {
+            return null;
+        }
+
         return $this->closureReflection->getReturnType();
     }
 
@@ -185,6 +199,45 @@ class StateMethod implements BuiltinMethodReflection
      */
     public function getParameters(): array
     {
+        if (!$this->closureReflection instanceof ReflectionFunction) {
+            //Simulate a BetterReflectionFunction behavior when the extension was not able
+            //to create it (ast node must be removed by ASTVisitor to avoid false postive)
+            $final = [];
+            foreach ($this->closureReflection->getParameters() as $parameter) {
+                $default = null;
+                if ($parameter->isOptional() && null !== ($defaultValue = $parameter->getDefaultValue())) {
+                    $default = new Variable($defaultValue);
+                }
+
+                $final[] = new ReflectionParameter(
+                    BetterReflectionParameter::createFromNode(
+                        reflector: (new BetterReflection())->reflector(),
+                        node: new Param(
+                            var: new Variable((string) $parameter->getName()),
+                            default: $default,
+                            type: (string) $parameter->getType(),
+                            byRef: $parameter->isPassedByReference(),
+                            variadic: $parameter->isVariadic(),
+                            attributes: $parameter->getAttributes(),
+                            flags: 0,
+                        ),
+                        function: new class {
+                            public function getLocatedSource(): never
+                            {
+                                //Throw an exception to hack BetterReflectionParaneeter constructor
+                                //To not extract lines
+                                throw new NoNodePosition();
+                            }
+                        },
+                        parameterIndex: $parameter->getPosition(),
+                        optional: $parameter->isOptional(),
+                    )
+                );
+            }
+
+            return $final;
+        }
+
         return $this->closureReflection->getParameters();
     }
 }
