@@ -36,6 +36,7 @@ use PHPStan\Type\FileTypeMapper;
 use PHPStan\PhpDoc\StubPhpDocProvider;
 use PHPStan\Php\PhpVersion;
 use PHPStan\PhpDoc\PhpDocInheritanceResolver;
+use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\File\FileHelper;
 use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\DependencyInjection\Type\DynamicThrowTypeExtensionProvider;
@@ -61,6 +62,7 @@ class NodeScopeResolverTest extends TestCase
 
         $nodeScopeResolver = new NodeScopeResolver(
             $this->createMock(ReflectionProvider::class),
+            $this->createMock(InitializerExprTypeResolver::class),
             $this->createMock(Reflector::class),
             $this->createMock(ClassReflectionExtensionRegistryProvider::class),
             $this->createMock(Parser::class),

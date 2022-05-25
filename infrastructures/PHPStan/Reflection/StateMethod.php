@@ -27,13 +27,14 @@ namespace Teknoo\States\PHPStan\Reflection;
 
 use PHPStan\Reflection\Php\BuiltinMethodReflection;
 use PHPStan\TrinaryLogic;
-use ReflectionClass;
-use ReflectionFunction;
-use ReflectionMethod;
-use ReflectionParameter;
-use ReflectionType;
-use RuntimeException;
-use Teknoo\States\State\StateInterface;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionIntersectionType;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
+use ReflectionMethod as NativeReflectionMethod;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionNamedType;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionUnionType;
 
 /**
  * To provide a PHPStan reflection for state's methode in a stated class.
@@ -58,8 +59,9 @@ use Teknoo\States\State\StateInterface;
 class StateMethod implements BuiltinMethodReflection
 {
     public function __construct(
-        private ReflectionMethod $factoryReflection,
+        private ReflectionMethod|NativeReflectionMethod $factoryReflection,
         private ReflectionFunction $closureReflection,
+        private ReflectionClass $reflectionClass,
     ) {
     }
 
@@ -70,7 +72,11 @@ class StateMethod implements BuiltinMethodReflection
 
     public function getReflection(): ?ReflectionMethod
     {
-        return $this->factoryReflection;
+        if ($this->factoryReflection instanceof ReflectionMethod) {
+            return $this->factoryReflection;
+        }
+
+        return null;
     }
 
     public function getFileName(): ?string
@@ -82,18 +88,9 @@ class StateMethod implements BuiltinMethodReflection
         return $fileName;
     }
 
-    /**
-     * @return ReflectionClass<StateInterface>
-     */
     public function getDeclaringClass(): ReflectionClass
     {
-        $reflection = $this->closureReflection->getClosureScopeClass();
-
-        if (!$reflection instanceof ReflectionClass) {
-            throw new RuntimeException("Reflection class is not available for the closure");
-        }
-
-        return $reflection;
+        return $this->reflectionClass;
     }
 
     public function getStartLine(): ?int
@@ -173,12 +170,12 @@ class StateMethod implements BuiltinMethodReflection
         return $this->closureReflection->isVariadic();
     }
 
-    public function getReturnType(): ?ReflectionType
+    public function getReturnType(): ReflectionIntersectionType|ReflectionNamedType|ReflectionUnionType|null
     {
         return $this->closureReflection->getReturnType();
     }
 
-    public function getTentativeReturnType(): ?ReflectionType
+    public function getTentativeReturnType(): ReflectionIntersectionType|ReflectionNamedType|ReflectionUnionType|null
     {
         return null;
     }

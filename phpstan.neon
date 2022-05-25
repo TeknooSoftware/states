@@ -6,5 +6,11 @@ parameters:
             message: '#expects class-string, string given#'
             path: infrastructures/PHPStan/Analyser/ASTVisitor.php
         -
+            message: '#Variable \$listClosure on left side of \?\? always exists and is not nullable#'
+            path: infrastructures/PHPStan/Analyser/ASTVisitor.php
+        -
             message: '#Trying to invoke Closure\|null#'
+            path: infrastructures/PHPStan/MethodsClassExtension.php
+        -
+            message: '#ReflectionEnum given#'
             path: infrastructures/PHPStan/MethodsClassExtension.php
