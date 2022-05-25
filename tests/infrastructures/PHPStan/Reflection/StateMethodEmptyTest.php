@@ -25,6 +25,12 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan\Reflection;
 
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
+use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
 use PHPStan\TrinaryLogic;
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
@@ -46,8 +52,7 @@ class StateMethodEmptyTest extends TestCase
     {
         $factoryReflection = $this->createMock(\ReflectionMethod::class);
         $factoryReflection->expects(self::any())->method('getName')->willReturn('factory');
-        $factoryReflection->expects(self::any())->method('getFileName')->willReturn(false);
-        $factoryReflection->expects(self::never())->method('getClosureScopeClass');
+        $factoryReflection->expects(self::any())->method('getFileName')->willReturn('');
         $factoryReflection->expects(self::never())->method('getStartLine');
         $factoryReflection->expects(self::never())->method('getEndLine');
         $factoryReflection->expects(self::any())->method('getDocComment')->willReturn($doc);
@@ -62,14 +67,11 @@ class StateMethodEmptyTest extends TestCase
         $factoryReflection->expects(self::never())->method('getReturnType');
         $factoryReflection->expects(self::never())->method('getParameters');
 
-        $closureReflection = $this->createMock(\ReflectionFunction::class);
+        $closureReflection = $this->createMock(BetterReflectionFunction::class);
         $closureReflection->expects(self::never())->method('getName');
         $closureReflection->expects(self::never())->method('getFileName');
-        $closureReflection->expects(self::any())->method('getClosureScopeClass')->willReturn(
-            $closureScopeClass ?? $this->createMock(\ReflectionClass::class)
-        );
-        $closureReflection->expects(self::any())->method('getStartLine')->willReturn(false);
-        $closureReflection->expects(self::any())->method('getEndLine')->willReturn(false);
+        $closureReflection->expects(self::any())->method('getStartLine')->willReturn(0);
+        $closureReflection->expects(self::any())->method('getEndLine')->willReturn(0);
         $closureReflection->expects(self::never())->method('getDocComment');
         $closureReflection->expects(self::any())->method('isVariadic')->willReturn(false);
         $closureReflection->expects(self::any())->method('getReturnType')->willReturn(
@@ -79,7 +81,16 @@ class StateMethodEmptyTest extends TestCase
             $p1 = $this->createMock(\ReflectionParameter::class)
         ]);
 
-        return new StateMethod($factoryReflection, $closureReflection);
+        return new StateMethod(
+            $factoryReflection,
+            new ReflectionFunction($closureReflection),
+            new ReflectionClass($this->createMock(BetterReflectionClass::class)),
+        );
+    }
+
+    public function testGetReflection()
+    {
+        self::assertNull($this->buildInstance()->getReflection());
     }
 
     public function testGetFileName()

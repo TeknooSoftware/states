@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.3] - 2022-05-25
+### Stable Release
+- Support PHPSan 1.7.1+
+
 ## [6.0.2] - 2022-05-14
 ### Stable Release
 - Detect (in phpstan extension) when a static closure is returned to throw an error to prevent it 

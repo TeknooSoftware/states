@@ -70,4 +70,10 @@ class StateDefault extends AbstractState
             return !empty($isPublished);
         };
     }
+
+    public function returnStaticClosure()
+    {
+        return static function() {
+        };
+    }
 }

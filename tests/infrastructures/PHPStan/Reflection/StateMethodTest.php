@@ -25,6 +25,16 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan\Reflection;
 
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionNamedType;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
+use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
+use PHPStan\BetterReflection\Reflection\ReflectionNamedType as BetterReflectionNamedType;
+use PHPStan\BetterReflection\Reflection\ReflectionParameter as BetterReflectionParameter;
 use PHPStan\TrinaryLogic;
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
@@ -42,12 +52,11 @@ use Teknoo\States\PHPStan\Reflection\StateMethod;
  */
 class StateMethodTest extends TestCase
 {
-    protected function buildInstance($doc = 'factory doc', $closureScopeClass = null)
+    protected function buildInstance($doc = 'factory doc')
     {
-        $factoryReflection = $this->createMock(\ReflectionMethod::class);
+        $factoryReflection = $this->createMock(BetterReflectionMethod::class);
         $factoryReflection->expects(self::any())->method('getName')->willReturn('factory');
         $factoryReflection->expects(self::any())->method('getFileName')->willReturn('factory.php');
-        $factoryReflection->expects(self::never())->method('getClosureScopeClass');
         $factoryReflection->expects(self::never())->method('getStartLine');
         $factoryReflection->expects(self::never())->method('getEndLine');
         $factoryReflection->expects(self::any())->method('getDocComment')->willReturn($doc);
@@ -62,24 +71,26 @@ class StateMethodTest extends TestCase
         $factoryReflection->expects(self::never())->method('getReturnType');
         $factoryReflection->expects(self::never())->method('getParameters');
 
-        $closureReflection = $this->createMock(\ReflectionFunction::class);
+        $closureReflection = $this->createMock(BetterReflectionFunction::class);
         $closureReflection->expects(self::never())->method('getName');
         $closureReflection->expects(self::never())->method('getFileName');
-        $closureReflection->expects(self::any())->method('getClosureScopeClass')->willReturn(
-            null === $closureScopeClass ? $this->createMock(\ReflectionClass::class) : null
-        );
         $closureReflection->expects(self::any())->method('getStartLine')->willReturn(12);
         $closureReflection->expects(self::any())->method('getEndLine')->willReturn(34);
         $closureReflection->expects(self::never())->method('getDocComment');
         $closureReflection->expects(self::any())->method('isVariadic')->willReturn(false);
         $closureReflection->expects(self::any())->method('getReturnType')->willReturn(
-            $type = $this->createMock(\ReflectionType::class)
+            $this->createMock(BetterReflectionNamedType::class)
         );
+
         $closureReflection->expects(self::any())->method('getParameters')->willReturn([
-            $p1 = $this->createMock(\ReflectionParameter::class)
+            $this->createMock(BetterReflectionParameter::class)
         ]);
 
-        return new StateMethod($factoryReflection, $closureReflection);
+        return new StateMethod(
+            new ReflectionMethod($factoryReflection),
+            new ReflectionFunction($closureReflection),
+            new ReflectionClass($this->createMock(BetterReflectionClass::class)),
+        );
     }
 
     public function testGetName()
@@ -89,7 +100,7 @@ class StateMethodTest extends TestCase
 
     public function testGetReflection()
     {
-        self::assertInstanceOf(\ReflectionMethod::class, $this->buildInstance()->getReflection());
+        self::assertInstanceOf(ReflectionMethod::class, $this->buildInstance()->getReflection());
     }
 
     public function testGetFileName()
@@ -100,12 +111,6 @@ class StateMethodTest extends TestCase
     public function testGetDeclaringClass()
     {
         self::assertInstanceOf(\ReflectionClass::class, $this->buildInstance()->getDeclaringClass());
-    }
-
-    public function testGetDeclaringClassError()
-    {
-        $this->expectException(\RuntimeException::class);
-        $this->buildInstance('foo', false)->getDeclaringClass();
     }
 
     public function testGetStartLine()
@@ -125,7 +130,7 @@ class StateMethodTest extends TestCase
 
     public function testGetDocCommentNull()
     {
-        self::assertNull($this->buildInstance(false)->getDocComment());
+        self::assertEmpty($this->buildInstance('')->getDocComment());
     }
 
     public function testIsStatic()
@@ -175,7 +180,7 @@ class StateMethodTest extends TestCase
 
     public function testGetReturnType()
     {
-        self::assertInstanceOf(\ReflectionType::class, $this->buildInstance()->getReturnType());
+        self::assertInstanceOf(ReflectionNamedType::class, $this->buildInstance()->getReturnType());
     }
 
     public function testGetTentativeReturnType()
@@ -185,9 +190,9 @@ class StateMethodTest extends TestCase
 
     public function testGetParameters()
     {
-        self::assertEquals(
-            [$p1 = $this->createMock(\ReflectionParameter::class)],
-            $this->buildInstance()->getParameters()
+        self::assertInstanceOf(
+            ReflectionParameter::class,
+            current($this->buildInstance()->getParameters()),
         );
     }
 }

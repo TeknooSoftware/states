@@ -25,10 +25,16 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan;
 
+use OutOfBoundsException;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
+use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
 use PHPStan\Cache\Cache;
 use PHPStan\Parser\Parser;
 use PHPStan\Parser\FunctionCallStatementFinder;
 use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\Php\PhpMethodReflection;
@@ -37,7 +43,6 @@ use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use ReflectionClass;
 use ReflectionException;
-use ReflectionFunction;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
@@ -46,7 +51,6 @@ use function array_pop;
 use function class_exists;
 use function explode;
 use function implode;
-use function is_callable;
 
 /**
  * Extension for PHPStan to support methods defined in states in Stated class when they are called from the proxy
@@ -69,32 +73,34 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
      */
     private array $proxyNativeReflection = [];
 
+    /**
+     * @var array<string, bool>
+     */
+    private array $hasMethodsCache = [];
+
     public function __construct(
         private Parser $parser,
         private FunctionCallStatementFinder $functionCallStatementFinder,
         private Cache $cache,
         private ReflectionProvider $reflectionProvider,
+        private InitializerExprTypeResolver $initializerExprTypeResolver,
     ) {
     }
 
-    /**
-     * @param ReflectionClass<object> $nativeReflection
-     * @throws ReflectionException
-     */
-    private function checkIfManagedClass(ReflectionClass $nativeReflection): bool
+    private function checkIfManagedClass(ClassReflection $reflection): bool
     {
-        if ($nativeReflection->isInterface()) {
+        if ($reflection->isInterface()) {
             return false;
         }
 
-        $className = $nativeReflection->getName();
-        if ($nativeReflection->implementsInterface(ProxyInterface::class)) {
-            $this->proxyNativeReflection[$className] = $nativeReflection;
+        $className = $reflection->getName();
+        if ($reflection->implementsInterface(ProxyInterface::class)) {
+            $this->proxyNativeReflection[$className] = new ReflectionClass($className);
 
             return true;
         }
 
-        if (!$nativeReflection->implementsInterface(StateInterface::class)) {
+        if (!$reflection->implementsInterface(StateInterface::class)) {
             return false;
         }
 
@@ -130,20 +136,20 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             $listClosure = $listDeclarationReflection->getClosure(null);
 
             return $listClosure();
+            //@codeCoverageIgnoreStart
         } catch (ReflectionException) {
             return [];
         }
+        //@codeCoverageIgnoreEnd
     }
 
     /**
-     * @param ReflectionClass<object> $nativeReflection
      * @throws ReflectionException
      */
-    private function checkMethod(ReflectionClass $nativeReflection, string $methodName): bool
+    private function checkMethod(ClassReflection $reflection, string $methodName): bool
     {
-        $className = $nativeReflection->getName();
-
-        foreach ($this->listStateClassFor($className) as $stateClass) {
+        $proxyClassName = $reflection->getName();
+        foreach ($this->listStateClassFor($proxyClassName) as $stateClass) {
             $nf = new ReflectionClass($stateClass);
             if ($nf->hasMethod($methodName)) {
                 return true;
@@ -158,63 +164,78 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
      */
     public function hasMethod(ClassReflection $classReflection, string $methodName): bool
     {
-        $nativeReflection = $classReflection->getNativeReflection();
-
-        if (!$this->checkIfManagedClass($nativeReflection)) {
-            return false;
+        $cacheKey = $classReflection->getName() . '::' . $methodName;
+        if (isset($this->hasMethodsCache[$cacheKey])) {
+            return $this->hasMethodsCache[$cacheKey];
         }
 
-        return $this->checkMethod($nativeReflection, $methodName);
+        if (!$this->checkIfManagedClass($classReflection)) {
+            return $this->hasMethodsCache[$cacheKey] = false;
+        }
+
+        return $this->hasMethodsCache[$cacheKey] = $this->checkMethod($classReflection, $methodName);
     }
 
     /**
-     * @param ReflectionClass<object> $stateClassReflection
-     * @param ReflectionClass<object> $nativeProxyReflection
+     * @param class-string<object> $proxyClassName
+     * @param ReflectionClass<object> $stateNativeReflection
      * @throws \PHPStan\Broker\ClassNotFoundException
      * @throws ReflectionException
      */
     private function getMethodReflection(
-        ReflectionClass $stateClassReflection,
-        ReflectionClass $nativeProxyReflection,
+        string $proxyClassName,
+        ClassReflection $classReflection,
+        string $stateClass,
+        ReflectionClass $stateNativeReflection,
         string $method
-    ): MethodReflection {
-        $factoryReflection = $stateClassReflection ->getMethod($method);
+    ): PhpMethodReflection {
+        $factoryNativeReflection = $stateNativeReflection->getMethod($method);
         /** @var \Closure $factoryClosure */
-        $factoryClosure = $factoryReflection->getClosure($stateClassReflection->newInstanceWithoutConstructor());
+        $factoryClosure = $factoryNativeReflection->getClosure($stateNativeReflection->newInstanceWithoutConstructor());
         $stateClosure = $factoryClosure();
 
         //To use the original \ReflectionClass api and not "BetterReflectionClass" whome not implements all the api.
-        $realNativeProxyReflection = new ReflectionClass($nativeProxyReflection->getName());
         $stateClosure = @$stateClosure->bindTo(
-            $realNativeProxyReflection->newInstanceWithoutConstructor(),
-            $realNativeProxyReflection->getName()
+            (new \ReflectionClass($proxyClassName))->newInstanceWithoutConstructor(),
+            $proxyClassName,
         );
 
         if (null === $stateClosure) {
             throw new ShouldNotHappenException(
-                "Closure returned by {$stateClassReflection->getName()}::{$method} must be not static"
+                "Closure returned by {$stateNativeReflection->getName()}::{$method} must be not static"
             );
         }
 
-        $closureReflection = new ReflectionFunction($stateClosure);
+        try {
+            $factoryReflection = new ReflectionMethod(BetterReflectionMethod::createFromName($stateClass, $method));
+            //@codeCoverageIgnoreStart
+        } catch (OutOfBoundsException) {
+            $factoryReflection = $factoryNativeReflection;
+        }
+        //@codeCoverageIgnoreEnd
 
         return new PhpMethodReflection(
-            $this->reflectionProvider->getClass($nativeProxyReflection->getName()), //ClassReflection $declaringClass,
-            null, // ?ClassReflection $declaringTrait,
-            new StateMethod($factoryReflection, $closureReflection), //BuiltinMethodReflection $reflection,
-            $this->reflectionProvider, //ReflectionProvider $reflectionProvider,
-            $this->parser, //Parser $parser,
-            $this->functionCallStatementFinder, //FunctionCallStatementFinder $functionCallStatementFinder,
-            $this->cache, //Cache $cache,
-            new TemplateTypeMap([]), //TemplateTypeMap $templateTypeMap,
-            [], //array $phpDocParameterTypes,
-            null, //?Type $phpDocReturnType,
-            null, //?Type $phpDocThrowType,
-            null, //?string $deprecatedDescription,
-            false, //bool $isDeprecated,
-            false, //bool $isInternal,
-            false, //bool $isFinal,
-            null, //?string $stubPhpDocString,
+            initializerExprTypeResolver: $this->initializerExprTypeResolver,
+            declaringClass: $classReflection,
+            declaringTrait: null,
+            reflection: new StateMethod(
+                $factoryReflection,
+                new ReflectionFunction(BetterReflectionFunction::createFromClosure($stateClosure)),
+                $classReflection->getNativeReflection(),
+            ),
+            reflectionProvider: $this->reflectionProvider,
+            parser: $this->parser,
+            functionCallStatementFinder: $this->functionCallStatementFinder,
+            cache: $this->cache,
+            templateTypeMap: new TemplateTypeMap([]),
+            phpDocParameterTypes: [],
+            phpDocReturnType: null,
+            phpDocThrowType: null,
+            deprecatedDescription: null,
+            isDeprecated: false,
+            isInternal: false,
+            isFinal: false,
+            isPure: null,
         );
     }
 
@@ -225,27 +246,25 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
      */
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection
     {
-        $nativeReflection = $classReflection->getNativeReflection();
+        $proxyClassName = $classReflection->getName();
 
-        if (!$this->checkIfManagedClass($nativeReflection)) {
-            $className = $nativeReflection->getName();
-            throw new ShouldNotHappenException("Class $className is not managed by this extension");
+        if (!$this->checkIfManagedClass($classReflection)) {
+            throw new ShouldNotHappenException("Class $proxyClassName is not managed by this extension");
         }
 
-        $className = $nativeReflection->getName();
-
-        foreach ($this->listStateClassFor($className) as $stateClass) {
-            $stateClassReflection = new ReflectionClass($stateClass);
-            if ($stateClassReflection->hasMethod($methodName)) {
+        foreach ($this->listStateClassFor($classReflection->getName()) as $stateClass) {
+            $stateNativeReflection = new ReflectionClass($stateClass);
+            if ($stateNativeReflection->hasMethod($methodName)) {
                 return $this->getMethodReflection(
-                    $stateClassReflection,
-                    $this->proxyNativeReflection[$className],
-                    $methodName
+                    proxyClassName: $proxyClassName,
+                    classReflection: $classReflection,
+                    stateClass: $stateClass,
+                    stateNativeReflection: $stateNativeReflection,
+                    method: $methodName,
                 );
             }
         }
 
-        $className = $nativeReflection->getName();
-        throw new ShouldNotHappenException("Class $className has no method $methodName");
+        throw new ShouldNotHappenException("Class $proxyClassName has no method $methodName");
     }
 }

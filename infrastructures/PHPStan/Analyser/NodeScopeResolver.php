@@ -32,6 +32,7 @@ use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\BetterReflection\Reflector\Reflector;
 use PHPStan\DependencyInjection\Reflection\ClassReflectionExtensionRegistryProvider;
 use PHPStan\Parser\Parser;
+use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Type\FileTypeMapper;
 use PHPStan\PhpDoc\StubPhpDocProvider;
 use PHPStan\Php\PhpVersion;
@@ -60,6 +61,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
 {
     public function __construct(
         ReflectionProvider $reflectionProvider,
+        InitializerExprTypeResolver $initializerExprTypeResolver,
         Reflector $reflector,
         ClassReflectionExtensionRegistryProvider $classReflectionExtensionRegistryProvider,
         Parser $parser,
@@ -78,22 +80,23 @@ class NodeScopeResolver extends BaseNodeScopeResolver
         private ASTVisitor $astVisitor,
     ) {
         parent::__construct(
-            $reflectionProvider,
-            $reflector,
-            $classReflectionExtensionRegistryProvider,
-            $parser,
-            $fileTypeMapper,
-            $stubPhpDocProvider,
-            $phpVersion,
-            $phpDocInheritanceResolver,
-            $fileHelper,
-            $typeSpecifier,
-            $dynamicThrowTypeExtensionProvider,
-            $polluteScopeWithLoopInitialAssignments,
-            $polluteScopeWithAlwaysIterableForeach,
-            $earlyTerminatingMethodCalls,
-            $earlyTerminatingFunctionCalls,
-            $implicitThrows,
+            reflectionProvider: $reflectionProvider,
+            initializerExprTypeResolver: $initializerExprTypeResolver,
+            reflector: $reflector,
+            classReflectionExtensionRegistryProvider: $classReflectionExtensionRegistryProvider,
+            parser: $parser,
+            fileTypeMapper: $fileTypeMapper,
+            stubPhpDocProvider: $stubPhpDocProvider,
+            phpVersion: $phpVersion,
+            phpDocInheritanceResolver: $phpDocInheritanceResolver,
+            fileHelper: $fileHelper,
+            typeSpecifier: $typeSpecifier,
+            dynamicThrowTypeExtensionProvider: $dynamicThrowTypeExtensionProvider,
+            polluteScopeWithLoopInitialAssignments: $polluteScopeWithLoopInitialAssignments,
+            polluteScopeWithAlwaysIterableForeach: $polluteScopeWithAlwaysIterableForeach,
+            earlyTerminatingMethodCalls: $earlyTerminatingMethodCalls,
+            earlyTerminatingFunctionCalls: $earlyTerminatingFunctionCalls,
+            implicitThrows: $implicitThrows,
         );
     }
 
