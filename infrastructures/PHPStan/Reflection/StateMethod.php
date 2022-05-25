@@ -25,25 +25,32 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan\Reflection;
 
-use PhpParser\Node\Expr;
 use PhpParser\Node\Expr\Variable;
+use PhpParser\Node\IntersectionType;
+use PhpParser\Node\Name;
+use PhpParser\Node\NullableType;
 use PhpParser\Node\Param;
+use PhpParser\Node\UnionType;
 use PHPStan\BetterReflection\BetterReflection;
-use PHPStan\BetterReflection\SourceLocator\Located\LocatedSource;
 use PHPStan\BetterReflection\Util\Exception\NoNodePosition;
 use PHPStan\Reflection\Php\BuiltinMethodReflection;
 use PHPStan\TrinaryLogic;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
+use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionIntersectionType;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionNamedType;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionUnionType;
 use PHPStan\BetterReflection\Reflection\ReflectionParameter as BetterReflectionParameter;
+use ReflectionIntersectionType as NativeReflectionIntersectionType;
 use ReflectionMethod as NativeReflectionMethod;
 use ReflectionFunction as NativeReflectionFunction;
-use Reflector;
+use ReflectionNamedType as NativeReflectionNamedType;
+use ReflectionUnionType as NativeReflectionUnionType;
+
+use function array_map;
 
 /**
  * To provide a PHPStan reflection for state's methode in a stated class.
@@ -209,19 +216,67 @@ class StateMethod implements BuiltinMethodReflection
                     $default = new Variable($defaultValue);
                 }
 
+                $finalType = null;
+                if (null !== ($type = $parameter->getType())) {
+                    if ($type instanceof NativeReflectionIntersectionType) {
+                        $finalType = new IntersectionType(
+                            array_map(
+                                fn ($namedType) => $type->allowsNull() ?
+                                    new NullableType(new Name($namedType->getName()))
+                                    : new Name($namedType->getName()),
+                                $type->getTypes()
+                            )
+                        );
+                    } elseif ($type instanceof NativeReflectionUnionType) {
+                        $finalType = new UnionType(
+                            array_map(
+                                fn ($namedType) => $type->allowsNull()
+                                    ? new NullableType(new Name($namedType->getName()))
+                                    : new Name($namedType->getName()),
+                                $type->getTypes()
+                            )
+                        );
+                    } elseif ($type instanceof NativeReflectionNamedType) {
+                        $finalType = new Name($type->getName());
+                        if ($type->allowsNull()) {
+                            $finalType = new NullableType($finalType);
+                        }
+                    }
+                }
+
                 $final[] = new ReflectionParameter(
                     BetterReflectionParameter::createFromNode(
                         reflector: (new BetterReflection())->reflector(),
                         node: new Param(
                             var: new Variable((string) $parameter->getName()),
                             default: $default,
-                            type: (string) $parameter->getType(),
+                            type: $finalType,
                             byRef: $parameter->isPassedByReference(),
                             variadic: $parameter->isVariadic(),
                             attributes: $parameter->getAttributes(),
                             flags: 0,
                         ),
-                        function: new class {
+                        function: new class ($this->factoryReflection) extends BetterReflectionFunction {
+                            public function __construct(
+                                private NativeReflectionMethod $method,
+                            ) {
+                            }
+
+                            public function inNamespace(): bool
+                            {
+                                return false;
+                            }
+
+                            public function getFileName(): ?string
+                            {
+                                return null;
+                            }
+
+                            public function getShortName(): string
+                            {
+                                return $this->method->getShortName();
+                            }
+
                             public function getLocatedSource(): never
                             {
                                 //Throw an exception to hack BetterReflectionParaneeter constructor
