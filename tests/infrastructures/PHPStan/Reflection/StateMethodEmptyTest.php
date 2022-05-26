@@ -26,15 +26,13 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\PHPStan\Reflection;
 
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
 use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
-use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
-use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
-use PHPStan\TrinaryLogic;
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
+use ReflectionIntersectionType as NativeReflectionIntersectionType;
+use ReflectionNamedType as NativeReflectionNamedType;
+use ReflectionUnionType as NativeReflectionUnionType;
 
 /**
  * @copyright   Copyright (c) EIRL Richard Déloge (richarddeloge@gmail.com)
@@ -79,14 +77,82 @@ class StateMethodEmptyTest extends TestCase
             $type = $this->createMock(\ReflectionType::class)
         );
         $closureReflection->expects(self::any())->method('getParameters')->willReturn([
-            $p1 = $this->createMock(\ReflectionParameter::class)
+            $p1 = $this->createMock(\ReflectionParameter::class),
+            $p2 = $this->createMock(\ReflectionParameter::class),
+            $p3 = $this->createMock(\ReflectionParameter::class),
         ]);
 
         $p1->expects(self::any())
+            ->method('getType')
+            ->willReturn($rf1 = $this->createMock(NativeReflectionIntersectionType::class));
+
+        $rf1->expects(self::any())
+            ->method('allowsNull')
+            ->willReturn(true);
+
+        $rf1->expects(self::any())
+            ->method('getTypes')
+            ->willReturn([
+                $rf11 = $this->createMock(NativeReflectionNamedType::class),
+                $rf12 = $this->createMock(NativeReflectionNamedType::class),
+            ]);
+
+        $rf11->expects(self::any())
+            ->method('getName')
+            ->willReturn('pt11');
+
+        $rf12->expects(self::any())
+            ->method('getName')
+            ->willReturn('pt12');
+
+        $p1->expects(self::any())
+            ->method('isOptional')
+            ->willReturn(false);
+
+        $p2->expects(self::any())
+            ->method('getType')
+            ->willReturn($rf2 = $this->createMock(NativeReflectionUnionType::class));
+
+        $rf2->expects(self::any())
+            ->method('allowsNull')
+            ->willReturn(true);
+
+        $rf2->expects(self::any())
+            ->method('getTypes')
+            ->willReturn([
+                $rf21 = $this->createMock(NativeReflectionNamedType::class),
+                $rf22 = $this->createMock(NativeReflectionNamedType::class),
+            ]);
+
+        $rf21->expects(self::any())
+            ->method('getName')
+            ->willReturn('pt21');
+
+        $rf22->expects(self::any())
+            ->method('getName')
+            ->willReturn('pt22');
+
+        $p2->expects(self::any())
+            ->method('isOptional')
+            ->willReturn(false);
+
+        $p3->expects(self::any())
+            ->method('getType')
+            ->willReturn($rf3 = $this->createMock(NativeReflectionNamedType::class));
+
+        $rf3->expects(self::any())
+            ->method('allowsNull')
+            ->willReturn(true);
+
+        $rf3->expects(self::any())
+            ->method('getName')
+            ->willReturn('pt3');
+
+        $p3->expects(self::any())
             ->method('getDefaultValue')
             ->willReturn('foo');
 
-        $p1->expects(self::any())
+        $p3->expects(self::any())
             ->method('isOptional')
             ->willReturn(true);
 

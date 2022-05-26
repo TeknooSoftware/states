@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.5] - 2022-05-26
+### Stable Release
+- Improve support PHPSan 1.7.1+
+
 ## [6.0.4] - 2022-05-25
 ### Stable Release
 - Improve support PHPSan 1.7.1+

@@ -262,6 +262,7 @@ class StateMethod implements BuiltinMethodReflection
                             ) {
                             }
 
+                            //@codeCoverageIgnoreStart
                             public function inNamespace(): bool
                             {
                                 return false;
@@ -276,6 +277,7 @@ class StateMethod implements BuiltinMethodReflection
                             {
                                 return $this->method->getShortName();
                             }
+                            //@codeCoverageIgnoreEnd
 
                             public function getLocatedSource(): never
                             {
