@@ -27,6 +27,7 @@ namespace Teknoo\States\PHPStan\Reflection;
 
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\IntersectionType;
+use PhpParser\Node\Identifier;
 use PhpParser\Node\Name;
 use PhpParser\Node\NullableType;
 use PhpParser\Node\Param;
@@ -221,21 +222,23 @@ class StateMethod implements BuiltinMethodReflection
                     if ($type instanceof NativeReflectionIntersectionType) {
                         $finalType = new IntersectionType(
                             array_map(
-                                fn ($namedType) => $type->allowsNull() ?
-                                    new NullableType(new Name($namedType->getName()))
-                                    : new Name($namedType->getName()),
+                                fn ($namedType) => new Name($namedType->getName()),
                                 $type->getTypes()
                             )
                         );
                     } elseif ($type instanceof NativeReflectionUnionType) {
-                        $finalType = new UnionType(
-                            array_map(
-                                fn ($namedType) => $type->allowsNull()
-                                    ? new NullableType(new Name($namedType->getName()))
-                                    : new Name($namedType->getName()),
-                                $type->getTypes()
-                            )
+                        $allowNull = $type->allowsNull();
+                        $types = array_map(
+                            function ($namedType) use (&$allowNull) {
+                                $allowNull = $allowNull || $namedType->allowsNull();
+                                return new Name($namedType->getName());
+                            },
+                            $type->getTypes()
                         );
+                        if (true === $allowNull) {
+                            $types[] = new Identifier('null');
+                        }
+                        $finalType = new UnionType($types);
                     } elseif ($type instanceof NativeReflectionNamedType) {
                         $finalType = new Name($type->getName());
                         if ($type->allowsNull()) {

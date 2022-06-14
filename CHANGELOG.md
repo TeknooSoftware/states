@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.6] - 2022-06-14
+### Stable Release
+- Fix error from an another BC Break in a patch release v1.7.14 of PHPStan 
+
 ## [6.0.5] - 2022-05-26
 ### Stable Release
 - Improve support PHPSan 1.7.1+
