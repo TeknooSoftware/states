@@ -9,9 +9,6 @@ parameters:
             message: '#Variable \$listClosure on left side of \?\? always exists and is not nullable#'
             path: infrastructures/PHPStan/Analyser/ASTVisitor.php
         -
-            message: '#array<PhpParser\\Node\\Name\|PhpParser\\Node\\NullableType> given#'
-            path: infrastructures/PHPStan/Reflection/StateMethod.php
-        -
             message: '#string, mixed given#'
             path: infrastructures/PHPStan/Reflection/StateMethod.php
         -
