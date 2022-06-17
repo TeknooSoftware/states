@@ -44,7 +44,6 @@ use Teknoo\States\Automated\Assertion\Property\CountsMore;
 class CountsMoreTest extends AbstractConstraintTest
 {
     /**
-     * @param int $expected
      * @return CountsMore|ConstraintInterface
      */
     public function buildInstance(int $expected=0): ConstraintInterface

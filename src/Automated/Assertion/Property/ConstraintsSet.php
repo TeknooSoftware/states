@@ -52,17 +52,16 @@ class ConstraintsSet implements ConstraintsSetInterface
      */
     private array $constraints;
 
-    private readonly Property $property;
-
     /**
      * @param array<ConstraintInterface> $constraints
      */
-    public function __construct(array $constraints, Property $property)
-    {
+    public function __construct(
+        array $constraints,
+        private readonly Property $property
+    ) {
         $this->uniqueConstructorCheck();
 
         $this->constraints = array_reverse($constraints);
-        $this->property = $property;
     }
 
     private function nextConstraint(): ?ConstraintInterface

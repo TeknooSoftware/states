@@ -81,11 +81,11 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
     private array $hasMethodsCache = [];
 
     public function __construct(
-        private Parser $parser,
-        private FunctionCallStatementFinder $functionCallStatementFinder,
-        private Cache $cache,
-        private ReflectionProvider $reflectionProvider,
-        private InitializerExprTypeResolver $initializerExprTypeResolver,
+        private readonly Parser $parser,
+        private readonly FunctionCallStatementFinder $functionCallStatementFinder,
+        private readonly Cache $cache,
+        private readonly ReflectionProvider $reflectionProvider,
+        private readonly InitializerExprTypeResolver $initializerExprTypeResolver,
     ) {
     }
 

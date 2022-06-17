@@ -81,10 +81,8 @@ class StandardObject extends AbstractStandardObject implements
 
     /**
      * Property to test behavior of proxy when a method in a state want access to a private property.
-     *
-     * @var mixed
      */
-    private $privateProperty = 'value1';
+    private mixed $privateProperty = 'value1';
 
     /**
      * Method to update static::$_startupFactoryClassName to run some unit tests.

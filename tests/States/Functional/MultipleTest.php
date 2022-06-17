@@ -55,7 +55,7 @@ class MultipleTest extends \PHPUnit\Framework\TestCase
         $fail = false;
         try {
             $simpleUser->isModerator();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $fail = true;
         }
 

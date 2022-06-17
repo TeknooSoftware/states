@@ -43,13 +43,9 @@ class IsInstanceOf extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    private readonly string $exceptedClassName;
-
-    public function __construct(string $exceptedClassName)
+    public function __construct(private readonly string $exceptedClassName)
     {
         $this->uniqueConstructorCheck();
-
-        $this->exceptedClassName = $exceptedClassName;
     }
 
     public function check(mixed &$value): ConstraintInterface

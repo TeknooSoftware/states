@@ -48,9 +48,7 @@ class StateDefault extends AbstractState
          *
          * @return string
          */
-        return function () {
-            return $this->userName;
-        };
+        return fn() => $this->userName;
     }
 
     protected function setModerator()

@@ -47,9 +47,7 @@ class StateDefault extends AbstractState
          *
          * @return string
          */
-        return function () {
-            return $this->getAttribute('title');
-        };
+        return fn() => $this->getAttribute('title');
     }
 
     /**

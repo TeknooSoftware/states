@@ -48,7 +48,7 @@ class IsNotInstanceOfTest extends AbstractConstraintTest
      */
     public function buildInstance(): ConstraintInterface
     {
-        return new IsNotInstanceOf('\DateTime');
+        return new IsNotInstanceOf(\DateTime::class);
     }
 
     public function testNotInstanceProperty()

@@ -30,7 +30,7 @@ use Acme\Extendable\Mother\States\StateOne;
 use Acme\Extendable\Mother\States\StateTwo;
 use Teknoo\States\Exception\MethodNotImplemented;
 
-$composer = include 'demo.php';
+$composer = include __DIR__ . '/demo.php';
 $composer->setPsr4('Acme\\', __DIR__.DS.'Acme'.DS);
 
 echo 'Teknoo Software - States library - Demo for extendable behavior:'.PHP_EOL;

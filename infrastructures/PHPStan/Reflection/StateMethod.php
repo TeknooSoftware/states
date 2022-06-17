@@ -77,9 +77,9 @@ use function array_map;
 class StateMethod implements BuiltinMethodReflection
 {
     public function __construct(
-        private ReflectionMethod|NativeReflectionMethod $factoryReflection,
-        private ReflectionFunction|NativeReflectionFunction $closureReflection,
-        private ReflectionClass $reflectionClass,
+        private readonly ReflectionMethod|NativeReflectionMethod $factoryReflection,
+        private readonly ReflectionFunction|NativeReflectionFunction $closureReflection,
+        private readonly ReflectionClass $reflectionClass,
     ) {
     }
 
@@ -129,9 +129,6 @@ class StateMethod implements BuiltinMethodReflection
         return $endLine;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDocComment(): ?string
     {
         $doc = $this->factoryReflection->getDocComment();
@@ -261,7 +258,7 @@ class StateMethod implements BuiltinMethodReflection
                         ),
                         function: new class ($this->factoryReflection) extends BetterReflectionFunction {
                             public function __construct(
-                                private NativeReflectionMethod $method,
+                                private readonly NativeReflectionMethod $method,
                             ) {
                             }
 

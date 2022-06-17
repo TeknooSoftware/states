@@ -102,15 +102,13 @@ class MethodsClassExtensionTest extends TestCase
 
     protected function buildInstance(): MethodsClassReflectionExtension
     {
-        $instance = new MethodsClassExtension(
+        return new MethodsClassExtension(
             $this->getParserMock(),
             $this->getFunctionCallStatementFinderMock(),
             $this->getCacheMock(),
             $this->getReflectionProviderMock(),
             $this->createMock(InitializerExprTypeResolver::class),
         );
-
-        return $instance;
     }
 
     public function testHasMethodIsInterface()

@@ -47,13 +47,9 @@ class CountsEqual extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    private readonly int $exceptedCount;
-
-    public function __construct(int $exceptedCount)
+    public function __construct(private readonly int $exceptedCount)
     {
         $this->uniqueConstructorCheck();
-
-        $this->exceptedCount = $exceptedCount;
     }
 
     public function check(mixed &$value): ConstraintInterface

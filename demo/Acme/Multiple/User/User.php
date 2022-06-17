@@ -42,27 +42,6 @@ use Teknoo\States\Proxy;
  */
 class User extends Proxy\Standard
 {
-    /**
-     * Username of this user.
-     *
-     * @var string
-     */
-    protected $userName = '';
-
-    /**
-     * To know if this user is an admin.
-     *
-     * @var bool
-     */
-    protected $isAdmin = false;
-
-    /**
-     * To know if this user is a moderator.
-     *
-     * @var bool
-     */
-    protected $isModerator = false;
-
     protected static function statesListDeclaration(): array
     {
         return [
@@ -74,17 +53,12 @@ class User extends Proxy\Standard
 
     /**
      * To initialize this user with some data.
-     *
-     * @param string $username
-     * @param bool   $isAdmin
-     * @param bool   $isModerator
      */
-    public function __construct($username, $isAdmin = false, $isModerator = false)
-    {
-        //Register options
-        $this->userName = $username;
-        $this->isAdmin = $isAdmin;
-        $this->isModerator = $isModerator;
+    public function __construct(
+        protected string $userName,
+        protected bool $isAdmin = false,
+        protected bool $isModerator = false
+    ) {
         //Initialize user
         parent::__construct();
         //Load states

@@ -47,17 +47,12 @@ abstract class AbstractStatesTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-        parent::setUpBeforeClass();
-
-        require_once dirname(dirname(__DIR__)).'/Support/InheritanceFakeClasses.php';
+        require_once dirname(__DIR__, 2).'/Support/InheritanceFakeClasses.php';
     }
 
     /**
      * Build a basic object to provide only public methods.
      *
-     * @param bool   $privateMode
-     * @param string $statedClassName
-     * @param array  $aliases
      *
      * @return Support\MockOnlyPublic
      */
@@ -66,9 +61,6 @@ abstract class AbstractStatesTest extends TestCase
     /**
      * Build a basic object to provide only protected methods.
      *
-     * @param bool   $privateMode
-     * @param string $statedClassName
-     * @param array  $aliases
      *
      * @return Support\MockOnlyProtected
      */
@@ -77,9 +69,6 @@ abstract class AbstractStatesTest extends TestCase
     /**
      * Build a basic object to provide only private methods.
      *
-     * @param bool   $privateMode
-     * @param string $statedClassName
-     * @param array  $aliases
      *
      * @return Support\MockOnlyPrivate
      */
@@ -94,7 +83,7 @@ abstract class AbstractStatesTest extends TestCase
      */
     protected function formatDescription($text)
     {
-        $s = trim(str_replace(array('*', '/'), '', $text->getDocComment()));
+        $s = trim(str_replace(array('*', '/'), '', (string) $text->getDocComment()));
 
         return preg_replace('~[[:cntrl:]]~', '', $s);
     }

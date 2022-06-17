@@ -150,18 +150,14 @@ trait StateTrait
      */
     private function checkVisibilityProtected(string &$methodName, string &$statedClassOrigin): bool
     {
-        if (
-            $this->reflectionsMethods[$methodName] instanceof ReflectionMethod
+        //It's a public or protected method, do like if there is no method
+        return $this->reflectionsMethods[$methodName] instanceof ReflectionMethod
             && false === $this->reflectionsMethods[$methodName]->isPrivate()
             && !empty($statedClassOrigin)
-            && ($statedClassOrigin === $this->statedClassName
-                || is_subclass_of($statedClassOrigin, $this->statedClassName))
-        ) {
-            //It's a public or protected method, do like if there is no method
-            return true;
-        }
-
-        return false;
+            && (
+                $statedClassOrigin === $this->statedClassName
+                || is_subclass_of($statedClassOrigin, $this->statedClassName)
+            );
     }
 
     /**
@@ -169,15 +165,9 @@ trait StateTrait
      */
     private function checkVisibilityPublic(string &$methodName): bool
     {
-        if (
-            $this->reflectionsMethods[$methodName] instanceof ReflectionMethod
-            && true === $this->reflectionsMethods[$methodName]->isPublic()
-        ) {
-            //It's a public method, do like if there is no method
-            return true;
-        }
-
-        return false;
+        //It's a public method, do like if there is no method
+        return $this->reflectionsMethods[$methodName] instanceof ReflectionMethod
+            && true === $this->reflectionsMethods[$methodName]->isPublic();
     }
 
     /**

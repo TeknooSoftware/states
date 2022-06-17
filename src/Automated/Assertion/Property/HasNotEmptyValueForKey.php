@@ -44,13 +44,9 @@ class HasNotEmptyValueForKey extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    private readonly string $keyName;
-
-    public function __construct(string $keyName)
+    public function __construct(private readonly string $keyName)
     {
         $this->uniqueConstructorCheck();
-
-        $this->keyName = $keyName;
     }
 
     public function check(mixed &$value): ConstraintInterface

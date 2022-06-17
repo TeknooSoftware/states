@@ -44,13 +44,9 @@ class IsGreaterOrEqualThan extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    private readonly mixed $exceptedValue;
-
-    public function __construct(mixed $exceptedValue)
+    public function __construct(private readonly mixed $exceptedValue)
     {
         $this->uniqueConstructorCheck();
-
-        $this->exceptedValue = $exceptedValue;
     }
 
     public function check(mixed &$value): ConstraintInterface

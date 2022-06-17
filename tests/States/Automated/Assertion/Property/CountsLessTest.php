@@ -44,7 +44,6 @@ use Teknoo\States\Automated\Assertion\Property\CountsLess;
 class CountsLessTest extends AbstractConstraintTest
 {
     /**
-     * @param int $expected
      * @return CountsLess|ConstraintInterface
      */
     public function buildInstance(int $expected=0): ConstraintInterface

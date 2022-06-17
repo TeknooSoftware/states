@@ -47,7 +47,7 @@ class CallbackTest extends AbstractAssertionTest
     /**
      * @return Callback|AssertionInterface
      */
-    public function buildInstance()
+    public function buildInstance(): callable|AssertionInterface
     {
         return new Callback(['state1', 'state2']);
     }

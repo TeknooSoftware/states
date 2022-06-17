@@ -77,9 +77,7 @@ class ASTVisitorTest extends TestCase
             $classReflection->expects(self::any())
                 ->method('getNativeReflection')
                 ->willReturnCallback(
-                    function () {
-                        return new \ReflectionClass($this->currentClass);
-                    }
+                    fn() => new \ReflectionClass($this->currentClass)
                 );
 
             $this->reflectionProvider->expects(self::any())

@@ -45,13 +45,6 @@ use Teknoo\States\Proxy;
  */
 class Article extends Proxy\Standard
 {
-    /**
-     * Article's data.
-     *
-     * @var array
-     */
-    protected $data = array();
-
     protected static function statesListDeclaration(): array
     {
         return [
@@ -96,9 +89,8 @@ class Article extends Proxy\Standard
      *
      * @param array $data
      */
-    public function __construct($data = array())
+    public function __construct(protected $data = array())
     {
-        $this->data = $data;
         parent::__construct();
         //If the article is published, load the state Published, else load the state Draft
         if (false === $this->isPublished()) {

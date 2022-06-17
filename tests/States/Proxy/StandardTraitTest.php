@@ -48,10 +48,8 @@ class StandardTraitTest extends AbstractProxyTest
 
     /**
      * Build a proxy object, into $this->proxy to test it.
-     *
-     * @return Proxy\ProxyInterface|Support\StandardTraitProxy
      */
-    protected function buildProxy()
+    protected function buildProxy(): \Proxy\ProxyInterface|\Teknoo\Tests\Support\StandardTraitProxy
     {
         $this->proxy = new Support\StandardTraitProxy();
 

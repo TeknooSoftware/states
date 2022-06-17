@@ -67,8 +67,8 @@ class ASTVisitor extends NodeVisitorAbstract
     private array $statesStmts = [];
 
     public function __construct(
-        private ReflectionProvider $reflectionProvider,
-        private Parser $parser,
+        private readonly ReflectionProvider $reflectionProvider,
+        private readonly Parser $parser,
     ) {
     }
 

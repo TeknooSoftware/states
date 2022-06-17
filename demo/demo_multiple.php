@@ -24,7 +24,7 @@ namespace demo;
 
 use demo\Acme\Multiple\User\User;
 
-$composer = include 'demo.php';
+$composer = include __DIR__ . '/demo.php';
 $composer->setPsr4('demo\\Acme\\', __DIR__.DS.'Acme'.DS);
 
 echo 'Teknoo Software - States library - Demo :'.PHP_EOL.PHP_EOL;

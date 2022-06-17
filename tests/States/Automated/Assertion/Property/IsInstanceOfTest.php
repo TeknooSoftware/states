@@ -48,7 +48,7 @@ class IsInstanceOfTest extends AbstractConstraintTest
      */
     public function buildInstance(): ConstraintInterface
     {
-        return new IsInstanceOf('\DateTime');
+        return new IsInstanceOf(\DateTime::class);
     }
 
     public function testInstanceOfProperty()

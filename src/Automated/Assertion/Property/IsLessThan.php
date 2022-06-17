@@ -43,13 +43,9 @@ class IsLessThan extends AbstractConstraint
 {
     use ImmutableTrait;
 
-    private readonly int | float $exceptedValue;
-
-    public function __construct(int | float $exceptedValue)
+    public function __construct(private readonly int | float $exceptedValue)
     {
         $this->uniqueConstructorCheck();
-
-        $this->exceptedValue = $exceptedValue;
     }
 
     public function check(mixed &$value): ConstraintInterface

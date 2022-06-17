@@ -47,7 +47,6 @@ use Teknoo\States\Proxy\ProxyTrait;
 class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @param array $assertions
      * @return AutomatedInterface
      */
     public function buildProxy(array $assertions): AutomatedInterface
@@ -56,11 +55,8 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
             use AutomatedTrait;
             use ProxyTrait;
 
-            private $assertions;
-
-            public function __construct(array $assertions)
+            public function __construct(private readonly array $assertions)
             {
-                $this->assertions = $assertions;
             }
 
             protected static function statesListDeclaration(): array

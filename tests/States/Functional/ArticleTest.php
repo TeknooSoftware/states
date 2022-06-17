@@ -83,7 +83,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $fail = false;
         try {
             $article->setTitle('Hello world');
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $fail = true;
         }
 
@@ -95,7 +95,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $fail = false;
         try {
             $article->setBody('Lorem [b]Ipsum[/b]');
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $fail = true;
         }
 
@@ -109,7 +109,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $fail = false;
         try {
             $article->getBodySource();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $fail = true;
         }
 
@@ -121,7 +121,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $fail = false;
         try {
             $article->publishing();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $fail = true;
         }
 
@@ -135,7 +135,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $fail = false;
         try {
             $article->getDate();
-        } catch (\Exception $e) {
+        } catch (\Exception) {
             $fail = true;
         }
 

@@ -77,7 +77,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
         array $earlyTerminatingMethodCalls,
         array $earlyTerminatingFunctionCalls,
         bool $implicitThrows,
-        private ASTVisitor $astVisitor,
+        private readonly ASTVisitor $astVisitor,
     ) {
         parent::__construct(
             reflectionProvider: $reflectionProvider,
