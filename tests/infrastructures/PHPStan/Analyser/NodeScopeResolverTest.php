@@ -40,6 +40,7 @@ use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\File\FileHelper;
 use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\DependencyInjection\Type\DynamicThrowTypeExtensionProvider;
+use PHPStan\Rules\Properties\ReadWritePropertiesExtensionProvider;
 use Teknoo\States\PHPStan\Analyser\ASTVisitor;
 use Teknoo\States\PHPStan\Analyser\NodeScopeResolver;
 
@@ -73,6 +74,7 @@ class NodeScopeResolverTest extends TestCase
             $this->createMock(FileHelper::class),
             $this->createMock(TypeSpecifier::class),
             $this->createMock(DynamicThrowTypeExtensionProvider::class),
+            $this->createMock(ReadWritePropertiesExtensionProvider::class),
             true,
             true,
             [],

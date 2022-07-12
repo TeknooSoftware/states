@@ -28,18 +28,19 @@ namespace Teknoo\States\PHPStan\Analyser;
 use PhpParser\NodeTraverser;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\NodeScopeResolver as BaseNodeScopeResolver;
-use PHPStan\Reflection\ReflectionProvider;
+use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\BetterReflection\Reflector\Reflector;
 use PHPStan\DependencyInjection\Reflection\ClassReflectionExtensionRegistryProvider;
-use PHPStan\Parser\Parser;
-use PHPStan\Reflection\InitializerExprTypeResolver;
-use PHPStan\Type\FileTypeMapper;
-use PHPStan\PhpDoc\StubPhpDocProvider;
-use PHPStan\Php\PhpVersion;
-use PHPStan\PhpDoc\PhpDocInheritanceResolver;
-use PHPStan\File\FileHelper;
-use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\DependencyInjection\Type\DynamicThrowTypeExtensionProvider;
+use PHPStan\File\FileHelper;
+use PHPStan\Parser\Parser;
+use PHPStan\Php\PhpVersion;
+use PHPStan\PhpDoc\StubPhpDocProvider;
+use PHPStan\PhpDoc\PhpDocInheritanceResolver;
+use PHPStan\Reflection\InitializerExprTypeResolver;
+use PHPStan\Reflection\ReflectionProvider;
+use PHPStan\Rules\Properties\ReadWritePropertiesExtensionProvider;
+use PHPStan\Type\FileTypeMapper;
 
 /**
  * NodeScope Resolver extending to parse the AST before analyze it with the AST Visitor provided by
@@ -72,6 +73,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
         FileHelper $fileHelper,
         TypeSpecifier $typeSpecifier,
         DynamicThrowTypeExtensionProvider $dynamicThrowTypeExtensionProvider,
+        ReadWritePropertiesExtensionProvider $readWritePropertiesExtensionProvider,
         bool $polluteScopeWithLoopInitialAssignments,
         bool $polluteScopeWithAlwaysIterableForeach,
         array $earlyTerminatingMethodCalls,
@@ -97,6 +99,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
             earlyTerminatingMethodCalls: $earlyTerminatingMethodCalls,
             earlyTerminatingFunctionCalls: $earlyTerminatingFunctionCalls,
             implicitThrows: $implicitThrows,
+            readWritePropertiesExtensionProvider: $readWritePropertiesExtensionProvider
         );
     }
 

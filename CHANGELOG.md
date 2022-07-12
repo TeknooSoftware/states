@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.8] - 2022-07-12
+### Stable Release
+- Support PHPStan 1.8.1+ (BC break in bug fix release)
+- Warning: PHPStan support will be dropped in 7.0+
+
 ## [6.0.7] - 2022-06-17
 ### Stable Release
 - Clean code and tests with rector
