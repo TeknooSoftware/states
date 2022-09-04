@@ -35,6 +35,7 @@ use PHPStan\Parser\Parser;
 use PHPStan\Parser\ParserErrorsException;
 use PHPStan\Reflection\ReflectionProvider;
 use ReflectionException;
+use Teknoo\East\Paas\Compilation\Conductor;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
@@ -121,7 +122,7 @@ class ASTVisitor extends NodeVisitorAbstract
      * @return array<int, ClassMethod>
      * @throws ParserErrorsException
      */
-    private function getStateStmts(string $className): array
+    private function getStateStmts(string $className, Class_ $parent): array
     {
         if (isset($this->statesStmts[$className])) {
             return $this->statesStmts[$className];
@@ -135,14 +136,14 @@ class ASTVisitor extends NodeVisitorAbstract
         }
 
         $node = $this->parser->parseFile($fileName);
-        $recursiveExtraction = static function (array $stmts, callable $recursiveExtraction): ?array {
+        $recursiveExtraction = static function (array $stmts, Class_ $parent, callable $recursiveExtraction): ?array {
             foreach ($stmts as $node) {
                 if (
                     !$node instanceof Class_
                     && !empty($node->stmts)
                     && is_array($node->stmts)
                 ) {
-                    $return = $recursiveExtraction($node->stmts, $recursiveExtraction);
+                    $return = $recursiveExtraction($node->stmts, $parent, $recursiveExtraction);
 
                     if (null !== $return) {
                         return $return;
@@ -155,6 +156,8 @@ class ASTVisitor extends NodeVisitorAbstract
                             continue;
                         }
 
+                        $stmt->setAttribute('parent', $parent);
+
                         $stmts[] = $stmt;
                     }
 
@@ -165,7 +168,7 @@ class ASTVisitor extends NodeVisitorAbstract
             return null;
         };
 
-        return $this->statesStmts[$className] = $recursiveExtraction($node, $recursiveExtraction) ?? [];
+        return $this->statesStmts[$className] = $recursiveExtraction($node, $parent, $recursiveExtraction) ?? [];
     }
 
     /**
@@ -218,7 +221,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 $classes = array_keys($this->listStatesFromProxyClass($className));
                 $node->stmts = $this->mergeStmts(
                     $node->stmts,
-                    array_map(fn ($class) => $this->getStateStmts((string) $class), $classes)
+                    array_map(fn ($class) => $this->getStateStmts((string) $class, $node), $classes)
                 );
             }
 
