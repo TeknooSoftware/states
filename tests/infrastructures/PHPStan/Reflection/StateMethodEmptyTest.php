@@ -198,7 +198,9 @@ class StateMethodEmptyTest extends TestCase
 
     public function testGetDocCommentNull()
     {
+        assert_options(ASSERT_ACTIVE, 0);
         self::assertEmpty($this->buildInstance('')->getDocComment());
         self::assertEmpty($this->buildInstance(false)->getDocComment());
+        assert_options(ASSERT_ACTIVE, 1);
     }
 }

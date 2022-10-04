@@ -130,7 +130,9 @@ class StateMethodTest extends TestCase
 
     public function testGetDocCommentNull()
     {
+        assert_options(ASSERT_ACTIVE, 0);
         self::assertEmpty($this->buildInstance('')->getDocComment());
+        assert_options(ASSERT_ACTIVE, 1);
     }
 
     public function testIsStatic()
