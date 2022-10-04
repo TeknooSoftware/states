@@ -181,6 +181,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
     /**
      * @param class-string<object> $proxyClassName
      * @param ReflectionClass<object> $stateNativeReflection
+     * @param non-empty-string $method
      * @throws \PHPStan\Broker\ClassNotFoundException
      * @throws ReflectionException
      */
@@ -252,6 +253,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
     /**
      * @throws ShouldNotHappenException
      * @throws \PHPStan\Broker\ClassNotFoundException
+     * @param non-empty-string $methodName
      * @throws ReflectionException
      */
     public function getMethod(ClassReflection $classReflection, string $methodName): MethodReflection

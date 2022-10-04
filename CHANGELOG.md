@@ -1,8 +1,12 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.10] - 2022-10-04
+### Stable Release
+- Support PHP 1.8.7+
+
 ## [6.0.9] - 2022-07-12
 ### Stable Release
-- Prevent issue in PHPStan AST Visitoor, replace parent in migrated class method statement
+- Prevent issue in PHPStan AST Visitor, replace parent in migrated class method statement
   with proxy statement.
 
 ## [6.0.8] - 2022-07-12

@@ -287,7 +287,7 @@ class StateMethod implements BuiltinMethodReflection
                             }
                         },
                         parameterIndex: $parameter->getPosition(),
-                        optional: $parameter->isOptional(),
+                        isOptional: $parameter->isOptional(),
                     )
                 );
             }

@@ -195,4 +195,10 @@ class StateMethodEmptyTest extends TestCase
             $this->buildInstance()->getParameters()[0]
         );
     }
+
+    public function testGetDocCommentNull()
+    {
+        self::assertEmpty($this->buildInstance('')->getDocComment());
+        self::assertEmpty($this->buildInstance(false)->getDocComment());
+    }
 }

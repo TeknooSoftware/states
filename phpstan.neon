@@ -12,6 +12,9 @@ parameters:
             message: '#string, mixed given#'
             path: infrastructures/PHPStan/Reflection/StateMethod.php
         -
+            message: '#should return non-empty-string but returns string#'
+            path: infrastructures/PHPStan/Reflection/StateMethod.php
+        -
             message: '#Trying to invoke Closure\|null#'
             path: infrastructures/PHPStan/MethodsClassExtension.php
         -
