@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.11] - 2022-11-03
+### Stable Release
+- Support PHP 1.9+
+
 ## [6.0.10] - 2022-10-04
 ### Stable Release
 - Support PHP 1.8.7+

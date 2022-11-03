@@ -42,6 +42,8 @@ use PHPStan\Reflection\Php\PhpMethodReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\Generic\TemplateTypeMap;
+use PHPStan\Type\Type;
+use PHPStan\Reflection\Assertions;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionFunction as NatveReflectionFunction;
@@ -247,6 +249,10 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             isInternal: false,
             isFinal: false,
             isPure: null,
+            asserts: Assertions::createEmpty(),
+            selfOutType: null,
+            phpDocComment: null,
+            phpDocParameterOutTypes: [],
         );
     }
 

@@ -297,4 +297,13 @@ class StateMethod implements BuiltinMethodReflection
 
         return $this->closureReflection->getParameters();
     }
+
+    public function returnsByReference(): TrinaryLogic
+    {
+        if ($this->closureReflection->returnsReference()) {
+            return TrinaryLogic::createYes();
+        }
+
+        return TrinaryLogic::createNo();
+    }
 }

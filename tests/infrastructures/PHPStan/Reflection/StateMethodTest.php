@@ -78,6 +78,7 @@ class StateMethodTest extends TestCase
         $closureReflection->expects(self::any())->method('getEndLine')->willReturn(34);
         $closureReflection->expects(self::never())->method('getDocComment');
         $closureReflection->expects(self::any())->method('isVariadic')->willReturn(false);
+        $closureReflection->expects(self::any())->method('returnsReference')->willReturn(false);
         $closureReflection->expects(self::any())->method('getReturnType')->willReturn(
             $this->createMock(BetterReflectionNamedType::class)
         );
@@ -195,6 +196,14 @@ class StateMethodTest extends TestCase
         self::assertInstanceOf(
             ReflectionParameter::class,
             current($this->buildInstance()->getParameters()),
+        );
+    }
+
+    public function testReturnsByReference()
+    {
+        self::assertEquals(
+            TrinaryLogic::createNo(),
+            $this->buildInstance()->returnsByReference(),
         );
     }
 }

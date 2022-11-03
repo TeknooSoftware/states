@@ -28,6 +28,7 @@ namespace Teknoo\Tests\States\PHPStan\Reflection;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
 use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
+use PHPStan\TrinaryLogic;
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 use ReflectionIntersectionType as NativeReflectionIntersectionType;
@@ -73,6 +74,7 @@ class StateMethodEmptyTest extends TestCase
         $closureReflection->expects(self::any())->method('getEndLine')->willReturn(0);
         $closureReflection->expects(self::never())->method('getDocComment');
         $closureReflection->expects(self::any())->method('isVariadic')->willReturn(false);
+        $closureReflection->expects(self::any())->method('returnsReference')->willReturn(true);
         $closureReflection->expects(self::any())->method('getReturnType')->willReturn(
             $type = $this->createMock(\ReflectionType::class)
         );
@@ -204,5 +206,13 @@ class StateMethodEmptyTest extends TestCase
         self::assertEmpty($this->buildInstance('')->getDocComment());
         self::assertEmpty($this->buildInstance(false)->getDocComment());
         assert_options(ASSERT_ACTIVE, 1);
+    }
+
+    public function testReturnsByReference()
+    {
+        self::assertEquals(
+            TrinaryLogic::createYes(),
+            $this->buildInstance()->returnsByReference(),
+        );
     }
 }
