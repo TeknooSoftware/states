@@ -21,6 +21,8 @@
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
 
+declare(strict_types=1);
+
 namespace Teknoo\Tests\States\Automated\Assertion;
 
 use Teknoo\States\Automated\Assertion\AbstractAssertion;
