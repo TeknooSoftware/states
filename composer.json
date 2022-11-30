@@ -43,6 +43,7 @@
         "sebastian/phpcpd": "^6.0.3",
         "phploc/phploc": "^7.0.2",
         "phpstan/phpstan": "^1.9",
+        "symfony/property-access": "^6.0",
         "icanhazstring/composer-unused": "^0.8.4",
         "nikic/php-parser": "^4.15.1",
         "doctrine/orm": "^2.13.3",
