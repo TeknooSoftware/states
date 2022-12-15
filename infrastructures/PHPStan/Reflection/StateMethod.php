@@ -219,14 +219,14 @@ class StateMethod implements BuiltinMethodReflection
                     if ($type instanceof NativeReflectionIntersectionType) {
                         $finalType = new IntersectionType(
                             array_map(
-                                fn ($namedType) => new Name($namedType->getName()),
+                                static fn($namedType): Name => new Name($namedType->getName()),
                                 $type->getTypes()
                             )
                         );
                     } elseif ($type instanceof NativeReflectionUnionType) {
                         $allowNull = $type->allowsNull();
                         $types = array_map(
-                            function ($namedType) use (&$allowNull) {
+                            static function ($namedType) use (&$allowNull): Name {
                                 $allowNull = $allowNull || $namedType->allowsNull();
                                 return new Name($namedType->getName());
                             },
@@ -235,6 +235,7 @@ class StateMethod implements BuiltinMethodReflection
                         if (true === $allowNull) {
                             $types[] = new Identifier('null');
                         }
+
                         $finalType = new UnionType($types);
                     } elseif ($type instanceof NativeReflectionNamedType) {
                         $finalType = new Name($type->getName());
@@ -277,6 +278,7 @@ class StateMethod implements BuiltinMethodReflection
                             {
                                 return $this->method->getShortName();
                             }
+
                             //@codeCoverageIgnoreEnd
 
                             public function getLocatedSource(): never

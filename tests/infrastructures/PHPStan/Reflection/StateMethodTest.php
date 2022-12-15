@@ -52,7 +52,7 @@ use Teknoo\States\PHPStan\Reflection\StateMethod;
  */
 class StateMethodTest extends TestCase
 {
-    protected function buildInstance($doc = 'factory doc')
+    protected function buildInstance($doc = 'factory doc'): \Teknoo\States\PHPStan\Reflection\StateMethod
     {
         $factoryReflection = $this->createMock(BetterReflectionMethod::class);
         $factoryReflection->expects(self::any())->method('getName')->willReturn('factory');
@@ -94,104 +94,104 @@ class StateMethodTest extends TestCase
         );
     }
 
-    public function testGetName()
+    public function testGetName(): void
     {
         self::assertEquals('factory', $this->buildInstance()->getName());
     }
 
-    public function testGetReflection()
+    public function testGetReflection(): void
     {
         self::assertInstanceOf(ReflectionMethod::class, $this->buildInstance()->getReflection());
     }
 
-    public function testGetFileName()
+    public function testGetFileName(): void
     {
         self::assertEquals('factory.php', $this->buildInstance()->getFileName());
     }
 
-    public function testGetDeclaringClass()
+    public function testGetDeclaringClass(): void
     {
         self::assertInstanceOf(\ReflectionClass::class, $this->buildInstance()->getDeclaringClass());
     }
 
-    public function testGetStartLine()
+    public function testGetStartLine(): void
     {
         self::assertEquals(12, $this->buildInstance()->getStartLine());
     }
 
-    public function testGetEndLine()
+    public function testGetEndLine(): void
     {
         self::assertEquals(34, $this->buildInstance()->getEndLine());
     }
 
-    public function testGetDocComment()
+    public function testGetDocComment(): void
     {
         self::assertEquals('factory doc', $this->buildInstance()->getDocComment());
     }
 
-    public function testGetDocCommentNull()
+    public function testGetDocCommentNull(): void
     {
         assert_options(ASSERT_ACTIVE, 0);
         self::assertEmpty($this->buildInstance('')->getDocComment());
         assert_options(ASSERT_ACTIVE, 1);
     }
 
-    public function testIsStatic()
+    public function testIsStatic(): void
     {
         self::assertFalse($this->buildInstance()->isStatic());
     }
 
-    public function testIsPrivate()
+    public function testIsPrivate(): void
     {
         self::assertFalse($this->buildInstance()->isPrivate());
     }
 
-    public function testIsPublic()
+    public function testIsPublic(): void
     {
         self::assertFalse($this->buildInstance()->isPublic());
     }
 
-    public function testGetPrototype()
+    public function testGetPrototype(): void
     {
         self::assertInstanceOf(StateMethod::class, $this->buildInstance()->getPrototype());
     }
 
-    public function testIsDeprecated()
+    public function testIsDeprecated(): void
     {
         self::assertEquals(TrinaryLogic::createFromBoolean(false), $this->buildInstance()->isDeprecated());
     }
 
-    public function testIsFinal()
+    public function testIsFinal(): void
     {
         self::assertFalse($this->buildInstance()->isFinal());
     }
 
-    public function testIsInternal()
+    public function testIsInternal(): void
     {
         self::assertFalse($this->buildInstance()->isInternal());
     }
 
-    public function testIsAbstract()
+    public function testIsAbstract(): void
     {
         self::assertFalse($this->buildInstance()->isAbstract());
     }
 
-    public function testIsVariadic()
+    public function testIsVariadic(): void
     {
         self::assertFalse($this->buildInstance()->isVariadic());
     }
 
-    public function testGetReturnType()
+    public function testGetReturnType(): void
     {
         self::assertInstanceOf(ReflectionNamedType::class, $this->buildInstance()->getReturnType());
     }
 
-    public function testGetTentativeReturnType()
+    public function testGetTentativeReturnType(): void
     {
         self::assertNull($this->buildInstance()->getTentativeReturnType());
     }
 
-    public function testGetParameters()
+    public function testGetParameters(): void
     {
         self::assertInstanceOf(
             ReflectionParameter::class,
@@ -199,7 +199,7 @@ class StateMethodTest extends TestCase
         );
     }
 
-    public function testReturnsByReference()
+    public function testReturnsByReference(): void
     {
         self::assertEquals(
             TrinaryLogic::createNo(),

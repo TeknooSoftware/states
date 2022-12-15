@@ -80,9 +80,6 @@ class AutomatedAcme implements AutomatedInterface
         $this->initializeStateProxy();
     }
 
-    /**
-     * @return array
-     */
     protected static function statesListDeclaration(): array
     {
         return [
@@ -92,11 +89,9 @@ class AutomatedAcme implements AutomatedInterface
     }
 
     /**
-     * @param mixed $foo
-     *
      * @return self
      */
-    public function setFoo($foo)
+    public function setFoo(mixed $foo)
     {
         $this->foo = $foo;
 
@@ -104,11 +99,9 @@ class AutomatedAcme implements AutomatedInterface
     }
 
     /**
-     * @param mixed $foo1
-     *
      * @return self
      */
-    public function setFoo1($foo1)
+    public function setFoo1(mixed $foo1)
     {
         $this->foo1 = $foo1;
 
@@ -116,11 +109,9 @@ class AutomatedAcme implements AutomatedInterface
     }
 
     /**
-     * @param mixed $foo2
-     *
      * @return self
      */
-    public function setFoo2($foo2)
+    public function setFoo2(mixed $foo2)
     {
         $this->foo2 = $foo2;
 

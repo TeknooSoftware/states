@@ -48,7 +48,7 @@ trait PrivateTestTrait
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
-    public function testPHPExceptionWhenAChildCanAccessToPrivatePropertyOfMother()
+    public function testPHPExceptionWhenAChildCanAccessToPrivatePropertyOfMother(): void
     {
         //PHPUnit intercepts the Notice exception ;)
         $this->expectException(\PHPUnit\Framework\Exception::class);
@@ -59,7 +59,7 @@ trait PrivateTestTrait
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
-    public function testIssetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother()
+    public function testIssetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother(): void
     {
         $this->initializeStateProxy(MockState1::class, true);
         self::assertFalse($this->proxy->issetChildrenPriProperty());
@@ -69,7 +69,7 @@ trait PrivateTestTrait
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
-    public function testSetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother()
+    public function testSetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother(): void
     {
         $this->initializeStateProxy(MockState1::class, true);
         $this->proxy->setChildrenPriProperty('value2');
@@ -79,7 +79,7 @@ trait PrivateTestTrait
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
-    public function testUnsetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother()
+    public function testUnsetPHPBehaviorWhenAChildCanAccessToPrivatePropertyOfMother(): void
     {
         $this->initializeStateProxy(MockState1::class, true);
         self::assertEmpty($this->proxy->unsetChildrenPriProperty());
@@ -88,7 +88,7 @@ trait PrivateTestTrait
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
-    public function testGetIssetSetUnsetPrivateViaMethodChildren()
+    public function testGetIssetSetUnsetPrivateViaMethodChildren(): void
     {
         $this->initializeStateProxy(MockState1::class, true);
         self::assertEquals('value1', $this->proxy->getPriProperty());
@@ -103,7 +103,7 @@ trait PrivateTestTrait
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
-    public function testCallPrivateFromState()
+    public function testCallPrivateFromState(): void
     {
         $this->initializeStateProxy(MockState1::class, true);
         self::assertEquals('fooBar', $this->proxy->callPriMethod());
@@ -112,7 +112,7 @@ trait PrivateTestTrait
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
-    public function testCallPrivateChildrenFromOutside()
+    public function testCallPrivateChildrenFromOutside(): void
     {
         $this->expectException(MethodNotImplemented::class);
         $this->proxy->parentPrivateMethodToCall();
@@ -121,7 +121,7 @@ trait PrivateTestTrait
     /**
      * Test behavior of magic method during a state's method calling (scope is not initialized).
      */
-    public function testCallPrivateChildrenFromState()
+    public function testCallPrivateChildrenFromState(): void
     {
         $this->initializeStateProxy(MockState1::class, true);
         $this->proxy->callChildrenPriMethod();

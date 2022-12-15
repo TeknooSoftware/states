@@ -42,7 +42,7 @@ use Teknoo\Tests\Support;
  */
 class BadStatesSupportTest extends TestCase
 {
-    public function testWithStateClassNotImplementStateInterface()
+    public function testWithStateClassNotImplementStateInterface(): void
     {
         $this->expectException(Proxy\Exception\StateNotFound::class);
         $proxy = new Support\BadStateDefinedInProxyTest();

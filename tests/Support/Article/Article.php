@@ -51,13 +51,6 @@ class Article implements Proxy\ProxyInterface
 {
     use Proxy\ProxyTrait;
 
-    /**
-     * Article's data.
-     *
-     * @var array
-     */
-    protected $data = array();
-
     protected static function statesListDeclaration(): array
     {
         return [
@@ -90,22 +83,17 @@ class Article implements Proxy\ProxyInterface
      * Update an article's attribute.
      *
      * @param string $name
-     * @param mixed  $value
      */
-    public function setAttribute($name, $value)
+    public function setAttribute($name, mixed $value): void
     {
         $this->data[$name] = $value;
     }
 
     /**
      * To initialize this article with some data.
-     *
-     * @param array $data
      */
-    public function __construct($data = array())
+    public function __construct(protected array $data = [])
     {
-        $this->data = $data;
-
         //Call the method of the trait to initialize local attributes of the proxy
         $this->initializeStateProxy();
 

@@ -50,7 +50,7 @@ class BadArticleClass implements StateInterface
 
     public function returnStaticClosure()
     {
-        return static function () {
+        return static function (): void {
         };
     }
 }

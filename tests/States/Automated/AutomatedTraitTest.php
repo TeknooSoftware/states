@@ -48,9 +48,6 @@ use Teknoo\States\Proxy\ProxyTrait;
  */
 class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @return AutomatedInterface
-     */
     public function buildProxy(array $assertions): AutomatedInterface
     {
         return new class($assertions) implements AutomatedInterface {
@@ -73,13 +70,13 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
         };
     }
 
-    public function testBadAssertions()
+    public function testBadAssertions(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->buildProxy([new \stdClass()])->updateStates();
     }
 
-    public function testUpdateStatesCallAssertions()
+    public function testUpdateStatesCallAssertions(): void
     {
         $assertion1 = $this->createMock(AssertionInterface::class);
         $assertion1->expects(self::once())->method('check');
@@ -92,21 +89,21 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testExceptionOnCheckPropertyWithBadProperty()
+    public function testExceptionOnCheckPropertyWithBadProperty(): void
     {
         $this->expectException(\TypeError::class);
         $this->buildProxy([])
             ->checkProperty(new \stdClass(), $this->createMock(ConstraintsSetInterface::class));
     }
 
-    public function testExceptionOnCheckPropertyWithBadConstraintSet()
+    public function testExceptionOnCheckPropertyWithBadConstraintSet(): void
     {
         $this->expectException(\TypeError::class);
         $this->buildProxy([])
             ->checkProperty('name', new \stdClass());
     }
 
-    public function testCheckPropertyWithUnsetProperty()
+    public function testCheckPropertyWithUnsetProperty(): void
     {
         $set = $this->createMock(ConstraintsSetInterface::class);
         $set->expects(self::once())
@@ -120,7 +117,7 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testCheckPropertyWithSetProperty()
+    public function testCheckPropertyWithSetProperty(): void
     {
         $set = $this->createMock(ConstraintsSetInterface::class);
         $set->expects(self::once())

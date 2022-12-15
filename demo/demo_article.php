@@ -50,11 +50,7 @@ echo $article->getFormattedBody().PHP_EOL;
 //Open a published article
 echo SEPARATOR.'Open article'.PHP_EOL;
 $article = new Acme\Article\Article(
-    array(
-        'is_published' => true,
-        'title' => 'title 2',
-        'body' => 'body 2',
-    )
+    ['is_published' => true, 'title' => 'title 2', 'body' => 'body 2']
 );
 
 //Already published, so constructor enable state "Default" and "Published"

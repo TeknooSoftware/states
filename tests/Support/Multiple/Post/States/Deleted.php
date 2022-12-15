@@ -51,8 +51,6 @@ class Deleted extends AbstractState
          *
          * @return string
          */
-        return function () {
-            return 'Message deleted';
-        };
+        return fn(): string => 'Message deleted';
     }
 }

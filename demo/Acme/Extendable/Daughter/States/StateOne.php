@@ -45,7 +45,7 @@ class StateOne extends AbstractState
         /**
          * @return int
          */
-        return fn() => 321;
+        return fn(): int => 321;
     }
 
     public function method4()
@@ -53,6 +53,6 @@ class StateOne extends AbstractState
         /**
          * @return int
          */
-        return fn() => 654;
+        return fn(): int => 654;
     }
 }

@@ -54,11 +54,11 @@ class Daughter extends Mother
     /**
      * Return the list of available state in this class.
      *
-     * @return array
+     * @return array<int|string, mixed>
      */
-    public function listMethodsByStates()
+    public function listMethodsByStates(): array
     {
-        $methodsList = array();
+        $methodsList = [];
         foreach ($this->getStatesList() as $stateName => $stateContainer) {
             $methodsList[$stateName] = $stateContainer->listMethods();
         }

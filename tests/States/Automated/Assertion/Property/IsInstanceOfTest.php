@@ -45,15 +45,12 @@ use Teknoo\States\Automated\Assertion\Property\IsInstanceOf;
  */
 class IsInstanceOfTest extends AbstractConstraintTest
 {
-    /**
-     * @return IsInstanceOf|ConstraintInterface
-     */
     public function buildInstance(): ConstraintInterface
     {
         return new IsInstanceOf(\DateTime::class);
     }
 
-    public function testInstanceOfProperty()
+    public function testInstanceOfProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = new \DateTime())->willReturnSelf();
@@ -64,7 +61,7 @@ class IsInstanceOfTest extends AbstractConstraintTest
         );
     }
 
-    public function testNotInstanceOfProperty()
+    public function testNotInstanceOfProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');

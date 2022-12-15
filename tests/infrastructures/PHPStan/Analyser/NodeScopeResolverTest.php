@@ -57,7 +57,7 @@ use Teknoo\States\PHPStan\Analyser\NodeScopeResolver;
  */
 class NodeScopeResolverTest extends TestCase
 {
-    public function testProcessNodes()
+    public function testProcessNodes(): void
     {
         $visitor = $this->createMock(ASTVisitor::class);
 
@@ -89,7 +89,7 @@ class NodeScopeResolverTest extends TestCase
         $nodeScopeResolver->processNodes(
             [$this->createMock(Node::class)],
             $this->createMock(MutatingScope::class),
-            function () {}
+            function (): void {}
         );
     }
 }

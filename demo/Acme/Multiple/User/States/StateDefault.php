@@ -58,7 +58,7 @@ class StateDefault extends AbstractState
          *
          * @param bool $value
          */
-        return function ($value) {
+        return function ($value): void {
             $this->isModerator = $value;
 
             if (!empty($this->isModerator)) {

@@ -45,15 +45,12 @@ use Teknoo\States\Automated\Assertion\Property\CountsEqual;
  */
 class CountsEqualTest extends AbstractConstraintTest
 {
-    /**
-     * @return CountsEqual|ConstraintInterface
-     */
     public function buildInstance(int $expected=0): ConstraintInterface
     {
         return new CountsEqual($expected);
     }
 
-    public function testValidArrayProperty()
+    public function testValidArrayProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = [1,2])->willReturnSelf();
@@ -64,7 +61,7 @@ class CountsEqualTest extends AbstractConstraintTest
         );
     }
 
-    public function testNotValidArrayProperty()
+    public function testNotValidArrayProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');
@@ -76,7 +73,7 @@ class CountsEqualTest extends AbstractConstraintTest
         );
     }
 
-    public function testValidCountableProperty()
+    public function testValidCountableProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = new \ArrayObject([1,2]))->willReturnSelf();
@@ -87,7 +84,7 @@ class CountsEqualTest extends AbstractConstraintTest
         );
     }
 
-    public function testNotValidCountableProperty()
+    public function testNotValidCountableProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');
@@ -99,7 +96,7 @@ class CountsEqualTest extends AbstractConstraintTest
         );
     }
 
-    public function testNotValidClassCountableProperty()
+    public function testNotValidClassCountableProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');

@@ -47,15 +47,11 @@ class StateFour implements StateInterface
 
     public function getPrivateValueOfGrandGauther()
     {
-        return function () {
-            return $this->privateValueOfGrandGauther;
-        };
+        return fn() => $this->privateValueOfGrandGauther;
     }
 
     private function thePrivateMethod(): callable
     {
-        return function (): int {
-            return 42;
-        };
+        return fn(): int => 42;
     }
 }

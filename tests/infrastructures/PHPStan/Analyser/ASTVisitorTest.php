@@ -77,13 +77,13 @@ class ASTVisitorTest extends TestCase
             $classReflection->expects(self::any())
                 ->method('getNativeReflection')
                 ->willReturnCallback(
-                    fn() => new \ReflectionClass($this->currentClass)
+                    fn(): \ReflectionClass => new \ReflectionClass($this->currentClass)
                 );
 
             $this->reflectionProvider->expects(self::any())
                 ->method('getClass')
                 ->willReturnCallback(
-                    function (string $class) use ($classReflection) {
+                    function (string $class) use ($classReflection): \PHPStan\Reflection\ClassReflection&\PHPUnit\Framework\MockObject\MockObject {
                         $this->currentClass = $class;
 
                         return $classReflection;
@@ -114,7 +114,7 @@ class ASTVisitorTest extends TestCase
         );
     }
 
-    public function testLeaveNodeWithNonClassNode()
+    public function testLeaveNodeWithNonClassNode(): void
     {
         self::assertInstanceOf(
             Node::class,
@@ -124,7 +124,7 @@ class ASTVisitorTest extends TestCase
         );
     }
 
-    public function testLeaveNodeWithNonStatedClassNode()
+    public function testLeaveNodeWithNonStatedClassNode(): void
     {
         self::assertInstanceOf(
             Node::class,
@@ -134,7 +134,7 @@ class ASTVisitorTest extends TestCase
         );
     }
 
-    public function testLeaveNodeWithStateClassNode()
+    public function testLeaveNodeWithStateClassNode(): void
     {
         $stateClass = new Class_(
             'state',
@@ -156,7 +156,7 @@ class ASTVisitorTest extends TestCase
         self::assertCount(1, $result->stmts);
     }
 
-    public function testLeaveNodeWithProxyClassNodeWithoutState()
+    public function testLeaveNodeWithProxyClassNodeWithoutState(): void
     {
         $proxyClass = new Class_(
             MockProxy::class,
@@ -178,7 +178,7 @@ class ASTVisitorTest extends TestCase
         self::assertCount(1, $result->stmts);
     }
 
-    public function testLeaveNodeWithProxyClassNodeWithoutstatesListDeclaration()
+    public function testLeaveNodeWithProxyClassNodeWithoutstatesListDeclaration(): void
     {
         $proxyClass = new Class_(
             MockProxyWithoutDeclaration::class,
@@ -198,7 +198,7 @@ class ASTVisitorTest extends TestCase
         self::assertCount(1, $result->stmts);
     }
 
-    public function testLeaveNodeWithProxyClassNodeWithStateAlreadyFetched()
+    public function testLeaveNodeWithProxyClassNodeWithStateAlreadyFetched(): void
     {
         $stateClass = new Class_(
             StateOne::class,
@@ -250,7 +250,7 @@ class ASTVisitorTest extends TestCase
         self::assertCount(4, $result->stmts);
     }
 
-    public function testLeaveNodeWithProxyClassNodeWithEmptyFile()
+    public function testLeaveNodeWithProxyClassNodeWithEmptyFile(): void
     {
         $stateClass = new Class_(
             StateOne::class,
@@ -293,7 +293,7 @@ class ASTVisitorTest extends TestCase
         self::assertCount(1, $result->stmts);
     }
 
-    public function testLeaveNodeWithProxyClassNodeWithStateFileNotFound()
+    public function testLeaveNodeWithProxyClassNodeWithStateFileNotFound(): void
     {
         $this->getReflectionProviderMock(null);
 
@@ -321,7 +321,7 @@ class ASTVisitorTest extends TestCase
         self::assertCount(1, $result->stmts);
     }
 
-    public function testLeaveNodeWithProxyClassNodeWithStateNotAlreadyFetched()
+    public function testLeaveNodeWithProxyClassNodeWithStateNotAlreadyFetched(): void
     {
         $stateClass = new Class_(
             StateOne::class,
@@ -364,7 +364,7 @@ class ASTVisitorTest extends TestCase
         self::assertCount(4, $result->stmts);
     }
 
-    public function testLeaveNodeWithProxyClassNodeWithStateWithSameMethodName()
+    public function testLeaveNodeWithProxyClassNodeWithStateWithSameMethodName(): void
     {
         $stateClass = new Class_(
             StateOne::class,
@@ -407,7 +407,7 @@ class ASTVisitorTest extends TestCase
         self::assertCount(4, $result->stmts);
     }
 
-    public function testLeaveNodeWithProxyClassNodeWithInheritance()
+    public function testLeaveNodeWithProxyClassNodeWithInheritance(): void
     {
         $stateClass = new Class_(
             StateOne::class,

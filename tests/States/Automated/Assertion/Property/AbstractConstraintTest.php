@@ -40,18 +40,15 @@ use Teknoo\States\Automated\Assertion\Property\IsEqual;
  */
 abstract class AbstractConstraintTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @return ConstraintInterface
-     */
     abstract public function buildInstance(): ConstraintInterface;
 
-    public function testInConstraintSetInstanceNotImplement()
+    public function testInConstraintSetInstanceNotImplement(): void
     {
         $this->expectException(\TypeError::class);
         $this->buildInstance()->inConstraintSet(new \stdClass());
     }
 
-    public function testInConstraintSet()
+    public function testInConstraintSet(): void
     {
         $instance = $this->buildInstance();
         $instanceWithSet = $instance->inConstraintSet($this->createMock(ConstraintsSetInterface::class));

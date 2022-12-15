@@ -62,7 +62,7 @@ class StateDefault extends AbstractState
          *
          * @return string
          */
-        return function () {
+        return function (): bool {
             $isPublished = $this->getAttribute('is_published');
 
             return !empty($isPublished);

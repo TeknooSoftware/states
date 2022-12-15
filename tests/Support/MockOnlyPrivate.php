@@ -51,15 +51,11 @@ class MockOnlyPrivate implements StateInterface
      */
     private function standardMethod10()
     {
-        return function ($a=0, $b=0) {
-            return $a+$b;
-        };
+        return fn($a=0, $b=0): float|int|array => $a+$b;
     }
 
     private static function _staticMethod12()
     {
-        return function ($a=0, $b=0) {
-            return $a+$b;
-        };
+        return fn($a=0, $b=0): float|int|array => $a+$b;
     }
 }

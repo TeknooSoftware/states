@@ -114,7 +114,7 @@ class ASTVisitor extends NodeVisitorAbstract
 
         $listClosure = $listDeclarationReflection->getClosure(null);
 
-        return array_flip(($listClosure ?? fn () => [])());
+        return array_flip(($listClosure ?? static fn(): array => [])());
     }
 
     /**
@@ -189,7 +189,7 @@ class ASTVisitor extends NodeVisitorAbstract
                     //The method is renamed and virtualy set a public to avoid false positive about duplicated code.
                     $stmt->name = new Identifier(((string) $stmt->name) . $currentMethodsList[$lowerName]);
                     $stmt->flags &= Class_::MODIFIER_PUBLIC & ~Class_::MODIFIER_PROTECTED & ~Class_::MODIFIER_PRIVATE;
-                    $currentMethodsList[$lowerName]++;
+                    ++$currentMethodsList[$lowerName];
                 } else {
                     $currentMethodsList[$lowerName] = 1;
                 }
@@ -221,7 +221,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 $classes = array_keys($this->listStatesFromProxyClass($className));
                 $node->stmts = $this->mergeStmts(
                     $node->stmts,
-                    array_map(fn ($class) => $this->getStateStmts((string) $class, $node), $classes)
+                    array_map(fn ($class): array => $this->getStateStmts((string) $class, $node), $classes)
                 );
             }
 
@@ -236,6 +236,7 @@ class ASTVisitor extends NodeVisitorAbstract
 
                     $this->statesStmts[$className][] = $stmt;
                 }
+
                 $node->stmts = $stmtsToKeep;
             }
         }

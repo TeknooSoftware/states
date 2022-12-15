@@ -44,15 +44,12 @@ use Teknoo\Tests\Support\AutomatedAcme\States\State2;
  */
 class AutomatedTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @return AutomatedAcme
-     */
-    public function buildInstance()
+    public function buildInstance(): \Teknoo\Tests\Support\AutomatedAcme\AutomatedAcme
     {
         return new AutomatedAcme();
     }
 
-    public function testUpdateStates()
+    public function testUpdateStates(): void
     {
         $instance = $this->buildInstance();
         self::assertEquals([], $instance->listEnabledStates());

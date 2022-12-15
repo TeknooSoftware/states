@@ -42,35 +42,27 @@ use Teknoo\States\State\StateInterface;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class MockProxy implements ProxyInterface
+class MockProxy implements ProxyInterface, \Stringable
 {
-    /**
-     * To test args passed by factory.
-     *
-     * @var null|array
-     */
-    public $args = null;
-
     /**
      * Local registry of loaded states, to simulate a real proxy.
      *
      * @var array
      */
-    protected $states = array();
+    protected $states = [];
 
     /**
      * Local registry of active states, to simulate a real proxy.
      *
      * @var array
      */
-    protected $actives = array();
+    protected $actives = [];
 
     /**
-     * @param mixed $arguments
+     * @param mixed $args
      */
-    public function __construct($arguments)
+    public function __construct(public ?array $args)
     {
-        $this->args = $arguments;
     }
 
     /**
@@ -120,7 +112,7 @@ class MockProxy implements ProxyInterface
     public function switchState(string $stateName): ProxyInterface
     {
         //Simulate real behavior
-        $this->actives = array($stateName => $stateName);
+        $this->actives = [$stateName => $stateName];
 
         return $this;
     }
@@ -155,7 +147,7 @@ class MockProxy implements ProxyInterface
     public function disableAllStates(): ProxyInterface
     {
         //Simulate real behavior
-        $this->actives = array();
+        $this->actives = [];
 
         return $this;
     }
@@ -243,6 +235,7 @@ class MockProxy implements ProxyInterface
     public function __toString(): string
     {
         //Not used in tests
+        return '';
     }
 
     /****************
@@ -260,7 +253,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetExists($offset)
+    public function offsetExists($offset): void
     {
         //Not used in tests
     }
@@ -268,7 +261,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetGet($offset)
+    public function offsetGet($offset): void
     {
         //Not used in tests
     }
@@ -276,7 +269,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetSet($offset, $value)
+    public function offsetSet($offset, $value): void
     {
         //Not used in tests
     }
@@ -284,7 +277,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function offsetUnset($offset)
+    public function offsetUnset($offset): void
     {
         //Not used in tests
     }
@@ -296,7 +289,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function current()
+    public function current(): void
     {
         //Not used in tests
     }
@@ -304,7 +297,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function key()
+    public function key(): void
     {
         //Not used in tests
     }
@@ -312,7 +305,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function next()
+    public function next(): void
     {
         //Not used in tests
     }
@@ -320,7 +313,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function rewind()
+    public function rewind(): void
     {
         //Not used in tests
     }
@@ -328,7 +321,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function seek($position)
+    public function seek($position): void
     {
         //Not used in tests
     }
@@ -336,7 +329,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function valid()
+    public function valid(): void
     {
         //Not used in tests
     }
@@ -364,7 +357,7 @@ class MockProxy implements ProxyInterface
     /**
      * {@inheritdoc}
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         //Not used in tests
     }

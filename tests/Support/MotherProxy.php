@@ -49,14 +49,12 @@ class MotherProxy
     /**
      * @var mixed
      */
-    private $parentPrivateProperty = 'value1';
+    private string $parentPrivateProperty = 'value1';
 
     /**
      * Method to test behavior of proxy when a method in a state want access to a private method of a children.
-     *
-     * @return string
      */
-    private function parentPrivateMethodToCall()
+    private function parentPrivateMethodToCall(): string
     {
         return 'fooBar';
     }

@@ -77,9 +77,8 @@ class Article extends Proxy\Standard
      * Update an article's attribute.
      *
      * @param string $name
-     * @param mixed  $value
      */
-    public function setAttribute($name, $value)
+    public function setAttribute($name, mixed $value): void
     {
         $this->data[$name] = $value;
     }
@@ -89,7 +88,7 @@ class Article extends Proxy\Standard
      *
      * @param array $data
      */
-    public function __construct(protected $data = array())
+    public function __construct(protected $data = [])
     {
         parent::__construct();
         //If the article is published, load the state Published, else load the state Draft

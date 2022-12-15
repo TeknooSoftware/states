@@ -32,7 +32,7 @@ if (!function_exists('testCallFromFunctionPrivate')) {
      * @license     http://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <richarddeloge@gmail.com>
      */
-    function testCallFromFunctionPrivate()
+    function testCallFromFunctionPrivate(): void
     {
         global $proxy;
         $proxy->privateTest();
@@ -51,7 +51,7 @@ if (!function_exists('testCallFromFunctionProtected')) {
      * @license     http://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <richarddeloge@gmail.com>
      */
-    function testCallFromFunctionProtected()
+    function testCallFromFunctionProtected(): void
     {
         global $proxy;
         $proxy->protectedTest();

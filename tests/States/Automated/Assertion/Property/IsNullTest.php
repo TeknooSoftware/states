@@ -45,15 +45,12 @@ use Teknoo\States\Automated\Assertion\Property\IsNull;
  */
 class IsNullTest extends AbstractConstraintTest
 {
-    /**
-     * @return IsNull|ConstraintInterface
-     */
     public function buildInstance(): ConstraintInterface
     {
         return new IsNull();
     }
 
-    public function testNotNullProperty()
+    public function testNotNullProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');
@@ -65,7 +62,7 @@ class IsNullTest extends AbstractConstraintTest
         );
     }
 
-    public function testNullProperty()
+    public function testNullProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = null)->willReturnSelf();

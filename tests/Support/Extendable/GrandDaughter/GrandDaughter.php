@@ -45,7 +45,7 @@ use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree;
  */
 class GrandDaughter extends Daughter
 {
-    private $privateValueOfGrandGauther = 42;
+    private int $privateValueOfGrandGauther = 42;
 
     protected static function statesListDeclaration(): array
     {

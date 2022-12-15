@@ -48,7 +48,7 @@ use ReflectionUnionType as NativeReflectionUnionType;
  */
 class StateMethodEmptyTest extends TestCase
 {
-    protected function buildInstance($doc = 'factory doc', $closureScopeClass = null)
+    protected function buildInstance($doc = 'factory doc', $closureScopeClass = null): \Teknoo\States\PHPStan\Reflection\StateMethod
     {
         $factoryReflection = $this->createMock(\ReflectionMethod::class);
         $factoryReflection->expects(self::any())->method('getName')->willReturn('factory');
@@ -165,32 +165,32 @@ class StateMethodEmptyTest extends TestCase
         );
     }
 
-    public function testGetReflection()
+    public function testGetReflection(): void
     {
         self::assertNull($this->buildInstance()->getReflection());
     }
 
-    public function testGetFileName()
+    public function testGetFileName(): void
     {
         self::assertNull($this->buildInstance()->getFileName());
     }
 
-    public function testGetStartLine()
+    public function testGetStartLine(): void
     {
         self::assertNull($this->buildInstance()->getStartLine());
     }
 
-    public function testGetEndLine()
+    public function testGetEndLine(): void
     {
         self::assertNull($this->buildInstance()->getEndLine());
     }
 
-    public function testGetReturnType()
+    public function testGetReturnType(): void
     {
         self::assertNull($this->buildInstance()->getReturnType());
     }
 
-    public function testGetParameters()
+    public function testGetParameters(): void
     {
         assert_options(ASSERT_ACTIVE, 0);
         self::assertInstanceOf(
@@ -200,7 +200,7 @@ class StateMethodEmptyTest extends TestCase
         assert_options(ASSERT_ACTIVE, 1);
     }
 
-    public function testGetDocCommentNull()
+    public function testGetDocCommentNull(): void
     {
         assert_options(ASSERT_ACTIVE, 0);
         self::assertEmpty($this->buildInstance('')->getDocComment());
@@ -208,7 +208,7 @@ class StateMethodEmptyTest extends TestCase
         assert_options(ASSERT_ACTIVE, 1);
     }
 
-    public function testReturnsByReference()
+    public function testReturnsByReference(): void
     {
         self::assertEquals(
             TrinaryLogic::createYes(),

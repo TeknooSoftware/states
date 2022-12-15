@@ -50,7 +50,7 @@ class ConstraintsSet implements ConstraintsSetInterface
     /**
      * @var ConstraintInterface[]
      */
-    private array $constraints;
+    private array $constraints = [];
 
     /**
      * @param array<ConstraintInterface> $constraints

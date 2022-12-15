@@ -45,15 +45,12 @@ use Teknoo\States\Automated\Assertion\Property\HasNotEmptyValueForKey;
  */
 class HasNotEmptyValueForKeyTest extends AbstractConstraintTest
 {
-    /**
-     * @return HasNotEmptyValueForKey|ConstraintInterface
-     */
     public function buildInstance(): ConstraintInterface
     {
         return new HasNotEmptyValueForKey('foo');
     }
 
-    public function testNotArray()
+    public function testNotArray(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');
@@ -65,7 +62,7 @@ class HasNotEmptyValueForKeyTest extends AbstractConstraintTest
         );
     }
 
-    public function testKeyNotExist()
+    public function testKeyNotExist(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');
@@ -77,7 +74,7 @@ class HasNotEmptyValueForKeyTest extends AbstractConstraintTest
         );
     }
 
-    public function testKeyExistButEmptyValue()
+    public function testKeyExistButEmptyValue(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');
@@ -89,7 +86,7 @@ class HasNotEmptyValueForKeyTest extends AbstractConstraintTest
         );
     }
 
-    public function testKeyExistAndNotEmptyValue()
+    public function testKeyExistAndNotEmptyValue(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = ['foo' => 'bar'])->willReturnSelf();

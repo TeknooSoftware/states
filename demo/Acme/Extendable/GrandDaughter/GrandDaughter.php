@@ -49,12 +49,10 @@ class GrandDaughter extends Daughter
 
     /**
      * Return the list of available state in this class.
-     *
-     * @return array
      */
-    public function listMethodsByStates()
+    public function listMethodsByStates(): array
     {
-        $methodsList = array();
+        $methodsList = [];
         foreach ($this->getStatesList() as $stateName => $stateContainer) {
             $methodsList[$stateName] = $stateContainer->listMethods();
         }

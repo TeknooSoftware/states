@@ -45,15 +45,12 @@ use Teknoo\States\Automated\Assertion\Property\IsArray;
  */
 class IsArrayTest extends AbstractConstraintTest
 {
-    /**
-     * @return IsArray|ConstraintInterface
-     */
     public function buildInstance(): ConstraintInterface
     {
         return new IsArray();
     }
 
-    public function testIsStringProperty()
+    public function testIsStringProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');
@@ -65,7 +62,7 @@ class IsArrayTest extends AbstractConstraintTest
         );
     }
 
-    public function testIsNumericProperty()
+    public function testIsNumericProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid')->with($value = 123)->willReturnSelf();
@@ -76,7 +73,7 @@ class IsArrayTest extends AbstractConstraintTest
         );
     }
 
-    public function testIsBoolProperty()
+    public function testIsBoolProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid')->with($value = true)->willReturnSelf();
@@ -87,7 +84,7 @@ class IsArrayTest extends AbstractConstraintTest
         );
     }
 
-    public function testIsArrayProperty()
+    public function testIsArrayProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = [])->willReturnSelf();
@@ -98,7 +95,7 @@ class IsArrayTest extends AbstractConstraintTest
         );
     }
 
-    public function testIsObjectProperty()
+    public function testIsObjectProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid')->with($value = new \stdClass())->willReturnSelf();

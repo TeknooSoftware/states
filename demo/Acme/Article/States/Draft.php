@@ -46,7 +46,7 @@ class Draft extends AbstractState
         /**
          * Publish this article.
          */
-        return function () {
+        return function (): void {
             $this->setAttribute('is_published', true);
             //Switch to Published State, so this state will be not available for next operations
             $this->disableState(Draft::class);
@@ -61,7 +61,7 @@ class Draft extends AbstractState
          *
          * @param string $title
          */
-        return function ($title) {
+        return function ($title): void {
             $this->setAttribute('title', $title);
         };
     }
@@ -73,7 +73,7 @@ class Draft extends AbstractState
          *
          * @param string $body
          */
-        return function ($body) {
+        return function ($body): void {
             $this->setAttribute('body', $body);
         };
     }

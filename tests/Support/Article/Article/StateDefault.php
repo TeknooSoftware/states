@@ -50,9 +50,7 @@ class StateDefault extends AbstractState
          *
          * @return string
          */
-        return function () {
-            return $this->getAttribute('title');
-        };
+        return fn() => $this->getAttribute('title');
     }
 
     /**
@@ -67,7 +65,7 @@ class StateDefault extends AbstractState
          *
          * @return string
          */
-        return function () {
+        return function (): bool {
             $isPublished = $this->getAttribute('is_published');
 
             return !empty($isPublished);
@@ -76,7 +74,7 @@ class StateDefault extends AbstractState
 
     public function returnStaticClosure()
     {
-        return static function() {
+        return static function(): void {
         };
     }
 }

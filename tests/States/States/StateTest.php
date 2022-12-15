@@ -49,10 +49,8 @@ class StateTest extends AbstractStatesTest
     /**
      * Build a basic object to provide only public methods.
      *
-     *
-     * @return Support\MockOnlyPublic
      */
-    protected function getPublicClassObject(bool $privateMode, string $statedClassName, array $aliases = [])
+    protected function getPublicClassObject(bool $privateMode, string $statedClassName, array $aliases = []): \Teknoo\Tests\Support\MockOnlyPublic
     {
         return new Support\MockOnlyPublic($privateMode, $statedClassName, $aliases);
     }
@@ -60,10 +58,8 @@ class StateTest extends AbstractStatesTest
     /**
      * Build a basic object to provide only protected methods.
      *
-     *
-     * @return Support\MockOnlyProtected
      */
-    protected function getProtectedClassObject(bool $privateMode, string $statedClassName, array $aliases = [])
+    protected function getProtectedClassObject(bool $privateMode, string $statedClassName, array $aliases = []): \Teknoo\Tests\Support\MockOnlyProtected
     {
         return new Support\MockOnlyProtected($privateMode, $statedClassName, $aliases);
     }
@@ -71,10 +67,8 @@ class StateTest extends AbstractStatesTest
     /**
      * Build a basic object to provide only private methods.
      *
-     *
-     * @return Support\MockOnlyPrivate
      */
-    protected function getPrivateClassObject(bool $privateMode, string $statedClassName, array $aliases = [])
+    protected function getPrivateClassObject(bool $privateMode, string $statedClassName, array $aliases = []): \Teknoo\Tests\Support\MockOnlyPrivate
     {
         return new Support\MockOnlyPrivate($privateMode, $statedClassName, $aliases);
     }

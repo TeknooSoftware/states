@@ -51,9 +51,7 @@ class MockOnlyPublic implements StateInterface
      */
     public function standardMethod1()
     {
-        return function ($a=0, $b=0) {
-            return $a+$b;
-        };
+        return fn($a=0, $b=0): float|int|array => $a+$b;
     }
 
     /**
@@ -61,26 +59,20 @@ class MockOnlyPublic implements StateInterface
      */
     final public function finalMethod2()
     {
-        return function ($a=0, $b=0) {
-            return $a+$b;
-        };
+        return fn($a=0, $b=0): float|int|array => $a+$b;
     }
 
     public static function staticMethod3()
     {
-        return function ($a=0, $b=0) {
-            return $a+$b;
-        };
+        return fn($a=0, $b=0): float|int|array => $a+$b;
     }
 
     public function standardMethod4()
     {
-        return function ($a=0, $b=0) {
-            return $a+$b;
-        };
+        return fn($a=0, $b=0): float|int|array => $a+$b;
     }
 
-    public function methodBuilderNoReturnClosure()
+    public function methodBuilderNoReturnClosure(): void
     {
     }
 }

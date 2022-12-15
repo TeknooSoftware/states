@@ -55,20 +55,12 @@ class Published implements StateInterface
          *
          * @return string
          */
-        return function () {
+        return function (): string|array {
             $body = $this->getAttribute('body');
 
             return str_replace(
-                array(
-                    '[br]',
-                    '[b]',
-                    '[/b]',
-                ),
-                array(
-                    '<br/>',
-                    '<strong>',
-                    '</strong>',
-                ),
+                ['[br]', '[b]', '[/b]'],
+                ['<br/>', '<strong>', '</strong>'],
                 $body
             );
         };
@@ -79,7 +71,7 @@ class Published implements StateInterface
         /*
          * Fake method not callable in public scope.
          */
-        return function () {
+        return function (): void {
         };
     }
 }

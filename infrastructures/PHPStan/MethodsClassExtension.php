@@ -144,6 +144,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         } catch (ReflectionException) {
             return [];
         }
+
         //@codeCoverageIgnoreEnd
     }
 
@@ -217,6 +218,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         } catch (OutOfBoundsException) {
             $factoryReflection = $factoryNativeReflection;
         }
+
         //@codeCoverageIgnoreEnd
 
         try {
@@ -225,6 +227,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         } catch (NoClosureOnLine) {
             $closureReflection = new NatveReflectionFunction($stateClosure);
         }
+
         //@codeCoverageIgnoreEnd
 
         return new PhpMethodReflection(

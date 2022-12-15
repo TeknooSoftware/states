@@ -45,15 +45,12 @@ use Teknoo\States\Automated\Assertion\Property\IsSame;
  */
 class IsSameTest extends AbstractConstraintTest
 {
-    /**
-     * @return IsSame|ConstraintInterface
-     */
     public function buildInstance(): ConstraintInterface
     {
         return new IsSame(10);
     }
 
-    public function testSameProperty()
+    public function testSameProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = 10)->willReturnSelf();
@@ -64,7 +61,7 @@ class IsSameTest extends AbstractConstraintTest
         );
     }
 
-    public function testNotSameProperty()
+    public function testNotSameProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');

@@ -46,24 +46,21 @@ use Teknoo\States\Proxy\ProxyInterface;
  */
 class CallbackTest extends AbstractAssertionTest
 {
-    /**
-     * @return Callback|AssertionInterface
-     */
     public function buildInstance(): callable|AssertionInterface
     {
         return new Callback(['state1', 'state2']);
     }
 
-    public function testCallClosure()
+    public function testCallClosure(): void
     {
         self::assertInstanceOf(
             Callback::class,
-            $this->buildInstance()->call(function () {
+            $this->buildInstance()->call(function (): void {
             })
         );
     }
 
-    public function testCallCalback()
+    public function testCallCalback(): void
     {
         self::assertInstanceOf(
             Callback::class,
@@ -71,19 +68,19 @@ class CallbackTest extends AbstractAssertionTest
         );
     }
 
-    public function testBadCallable()
+    public function testBadCallable(): void
     {
         $this->expectException(\TypeError::class);
         $this->buildInstance()->call('badFunctionName');
     }
 
-    public function testExceptionWhenCheckAssertionWithNoCallbackDefined()
+    public function testExceptionWhenCheckAssertionWithNoCallbackDefined(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->buildInstance()->check($this->createMock(AutomatedInterface::class));
     }
 
-    public function testCheckCallbackIsValid()
+    public function testCheckCallbackIsValid(): void
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
@@ -92,7 +89,7 @@ class CallbackTest extends AbstractAssertionTest
             ->withConsecutive(['state1'], ['state2'])
             ->willReturnSelf();
 
-        $assertion->call(function ($proxy, $callback) {
+        $assertion->call(function ($proxy, $callback): void {
             self::assertInstanceOf(AutomatedInterface::class, $proxy);
             self::assertInstanceOf(Callback::class, $callback);
 
@@ -112,14 +109,14 @@ class CallbackTest extends AbstractAssertionTest
         );
     }
 
-    public function testCheckCallbackIsNotValid()
+    public function testCheckCallbackIsNotValid(): void
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
         $proxy->expects(self::never())
             ->method('enableState');
 
-        $assertion->call(function ($proxy, $callback) {
+        $assertion->call(function ($proxy, $callback): void {
             self::assertInstanceOf(AutomatedInterface::class, $proxy);
             self::assertInstanceOf(Callback::class, $callback);
         });

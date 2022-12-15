@@ -55,7 +55,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
     /**
      * Check if the list of states for the mother contains only its states and not states of its children classes.
      */
-    public function testListAvailablesStatesMother()
+    public function testListAvailablesStatesMother(): void
     {
         $motherInstance = new Mother();
         $statesList = $motherInstance->listAvailableStates();
@@ -70,7 +70,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
      * Check if the list of states for the daughter contains only its states and states of its mother.
      * States overloaded must not be duplicated.
      */
-    public function testListAvailablesStatesDaughter()
+    public function testListAvailablesStatesDaughter(): void
     {
         $daughterInstance = new Daughter();
         $statesList = $daughterInstance->listAvailableStates();
@@ -84,7 +84,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
     /**
      * Check if the list of states for the grand dauther contains its states, and non overloaded parents'states.
      */
-    public function testListAvailableStatesGrandDaughter()
+    public function testListAvailableStatesGrandDaughter(): void
     {
         $grandDaughterInstance = new GrandDaughter();
         $statesList = $grandDaughterInstance->listAvailableStates();
@@ -104,7 +104,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
     /**
      * Check if the list of states for the grand dauther contains its states, and non overloaded parents'states.
      */
-    public function testListAvailableStatesGrandGrandDaughter()
+    public function testListAvailableStatesGrandGrandDaughter(): void
     {
         $grandGrandDaughterInstance = new GrandGrandDaughter();
         $statesList = $grandGrandDaughterInstance->listAvailableStates();
@@ -124,7 +124,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
     /**
      * Check if methods in states are only methods availables from the mother.
      */
-    public function testListMethodsByStatesMother()
+    public function testListMethodsByStatesMother(): void
     {
         $motherInstance = new Mother();
         self::assertEquals(
@@ -141,7 +141,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
      * Check if methods in states are only public and protected methods availables from the mother
      * (of non overloaded states) and its owned methods.
      */
-    public function testListMethodsByStatesDaughter()
+    public function testListMethodsByStatesDaughter(): void
     {
         $daughterInstance = new Daughter();
         self::assertEquals(
@@ -159,7 +159,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
      * Check if methods in states are only public and protected methods availables from the mother
      * (of non overloaded states) and its owned methods. Check inheritance state from a state in parent classe.
      */
-    public function testListMethodsByStatesGrandDaughter()
+    public function testListMethodsByStatesGrandDaughter(): void
     {
         $grandDaughterInstance = new GrandDaughter();
         self::assertEquals(
@@ -178,7 +178,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
      * Check if methods in states are only public and protected methods availables from the mother
      * (of non overloaded states) and its owned methods. Check inheritance state from a state in parent classe.
      */
-    public function testListMethodsByStatesGrandGrandDaughter()
+    public function testListMethodsByStatesGrandGrandDaughter(): void
     {
         $grandGrandDaughterInstance = new GrandGrandDaughter();
         self::assertEquals(
@@ -196,7 +196,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
     /**
      * Test behavior of overloaded states.
      */
-    public function testOverloadedState()
+    public function testOverloadedState(): void
     {
         $motherInstance = new Mother();
         $motherInstance->enableState(\Teknoo\Tests\Support\Extendable\Mother\States\StateOne::class);
@@ -253,7 +253,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
     /**
      * Test behavior of overloaded states.
      */
-    public function testExtendedState()
+    public function testExtendedState(): void
     {
         $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateThree::class);
@@ -273,7 +273,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
     /**
      * Test if the php behavior on private method is keeped with stated class.
      */
-    public function testMotherCanCallPrivate()
+    public function testMotherCanCallPrivate(): void
     {
         $motherInstance = new Mother();
         $motherInstance->enableState(StateTwo::class);
@@ -284,7 +284,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
      * Test if the php behavior on private method in parent class
      * is keeped with an extending stated class (can call if the method is in mother scope).
      */
-    public function testDaughterCanCallPrivateViaMotherMethod()
+    public function testDaughterCanCallPrivateViaMotherMethod(): void
     {
         $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateTwo::class);
@@ -295,7 +295,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
      * Test if the php behavior on protected method in parent class
      * is keeped with an extending stated class (can call).
      */
-    public function testDaughterCanCallMotherProtected()
+    public function testDaughterCanCallMotherProtected(): void
     {
         $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateTwo::class)
@@ -307,7 +307,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
      * Test if the php behavior on private method in parent class
      * is keeped with an extending stated class (can not call).
      */
-    public function testDaughterCanNotCallMotherPrivate()
+    public function testDaughterCanNotCallMotherPrivate(): void
     {
         $this->expectException(\Teknoo\States\Proxy\Exception\MethodNotImplemented::class);
 
@@ -318,7 +318,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
         $daughterInstance->methodRecallMotherPrivate();
     }
 
-    public function testAccessToPrivateAttributeWithBindOfClosure()
+    public function testAccessToPrivateAttributeWithBindOfClosure(): void
     {
         $daughterInstance = new Daughter();
         $daughterInstance->enableState(StateTwo::class);
@@ -336,7 +336,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testAccessToPrivateAttributeWithBindOfClosureFromGrandDaughter()
+    public function testAccessToPrivateAttributeWithBindOfClosureFromGrandDaughter(): void
     {
         $daughterInstance = new GrandDaughter();
         $daughterInstance->enableState(StateTwo::class);
@@ -354,7 +354,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testAccessToPrivateAttributeWithBindOfClosureFromGrandGrandDaughter()
+    public function testAccessToPrivateAttributeWithBindOfClosureFromGrandGrandDaughter(): void
     {
         $daughterInstance = new GrandGrandDaughter();
         $daughterInstance->enableState(StateTwo::class);
@@ -372,7 +372,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testStatesLoadingWhenStatesListDeclarationIsNotImplementedInClass()
+    public function testStatesLoadingWhenStatesListDeclarationIsNotImplementedInClass(): void
     {
         $gdIinstance = new GrandDaughter();
         $gdIinstance->enableState(StateFour::class);
@@ -383,7 +383,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
         self::assertEquals(42, $gddInstance->getPrivateValueOfGrandGauther());
     }
 
-    public function testCallPrivateMethodFromAPublicMethodInParent()
+    public function testCallPrivateMethodFromAPublicMethodInParent(): void
     {
         $gddInstance = new GrandGrandDaughter();
         $gddInstance->enableState(StateFour::class);
@@ -394,7 +394,7 @@ class ExtendableTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    public function testCallPrivateMethodFromAPublicMethod()
+    public function testCallPrivateMethodFromAPublicMethod(): void
     {
         $this->expectException(MethodNotImplemented::class);
 

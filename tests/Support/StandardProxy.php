@@ -75,34 +75,28 @@ class StandardProxy extends Proxy\Standard implements
      *
      * @var mixed
      */
-    private $privateProperty = 'value1';
+    private string $privateProperty = 'value1';
 
     /**
      * Method to test behavior of proxy when a method in a state want access to a public method.
-     *
-     * @return string
      */
-    public function publicMethodToCall()
+    public function publicMethodToCall(): string
     {
         return 'fooBar';
     }
 
     /**
      * Method to test behavior of proxy when a method in a state want access to a protected method.
-     *
-     * @return string
      */
-    protected function protectedMethodToCall()
+    protected function protectedMethodToCall(): string
     {
         return 'fooBar';
     }
 
     /**
      * Method to test behavior of proxy when a method in a state want access to a private method.
-     *
-     * @return string
      */
-    private function privateMethodToCall()
+    private function privateMethodToCall(): string
     {
         return 'fooBar';
     }

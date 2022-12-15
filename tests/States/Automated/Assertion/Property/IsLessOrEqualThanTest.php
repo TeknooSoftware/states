@@ -45,15 +45,12 @@ use Teknoo\States\Automated\Assertion\Property\IsLessOrEqualThan;
  */
 class IsLessOrEqualThanTest extends AbstractConstraintTest
 {
-    /**
-     * @return IsLessOrEqualThan|ConstraintInterface
-     */
     public function buildInstance(): ConstraintInterface
     {
         return new IsLessOrEqualThan(10);
     }
 
-    public function testGreatProperty()
+    public function testGreatProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');
@@ -65,7 +62,7 @@ class IsLessOrEqualThanTest extends AbstractConstraintTest
         );
     }
 
-    public function testEqualProperty()
+    public function testEqualProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = 10)->willReturnSelf();
@@ -76,7 +73,7 @@ class IsLessOrEqualThanTest extends AbstractConstraintTest
         );
     }
 
-    public function testLessProperty()
+    public function testLessProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = 9)->willReturnSelf();

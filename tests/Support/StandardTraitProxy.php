@@ -78,7 +78,7 @@ class StandardTraitProxy extends MotherProxy implements
      *
      * @var mixed
      */
-    private $privateProperty = 'value1';
+    private string $privateProperty = 'value1';
 
     /**
      * Initialize the proxy.
@@ -91,30 +91,24 @@ class StandardTraitProxy extends MotherProxy implements
 
     /**
      * Method to test behavior of proxy when a method in a state want access to a public method.
-     *
-     * @return string
      */
-    public function publicMethodToCall()
+    public function publicMethodToCall(): string
     {
         return 'fooBar';
     }
 
     /**
      * Method to test behavior of proxy when a method in a state want access to a protected method.
-     *
-     * @return string
      */
-    protected function protectedMethodToCall()
+    protected function protectedMethodToCall(): string
     {
         return 'fooBar';
     }
 
     /**
      * Method to test behavior of proxy when a method in a state want access to a private method.
-     *
-     * @return string
      */
-    private function privateMethodToCall()
+    private function privateMethodToCall(): string
     {
         return 'fooBar';
     }
@@ -126,9 +120,6 @@ class StandardTraitProxy extends MotherProxy implements
 
     /**
      * To test a bad state injection
-     * @param string $stateName
-     * @param StateInterface $state
-     * @return Proxy\ProxyInterface
      */
     public function registerStateWithoutOriginal(string $stateName, StateInterface $state): Proxy\ProxyInterface
     {

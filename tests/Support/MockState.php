@@ -93,15 +93,9 @@ class MockState implements StateInterface
      */
     protected $virtualInjection = null;
 
-    /**
-     * @var bool
-     */
-    protected $privateModeEnable = false;
+    protected bool $privateModeEnable;
 
-    /**
-     * @var string
-     */
-    protected $statedClassName = '';
+    protected string $statedClassName;
 
     /**
      * Initialize virtual state.
@@ -121,19 +115,19 @@ class MockState implements StateInterface
             //No testing closure defined, build a default closure, this closure logs in this state all calls
             //Bind $this in another var because $this is not allowed into use()
             $state = $this;
-            $this->closure = $closure = function () use ($state) {
+            $this->closure = $closure = function () use ($state): bool|array|string {
                 $state->setMethodCalled();
                 $state->setCalledArguments(func_get_args());
 
-                if (false !== \strpos($state->extractMethodCalled(), 'offsetExists')) {
+                if (str_contains((string) $state->extractMethodCalled(), 'offsetExists')) {
                     return true;
                 }
 
-                if (false !== \strpos($state->extractMethodCalled(), 'valid')) {
+                if (str_contains((string) $state->extractMethodCalled(), 'valid')) {
                     return true;
                 }
 
-                if (false !== \strpos($state->extractMethodCalled(), '__serialize')) {
+                if (str_contains((string) $state->extractMethodCalled(), '__serialize')) {
                     return ['foo'];
                 }
 
@@ -145,7 +139,7 @@ class MockState implements StateInterface
     /**
      * To allow all call of testMethod and getClosure and return a fake closure.
      */
-    public function allowMethod()
+    public function allowMethod(): void
     {
         $this->methodAllowed = true;
     }
@@ -153,7 +147,7 @@ class MockState implements StateInterface
     /**
      * To forbid all call of testMethod and getClosure and return a fake closure.
      */
-    public function disallowMethod()
+    public function disallowMethod(): void
     {
         $this->methodAllowed = false;
     }
@@ -161,7 +155,6 @@ class MockState implements StateInterface
     /**
      * To update the closure to use in this mock.
      *
-     * @param \Closure $closure
      *
      * @return $this
      */
@@ -259,10 +252,8 @@ class MockState implements StateInterface
     /**
      * Register into the state the argument used for the closure
      * Method added for test to check different behavior in calling method.
-     *
-     * @param array $arguments
      */
-    public function setCalledArguments($arguments)
+    public function setCalledArguments(array $arguments): void
     {
         $this->calledArguments = $arguments;
     }
@@ -285,7 +276,7 @@ class MockState implements StateInterface
      * Remember that the closure has been called
      * Method added for test to check different behavior in calling method.
      */
-    public function setMethodCalled()
+    public function setMethodCalled(): void
     {
         $this->methodCalled = true;
     }
@@ -325,168 +316,140 @@ class MockState implements StateInterface
 
     public function recallMethod()
     {
-        return function ($methodName) {
-            return $this->{$methodName}();
-        };
+        return fn($methodName) => $this->{$methodName}();
     }
 
     public function getPublicProperty()
     {
-        return function () {
-            return $this->publicProperty;
-        };
+        return fn() => $this->publicProperty;
     }
 
     public function issetPublicProperty()
     {
-        return function () {
-            return isset($this->publicProperty);
-        };
+        return fn(): bool => isset($this->publicProperty);
     }
 
     public function issetMissingPublicProperty()
     {
-        return function () {
-            return isset($this->missingPublicProperty);
-        };
+        return fn(): bool => isset($this->missingPublicProperty);
     }
 
     public function getOnMissingPublicProperty()
     {
-        return function () {
-            return $this->missingPublicProperty;
-        };
+        return fn() => $this->missingPublicProperty;
     }
 
     public function setOnMissingPublicProperty()
     {
-        return function ($value) {
+        return function ($value): void {
             $this->missingPublicProperty = $value;
         };
     }
 
     public function unsetOnMissingPublicProperty()
     {
-        return function () {
+        return function (): void {
             unset($this->missingPublicProperty);
         };
     }
 
     public function setPublicProperty()
     {
-        return function ($value) {
+        return function ($value): void {
             $this->publicProperty = $value;
         };
     }
 
     public function unsetPublicProperty()
     {
-        return function () {
+        return function (): void {
             unset($this->publicProperty);
         };
     }
 
     public function getProProperty()
     {
-        return function () {
-            return $this->protectedProperty;
-        };
+        return fn() => $this->protectedProperty;
     }
 
     public function issetProProperty()
     {
-        return function () {
-            return isset($this->protectedProperty);
-        };
+        return fn(): bool => isset($this->protectedProperty);
     }
 
     public function issetMissingProProperty()
     {
-        return function () {
-            return isset($this->missingProtectedProperty);
-        };
+        return fn(): bool => isset($this->missingProtectedProperty);
     }
 
     public function setProProperty()
     {
-        return function ($value) {
+        return function ($value): void {
             $this->protectedProperty = $value;
         };
     }
 
     public function unsetProProperty()
     {
-        return function () {
+        return function (): void {
             unset($this->protectedProperty);
         };
     }
 
     public function getPriProperty()
     {
-        return function () {
-            return $this->privateProperty;
-        };
+        return fn() => $this->privateProperty;
     }
 
     public function issetPriProperty()
     {
-        return function () {
-            return isset($this->privateProperty);
-        };
+        return fn(): bool => isset($this->privateProperty);
     }
 
     public function issetMissingPriProperty()
     {
-        return function () {
-            return isset($this->missingPrivateProperty);
-        };
+        return fn(): bool => isset($this->missingPrivateProperty);
     }
 
     public function setPriProperty()
     {
-        return function ($value) {
+        return function ($value): void {
             $this->privateProperty = $value;
         };
     }
 
     public function unsetPriProperty()
     {
-        return function () {
+        return function (): void {
             unset($this->privateProperty);
         };
     }
 
     public function getChildrenPriProperty()
     {
-        return function () {
-            return $this->parentPrivateProperty;
-        };
+        return fn() => $this->parentPrivateProperty;
     }
 
     public function issetChildrenPriProperty()
     {
-        return function () {
-            return isset($this->parentPrivateProperty);
-        };
+        return fn(): bool => isset($this->parentPrivateProperty);
     }
 
     public function issetChildrenMissingPriProperty()
     {
-        return function () {
-            return isset($this->missingPrivateProperty);
-        };
+        return fn(): bool => isset($this->missingPrivateProperty);
     }
 
     public function setChildrenPriProperty()
     {
-        return function ($value) {
+        return function ($value): void {
             $this->parentPrivateProperty = $value;
         };
     }
 
     public function unsetChildrenPriProperty()
     {
-        return function () {
+        return function (): void {
             unset($this->parentPrivateProperty);
         };
     }
@@ -496,9 +459,7 @@ class MockState implements StateInterface
      */
     public function callPublicMethod()
     {
-        return function () {
-            return $this->publicMethodToCall();
-        };
+        return fn() => $this->publicMethodToCall();
     }
 
     /**
@@ -506,9 +467,7 @@ class MockState implements StateInterface
      */
     public function callProMethod()
     {
-        return function () {
-            return $this->protectedMethodToCall();
-        };
+        return fn() => $this->protectedMethodToCall();
     }
 
     /**
@@ -516,9 +475,7 @@ class MockState implements StateInterface
      */
     public function callPriMethod()
     {
-        return function () {
-            return $this->privateMethodToCall();
-        };
+        return fn() => $this->privateMethodToCall();
     }
 
     /**
@@ -526,8 +483,6 @@ class MockState implements StateInterface
      */
     public function callChildrenPriMethod()
     {
-        return function () {
-            return $this->parentPrivateMethodToCall();
-        };
+        return fn() => $this->parentPrivateMethodToCall();
     }
 }

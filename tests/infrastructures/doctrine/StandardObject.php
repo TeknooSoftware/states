@@ -88,40 +88,32 @@ class StandardObject extends AbstractStandardObject implements
 
     /**
      * Method to update static::$_startupFactoryClassName to run some unit tests.
-     *
-     * @param string $className
      */
-    public static function defineStartupFactoryClassName($className)
+    public static function defineStartupFactoryClassName(string $className): void
     {
         static::$startupFactoryClassName = $className;
     }
 
     /**
      * Method to test behavior of proxy when a method in a state want access to a public method.
-     *
-     * @return string
      */
-    public function publicMethodToCall()
+    public function publicMethodToCall(): string
     {
         return 'fooBar';
     }
 
     /**
      * Method to test behavior of proxy when a method in a state want access to a protected method.
-     *
-     * @return string
      */
-    protected function protectedMethodToCall()
+    protected function protectedMethodToCall(): string
     {
         return 'fooBar';
     }
 
     /**
      * Method to test behavior of proxy when a method in a state want access to a private method.
-     *
-     * @return string
      */
-    private function privateMethodToCall()
+    private function privateMethodToCall(): string
     {
         return 'fooBar';
     }

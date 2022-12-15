@@ -42,7 +42,7 @@ use Teknoo\Tests\Support\Multiple\User\User;
  */
 class MultipleTest extends \PHPUnit\Framework\TestCase
 {
-    public function testMultiple()
+    public function testMultiple(): void
     {
         //Initialize user
         $simpleUser = new User('simple 1');

@@ -47,9 +47,9 @@ class DoctrineMockProxy extends MockProxy implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see __setCloner
      *
-     * @return Closure|null
+     * @return Closure
      */
-    public function __getCloner()
+    public function __getCloner(): void
     {
     }
 
@@ -58,9 +58,9 @@ class DoctrineMockProxy extends MockProxy implements \Doctrine\ORM\Proxy\Proxy
      *
      * @see __setInitializer
      *
-     * @return Closure|null
+     * @return Closure
      */
-    public function __getInitializer()
+    public function __getInitializer(): void
     {
     }
 
@@ -70,7 +70,7 @@ class DoctrineMockProxy extends MockProxy implements \Doctrine\ORM\Proxy\Proxy
      * @return array Keys are the property names, and values are the default values
      *               for those properties.
      */
-    public function __getLazyProperties()
+    public function __getLazyProperties(): void
     {
     }
 
@@ -79,7 +79,7 @@ class DoctrineMockProxy extends MockProxy implements \Doctrine\ORM\Proxy\Proxy
      *
      * @return bool
      */
-    public function __isInitialized()
+    public function __isInitialized(): void
     {
     }
 
@@ -89,7 +89,7 @@ class DoctrineMockProxy extends MockProxy implements \Doctrine\ORM\Proxy\Proxy
      *
      * @param Closure|null $cloner
      */
-    public function __setCloner(Closure $cloner = null)
+    public function __setCloner(Closure $cloner = null): void
     {
     }
 
@@ -98,7 +98,7 @@ class DoctrineMockProxy extends MockProxy implements \Doctrine\ORM\Proxy\Proxy
      *
      * @param bool $initialized
      */
-    public function __setInitialized($initialized)
+    public function __setInitialized($initialized): void
     {
     }
 
@@ -110,7 +110,7 @@ class DoctrineMockProxy extends MockProxy implements \Doctrine\ORM\Proxy\Proxy
      *
      * @param Closure|null $initializer
      */
-    public function __setInitializer(Closure $initializer = null)
+    public function __setInitializer(Closure $initializer = null): void
     {
     }
 
@@ -119,7 +119,7 @@ class DoctrineMockProxy extends MockProxy implements \Doctrine\ORM\Proxy\Proxy
      *
      * Acts as a no-op if already initialized.
      */
-    public function __load()
+    public function __load(): void
     {
     }
 }

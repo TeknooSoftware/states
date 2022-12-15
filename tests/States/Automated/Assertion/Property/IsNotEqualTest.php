@@ -45,15 +45,12 @@ use Teknoo\States\Automated\Assertion\Property\IsNotEqual;
  */
 class IsNotEqualTest extends AbstractConstraintTest
 {
-    /**
-     * @return IsNotEqual|ConstraintInterface
-     */
     public function buildInstance(): ConstraintInterface
     {
         return new IsNotEqual(10);
     }
 
-    public function testNotEqualProperty()
+    public function testNotEqualProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = 9)->willReturnSelf();
@@ -64,7 +61,7 @@ class IsNotEqualTest extends AbstractConstraintTest
         );
     }
 
-    public function testEqualProperty()
+    public function testEqualProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');

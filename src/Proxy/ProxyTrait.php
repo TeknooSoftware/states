@@ -207,7 +207,7 @@ trait ProxyTrait
         $currentClassName = static::class;
         $loadedStatesList = [];
 
-        $initializesStates = function ($className, $privateMode, &$loadedStatesList) {
+        $initializesStates = function ($className, $privateMode, &$loadedStatesList): void {
             $rfm = new ReflectionMethod($className, 'statesListDeclaration');
             if ($rfm->getDeclaringClass()->getName() === $className) {
                 //Private mode is only enable for states directly defined in this stated class.
@@ -389,8 +389,6 @@ trait ProxyTrait
      * Called from a static method of this stated class, or from a method of this stated class (but not this instance) :
      *  Private scope
      * Called from a method of this stated class instance : Private state
-     *
-     * @return Visibility
      */
     private function getVisibilityScope(int $limit): Visibility
     {
@@ -458,6 +456,7 @@ trait ProxyTrait
                 //Update new stack
                 $clonedStatesArray[$key] = $clonedState;
             }
+
             $this->states = $clonedStatesArray;
         }
 
@@ -678,13 +677,12 @@ trait ProxyTrait
         $activeStateFound = false;
         $returnValue = null;
 
-        $callback = function (&$value) use (&$returnValue, &$activeStateFound, $methodName) {
+        $callback = static function (&$value) use (&$returnValue, &$activeStateFound, $methodName): void {
             if (true === $activeStateFound) {
                 throw new Exception\AvailableSeveralMethodImplementations(
                     "Method \"$methodName\" has several implementations in different states"
                 );
             }
-
             $returnValue = $value;
             $activeStateFound = true;
         };

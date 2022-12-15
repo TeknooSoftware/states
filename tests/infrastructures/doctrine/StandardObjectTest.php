@@ -60,7 +60,7 @@ class StandardObjectTest extends StandardTest
     /**
      * Test if the class initialize its vars from the trait constructor.
      */
-    public function testPostLoadDoctrine()
+    public function testPostLoadDoctrine(): void
     {
         $proxyReflectionClass = new \ReflectionClass(StandardObject::class);
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();

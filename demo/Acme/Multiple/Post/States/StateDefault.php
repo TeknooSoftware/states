@@ -66,7 +66,7 @@ class StateDefault extends AbstractState
          *
          * @return $this
          */
-        return function ($title) {
+        return function ($title): static {
             $this->title = $title;
 
             return $this;
@@ -82,7 +82,7 @@ class StateDefault extends AbstractState
          *
          * @return $this
          */
-        return function ($body) {
+        return function ($body): void {
             $this->body = $body;
         };
     }

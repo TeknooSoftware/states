@@ -48,7 +48,7 @@ class Administrator extends AbstractState
          *
          * @param User $user
          */
-        return function (User $user) {
+        return function (User $user): void {
             $user->setModerator(true);
         };
     }

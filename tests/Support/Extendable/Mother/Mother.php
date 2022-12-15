@@ -89,7 +89,7 @@ class Mother extends GrandMother implements ProxyInterface
             'executeClosure'
         ];
 
-        $methodsList = array();
+        $methodsList = [];
         foreach ($this->getStatesList() as $stateName => $stateContainer) {
             $methodsList[$stateName] = [];
             foreach ((new \ReflectionObject($stateContainer))->getMethods() as $method) {

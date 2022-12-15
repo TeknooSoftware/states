@@ -46,15 +46,12 @@ use Teknoo\States\Exception\IllegalArgument;
  */
 class PropertyTest extends AbstractAssertionTest
 {
-    /**
-     * @return Property
-     */
-    public function buildInstance()
+    public function buildInstance(): \Teknoo\States\Automated\Assertion\Property
     {
         return new Property(['state1', 'state2']);
     }
 
-    public function testWithConstraint()
+    public function testWithConstraint(): void
     {
         self::assertInstanceOf(
             Property::class,
@@ -65,19 +62,19 @@ class PropertyTest extends AbstractAssertionTest
         );
     }
 
-    public function testWithBadPropertyName()
+    public function testWithBadPropertyName(): void
     {
         $this->expectException(\TypeError::class);
         $this->buildInstance()->with(new \stdClass(), 42);
     }
 
-    public function testWithBadConstraint()
+    public function testWithBadConstraint(): void
     {
         $this->expectException(\TypeError::class);
         $this->buildInstance()->with('fooBar', new \stdClass());
     }
 
-    public function testCheckWithNoConstraintIsValid()
+    public function testCheckWithNoConstraintIsValid(): void
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
@@ -92,7 +89,7 @@ class PropertyTest extends AbstractAssertionTest
         self::assertNotSame($assertion, $assertionChecked);
     }
 
-    public function testCheckWithInvalidPropertyNameInConstraint()
+    public function testCheckWithInvalidPropertyNameInConstraint(): void
     {
         $assertion = $this->buildInstance();
 
@@ -100,7 +97,7 @@ class PropertyTest extends AbstractAssertionTest
         $assertion->with('123', new Property\IsNotNull());
     }
 
-    public function testCheckOneConstraintIsValid()
+    public function testCheckOneConstraintIsValid(): void
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
@@ -111,7 +108,7 @@ class PropertyTest extends AbstractAssertionTest
 
         $proxy->expects(self::once())
             ->method('checkProperty')
-            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use ($proxy) {
+            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use ($proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
                 self::assertEquals('prop1', $name);
                 $value = 123;
                 $set->check($value);
@@ -130,7 +127,7 @@ class PropertyTest extends AbstractAssertionTest
         self::assertNotSame($assertion2, $assertionChecked);
     }
 
-    public function testCheckOneConstraintIsNotValid()
+    public function testCheckOneConstraintIsNotValid(): void
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
@@ -139,7 +136,7 @@ class PropertyTest extends AbstractAssertionTest
 
         $proxy->expects(self::once())
             ->method('checkProperty')
-            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use ($proxy) {
+            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use ($proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
                 self::assertEquals('prop1', $name);
                 $var = null;
                 $set->check($var);
@@ -158,7 +155,7 @@ class PropertyTest extends AbstractAssertionTest
         self::assertNotSame($assertion2, $assertionChecked);
     }
 
-    public function testCheckTwoPropertyConstraintIsValid()
+    public function testCheckTwoPropertyConstraintIsValid(): void
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
@@ -170,7 +167,7 @@ class PropertyTest extends AbstractAssertionTest
         $counter=0;
         $proxy->expects(self::exactly(2))
             ->method('checkProperty')
-            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy) {
+            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
                 if (0 === $counter++) {
                     self::assertEquals('prop1', $name);
                 } else {
@@ -197,7 +194,7 @@ class PropertyTest extends AbstractAssertionTest
         self::assertNotSame($assertion3, $assertionChecked);
     }
 
-    public function testCheckTwoPropertyOneNotValidSoNotValid()
+    public function testCheckTwoPropertyOneNotValidSoNotValid(): void
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
@@ -207,7 +204,7 @@ class PropertyTest extends AbstractAssertionTest
         $counter=0;
         $proxy->expects(self::exactly(2))
             ->method('checkProperty')
-            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy) {
+            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
                 if (0 === $counter++) {
                     self::assertEquals('prop1', $name);
                 } else {

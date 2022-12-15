@@ -45,15 +45,12 @@ use Teknoo\States\Automated\Assertion\Property\IsEmpty;
  */
 class IsEmptyTest extends AbstractConstraintTest
 {
-    /**
-     * @return IsEmpty|ConstraintInterface
-     */
     public function buildInstance(): ConstraintInterface
     {
         return new IsEmpty();
     }
 
-    public function testNotEmptyProperty()
+    public function testNotEmptyProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::never())->method('isValid');
@@ -65,7 +62,7 @@ class IsEmptyTest extends AbstractConstraintTest
         );
     }
 
-    public function testEmptyProperty()
+    public function testEmptyProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects(self::once())->method('isValid')->with($value = '')->willReturnSelf();
