@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Automated;
 
+use stdClass;
 use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 use Teknoo\States\Automated\AutomatedInterface;
@@ -50,7 +51,7 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function buildProxy(array $assertions): AutomatedInterface
     {
-        return new class($assertions) implements AutomatedInterface {
+        return new class($assertions) extends stdClass implements AutomatedInterface {
             use AutomatedTrait;
             use ProxyTrait;
 
@@ -73,7 +74,7 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
     public function testBadAssertions(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->buildProxy([new \stdClass()])->updateStates();
+        $this->buildProxy([new stdClass()])->updateStates();
     }
 
     public function testUpdateStatesCallAssertions(): void
@@ -93,14 +94,14 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
     {
         $this->expectException(\TypeError::class);
         $this->buildProxy([])
-            ->checkProperty(new \stdClass(), $this->createMock(ConstraintsSetInterface::class));
+            ->checkProperty(new stdClass(), $this->createMock(ConstraintsSetInterface::class));
     }
 
     public function testExceptionOnCheckPropertyWithBadConstraintSet(): void
     {
         $this->expectException(\TypeError::class);
         $this->buildProxy([])
-            ->checkProperty('name', new \stdClass());
+            ->checkProperty('name', new stdClass());
     }
 
     public function testCheckPropertyWithUnsetProperty(): void

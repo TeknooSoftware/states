@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Doctrine;
 
+use AllowDynamicProperties;
 use Teknoo\States\Doctrine\AbstractStandardObject;
 use Teknoo\States\Proxy\ArrayAccessTrait;
 use Teknoo\States\Proxy\IteratorTrait;
@@ -49,6 +50,7 @@ use Teknoo\States\Proxy\SerializableTrait;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
+#[AllowDynamicProperties]
 class StandardObject extends AbstractStandardObject implements
     \ArrayAccess,
     \SeekableIterator,

@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support;
 
+use AllowDynamicProperties;
 use Teknoo\States\Proxy;
 
 /**
@@ -46,6 +47,7 @@ use Teknoo\States\Proxy;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
+#[AllowDynamicProperties]
 class StandardProxy extends Proxy\Standard implements
     \ArrayAccess,
     \SeekableIterator,
