@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.13] - 2023-02-03
+### Stable Release
+- Update dev libs to support PHPUnit 10 and remove unused phploc
+
 ## [6.0.12] - 2022-12-15
 ### Stable Release
 - Many QA fixes
