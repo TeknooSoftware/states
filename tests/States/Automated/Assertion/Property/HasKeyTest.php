@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\HasKey;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class HasKeyTest extends AbstractConstraintTest
+class HasKeyTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {

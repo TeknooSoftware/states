@@ -34,7 +34,7 @@ use Teknoo\States\State\Visibility;
 use Teknoo\Tests\Support;
 
 /**
- * Class AbstractStatesTest
+ * Class AbstractStatesTests
  * Set of tests to test the excepted behaviors of all implementations of \Teknoo\States\State\StateInterface *.
 
  *
@@ -46,7 +46,7 @@ use Teknoo\Tests\Support;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-abstract class AbstractStatesTest extends TestCase
+abstract class AbstractStatesTests extends TestCase
 {
     public static function setUpBeforeClass(): void
     {

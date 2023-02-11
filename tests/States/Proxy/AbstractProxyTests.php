@@ -25,15 +25,19 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Proxy;
 
+use PHPUnit\Framework\Error\Warning;
 use Teknoo\States\Proxy;
 use Teknoo\States\Proxy\Exception;
 use Teknoo\States\State\StateInterface;
 use Teknoo\Tests\Support\MockState1;
 use Teknoo\Tests\Support\MockState2;
 use Teknoo\Tests\Support\MockState3;
+use function class_exists;
+use function set_error_handler;
+use const E_WARNING;
 
 /**
- * Class AbstractProxyTest
+ * Class AbstractProxyTests
  * Abstract tests case to test the excepted behavior of each proxy implementing the interface
  * Proxy\ProxyInterface.
  *
@@ -46,7 +50,7 @@ use Teknoo\Tests\Support\MockState3;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
+abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
 {
     /**
      * Mock state 1, used in these tests.
@@ -689,7 +693,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
 
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('myCustomMethod', $this->state1->getMethodNameCalled());
-        self::assertSame(AbstractProxyTest::class, $this->state1->getStatedClassOrigin());
+        self::assertSame(AbstractProxyTests::class, $this->state1->getStatedClassOrigin());
         self::assertSame(['foo', 'bar'], $this->state1->getCalledArguments());
     }
 
@@ -1204,7 +1208,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
-        self::assertSame(AbstractProxyTest::class, $this->state1->getStatedClassOrigin());
+        self::assertSame(AbstractProxyTests::class, $this->state1->getStatedClassOrigin());
         self::assertSame([], $this->state1->getCalledArguments());
     }
 
@@ -1227,7 +1231,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('privateTest', $this->state1->getMethodNameCalled());
-        self::assertSame(AbstractProxyTest::class, $this->state1->getStatedClassOrigin());
+        self::assertSame(AbstractProxyTests::class, $this->state1->getStatedClassOrigin());
         self::assertSame([], $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1237,7 +1241,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('protectedTest', $this->state1->getMethodNameCalled());
-        self::assertSame(AbstractProxyTest::class, $this->state1->getStatedClassOrigin());
+        self::assertSame(AbstractProxyTests::class, $this->state1->getStatedClassOrigin());
         self::assertSame([], $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1247,7 +1251,7 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
-        self::assertSame(AbstractProxyTest::class, $this->state1->getStatedClassOrigin());
+        self::assertSame(AbstractProxyTests::class, $this->state1->getStatedClassOrigin());
         self::assertSame([], $this->state1->getCalledArguments());
     }
 
@@ -1292,12 +1296,24 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         //Test missing property
         self::assertFalse(isset($this->proxy->missingPublicProperty));
         $fail = false;
+        $previous = null;
+        if (!class_exists(Warning::class)) {
+            $previous = set_error_handler(
+                function () use (&$fail) {
+                    $fail = true;
+                },
+                E_WARNING
+            );
+        }
         try {
             $a = $this->proxy->missingPublicProperty;
         } catch (\Throwable) {
             $fail = true;
         }
         if (!$fail) {
+            if (null !== $previous) {
+                set_error_handler($previous);
+            }
             self::fail('Error __get must throw an exception for missing property');
         }
 
@@ -1312,6 +1328,9 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             $a = $this->proxy->missingPublicProperty;
         } catch (\Throwable) {
             $fail = true;
+        }
+        if (null !== $previous) {
+            set_error_handler($previous);
         }
         if (!$fail) {
             self::fail('Error __get must throw an exception for missing property');
@@ -1334,12 +1353,23 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
         //Test missing property
         self::assertFalse($this->proxy->issetMissingPublicProperty());
         $fail = false;
+        if (!class_exists(Warning::class)) {
+            $previous = set_error_handler(
+                function () use (&$fail) {
+                    $fail = true;
+                },
+                E_WARNING
+            );
+        }
         try {
             $a = $this->proxy->getOnMissingPublicProperty();
         } catch (\Throwable) {
             $fail = true;
         }
         if (!$fail) {
+            if (null !== $previous) {
+                set_error_handler($previous);
+            }
             self::fail('Error __get must throw an exception for missing property');
         }
 
@@ -1355,6 +1385,9 @@ abstract class AbstractProxyTest extends \PHPUnit\Framework\TestCase
             $fail = true;
         }
         if (!$fail) {
+            if (null !== $previous) {
+                set_error_handler($previous);
+            }
             self::fail('Error __get must throw an exception for missing property');
         }
     }

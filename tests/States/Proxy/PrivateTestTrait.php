@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Proxy;
 
+use PHPUnit\Framework\Error\Warning;
+use PHPUnit\Framework\Exception;
 use Teknoo\States\Proxy\Exception\MethodNotImplemented;
 use Teknoo\States\State\AbstractState;
 use Teknoo\Tests\Support\MockState1;
@@ -51,9 +53,24 @@ trait PrivateTestTrait
     public function testPHPExceptionWhenAChildCanAccessToPrivatePropertyOfMother(): void
     {
         //PHPUnit intercepts the Notice exception ;)
-        $this->expectException(\PHPUnit\Framework\Exception::class);
+        $fail = false;
+        if (!class_exists(Warning::class)) {
+            $previous = set_error_handler(
+                function () use (&$fail) {
+                    $fail = true;
+                },
+                E_WARNING
+            );
+        } else {
+            $this->expectException(Exception::class);
+        }
         $this->initializeStateProxy(MockState1::class, true);
         $this->proxy->getChildrenPriProperty();
+
+        if (null !== $previous) {
+            self::assertTrue($fail);
+            set_error_handler($previous);
+        }
     }
 
     /**

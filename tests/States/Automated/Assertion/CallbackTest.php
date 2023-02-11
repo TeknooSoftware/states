@@ -44,7 +44,7 @@ use Teknoo\States\Proxy\ProxyInterface;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class CallbackTest extends AbstractAssertionTest
+class CallbackTest extends AbstractAssertionTests
 {
     public function buildInstance(): callable|AssertionInterface
     {
@@ -86,7 +86,13 @@ class CallbackTest extends AbstractAssertionTest
         $proxy = $this->createMock(AutomatedInterface::class);
         $proxy->expects(self::exactly(2))
             ->method('enableState')
-            ->withConsecutive(['state1'], ['state2'])
+            ->with($this->callback(
+                fn ($value) => match ($value) {
+                    'state1' => true,
+                    'state2' => true,
+                    default => false,
+                }
+            ))
             ->willReturnSelf();
 
         $assertion->call(function ($proxy, $callback): void {

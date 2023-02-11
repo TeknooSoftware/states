@@ -30,7 +30,7 @@ use Teknoo\Tests\Support;
 
 /**
  * Class StandardTest
- * Implementation of AbstractProxyTest to test the proxy Proxy\Standard.
+ * Implementation of AbstractProxyTests to test the proxy Proxy\Standard.
  *
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (richarddeloge@gmail.com)
@@ -48,7 +48,7 @@ use Teknoo\Tests\Support;
  * @covers \Teknoo\States\Proxy\MagicCallTrait
  * @covers \Teknoo\States\Proxy\SerializableTrait
  */
-class StandardTest extends AbstractProxyTest
+class StandardTest extends AbstractProxyTests
 {
     /**
      * Build a proxy object, into $this->proxy to test it.

@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\IsArray;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsArrayTest extends AbstractConstraintTest
+class IsArrayTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {

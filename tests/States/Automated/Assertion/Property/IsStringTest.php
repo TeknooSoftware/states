@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\IsString;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsStringTest extends AbstractConstraintTest
+class IsStringTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {

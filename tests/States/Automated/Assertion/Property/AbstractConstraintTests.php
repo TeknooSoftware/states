@@ -38,7 +38,7 @@ use Teknoo\States\Automated\Assertion\Property\IsEqual;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-abstract class AbstractConstraintTest extends \PHPUnit\Framework\TestCase
+abstract class AbstractConstraintTests extends \PHPUnit\Framework\TestCase
 {
     abstract public function buildInstance(): ConstraintInterface;
 

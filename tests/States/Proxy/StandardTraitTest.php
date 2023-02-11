@@ -29,7 +29,7 @@ use Teknoo\Tests\Support;
 
 /**
  * Class StandardTraitTest
- * Implementation of AbstractProxyTest to test the trait Proxy\StandardTrait.
+ * Implementation of AbstractProxyTests to test the trait Proxy\StandardTrait.
  *
  *
  * @copyright   Copyright (c) 2009-2020 Richard Déloge (richarddeloge@gmail.com)
@@ -45,7 +45,7 @@ use Teknoo\Tests\Support;
  * @covers \Teknoo\States\Proxy\MagicCallTrait
  * @covers \Teknoo\States\Proxy\SerializableTrait
  */
-class StandardTraitTest extends AbstractProxyTest
+class StandardTraitTest extends AbstractProxyTests
 {
     use PrivateTestTrait;
 

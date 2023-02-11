@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\CountsEqual;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class CountsEqualTest extends AbstractConstraintTest
+class CountsEqualTest extends AbstractConstraintTests
 {
     public function buildInstance(int $expected=0): ConstraintInterface
     {

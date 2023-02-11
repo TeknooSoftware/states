@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\IsNull;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsNullTest extends AbstractConstraintTest
+class IsNullTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {

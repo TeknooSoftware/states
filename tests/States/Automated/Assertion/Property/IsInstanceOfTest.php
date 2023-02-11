@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\IsInstanceOf;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsInstanceOfTest extends AbstractConstraintTest
+class IsInstanceOfTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {

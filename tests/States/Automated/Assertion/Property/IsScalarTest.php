@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\IsScalar;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsScalarTest extends AbstractConstraintTest
+class IsScalarTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {

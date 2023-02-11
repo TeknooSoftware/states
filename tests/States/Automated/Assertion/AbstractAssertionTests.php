@@ -28,7 +28,7 @@ namespace Teknoo\Tests\States\Automated\Assertion;
 use Teknoo\States\Automated\Assertion\AbstractAssertion;
 
 /**
- * Class AbstractAssertionTest.
+ * Class AbstractAssertionTests.
  *
  * @covers \Teknoo\States\Automated\Assertion\AbstractAssertion
  *
@@ -40,7 +40,7 @@ use Teknoo\States\Automated\Assertion\AbstractAssertion;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-abstract class AbstractAssertionTest extends \PHPUnit\Framework\TestCase
+abstract class AbstractAssertionTests extends \PHPUnit\Framework\TestCase
 {
     /**
      * @return AbstractAssertion

@@ -29,7 +29,7 @@ use Teknoo\Tests\Support;
 
 /**
  * Class StateTest
- * Implementation of AbstractStatesTest to test the trait \Teknoo\States\State\StateTrait and
+ * Implementation of AbstractStatesTests to test the trait \Teknoo\States\State\StateTrait and
  * the abstract class \Teknoo\States\State\AbstractState.
  *
  *
@@ -44,7 +44,7 @@ use Teknoo\Tests\Support;
  * @covers \Teknoo\States\State\StateTrait
  * @covers \Teknoo\States\State\AbstractState
  */
-class StateTest extends AbstractStatesTest
+class StateTest extends AbstractStatesTests
 {
     /**
      * Build a basic object to provide only public methods.

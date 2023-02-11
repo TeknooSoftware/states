@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\CountsLess;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class CountsLessTest extends AbstractConstraintTest
+class CountsLessTest extends AbstractConstraintTests
 {
     public function buildInstance(int $expected=0): ConstraintInterface
     {

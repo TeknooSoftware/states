@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\Callback;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class CallbackTest extends AbstractConstraintTest
+class CallbackTest extends AbstractConstraintTests
 {
     /**
      * @return Callback|ConstraintInterface

@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\IsNotEmpty;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsNotEmptyTest extends AbstractConstraintTest
+class IsNotEmptyTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {

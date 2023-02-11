@@ -44,7 +44,7 @@ use Teknoo\States\Exception\IllegalArgument;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class PropertyTest extends AbstractAssertionTest
+class PropertyTest extends AbstractAssertionTests
 {
     public function buildInstance(): \Teknoo\States\Automated\Assertion\Property
     {
@@ -80,7 +80,13 @@ class PropertyTest extends AbstractAssertionTest
         $proxy = $this->createMock(AutomatedInterface::class);
         $proxy->expects(self::exactly(2))
             ->method('enableState')
-            ->withConsecutive(['state1'], ['state2'])
+            ->with($this->callback(
+                fn ($value) => match ($value) {
+                    'state1' => true,
+                    'state2' => true,
+                    default => false,
+                }
+            ))
             ->willReturnSelf();
 
         $assertionChecked = $assertion->check($proxy);
@@ -103,7 +109,13 @@ class PropertyTest extends AbstractAssertionTest
         $proxy = $this->createMock(AutomatedInterface::class);
         $proxy->expects(self::exactly(2))
             ->method('enableState')
-            ->withConsecutive(['state1'], ['state2'])
+            ->with($this->callback(
+                fn ($value) => match ($value) {
+                    'state1' => true,
+                    'state2' => true,
+                    default => false,
+                }
+            ))
             ->willReturnSelf();
 
         $proxy->expects(self::once())
@@ -161,7 +173,13 @@ class PropertyTest extends AbstractAssertionTest
         $proxy = $this->createMock(AutomatedInterface::class);
         $proxy->expects(self::exactly(2))
             ->method('enableState')
-            ->withConsecutive(['state1'], ['state2'])
+            ->with($this->callback(
+                fn ($value) => match ($value) {
+                    'state1' => true,
+                    'state2' => true,
+                    default => false,
+                }
+            ))
             ->willReturnSelf();
 
         $counter=0;

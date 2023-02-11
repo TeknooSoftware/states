@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\IsNotEqual;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsNotEqualTest extends AbstractConstraintTest
+class IsNotEqualTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {

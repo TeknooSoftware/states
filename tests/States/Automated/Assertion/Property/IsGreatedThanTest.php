@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\IsGreaterThan;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsGreatedThanTest extends AbstractConstraintTest
+class IsGreatedThanTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {

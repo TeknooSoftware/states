@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\IsEqual;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class IsEqualTest extends AbstractConstraintTest
+class IsEqualTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {

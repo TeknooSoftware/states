@@ -43,7 +43,7 @@ use Teknoo\States\Automated\Assertion\Property\HasEmptyValueForKey;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class HasEmptyValueForKeyTest extends AbstractConstraintTest
+class HasEmptyValueForKeyTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {
