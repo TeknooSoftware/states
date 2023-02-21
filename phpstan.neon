@@ -1,4 +1,5 @@
 parameters:
+    treatPhpDocTypesAsCertain: false
     ignoreErrors:
         - '#is not covered by backward compatibility promise#'
         - '#Call to an undefined static method [a-zA-Z0-9\\_]+::statesListDeclaration\(\)#'

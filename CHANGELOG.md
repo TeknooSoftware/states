@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.15] - 2023-02-11
+### Stable Release
+- PHPStan 1.10+
+
 ## [6.0.14] - 2023-02-11
 ### Stable Release
 - Remove phpcpd and upgrade phpunit.xml
