@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * States.
  *
  * LICENSE
