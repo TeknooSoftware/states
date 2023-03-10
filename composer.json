@@ -42,7 +42,7 @@
         "squizlabs/php_codesniffer": "^3.7.1",
         "phpstan/phpstan": "^1.10",
         "symfony/property-access": "^6.2.5",
-        "icanhazstring/composer-unused": "^0.8.6",
+        "icanhazstring/composer-unused": "^0.8.5",
         "nikic/php-parser": "^4.15.2",
         "doctrine/orm": "^2.13.4",
         "doctrine/mongodb-odm": "^2.4.2"
