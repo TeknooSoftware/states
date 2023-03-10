@@ -28,6 +28,7 @@ namespace Teknoo\States\Proxy;
 use ReflectionMethod;
 use RuntimeException;
 use SplStack;
+use Teknoo\States\Exception\WrongConfiguration;
 use Teknoo\States\Proxy\Exception\StateNotFound;
 use Teknoo\States\State\StateInterface;
 use Teknoo\States\State\Visibility;
@@ -258,7 +259,7 @@ trait ProxyTrait
         $stateClass = $state::class;
 
         if (!isset($this->classesByStates[$stateClass])) {
-            throw new RuntimeException("Error, no original class name defined for $stateClass");
+            throw new WrongConfiguration("Error, no original class name defined for $stateClass");
         }
 
         $this->callerStatedClassesStack->push($this->classesByStates[$stateClass]);
@@ -636,9 +637,10 @@ trait ProxyTrait
 
         $inStates = $this->statesIntersect($enabledStatesList, $statesNames, $allStates);
 
-        if (((!$allStates && !empty($inStates)) || count($inStates) === count($statesNames)) && $mustActive) {
-            $callback($enabledStatesList);
-        } elseif ((empty($inStates) || (!$allStates && count($inStates) < count($statesNames))) && !$mustActive) {
+        if (
+            (((!$allStates && !empty($inStates)) || count($inStates) === count($statesNames)) && $mustActive)
+            || ((empty($inStates) || (!$allStates && count($inStates) < count($statesNames))) && !$mustActive)
+        ) {
             $callback($enabledStatesList);
         }
     }

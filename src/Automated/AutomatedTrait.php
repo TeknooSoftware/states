@@ -25,9 +25,9 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Automated;
 
-use RuntimeException;
 use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
+use Teknoo\States\Automated\Exception\AssertionException;
 
 /**
  * Trait to implement in proxy of your stated classes to add automated behaviors.
@@ -62,7 +62,7 @@ trait AutomatedTrait
     {
         foreach ($this->listAssertions() as $assertion) {
             if (!$assertion instanceof AssertionInterface) {
-                throw new RuntimeException('Error, all assertions must implements AssertionInterface');
+                throw new AssertionException('Error, all assertions must implements AssertionInterface');
             }
 
             yield $assertion;

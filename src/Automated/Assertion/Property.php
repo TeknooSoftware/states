@@ -25,10 +25,10 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Automated\Assertion;
 
-use RuntimeException;
 use Teknoo\States\Automated\Assertion\Property\ConstraintInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSet;
 use Teknoo\States\Automated\AutomatedInterface;
+use Teknoo\States\Automated\Exception\AssertionException;
 use Teknoo\States\Exception\IllegalArgument;
 
 use function array_keys;
@@ -102,7 +102,7 @@ class Property extends AbstractAssertion
     public function isValid(): AssertionInterface
     {
         if (null === $this->proxy) {
-            throw new RuntimeException('The method "check" with a valid proxy was not called before');
+            throw new AssertionException('The method "check" with a valid proxy was not called before');
         }
 
         if (empty($this->constraints)) {

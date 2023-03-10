@@ -107,8 +107,6 @@ class ConstraintsSet implements ConstraintsSetInterface
      */
     public function isValid(mixed &$value): ConstraintsSetInterface
     {
-        $this->processConstraint($value);
-
-        return $this;
+        return $this->check($value);
     }
 }

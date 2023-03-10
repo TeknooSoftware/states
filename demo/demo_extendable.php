@@ -42,9 +42,11 @@ $grandDaughterInstance = new GrandDaughter();
 
 echo PHP_EOL.'List states available for the mother class : '.GREEN_COLOR;
 echo implode(', ', $motherInstance->listAvailableStates());
-echo RESET_COLOR.PHP_EOL.'List states available for the daughter class, include mother\'s states and overloaded states : '.GREEN_COLOR;
+echo RESET_COLOR.PHP_EOL.'List states available for the daughter class, '
+    . 'include mother\'s states and overloaded states : '.GREEN_COLOR;
 echo implode(', ', $daughterInstance->listAvailableStates());
-echo RESET_COLOR.PHP_EOL.'List states available for the grand daughter class, include parents\' states, overloaded and extended states : '.GREEN_COLOR;
+echo RESET_COLOR.PHP_EOL.'List states available for the grand daughter class, '
+    . 'include parents\' states, overloaded and extended states : '.GREEN_COLOR;
 echo implode(', ', $grandDaughterInstance->listAvailableStates());
 
 $motherInstance->enableState(StateOne::class);
@@ -56,17 +58,21 @@ echo PHP_EOL.'Call method3 of daughter object : '.GREEN_COLOR.$daughterInstance-
 echo PHP_EOL.'Call method4 of daughter object : '.GREEN_COLOR.$daughterInstance->method4().RESET_COLOR.PHP_EOL;
 $daughterInstance->disableAllStates();
 $daughterInstance->enableState(StateOne::class);
-echo PHP_EOL.'Call method3 of daughter object from mother state\'s name : '.GREEN_COLOR.$daughterInstance->method3().RESET_COLOR;
-echo PHP_EOL.'Call method4 of daughter object from mother state\'s name : '.GREEN_COLOR.$daughterInstance->method4().RESET_COLOR.PHP_EOL;
+echo PHP_EOL.'Call method3 of daughter object from mother '
+    . 'state\'s name : '.GREEN_COLOR.$daughterInstance->method3().RESET_COLOR;
+echo PHP_EOL.'Call method4 of daughter object from mother '
+    . 'state\'s name : '.GREEN_COLOR.$daughterInstance->method4().RESET_COLOR.PHP_EOL;
 
-echo PHP_EOL.'Forbid call of mother method 1 from daughter object (StateOne is overloaded in Daughter class and method1 has not been defined here) : ';
+echo PHP_EOL.'Forbid call of mother method 1 from daughter '
+    . 'object (StateOne is overloaded in Daughter class and method1 has not been defined here) : ';
 try {
     $daughterInstance->method1();
     echo RED_COLOR.'Error, method called :/'.RESET_COLOR;
     echo 'Demo failed';
     exit;
 } catch (MethodNotImplemented $e) {
-    echo GREEN_COLOR.PHP_EOL.'OK, the method1 has not been defined in overloaded state, it\'s not available in the daughter class'.RESET_COLOR;
+    echo GREEN_COLOR.PHP_EOL.'OK, the method1 has not been defined in overloaded state, '
+        . 'it\'s not available in the daughter class'.RESET_COLOR;
 } catch (\Exception $e) {
     echo PHP_EOL.RED_COLOR.' Error '.$e->getMessage().RESET_COLOR;
     echo 'Demo failed';
@@ -79,14 +85,17 @@ echo GREEN_COLOR.$grandDaughterInstance->method6().RESET_COLOR;
 echo PHP_EOL.'Call now the method7 defined in this state for GrandDaughter class : ';
 echo GREEN_COLOR.$grandDaughterInstance->method7().RESET_COLOR.PHP_EOL;
 
-echo PHP_EOL.'Test behavior when we call a private method defined in mother class, via a public method, by a mother object : ';
+echo PHP_EOL.'Test behavior when we call a private method defined '
+    . 'in mother class, via a public method, by a mother object : ';
 $motherInstance->enableState(StateTwo::class);
 echo GREEN_COLOR.$motherInstance->methodRecallPrivate().RESET_COLOR;
-echo PHP_EOL.'Test behavior when we call a private method defined in mother class, via a public method, by a daughter object : ';
+echo PHP_EOL.'Test behavior when we call a private method defined '
+    . 'in mother class, via a public method, by a daughter object : ';
 $daughterInstance->enableState(StateTwo::class);
 echo GREEN_COLOR.$daughterInstance->methodRecallPrivate().RESET_COLOR;
 
-echo PHP_EOL.'Test behavior when we call a private method defined in mother class, via a public method in daughter class, by a daughter object : ';
+echo PHP_EOL.'Test behavior when we call a private method defined '
+    . 'in mother class, via a public method in daughter class, by a daughter object : ';
 $daughterInstance->enableState(StateTwo::class)->enableState(\Acme\Extendable\Daughter\States\StateThree::class);
 
 try {

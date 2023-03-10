@@ -202,7 +202,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
 
         //To use the original \ReflectionClass api and not "BetterReflectionClass" whome not implements all the api.
         $stateClosure = @$stateClosure->bindTo(
-            (new \ReflectionClass($proxyClassName))->newInstanceWithoutConstructor(),
+            (new ReflectionClass($proxyClassName))->newInstanceWithoutConstructor(),
             $proxyClassName,
         );
 

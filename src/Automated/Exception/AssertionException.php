@@ -11,6 +11,7 @@
  * obtain it through the world-wide-web, please send an email
  * to richarddeloge@gmail.com so we can send you a copy immediately.
  *
+ * @category    Exception
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (richarddeloge@gmail.com)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software)
@@ -23,16 +24,12 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Automated\Assertion;
+namespace Teknoo\States\Automated\Exception;
 
-use Teknoo\States\Automated\AutomatedInterface;
-use Teknoo\States\Automated\Exception\AssertionException;
-
-use function is_callable;
+use Teknoo\States\Exception;
 
 /**
- * Assertion implementation to delegated the validation to a callable (a callback or a closure) and
- * return enabled states.
+ * @category    Exception
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (richarddeloge@gmail.com)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software)
@@ -42,36 +39,6 @@ use function is_callable;
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richarddeloge@gmail.com>
  */
-class Callback extends AbstractAssertion
+class AssertionException extends Exception\AssertionException
 {
-    /**
-     * Callable (callback or closure) to execute to determine if this assertio is valid or not.
-     *
-     * @var callable
-     */
-    private $callback;
-
-    /*
-     * To register the callable (callback or closure) to execute to determine if this assertio is valid or not.
-     */
-    public function call(callable $callback): self
-    {
-        $this->callback = $callback;
-
-        return $this;
-    }
-
-    public function check(AutomatedInterface $proxy): AssertionInterface
-    {
-        if (!is_callable($this->callback)) {
-            throw new AssertionException('Error the callback is not callable');
-        }
-
-        $that = clone $this;
-        $that->proxy = $proxy;
-
-        ($this->callback)($proxy, $that);
-
-        return $that;
-    }
 }

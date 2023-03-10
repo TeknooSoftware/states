@@ -25,9 +25,10 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Automated\Assertion;
 
-use RuntimeException;
 use Teknoo\Immutable\ImmutableTrait;
 use Teknoo\States\Automated\AutomatedInterface;
+use Teknoo\States\Automated\Exception\AssertionException;
+use Teknoo\States\Proxy\Exception\StateNotFound;
 
 /**
  * Abstract implementation of AssertionInterface.
@@ -63,12 +64,13 @@ abstract class AbstractAssertion implements AssertionInterface
     }
 
     /**
-     * @throws \Teknoo\States\Proxy\Exception\StateNotFound
+     * @throws StateNotFound
+     * @throws AssertionException
      */
     public function isValid(): AssertionInterface
     {
         if (!$this->proxy instanceof AutomatedInterface) {
-            throw new RuntimeException('Error, the proxy is not a valid AutomatedInterface instance');
+            throw new AssertionException('Error, the proxy is not a valid AutomatedInterface instance');
         }
 
         foreach ($this->statesList as $state) {

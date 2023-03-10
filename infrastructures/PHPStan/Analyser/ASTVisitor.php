@@ -118,6 +118,43 @@ class ASTVisitor extends NodeVisitorAbstract
     }
 
     /**
+     * @param array<int, Stmt> $stmts
+     * @return array<int, ClassMethod>|null
+     */
+    private static function recursiveExtraction(array $stmts, Class_ $parent, callable $recursiveExtraction): ?array
+    {
+        foreach ($stmts as $node) {
+            if (
+                !$node instanceof Class_
+                && !empty($node->stmts)
+                && is_array($node->stmts)
+            ) {
+                $return = $recursiveExtraction($node->stmts, $parent, $recursiveExtraction);
+
+                if (null !== $return) {
+                    return $return;
+                }
+            } elseif ($node instanceof Class_) {
+                $stmts = [];
+
+                foreach ($node->stmts as $stmt) {
+                    if (!$stmt instanceof ClassMethod) {
+                        continue;
+                    }
+
+                    $stmt->setAttribute('parent', $parent);
+
+                    $stmts[] = $stmt;
+                }
+
+                return $stmts;
+            }
+        }
+
+        return null;
+    }
+
+    /**
      * @param class-string $className
      * @return array<int, ClassMethod>
      * @throws ParserErrorsException
@@ -136,39 +173,9 @@ class ASTVisitor extends NodeVisitorAbstract
         }
 
         $node = $this->parser->parseFile($fileName);
-        $recursiveExtraction = static function (array $stmts, Class_ $parent, callable $recursiveExtraction): ?array {
-            foreach ($stmts as $node) {
-                if (
-                    !$node instanceof Class_
-                    && !empty($node->stmts)
-                    && is_array($node->stmts)
-                ) {
-                    $return = $recursiveExtraction($node->stmts, $parent, $recursiveExtraction);
+        $recursiveExtraction = self::recursiveExtraction(...);
 
-                    if (null !== $return) {
-                        return $return;
-                    }
-                } elseif ($node instanceof Class_) {
-                    $stmts = [];
-
-                    foreach ($node->stmts as $stmt) {
-                        if (!$stmt instanceof ClassMethod) {
-                            continue;
-                        }
-
-                        $stmt->setAttribute('parent', $parent);
-
-                        $stmts[] = $stmt;
-                    }
-
-                    return $stmts;
-                }
-            }
-
-            return null;
-        };
-
-        return $this->statesStmts[$className] = $recursiveExtraction($node, $parent, $recursiveExtraction) ?? [];
+        return $this->statesStmts[$className] = self::recursiveExtraction($node, $parent, $recursiveExtraction) ?? [];
     }
 
     /**
