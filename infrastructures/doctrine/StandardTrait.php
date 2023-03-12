@@ -31,7 +31,6 @@ use Teknoo\States\Proxy\ProxyTrait;
 /**
  * Trait adapt standard proxies to doctrine.
  *
- *
  * @copyright   Copyright (c) EIRL Richard Déloge (richarddeloge@gmail.com)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software)
  *

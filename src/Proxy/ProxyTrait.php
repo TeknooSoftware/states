@@ -26,7 +26,6 @@ declare(strict_types=1);
 namespace Teknoo\States\Proxy;
 
 use ReflectionMethod;
-use RuntimeException;
 use SplStack;
 use Teknoo\States\Exception\WrongConfiguration;
 use Teknoo\States\Proxy\Exception\StateNotFound;

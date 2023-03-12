@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan\Reflection;
 
-use PhpParser\Node\ComplexType;
 use PhpParser\Node\Expr\Variable;
 use PhpParser\Node\IntersectionType;
 use PhpParser\Node\Identifier;
