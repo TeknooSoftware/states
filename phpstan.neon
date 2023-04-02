@@ -7,9 +7,6 @@ parameters:
             message: '#expects class-string, string given#'
             path: infrastructures/PHPStan/Analyser/ASTVisitor.php
         -
-            message: '#Variable \$listClosure on left side of \?\? always exists and is not nullable#'
-            path: infrastructures/PHPStan/Analyser/ASTVisitor.php
-        -
             message: '#string, mixed given#'
             path: infrastructures/PHPStan/Reflection/StateMethod.php
         -
