@@ -232,7 +232,7 @@ From the version 2.0, this library has been redesigned to
 
 Credits
 -------
-Richard Déloge - <richarddeloge@gmail.com> - Lead developer.
+Richard Déloge - <richard@teknoo.software> - Lead developer.
 Teknoo Software - <https://teknoo.software>
 
 About Teknoo Software
