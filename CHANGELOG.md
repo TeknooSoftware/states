@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [6.0.19] - 2023-05-15
+### Stable Release
+- Update dev lib requirements
+- Update copyrights
+
 ## [6.0.18] - 2023-04-16
 ### Stable Release
 - Update dev lib requirements
