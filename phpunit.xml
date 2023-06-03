@@ -13,7 +13,7 @@
       <directory>infrastructures</directory>
     </include>
     <exclude>
-      <directory>docs</directory>
+      <directory>documentation</directory>
       <directory>demo</directory>
       <directory>licences</directory>
     </exclude>

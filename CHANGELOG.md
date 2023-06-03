@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [6.1.0] - 2023-06-03
+### Stable Release
+- Optimize initialiation with a cache 
+- Improve the documentation
+
 ## [6.0.19] - 2023-05-15
 ### Stable Release
 - Update dev lib requirements
@@ -145,7 +150,7 @@
 ### Stable Release
 - Support PHPStan !.!+
 - Remove State's PHPStan Scope. (Minor BC break, not impact State in production, only on QA. Need to update PHPStan 
-  configuration to fix it [How to](docs/howto/phpstan.md) )
+  configuration to fix it [How to](documentation/howto/phpstan.md) )
 - Add ASTVisitor to plug into PHPStan to alter proxies's AST with states's AST.
 
 ## [5.0.6] - 2021-08-22

@@ -7,16 +7,21 @@ Teknoo Software - States library
 [![License](https://poser.pugx.org/teknoo/states/license)](https://packagist.org/packages/teknoo/states)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
 
-States allows you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in PHP. 
-This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability and workflows writing.
+States allows you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in 
+PHP. This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic 
+conditional statements and this improve maintainability and workflows writing.
 
 Features
 --------
 
 * **Create Several States** : Split classes in states to avoid ununderstable large monolithic statements.
-* **Inherit States and Classes** : Complete and factorize states thanks to inheritance. Stated classes can be also inherited.
+* **Inherit States and Classes** : Complete and factorize states thanks to inheritance. 
+  * Stated classes can be also inherited.
 * **Automate States Switching** : Define states switching rules based on object's properties.
-* **Implement Every Where**: Thanks to traits and interfaces, use this pattern on your existant code. Compatible with Doctrine.
+* **Implement Every Where**: Thanks to traits and interfaces, use this pattern on your existant code. 
+  * Compatible with Doctrine.
+
+A complete documentation is available in [documentation/README.md](documentation/README.md)
 
 Quick Example
 -------------
@@ -176,6 +181,7 @@ This library requires :
     * A PHP autoloader (Composer is recommended)
     * Teknoo/Immutable (for Automated features).
     
+A complete documentation is available in [documentation/README.md](documentation/README.md)
 
 News from Teknoo State 6.0
 --------------------------
@@ -210,11 +216,11 @@ _ All files use strict typing. Please make sure to not rely on type coercion.
     
 Quick How-to to implement your first stated class
 -------------------------------------------------
-Quick How-to to learn how to use this library : [Startup](docs/howto/quick-startup.md).
+Quick How-to to learn how to use this library : [Startup](documentation/howto/quick-startup.md).
 
 Behavior Documentation
 ----------------------
-Documentation to explain how this library works : [Behavior](docs/howto/behavior.md).
+Documentation to explain how this library works : [Behavior](documentation/howto/behavior.md).
 
 Evolutions in 3.x versions
 --------------------------

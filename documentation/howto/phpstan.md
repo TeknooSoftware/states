@@ -1,6 +1,7 @@
-#Teknoo Software - States library - PHPStan
+Teknoo Software - States library - PHPStan
+==========================================
 
-To enable support of PHpStan in your project, create or edit your `phpstan.neon` and add
+To enable support of PHPStan in your project, create or edit your `phpstan.neon` and add
 
     services:
         -
@@ -20,12 +21,11 @@ To enable support of PHpStan in your project, create or edit your `phpstan.neon`
             autowired: PHPStan\Analyser\NodeScopeResolver
             arguments:
                 parser: @defaultAnalysisParser
-                classReflector: @nodeScopeResolverClassReflector
+                reflector: @nodeScopeResolverReflector
                 polluteScopeWithLoopInitialAssignments: %polluteScopeWithLoopInitialAssignments%
                 polluteScopeWithAlwaysIterableForeach: %polluteScopeWithAlwaysIterableForeach%
                 earlyTerminatingMethodCalls: %earlyTerminatingMethodCalls%
                 earlyTerminatingFunctionCalls: %earlyTerminatingFunctionCalls%
                 implicitThrows: %exceptions.implicitThrows%
+                treatPhpDocTypesAsCertain: %treatPhpDocTypesAsCertain%
 
-If you had already PHPStan support with PHPStan pre 1.0 version, you must remove the entry `scopeClass` 
-under `parameters` key.

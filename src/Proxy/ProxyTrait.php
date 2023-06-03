@@ -130,6 +130,16 @@ trait ProxyTrait
     private string $defaultCallerStatedClassName = '';
 
     /**
+     * @var array<string, array{
+     *     0: array<string, StateInterface>,
+     *     1: array<string, StateInterface>,
+     *     2: array<string, string>,
+     *     3: array<string, string>
+     * }>
+     */
+    private static array $loadedStatesCaches = [];
+
+    /**
      * List all states's classes available in this state. It's not mandatory to redefine states of parent's class,
      * They are automatically loaded by the proxy. Warning, if you redeclare a state of a parent's class with its full
      * qualified class name, you can access to its private method: this declaration overloads the parent's state and
@@ -202,6 +212,18 @@ trait ProxyTrait
     private function loadStates(): ProxyInterface
     {
         $currentClassName = static::class;
+
+        if (isset(self::$loadedStatesCaches[$currentClassName])) {
+            list(
+                $this->activesStates,
+                $this->states,
+                $this->classesByStates,
+                $this->statesAliasesList,
+            ) = self::$loadedStatesCaches[$currentClassName];
+
+            return $this;
+        }
+
         $loadedStatesList = [];
 
         $initializesStates = function ($className, $privateMode, &$loadedStatesList): void {
@@ -230,6 +252,13 @@ trait ProxyTrait
                 $initializesStates($parentClassName, true, $loadedStatesList);
             }
         } while (false !== $parentClassName);
+
+        self::$loadedStatesCaches[$currentClassName] = [
+            $this->activesStates,
+            $this->states,
+            $this->classesByStates,
+            $this->statesAliasesList,
+        ];
 
         return $this;
     }
@@ -687,7 +716,8 @@ trait ProxyTrait
 
         //browse all enabled state to find the method
         $callerStatedClass = $this->getCallerStatedClassName();
-        foreach ($this->activesStates as $activeStateObject) {
+        $activesStatesStack = $this->activesStates;
+        foreach ($activesStatesStack as $activeStateObject) {
             $this->pushCallerStatedClassName($activeStateObject);
 
             //Call it
