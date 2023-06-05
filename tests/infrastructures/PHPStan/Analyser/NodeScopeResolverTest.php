@@ -78,6 +78,7 @@ class NodeScopeResolverTest extends TestCase
             [],
             true,
             true,
+            true,
             $visitor,
         );
 
