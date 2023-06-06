@@ -28,4 +28,4 @@ To enable support of PHPStan in your project, create or edit your `phpstan.neon`
                 earlyTerminatingFunctionCalls: %earlyTerminatingFunctionCalls%
                 implicitThrows: %exceptions.implicitThrows%
                 treatPhpDocTypesAsCertain: %treatPhpDocTypesAsCertain%
-
+                detectDeadTypeInMultiCatch: %featureToggles.detectDeadTypeInMultiCatch%
