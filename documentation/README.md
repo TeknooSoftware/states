@@ -66,4 +66,4 @@ sharing knowledge and skills.
 
 License
 -------
-Space is licensed under the MIT License - see the licenses folder for details.
+State is licensed under the MIT License - see the licenses folder for details.
