@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan\Analyser;
 
+use PHPStan\Analyser\ScopeFactory;
 use PHPUnit\Framework\TestCase;
 use PhpParser\Node;
 use PHPStan\Analyser\MutatingScope;
@@ -72,6 +73,7 @@ class NodeScopeResolverTest extends TestCase
             $this->createMock(TypeSpecifier::class),
             $this->createMock(DynamicThrowTypeExtensionProvider::class),
             $this->createMock(ReadWritePropertiesExtensionProvider::class),
+            $this->createMock(ScopeFactory::class),
             true,
             true,
             [],

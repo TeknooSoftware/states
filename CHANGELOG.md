@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.1.2] - 2023-07-04
+### Stable Release
+- Fix support of last PHPStan 1.10.23
+
 ## [6.1.1] - 2023-06-05
 ### Stable Release
 - Fix support of last PHPStan 

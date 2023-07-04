@@ -28,6 +28,7 @@ namespace Teknoo\States\PHPStan\Analyser;
 use PhpParser\NodeTraverser;
 use PHPStan\Analyser\MutatingScope;
 use PHPStan\Analyser\NodeScopeResolver as BaseNodeScopeResolver;
+use PHPStan\Analyser\ScopeFactory;
 use PHPStan\Analyser\TypeSpecifier;
 use PHPStan\BetterReflection\Reflector\Reflector;
 use PHPStan\DependencyInjection\Reflection\ClassReflectionExtensionRegistryProvider;
@@ -71,6 +72,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
         TypeSpecifier $typeSpecifier,
         DynamicThrowTypeExtensionProvider $dynamicThrowTypeExtensionProvider,
         ReadWritePropertiesExtensionProvider $readWritePropertiesExtensionProvider,
+        ScopeFactory $scopeFactory,
         bool $polluteScopeWithLoopInitialAssignments,
         bool $polluteScopeWithAlwaysIterableForeach,
         array $earlyTerminatingMethodCalls,
@@ -93,6 +95,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
             fileHelper: $fileHelper,
             typeSpecifier: $typeSpecifier,
             dynamicThrowTypeExtensionProvider: $dynamicThrowTypeExtensionProvider,
+            scopeFactory: $scopeFactory,
             polluteScopeWithLoopInitialAssignments: $polluteScopeWithLoopInitialAssignments,
             polluteScopeWithAlwaysIterableForeach: $polluteScopeWithAlwaysIterableForeach,
             earlyTerminatingMethodCalls: $earlyTerminatingMethodCalls,
