@@ -88,7 +88,7 @@ abstract class AbstractStatesTests extends TestCase
 
     public function testWhenExecuteAnNonExistentMethodExceptionMustBeThrew(): void
     {
-        $args =[
+        $args = [
             $this->createMock(ProxyInterface::class),
             'badMethod',
             [1,2],
@@ -178,7 +178,7 @@ abstract class AbstractStatesTests extends TestCase
 
     public function testExecutePrivateMethodInAPrivateScope(): void
     {
-        $args =[
+        $args = [
             $this->createMock(ProxyInterface::class) ,
             'standardMethod10' ,
             [1,2] ,
@@ -424,7 +424,7 @@ abstract class AbstractStatesTests extends TestCase
 
     public function testExecuteParentProtectedMethodInPrivateScope(): void
     {
-        $args =[
+        $args = [
             $this->createMock(ProxyInterface::class) ,
             'standardMethod6' ,
             [1,2] ,

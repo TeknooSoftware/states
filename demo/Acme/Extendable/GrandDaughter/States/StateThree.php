@@ -20,6 +20,7 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+
 namespace Acme\Extendable\GrandDaughter\States;
 
 use Acme\Extendable\Daughter\States as Daughter;
@@ -45,6 +46,6 @@ class StateThree extends Daughter\StateThree
         /**
          * @return int
          */
-        return fn(): int => 777;
+        return fn (): int => 777;
     }
 }

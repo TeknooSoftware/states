@@ -48,7 +48,7 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function buildProxy(array $assertions): AutomatedInterface
     {
-        return new class($assertions) extends stdClass implements AutomatedInterface {
+        return new class ($assertions) extends stdClass implements AutomatedInterface {
             use AutomatedTrait;
             use ProxyTrait;
 

@@ -42,7 +42,7 @@ use Teknoo\States\Automated\Assertion\Property\CountsEqual;
  */
 class CountsEqualTest extends AbstractConstraintTests
 {
-    public function buildInstance(int $expected=0): ConstraintInterface
+    public function buildInstance(int $expected = 0): ConstraintInterface
     {
         return new CountsEqual($expected);
     }

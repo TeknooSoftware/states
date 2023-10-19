@@ -20,6 +20,7 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+
 namespace demo\Acme\Article;
 
 use demo\Acme\Article\States\Archived;

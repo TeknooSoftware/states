@@ -45,8 +45,8 @@ use Teknoo\Tests\Support\AutomatedAcme\States\State2;
  */
 class AutomatedAcme implements AutomatedInterface
 {
-    use ProxyTrait,
-        AutomatedTrait;
+    use ProxyTrait;
+    use AutomatedTrait;
 
     /**
      * For AssertionTest.

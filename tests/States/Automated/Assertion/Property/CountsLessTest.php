@@ -42,7 +42,7 @@ use Teknoo\States\Automated\Assertion\Property\CountsLess;
  */
 class CountsLessTest extends AbstractConstraintTests
 {
-    public function buildInstance(int $expected=0): ConstraintInterface
+    public function buildInstance(int $expected = 0): ConstraintInterface
     {
         return new CountsLess($expected);
     }

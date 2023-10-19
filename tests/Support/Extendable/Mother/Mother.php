@@ -105,7 +105,7 @@ class Mother extends GrandMother implements ProxyInterface
     /**
      * Return the list of registered states instance. Present only for debug and tests
      */
-    public function getStatesList() : array
+    public function getStatesList(): array
     {
         if (!empty($this->states)) {
             return $this->states;

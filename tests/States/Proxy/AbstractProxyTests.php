@@ -32,8 +32,10 @@ use Teknoo\States\State\StateInterface;
 use Teknoo\Tests\Support\MockState1;
 use Teknoo\Tests\Support\MockState2;
 use Teknoo\Tests\Support\MockState3;
+
 use function class_exists;
 use function set_error_handler;
+
 use const E_WARNING;
 
 /**
@@ -1179,7 +1181,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         //from a closure to get a description of a private method
         $fail = false;
         try {
-            $closure = fn() => $proxy->privateTest();
+            $closure = fn () => $proxy->privateTest();
             $closure();
         } catch (Exception\MethodNotImplemented) {
             $fail = true;
@@ -1191,7 +1193,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         //from a closure to get a description of a protected method
         $fail = false;
         try {
-            $closure = fn() => $proxy->protectedTest();
+            $closure = fn () => $proxy->protectedTest();
             $closure();
         } catch (Exception\MethodNotImplemented) {
             $fail = true;
@@ -1201,7 +1203,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a closure to get a description of a public method
-        $closure = fn() => $proxy->publicTest();
+        $closure = fn () => $proxy->publicTest();
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
         self::assertSame('publicTest', $this->state1->getMethodNameCalled());
@@ -1223,7 +1225,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a bound closure to get a description of a private method
-        $closureOriginal = fn() => $proxy->privateTest();
+        $closureOriginal = fn () => $proxy->privateTest();
         $closure = \Closure::bind($closureOriginal, $this->proxy);
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
@@ -1233,7 +1235,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a bound closure to get a description of a protected method
-        $closureOriginal = fn() => $proxy->protectedTest();
+        $closureOriginal = fn () => $proxy->protectedTest();
         $closure = \Closure::bind($closureOriginal, $this->proxy);
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
@@ -1243,7 +1245,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a bound closure to get a description of a public method
-        $closureOriginal = fn() => $proxy->publicTest();
+        $closureOriginal = fn () => $proxy->publicTest();
         $closure = \Closure::bind($closureOriginal, $this->proxy);
         $closure();
         self::assertTrue($this->state1->methodWasCalled());
@@ -1819,7 +1821,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
     {
         $this->initializeStateProxy(MockState1::class, true);
         $iterator = new \ArrayIterator([1, 2, 3]);
-        $this->state1->setClosure(fn(): \ArrayIterator => $iterator);
+        $this->state1->setClosure(fn (): \ArrayIterator => $iterator);
         self::assertSame($iterator, $this->proxy->getIterator());
     }
 

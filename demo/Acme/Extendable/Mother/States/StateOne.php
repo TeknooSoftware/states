@@ -20,6 +20,7 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+
 namespace Acme\Extendable\Mother\States;
 
 use Acme\Extendable\Mother\Mother;
@@ -45,7 +46,7 @@ class StateOne extends AbstractState
         /**
          * @return int
          */
-        return fn(): int => 123;
+        return fn (): int => 123;
     }
 
     public function method2()
@@ -53,6 +54,6 @@ class StateOne extends AbstractState
         /**
          * @return int
          */
-        return fn(): int => 456;
+        return fn (): int => 456;
     }
 }

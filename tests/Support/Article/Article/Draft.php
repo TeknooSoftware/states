@@ -85,6 +85,6 @@ class Draft extends AbstractState
          *
          * @return string
          */
-        return fn() => $this->getAttribute('body');
+        return fn () => $this->getAttribute('body');
     }
 }

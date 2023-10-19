@@ -313,27 +313,27 @@ class MockState implements StateInterface
 
     public function recallMethod()
     {
-        return fn($methodName) => $this->{$methodName}();
+        return fn ($methodName) => $this->{$methodName}();
     }
 
     public function getPublicProperty()
     {
-        return fn() => $this->publicProperty;
+        return fn () => $this->publicProperty;
     }
 
     public function issetPublicProperty()
     {
-        return fn(): bool => isset($this->publicProperty);
+        return fn (): bool => isset($this->publicProperty);
     }
 
     public function issetMissingPublicProperty()
     {
-        return fn(): bool => isset($this->missingPublicProperty);
+        return fn (): bool => isset($this->missingPublicProperty);
     }
 
     public function getOnMissingPublicProperty()
     {
-        return fn() => $this->missingPublicProperty;
+        return fn () => $this->missingPublicProperty;
     }
 
     public function setOnMissingPublicProperty()
@@ -366,17 +366,17 @@ class MockState implements StateInterface
 
     public function getProProperty()
     {
-        return fn() => $this->protectedProperty;
+        return fn () => $this->protectedProperty;
     }
 
     public function issetProProperty()
     {
-        return fn(): bool => isset($this->protectedProperty);
+        return fn (): bool => isset($this->protectedProperty);
     }
 
     public function issetMissingProProperty()
     {
-        return fn(): bool => isset($this->missingProtectedProperty);
+        return fn (): bool => isset($this->missingProtectedProperty);
     }
 
     public function setProProperty()
@@ -395,17 +395,17 @@ class MockState implements StateInterface
 
     public function getPriProperty()
     {
-        return fn() => $this->privateProperty;
+        return fn () => $this->privateProperty;
     }
 
     public function issetPriProperty()
     {
-        return fn(): bool => isset($this->privateProperty);
+        return fn (): bool => isset($this->privateProperty);
     }
 
     public function issetMissingPriProperty()
     {
-        return fn(): bool => isset($this->missingPrivateProperty);
+        return fn (): bool => isset($this->missingPrivateProperty);
     }
 
     public function setPriProperty()
@@ -424,17 +424,17 @@ class MockState implements StateInterface
 
     public function getChildrenPriProperty()
     {
-        return fn() => $this->parentPrivateProperty;
+        return fn () => $this->parentPrivateProperty;
     }
 
     public function issetChildrenPriProperty()
     {
-        return fn(): bool => isset($this->parentPrivateProperty);
+        return fn (): bool => isset($this->parentPrivateProperty);
     }
 
     public function issetChildrenMissingPriProperty()
     {
-        return fn(): bool => isset($this->missingPrivateProperty);
+        return fn (): bool => isset($this->missingPrivateProperty);
     }
 
     public function setChildrenPriProperty()
@@ -456,7 +456,7 @@ class MockState implements StateInterface
      */
     public function callPublicMethod()
     {
-        return fn() => $this->publicMethodToCall();
+        return fn () => $this->publicMethodToCall();
     }
 
     /**
@@ -464,7 +464,7 @@ class MockState implements StateInterface
      */
     public function callProMethod()
     {
-        return fn() => $this->protectedMethodToCall();
+        return fn () => $this->protectedMethodToCall();
     }
 
     /**
@@ -472,7 +472,7 @@ class MockState implements StateInterface
      */
     public function callPriMethod()
     {
-        return fn() => $this->privateMethodToCall();
+        return fn () => $this->privateMethodToCall();
     }
 
     /**
@@ -480,6 +480,6 @@ class MockState implements StateInterface
      */
     public function callChildrenPriMethod()
     {
-        return fn() => $this->parentPrivateMethodToCall();
+        return fn () => $this->parentPrivateMethodToCall();
     }
 }

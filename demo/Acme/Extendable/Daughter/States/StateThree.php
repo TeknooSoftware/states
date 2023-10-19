@@ -20,6 +20,7 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+
 namespace Acme\Extendable\Daughter\States;
 
 use Acme\Extendable\GrandDaughter\GrandDaughter;
@@ -45,7 +46,7 @@ class StateThree extends AbstractState
         /**
          * @return int
          */
-        return fn(): int => 666;
+        return fn (): int => 666;
     }
 
     public function methodRecallMotherPrivate()
@@ -53,7 +54,7 @@ class StateThree extends AbstractState
         /**
          * @return int
          */
-        return fn(): int|float => $this->methodPrivate() * 3;
+        return fn (): int|float => $this->methodPrivate() * 3;
     }
 
     public function methodRecallMotherProtected()
@@ -61,6 +62,6 @@ class StateThree extends AbstractState
         /**
          * @return int
          */
-        return fn(): int|float => $this->methodProtected() * 3;
+        return fn (): int|float => $this->methodProtected() * 3;
     }
 }

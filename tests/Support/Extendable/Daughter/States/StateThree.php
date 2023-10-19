@@ -45,7 +45,7 @@ class StateThree extends AbstractState
         /*
          * @return int
          */
-        return fn(): int => 666;
+        return fn (): int => 666;
     }
 
     public function methodRecallMotherPrivate()
@@ -53,7 +53,7 @@ class StateThree extends AbstractState
         /*
          * @return int
          */
-        return fn(): int|float => $this->methodPrivate() * 3;
+        return fn (): int|float => $this->methodPrivate() * 3;
     }
 
     public function methodRecallMotherProtected()
@@ -61,6 +61,6 @@ class StateThree extends AbstractState
         /*
          * @return int
          */
-        return fn(): int|float => $this->methodProtected() * 3;
+        return fn (): int|float => $this->methodProtected() * 3;
     }
 }

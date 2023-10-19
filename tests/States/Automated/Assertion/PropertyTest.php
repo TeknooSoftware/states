@@ -179,7 +179,7 @@ class PropertyTest extends AbstractAssertionTests
             ))
             ->willReturnSelf();
 
-        $counter=0;
+        $counter = 0;
         $proxy->expects(self::exactly(2))
             ->method('checkProperty')
             ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
@@ -216,7 +216,7 @@ class PropertyTest extends AbstractAssertionTests
         $proxy->expects(self::never())
             ->method('enableState');
 
-        $counter=0;
+        $counter = 0;
         $proxy->expects(self::exactly(2))
             ->method('checkProperty')
             ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {

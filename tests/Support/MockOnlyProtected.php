@@ -45,7 +45,7 @@ class MockOnlyProtected implements StateInterface
 
     protected static function _staticMethod5()
     {
-        return fn($a=0, $b=0): float|int|array => $a+$b;
+        return fn ($a = 0, $b = 0): float|int|array => $a + $b;
     }
 
     /**
@@ -64,7 +64,7 @@ class MockOnlyProtected implements StateInterface
          *
          * @return mixed
          */
-        return fn($a, $b): float|int|array => $a + $b;
+        return fn ($a, $b): float|int|array => $a + $b;
     }
 
     /**
@@ -72,11 +72,11 @@ class MockOnlyProtected implements StateInterface
      */
     final protected function finalMethod7()
     {
-        return fn($a=0, $b=0): float|int|array => $a+$b;
+        return fn ($a = 0, $b = 0): float|int|array => $a + $b;
     }
 
     protected function standardMethod8()
     {
-        return fn($a=0, $b=0): float|int|array => $a+$b;
+        return fn ($a = 0, $b = 0): float|int|array => $a + $b;
     }
 }

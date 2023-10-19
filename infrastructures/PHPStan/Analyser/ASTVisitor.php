@@ -111,7 +111,7 @@ class ASTVisitor extends NodeVisitorAbstract
 
         $listClosure = $listDeclarationReflection->getClosure(null);
 
-        return array_flip(($listClosure ?? static fn(): array => [])());
+        return array_flip(($listClosure ?? static fn (): array => [])());
     }
 
     /**

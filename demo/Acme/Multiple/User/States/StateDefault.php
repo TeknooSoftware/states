@@ -20,6 +20,7 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+
 namespace demo\Acme\Multiple\User\States;
 
 use demo\Acme\Multiple\User\User;
@@ -48,7 +49,7 @@ class StateDefault extends AbstractState
          *
          * @return string
          */
-        return fn() => $this->userName;
+        return fn () => $this->userName;
     }
 
     protected function setModerator()

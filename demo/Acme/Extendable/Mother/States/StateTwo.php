@@ -20,6 +20,7 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+
 namespace Acme\Extendable\Mother\States;
 
 use Acme\Extendable\Mother\Mother;
@@ -49,7 +50,7 @@ class StateTwo implements StateInterface
         /**
          * @return int
          */
-        return fn(): int => 123;
+        return fn (): int => 123;
     }
 
     protected function methodProtected()
@@ -57,7 +58,7 @@ class StateTwo implements StateInterface
         /**
          * @return int
          */
-        return fn(): int => 456;
+        return fn (): int => 456;
     }
 
     private function methodPrivate()
@@ -65,7 +66,7 @@ class StateTwo implements StateInterface
         /**
          * @return int
          */
-        return fn(): int => 789;
+        return fn (): int => 789;
     }
 
     public function methodRecallPrivate()
@@ -73,6 +74,6 @@ class StateTwo implements StateInterface
         /**
          * @return int
          */
-        return fn(): int|float => $this->methodPrivate() * 2;
+        return fn (): int|float => $this->methodPrivate() * 2;
     }
 }

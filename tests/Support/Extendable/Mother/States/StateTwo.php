@@ -48,7 +48,7 @@ class StateTwo implements StateInterface
         /*
          * @return int
          */
-        return fn(): int => 123;
+        return fn (): int => 123;
     }
 
     protected function methodProtected()
@@ -56,7 +56,7 @@ class StateTwo implements StateInterface
         /*
          * @return int
          */
-        return fn(): int => 456;
+        return fn (): int => 456;
     }
 
     private function methodPrivate()
@@ -64,7 +64,7 @@ class StateTwo implements StateInterface
         /*
          * @return int
          */
-        return fn(): int => 789;
+        return fn (): int => 789;
     }
 
     public function methodRecallPrivate()
@@ -72,7 +72,7 @@ class StateTwo implements StateInterface
         /*
          * @return int
          */
-        return fn(): int|float => $this->methodPrivate() * 2;
+        return fn (): int|float => $this->methodPrivate() * 2;
     }
 
     public function updateVariable()
@@ -84,6 +84,6 @@ class StateTwo implements StateInterface
 
     public function getMotherVariable()
     {
-        return fn() => $this->motherVariable;
+        return fn () => $this->motherVariable;
     }
 }

@@ -203,7 +203,7 @@ class StateMethod implements BuiltinMethodReflection
         if ($type instanceof NativeReflectionIntersectionType) {
             $finalType = new IntersectionType(
                 array_map(
-                    static fn($namedType): Name => new Name($namedType->getName()),
+                    static fn ($namedType): Name => new Name($namedType->getName()),
                     $type->getTypes()
                 )
             );

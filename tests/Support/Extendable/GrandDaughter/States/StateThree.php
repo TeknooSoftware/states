@@ -45,6 +45,6 @@ class StateThree extends Daughter\StateThree
         /*
          * @return int
          */
-        return fn(): int => 777;
+        return fn (): int => 777;
     }
 }

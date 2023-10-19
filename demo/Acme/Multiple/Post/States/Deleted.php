@@ -20,6 +20,7 @@
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+
 namespace demo\Acme\Multiple\Post\States;
 
 use demo\Acme\Multiple\Post\Post;
@@ -48,6 +49,6 @@ class Deleted extends AbstractState
          *
          * @return string
          */
-        return fn(): string => 'Message deleted';
+        return fn (): string => 'Message deleted';
     }
 }

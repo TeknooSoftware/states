@@ -53,10 +53,10 @@ class StandardObject extends AbstractStandardObject implements
     \SeekableIterator,
     \Countable
 {
-    use ArrayAccessTrait,
-        MagicCallTrait,
-        IteratorTrait,
-        SerializableTrait;
+    use ArrayAccessTrait;
+    use MagicCallTrait;
+    use IteratorTrait;
+    use SerializableTrait;
 
     /**
      * Class name of the factory to use during set up to initialize this object.

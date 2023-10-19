@@ -48,6 +48,6 @@ class Moderator extends AbstractState
          *
          * @return bool
          */
-        return fn() => $this->isModerator;
+        return fn () => $this->isModerator;
     }
 }
