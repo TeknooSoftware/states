@@ -24,6 +24,7 @@
 namespace demo;
 
 use demo\Acme\Multiple\User\User;
+use Exception;
 
 $composer = include __DIR__ . '/demo.php';
 $composer->setPsr4('demo\\Acme\\', __DIR__.DS.'Acme'.DS);
@@ -47,7 +48,7 @@ echo 'get name : '.GREEN_COLOR.$administrator->getName().RESET_COLOR.PHP_EOL.PHP
 echo 'User is moderator : ';
 try {
     echo $simpleUser->isModerator().PHP_EOL;
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo 'Excepted Error : '.RED_COLOR.$e->getMessage().GREEN_COLOR.' GOOD'.RESET_COLOR.PHP_EOL;
 }
 echo 'Modo is moderator : '.GREEN_COLOR.$moderator->isModerator().RESET_COLOR.PHP_EOL;

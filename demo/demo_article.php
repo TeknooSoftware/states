@@ -23,6 +23,8 @@
 
 namespace demo;
 
+use Exception;
+
 $composer = include __DIR__ . '/demo.php';
 $composer->setPsr4('demo\\Acme\\', __DIR__.DS.'Acme'.DS);
 
@@ -61,14 +63,14 @@ echo 'set some data'.PHP_EOL;
 //Method not available, because state Draft is not enabled
 try {
     $article->setTitle('Hello world');
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo 'Excepted Error : '.RED_COLOR.$e->getMessage().GREEN_COLOR.' GOOD'.RESET_COLOR.PHP_EOL;
 }
 
 //Method not available, because state Draft is not enabled
 try {
     $article->setBody('Lorem [b]Ipsum[/b]');
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo 'Excepted Error : '.RED_COLOR.$e->getMessage().GREEN_COLOR.' GOOD'.RESET_COLOR.PHP_EOL;
 }
 
@@ -77,7 +79,7 @@ echo 'title : '.$article->getTitle().PHP_EOL;
 //Method not available, because state Draft is not enabled
 try {
     echo 'body : '.$article->getBodySource().PHP_EOL;
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo 'Excepted Error : '.RED_COLOR.$e->getMessage().GREEN_COLOR.' GOOD'.RESET_COLOR.PHP_EOL;
 }
 
@@ -85,7 +87,7 @@ try {
 echo SEPARATOR.'Publishing...'.PHP_EOL.PHP_EOL;
 try {
     $article->publishing();
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo 'Excepted Error : '.RED_COLOR.$e->getMessage().GREEN_COLOR.' GOOD'.RESET_COLOR.PHP_EOL;
 }
 
@@ -94,7 +96,7 @@ echo $article->getFormattedBody().PHP_EOL;
 
 try {
     $article->getDate();
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo 'Excepted Error : '.RED_COLOR.$e->getMessage().GREEN_COLOR.' GOOD'.RESET_COLOR.PHP_EOL;
 }
 

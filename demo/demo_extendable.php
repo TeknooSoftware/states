@@ -29,6 +29,7 @@ use Acme\Extendable\GrandDaughter\States\StateThree;
 use Acme\Extendable\Mother\Mother;
 use Acme\Extendable\Mother\States\StateOne;
 use Acme\Extendable\Mother\States\StateTwo;
+use Exception;
 use Teknoo\States\Exception\MethodNotImplemented;
 
 $composer = include __DIR__ . '/demo.php';
@@ -71,10 +72,10 @@ try {
     echo RED_COLOR.'Error, method called :/'.RESET_COLOR;
     echo 'Demo failed';
     exit;
-} catch (MethodNotImplemented $e) {
+} catch (MethodNotImplemented) {
     echo GREEN_COLOR.PHP_EOL.'OK, the method1 has not been defined in overloaded state, '
         . 'it\'s not available in the daughter class'.RESET_COLOR;
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo PHP_EOL.RED_COLOR.' Error '.$e->getMessage().RESET_COLOR;
     echo 'Demo failed';
     exit;
@@ -104,9 +105,9 @@ try {
     echo RED_COLOR.'Error, method called :/'.RESET_COLOR;
     echo 'Demo failed';
     exit;
-} catch (MethodNotImplemented $e) {
+} catch (MethodNotImplemented) {
     echo GREEN_COLOR.PHP_EOL.'Ok, the method is not available directly by daughter object'.RESET_COLOR;
-} catch (\Exception $e) {
+} catch (Exception $e) {
     echo PHP_EOL.RED_COLOR.'Error '.$e->getMessage().RESET_COLOR;
     echo 'Demo failed';
     exit;
