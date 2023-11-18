@@ -40,6 +40,7 @@ use PHPStan\PhpDoc\StubPhpDocProvider;
 use PHPStan\PhpDoc\PhpDocInheritanceResolver;
 use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Reflection\ReflectionProvider;
+use PHPStan\Reflection\SignatureMap\SignatureMapProvider;
 use PHPStan\Rules\Properties\ReadWritePropertiesExtensionProvider;
 use PHPStan\Type\FileTypeMapper;
 
@@ -67,6 +68,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
         FileTypeMapper $fileTypeMapper,
         StubPhpDocProvider $stubPhpDocProvider,
         PhpVersion $phpVersion,
+        SignatureMapProvider $signatureMapProvider,
         PhpDocInheritanceResolver $phpDocInheritanceResolver,
         FileHelper $fileHelper,
         TypeSpecifier $typeSpecifier,
@@ -91,6 +93,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
             fileTypeMapper: $fileTypeMapper,
             stubPhpDocProvider: $stubPhpDocProvider,
             phpVersion: $phpVersion,
+            signatureMapProvider: $signatureMapProvider,
             phpDocInheritanceResolver: $phpDocInheritanceResolver,
             fileHelper: $fileHelper,
             typeSpecifier: $typeSpecifier,

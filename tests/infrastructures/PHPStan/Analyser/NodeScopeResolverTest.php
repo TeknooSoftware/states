@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\PHPStan\Analyser;
 
 use PHPStan\Analyser\ScopeFactory;
+use PHPStan\Reflection\SignatureMap\SignatureMapProvider;
 use PHPUnit\Framework\TestCase;
 use PhpParser\Node;
 use PHPStan\Analyser\MutatingScope;
@@ -68,6 +69,7 @@ class NodeScopeResolverTest extends TestCase
             $this->createMock(FileTypeMapper::class),
             $this->createMock(StubPhpDocProvider::class),
             $this->createMock(PhpVersion::class),
+            $this->createMock(SignatureMapProvider::class),
             $this->createMock(PhpDocInheritanceResolver::class),
             $this->createMock(FileHelper::class),
             $this->createMock(TypeSpecifier::class),
