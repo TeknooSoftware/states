@@ -46,7 +46,7 @@
         "phpstan/phpstan": "^1.10.42",
         "symfony/property-access": "^6.3",
         "icanhazstring/composer-unused": "^0.8.9",
-        "nikic/php-parser": "^4.15.5",
+        "nikic/php-parser": "^4.17.1",
         "doctrine/orm": "^2.15.2",
         "doctrine/mongodb-odm": "^2.5.2"
     },
