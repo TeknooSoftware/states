@@ -30,6 +30,7 @@ use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
 use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
 use PHPStan\TrinaryLogic;
 use PHPUnit\Framework\TestCase;
+use Teknoo\States\PHPStan\Reflection\Exception\MissingReflectionMethodException;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 use ReflectionIntersectionType as NativeReflectionIntersectionType;
 use ReflectionNamedType as NativeReflectionNamedType;
@@ -164,7 +165,8 @@ class StateMethodEmptyTest extends TestCase
 
     public function testGetReflection(): void
     {
-        self::assertNull($this->buildInstance()->getReflection());
+        $this->expectException(MissingReflectionMethodException::class);
+        $this->buildInstance()->getReflection();
     }
 
     public function testGetFileName(): void

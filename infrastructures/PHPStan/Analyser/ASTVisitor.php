@@ -50,8 +50,6 @@ use function array_merge;
  * AST Visitor tp alter the AST returned by PhpParser to remove all method in state class and migrate theirs
  * statements into related proxies classes, to avoid false positive with PHPStan about deadcode or "non existent method"
  *
- * @see http://php.net/manual/en/class.arrayaccess.php
- *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License

@@ -49,8 +49,6 @@ use PHPStan\Type\FileTypeMapper;
  * this library to support Statesclasses and method in state class and avoid false positive with PHPStan
  * about deadcode or "non existent method"
  *
- * @see http://php.net/manual/en/class.arrayaccess.php
- *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
@@ -79,6 +77,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
         bool $polluteScopeWithAlwaysIterableForeach,
         array $earlyTerminatingMethodCalls,
         array $earlyTerminatingFunctionCalls,
+        array $universalObjectCratesClasses,
         bool $implicitThrows,
         bool $treatPhpDocTypesAsCertain,
         bool $detectDeadTypeInMultiCatch,
@@ -103,6 +102,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
             polluteScopeWithAlwaysIterableForeach: $polluteScopeWithAlwaysIterableForeach,
             earlyTerminatingMethodCalls: $earlyTerminatingMethodCalls,
             earlyTerminatingFunctionCalls: $earlyTerminatingFunctionCalls,
+            universalObjectCratesClasses: $universalObjectCratesClasses,
             implicitThrows: $implicitThrows,
             treatPhpDocTypesAsCertain: $treatPhpDocTypesAsCertain,
             readWritePropertiesExtensionProvider: $readWritePropertiesExtensionProvider,

@@ -59,8 +59,6 @@ use function implode;
  * Extension for PHPStan to support methods defined in states in Stated class when they are called from the proxy
  * or another method in a state.
  *
- * @see http://php.net/manual/en/class.arrayaccess.php
- *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License

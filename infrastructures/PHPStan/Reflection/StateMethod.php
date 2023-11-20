@@ -50,6 +50,7 @@ use ReflectionMethod as NativeReflectionMethod;
 use ReflectionFunction as NativeReflectionFunction;
 use ReflectionNamedType as NativeReflectionNamedType;
 use ReflectionUnionType as NativeReflectionUnionType;
+use Teknoo\States\PHPStan\Reflection\Exception\MissingReflectionMethodException;
 
 use function array_map;
 
@@ -63,8 +64,6 @@ use function array_map;
  * This class provide a valid PHPStan reflection for these method from the PHPStan API Reflection on the closure
  * and the closure factory. A fallback to native API Reflection is provided when PHPSTan's Reflection is not available
  * for states classes (disable by AST Visitor of States to avoid anothers false positives)
- *
- * @see http://php.net/manual/en/class.arrayaccess.php
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
@@ -85,13 +84,13 @@ class StateMethod implements BuiltinMethodReflection
         return $this->factoryReflection->getName();
     }
 
-    public function getReflection(): ?ReflectionMethod
+    public function getReflection(): ReflectionMethod
     {
         if ($this->factoryReflection instanceof ReflectionMethod) {
             return $this->factoryReflection;
         }
 
-        return null;
+        throw new MissingReflectionMethodException("Missing Factory Reflection Method");
     }
 
     public function getFileName(): ?string
