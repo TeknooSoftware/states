@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.1.5] - 2023-11-29
+### Stable Release
+- Update dev lib requirements
+
 ## [6.1.4] - 2023-11-20
 ### Stable Release
 - Fix support of last PHPStan 1.10.43 (PHPStan team does not respect Semver !)
