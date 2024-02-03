@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.1.6] - 2024-02-03
+### Stable Release
+- Support Doctrine ORM 3
+
 ## [6.1.5] - 2023-11-29
 ### Stable Release
 - Update dev lib requirements
