@@ -216,11 +216,7 @@ _ All files use strict typing. Please make sure to not rely on type coercion.
     
 Quick How-to to implement your first stated class
 -------------------------------------------------
-Quick How-to to learn how to use this library : [Startup](documentation/howto/quick-startup.md).
-
-Behavior Documentation
-----------------------
-Documentation to explain how this library works : [Behavior](documentation/howto/behavior.md).
+Quick How-to to learn how to use this library : [Startup](documentation/howto/write-stated-class.md).
 
 Evolutions in 3.x versions
 --------------------------
