@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [6.1.7] - 2024-03-07
+### Stable Release
+- Fix support of last PHPStan 1.10.60 (PHPStan team does not respect Semver and like to break codes !).
+  You must add `paramOutType: %featureToggles.paramOutType%` to your Phpstan.neon configuration
+
 ## [6.1.6] - 2024-02-03
 ### Stable Release
 - Support Doctrine ORM 3

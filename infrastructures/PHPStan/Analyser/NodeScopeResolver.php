@@ -81,6 +81,7 @@ class NodeScopeResolver extends BaseNodeScopeResolver
         bool $implicitThrows,
         bool $treatPhpDocTypesAsCertain,
         bool $detectDeadTypeInMultiCatch,
+        bool $paramOutType,
         private readonly ASTVisitor $astVisitor,
     ) {
         parent::__construct(
@@ -106,7 +107,8 @@ class NodeScopeResolver extends BaseNodeScopeResolver
             implicitThrows: $implicitThrows,
             treatPhpDocTypesAsCertain: $treatPhpDocTypesAsCertain,
             readWritePropertiesExtensionProvider: $readWritePropertiesExtensionProvider,
-            detectDeadTypeInMultiCatch: $detectDeadTypeInMultiCatch
+            detectDeadTypeInMultiCatch: $detectDeadTypeInMultiCatch,
+            paramOutType: $paramOutType,
         );
     }
 
