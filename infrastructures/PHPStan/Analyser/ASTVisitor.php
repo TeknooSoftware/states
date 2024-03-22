@@ -34,6 +34,7 @@ use PhpParser\NodeVisitorAbstract;
 use PHPStan\Parser\Parser;
 use PHPStan\Parser\ParserErrorsException;
 use PHPStan\Reflection\ReflectionProvider;
+use ReflectionClass;
 use ReflectionException;
 use Teknoo\East\Paas\Compilation\Conductor;
 use Teknoo\States\Proxy\ProxyInterface;
@@ -43,8 +44,6 @@ use function array_flip;
 use function array_keys;
 use function array_map;
 use function get_parent_class;
-use function is_array;
-use function array_merge;
 
 /**
  * AST Visitor tp alter the AST returned by PhpParser to remove all method in state class and migrate theirs
@@ -61,6 +60,11 @@ class ASTVisitor extends NodeVisitorAbstract
      * @var array<string, array<int, ClassMethod>>
      */
     private array $statesStmts = [];
+
+    /**
+     * @var array<string, true>
+     */
+    private array $classesUpdated = [];
 
     public function __construct(
         private readonly ReflectionProvider $reflectionProvider,
@@ -91,14 +95,13 @@ class ASTVisitor extends NodeVisitorAbstract
     }
 
     /**
+     * @param class-string $className
      * @return array<class-string>
      * @throws ReflectionException
      */
     private function extractStatesClassesDeclaration(string $className): array
     {
-        $nativeReflection = $this->reflectionProvider
-            ->getClass($className)
-            ->getNativeReflection();
+        $nativeReflection = new ReflectionClass($className);
 
         if (!$nativeReflection->hasMethod('statesListDeclaration')) {
             return [];
@@ -113,64 +116,29 @@ class ASTVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * @param array<int, Stmt> $stmts
-     * @return array<int, ClassMethod>|null
-     */
-    private static function recursiveExtraction(array $stmts, Class_ $parent, callable $recursiveExtraction): ?array
-    {
-        foreach ($stmts as $node) {
-            if (
-                !$node instanceof Class_
-                && !empty($node->stmts)
-                && is_array($node->stmts)
-            ) {
-                $return = $recursiveExtraction($node->stmts, $parent, $recursiveExtraction);
-
-                if (null !== $return) {
-                    return $return;
-                }
-            } elseif ($node instanceof Class_) {
-                $stmts = [];
-
-                foreach ($node->stmts as $stmt) {
-                    if (!$stmt instanceof ClassMethod) {
-                        continue;
-                    }
-
-                    $stmt->setAttribute('parent', $parent);
-
-                    $stmts[] = $stmt;
-                }
-
-                return $stmts;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * @param class-string $className
      * @return array<int, ClassMethod>
      * @throws ParserErrorsException
      */
     private function getStateStmts(string $className, Class_ $parent): array
     {
-        if (isset($this->statesStmts[$className])) {
-            return $this->statesStmts[$className];
+        if (!isset($this->statesStmts[$className])) {
+            $reflection = $this->reflectionProvider->getClass($className);
+            $fileName = $reflection->getFileName();
+
+            if (empty($fileName)) {
+                return [];
+            }
+
+            $this->parser->parseFile($fileName);
         }
 
-        $reflection = $this->reflectionProvider->getClass($className);
-        $fileName = $reflection->getFileName();
-
-        if (empty($fileName)) {
-            return [];
+        $this->statesStmts[$className] ??= [];
+        foreach ($this->statesStmts[$className] as $stmt) {
+            $stmt->setAttribute('parent', $parent);
         }
 
-        $node = $this->parser->parseFile($fileName);
-        $recursiveExtraction = self::recursiveExtraction(...);
-
-        return $this->statesStmts[$className] = self::recursiveExtraction($node, $parent, $recursiveExtraction) ?? [];
+        return $this->statesStmts[$className];
     }
 
     /**
@@ -217,23 +185,47 @@ class ASTVisitor extends NodeVisitorAbstract
 
             $className = (string) $node->namespacedName;
             if (
-                ProxyInterface::class === $interfaceName
-                || is_subclass_of($interfaceName, ProxyInterface::class)
+                !isset($this->classesUpdated[$className])
+                && (
+                    ProxyInterface::class === $interfaceName
+                    || is_subclass_of($interfaceName, ProxyInterface::class)
+                )
             ) {
+                $this->classesUpdated[$className] = true;
                 $classes = array_keys($this->listStatesFromProxyClass($className));
                 $node->stmts = $this->mergeStmts(
                     $node->stmts,
-                    array_map(fn ($class): array => $this->getStateStmts((string) $class, $node), $classes)
+                    array_map(
+                        fn ($class): array => $this->getStateStmts((string) $class, $node),
+                        $classes,
+                    )
                 );
             }
 
-            if (StateInterface::class === $interfaceName) {
-                $this->statesStmts[$className] = [];
+            if (
+                StateInterface::class === $interfaceName
+                && !isset($this->statesStmts[$className])
+            ) {
                 $stmtsToKeep = [];
                 foreach ($node->stmts as $stmt) {
                     if (!$stmt instanceof ClassMethod) {
                         $stmtsToKeep[] = $stmt;
                         continue;
+                    }
+
+                    if (
+                        $stmt->returnType instanceof Identifier
+                        && $stmt->returnType->name === 'callable'
+                        && isset($stmt->stmts[0])
+                    ) {
+                        /** @var Stmt\Return_ $returnStmt */
+                        $returnStmt = $stmt->stmts[0];
+                        /** @var Node\Expr\Closure $closureStmt */
+                        $closureStmt =  $returnStmt->expr;
+                        $stmt->params = $closureStmt->params;
+                        $stmt->returnType = $closureStmt->returnType;
+                        $stmt->attrGroups = $closureStmt->attrGroups;
+                        $stmt->stmts = $closureStmt->stmts;
                     }
 
                     $this->statesStmts[$className][] = $stmt;

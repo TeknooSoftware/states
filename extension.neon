@@ -1,10 +1,4 @@
-Teknoo Software - States library - PHPStan
-==========================================
-
-To enable support of PHPStan in your project, add `phpstan/extension-installer` to your dev requirements, 
-or create or edit your `phpstan.neon` and add
-
-    services:
+services:
     -
         class: Teknoo\States\PHPStan\MethodsClassExtension
         arguments:

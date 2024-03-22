@@ -37,9 +37,9 @@ use PHPUnit\Framework\TestCase;
 use Teknoo\States\PHPStan\Analyser\ASTVisitor;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
-use Teknoo\Tests\Support\Extendable\GrandDaughter\GrandDaughter;
 use Teknoo\Tests\Support\Extendable\Mother\Mother;
 use Teknoo\Tests\Support\Extendable\Mother\States\StateOne;
+use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
 use Teknoo\Tests\Support\MockProxy;
 use Teknoo\Tests\Support\MockProxyWithoutDeclaration;
 
@@ -133,12 +133,24 @@ class ASTVisitorTest extends TestCase
 
     public function testLeaveNodeWithStateClassNode(): void
     {
+        $method = new ClassMethod(
+            'foo',
+            [
+                'returnType' => 'callable',
+                'stmts' => [
+                    new Node\Stmt\Return_(
+                        $this->createMock(Node\Expr\Closure::class),
+                    )
+                ],
+            ]
+        );
+
         $stateClass = new Class_(
             'state',
             [
                 'stmts' => [
                     $this->createMock(Node::class),
-                    $this->createMock(ClassMethod::class),
+                    $method,
                 ],
                 'implements' => [new Name(StateInterface::class)]
             ]
@@ -194,59 +206,6 @@ class ASTVisitorTest extends TestCase
         self::assertTrue(!empty($result->stmts));
         self::assertCount(1, $result->stmts);
     }
-
-    public function testLeaveNodeWithProxyClassNodeWithStateAlreadyFetched(): void
-    {
-        $stateClass = new Class_(
-            StateOne::class,
-            [
-                'stmts' => [
-                    $this->createMock(Node::class),
-                    new ClassMethod($this->createMock(Node\Identifier::class), []),
-                ],
-                'implements' => [new Name(StateInterface::class)]
-            ]
-        );
-        $stateClass->namespacedName = StateOne::class;
-
-        $proxyClass = new Class_(
-            Mother::class,
-            [
-                'stmts' => [
-                    $this->createMock(Node::class),
-                ],
-                'implements' => [new Name(ProxyInterface::class)]
-            ]
-        );
-        $proxyClass->namespacedName = Mother::class;
-
-        $visitor = $this->buildVisitor();
-
-        $this->getParserMock()
-            ->expects(self::any())
-            ->method('parseFile')
-            ->willReturn([
-                $this->createMock(Node::class),
-                new Node\Stmt\Namespace_(new Name('Foo\\Bar'), [clone $stateClass]),
-                $this->createMock(Node::class),
-            ]);
-
-        self::assertInstanceOf(
-            Node::class,
-            $result = $visitor->leaveNode($stateClass)
-        );
-
-        self::assertCount(1, $result->stmts);
-
-        self::assertInstanceOf(
-            Node::class,
-            $result = $visitor->leaveNode($proxyClass)
-        );
-
-        self::assertTrue(!empty($result->stmts));
-        self::assertCount(4, $result->stmts);
-    }
-
     public function testLeaveNodeWithProxyClassNodeWithEmptyFile(): void
     {
         $stateClass = new Class_(
@@ -271,8 +230,7 @@ class ASTVisitorTest extends TestCase
 
         $this->getParserMock()
             ->expects(self::any())
-            ->method('parseFile')
-            ->willReturn([]);
+            ->method('parseFile');
 
         self::assertInstanceOf(
             Node::class,
@@ -318,53 +276,11 @@ class ASTVisitorTest extends TestCase
         self::assertCount(1, $result->stmts);
     }
 
-    public function testLeaveNodeWithProxyClassNodeWithStateNotAlreadyFetched(): void
+
+    public function testLeaveNodeWithProxyClassNode(): void
     {
-        $stateClass = new Class_(
-            StateOne::class,
-            [
-                'stmts' => [
-                    $this->createMock(Node::class),
-                    new ClassMethod($this->createMock(Node\Identifier::class), []),
-                ],
-                'implements' => [new Name(StateInterface::class)]
-            ]
-        );
-        $stateClass->namespacedName = StateOne::class;
-
-        $proxyClass = new Class_(
-            Mother::class,
-            [
-                'stmts' => [$this->createMock(Node::class)],
-                'implements' => [new Name(ProxyInterface::class)]
-            ]
-        );
-        $proxyClass->namespacedName = Mother::class;
-
-        $visitor = $this->buildVisitor();
-
-        $this->getParserMock()
-            ->expects(self::any())
-            ->method('parseFile')
-            ->willReturn([
-                $this->createMock(Node::class),
-                new Node\Stmt\Namespace_(new Name('Foo\\Bar'), [$stateClass]),
-                $this->createMock(Node::class),
-            ]);
-
-        self::assertInstanceOf(
-            Node::class,
-            $result = $visitor->leaveNode($proxyClass)
-        );
-
-        self::assertTrue(!empty($result->stmts));
-        self::assertCount(4, $result->stmts);
-    }
-
-    public function testLeaveNodeWithProxyClassNodeWithStateWithSameMethodName(): void
-    {
-        $stateClass = new Class_(
-            StateOne::class,
+        $state1Class = new Class_(
+            'StateOne',
             [
                 'stmts' => [
                     $this->createMock(Node::class),
@@ -373,12 +289,30 @@ class ASTVisitorTest extends TestCase
                 'implements' => [new Name(StateInterface::class)]
             ]
         );
-        $stateClass->namespacedName = StateOne::class;
+
+        $state1Class->namespacedName = StateOne::class;
+
+        $state2Class = new Class_(
+            'StateTwo',
+            [
+                'stmts' => [
+                    $this->createMock(Node::class),
+                    new ClassMethod(new Node\Identifier('foo'), []),
+                    new ClassMethod(new Node\Identifier('bar'), []),
+                ],
+                'implements' => [new Name(StateInterface::class)]
+            ]
+        );
+
+        $state2Class->namespacedName = StateTwo::class;
 
         $proxyClass = new Class_(
             Mother::class,
             [
-                'stmts' => [$this->createMock(Node::class)],
+                'stmts' => [
+                    $this->createMock(Node::class),
+                    new ClassMethod(new Node\Identifier('hello'), []),
+                ],
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
@@ -386,14 +320,17 @@ class ASTVisitorTest extends TestCase
 
         $visitor = $this->buildVisitor();
 
-        $this->getParserMock()
-            ->expects(self::any())
-            ->method('parseFile')
-            ->willReturn([
-                $this->createMock(Node::class),
-                new Node\Stmt\Namespace_(new Name('Foo\\Bar'), [$stateClass]),
-                $this->createMock(Node::class),
-            ]);
+        self::assertInstanceOf(
+            Node::class,
+            $result = $visitor->leaveNode($state1Class)
+        );
+        self::assertCount(1, $result->stmts);
+
+        self::assertInstanceOf(
+            Node::class,
+            $result = $visitor->leaveNode($state2Class)
+        );
+        self::assertCount(1, $result->stmts);
 
         self::assertInstanceOf(
             Node::class,
@@ -401,49 +338,6 @@ class ASTVisitorTest extends TestCase
         );
 
         self::assertTrue(!empty($result->stmts));
-        self::assertCount(4, $result->stmts);
-    }
-
-    public function testLeaveNodeWithProxyClassNodeWithInheritance(): void
-    {
-        $stateClass = new Class_(
-            StateOne::class,
-            [
-                'stmts' => [
-                    $this->createMock(Node::class),
-                    new ClassMethod($this->createMock(Node\Identifier::class), []),
-                ],
-                'implements' => [new Name(StateInterface::class)]
-            ]
-        );
-        $stateClass->namespacedName = StateOne::class;
-
-        $proxyClass = new Class_(
-            GrandDaughter::class,
-            [
-                'stmts' => [$this->createMock(Node::class)],
-                'implements' => [new Name(ProxyInterface::class)]
-            ]
-        );
-        $proxyClass->namespacedName = GrandDaughter::class;
-
-        $visitor = $this->buildVisitor();
-
-        $this->getParserMock()
-            ->expects(self::any())
-            ->method('parseFile')
-            ->willReturn([
-                $this->createMock(Node::class),
-                new Node\Stmt\Namespace_(new Name('Foo\\Bar'), [$stateClass]),
-                $this->createMock(Node::class),
-            ]);
-
-        self::assertInstanceOf(
-            Node::class,
-            $result = $visitor->leaveNode($proxyClass)
-        );
-
-        self::assertTrue(!empty($result->stmts));
-        self::assertCount(9, $result->stmts);
+        self::assertCount(5, $result->stmts);
     }
 }

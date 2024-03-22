@@ -1,5 +1,17 @@
 # Teknoo Software - States library - Change Log
 
+## [6.2.0-beta1] - 2024-03-22
+### Stable Release
+- Fix support of last PHPStan 1.10.64
+- Remove PHPStan extension NodeScopeResolver
+- Add tag `phpstan.parser.richParserNodeVisitor` to ASTVisitor, to limit PHPStan alteration
+- Rework `ASTVisitor` to :
+  - simplify its behavior
+  - avoid infinity loop
+  - update migrated statements with type from the closure
+  - Fix some bug when a state was analyzed before the proxy
+- Support `phpstan/extension-installer`
+
 ## [6.1.7] - 2024-03-07
 ### Stable Release
 - Fix support of last PHPStan 1.10.60 (PHPStan team does not respect Semver and like to break codes !).
