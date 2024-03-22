@@ -44,6 +44,7 @@ use function array_flip;
 use function array_keys;
 use function array_map;
 use function get_parent_class;
+use function strtolower;
 
 /**
  * AST Visitor tp alter the AST returned by PhpParser to remove all method in state class and migrate theirs
@@ -214,8 +215,16 @@ class ASTVisitor extends NodeVisitorAbstract
                     }
 
                     if (
-                        $stmt->returnType instanceof Identifier
-                        && $stmt->returnType->name === 'callable'
+                        (
+                            (
+                                $stmt->returnType instanceof Identifier
+                                && strtolower($stmt->returnType->name) === 'callable'
+                            )
+                            || (
+                                $stmt->returnType instanceof Node\Name\FullyQualified
+                                && 'closure' === strtolower((string) $stmt->returnType)
+                            )
+                        )
                         && isset($stmt->stmts[0])
                     ) {
                         /** @var Stmt\Return_ $returnStmt */
