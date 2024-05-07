@@ -29,6 +29,7 @@ use Closure;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
+use SensitiveParameter;
 use Teknoo\States\Proxy\ProxyInterface;
 
 use function is_subclass_of;
@@ -273,7 +274,7 @@ trait StateTrait
     public function executeClosure(
         ProxyInterface $object,
         string &$methodName,
-        array &$arguments,
+        #[SensitiveParameter] array &$arguments,
         Visibility &$requiredScope,
         string &$statedClassOrigin,
         callable &$returnCallback

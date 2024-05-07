@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Proxy;
 
+use SensitiveParameter;
 use Teknoo\States\State\Exception\InvalidArgument;
 use Teknoo\States\State\StateInterface;
 
@@ -164,5 +165,5 @@ interface ProxyInterface
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws InvalidArgument                when the method name is not a string
      */
-    public function __call(string $name, array $arguments): mixed;
+    public function __call(string $name, #[SensitiveParameter] array $arguments): mixed;
 }

@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\States\Proxy;
 
 use ReflectionMethod;
+use SensitiveParameter;
 use SplStack;
 use Teknoo\States\Exception\WrongConfiguration;
 use Teknoo\States\Proxy\Exception\StateNotFound;
@@ -696,7 +697,7 @@ trait ProxyTrait
      * @param array<mixed> $arguments
      * @throws Throwable
      */
-    public function __call(string $methodName, array $arguments): mixed
+    public function __call(string $methodName, #[SensitiveParameter] array $arguments): mixed
     {
         //Get the visibility scope forbidden to call to a protected or private method from not allowed method
         $scopeVisibility = $this->getVisibilityScope(3);

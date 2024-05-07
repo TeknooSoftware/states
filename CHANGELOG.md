@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [6.3.0] - 2024-05-07
+### Stable Release
+- Drop support of PHP 8.1
+- Add sensitive parameter attribute on Proxies' `__call` methods and states' `executeClosure` methods to prevent leaks.
+
 ## [6.2.0] - 2024-03-22
 ### Stable Release
 - Fix support of last PHPStan 1.10.64

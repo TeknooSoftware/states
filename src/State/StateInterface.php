@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\States\State;
 
+use SensitiveParameter;
 use Teknoo\States\Proxy\ProxyInterface;
 
 /**
@@ -95,7 +96,7 @@ interface StateInterface
     public function executeClosure(
         ProxyInterface $object,
         string &$methodName,
-        array &$arguments,
+        #[SensitiveParameter] array &$arguments,
         Visibility &$requiredScope,
         string &$statedClassOrigin,
         callable &$returnCallback
