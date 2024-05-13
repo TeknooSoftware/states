@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.3.1] - 2024-05-13
+### Stable Release
+- Fix nth BC break in a minor version of PHPStan !
+
 ## [6.3.0] - 2024-05-07
 ### Stable Release
 - Drop support of PHP 8.1

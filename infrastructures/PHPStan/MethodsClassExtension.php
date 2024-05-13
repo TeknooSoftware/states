@@ -43,6 +43,7 @@ use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Reflection\Assertions;
+use PHPStan\Type\Type;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionFunction as NatveReflectionFunction;
@@ -223,7 +224,6 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         }
 
         //@codeCoverageIgnoreEnd
-
         return new PhpMethodReflection(
             initializerExprTypeResolver: $this->initializerExprTypeResolver,
             declaringClass: $classReflection,
@@ -250,6 +250,8 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             selfOutType: null,
             phpDocComment: null,
             phpDocParameterOutTypes: [],
+            immediatelyInvokedCallableParameters: [],
+            phpDocClosureThisTypeParameters: [],
         );
     }
 
