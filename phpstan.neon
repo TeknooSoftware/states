@@ -16,8 +16,5 @@ parameters:
             message: '#Parameter \#1 \$callback of function array_map expects#'
             path: infrastructures/PHPStan/Reflection/StateMethod.php
         -
-            message: '#Trying to invoke Closure\|null#'
-            path: infrastructures/PHPStan/MethodsClassExtension.php
-        -
             message: '#ReflectionEnum given#'
             path: infrastructures/PHPStan/MethodsClassExtension.php
