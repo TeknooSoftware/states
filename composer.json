@@ -61,7 +61,7 @@
     "autoload-dev": {
         "psr-4": {
             "Teknoo\\Tests\\States\\": ["tests/States/"],
-            "Teknoo\\Tests\\Support\\": ["tests/Support/"],
+            "Teknoo\\Tests\\Support\\": ["tests/fixtures/Support/"],
             "Teknoo\\Tests\\States\\Doctrine\\": "tests/infrastructures/doctrine/",
             "Teknoo\\Tests\\States\\PHPStan\\": "tests/infrastructures/PHPStan/"
         }

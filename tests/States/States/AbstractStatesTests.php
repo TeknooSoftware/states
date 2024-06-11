@@ -47,7 +47,7 @@ abstract class AbstractStatesTests extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-        require_once dirname(__DIR__, 2).'/Support/InheritanceFakeClasses.php';
+        require_once dirname(__DIR__, 2).'/fixtures/InheritanceFakeClasses.php';
     }
 
     /**

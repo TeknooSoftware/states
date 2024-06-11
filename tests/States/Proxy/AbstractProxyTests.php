@@ -713,7 +713,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         global $proxy;
         $proxy = $this->proxy;
 
-        include_once dirname(__DIR__, 2).'/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(__DIR__, 2).'/fixtures/TestVisibilityFunctionsCall.php';
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a function to get a description of a private method
@@ -759,7 +759,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         global $proxy;
         $proxy = $this->proxy;
 
-        include_once dirname(__DIR__, 2).'/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(__DIR__, 2).'/fixtures/TestVisibilityFunctionsCall.php';
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external object to get a description of private methods
@@ -808,7 +808,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         global $proxy;
         $proxy = $this->proxy;
 
-        include_once dirname(__DIR__, 2).'/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(__DIR__, 2).'/fixtures/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', $this->proxy::class);
@@ -858,7 +858,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
     {
         $this->initializeStateProxy(MockState1::class, true);
         //To access to the proxy in the method
-        include_once dirname(__DIR__, 2).'/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(__DIR__, 2).'/fixtures/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', $this->proxy::class);
@@ -914,7 +914,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
     {
         $this->initializeStateProxy(MockState1::class, true);
         //To access to the proxy in the method
-        include_once dirname(__DIR__, 2).'/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(__DIR__, 2).'/fixtures/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', $this->proxy::class);
@@ -969,7 +969,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
     {
         $this->initializeStateProxy(MockState1::class, true);
         //To access to the proxy in the method
-        include_once dirname(__DIR__, 2).'/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(__DIR__, 2).'/fixtures/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', $this->proxy::class);
@@ -1027,7 +1027,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         global $proxy;
         $proxy = $this->proxy;
 
-        include_once dirname(__DIR__, 2).'/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(__DIR__, 2).'/fixtures/TestVisibilityFunctionsCall.php';
 
         //Build temp functions to test proxy behavior with different scope visibility
         //from a external class to get a description of private methods
@@ -1073,7 +1073,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         global $proxy;
         $proxy = $this->proxy;
 
-        include_once dirname(__DIR__, 2).'/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(__DIR__, 2).'/fixtures/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', $this->proxy::class);
@@ -1120,7 +1120,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
     {
         $this->initializeStateProxy(MockState1::class, true);
         //To access to the proxy in the method
-        include_once dirname(__DIR__, 2).'/Support/TestVisibilityFunctionsCall.php';
+        include_once dirname(__DIR__, 2).'/fixtures/TestVisibilityFunctionsCall.php';
 
         //Create a temp child class to test
         $classNamePartArray = explode('\\', $this->proxy::class);
