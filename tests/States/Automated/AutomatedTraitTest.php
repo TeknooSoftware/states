@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Automated;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
@@ -35,15 +36,12 @@ use Teknoo\States\Proxy\ProxyTrait;
 /**
  * Class AbstractAutomatedTest.
  *
- * @covers \Teknoo\States\Automated\AutomatedTrait
- *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
- *
- * @covers      \Teknoo\States\Automated\AutomatedTrait
  */
+#[CoversClass(AutomatedTrait::class)]
 class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function buildProxy(array $assertions): AutomatedInterface

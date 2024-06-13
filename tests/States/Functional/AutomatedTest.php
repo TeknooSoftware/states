@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Functional;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use Teknoo\States\Automated\AutomatedTrait;
 use Teknoo\Tests\Support\AutomatedAcme\AutomatedAcme;
 use Teknoo\Tests\Support\AutomatedAcme\States\State1;
 use Teknoo\Tests\Support\AutomatedAcme\States\State2;
@@ -32,13 +34,12 @@ use Teknoo\Tests\Support\AutomatedAcme\States\State2;
 /**
  * Class AutomatedTest.
  *
- * @covers \Teknoo\States\Automated\AutomatedTrait
- *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[CoversClass(AutomatedTrait::class)]
 class AutomatedTest extends \PHPUnit\Framework\TestCase
 {
     public function buildInstance(): \Teknoo\Tests\Support\AutomatedAcme\AutomatedAcme

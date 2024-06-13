@@ -25,6 +25,9 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Doctrine;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use Teknoo\States\Doctrine\AbstractStandardObject;
+use Teknoo\States\Doctrine\StandardTrait;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\Tests\States\Proxy\StandardTest;
 
@@ -36,10 +39,9 @@ use Teknoo\Tests\States\Proxy\StandardTest;
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
- *
- * @covers \Teknoo\States\Doctrine\AbstractStandardObject
- * @covers \Teknoo\States\Doctrine\StandardTrait
  */
+#[CoversClass(AbstractStandardObject::class)]
+#[CoversClass(StandardTrait::class)]
 class StandardObjectTest extends StandardTest
 {
     /**

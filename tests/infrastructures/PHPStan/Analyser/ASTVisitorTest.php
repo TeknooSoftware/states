@@ -32,6 +32,7 @@ use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Parser\Parser;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ReflectionProvider;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\PHPStan\Analyser\ASTVisitor;
@@ -48,9 +49,8 @@ use Teknoo\Tests\Support\MockProxyWithoutDeclaration;
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
- *
- * @covers      \Teknoo\States\PHPStan\Analyser\ASTVisitor
  */
+#[CoversClass(ASTVisitor::class)]
 class ASTVisitorTest extends TestCase
 {
     private ?ReflectionProvider $reflectionProvider = null;

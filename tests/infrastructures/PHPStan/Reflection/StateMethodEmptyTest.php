@@ -29,6 +29,7 @@ use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
 use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
 use PHPStan\TrinaryLogic;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\PHPStan\Reflection\Exception\MissingReflectionMethodException;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
@@ -43,9 +44,8 @@ use function ini_get;
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
- *
- * @covers      \Teknoo\States\PHPStan\Reflection\StateMethod
  */
+#[CoversClass(StateMethod::class)]
 class StateMethodEmptyTest extends TestCase
 {
     protected function buildInstance($doc = 'factory doc', $closureScopeClass = null): \Teknoo\States\PHPStan\Reflection\StateMethod

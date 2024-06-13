@@ -36,6 +36,7 @@ use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMeth
 use PHPStan\BetterReflection\Reflection\ReflectionNamedType as BetterReflectionNamedType;
 use PHPStan\BetterReflection\Reflection\ReflectionParameter as BetterReflectionParameter;
 use PHPStan\TrinaryLogic;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 
@@ -44,9 +45,8 @@ use Teknoo\States\PHPStan\Reflection\StateMethod;
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
- *
- * @covers      \Teknoo\States\PHPStan\Reflection\StateMethod
  */
+#[CoversClass(StateMethod::class)]
 class StateMethodTest extends TestCase
 {
     protected function buildInstance($doc = 'factory doc'): \Teknoo\States\PHPStan\Reflection\StateMethod

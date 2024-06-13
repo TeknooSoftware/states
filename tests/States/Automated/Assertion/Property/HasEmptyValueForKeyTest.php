@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Automated\Assertion\Property;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use Teknoo\States\Automated\Assertion\Property\AbstractConstraint;
 use Teknoo\States\Automated\Assertion\Property\ConstraintInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 use Teknoo\States\Automated\Assertion\Property\HasEmptyValueForKey;
@@ -32,14 +34,13 @@ use Teknoo\States\Automated\Assertion\Property\HasEmptyValueForKey;
 /**
  * Class IsNotEmptyTest.
  *
- * @covers \Teknoo\States\Automated\Assertion\Property\HasEmptyValueForKey
- * @covers \Teknoo\States\Automated\Assertion\Property\AbstractConstraint
- *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[CoversClass(AbstractConstraint::class)]
+#[CoversClass(HasEmptyValueForKey::class)]
 class HasEmptyValueForKeyTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface

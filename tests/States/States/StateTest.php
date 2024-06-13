@@ -25,6 +25,9 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\States;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use Teknoo\States\State\AbstractState;
+use Teknoo\States\State\StateTrait;
 use Teknoo\Tests\Support;
 
 /**
@@ -37,10 +40,9 @@ use Teknoo\Tests\Support;
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
- *
- * @covers \Teknoo\States\State\StateTrait
- * @covers \Teknoo\States\State\AbstractState
  */
+#[CoversClass(StateTrait::class)]
+#[CoversClass(AbstractState::class)]
 class StateTest extends AbstractStatesTests
 {
     /**

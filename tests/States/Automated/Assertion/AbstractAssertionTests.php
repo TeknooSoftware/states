@@ -25,18 +25,18 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Automated\Assertion;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Teknoo\States\Automated\Assertion\AbstractAssertion;
 
 /**
  * Class AbstractAssertionTests.
- *
- * @covers \Teknoo\States\Automated\Assertion\AbstractAssertion
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[CoversClass(AbstractAssertion::class)]
 abstract class AbstractAssertionTests extends \PHPUnit\Framework\TestCase
 {
     /**

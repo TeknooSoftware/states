@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Automated\Assertion\Property;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use Teknoo\States\Automated\Assertion\Property;
 use Teknoo\States\Automated\Assertion\Property\ConstraintInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSet;
@@ -34,9 +35,8 @@ use Teknoo\States\Automated\Assertion\Property\ConstraintsSet;
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
- *
- * @covers      \Teknoo\States\Automated\Assertion\Property\ConstraintsSet
  */
+#[CoversClass(ConstraintsSet::class)]
 class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
 {
     private $set;

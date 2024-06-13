@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Automated\Assertion;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use Teknoo\States\Automated\Assertion\AbstractAssertion;
 use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Callback;
 use Teknoo\States\Automated\AutomatedInterface;
@@ -33,14 +35,13 @@ use Teknoo\States\Proxy\ProxyInterface;
 /**
  * Class CallbackTest.
  *
- * @covers \Teknoo\States\Automated\Assertion\AbstractAssertion
- * @covers \Teknoo\States\Automated\Assertion\Callback
- *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[CoversClass(AbstractAssertion::class)]
+#[CoversClass(Callback::class)]
 class CallbackTest extends AbstractAssertionTests
 {
     public function buildInstance(): callable|AssertionInterface
