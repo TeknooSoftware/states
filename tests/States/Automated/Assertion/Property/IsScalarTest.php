@@ -50,7 +50,7 @@ class IsScalarTest extends AbstractConstraintTests
     public function testIsStringProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::once())->method('isValid');
+        $constraintSet->expects($this->once())->method('isValid');
 
         $value = 'foo';
         self::assertInstanceOf(
@@ -62,7 +62,7 @@ class IsScalarTest extends AbstractConstraintTests
     public function testIsNumericProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::once())->method('isValid')->with($value = 123)->willReturnSelf();
+        $constraintSet->expects($this->once())->method('isValid')->with($value = 123)->willReturnSelf();
 
         self::assertInstanceOf(
             ConstraintInterface::class,
@@ -73,7 +73,7 @@ class IsScalarTest extends AbstractConstraintTests
     public function testIsBoolProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::once())->method('isValid')->with($value = true)->willReturnSelf();
+        $constraintSet->expects($this->once())->method('isValid')->with($value = true)->willReturnSelf();
 
         self::assertInstanceOf(
             ConstraintInterface::class,
@@ -84,7 +84,7 @@ class IsScalarTest extends AbstractConstraintTests
     public function testIsArrayProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::never())->method('isValid')->with($value = [])->willReturnSelf();
+        $constraintSet->expects($this->never())->method('isValid')->with($value = [])->willReturnSelf();
 
         self::assertInstanceOf(
             ConstraintInterface::class,
@@ -95,7 +95,7 @@ class IsScalarTest extends AbstractConstraintTests
     public function testIsObjectProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::never())->method('isValid')->with($value = new \stdClass())->willReturnSelf();
+        $constraintSet->expects($this->never())->method('isValid')->with($value = new \stdClass())->willReturnSelf();
 
         self::assertInstanceOf(
             ConstraintInterface::class,

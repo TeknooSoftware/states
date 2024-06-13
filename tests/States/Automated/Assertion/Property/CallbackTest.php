@@ -57,7 +57,7 @@ class CallbackTest extends AbstractConstraintTests
     public function testNotValidProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::never())->method('isValid');
+        $constraintSet->expects($this->never())->method('isValid');
 
         $value = 'bar';
         self::assertInstanceOf(
@@ -69,7 +69,7 @@ class CallbackTest extends AbstractConstraintTests
     public function testValidProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::once())->method('isValid')->with($value = 'foo')->willReturnSelf();
+        $constraintSet->expects($this->once())->method('isValid')->with($value = 'foo')->willReturnSelf();
 
         self::assertInstanceOf(
             ConstraintInterface::class,

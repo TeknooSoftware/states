@@ -66,7 +66,7 @@ trait PrivateTestTrait
 
         if (null !== $previous) {
             self::assertTrue($fail);
-            set_error_handler($previous);
+            \restore_error_handler();
         }
     }
 

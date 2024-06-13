@@ -75,7 +75,7 @@ class PropertyTest extends AbstractAssertionTests
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
-        $proxy->expects(self::exactly(2))
+        $proxy->expects($this->exactly(2))
             ->method('enableState')
             ->with($this->callback(
                 fn ($value) => match ($value) {
@@ -104,7 +104,7 @@ class PropertyTest extends AbstractAssertionTests
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
-        $proxy->expects(self::exactly(2))
+        $proxy->expects($this->exactly(2))
             ->method('enableState')
             ->with($this->callback(
                 fn ($value) => match ($value) {
@@ -115,7 +115,7 @@ class PropertyTest extends AbstractAssertionTests
             ))
             ->willReturnSelf();
 
-        $proxy->expects(self::once())
+        $proxy->expects($this->once())
             ->method('checkProperty')
             ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use ($proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
                 self::assertEquals('prop1', $name);
@@ -140,10 +140,10 @@ class PropertyTest extends AbstractAssertionTests
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
-        $proxy->expects(self::never())
+        $proxy->expects($this->never())
             ->method('enableState');
 
-        $proxy->expects(self::once())
+        $proxy->expects($this->once())
             ->method('checkProperty')
             ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use ($proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
                 self::assertEquals('prop1', $name);
@@ -168,7 +168,7 @@ class PropertyTest extends AbstractAssertionTests
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
-        $proxy->expects(self::exactly(2))
+        $proxy->expects($this->exactly(2))
             ->method('enableState')
             ->with($this->callback(
                 fn ($value) => match ($value) {
@@ -180,7 +180,7 @@ class PropertyTest extends AbstractAssertionTests
             ->willReturnSelf();
 
         $counter = 0;
-        $proxy->expects(self::exactly(2))
+        $proxy->expects($this->exactly(2))
             ->method('checkProperty')
             ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
                 if (0 === $counter++) {
@@ -213,11 +213,11 @@ class PropertyTest extends AbstractAssertionTests
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
-        $proxy->expects(self::never())
+        $proxy->expects($this->never())
             ->method('enableState');
 
         $counter = 0;
-        $proxy->expects(self::exactly(2))
+        $proxy->expects($this->exactly(2))
             ->method('checkProperty')
             ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
                 if (0 === $counter++) {

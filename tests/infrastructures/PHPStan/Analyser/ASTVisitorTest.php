@@ -68,16 +68,16 @@ class ASTVisitorTest extends TestCase
             $this->reflectionProvider = $this->createMock(ReflectionProvider::class);
 
             $classReflection = $this->createMock(ClassReflection::class);
-            $classReflection->expects(self::any())
+            $classReflection->expects($this->any())
                 ->method('getFileName')
                 ->willReturn($file);
-            $classReflection->expects(self::any())
+            $classReflection->expects($this->any())
                 ->method('getNativeReflection')
                 ->willReturnCallback(
                     fn (): \ReflectionClass => new \ReflectionClass($this->currentClass)
                 );
 
-            $this->reflectionProvider->expects(self::any())
+            $this->reflectionProvider->expects($this->any())
                 ->method('getClass')
                 ->willReturnCallback(
                     function (string $class) use ($classReflection): \PHPStan\Reflection\ClassReflection&\PHPUnit\Framework\MockObject\MockObject {
@@ -133,17 +133,26 @@ class ASTVisitorTest extends TestCase
 
     public function testLeaveNodeWithStateClassNode(): void
     {
+        $closure = $this->createMock(
+            Node\Expr\Closure::class
+        );
+        $closure->params = [];
+        $closure->attrGroups = [];
+        $closure->stmts = [];
+        $closure->returnType = new Node\Identifier('void');
+
         $method = new ClassMethod(
             'foo',
             [
-                'returnType' => 'callable',
+                'returnType' => new Node\Identifier('callable'),
                 'stmts' => [
                     new Node\Stmt\Return_(
-                        $this->createMock(Node\Expr\Closure::class),
+                        $closure,
                     )
                 ],
             ]
         );
+
 
         $stateClass = new Class_(
             'state',
@@ -155,7 +164,7 @@ class ASTVisitorTest extends TestCase
                 'implements' => [new Name(StateInterface::class)]
             ]
         );
-        $stateClass->namespacedName = 'state';
+        $stateClass->namespacedName = new Name('state');
 
         self::assertInstanceOf(
             Node::class,
@@ -176,7 +185,7 @@ class ASTVisitorTest extends TestCase
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
-        $proxyClass->namespacedName = MockProxy::class;
+        $proxyClass->namespacedName = new Name(MockProxy::class);
 
         self::assertInstanceOf(
             Node::class,
@@ -196,7 +205,7 @@ class ASTVisitorTest extends TestCase
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
-        $proxyClass->namespacedName = MockProxyWithoutDeclaration::class;
+        $proxyClass->namespacedName = new Name(MockProxyWithoutDeclaration::class);
 
         self::assertInstanceOf(
             Node::class,
@@ -215,7 +224,7 @@ class ASTVisitorTest extends TestCase
                 'implements' => [new Name(StateInterface::class)]
             ]
         );
-        $stateClass->namespacedName = StateOne::class;
+        $stateClass->namespacedName = new Name(StateOne::class);
 
         $proxyClass = new Class_(
             Mother::class,
@@ -224,12 +233,12 @@ class ASTVisitorTest extends TestCase
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
-        $proxyClass->namespacedName = Mother::class;
+        $proxyClass->namespacedName = new Name(Mother::class);
 
         $visitor = $this->buildVisitor();
 
         $this->getParserMock()
-            ->expects(self::any())
+            ->expects($this->any())
             ->method('parseFile');
 
         self::assertInstanceOf(
@@ -259,12 +268,12 @@ class ASTVisitorTest extends TestCase
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
-        $proxyClass->namespacedName = Mother::class;
+        $proxyClass->namespacedName = new Name(Mother::class);
 
         $visitor = $this->buildVisitor();
 
         $this->getParserMock()
-            ->expects(self::never())
+            ->expects($this->never())
             ->method('parseFile');
 
         self::assertInstanceOf(
@@ -290,7 +299,7 @@ class ASTVisitorTest extends TestCase
             ]
         );
 
-        $state1Class->namespacedName = StateOne::class;
+        $state1Class->namespacedName = new Name(StateOne::class);
 
         $state2Class = new Class_(
             'StateTwo',
@@ -304,7 +313,7 @@ class ASTVisitorTest extends TestCase
             ]
         );
 
-        $state2Class->namespacedName = StateTwo::class;
+        $state2Class->namespacedName = new Name(StateTwo::class);
 
         $proxyClass = new Class_(
             Mother::class,
@@ -316,7 +325,7 @@ class ASTVisitorTest extends TestCase
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
-        $proxyClass->namespacedName = Mother::class;
+        $proxyClass->namespacedName = new Name(Mother::class);
 
         $visitor = $this->buildVisitor();
 

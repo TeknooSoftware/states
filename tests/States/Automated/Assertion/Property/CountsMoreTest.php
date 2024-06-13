@@ -50,7 +50,7 @@ class CountsMoreTest extends AbstractConstraintTests
     public function testValidArrayProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::once())->method('isValid')->with($value = [1,2])->willReturnSelf();
+        $constraintSet->expects($this->once())->method('isValid')->with($value = [1,2])->willReturnSelf();
 
         self::assertInstanceOf(
             ConstraintInterface::class,
@@ -61,7 +61,7 @@ class CountsMoreTest extends AbstractConstraintTests
     public function testNotValidArrayProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::never())->method('isValid');
+        $constraintSet->expects($this->never())->method('isValid');
 
         $value = [1,2];
         self::assertInstanceOf(
@@ -73,7 +73,7 @@ class CountsMoreTest extends AbstractConstraintTests
     public function testValidCountableProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::once())->method('isValid')->with($value = new \ArrayObject([1,2]))->willReturnSelf();
+        $constraintSet->expects($this->once())->method('isValid')->with($value = new \ArrayObject([1,2]))->willReturnSelf();
 
         self::assertInstanceOf(
             ConstraintInterface::class,
@@ -84,7 +84,7 @@ class CountsMoreTest extends AbstractConstraintTests
     public function testNotValidCountableProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::never())->method('isValid');
+        $constraintSet->expects($this->never())->method('isValid');
 
         $value = new \ArrayObject([1,2]);
         self::assertInstanceOf(
@@ -96,7 +96,7 @@ class CountsMoreTest extends AbstractConstraintTests
     public function testNotValidClassCountableProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::never())->method('isValid');
+        $constraintSet->expects($this->never())->method('isValid');
 
         $value = new \stdClass();
         self::assertInstanceOf(

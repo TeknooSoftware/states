@@ -111,7 +111,7 @@ class MethodsClassExtensionTest extends TestCase
     public function testHasMethodIsInterface(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(true);
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(true);
 
         $instance = $this->buildInstance();
         self::assertFalse($instance->hasMethod($classReflection, 'aMethodName'));
@@ -121,8 +121,8 @@ class MethodsClassExtensionTest extends TestCase
     public function testHasMethodNotImplementProxyAndNotImplementState(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturn(false);
 
         $instance = $this->buildInstance();
         self::assertFalse($instance->hasMethod($classReflection, 'aMethodName'));
@@ -132,12 +132,12 @@ class MethodsClassExtensionTest extends TestCase
     public function testHasMethodImplementProxyMethodInProxy(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
             [StateInterface::class, false],
         ]);
-        $classReflection->expects(self::any())->method('getName')->willReturn(Article::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Article::class);
 
         $instance = $this->buildInstance();
         self::assertFalse($instance->hasMethod($classReflection, 'getAttribute'));
@@ -147,12 +147,12 @@ class MethodsClassExtensionTest extends TestCase
     public function testStatesListDeclaratoionReflectionError(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
             [StateInterface::class, false],
         ]);
-        $classReflection->expects(self::any())->method('getName')->willReturn(Article::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Article::class);
 
         self::assertFalse($this->buildInstance()->hasMethod($classReflection, 'aMethod'));
     }
@@ -160,12 +160,12 @@ class MethodsClassExtensionTest extends TestCase
     public function testHasMethodImplementProxyMethodInState(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
             [StateInterface::class, false],
         ]);
-        $classReflection->expects(self::any())->method('getName')->willReturn(Article::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Article::class);
 
         $instance = $this->buildInstance();
         self::assertTrue($instance->hasMethod($classReflection, 'getFormattedBody'));
@@ -175,12 +175,12 @@ class MethodsClassExtensionTest extends TestCase
     public function testHasMethodImplementProxyMethodNotExist(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
             [StateInterface::class, false],
         ]);
-        $classReflection->expects(self::any())->method('getName')->willReturn(Article::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Article::class);
 
         self::assertFalse($this->buildInstance()->hasMethod($classReflection, 'aFakeMethodName'));
     }
@@ -188,13 +188,13 @@ class MethodsClassExtensionTest extends TestCase
     public function testHasMethodImplementStateProxyNotFound(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
             [StateInterface::class, true],
         ]);
 
-        $classReflection->expects(self::any())->method('getName')->willReturn('Foo\Bar\Not\ExistClass');
+        $classReflection->expects($this->any())->method('getName')->willReturn('Foo\Bar\Not\ExistClass');
 
         self::assertFalse($this->buildInstance()->hasMethod($classReflection, 'aMethod'));
     }
@@ -202,13 +202,13 @@ class MethodsClassExtensionTest extends TestCase
     public function testHasMethodImplementStateMethodInState(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
             [StateInterface::class, true],
         ]);
 
-        $classReflection->expects(self::any())->method('getName')->willReturn(Draft::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Draft::class);
 
         self::assertTrue($this->buildInstance()->hasMethod($classReflection, 'getFormattedBody'));
     }
@@ -216,13 +216,13 @@ class MethodsClassExtensionTest extends TestCase
     public function testHasMethodImplementStateMethodInProxy(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
             [StateInterface::class, true],
         ]);
 
-        $classReflection->expects(self::any())->method('getName')->willReturn(Draft::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Draft::class);
 
         self::assertFalse($this->buildInstance()->hasMethod($classReflection, 'getAttribute'));
     }
@@ -230,13 +230,13 @@ class MethodsClassExtensionTest extends TestCase
     public function testHasMethodImplementStateMethodNotExist(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
             [StateInterface::class, true],
         ]);
 
-        $classReflection->expects(self::any())->method('getName')->willReturn(Draft::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Draft::class);
 
         self::assertFalse($this->buildInstance()->hasMethod($classReflection, 'aNonExistantMethod'));
     }
@@ -246,7 +246,7 @@ class MethodsClassExtensionTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(true);
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(true);
 
         $this->buildInstance()->getMethod($classReflection, 'aMethod');
     }
@@ -256,8 +256,8 @@ class MethodsClassExtensionTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturn(false);
 
         $this->buildInstance()->getMethod($classReflection, 'aMethod');
     }
@@ -267,12 +267,12 @@ class MethodsClassExtensionTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
             [StateInterface::class, false],
         ]);
-        $classReflection->expects(self::any())->method('getName')->willReturn(Article::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Article::class);
 
         $this->buildInstance()->getMethod($classReflection, 'getAttribute');
     }
@@ -280,14 +280,14 @@ class MethodsClassExtensionTest extends TestCase
     public function testGetMethodImplementProxyMethodInState(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
             [StateInterface::class, false],
         ]);
-        $classReflection->expects(self::any())->method('getName')->willReturn(Article::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Article::class);
 
-        $classReflection->expects(self::any())
+        $classReflection->expects($this->any())
             ->method('getNativeReflection')
             ->willReturn(
                 new ReflectionClass(
@@ -303,12 +303,12 @@ class MethodsClassExtensionTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
             [StateInterface::class, false],
         ]);
-        $classReflection->expects(self::any())->method('getName')->willReturn(Article::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Article::class);
 
         $this->buildInstance()->getMethod($classReflection, 'notExistantMethod');
     }
@@ -318,12 +318,12 @@ class MethodsClassExtensionTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
             [StateInterface::class, false],
         ]);
-        $classReflection->expects(self::any())->method('getName')->willReturn(Article::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Article::class);
 
         $this->buildInstance()->getMethod($classReflection, 'returnStaticClosure');
     }
@@ -333,13 +333,13 @@ class MethodsClassExtensionTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
             [StateInterface::class, true],
         ]);
 
-        $classReflection->expects(self::any())->method('getName')->willReturn('Foo\Bar\Not\ExistClass');
+        $classReflection->expects($this->any())->method('getName')->willReturn('Foo\Bar\Not\ExistClass');
 
         $this->buildInstance()->getMethod($classReflection, 'aMethod');
     }
@@ -349,13 +349,13 @@ class MethodsClassExtensionTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
             [StateInterface::class, true],
         ]);
 
-        $classReflection->expects(self::any())->method('getName')->willReturn(\DateTime::class.'\\Foo');
+        $classReflection->expects($this->any())->method('getName')->willReturn(\DateTime::class.'\\Foo');
 
         $this->buildInstance()->getMethod($classReflection, 'aMethod');
     }
@@ -363,15 +363,15 @@ class MethodsClassExtensionTest extends TestCase
     public function testGetMethodImplementStateMethodInState(): void
     {
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
             [StateInterface::class, true],
         ]);
 
-        $classReflection->expects(self::any())->method('getName')->willReturn(Draft::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Draft::class);
 
-        $classReflection->expects(self::any())
+        $classReflection->expects($this->any())
             ->method('getNativeReflection')
             ->willReturn(
                 new ReflectionClass(
@@ -389,13 +389,13 @@ class MethodsClassExtensionTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
             [StateInterface::class, true],
         ]);
 
-        $classReflection->expects(self::any())->method('getName')->willReturn(Draft::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Draft::class);
 
         $this->buildInstance()->getMethod($classReflection, 'getAttribute');
     }
@@ -405,13 +405,13 @@ class MethodsClassExtensionTest extends TestCase
         $this->expectException(ShouldNotHappenException::class);
 
         $classReflection = $this->createMock(ClassReflection::class);
-        $classReflection->expects(self::any())->method('isInterface')->willReturn(false);
-        $classReflection->expects(self::any())->method('implementsInterface')->willReturnMap([
+        $classReflection->expects($this->any())->method('isInterface')->willReturn(false);
+        $classReflection->expects($this->any())->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
             [StateInterface::class, true],
         ]);
 
-        $classReflection->expects(self::any())->method('getName')->willReturn(Draft::class);
+        $classReflection->expects($this->any())->method('getName')->willReturn(Draft::class);
 
         $this->buildInstance()->getMethod($classReflection, 'notExistantMethod');
     }

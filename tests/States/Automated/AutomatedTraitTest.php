@@ -77,9 +77,9 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
     public function testUpdateStatesCallAssertions(): void
     {
         $assertion1 = $this->createMock(AssertionInterface::class);
-        $assertion1->expects(self::once())->method('check');
+        $assertion1->expects($this->once())->method('check');
         $assertion2 = $this->createMock(AssertionInterface::class);
-        $assertion2->expects(self::once())->method('check');
+        $assertion2->expects($this->once())->method('check');
 
         self::assertInstanceOf(
             AutomatedInterface::class,
@@ -104,7 +104,7 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
     public function testCheckPropertyWithUnsetProperty(): void
     {
         $set = $this->createMock(ConstraintsSetInterface::class);
-        $set->expects(self::once())
+        $set->expects($this->once())
             ->method('check')
             ->with(null)
             ->willReturnSelf();
@@ -118,7 +118,7 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
     public function testCheckPropertyWithSetProperty(): void
     {
         $set = $this->createMock(ConstraintsSetInterface::class);
-        $set->expects(self::once())
+        $set->expects($this->once())
             ->method('check')
             ->with('fooBar')
             ->willReturnSelf();

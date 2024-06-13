@@ -50,7 +50,7 @@ class IsLessThanTest extends AbstractConstraintTests
     public function testGreatProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::never())->method('isValid');
+        $constraintSet->expects($this->never())->method('isValid');
 
         $value = 11;
         self::assertInstanceOf(
@@ -62,7 +62,7 @@ class IsLessThanTest extends AbstractConstraintTests
     public function testEqualProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::never())->method('isValid');
+        $constraintSet->expects($this->never())->method('isValid');
 
         $value = 10;
         self::assertInstanceOf(
@@ -74,7 +74,7 @@ class IsLessThanTest extends AbstractConstraintTests
     public function testLessProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::once())->method('isValid')->with($value = 9)->willReturnSelf();
+        $constraintSet->expects($this->once())->method('isValid')->with($value = 9)->willReturnSelf();
 
         self::assertInstanceOf(
             ConstraintInterface::class,

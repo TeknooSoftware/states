@@ -1311,7 +1311,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         }
         if (!$fail) {
             if (null !== $previous) {
-                set_error_handler($previous);
+                \restore_error_handler();
             }
             self::fail('Error __get must throw an exception for missing property');
         }
@@ -1329,7 +1329,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
             $fail = true;
         }
         if (null !== $previous) {
-            set_error_handler($previous);
+            \restore_error_handler();
         }
         if (!$fail) {
             self::fail('Error __get must throw an exception for missing property');
@@ -1360,16 +1360,21 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
                 E_WARNING
             );
         }
+
         try {
             $a = $this->proxy->getOnMissingPublicProperty();
         } catch (\Throwable) {
             $fail = true;
         }
+
         if (!$fail) {
             if (null !== $previous) {
-                set_error_handler($previous);
+                \restore_error_handler();
             }
+
             self::fail('Error __get must throw an exception for missing property');
+
+            return;
         }
 
         $this->proxy->setOnMissingPublicProperty('fooBar');
@@ -1378,15 +1383,18 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         $this->proxy->unsetOnMissingPublicProperty();
         self::assertFalse($this->proxy->issetMissingPublicProperty());
         $fail = false;
+
         try {
             $a = $this->proxy->getOnMissingPublicProperty();
         } catch (\Throwable) {
             $fail = true;
         }
+
+        if (null !== $previous) {
+            \restore_error_handler();
+        }
+
         if (!$fail) {
-            if (null !== $previous) {
-                set_error_handler($previous);
-            }
             self::fail('Error __get must throw an exception for missing property');
         }
     }

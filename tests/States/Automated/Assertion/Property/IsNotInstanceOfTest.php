@@ -50,7 +50,7 @@ class IsNotInstanceOfTest extends AbstractConstraintTests
     public function testNotInstanceProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::once())->method('isValid')->with($value = new \stdClass())->willReturnSelf();
+        $constraintSet->expects($this->once())->method('isValid')->with($value = new \stdClass())->willReturnSelf();
 
         self::assertInstanceOf(
             ConstraintInterface::class,
@@ -61,7 +61,7 @@ class IsNotInstanceOfTest extends AbstractConstraintTests
     public function testInstanceOfProperty(): void
     {
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
-        $constraintSet->expects(self::never())->method('isValid');
+        $constraintSet->expects($this->never())->method('isValid');
 
         $value = new \DateTime();
         self::assertInstanceOf(

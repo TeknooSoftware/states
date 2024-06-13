@@ -81,7 +81,7 @@ class CallbackTest extends AbstractAssertionTests
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
-        $proxy->expects(self::exactly(2))
+        $proxy->expects($this->exactly(2))
             ->method('enableState')
             ->with($this->callback(
                 fn ($value) => match ($value) {
@@ -116,7 +116,7 @@ class CallbackTest extends AbstractAssertionTests
     {
         $assertion = $this->buildInstance();
         $proxy = $this->createMock(AutomatedInterface::class);
-        $proxy->expects(self::never())
+        $proxy->expects($this->never())
             ->method('enableState');
 
         $assertion->call(function ($proxy, $callback): void {
