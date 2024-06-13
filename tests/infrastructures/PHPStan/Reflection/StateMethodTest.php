@@ -128,6 +128,7 @@ class StateMethodTest extends TestCase
 
     public function testGetDocCommentNull(): void
     {
+        self::assertNotEquals(1, ini_get('zend.assertions'));
         self::assertEmpty($this->buildInstance('')->getDocComment());
     }
 

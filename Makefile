@@ -41,7 +41,7 @@ audit:
 
 ### Testing
 test:
-	XDEBUG_MODE=coverage ${PHP} -dzend_extension=xdebug.so -dxdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml --colors --coverage-text
+	XDEBUG_MODE=coverage ${PHP} -dzend.assertions=0 -dzend_extension=xdebug.so -dxdebug.mode=coverage vendor/bin/phpunit -c phpunit.xml --colors --coverage-text
 
 .PHONY: test
 

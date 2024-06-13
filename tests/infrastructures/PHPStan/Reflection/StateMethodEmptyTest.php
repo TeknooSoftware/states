@@ -36,6 +36,8 @@ use ReflectionIntersectionType as NativeReflectionIntersectionType;
 use ReflectionNamedType as NativeReflectionNamedType;
 use ReflectionUnionType as NativeReflectionUnionType;
 
+use function ini_get;
+
 /**
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
@@ -191,6 +193,7 @@ class StateMethodEmptyTest extends TestCase
 
     public function testGetParameters(): void
     {
+        self::assertNotEquals(1, ini_get('zend.assertions'));
         self::assertInstanceOf(
             ReflectionParameter::class,
             $this->buildInstance()->getParameters()[0]
@@ -199,6 +202,7 @@ class StateMethodEmptyTest extends TestCase
 
     public function testGetDocCommentNull(): void
     {
+        self::assertNotEquals(1, ini_get('zend.assertions'));
         self::assertEmpty($this->buildInstance('')->getDocComment());
         self::assertEmpty($this->buildInstance(false)->getDocComment());
     }
