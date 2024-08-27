@@ -1,5 +1,11 @@
 # Teknoo Software - States library - Change Log
 
+## [6.3.2] - 2024-08-27
+### Stable Release
+- Fix nth BC break (bis in a minor version of PHPStan 1.12+! Fix units tests about PHPStan extension, but there are no
+  longer "unit" because PHPStan's teams decided to set all "internal classes" as final (Why ???), even on classes needed
+  for extensions...
+
 ## [6.3.1] - 2024-05-13
 ### Stable Release
 - Fix nth BC break in a minor version of PHPStan !

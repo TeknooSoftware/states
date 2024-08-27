@@ -247,6 +247,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             isFinal: false,
             isPure: null,
             asserts: Assertions::createEmpty(),
+            acceptsNamedArguments: true,
             selfOutType: null,
             phpDocComment: null,
             phpDocParameterOutTypes: [],

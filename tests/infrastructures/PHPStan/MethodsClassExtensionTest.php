@@ -25,17 +25,23 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan;
 
+use PHPStan\Analyser\ConstantResolver;
 use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
 use PHPStan\Cache\Cache;
+use PHPStan\Cache\CacheStorage;
+use PHPStan\DependencyInjection\Type\OperatorTypeSpecifyingExtensionRegistryProvider;
 use PHPStan\Parser\Parser;
 use PHPStan\Parser\FunctionCallStatementFinder;
+use PHPStan\Php\PhpVersion;
 use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\ReflectionProvider;
+use PHPStan\Reflection\ReflectionProvider\ReflectionProviderProvider;
 use PHPStan\ShouldNotHappenException;
+use PHPStan\Type\Constant\OversizedArrayBuilder;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Teknoo\States\PHPStan\MethodsClassExtension;
 use Teknoo\States\Proxy\ProxyInterface;
@@ -82,7 +88,7 @@ class MethodsClassExtensionTest extends TestCase
     private function getFunctionCallStatementFinderMock(): FunctionCallStatementFinder
     {
         if (!$this->functionCallStatementFinder instanceof FunctionCallStatementFinder) {
-            $this->functionCallStatementFinder = $this->createMock(FunctionCallStatementFinder::class);
+            $this->functionCallStatementFinder = new FunctionCallStatementFinder();
         }
 
         return $this->functionCallStatementFinder;
@@ -91,7 +97,7 @@ class MethodsClassExtensionTest extends TestCase
     private function getCacheMock(): Cache
     {
         if (!$this->cache instanceof Cache) {
-            $this->cache = $this->createMock(Cache::class);
+            $this->cache = new Cache($this->createMock(CacheStorage::class));
         }
 
         return $this->cache;
@@ -104,7 +110,17 @@ class MethodsClassExtensionTest extends TestCase
             $this->getFunctionCallStatementFinderMock(),
             $this->getCacheMock(),
             $this->getReflectionProviderMock(),
-            $this->createMock(InitializerExprTypeResolver::class),
+            new InitializerExprTypeResolver(
+                new ConstantResolver(
+                    $this->createMock(ReflectionProviderProvider::class),
+                    [],
+                ),
+                $this->createMock(ReflectionProviderProvider::class),
+                $this->createMock(PhpVersion::class),
+                $this->createMock(OperatorTypeSpecifyingExtensionRegistryProvider::class),
+                new OversizedArrayBuilder(),
+                true,
+            ),
         );
     }
 
