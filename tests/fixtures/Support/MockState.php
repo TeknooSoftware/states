@@ -186,7 +186,7 @@ class MockState implements StateInterface
     private function getClosure(
         string $methodName,
         State\Visibility $scope = State\Visibility::Public,
-        string $statedClassOriginName = null
+        ?string $statedClassOriginName = null
     ) {
         if (false === $this->methodAllowed) {
             return null;
