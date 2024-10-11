@@ -126,6 +126,14 @@ trait ProxyTrait
     private SplStack $callerStatedClassesStack;
 
     /**
+     * Cache to store the selected state for a method to avoid search at each call of the same method
+     * This cache is cleared at each change of active statte
+     *
+     * @var array<string, array<string, StateInterface>>
+     */
+    private array $calledMethodCache = [];
+
+    /**
      * Default class name extracted from call stack by extractVisibilityScopeFromObject
      */
     private string $defaultCallerStatedClassName = '';
@@ -339,6 +347,7 @@ trait ProxyTrait
         //Initialize internal vars
         $this->states = [];
         $this->activesStates = [];
+        $this->clearCalledMethodCache();
         $this->classesByStates = [];
         $this->statesAliasesList  = [];
         $this->callerStatedClassesStack = new SplStack();
@@ -488,6 +497,7 @@ trait ProxyTrait
         }
 
         //Enabling states
+        $this->clearCalledMethodCache();
         if (!empty($this->activesStates)) {
             $activesStates = array_keys($this->activesStates);
             $this->activesStates = [];
@@ -545,6 +555,7 @@ trait ProxyTrait
 
         if (isset($this->activesStates[$stateName])) {
             unset($this->activesStates[$stateName]);
+            $this->clearCalledMethodCache();
         }
 
         if (isset($this->classesByStates[$stateName])) {
@@ -568,6 +579,14 @@ trait ProxyTrait
     }
 
     /**
+     * Called at each change in actives states
+     */
+    private function clearCalledMethodCache(): void
+    {
+        $this->calledMethodCache = [];
+    }
+
+    /**
      * @throws Exception\StateNotFound
      */
     public function enableState(string $stateName): ProxyInterface
@@ -576,6 +595,7 @@ trait ProxyTrait
 
         if (isset($this->states[$stateName])) {
             $this->activesStates[$stateName] = $this->states[$stateName];
+            $this->clearCalledMethodCache();
         } else {
             throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
@@ -592,6 +612,7 @@ trait ProxyTrait
 
         if (isset($this->activesStates[$stateName])) {
             unset($this->activesStates[$stateName]);
+            $this->clearCalledMethodCache();
         } else {
             throw new Exception\StateNotFound(sprintf('State "%s" is not available', $stateName));
         }
@@ -602,6 +623,7 @@ trait ProxyTrait
     public function disableAllStates(): ProxyInterface
     {
         $this->activesStates = [];
+        $this->clearCalledMethodCache();
 
         return $this;
     }
@@ -711,12 +733,31 @@ trait ProxyTrait
                     "Method \"$methodName\" has several implementations in different states"
                 );
             }
+
             $returnValue = $value;
             $activeStateFound = true;
         };
 
-        //browse all enabled state to find the method
         $callerStatedClass = $this->getCallerStatedClassName();
+
+        if (isset($this->calledMethodCache[$callerStatedClass][$methodName])) {
+            $this->calledMethodCache[$callerStatedClass][$methodName]->executeClosure(
+                $this,
+                $methodName,
+                $arguments,
+                $scopeVisibility,
+                $callerStatedClass,
+                $callback
+            );
+
+            if (true === $activeStateFound) {
+                return $returnValue;
+            }
+        }
+
+        //browse all enabled state to find the method
+        $stateToCache = null;
+        $callerStatedClassToCache = null;
         $activesStatesStack = $this->activesStates;
         foreach ($activesStatesStack as $activeStateObject) {
             $this->pushCallerStatedClassName($activeStateObject);
@@ -735,9 +776,18 @@ trait ProxyTrait
                 //Restore stated class name stack
                 $this->popCallerStatedClassName();
             }
+
+            if (true === $activeStateFound && null === $stateToCache) {
+                $stateToCache = $activeStateObject;
+                $callerStatedClassToCache = $callerStatedClass;
+            }
         }
 
         if (true === $activeStateFound) {
+            if (null !== $stateToCache && $methodName && $callerStatedClassToCache) {
+                $this->calledMethodCache[(string) $callerStatedClassToCache][(string) $methodName] = $stateToCache;
+            }
+
             return $returnValue;
         }
 

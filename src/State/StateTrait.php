@@ -100,6 +100,11 @@ trait StateTrait
      */
     private array $closuresObjects = [];
 
+    /**
+     * @var array<string, array<int|string, array<int|string, bool>>>
+     */
+    private array $visibilityCache = [];
+
     public function __construct(
         private bool $privateModeStatus,
         private string $statedClassName,
@@ -180,11 +185,11 @@ trait StateTrait
      */
     private function checkVisibility(
         string &$methodName,
-        Visibility &$requiredScope,
+        Visibility $scope,
         string &$statedClassOrigin
     ): bool {
         //Check visibility scope
-        return match ($requiredScope) {
+        return $this->visibilityCache[$scope->value][$statedClassOrigin][$methodName] ??= match ($scope) {
             Visibility::Private => $this->checkVisibilityPrivate($methodName, $statedClassOrigin),
             Visibility::Protected => $this->checkVisibilityProtected($methodName, $statedClassOrigin),
             Visibility::Public => $this->checkVisibilityPublic($methodName),
@@ -275,7 +280,7 @@ trait StateTrait
         ProxyInterface $object,
         string &$methodName,
         #[SensitiveParameter] array &$arguments,
-        Visibility &$requiredScope,
+        Visibility $requiredScope,
         string &$statedClassOrigin,
         callable &$returnCallback
     ): StateInterface {

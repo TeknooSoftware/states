@@ -1,5 +1,14 @@
 # Teknoo Software - States library - Change Log
 
+## [6.4.0] - 2024-19-11
+### Stable Release
+- Add caches in `ProxyTrait` and `StateTrait` about found state for a method name and visibility check when a call
+  to not reperform all operations when the context stay unchanged.
+    - The visibility cache life is as long as the state object life (because the visibility is immutable at runtime,
+      according to caller class.
+    - Te call cache is refresh at each state change (enabling, disabling state or cloning object) because the answer
+      is not immutable at runtime
+
 ## [6.3.2] - 2024-08-27
 ### Stable Release
 - Fix nth BC break (bis in a minor version of PHPStan 1.12+! Fix units tests about PHPStan extension, but there are no

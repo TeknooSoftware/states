@@ -97,7 +97,7 @@ interface StateInterface
         ProxyInterface $object,
         string &$methodName,
         #[SensitiveParameter] array &$arguments,
-        Visibility &$requiredScope,
+        Visibility $requiredScope,
         string &$statedClassOrigin,
         callable &$returnCallback
     ): StateInterface;

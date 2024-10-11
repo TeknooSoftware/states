@@ -169,7 +169,7 @@ class MockState implements StateInterface
         ProxyInterface $object,
         string &$methodName,
         array &$arguments,
-        State\Visibility &$requiredScope,
+        State\Visibility $requiredScope,
         string &$statedClassOrigin,
         callable &$returnCallback
     ): StateInterface {
