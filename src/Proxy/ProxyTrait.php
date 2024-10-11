@@ -123,7 +123,7 @@ trait ProxyTrait
      *
      * @var SplStack<string>
      */
-    private SplStack $callerStatedClassesStack;
+    private ?SplStack $callerStatedClassesStack = null;
 
     /**
      * Cache to store the selected state for a method to avoid search at each call of the same method
@@ -132,6 +132,8 @@ trait ProxyTrait
      * @var array<string, array<string, StateInterface>>
      */
     private array $calledMethodCache = [];
+
+    private bool $disableCalledMethodCache = false;
 
     /**
      * Default class name extracted from call stack by extractVisibilityScopeFromObject
@@ -277,7 +279,7 @@ trait ProxyTrait
      */
     private function getCallerStatedClassName(): string
     {
-        if (true !== $this->callerStatedClassesStack->isEmpty()) {
+        if (false === $this->callerStatedClassesStack?->isEmpty()) {
             return $this->callerStatedClassesStack->top();
         }
 
@@ -296,7 +298,7 @@ trait ProxyTrait
             throw new WrongConfiguration("Error, no original class name defined for $stateClass");
         }
 
-        $this->callerStatedClassesStack->push($this->classesByStates[$stateClass]);
+        $this->callerStatedClassesStack?->push($this->classesByStates[$stateClass]);
 
         return $this;
     }
@@ -306,7 +308,7 @@ trait ProxyTrait
      */
     private function popCallerStatedClassName(): ProxyInterface
     {
-        if (false === $this->callerStatedClassesStack->isEmpty()) {
+        if (false === $this->callerStatedClassesStack?->isEmpty()) {
             $this->callerStatedClassesStack->pop();
         }
 
@@ -347,10 +349,10 @@ trait ProxyTrait
         //Initialize internal vars
         $this->states = [];
         $this->activesStates = [];
-        $this->clearCalledMethodCache();
         $this->classesByStates = [];
         $this->statesAliasesList  = [];
         $this->callerStatedClassesStack = new SplStack();
+        $this->clearCalledMethodCache();
         //Creates
         $this->loadStates();
     }
@@ -584,6 +586,7 @@ trait ProxyTrait
     private function clearCalledMethodCache(): void
     {
         $this->calledMethodCache = [];
+        $this->disableCalledMethodCache = !$this->callerStatedClassesStack?->isEmpty();
     }
 
     /**
@@ -784,9 +787,16 @@ trait ProxyTrait
         }
 
         if (true === $activeStateFound) {
-            if (null !== $stateToCache && $methodName && $callerStatedClassToCache) {
+            if (
+                null !== $stateToCache
+                && $methodName
+                && $callerStatedClassToCache
+                && !$this->disableCalledMethodCache
+            ) {
                 $this->calledMethodCache[(string) $callerStatedClassToCache][(string) $methodName] = $stateToCache;
             }
+
+            $this->disableCalledMethodCache = false;
 
             return $returnValue;
         }

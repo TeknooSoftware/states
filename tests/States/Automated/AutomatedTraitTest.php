@@ -52,6 +52,7 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
 
             public function __construct(private readonly array $assertions)
             {
+                $this->initializeStateProxy();
             }
 
             protected static function statesListDeclaration(): array

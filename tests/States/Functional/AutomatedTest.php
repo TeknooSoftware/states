@@ -27,6 +27,7 @@ namespace Teknoo\Tests\States\Functional;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use Teknoo\States\Automated\AutomatedTrait;
+use Teknoo\States\Proxy\Exception\MethodNotImplemented;
 use Teknoo\Tests\Support\AutomatedAcme\AutomatedAcme;
 use Teknoo\Tests\Support\AutomatedAcme\States\State1;
 use Teknoo\Tests\Support\AutomatedAcme\States\State2;
@@ -76,5 +77,22 @@ class AutomatedTest extends \PHPUnit\Framework\TestCase
         self::assertEquals([State2::class], $instance->listEnabledStates());
         $instance->updateStates();
         self::assertEquals([], $instance->listEnabledStates());
+    }
+
+    public function testPreventCacheWhenUpdateStateInState()
+    {
+        $instance = $this->buildInstance();
+        self::assertEquals([], $instance->listEnabledStates());
+
+        $instance->setFoo('bar');
+        self::assertEquals([], $instance->listEnabledStates());
+        $instance->updateStates();
+        self::assertEquals([State1::class], $instance->listEnabledStates());
+
+        $instance->switchToTwo();
+        self::assertEquals([State2::class], $instance->listEnabledStates());
+
+        $this->expectException(MethodNotImplemented::class);
+        $instance->switchToTwo();
     }
 }

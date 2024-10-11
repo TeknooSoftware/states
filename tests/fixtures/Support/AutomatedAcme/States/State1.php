@@ -38,4 +38,14 @@ use Teknoo\States\State\AbstractState;
  */
 class State1 extends AbstractState
 {
+    public function switchToTwo()
+    {
+        return function (): void {
+            $this->foo = 'notfoo';
+            $this->foo1 = 'bar1';
+            $this->foo2 = null;
+
+            $this->updateStates();
+        };
+    }
 }

@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [6.4.1] - 2024-19-11
+### Stable Release
+Fixed wrong behavior with the new cache about calls when states are updated from a stated method.
+
 ## [6.4.0] - 2024-19-11
 ### Stable Release
 - Add caches in `ProxyTrait` and `StateTrait` about found state for a method name and visibility check when a call
