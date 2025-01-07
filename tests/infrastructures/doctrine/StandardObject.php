@@ -26,6 +26,8 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\Doctrine;
 
 use AllowDynamicProperties;
+use Closure;
+use ProxyManager\Proxy\LazyLoadingInterface;
 use Teknoo\States\Doctrine\AbstractStandardObject;
 use Teknoo\States\Proxy\ArrayAccessTrait;
 use Teknoo\States\Proxy\IteratorTrait;
@@ -51,7 +53,8 @@ use Teknoo\States\Proxy\SerializableTrait;
 class StandardObject extends AbstractStandardObject implements
     \ArrayAccess,
     \SeekableIterator,
-    \Countable
+    \Countable,
+    LazyLoadingInterface
 {
     use ArrayAccessTrait;
     use MagicCallTrait;
@@ -120,5 +123,26 @@ class StandardObject extends AbstractStandardObject implements
     protected static function statesListDeclaration(): array
     {
         return [];
+    }
+
+
+    public function setProxyInitializer(?Closure $initializer = null)
+    {
+        // TODO: Implement setProxyInitializer() method.
+    }
+
+    public function getProxyInitializer(): ?Closure
+    {
+        // TODO: Implement getProxyInitializer() method.
+    }
+
+    public function initializeProxy(): bool
+    {
+        return true;
+    }
+
+    public function isProxyInitialized(): bool
+    {
+        return false;
     }
 }

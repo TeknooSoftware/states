@@ -413,6 +413,14 @@ trait ProxyTrait
     }
 
     /**
+     * To update the limit to use getVisibilityScope when the ProxyTrait is extended
+     */
+    private function alterVisibilityScopeLimit(int $limit): int
+    {
+        return $limit;
+    }
+
+    /**
      * To determine the caller visibility scope to not grant to call protected or private method from an external
      * object.
      * getVisibilityScope() uses debug_backtrace() to get last entries in the calling stack.
@@ -430,6 +438,8 @@ trait ProxyTrait
      */
     private function getVisibilityScope(int $limit): Visibility
     {
+        $limit = $this->alterVisibilityScopeLimit($limit);
+
         //Get the calling stack
         $callingStack = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
 

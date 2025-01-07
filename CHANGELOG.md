@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [6.4.2] - 2025-07-01
+### Stable Release
+Fix issue with last Doctrine Proxy behavior, entities and objects's events postLoad is only initialized when a property
+is readed
+
 ## [6.4.1] - 2024-19-11
 ### Stable Release
 Fixed wrong behavior with the new cache about calls when states are updated from a stated method.

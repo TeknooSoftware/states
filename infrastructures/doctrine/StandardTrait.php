@@ -15,7 +15,7 @@
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  *
- * @link        https://teknoo.software/libraries/states Project website
+ * @link        http://teknoo.software/states Project website
  *
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
@@ -25,8 +25,11 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Doctrine;
 
+use ProxyManager\Proxy\LazyLoadingInterface;
+use SensitiveParameter;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\Proxy\ProxyTrait;
+use Throwable;
 
 /**
  * Trait adapt standard proxies to doctrine.
@@ -38,7 +41,9 @@ use Teknoo\States\Proxy\ProxyTrait;
  */
 trait StandardTrait
 {
-    use ProxyTrait;
+    use ProxyTrait {
+        __call as private __callTrait;
+    }
 
     /**
      * Doctrine does not call the construction and create a new instance without it.
@@ -59,5 +64,23 @@ trait StandardTrait
     public function updateStates(): ProxyInterface
     {
         return $this;
+    }
+
+    private function alterVisibilityScopeLimit(int $limit): int
+    {
+        return $limit + 1;
+    }
+
+    /**
+     * @param array<mixed> $arguments
+     * @throws Throwable
+     */
+    public function __call(string $methodName, #[SensitiveParameter] array $arguments): mixed
+    {
+        if ($this instanceof LazyLoadingInterface && !$this->isProxyInitialized()) {
+            $this->initializeProxy();
+        }
+
+        return $this->__callTrait($methodName, $arguments);
     }
 }
