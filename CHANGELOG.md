@@ -1,5 +1,13 @@
 # Teknoo Software - States library - Change Log
 
+## [6.4.3] - 2025-02-07
+### Stable Release
+- Update dev lib requirements
+  - Require Symfony libraries 6.4 or 7.2
+- Drop support of PHP 8.2
+  - The library stay usable with PHP 8.2, without any waranties and tests
+  - In the next major release, Support of PHP 8.2 will be dropped
+
 ## [6.4.2] - 2025-07-01
 ### Stable Release
 Fix issue with last Doctrine Proxy behavior, entities and objects's events postLoad is only initialized when a property
