@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan\Analyser;
 
+use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt;
@@ -36,7 +37,6 @@ use PHPStan\Parser\ParserErrorsException;
 use PHPStan\Reflection\ReflectionProvider;
 use ReflectionClass;
 use ReflectionException;
-use Teknoo\East\Paas\Compilation\Conductor;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
@@ -113,7 +113,7 @@ class ASTVisitor extends NodeVisitorAbstract
 
         $listClosure = $listDeclarationReflection->getClosure(null);
 
-        return array_flip(($listClosure ?? static fn (): array => [])());
+        return array_flip($listClosure());
     }
 
     /**
@@ -159,7 +159,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 if (isset($currentMethodsList[$lowerName])) {
                     //The method is renamed and virtualy set a public to avoid false positive about duplicated code.
                     $stmt->name = new Identifier(((string) $stmt->name) . $currentMethodsList[$lowerName]);
-                    $stmt->flags &= Class_::MODIFIER_PUBLIC & ~Class_::MODIFIER_PROTECTED & ~Class_::MODIFIER_PRIVATE;
+                    $stmt->flags &= Modifiers::PUBLIC & ~Modifiers::PROTECTED & ~Modifiers::PRIVATE;
                     ++$currentMethodsList[$lowerName];
                 } else {
                     $currentMethodsList[$lowerName] = 1;
