@@ -34,10 +34,12 @@ use PhpParser\Node\Param;
 use PhpParser\Node\UnionType;
 use PHPStan\BetterReflection\BetterReflection;
 use PHPStan\BetterReflection\Util\Exception\NoNodePosition;
+use PHPStan\Reflection\Assertions;
+use PHPStan\Reflection\ClassMemberReflection;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ExtendedMethodReflection;
-use PHPStan\Reflection\Php\BuiltinMethodReflection;
+use PHPStan\Reflection\ExtendedParametersAcceptor;
 use PHPStan\TrinaryLogic;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionIntersectionType;
@@ -46,6 +48,7 @@ use PHPStan\BetterReflection\Reflection\Adapter\ReflectionNamedType;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionUnionType;
 use PHPStan\BetterReflection\Reflection\ReflectionParameter as BetterReflectionParameter;
+use PHPStan\Type\Type;
 use ReflectionIntersectionType as NativeReflectionIntersectionType;
 use ReflectionMethod as NativeReflectionMethod;
 use ReflectionFunction as NativeReflectionFunction;
@@ -76,7 +79,7 @@ class StateMethod implements ExtendedMethodReflection
     public function __construct(
         private readonly ReflectionMethod|NativeReflectionMethod $factoryReflection,
         private readonly ReflectionFunction|NativeReflectionFunction $closureReflection,
-        private readonly ReflectionClass $reflectionClass,
+        private readonly ClassReflection $reflectionClass,
     ) {
     }
 
@@ -103,7 +106,7 @@ class StateMethod implements ExtendedMethodReflection
         return $fileName;
     }
 
-    public function getDeclaringClass(): ReflectionClass
+    public function getDeclaringClass(): ClassReflection
     {
         return $this->reflectionClass;
     }
@@ -152,7 +155,7 @@ class StateMethod implements ExtendedMethodReflection
         return $this->factoryReflection->isPublic();
     }
 
-    public function getPrototype(): BuiltinMethodReflection
+    public function getPrototype(): ClassMemberReflection
     {
         return $this;
     }
@@ -317,5 +320,70 @@ class StateMethod implements ExtendedMethodReflection
         }
 
         return TrinaryLogic::createNo();
+    }
+
+    public function getVariants(): array
+    {
+        // TODO: Implement getVariants() method.
+    }
+
+    public function getOnlyVariant(): ExtendedParametersAcceptor
+    {
+        // TODO: Implement getOnlyVariant() method.
+    }
+
+    public function getNamedArgumentsVariants(): ?array
+    {
+        // TODO: Implement getNamedArgumentsVariants() method.
+    }
+
+    public function acceptsNamedArguments(): TrinaryLogic
+    {
+        // TODO: Implement acceptsNamedArguments() method.
+    }
+
+    public function getAsserts(): Assertions
+    {
+        // TODO: Implement getAsserts() method.
+    }
+
+    public function getSelfOutType(): ?Type
+    {
+        // TODO: Implement getSelfOutType() method.
+    }
+
+    public function isFinalByKeyword(): TrinaryLogic
+    {
+        // TODO: Implement isFinalByKeyword() method.
+    }
+
+    public function isBuiltin()
+    {
+        // TODO: Implement isBuiltin() method.
+    }
+
+    public function isPure(): TrinaryLogic
+    {
+        // TODO: Implement isPure() method.
+    }
+
+    public function getAttributes(): array
+    {
+        // TODO: Implement getAttributes() method.
+    }
+
+    public function getDeprecatedDescription(): ?string
+    {
+        // TODO: Implement getDeprecatedDescription() method.
+    }
+
+    public function getThrowType(): ?Type
+    {
+        // TODO: Implement getThrowType() method.
+    }
+
+    public function hasSideEffects(): TrinaryLogic
+    {
+        // TODO: Implement hasSideEffects() method.
     }
 }
