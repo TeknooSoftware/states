@@ -15,9 +15,9 @@
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  *
- * @link        http://teknoo.software/states Project website
+ * @link        https://teknoo.software/libraries/states Project website
  *
- * @license     http://teknoo.software/license/mit         MIT License
+ * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
 
@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\Doctrine;
 
 use Closure;
+use ProxyManager\Proxy\LazyLoadingInterface;
 use Teknoo\Tests\Support\MockProxy;
 
 /**
@@ -34,10 +35,10 @@ use Teknoo\Tests\Support\MockProxy;
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
- * @license     http://teknoo.software/license/mit         MIT License
+ * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-class DoctrineMockProxy extends MockProxy implements \Doctrine\ORM\Proxy\Proxy
+class DoctrineMockProxy extends MockProxy implements LazyLoadingInterface
 {
     /**
      * Retrieves the callback to be used when cloning the proxy.
@@ -118,5 +119,25 @@ class DoctrineMockProxy extends MockProxy implements \Doctrine\ORM\Proxy\Proxy
      */
     public function __load(): void
     {
+    }
+
+    public function setProxyInitializer(?Closure $initializer = null)
+    {
+        // TODO: Implement setProxyInitializer() method.
+    }
+
+    public function getProxyInitializer(): ?Closure
+    {
+        // TODO: Implement getProxyInitializer() method.
+    }
+
+    public function initializeProxy(): bool
+    {
+        // TODO: Implement initializeProxy() method.
+    }
+
+    public function isProxyInitialized(): bool
+    {
+        return false;
     }
 }

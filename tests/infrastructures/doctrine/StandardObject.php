@@ -15,9 +15,9 @@
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  *
- * @link        http://teknoo.software/states Project website
+ * @link        https://teknoo.software/libraries/states Project website
  *
- * @license     http://teknoo.software/license/mit         MIT License
+ * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
 
@@ -26,6 +26,8 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\Doctrine;
 
 use AllowDynamicProperties;
+use Closure;
+use ProxyManager\Proxy\LazyLoadingInterface;
 use Teknoo\States\Doctrine\AbstractStandardObject;
 use Teknoo\States\Proxy\ArrayAccessTrait;
 use Teknoo\States\Proxy\IteratorTrait;
@@ -44,14 +46,15 @@ use Teknoo\States\Proxy\SerializableTrait;
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
- * @license     http://teknoo.software/license/mit         MIT License
+ * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
 #[AllowDynamicProperties]
 class StandardObject extends AbstractStandardObject implements
     \ArrayAccess,
     \SeekableIterator,
-    \Countable
+    \Countable,
+    LazyLoadingInterface
 {
     use ArrayAccessTrait;
     use MagicCallTrait;
@@ -120,5 +123,26 @@ class StandardObject extends AbstractStandardObject implements
     protected static function statesListDeclaration(): array
     {
         return [];
+    }
+
+
+    public function setProxyInitializer(?Closure $initializer = null)
+    {
+        // TODO: Implement setProxyInitializer() method.
+    }
+
+    public function getProxyInitializer(): ?Closure
+    {
+        // TODO: Implement getProxyInitializer() method.
+    }
+
+    public function initializeProxy(): bool
+    {
+        return true;
+    }
+
+    public function isProxyInitialized(): bool
+    {
+        return false;
     }
 }

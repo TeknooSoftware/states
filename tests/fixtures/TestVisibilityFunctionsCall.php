@@ -15,9 +15,9 @@
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  *
- * @link        http://teknoo.software/states Project website
+ * @link        https://teknoo.software/libraries/states Project website
  *
- * @license     http://teknoo.software/license/mit         MIT License
+ * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
 if (!function_exists('testCallFromFunctionPrivate')) {
@@ -27,9 +27,9 @@ if (!function_exists('testCallFromFunctionPrivate')) {
      *
      *
      *
-     * @link        http://teknoo.software/states Project website
+     * @link        https://teknoo.software/libraries/states Project website
      *
-     * @license     http://teknoo.software/license/mit         MIT License
+     * @license     https://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <richard@teknoo.software>
      */
     function testCallFromFunctionPrivate(): void
@@ -46,9 +46,9 @@ if (!function_exists('testCallFromFunctionProtected')) {
      *
      *
      *
-     * @link        http://teknoo.software/states Project website
+     * @link        https://teknoo.software/libraries/states Project website
      *
-     * @license     http://teknoo.software/license/mit         MIT License
+     * @license     https://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <richard@teknoo.software>
      */
     function testCallFromFunctionProtected(): void
@@ -65,9 +65,9 @@ if (!function_exists('testCallFromFunctionPublic')) {
      *
      *
      *
-     * @link        http://teknoo.software/states Project website
+     * @link        https://teknoo.software/libraries/states Project website
      *
-     * @license     http://teknoo.software/license/mit         MIT License
+     * @license     https://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <richard@teknoo.software>
      *
      * @return mixed
@@ -87,9 +87,9 @@ if (!trait_exists('testCallTrait')) {
      *
      *
      *
-     * @link        http://teknoo.software/states Project website
+     * @link        https://teknoo.software/libraries/states Project website
      *
-     * @license     http://teknoo.software/license/mit         MIT License
+     * @license     https://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <richard@teknoo.software>
      */
     trait testCallTrait
@@ -145,9 +145,9 @@ if (!class_exists('testCallFromOtherObject')) {
      *
      *
      *
-     * @link        http://teknoo.software/states Project website
+     * @link        https://teknoo.software/libraries/states Project website
      *
-     * @license     http://teknoo.software/license/mit         MIT License
+     * @license     https://teknoo.software/license/mit         MIT License
      * @author      Richard Déloge <richard@teknoo.software>
      */
     class testCallFromOtherObject

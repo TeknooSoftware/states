@@ -14,9 +14,9 @@
  *
  * @copyright   Copyright (c) 2009-2020 Richard Déloge (richard@teknoo.software)
  *
- * @link        http://teknoo.software/states Project website
+ * @link        https://teknoo.software/libraries/states Project website
  *
- * @license     http://teknoo.software/license/mit         MIT License
+ * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
 
@@ -35,9 +35,9 @@ use Teknoo\Tests\Support;
  *
  * @copyright   Copyright (c) 2009-2020 Richard Déloge (richard@teknoo.software)
  *
- * @link        http://teknoo.software/states Project website
+ * @link        https://teknoo.software/libraries/states Project website
  *
- * @license     http://teknoo.software/license/mit         MIT License
+ * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
 #[CoversClass(Proxy\ProxyTrait::class)]

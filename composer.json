@@ -3,7 +3,7 @@
     "type": "library",
     "description": "Library to create classes following the State pattern in PHP. This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic conditional statements and this improve maintainability and workflow writing.",
     "keywords": ["states","class","state pattern","pattern","behavioral software design pattern","workflow"],
-    "homepage": "http://teknoo.software/states",
+    "homepage": "https://teknoo.software/libraries/states",
     "license": ["MIT"],
     "authors": [
         {
@@ -37,17 +37,17 @@
     },
     "require":{
         "php": "^8.2",
-        "teknoo/immutable": "^3.0.17"
+        "teknoo/immutable": "^3.0.19"
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
-        "phpunit/phpunit": "^10.5.34||^11",
-        "squizlabs/php_codesniffer": "^3.10.2",
-        "phpstan/phpstan": "^2",
-        "symfony/property-access": "^6.3||^7.0",
-        "nikic/php-parser": "^5",
-        "doctrine/orm": "^2.17.2||^3",
-        "doctrine/mongodb-odm": "^2.6.2"
+        "phpunit/phpunit": "^10.5.34||^12",
+        "squizlabs/php_codesniffer": "^3.11.3",
+        "phpstan/phpstan": "^1.12.16",
+        "symfony/property-access": "^6.4||^7.2",
+        "nikic/php-parser": "^4.19.4",
+        "doctrine/orm": "^3.3.2",
+        "doctrine/mongodb-odm": "^2.10"
     },
     "minimum-stability": "stable",
     "autoload": {
