@@ -23,7 +23,7 @@ The list of available properties assertions are :
 
 Implementation
 --------------
-Your proxy class must implements the interface `AutomatedIntterface` and use the trait 
+Your proxy class must implements the interface `AutomatedInterface` and use the trait
 `AutomatedTrait`.
 
 Your rules must be defined in the method `listAssertions` like this
@@ -38,7 +38,7 @@ Your rules must be defined in the method `listAssertions` like this
             ];
         }
 
-Each assertion is associated to a sett of states to enable (all other states will be disabled) and
+Each assertion is associated to a set of states to enable (all other states will be disabled) and
 several assertions (one assertion per call to `with`). All assertions must be valid.
 
 Run assertions

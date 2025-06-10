@@ -14,11 +14,11 @@ conditional statements and this improve maintainability and workflows writing.
 Features
 --------
 
-* **Create Several States** : Split classes in states to avoid ununderstable large monolithic statements.
+* **Create Several States** : Split classes in states to avoid un-understandable large monolithic statements.
 * **Inherit States and Classes** : Complete and factorize states thanks to inheritance. 
   * Stated classes can be also inherited.
 * **Automate States Switching** : Define states switching rules based on object's properties.
-* **Implement Every Where**: Thanks to traits and interfaces, use this pattern on your existant code. 
+* **Implement Every Where**: Thanks to traits and interfaces, use this pattern on your existing code.
   * Compatible with Doctrine.
 
 A complete documentation is available in [documentation/README.md](documentation/README.md)

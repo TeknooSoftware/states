@@ -5,7 +5,7 @@ Presentation
 ------------
 
 ### Requirements
-This library works with PHP 8.1 and newer. It does not require external library excepts a Composer and Immutable.
+This library works with PHP 8.1 and newer. It does not require external library except a Composer and Immutable.
 
 Write your first stated class
 -----------------------------
