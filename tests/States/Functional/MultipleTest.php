@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Functional;
 
+use Teknoo\States\Proxy\Exception\MethodNotImplemented;
 use Teknoo\Tests\Support\Multiple\User\User;
 
 /**
@@ -52,16 +53,8 @@ class MultipleTest extends \PHPUnit\Framework\TestCase
         self::assertEquals('admin', $administrator->getName());
 
         //Method not available, because state Moderator is not enabled
-        $fail = false;
-        try {
-            $simpleUser->isModerator();
-        } catch (\Exception) {
-            $fail = true;
-        }
-
-        if (!$fail) {
-            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
-        }
+        $this->expectException(MethodNotImplemented::class);
+        $simpleUser->isModerator();
 
         self::assertTrue($moderator->isModerator());
         self::assertTrue($administrator->isModerator());
