@@ -2,7 +2,7 @@
 
 # Applications
 COMPOSER ?= /usr/bin/env composer
-DEPENDENCIES ?= lastest
+DEPENDENCIES ?= latest
 PHP ?= /usr/bin/env php
 
 ### Helpers
