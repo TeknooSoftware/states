@@ -40,6 +40,8 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\Php\PhpMethodReflection;
 use PHPStan\Reflection\ReflectionProvider;
+use PHPStan\Reflection\AttributeReflectionFactory;
+use PHPStan\Reflection\ReflectionProvider\DirectReflectionProviderProvider;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Reflection\Assertions;
@@ -224,19 +226,25 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         }
 
         //@codeCoverageIgnoreEnd
+        $stateMethod = new StateMethod(
+            factoryReflection: $factoryReflection,
+            closureReflection: $closureReflection,
+            reflectionClass: $classReflection->getNativeReflection(),
+        );
+
         return new PhpMethodReflection(
             initializerExprTypeResolver: $this->initializerExprTypeResolver,
             declaringClass: $classReflection,
             declaringTrait: null,
-            reflection: new StateMethod(
-                factoryReflection: $factoryReflection,
-                closureReflection: $closureReflection,
-                reflectionClass: $classReflection->getNativeReflection(),
-            ),
+            reflection: $stateMethod->getReflection(),
             reflectionProvider: $this->reflectionProvider,
+            attributeReflectionFactory: new AttributeReflectionFactory(
+                initializerExprTypeResolver: $this->initializerExprTypeResolver,
+                reflectionProviderProvider: new DirectReflectionProviderProvider(
+                    $this->reflectionProvider,
+                ),
+            ),
             parser: $this->parser,
-            functionCallStatementFinder: $this->functionCallStatementFinder,
-            cache: $this->cache,
             templateTypeMap: new TemplateTypeMap([]),
             phpDocParameterTypes: [],
             phpDocReturnType: null,
@@ -253,6 +261,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             phpDocParameterOutTypes: [],
             immediatelyInvokedCallableParameters: [],
             phpDocClosureThisTypeParameters: [],
+            attributes: [],
         );
     }
 
