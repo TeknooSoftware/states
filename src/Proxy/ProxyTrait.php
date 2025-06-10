@@ -662,6 +662,12 @@ trait ProxyTrait
      */
     private function statesIntersect(array $enabledStatesList, array $statesNames, bool $allStates): array
     {
+        if (empty($statesNames)) {
+            return [];
+        }
+
+        reset($statesNames);
+
         $inStates = [];
         $list = array_flip($enabledStatesList);
 

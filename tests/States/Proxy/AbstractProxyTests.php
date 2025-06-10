@@ -483,6 +483,22 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         self::assertTrue($called);
     }
 
+    public function testIsInStateCallbackOnEmptyList(): void
+    {
+        $proxy = $this->buildProxy();
+
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isInState([], function (array $statesList) use (&$called): void {
+                $called = true;
+                self::assertSame([], $statesList);
+            })
+        );
+
+        self::assertTrue($called);
+    }
+
     /**
      * Test behavior of the proxy method inState.
      */
@@ -648,6 +664,22 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
                 self::fail();
             }, true)
         );
+    }
+
+    public function testIsNotInStateCallbackOnEmptyList(): void
+    {
+        $proxy = $this->buildProxy();
+
+        $called = false;
+        self::assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isNotInState([], function (array $statesList) use (&$called): void {
+                $called = true;
+                self::assertSame([], $statesList);
+            })
+        );
+
+        self::assertTrue($called);
     }
 
     /**
