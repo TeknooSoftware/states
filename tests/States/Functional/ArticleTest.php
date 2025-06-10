@@ -32,6 +32,7 @@ use Teknoo\Tests\Support\Article\Article\Extended;
 use Teknoo\Tests\Support\Article\Article\Promoted;
 use Teknoo\Tests\Support\Article\Article\Published;
 use Teknoo\Tests\Support\Article\Article\StateDefault;
+use Teknoo\States\Proxy\Exception\MethodNotImplemented;
 
 /**
  * Class ArticleTest
@@ -76,68 +77,28 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         self::assertEquals('title 2', $article->getTitle());
 
         //Method not available, because state Draft is not enabled
-        $fail = false;
-        try {
-            $article->setTitle('Hello world');
-        } catch (\Exception) {
-            $fail = true;
-        }
-
-        if (!$fail) {
-            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
-        }
+        $this->expectException(MethodNotImplemented::class);
+        $article->setTitle('Hello world');
 
         //Method not available, because state Draft is not enabled
-        $fail = false;
-        try {
-            $article->setBody('Lorem [b]Ipsum[/b]');
-        } catch (\Exception) {
-            $fail = true;
-        }
-
-        if (!$fail) {
-            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
-        }
+        $this->expectException(MethodNotImplemented::class);
+        $article->setBody('Lorem [b]Ipsum[/b]');
 
         self::assertEquals('title 2', $article->getTitle());
 
         //Method not available, because state Draft is not enabled
-        $fail = false;
-        try {
-            $article->getBodySource();
-        } catch (\Exception) {
-            $fail = true;
-        }
-
-        if (!$fail) {
-            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
-        }
+        $this->expectException(MethodNotImplemented::class);
+        $article->getBodySource();
 
         //Method not available, because state Draft is not enabled
-        $fail = false;
-        try {
-            $article->publishing();
-        } catch (\Exception) {
-            $fail = true;
-        }
-
-        if (!$fail) {
-            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
-        }
+        $this->expectException(MethodNotImplemented::class);
+        $article->publishing();
 
         self::assertEquals('title 2', $article->getTitle());
         self::assertEquals('body 2', $article->getFormattedBody());
 
-        $fail = false;
-        try {
-            $article->getDate();
-        } catch (\Exception) {
-            $fail = true;
-        }
-
-        if (!$fail) {
-            self::fail('Error, the lib must throw an exception because the method is not available in enabled states');
-        }
+        $this->expectException(MethodNotImplemented::class);
+        $article->getDate();
     }
 
     public function testStatesFullQualifiedClassName(): void
