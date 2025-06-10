@@ -127,7 +127,7 @@ trait ProxyTrait
 
     /**
      * Cache to store the selected state for a method to avoid search at each call of the same method
-     * This cache is cleared at each change of active statte
+     * This cache is cleared at each change of active state
      *
      * @var array<string, array<string, StateInterface>>
      */
