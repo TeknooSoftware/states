@@ -23,7 +23,7 @@
 
 namespace demo;
 
-error_reporting(E_ALL | E_STRICT);
+error_reporting(E_ALL);
 
 defined('DS')
 || define('DS', DIRECTORY_SEPARATOR);
