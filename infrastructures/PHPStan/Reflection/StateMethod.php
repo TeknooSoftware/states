@@ -34,8 +34,12 @@ use PhpParser\Node\Param;
 use PhpParser\Node\UnionType;
 use PHPStan\BetterReflection\BetterReflection;
 use PHPStan\BetterReflection\Util\Exception\NoNodePosition;
-use PHPStan\Reflection\Php\BuiltinMethodReflection;
+use PHPStan\Reflection\MethodReflection;
+use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\ClassMemberReflection;
+use PHPStan\Reflection\ParametersAcceptor;
 use PHPStan\TrinaryLogic;
+use PHPStan\Type\Type;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
@@ -70,12 +74,12 @@ use function array_map;
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-class StateMethod implements BuiltinMethodReflection
+class StateMethod implements MethodReflection
 {
     public function __construct(
         private readonly ReflectionMethod|NativeReflectionMethod $factoryReflection,
         private readonly ReflectionFunction|NativeReflectionFunction $closureReflection,
-        private readonly ReflectionClass $reflectionClass,
+        private readonly ClassReflection|ReflectionClass $reflectionClass,
     ) {
     }
 
@@ -102,9 +106,16 @@ class StateMethod implements BuiltinMethodReflection
         return $fileName;
     }
 
-    public function getDeclaringClass(): ReflectionClass
+    public function getDeclaringClass(): ClassReflection
     {
-        return $this->reflectionClass;
+        // For production use, this should be a PHPStan ClassReflection
+        // For tests, we may receive a ReflectionClass which we need to handle
+        if ($this->reflectionClass instanceof ClassReflection) {
+            return $this->reflectionClass;
+        }
+
+        // This should not happen in production, but we need to handle it for tests
+        throw new \RuntimeException('Expected ClassReflection but got ' . get_class($this->reflectionClass));
     }
 
     public function getStartLine(): ?int
@@ -151,7 +162,7 @@ class StateMethod implements BuiltinMethodReflection
         return $this->factoryReflection->isPublic();
     }
 
-    public function getPrototype(): BuiltinMethodReflection
+    public function getPrototype(): ClassMemberReflection
     {
         return $this;
     }
@@ -161,14 +172,14 @@ class StateMethod implements BuiltinMethodReflection
         return TrinaryLogic::createFromBoolean($this->factoryReflection->isDeprecated());
     }
 
-    public function isFinal(): bool
+    public function isFinal(): TrinaryLogic
     {
-        return $this->factoryReflection->isFinal();
+        return TrinaryLogic::createFromBoolean($this->factoryReflection->isFinal());
     }
 
-    public function isInternal(): bool
+    public function isInternal(): TrinaryLogic
     {
-        return $this->factoryReflection->isInternal();
+        return TrinaryLogic::createFromBoolean($this->factoryReflection->isInternal());
     }
 
     public function isAbstract(): bool
@@ -316,5 +327,28 @@ class StateMethod implements BuiltinMethodReflection
         }
 
         return TrinaryLogic::createNo();
+    }
+
+    public function getThrowType(): ?Type
+    {
+        return null;
+    }
+
+    /**
+     * @return ParametersAcceptor[]
+     */
+    public function getVariants(): array
+    {
+        return [];
+    }
+
+    public function hasSideEffects(): TrinaryLogic
+    {
+        return TrinaryLogic::createMaybe();
+    }
+
+    public function getDeprecatedDescription(): ?string
+    {
+        return null;
     }
 }

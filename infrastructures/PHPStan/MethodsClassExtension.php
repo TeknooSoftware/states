@@ -27,13 +27,10 @@ namespace Teknoo\States\PHPStan;
 
 use OutOfBoundsException;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
-use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
 use PHPStan\BetterReflection\SourceLocator\Exception\NoClosureOnLine;
 use PHPStan\Cache\Cache;
 use PHPStan\Parser\Parser;
-use PHPStan\Parser\FunctionCallStatementFinder;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Reflection\MethodReflection;
@@ -43,10 +40,9 @@ use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Reflection\Assertions;
-use PHPStan\Type\Type;
 use ReflectionClass;
 use ReflectionException;
-use ReflectionFunction as NatveReflectionFunction;
+use ReflectionFunction as NativeReflectionFunction;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
@@ -79,7 +75,6 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
 
     public function __construct(
         private readonly Parser $parser,
-        private readonly FunctionCallStatementFinder $functionCallStatementFinder,
         private readonly Cache $cache,
         private readonly ReflectionProvider $reflectionProvider,
         private readonly InitializerExprTypeResolver $initializerExprTypeResolver,
@@ -208,7 +203,8 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         }
 
         try {
-            $factoryReflection = new ReflectionMethod(BetterReflectionMethod::createFromName($stateClass, $method));
+            $stateClassReflection = $this->reflectionProvider->getClass($stateClass);
+            $factoryReflection = $stateClassReflection->getNativeMethod($method);
             //@codeCoverageIgnoreStart
         } catch (OutOfBoundsException) {
             $factoryReflection = $factoryNativeReflection;
@@ -220,7 +216,10 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             $closureReflection = new ReflectionFunction(BetterReflectionFunction::createFromClosure($stateClosure));
             //@codeCoverageIgnoreStart
         } catch (NoClosureOnLine) {
-            $closureReflection = new NatveReflectionFunction($stateClosure);
+            $closureReflection = new NativeReflectionFunction($stateClosure);
+        } catch (\Throwable) {
+            // Fallback for PHPStan 2 compatibility
+            $closureReflection = new NativeReflectionFunction($stateClosure);
         }
 
         //@codeCoverageIgnoreEnd
@@ -231,12 +230,10 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             reflection: new StateMethod(
                 factoryReflection: $factoryReflection,
                 closureReflection: $closureReflection,
-                reflectionClass: $classReflection->getNativeReflection(),
+                reflectionClass: $classReflection,
             ),
             reflectionProvider: $this->reflectionProvider,
             parser: $this->parser,
-            functionCallStatementFinder: $this->functionCallStatementFinder,
-            cache: $this->cache,
             templateTypeMap: new TemplateTypeMap([]),
             phpDocParameterTypes: [],
             phpDocReturnType: null,
@@ -253,6 +250,8 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             phpDocParameterOutTypes: [],
             immediatelyInvokedCallableParameters: [],
             phpDocClosureThisTypeParameters: [],
+            attributeReflectionFactory: null,
+            attributes: [],
         );
     }
 
