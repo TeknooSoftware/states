@@ -29,17 +29,11 @@ use OutOfBoundsException;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use PHPStan\BetterReflection\SourceLocator\Exception\NoClosureOnLine;
-use PHPStan\Cache\Cache;
-use PHPStan\Parser\Parser;
 use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
-use PHPStan\Reflection\Php\PhpMethodReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
-use PHPStan\Type\Generic\TemplateTypeMap;
-use PHPStan\Reflection\Assertions;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionFunction as NativeReflectionFunction;
@@ -74,10 +68,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
     private array $hasMethodsCache = [];
 
     public function __construct(
-        private readonly Parser $parser,
-        private readonly Cache $cache,
         private readonly ReflectionProvider $reflectionProvider,
-        private readonly InitializerExprTypeResolver $initializerExprTypeResolver,
     ) {
     }
 
@@ -184,7 +175,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         string $stateClass,
         ReflectionClass $stateNativeReflection,
         string $method
-    ): PhpMethodReflection {
+    ): MethodReflection {
         $factoryNativeReflection = $stateNativeReflection->getMethod($method);
         /** @var \Closure $factoryClosure */
         $factoryClosure = $factoryNativeReflection->getClosure($stateNativeReflection->newInstanceWithoutConstructor());
@@ -223,35 +214,10 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         }
 
         //@codeCoverageIgnoreEnd
-        return new PhpMethodReflection(
-            initializerExprTypeResolver: $this->initializerExprTypeResolver,
-            declaringClass: $classReflection,
-            declaringTrait: null,
-            reflection: new StateMethod(
-                factoryReflection: $factoryReflection,
-                closureReflection: $closureReflection,
-                reflectionClass: $classReflection,
-            ),
-            reflectionProvider: $this->reflectionProvider,
-            parser: $this->parser,
-            templateTypeMap: new TemplateTypeMap([]),
-            phpDocParameterTypes: [],
-            phpDocReturnType: null,
-            phpDocThrowType: null,
-            deprecatedDescription: null,
-            isDeprecated: false,
-            isInternal: false,
-            isFinal: false,
-            isPure: null,
-            asserts: Assertions::createEmpty(),
-            acceptsNamedArguments: true,
-            selfOutType: null,
-            phpDocComment: null,
-            phpDocParameterOutTypes: [],
-            immediatelyInvokedCallableParameters: [],
-            phpDocClosureThisTypeParameters: [],
-            attributeReflectionFactory: null,
-            attributes: [],
+        return new StateMethod(
+            factoryReflection: $factoryReflection,
+            closureReflection: $closureReflection,
+            reflectionClass: $classReflection,
         );
     }
 

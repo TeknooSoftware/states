@@ -238,6 +238,9 @@ trait ProxyTrait
         $loadedStatesList = [];
 
         $initializesStates = function ($className, $privateMode, &$loadedStatesList): void {
+            /**
+             * @var class-string<self> $className
+             */
             $rfm = new ReflectionMethod($className, 'statesListDeclaration');
             if ($rfm->getDeclaringClass()->getName() === $className) {
                 //Private mode is only enable for states directly defined in this stated class.

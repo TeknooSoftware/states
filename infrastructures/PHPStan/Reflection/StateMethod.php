@@ -77,7 +77,7 @@ use function array_map;
 class StateMethod implements MethodReflection
 {
     public function __construct(
-        private readonly ReflectionMethod|NativeReflectionMethod $factoryReflection,
+        private readonly ReflectionMethod|NativeReflectionMethod|MethodReflection $factoryReflection,
         private readonly ReflectionFunction|NativeReflectionFunction $closureReflection,
         private readonly ClassReflection|ReflectionClass $reflectionClass,
     ) {
@@ -94,11 +94,20 @@ class StateMethod implements MethodReflection
             return $this->factoryReflection;
         }
 
+        // If it's a PHPStan MethodReflection, try to get the underlying ReflectionMethod
+        if ($this->factoryReflection instanceof MethodReflection && method_exists($this->factoryReflection, 'getReflection')) {
+            return $this->factoryReflection->getReflection();
+        }
+
         throw new MissingReflectionMethodException("Missing Factory Reflection Method");
     }
 
     public function getFileName(): ?string
     {
+        if ($this->factoryReflection instanceof MethodReflection) {
+            return $this->factoryReflection->getDeclaringClass()->getFileName();
+        }
+
         if (empty($fileName = $this->factoryReflection->getFileName())) {
             return null;
         }
@@ -169,21 +178,28 @@ class StateMethod implements MethodReflection
 
     public function isDeprecated(): TrinaryLogic
     {
-        return TrinaryLogic::createFromBoolean($this->factoryReflection->isDeprecated());
+        $deprecated = $this->factoryReflection->isDeprecated();
+        return $deprecated instanceof TrinaryLogic ? $deprecated : TrinaryLogic::createFromBoolean($deprecated);
     }
 
     public function isFinal(): TrinaryLogic
     {
-        return TrinaryLogic::createFromBoolean($this->factoryReflection->isFinal());
+        $final = $this->factoryReflection->isFinal();
+        return $final instanceof TrinaryLogic ? $final : TrinaryLogic::createFromBoolean($final);
     }
 
     public function isInternal(): TrinaryLogic
     {
-        return TrinaryLogic::createFromBoolean($this->factoryReflection->isInternal());
+        $internal = $this->factoryReflection->isInternal();
+        return $internal instanceof TrinaryLogic ? $internal : TrinaryLogic::createFromBoolean($internal);
     }
 
     public function isAbstract(): bool
     {
+        if ($this->factoryReflection instanceof MethodReflection) {
+            return false; // State methods are never abstract
+        }
+
         return $this->factoryReflection->isAbstract();
     }
 
@@ -213,7 +229,7 @@ class StateMethod implements MethodReflection
         if ($type instanceof NativeReflectionIntersectionType) {
             $finalType = new IntersectionType(
                 array_map(
-                    static fn (NativeReflectionNamedType $namedType): Name => new Name($namedType->getName()),
+                    static fn ($namedType): Name => new Name($namedType instanceof NativeReflectionNamedType ? $namedType->getName() : 'mixed'),
                     $type->getTypes()
                 )
             );
@@ -222,9 +238,12 @@ class StateMethod implements MethodReflection
         if ($type instanceof NativeReflectionUnionType) {
             $allowNull = $type->allowsNull();
             $types = array_map(
-                static function (NativeReflectionNamedType $namedType) use (&$allowNull): Name {
-                    $allowNull = $allowNull || $namedType->allowsNull();
-                    return new Name($namedType->getName());
+                static function ($namedType) use (&$allowNull): Name {
+                    if ($namedType instanceof NativeReflectionNamedType) {
+                        $allowNull = $allowNull || $namedType->allowsNull();
+                        return new Name($namedType->getName());
+                    }
+                    return new Name('mixed');
                 },
                 $type->getTypes()
             );
@@ -257,7 +276,7 @@ class StateMethod implements MethodReflection
             foreach ($this->closureReflection->getParameters() as $parameter) {
                 $default = null;
                 if ($parameter->isOptional() && null !== ($defaultValue = $parameter->getDefaultValue())) {
-                    $default = new Variable($defaultValue);
+                    $default = new Variable(is_string($defaultValue) ? $defaultValue : 'default');
                 }
 
                 $finalType = null;
@@ -277,9 +296,9 @@ class StateMethod implements MethodReflection
                             attributes: $parameter->getAttributes(),
                             flags: 0,
                         ),
-                        function: new class ($this->factoryReflection) extends BetterReflectionFunction {
+                        function: new class ($this->getReflection()) extends BetterReflectionFunction {
                             public function __construct(
-                                private readonly NativeReflectionMethod $method,
+                                private readonly ReflectionMethod $method,
                             ) {
                             }
 
@@ -296,7 +315,8 @@ class StateMethod implements MethodReflection
 
                             public function getShortName(): string
                             {
-                                return $this->method->getShortName();
+                                $name = $this->method->getShortName();
+                                return $name !== '' ? $name : 'unknown';
                             }
 
                             //@codeCoverageIgnoreEnd

@@ -36,7 +36,6 @@ use PHPStan\Parser\ParserErrorsException;
 use PHPStan\Reflection\ReflectionProvider;
 use ReflectionClass;
 use ReflectionException;
-use Teknoo\East\Paas\Compilation\Conductor;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
@@ -193,11 +192,12 @@ class ASTVisitor extends NodeVisitorAbstract
                 )
             ) {
                 $this->classesUpdated[$className] = true;
+                /** @var array<class-string> $classes */
                 $classes = array_keys($this->listStatesFromProxyClass($className));
                 $node->stmts = $this->mergeStmts(
                     $node->stmts,
                     array_map(
-                        fn ($class): array => $this->getStateStmts((string) $class, $node),
+                        fn (string $class): array => $this->getStateStmts($class, $node),
                         $classes,
                     )
                 );
