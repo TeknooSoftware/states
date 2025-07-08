@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan\Analyser;
 
+use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt;
@@ -36,7 +37,6 @@ use PHPStan\Parser\ParserErrorsException;
 use PHPStan\Reflection\ReflectionProvider;
 use ReflectionClass;
 use ReflectionException;
-use Teknoo\East\Paas\Compilation\Conductor;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
@@ -75,6 +75,7 @@ class ASTVisitor extends NodeVisitorAbstract
 
     /**
      * @return array<class-string>
+     * @throws ReflectionException
      */
     private function listStatesFromProxyClass(string $proxyClass): array
     {
@@ -111,9 +112,7 @@ class ASTVisitor extends NodeVisitorAbstract
         $listDeclarationReflection = $nativeReflection
             ->getMethod('statesListDeclaration');
 
-        $listClosure = $listDeclarationReflection->getClosure(null);
-
-        return array_flip(($listClosure ?? static fn (): array => [])());
+        return array_flip($listDeclarationReflection->getClosure()());
     }
 
     /**
@@ -159,7 +158,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 if (isset($currentMethodsList[$lowerName])) {
                     //The method is renamed and virtualy set a public to avoid false positive about duplicated code.
                     $stmt->name = new Identifier(((string) $stmt->name) . $currentMethodsList[$lowerName]);
-                    $stmt->flags &= Class_::MODIFIER_PUBLIC & ~Class_::MODIFIER_PROTECTED & ~Class_::MODIFIER_PRIVATE;
+                    $stmt->flags &= Modifiers::PUBLIC & ~Modifiers::PROTECTED & ~Modifiers::PRIVATE;
                     ++$currentMethodsList[$lowerName];
                 } else {
                     $currentMethodsList[$lowerName] = 1;
@@ -172,6 +171,10 @@ class ASTVisitor extends NodeVisitorAbstract
         return $proxyStmts;
     }
 
+    /**
+     * @throws ParserErrorsException
+     * @throws ReflectionException
+     */
     public function leaveNode(Node $node): ?Node
     {
         if (
@@ -197,7 +200,9 @@ class ASTVisitor extends NodeVisitorAbstract
                 $node->stmts = $this->mergeStmts(
                     $node->stmts,
                     array_map(
-                        fn ($class): array => $this->getStateStmts((string) $class, $node),
+                    /**
+                     * @throws ParserErrorsException
+                     */ fn ($class): array => $this->getStateStmts((string) $class, $node),
                         $classes,
                     )
                 );
