@@ -106,21 +106,7 @@ class MethodsClassExtensionTest extends TestCase
     protected function buildInstance(): MethodsClassReflectionExtension
     {
         return new MethodsClassExtension(
-            $this->getParserMock(),
-            $this->getFunctionCallStatementFinderMock(),
-            $this->getCacheMock(),
             $this->getReflectionProviderMock(),
-            new InitializerExprTypeResolver(
-                new ConstantResolver(
-                    $this->createMock(ReflectionProviderProvider::class),
-                    [],
-                ),
-                $this->createMock(ReflectionProviderProvider::class),
-                $this->createMock(PhpVersion::class),
-                $this->createMock(OperatorTypeSpecifyingExtensionRegistryProvider::class),
-                new OversizedArrayBuilder(),
-                true,
-            ),
         );
     }
 

@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\PHPStan\Reflection;
 
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionNamedType;
@@ -108,7 +109,9 @@ class StateMethodTest extends TestCase
 
     public function testGetDeclaringClass(): void
     {
-        self::assertInstanceOf(\ReflectionClass::class, $this->buildInstance()->getDeclaringClass());
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Expected ClassReflection but got');
+        $this->buildInstance()->getDeclaringClass();
     }
 
     public function testGetStartLine(): void
@@ -159,12 +162,12 @@ class StateMethodTest extends TestCase
 
     public function testIsFinal(): void
     {
-        self::assertFalse($this->buildInstance()->isFinal());
+        self::assertEquals(TrinaryLogic::createFromBoolean(false), $this->buildInstance()->isFinal());
     }
 
     public function testIsInternal(): void
     {
-        self::assertFalse($this->buildInstance()->isInternal());
+        self::assertEquals(TrinaryLogic::createFromBoolean(false), $this->buildInstance()->isInternal());
     }
 
     public function testIsAbstract(): void

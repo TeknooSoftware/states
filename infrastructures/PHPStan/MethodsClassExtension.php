@@ -25,31 +25,24 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan;
 
+use Closure;
 use OutOfBoundsException;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
-use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
 use PHPStan\BetterReflection\SourceLocator\Exception\NoClosureOnLine;
-use PHPStan\Cache\Cache;
-use PHPStan\Parser\Parser;
-use PHPStan\Parser\FunctionCallStatementFinder;
+use PHPStan\Broker\ClassNotFoundException;
 use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
-use PHPStan\Reflection\Php\PhpMethodReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
-use PHPStan\Type\Generic\TemplateTypeMap;
-use PHPStan\Reflection\Assertions;
-use PHPStan\Type\Type;
 use ReflectionClass;
 use ReflectionException;
-use ReflectionFunction as NatveReflectionFunction;
+use ReflectionFunction as NativeReflectionFunction;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
+use Throwable;
 
 use function array_pop;
 use function class_exists;
@@ -68,7 +61,7 @@ use function implode;
 class MethodsClassExtension implements MethodsClassReflectionExtension
 {
     /**
-     * @var array<ReflectionClass<object>>>
+     * @var array<string, ReflectionClass<object>>
      */
     private array $proxyNativeReflection = [];
 
@@ -78,11 +71,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
     private array $hasMethodsCache = [];
 
     public function __construct(
-        private readonly Parser $parser,
-        private readonly FunctionCallStatementFinder $functionCallStatementFinder,
-        private readonly Cache $cache,
         private readonly ReflectionProvider $reflectionProvider,
-        private readonly InitializerExprTypeResolver $initializerExprTypeResolver,
     ) {
     }
 
@@ -180,7 +169,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
      * @param class-string<object> $proxyClassName
      * @param ReflectionClass<object> $stateNativeReflection
      * @param non-empty-string $method
-     * @throws \PHPStan\Broker\ClassNotFoundException
+     * @throws ClassNotFoundException
      * @throws ReflectionException
      */
     private function getMethodReflection(
@@ -189,9 +178,9 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         string $stateClass,
         ReflectionClass $stateNativeReflection,
         string $method
-    ): PhpMethodReflection {
+    ): MethodReflection {
         $factoryNativeReflection = $stateNativeReflection->getMethod($method);
-        /** @var \Closure $factoryClosure */
+        /** @var Closure $factoryClosure */
         $factoryClosure = $factoryNativeReflection->getClosure($stateNativeReflection->newInstanceWithoutConstructor());
         $stateClosure = $factoryClosure();
 
@@ -208,7 +197,8 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         }
 
         try {
-            $factoryReflection = new ReflectionMethod(BetterReflectionMethod::createFromName($stateClass, $method));
+            $stateClassReflection = $this->reflectionProvider->getClass($stateClass);
+            $factoryReflection = $stateClassReflection->getNativeMethod($method);
             //@codeCoverageIgnoreStart
         } catch (OutOfBoundsException) {
             $factoryReflection = $factoryNativeReflection;
@@ -220,45 +210,23 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             $closureReflection = new ReflectionFunction(BetterReflectionFunction::createFromClosure($stateClosure));
             //@codeCoverageIgnoreStart
         } catch (NoClosureOnLine) {
-            $closureReflection = new NatveReflectionFunction($stateClosure);
+            $closureReflection = new NativeReflectionFunction($stateClosure);
+        } catch (Throwable) {
+            // Fallback for PHPStan 2 compatibility
+            $closureReflection = new NativeReflectionFunction($stateClosure);
         }
 
         //@codeCoverageIgnoreEnd
-        return new PhpMethodReflection(
-            initializerExprTypeResolver: $this->initializerExprTypeResolver,
-            declaringClass: $classReflection,
-            declaringTrait: null,
-            reflection: new StateMethod(
-                factoryReflection: $factoryReflection,
-                closureReflection: $closureReflection,
-                reflectionClass: $classReflection->getNativeReflection(),
-            ),
-            reflectionProvider: $this->reflectionProvider,
-            parser: $this->parser,
-            functionCallStatementFinder: $this->functionCallStatementFinder,
-            cache: $this->cache,
-            templateTypeMap: new TemplateTypeMap([]),
-            phpDocParameterTypes: [],
-            phpDocReturnType: null,
-            phpDocThrowType: null,
-            deprecatedDescription: null,
-            isDeprecated: false,
-            isInternal: false,
-            isFinal: false,
-            isPure: null,
-            asserts: Assertions::createEmpty(),
-            acceptsNamedArguments: true,
-            selfOutType: null,
-            phpDocComment: null,
-            phpDocParameterOutTypes: [],
-            immediatelyInvokedCallableParameters: [],
-            phpDocClosureThisTypeParameters: [],
+        return new StateMethod(
+            factoryReflection: $factoryReflection,
+            closureReflection: $closureReflection,
+            reflectionClass: $classReflection,
         );
     }
 
     /**
      * @throws ShouldNotHappenException
-     * @throws \PHPStan\Broker\ClassNotFoundException
+     * @throws ClassNotFoundException
      * @param non-empty-string $methodName
      * @throws ReflectionException
      */

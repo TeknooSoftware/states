@@ -26,17 +26,19 @@ declare(strict_types=1);
 namespace Teknoo\States\PHPStan\Analyser;
 
 use PhpParser\Node;
+use PhpParser\Node\Expr\Closure;
 use PhpParser\Node\Identifier;
+use PhpParser\Node\Name\FullyQualified;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\Node\Stmt\Return_;
 use PhpParser\NodeVisitorAbstract;
 use PHPStan\Parser\Parser;
 use PHPStan\Parser\ParserErrorsException;
 use PHPStan\Reflection\ReflectionProvider;
 use ReflectionClass;
 use ReflectionException;
-use Teknoo\East\Paas\Compilation\Conductor;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
@@ -193,11 +195,12 @@ class ASTVisitor extends NodeVisitorAbstract
                 )
             ) {
                 $this->classesUpdated[$className] = true;
+                /** @var array<class-string> $classes */
                 $classes = array_keys($this->listStatesFromProxyClass($className));
                 $node->stmts = $this->mergeStmts(
                     $node->stmts,
                     array_map(
-                        fn ($class): array => $this->getStateStmts((string) $class, $node),
+                        fn (string $class): array => $this->getStateStmts($class, $node),
                         $classes,
                     )
                 );
@@ -221,15 +224,15 @@ class ASTVisitor extends NodeVisitorAbstract
                                 && strtolower($stmt->returnType->name) === 'callable'
                             )
                             || (
-                                $stmt->returnType instanceof Node\Name\FullyQualified
+                                $stmt->returnType instanceof FullyQualified
                                 && 'closure' === strtolower((string) $stmt->returnType)
                             )
                         )
                         && isset($stmt->stmts[0])
                     ) {
-                        /** @var Stmt\Return_ $returnStmt */
+                        /** @var Return_ $returnStmt */
                         $returnStmt = $stmt->stmts[0];
-                        /** @var Node\Expr\Closure $closureStmt */
+                        /** @var Closure $closureStmt */
                         $closureStmt =  $returnStmt->expr;
                         $stmt->params = $closureStmt->params;
                         $stmt->returnType = $closureStmt->returnType;
