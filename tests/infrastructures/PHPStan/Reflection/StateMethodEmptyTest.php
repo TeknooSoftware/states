@@ -31,6 +31,7 @@ use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass
 use PHPStan\TrinaryLogic;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use ReflectionMethod;
 use Teknoo\States\PHPStan\Reflection\Exception\MissingReflectionMethodException;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 use ReflectionIntersectionType as NativeReflectionIntersectionType;
@@ -50,7 +51,7 @@ class StateMethodEmptyTest extends TestCase
 {
     protected function buildInstance($doc = 'factory doc', $closureScopeClass = null): \Teknoo\States\PHPStan\Reflection\StateMethod
     {
-        $factoryReflection = $this->createMock(\ReflectionMethod::class);
+        $factoryReflection = $this->createMock(ReflectionMethod::class);
         $factoryReflection->expects($this->any())->method('getName')->willReturn('factory');
         $factoryReflection->expects($this->any())->method('getFileName')->willReturn('');
         $factoryReflection->expects($this->never())->method('getStartLine');
@@ -167,8 +168,10 @@ class StateMethodEmptyTest extends TestCase
 
     public function testGetReflection(): void
     {
-        $this->expectException(MissingReflectionMethodException::class);
-        $this->buildInstance()->getReflection();
+        self::assertInstanceOf(
+            ReflectionMethod::class,
+            $this->buildInstance()->getReflection(),
+        );
     }
 
     public function testGetFileName(): void

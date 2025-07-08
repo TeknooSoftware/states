@@ -90,9 +90,9 @@ class StateMethod implements MethodReflection
         return $this->factoryReflection->getName();
     }
 
-    public function getReflection(): ReflectionMethod
+    public function getReflection(): ReflectionMethod|NativeReflectionMethod
     {
-        if ($this->factoryReflection instanceof ReflectionMethod) {
+        if ($this->factoryReflection instanceof NativeReflectionMethod) {
             return $this->factoryReflection;
         }
 
@@ -324,7 +324,7 @@ class StateMethod implements MethodReflection
                         ),
                         function: new class ($this->getReflection()) extends BetterReflectionFunction {
                             public function __construct(
-                                private readonly ReflectionMethod $method,
+                                private readonly ReflectionMethod|NativeReflectionMethod $method,
                             ) {
                             }
 
