@@ -70,7 +70,7 @@ use function array_map;
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-class StateMethod implements BuiltinMethodReflection
+class StateMethod implements ExtendedMethodReflection
 {
     public function __construct(
         private readonly ReflectionMethod|NativeReflectionMethod $factoryReflection,
