@@ -54,7 +54,7 @@ class IsArrayTest extends AbstractConstraintTests
         $constraintSet->expects($this->never())->method('isValid');
 
         $value = 'foo';
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -65,7 +65,7 @@ class IsArrayTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->never())->method('isValid')->with($value = 123)->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -76,7 +76,7 @@ class IsArrayTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->never())->method('isValid')->with($value = true)->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -87,7 +87,7 @@ class IsArrayTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->once())->method('isValid')->with($value = [])->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -98,7 +98,7 @@ class IsArrayTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->never())->method('isValid')->with($value = new \stdClass())->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );

@@ -54,7 +54,7 @@ class IsNotEmptyTest extends AbstractConstraintTests
         $constraintSet->expects($this->never())->method('isValid');
 
         $value = '';
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -65,7 +65,7 @@ class IsNotEmptyTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->once())->method('isValid')->with($value = 'foo')->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );

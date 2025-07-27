@@ -26,9 +26,13 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\States;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Teknoo\States\State\AbstractState;
 use Teknoo\States\State\StateTrait;
 use Teknoo\Tests\Support;
+use Teknoo\Tests\Support\MockOnlyPrivate;
+use Teknoo\Tests\Support\MockOnlyProtected;
+use Teknoo\Tests\Support\MockOnlyPublic;
 
 /**
  * Class StateTest
@@ -41,7 +45,7 @@ use Teknoo\Tests\Support;
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-#[CoversClass(StateTrait::class)]
+#[CoversTrait(StateTrait::class)]
 #[CoversClass(AbstractState::class)]
 class StateTest extends AbstractStatesTests
 {
@@ -49,26 +53,35 @@ class StateTest extends AbstractStatesTests
      * Build a basic object to provide only public methods.
      *
      */
-    protected function getPublicClassObject(bool $privateMode, string $statedClassName, array $aliases = []): \Teknoo\Tests\Support\MockOnlyPublic
-    {
-        return new Support\MockOnlyPublic($privateMode, $statedClassName, $aliases);
+    protected function getPublicClassObject(
+        bool $privateMode,
+        string $statedClassName,
+        array $aliases = []
+    ): MockOnlyPublic {
+        return new MockOnlyPublic($privateMode, $statedClassName, $aliases);
     }
 
     /**
      * Build a basic object to provide only protected methods.
      *
      */
-    protected function getProtectedClassObject(bool $privateMode, string $statedClassName, array $aliases = []): \Teknoo\Tests\Support\MockOnlyProtected
-    {
-        return new Support\MockOnlyProtected($privateMode, $statedClassName, $aliases);
+    protected function getProtectedClassObject(
+        bool $privateMode,
+        string $statedClassName,
+        array $aliases = []
+    ): MockOnlyProtected {
+        return new MockOnlyProtected($privateMode, $statedClassName, $aliases);
     }
 
     /**
      * Build a basic object to provide only private methods.
      *
      */
-    protected function getPrivateClassObject(bool $privateMode, string $statedClassName, array $aliases = []): \Teknoo\Tests\Support\MockOnlyPrivate
-    {
-        return new Support\MockOnlyPrivate($privateMode, $statedClassName, $aliases);
+    protected function getPrivateClassObject(
+        bool $privateMode,
+        string $statedClassName,
+        array $aliases = []
+    ): MockOnlyPrivate {
+        return new MockOnlyPrivate($privateMode, $statedClassName, $aliases);
     }
 }

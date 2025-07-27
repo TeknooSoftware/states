@@ -54,7 +54,7 @@ class IsLessThanTest extends AbstractConstraintTests
         $constraintSet->expects($this->never())->method('isValid');
 
         $value = 11;
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -66,7 +66,7 @@ class IsLessThanTest extends AbstractConstraintTests
         $constraintSet->expects($this->never())->method('isValid');
 
         $value = 10;
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -77,7 +77,7 @@ class IsLessThanTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->once())->method('isValid')->with($value = 9)->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );

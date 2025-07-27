@@ -25,32 +25,35 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan\Reflection;
 
-use PhpParser\Node\Expr\Variable;
-use PhpParser\Node\IntersectionType;
-use PhpParser\Node\Identifier;
-use PhpParser\Node\Name;
-use PhpParser\Node\NullableType;
-use PhpParser\Node\Param;
-use PhpParser\Node\UnionType;
-use PHPStan\BetterReflection\BetterReflection;
-use PHPStan\BetterReflection\Util\Exception\NoNodePosition;
-use PHPStan\Reflection\Php\BuiltinMethodReflection;
-use PHPStan\TrinaryLogic;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
-use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionIntersectionType;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionNamedType;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionUnionType;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter as BetterReflectionParameter;
-use ReflectionIntersectionType as NativeReflectionIntersectionType;
-use ReflectionMethod as NativeReflectionMethod;
-use ReflectionFunction as NativeReflectionFunction;
-use ReflectionNamedType as NativeReflectionNamedType;
-use ReflectionUnionType as NativeReflectionUnionType;
-use Teknoo\States\PHPStan\Reflection\Exception\MissingReflectionMethodException;
+use PHPStan\Internal\DeprecatedAttributeHelper;
+use PHPStan\Reflection\Assertions;
+use PHPStan\Reflection\AttributeReflection;
+use PHPStan\Reflection\AttributeReflectionFactory;
+use PHPStan\Reflection\ClassMemberReflection;
+use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\ExtendedFunctionVariant;
+use PHPStan\Reflection\ExtendedMethodReflection;
+use PHPStan\Reflection\ExtendedParametersAcceptor;
+use PHPStan\Reflection\InitializerExprContext;
+use PHPStan\Reflection\InitializerExprTypeResolver;
+use PHPStan\Reflection\MethodPrototypeReflection;
+use PHPStan\Reflection\MissingMethodFromReflectionException;
+use PHPStan\Reflection\Php\PhpParameterReflection;
+use PHPStan\Reflection\ReflectionProvider;
+use PHPStan\ShouldNotHappenException;
+use PHPStan\TrinaryLogic;
+use PHPStan\Type\Generic\TemplateTypeMap;
+use PHPStan\Type\MixedType;
+use PHPStan\Type\ThisType;
+use PHPStan\Type\Type;
+use PHPStan\Type\TypehintHelper;
+use ReflectionException;
+use ReflectionType;
+use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
+use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
 
 use function array_map;
 
@@ -70,12 +73,36 @@ use function array_map;
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-class StateMethod implements BuiltinMethodReflection
+class StateMethod implements ExtendedMethodReflection
 {
+    /** @var list<ExtendedFunctionVariant>|null */
+    private ?array $variants = null;
+
+    /** @var list<PhpParameterReflection>|null */
+    private ?array $parameters = null;
+
+    private ?Type $returnType = null;
+
+    private ?Type $nativeReturnType = null;
+
+    /**
+     * @param list<AttributeReflection> $attributes
+     */
     public function __construct(
-        private readonly ReflectionMethod|NativeReflectionMethod $factoryReflection,
-        private readonly ReflectionFunction|NativeReflectionFunction $closureReflection,
-        private readonly ReflectionClass $reflectionClass,
+        private readonly ReflectionProvider $reflectionProvider,
+        private readonly InitializerExprTypeResolver|InitializerExprTypeResolverInterface $initializerExprTypeResolver,
+        private readonly AttributeReflectionFactory|AttributeReflectionFactoryInterface $attributeReflectionFactory,
+        private readonly ReflectionMethod $factoryReflection,
+        private readonly ReflectionFunction $closureReflection,
+        private readonly ClassReflection $declaringClass,
+        private readonly ?Type $phpDocReturnType,
+        private readonly ?Type $phpDocThrowType,
+        private readonly ?Type $selfOutType,
+        private readonly Assertions $asserts,
+        private readonly TemplateTypeMap $templateTypeMap,
+        private readonly ?bool $isPure,
+        private readonly array $attributes,
+        private readonly bool $acceptsNamedArguments,
     ) {
     }
 
@@ -84,61 +111,50 @@ class StateMethod implements BuiltinMethodReflection
         return $this->factoryReflection->getName();
     }
 
-    public function getReflection(): ReflectionMethod
+    public function getDeclaringClass(): ClassReflection
     {
-        if ($this->factoryReflection instanceof ReflectionMethod) {
-            return $this->factoryReflection;
-        }
-
-        throw new MissingReflectionMethodException("Missing Factory Reflection Method");
+        return $this->declaringClass;
     }
 
-    public function getFileName(): ?string
+    public function getPrototype(): ClassMemberReflection
     {
-        if (empty($fileName = $this->factoryReflection->getFileName())) {
-            return null;
+        try {
+            $prototypeMethod = $this->factoryReflection->getPrototype();
+            $declaringClassName = $prototypeMethod->getDeclaringClass()->getName();
+
+            $prototypeDeclaringClass = $this->declaringClass->getAncestorWithClassName($declaringClassName);
+
+            if (!$prototypeDeclaringClass instanceof ClassReflection) {
+                $prototypeDeclaringClass = $this->reflectionProvider->getClass($declaringClassName);
+            }
+
+            $tentativeReturnType = null;
+            if (($trt = $prototypeMethod->getTentativeReturnType()) instanceof ReflectionType) {
+                $tentativeReturnType = TypehintHelper::decideTypeFromReflection(
+                    reflectionType: $trt,
+                    selfClass: $prototypeDeclaringClass,
+                );
+            }
+
+            return new MethodPrototypeReflection(
+                name: $prototypeMethod->getName(),
+                declaringClass: $prototypeDeclaringClass,
+                isStatic: $prototypeMethod->isStatic(),
+                isPrivate: $prototypeMethod->isPrivate(),
+                isPublic: $prototypeMethod->isPublic(),
+                isAbstract: $prototypeMethod->isAbstract(),
+                isInternal: $prototypeMethod->isInternal(),
+                variants: $prototypeDeclaringClass->getNativeMethod($prototypeMethod->getName())->getVariants(),
+                tentativeReturnType: $tentativeReturnType,
+            );
+        } catch (ReflectionException | ShouldNotHappenException | MissingMethodFromReflectionException) {
+            return $this;
         }
-
-        return $fileName;
-    }
-
-    public function getDeclaringClass(): ReflectionClass
-    {
-        return $this->reflectionClass;
-    }
-
-    public function getStartLine(): ?int
-    {
-        if (empty($startLine = $this->closureReflection->getStartLine())) {
-            return null;
-        }
-
-        return $startLine;
-    }
-
-    public function getEndLine(): ?int
-    {
-        if (empty($endLine = $this->closureReflection->getEndLine())) {
-            return null;
-        }
-
-        return $endLine;
-    }
-
-    public function getDocComment(): ?string
-    {
-        $doc = $this->factoryReflection->getDocComment();
-
-        if (false === $doc) {
-            return null;
-        }
-
-        return $doc;
     }
 
     public function isStatic(): bool
     {
-        return $this->factoryReflection->isStatic();
+        return false;
     }
 
     public function isPrivate(): bool
@@ -151,9 +167,19 @@ class StateMethod implements BuiltinMethodReflection
         return $this->factoryReflection->isPublic();
     }
 
-    public function getPrototype(): BuiltinMethodReflection
+    public function isFinal(): TrinaryLogic
     {
-        return $this;
+        return TrinaryLogic::createNo();
+    }
+
+    public function isFinalByKeyword(): TrinaryLogic
+    {
+        return TrinaryLogic::createNo();
+    }
+
+    public function isInternal(): TrinaryLogic
+    {
+        return TrinaryLogic::createFromBoolean($this->factoryReflection->isInternal());
     }
 
     public function isDeprecated(): TrinaryLogic
@@ -161,19 +187,14 @@ class StateMethod implements BuiltinMethodReflection
         return TrinaryLogic::createFromBoolean($this->factoryReflection->isDeprecated());
     }
 
-    public function isFinal(): bool
+    public function getDeprecatedDescription(): ?string
     {
-        return $this->factoryReflection->isFinal();
-    }
+        if ($this->factoryReflection->isDeprecated()) {
+            $attributes = $this->factoryReflection->getBetterReflection()->getAttributes();
+            return DeprecatedAttributeHelper::getDeprecatedDescription($attributes);
+        }
 
-    public function isInternal(): bool
-    {
-        return $this->factoryReflection->isInternal();
-    }
-
-    public function isAbstract(): bool
-    {
-        return $this->factoryReflection->isAbstract();
+        return null;
     }
 
     public function isVariadic(): bool
@@ -181,140 +202,185 @@ class StateMethod implements BuiltinMethodReflection
         return $this->closureReflection->isVariadic();
     }
 
-    public function getReturnType(): ReflectionIntersectionType|ReflectionNamedType|ReflectionUnionType|null
+    public function getDocComment(): ?string
     {
-        if (!$this->closureReflection instanceof ReflectionFunction) {
+        $docComment = $this->factoryReflection->getDocComment();
+        if (false === $docComment) {
             return null;
         }
 
-        return $this->closureReflection->getReturnType();
+        return $docComment;
     }
 
-    public function getTentativeReturnType(): ReflectionIntersectionType|ReflectionNamedType|ReflectionUnionType|null
+    public function getAttributes(): array
     {
-        return null;
+        return $this->attributes;
     }
 
-    private static function buildFinalType(
-        mixed $type
-    ): IntersectionType|UnionType|Name|NullableType|null {
-        $finalType = null;
-        if ($type instanceof NativeReflectionIntersectionType) {
-            $finalType = new IntersectionType(
-                array_map(
-                    static fn (NativeReflectionNamedType $namedType): Name => new Name($namedType->getName()),
-                    $type->getTypes()
-                )
-            );
-        }
-
-        if ($type instanceof NativeReflectionUnionType) {
-            $allowNull = $type->allowsNull();
-            $types = array_map(
-                static function (NativeReflectionNamedType $namedType) use (&$allowNull): Name {
-                    $allowNull = $allowNull || $namedType->allowsNull();
-                    return new Name($namedType->getName());
-                },
-                $type->getTypes()
-            );
-            if (true === $allowNull) {
-                $types[] = new Identifier('null');
-            }
-
-            $finalType = new UnionType($types);
-        }
-
-        if ($type instanceof NativeReflectionNamedType) {
-            $finalType = new Name($type->getName());
-            if ($type->allowsNull()) {
-                $finalType = new NullableType($finalType);
-            }
-        }
-
-        return $finalType;
+    public function getThrowType(): ?Type
+    {
+        return $this->phpDocThrowType;
     }
 
     /**
-     * @return ReflectionParameter[]
+     * @throws ShouldNotHappenException
      */
-    public function getParameters(): array
+    public function hasSideEffects(): TrinaryLogic
     {
-        if (!$this->closureReflection instanceof ReflectionFunction) {
-            //Simulate a BetterReflectionFunction behavior when the extension was not able
-            //to create it (ast node must be removed by ASTVisitor to avoid false postive)
-            $final = [];
-            foreach ($this->closureReflection->getParameters() as $parameter) {
-                $default = null;
-                if ($parameter->isOptional() && null !== ($defaultValue = $parameter->getDefaultValue())) {
-                    $default = new Variable($defaultValue);
-                }
-
-                $finalType = null;
-                if (null !== ($type = $parameter->getType())) {
-                    $finalType = self::buildFinalType($type);
-                }
-
-                $final[] = new ReflectionParameter(
-                    BetterReflectionParameter::createFromNode(
-                        reflector: (new BetterReflection())->reflector(),
-                        node: new Param(
-                            var: new Variable((string) $parameter->getName()),
-                            default: $default,
-                            type: $finalType,
-                            byRef: $parameter->isPassedByReference(),
-                            variadic: $parameter->isVariadic(),
-                            attributes: $parameter->getAttributes(),
-                            flags: 0,
-                        ),
-                        function: new class ($this->factoryReflection) extends BetterReflectionFunction {
-                            public function __construct(
-                                private readonly NativeReflectionMethod $method,
-                            ) {
-                            }
-
-                            //@codeCoverageIgnoreStart
-                            public function inNamespace(): bool
-                            {
-                                return false;
-                            }
-
-                            public function getFileName(): ?string
-                            {
-                                return null;
-                            }
-
-                            public function getShortName(): string
-                            {
-                                return $this->method->getShortName();
-                            }
-
-                            //@codeCoverageIgnoreEnd
-
-                            public function getLocatedSource(): never
-                            {
-                                //Throw an exception to hack BetterReflectionParaneeter constructor
-                                //To not extract lines
-                                throw new NoNodePosition();
-                            }
-                        },
-                        parameterIndex: $parameter->getPosition(),
-                        isOptional: $parameter->isOptional(),
-                    )
-                );
-            }
-
-            return $final;
+        if ($this->getReturnType()->isVoid()->yes()) {
+            return TrinaryLogic::createYes();
         }
 
-        return $this->closureReflection->getParameters();
+        if (!$this->isPure()->maybe()) {
+            return $this->isPure();
+        }
+
+        if (new ThisType($this->getDeclaringClass())->isSuperTypeOf($this->getReturnType())->yes()) {
+            return TrinaryLogic::createYes();
+        }
+
+        return TrinaryLogic::createMaybe();
+    }
+
+    public function isPure(): TrinaryLogic
+    {
+        if (null === $this->isPure) {
+            return TrinaryLogic::createMaybe();
+        }
+
+        return TrinaryLogic::createFromBoolean($this->isPure);
+    }
+
+    public function getSelfOutType(): ?Type
+    {
+        return $this->selfOutType;
     }
 
     public function returnsByReference(): TrinaryLogic
     {
-        if ($this->closureReflection->returnsReference()) {
-            return TrinaryLogic::createYes();
+        return TrinaryLogic::createNo();
+    }
+
+    /**
+     * @return list<ExtendedParametersAcceptor>
+     * @throws ShouldNotHappenException
+     */
+    public function getVariants(): array
+    {
+        if (null === $this->variants) {
+            $this->variants = [
+                new ExtendedFunctionVariant(
+                    templateTypeMap: $this->templateTypeMap,
+                    resolvedTemplateTypeMap: null,
+                    parameters: $this->getParameters(),
+                    isVariadic: $this->isVariadic(),
+                    returnType: $this->getReturnType(),
+                    phpDocReturnType: $this->getPhpDocReturnType(),
+                    nativeReturnType: $this->getNativeReturnType()
+                )
+            ];
         }
 
-        return TrinaryLogic::createNo();
+        return $this->variants;
+    }
+
+    /**
+     * @throws ShouldNotHappenException
+     */
+    public function getOnlyVariant(): ExtendedParametersAcceptor
+    {
+        return $this->getVariants()[0];
+    }
+
+    public function getNamedArgumentsVariants(): ?array
+    {
+        return null;
+    }
+
+    public function acceptsNamedArguments(): TrinaryLogic
+    {
+        return TrinaryLogic::createFromBoolean(
+            $this->declaringClass->acceptsNamedArguments() && $this->acceptsNamedArguments
+        );
+    }
+
+    public function getAsserts(): Assertions
+    {
+        return $this->asserts;
+    }
+
+    public function isBuiltin(): TrinaryLogic|bool
+    {
+        return TrinaryLogic::createFromBoolean($this->factoryReflection->isInternal());
+    }
+
+    public function isAbstract(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @return list<PhpParameterReflection>
+     */
+    private function getParameters(): array
+    {
+        if ($this->parameters === null) {
+            $this->parameters = array_map(
+                fn (ReflectionParameter $reflection): PhpParameterReflection => new PhpParameterReflection(
+                    $this->initializerExprTypeResolver,
+                    $reflection,
+                    null,
+                    $this->getDeclaringClass(),
+                    null,
+                    TrinaryLogic::createMaybe(),
+                    null,
+                    $this->attributeReflectionFactory->fromNativeReflection(
+                        $reflection->getAttributes(),
+                        InitializerExprContext::fromReflectionParameter($reflection)
+                    )
+                ),
+                $this->closureReflection->getParameters()
+            );
+        }
+
+        return $this->parameters ?? [];
+    }
+
+    /**
+     * @throws ShouldNotHappenException
+     */
+    private function getNativeReturnType(): Type
+    {
+        if (!$this->nativeReturnType instanceof Type) {
+            $this->nativeReturnType = TypehintHelper::decideTypeFromReflection(
+                reflectionType: $this->closureReflection->getReturnType(),
+                selfClass: $this->declaringClass
+            );
+        }
+
+        return $this->nativeReturnType;
+    }
+
+    private function getPhpDocReturnType(): Type
+    {
+        return $this->phpDocReturnType ?? new MixedType();
+    }
+
+    /**
+     * @throws ShouldNotHappenException
+     */
+    private function getReturnType(): Type
+    {
+        if (!$this->returnType instanceof Type) {
+            $returnType = $this->closureReflection->getReturnType();
+
+            $this->returnType = TypehintHelper::decideTypeFromReflection(
+                reflectionType: $returnType,
+                phpDocType: $this->phpDocReturnType,
+                selfClass: $this->declaringClass,
+            );
+        }
+
+        return $this->returnType;
     }
 }

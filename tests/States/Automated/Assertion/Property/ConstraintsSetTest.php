@@ -26,6 +26,8 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\Automated\Assertion\Property;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\TestCase;
 use Teknoo\States\Automated\Assertion\Property;
 use Teknoo\States\Automated\Assertion\Property\ConstraintInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSet;
@@ -37,7 +39,7 @@ use Teknoo\States\Automated\Assertion\Property\ConstraintsSet;
  * @author      Richard Déloge <richard@teknoo.software>
  */
 #[CoversClass(ConstraintsSet::class)]
-class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
+class ConstraintsSetTest extends TestCase
 {
     private $set;
 
@@ -55,7 +57,7 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
     public function testConstructorWithBadProperty(): void
     {
         $this->expectException(\TypeError::class);
-        $this->buildInstance([$this->createMock(Property\ConstraintInterface::class)], new \stdClass());
+        $this->buildInstance([$this->createMock(ConstraintInterface::class)], new \stdClass());
     }
 
     public function testCheckWithoutConstraintMustValid(): void
@@ -65,10 +67,7 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
 
         $value = 'foo';
 
-        self::assertInstanceOf(
-            ConstraintsSet::class,
-            $this->buildInstance([], $property)->check($value)
-        );
+        $this->assertInstanceOf(ConstraintsSet::class, $this->buildInstance([], $property)->check($value));
     }
 
     public function testIsValidWithoutConstraintMustValid(): void
@@ -78,10 +77,7 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
 
         $value = 'foo';
 
-        self::assertInstanceOf(
-            ConstraintsSet::class,
-            $this->buildInstance([], $property)->isValid($value)
-        );
+        $this->assertInstanceOf(ConstraintsSet::class, $this->buildInstance([], $property)->isValid($value));
     }
 
     public function testProcessWithTwoConstraintOnlyOneValidSoPropertyIsNotValid(): void
@@ -95,7 +91,7 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
         $constraint1 = $this->createMock(ConstraintInterface::class);
         $constraint1->expects($this->once())
             ->method('inConstraintSet')
-            ->willReturnCallback(function ($cs) use ($constraint1): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\Assertion\Property\ConstraintInterface {
+            ->willReturnCallback(function ($cs) use ($constraint1): MockObject&ConstraintInterface {
                 $this->set = $cs;
 
                 return $constraint1;
@@ -103,8 +99,8 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
 
         $constraint1->expects($this->once())
             ->method('check')
-            ->willReturnCallback(function ($value) use ($constraint1): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\Assertion\Property\ConstraintInterface {
-                self::assertInstanceOf(ConstraintsSet::class, $this->set);
+            ->willReturnCallback(function ($value) use ($constraint1): MockObject&ConstraintInterface {
+                $this->assertInstanceOf(ConstraintsSet::class, $this->set);
                 $this->set->isValid($value);
 
                 return $constraint1;
@@ -115,9 +111,9 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
             ->method('inConstraintSet')
             ->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintsSet::class,
-            $this->buildInstance([$constraint1, $constraint2], $property)->isValid($value)
+            $this->buildInstance([$constraint1, $constraint2], $property)->isValid($value),
         );
     }
 
@@ -127,12 +123,10 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
         $property->expects($this->once())->method('isValid');
 
         $value = 'foo';
-
-        $set = null;
         $constraint1 = $this->createMock(ConstraintInterface::class);
         $constraint1->expects($this->once())
             ->method('inConstraintSet')
-            ->willReturnCallback(function ($cs) use ($constraint1): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\Assertion\Property\ConstraintInterface {
+            ->willReturnCallback(function ($cs) use ($constraint1): MockObject&ConstraintInterface {
                 $this->set = $cs;
 
                 return $constraint1;
@@ -140,8 +134,8 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
 
         $constraint1->expects($this->once())
             ->method('check')
-            ->willReturnCallback(function ($value) use ($constraint1): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\Assertion\Property\ConstraintInterface {
-                self::assertInstanceOf(ConstraintsSet::class, $this->set);
+            ->willReturnCallback(function ($value) use ($constraint1): MockObject&ConstraintInterface {
+                $this->assertInstanceOf(ConstraintsSet::class, $this->set);
                 $this->set->isValid($value);
 
                 return $constraint1;
@@ -150,7 +144,7 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
         $constraint2 = $this->createMock(ConstraintInterface::class);
         $constraint2->expects($this->once())
             ->method('inConstraintSet')
-            ->willReturnCallback(function ($cs) use ($constraint2): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\Assertion\Property\ConstraintInterface {
+            ->willReturnCallback(function ($cs) use ($constraint2): MockObject&ConstraintInterface {
                 $this->set = $cs;
 
                 return $constraint2;
@@ -158,16 +152,16 @@ class ConstraintsSetTest extends \PHPUnit\Framework\TestCase
 
         $constraint2->expects($this->once())
             ->method('check')
-            ->willReturnCallback(function ($value) use ($constraint2): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\Assertion\Property\ConstraintInterface {
-                self::assertInstanceOf(ConstraintsSet::class, $this->set);
+            ->willReturnCallback(function ($value) use ($constraint2): MockObject&ConstraintInterface {
+                $this->assertInstanceOf(ConstraintsSet::class, $this->set);
                 $this->set->isValid($value);
 
                 return $constraint2;
             });
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintsSet::class,
-            $this->buildInstance([$constraint1, $constraint2], $property)->isValid($value)
+            $this->buildInstance([$constraint1, $constraint2], $property)->isValid($value),
         );
     }
 }

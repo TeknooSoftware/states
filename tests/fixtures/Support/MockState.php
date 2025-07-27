@@ -25,11 +25,11 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support;
 
-use Teknoo\States\Proxy;
+use Closure;
+use ReflectionMethod;
 use Teknoo\States\Proxy\ProxyInterface;
-use Teknoo\States\State;
-use Teknoo\States\State\Exception;
 use Teknoo\States\State\StateInterface;
+use Teknoo\States\State\Visibility;
 
 /**
  * Class MockState
@@ -60,35 +60,35 @@ class MockState implements StateInterface
     /**
      * Fake closure to test method calling.
      *
-     * @var \Closure
+     * @var Closure
      */
-    protected $closure = null;
+    protected $closure;
 
     /**
      * Argument used in the call of closure.
      *
      * @var array
      */
-    protected $calledArguments = null;
+    protected $calledArguments;
 
     /**
      * Return the method name called.
      *
      * @var string
      */
-    protected $methodName = null;
+    protected $methodName;
 
     /**
      * Return the stated class name who own the state
      *
      * @var string
      */
-    protected $statedClassOrigin = null;
+    protected $statedClassOrigin;
 
     /**
-     * @var \Closure
+     * @var Closure
      */
-    protected $virtualInjection = null;
+    protected $virtualInjection;
 
     protected bool $privateModeEnable;
 
@@ -97,15 +97,13 @@ class MockState implements StateInterface
     /**
      * Initialize virtual state.
      *
-     * @param bool     $privateMode
-     * @param string   $statedClassName
-     * @param \Closure $closure
+     * @param Closure $closure
      */
     public function __construct(bool $privateMode, string $statedClassName, $closure = null)
     {
         $this->privateModeEnable = $privateMode;
         $this->statedClassName = $statedClassName;
-        if ($closure instanceof \Closure) {
+        if ($closure instanceof Closure) {
             //Use as testing closure the passed closure
             $this->closure = $closure;
         } else {
@@ -155,7 +153,7 @@ class MockState implements StateInterface
      *
      * @return $this
      */
-    public function setClosure(\Closure $closure)
+    public function setClosure(Closure $closure): static
     {
         $this->closure = $closure;
 
@@ -169,13 +167,13 @@ class MockState implements StateInterface
         ProxyInterface $object,
         string &$methodName,
         array &$arguments,
-        State\Visibility $requiredScope,
+        Visibility $requiredScope,
         string &$statedClassOrigin,
         callable &$returnCallback
     ): StateInterface {
         $closure = $this->getClosure($methodName, $requiredScope, $statedClassOrigin);
 
-        if ($closure instanceof \Closure) {
+        if ($closure instanceof Closure) {
             $returnValue = $closure->call($object, ...$arguments);
             $returnCallback($returnValue);
         }
@@ -185,7 +183,7 @@ class MockState implements StateInterface
 
     private function getClosure(
         string $methodName,
-        State\Visibility $scope = State\Visibility::Public,
+        Visibility $scope = Visibility::Public,
         ?string $statedClassOriginName = null
     ) {
         if (false === $this->methodAllowed) {
@@ -197,16 +195,17 @@ class MockState implements StateInterface
         //if the method name contains protected, its a protected method
         //else its a public method
         switch ($scope) {
-            case State\Visibility::Private:
+            case Visibility::Private:
                 //Private, can access all
                 break;
-            case State\Visibility::Protected:
+            case Visibility::Protected:
                 //Can not access to private methods
                 if (false !== stripos($methodName, 'private')) {
                     return null;
                 }
+
                 break;
-            case State\Visibility::Public:
+            case Visibility::Public:
                 //Can not access to protected and private method.
                 if (false !== stripos($methodName, 'private')) {
                     return null;
@@ -215,6 +214,7 @@ class MockState implements StateInterface
                 if (false !== stripos($methodName, 'protected')) {
                     return null;
                 }
+
                 break;
         }
 
@@ -222,14 +222,14 @@ class MockState implements StateInterface
         $this->statedClassOrigin = $statedClassOriginName;
 
         if (method_exists($this, $methodName)) {
-            $rm = new \ReflectionMethod($this, $methodName);
+            $rm = new ReflectionMethod($this, $methodName);
             $rm->setAccessible(true);
             $rmcBuilder = $rm->getClosure($this);
 
             return $rmcBuilder();
-        } else {
-            return $this->closure;
         }
+
+        return $this->closure;
     }
 
     /**

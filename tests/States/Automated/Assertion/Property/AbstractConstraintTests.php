@@ -50,19 +50,10 @@ abstract class AbstractConstraintTests extends \PHPUnit\Framework\TestCase
         $instance = $this->buildInstance();
         $instanceWithSet = $instance->inConstraintSet($this->createMock(ConstraintsSetInterface::class));
 
-        self::assertInstanceOf(
-            ConstraintInterface::class,
-            $instance
-        );
+        $this->assertInstanceOf(ConstraintInterface::class, $instance);
 
-        self::assertInstanceOf(
-            ConstraintInterface::class,
-            $instanceWithSet
-        );
+        $this->assertInstanceOf(ConstraintInterface::class, $instanceWithSet);
 
-        self::assertNotSame(
-            $instance,
-            $instanceWithSet
-        );
+        $this->assertNotSame($instance, $instanceWithSet);
     }
 }

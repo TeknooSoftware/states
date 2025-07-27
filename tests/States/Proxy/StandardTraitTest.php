@@ -25,6 +25,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\Proxy;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Teknoo\States\Proxy;
 use Teknoo\Tests\Support;
 
@@ -40,11 +41,11 @@ use Teknoo\Tests\Support;
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-#[CoversClass(Proxy\ProxyTrait::class)]
-#[CoversClass(Proxy\ArrayAccessTrait::class)]
-#[CoversClass(Proxy\IteratorTrait::class)]
-#[CoversClass(Proxy\MagicCallTrait::class)]
-#[CoversClass(Proxy\SerializableTrait::class)]
+#[CoversTrait(Proxy\ProxyTrait::class)]
+#[CoversTrait(Proxy\ArrayAccessTrait::class)]
+#[CoversTrait(Proxy\IteratorTrait::class)]
+#[CoversTrait(Proxy\MagicCallTrait::class)]
+#[CoversTrait(Proxy\SerializableTrait::class)]
 class StandardTraitTest extends AbstractProxyTests
 {
     use PrivateTestTrait;

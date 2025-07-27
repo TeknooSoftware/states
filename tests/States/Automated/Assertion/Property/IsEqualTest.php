@@ -53,7 +53,7 @@ class IsEqualTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->once())->method('isValid')->with($value = 'fooBar')->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -65,7 +65,7 @@ class IsEqualTest extends AbstractConstraintTests
         $constraintSet->expects($this->never())->method('isValid');
 
         $value = 'barFoo';
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );

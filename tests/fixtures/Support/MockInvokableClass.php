@@ -25,6 +25,8 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support;
 
+use stdClass;
+
 /**
  * Class MockInvokableClass
  * Mock class to test invokable object in unit tests with DI Container.
@@ -39,11 +41,9 @@ class MockInvokableClass
 {
     /**
      * Invokable magic method.
-     *
-     * @return \stdClass
      */
-    public function __invoke()
+    public function __invoke(): \stdClass
     {
-        return new \stdClass();
+        return new stdClass();
     }
 }

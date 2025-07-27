@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\Automated\Assertion;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestCase;
 use Teknoo\States\Automated\Assertion\AbstractAssertion;
 
 /**
@@ -37,7 +38,7 @@ use Teknoo\States\Automated\Assertion\AbstractAssertion;
  * @author      Richard Déloge <richard@teknoo.software>
  */
 #[CoversClass(AbstractAssertion::class)]
-abstract class AbstractAssertionTests extends \PHPUnit\Framework\TestCase
+abstract class AbstractAssertionTests extends TestCase
 {
     /**
      * @return AbstractAssertion

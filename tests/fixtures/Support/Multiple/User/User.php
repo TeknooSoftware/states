@@ -45,10 +45,6 @@ class User extends Proxy\Standard
 {
     /**
      * To initialize this user with some data.
-     *
-     * @param string $userName
-     * @param bool   $isAdmin
-     * @param bool   $isModerator
      */
     public function __construct(protected string $userName, protected bool $isAdmin = false, protected bool $isModerator = false)
     {
@@ -65,6 +61,7 @@ class User extends Proxy\Standard
         }
     }
 
+    #[\Override]
     protected static function statesListDeclaration(): array
     {
         return [

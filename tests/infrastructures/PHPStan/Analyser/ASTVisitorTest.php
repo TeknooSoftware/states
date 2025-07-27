@@ -30,11 +30,10 @@ use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Parser\Parser;
-use PHPStan\Reflection\ClassReflection;
-use PHPStan\Reflection\ReflectionProvider;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Teknoo\States\PHPStan\Analyser\ASTVisitor;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
@@ -53,39 +52,27 @@ use Teknoo\Tests\Support\MockProxyWithoutDeclaration;
 #[CoversClass(ASTVisitor::class)]
 class ASTVisitorTest extends TestCase
 {
-    private ?ReflectionProvider $reflectionProvider = null;
+    /**
+     * @var callable|null
+     */
+    private mixed $reflectionProvider = null;
 
     private ?Parser $parser = null;
 
     public string $currentClass = '';
 
-    /**
-     * @return ReflectionProvider|MockObject
-     */
-    private function getReflectionProviderMock(?string $file = 'foo/bar.php'): ReflectionProvider
+    private function getReflectionProviderMock(bool|string $file = 'foo/bar.php'): callable
     {
-        if (!$this->reflectionProvider instanceof ReflectionProvider) {
-            $this->reflectionProvider = $this->createMock(ReflectionProvider::class);
+        if (!$this->reflectionProvider) {
+            $this->reflectionProvider = function (string $class) use ($file): ReflectionClass&MockObject {
+                $this->currentClass = $class;
 
-            $classReflection = $this->createMock(ClassReflection::class);
-            $classReflection->expects($this->any())
-                ->method('getFileName')
-                ->willReturn($file);
-            $classReflection->expects($this->any())
-                ->method('getNativeReflection')
-                ->willReturnCallback(
-                    fn (): \ReflectionClass => new \ReflectionClass($this->currentClass)
-                );
+                $mock = $this->createMock(ReflectionClass::class);
 
-            $this->reflectionProvider->expects($this->any())
-                ->method('getClass')
-                ->willReturnCallback(
-                    function (string $class) use ($classReflection): \PHPStan\Reflection\ClassReflection&\PHPUnit\Framework\MockObject\MockObject {
-                        $this->currentClass = $class;
+                $mock->method('getFileName')->willReturn($file);
 
-                        return $classReflection;
-                    }
-                );
+                return $mock;
+            };
         }
 
         return $this->reflectionProvider;
@@ -113,7 +100,7 @@ class ASTVisitorTest extends TestCase
 
     public function testLeaveNodeWithNonClassNode(): void
     {
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             Node::class,
             $this->buildVisitor()->leaveNode(
                 $this->createMock(Node::class)
@@ -123,7 +110,7 @@ class ASTVisitorTest extends TestCase
 
     public function testLeaveNodeWithNonStatedClassNode(): void
     {
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             Node::class,
             $this->buildVisitor()->leaveNode(
                 $this->createMock(Class_::class)
@@ -166,12 +153,12 @@ class ASTVisitorTest extends TestCase
         );
         $stateClass->namespacedName = new Name('state');
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             Node::class,
             $result = $this->buildVisitor()->leaveNode($stateClass)
         );
 
-        self::assertCount(1, $result->stmts);
+        $this->assertCount(1, $result->stmts);
     }
 
     public function testLeaveNodeWithProxyClassNodeWithoutState(): void
@@ -187,13 +174,13 @@ class ASTVisitorTest extends TestCase
         );
         $proxyClass->namespacedName = new Name(MockProxy::class);
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             Node::class,
             $result = $this->buildVisitor()->leaveNode($proxyClass)
         );
 
-        self::assertTrue(!empty($result->stmts));
-        self::assertCount(1, $result->stmts);
+        $this->assertNotEmpty($result->stmts);
+        $this->assertCount(1, $result->stmts);
     }
 
     public function testLeaveNodeWithProxyClassNodeWithoutstatesListDeclaration(): void
@@ -207,14 +194,12 @@ class ASTVisitorTest extends TestCase
         );
         $proxyClass->namespacedName = new Name(MockProxyWithoutDeclaration::class);
 
-        self::assertInstanceOf(
-            Node::class,
-            $result = $this->buildVisitor()->leaveNode($proxyClass)
-        );
+        $this->assertInstanceOf(Node::class, $result = $this->buildVisitor()->leaveNode($proxyClass));
 
-        self::assertTrue(!empty($result->stmts));
-        self::assertCount(1, $result->stmts);
+        $this->assertNotEmpty($result->stmts);
+        $this->assertCount(1, $result->stmts);
     }
+
     public function testLeaveNodeWithProxyClassNodeWithEmptyFile(): void
     {
         $stateClass = new Class_(
@@ -238,28 +223,21 @@ class ASTVisitorTest extends TestCase
         $visitor = $this->buildVisitor();
 
         $this->getParserMock()
-            ->expects($this->any())
             ->method('parseFile');
 
-        self::assertInstanceOf(
-            Node::class,
-            $result = $visitor->leaveNode($stateClass)
-        );
+        $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($stateClass));
 
-        self::assertTrue(empty($result->stmts));
+        $this->assertEmpty($result->stmts);
 
-        self::assertInstanceOf(
-            Node::class,
-            $result = $visitor->leaveNode($proxyClass)
-        );
+        $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($proxyClass));
 
-        self::assertTrue(!empty($result->stmts));
-        self::assertCount(1, $result->stmts);
+        $this->assertNotEmpty($result->stmts);
+        $this->assertCount(1, $result->stmts);
     }
 
     public function testLeaveNodeWithProxyClassNodeWithStateFileNotFound(): void
     {
-        $this->getReflectionProviderMock(null);
+        $this->getReflectionProviderMock(false);
 
         $proxyClass = new Class_(
             Mother::class,
@@ -276,13 +254,10 @@ class ASTVisitorTest extends TestCase
             ->expects($this->never())
             ->method('parseFile');
 
-        self::assertInstanceOf(
-            Node::class,
-            $result = $visitor->leaveNode($proxyClass)
-        );
+        $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($proxyClass));
 
-        self::assertTrue(!empty($result->stmts));
-        self::assertCount(1, $result->stmts);
+        $this->assertNotEmpty($result->stmts);
+        $this->assertCount(1, $result->stmts);
     }
 
 
@@ -329,24 +304,15 @@ class ASTVisitorTest extends TestCase
 
         $visitor = $this->buildVisitor();
 
-        self::assertInstanceOf(
-            Node::class,
-            $result = $visitor->leaveNode($state1Class)
-        );
-        self::assertCount(1, $result->stmts);
+        $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($state1Class));
+        $this->assertCount(1, $result->stmts);
 
-        self::assertInstanceOf(
-            Node::class,
-            $result = $visitor->leaveNode($state2Class)
-        );
-        self::assertCount(1, $result->stmts);
+        $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($state2Class));
+        $this->assertCount(1, $result->stmts);
 
-        self::assertInstanceOf(
-            Node::class,
-            $result = $visitor->leaveNode($proxyClass)
-        );
+        $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($proxyClass));
 
-        self::assertTrue(!empty($result->stmts));
-        self::assertCount(5, $result->stmts);
+        $this->assertNotEmpty($result->stmts);
+        $this->assertCount(5, $result->stmts);
     }
 }

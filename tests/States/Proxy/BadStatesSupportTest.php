@@ -24,7 +24,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Proxy;
 
-use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\Proxy;
 use Teknoo\Tests\Support;
@@ -39,12 +39,12 @@ use Teknoo\Tests\Support;
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-#[CoversClass(Proxy\ProxyTrait::class)]
+#[CoversTrait(Proxy\ProxyTrait::class)]
 class BadStatesSupportTest extends TestCase
 {
     public function testWithStateClassNotImplementStateInterface(): void
     {
         $this->expectException(Proxy\Exception\StateNotFound::class);
-        $proxy = new Support\BadStateDefinedInProxyTest();
+        new Support\BadStateDefinedInProxyTest();
     }
 }

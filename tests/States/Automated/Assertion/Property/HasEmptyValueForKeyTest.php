@@ -54,7 +54,7 @@ class HasEmptyValueForKeyTest extends AbstractConstraintTests
         $constraintSet->expects($this->never())->method('isValid');
 
         $value = 'foo';
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -66,7 +66,7 @@ class HasEmptyValueForKeyTest extends AbstractConstraintTests
         $constraintSet->expects($this->never())->method('isValid');
 
         $value = [];
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -78,7 +78,7 @@ class HasEmptyValueForKeyTest extends AbstractConstraintTests
         $constraintSet->expects($this->once())->method('isValid');
 
         $value = ['foo' => null];
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );
@@ -89,7 +89,7 @@ class HasEmptyValueForKeyTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->never())->method('isValid')->with($value = ['foo' => 'bar'])->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)
         );

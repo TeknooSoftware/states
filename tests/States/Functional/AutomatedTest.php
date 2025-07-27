@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\Functional;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Teknoo\States\Automated\AutomatedTrait;
 use Teknoo\States\Proxy\Exception\MethodNotImplemented;
 use Teknoo\Tests\Support\AutomatedAcme\AutomatedAcme;
@@ -40,7 +41,7 @@ use Teknoo\Tests\Support\AutomatedAcme\States\State2;
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-#[CoversClass(AutomatedTrait::class)]
+#[CoversTrait(AutomatedTrait::class)]
 class AutomatedTest extends \PHPUnit\Framework\TestCase
 {
     public function buildInstance(): \Teknoo\Tests\Support\AutomatedAcme\AutomatedAcme
@@ -51,46 +52,46 @@ class AutomatedTest extends \PHPUnit\Framework\TestCase
     public function testUpdateStates(): void
     {
         $instance = $this->buildInstance();
-        self::assertEquals([], $instance->listEnabledStates());
+        $this->assertSame([], $instance->listEnabledStates());
 
         $instance->setFoo('bar');
-        self::assertEquals([], $instance->listEnabledStates());
+        $this->assertSame([], $instance->listEnabledStates());
         $instance->updateStates();
-        self::assertEquals([State1::class], $instance->listEnabledStates());
+        $this->assertSame([State1::class], $instance->listEnabledStates());
 
         $instance->setFoo1('bar1')->setFoo2(123);
-        self::assertEquals([State1::class], $instance->listEnabledStates());
+        $this->assertSame([State1::class], $instance->listEnabledStates());
         $instance->updateStates();
-        self::assertEquals([State1::class], $instance->listEnabledStates());
+        $this->assertSame([State1::class], $instance->listEnabledStates());
 
         $instance->setFoo1('bar1')->setFoo2(null);
-        self::assertEquals([State1::class], $instance->listEnabledStates());
+        $this->assertSame([State1::class], $instance->listEnabledStates());
         $instance->updateStates();
-        self::assertEquals([State1::class, State2::class], $instance->listEnabledStates());
+        $this->assertSame([State1::class, State2::class], $instance->listEnabledStates());
 
         $instance->setFoo('');
-        self::assertEquals([State1::class, State2::class], $instance->listEnabledStates());
+        $this->assertSame([State1::class, State2::class], $instance->listEnabledStates());
         $instance->updateStates();
-        self::assertEquals([State2::class], $instance->listEnabledStates());
+        $this->assertSame([State2::class], $instance->listEnabledStates());
 
         $instance->setFoo1('');
-        self::assertEquals([State2::class], $instance->listEnabledStates());
+        $this->assertSame([State2::class], $instance->listEnabledStates());
         $instance->updateStates();
-        self::assertEquals([], $instance->listEnabledStates());
+        $this->assertSame([], $instance->listEnabledStates());
     }
 
-    public function testPreventCacheWhenUpdateStateInState()
+    public function testPreventCacheWhenUpdateStateInState(): void
     {
         $instance = $this->buildInstance();
-        self::assertEquals([], $instance->listEnabledStates());
+        $this->assertSame([], $instance->listEnabledStates());
 
         $instance->setFoo('bar');
-        self::assertEquals([], $instance->listEnabledStates());
+        $this->assertSame([], $instance->listEnabledStates());
         $instance->updateStates();
-        self::assertEquals([State1::class], $instance->listEnabledStates());
+        $this->assertSame([State1::class], $instance->listEnabledStates());
 
         $instance->switchToTwo();
-        self::assertEquals([State2::class], $instance->listEnabledStates());
+        $this->assertSame([State2::class], $instance->listEnabledStates());
 
         $this->expectException(MethodNotImplemented::class);
         $instance->switchToTwo();

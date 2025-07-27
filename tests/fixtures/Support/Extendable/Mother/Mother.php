@@ -69,10 +69,8 @@ class Mother extends GrandMother implements ProxyInterface
 
     /**
      * Return the list of available state in this class.
-     *
-     * @return array
      */
-    public function listMethodsByStates()
+    public function listMethodsByStates(): array
     {
         $ignoreMethods = [
             '__construct',
@@ -89,7 +87,7 @@ class Mother extends GrandMother implements ProxyInterface
         $methodsList = [];
         foreach ($this->getStatesList() as $stateName => $stateContainer) {
             $methodsList[$stateName] = [];
-            foreach ((new \ReflectionObject($stateContainer))->getMethods() as $method) {
+            foreach (new \ReflectionObject($stateContainer)->getMethods() as $method) {
                 $methodName = $method->getName();
                 if (!\in_array($methodName, $ignoreMethods)) {
                     $methodsList[$stateName][] = $methodName;
@@ -121,9 +119,9 @@ class Mother extends GrandMother implements ProxyInterface
     {
         if (!empty($this->states) && \is_array($this->states)) {
             return \array_keys($this->states);
-        } else {
-            return [];
         }
+
+        return [];
     }
 
     /**
@@ -133,9 +131,9 @@ class Mother extends GrandMother implements ProxyInterface
     {
         if (!empty($this->activesStates) && \is_array($this->activesStates)) {
             return \array_keys($this->activesStates);
-        } else {
-            return [];
         }
+
+        return [];
     }
 
     public function classicGetMotherVariable()

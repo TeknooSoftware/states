@@ -25,18 +25,20 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan\Analyser;
 
+use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PhpParser\NodeVisitorAbstract;
+use PHPStan\Node\AnonymousClassNode;
 use PHPStan\Parser\Parser;
 use PHPStan\Parser\ParserErrorsException;
+use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use ReflectionClass;
 use ReflectionException;
-use Teknoo\East\Paas\Compilation\Conductor;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
@@ -67,14 +69,30 @@ class ASTVisitor extends NodeVisitorAbstract
      */
     private array $classesUpdated = [];
 
+    /**
+     * @var callable(string): (\ReflectionClass<object>|ClassReflection)
+     */
+    private mixed $reflectionClassFactory;
+
+    /**
+     * @param ReflectionProvider|callable(string): (\ReflectionClass<object>|ClassReflection) $reflectionProvider
+     */
     public function __construct(
-        private readonly ReflectionProvider $reflectionProvider,
+        ReflectionProvider|callable $reflectionProvider,
         private readonly Parser $parser,
     ) {
+        if ($reflectionProvider instanceof ReflectionProvider) {
+            //@codeCoverageIgnoreStart
+            $this->reflectionClassFactory = $reflectionProvider->getClass(...);
+            //@codeCoverageIgnoreEnd
+        } else {
+            $this->reflectionClassFactory = $reflectionProvider;
+        }
     }
 
     /**
      * @return array<class-string>
+     * @throws ReflectionException
      */
     private function listStatesFromProxyClass(string $proxyClass): array
     {
@@ -108,12 +126,12 @@ class ASTVisitor extends NodeVisitorAbstract
             return [];
         }
 
-        $listDeclarationReflection = $nativeReflection
-            ->getMethod('statesListDeclaration');
+        $listDeclarationReflection = $nativeReflection->getMethod('statesListDeclaration');
 
-        $listClosure = $listDeclarationReflection->getClosure(null);
+        /** @var array<class-string, int> $classesList */
+        $classesList = $listDeclarationReflection->getClosure()();
 
-        return array_flip(($listClosure ?? static fn (): array => [])());
+        return array_flip($classesList);
     }
 
     /**
@@ -124,7 +142,7 @@ class ASTVisitor extends NodeVisitorAbstract
     private function getStateStmts(string $className, Class_ $parent): array
     {
         if (!isset($this->statesStmts[$className])) {
-            $reflection = $this->reflectionProvider->getClass($className);
+            $reflection = ($this->reflectionClassFactory)($className);
             $fileName = $reflection->getFileName();
 
             if (empty($fileName)) {
@@ -159,7 +177,7 @@ class ASTVisitor extends NodeVisitorAbstract
                 if (isset($currentMethodsList[$lowerName])) {
                     //The method is renamed and virtualy set a public to avoid false positive about duplicated code.
                     $stmt->name = new Identifier(((string) $stmt->name) . $currentMethodsList[$lowerName]);
-                    $stmt->flags &= Class_::MODIFIER_PUBLIC & ~Class_::MODIFIER_PROTECTED & ~Class_::MODIFIER_PRIVATE;
+                    $stmt->flags &= Modifiers::PUBLIC & ~Modifiers::PROTECTED & ~Modifiers::PRIVATE;
                     ++$currentMethodsList[$lowerName];
                 } else {
                     $currentMethodsList[$lowerName] = 1;
@@ -172,10 +190,15 @@ class ASTVisitor extends NodeVisitorAbstract
         return $proxyStmts;
     }
 
+    /**
+     * @throws ParserErrorsException
+     * @throws ReflectionException
+     */
     public function leaveNode(Node $node): ?Node
     {
         if (
             !$node instanceof Class_
+            || $node instanceof AnonymousClassNode
             || empty($node->implements)
         ) {
             return $node;
@@ -197,6 +220,9 @@ class ASTVisitor extends NodeVisitorAbstract
                 $node->stmts = $this->mergeStmts(
                     $node->stmts,
                     array_map(
+                        /**
+                         * @throws ParserErrorsException
+                         */
                         fn ($class): array => $this->getStateStmts((string) $class, $node),
                         $classes,
                     )
@@ -215,7 +241,8 @@ class ASTVisitor extends NodeVisitorAbstract
                     }
 
                     if (
-                        (
+                        isset($stmt->stmts[0])
+                        && (
                             (
                                 $stmt->returnType instanceof Identifier
                                 && strtolower($stmt->returnType->name) === 'callable'
@@ -225,7 +252,6 @@ class ASTVisitor extends NodeVisitorAbstract
                                 && 'closure' === strtolower((string) $stmt->returnType)
                             )
                         )
-                        && isset($stmt->stmts[0])
                     ) {
                         /** @var Stmt\Return_ $returnStmt */
                         $returnStmt = $stmt->stmts[0];

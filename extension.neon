@@ -2,13 +2,16 @@ services:
     -
         class: Teknoo\States\PHPStan\MethodsClassExtension
         arguments:
-            parser: @defaultAnalysisParser
+            attributeReflectionFactory: @PHPStan\Reflection\AttributeReflectionFactory
+            initializerExprTypeResolver: @PHPStan\Reflection\InitializerExprTypeResolver
+            phpDocInheritanceResolver: @PHPStan\PhpDoc\PhpDocInheritanceResolver
         tags:
             - phpstan.broker.methodsClassReflectionExtension
 
     -
         class: Teknoo\States\PHPStan\Analyser\ASTVisitor
         arguments:
+            reflectionProvider: @reflectionProvider
             parser: @defaultAnalysisParser
         tags:
             - 'phpstan.parser.richParserNodeVisitor'

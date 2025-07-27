@@ -26,6 +26,8 @@ declare(strict_types=1);
 namespace Teknoo\States\Proxy;
 
 use Exception;
+use Teknoo\States\Proxy\Exception\AvailableSeveralMethodImplementations;
+use Teknoo\States\Proxy\Exception\MethodNotImplemented;
 use Throwable;
 
 /**
@@ -48,10 +50,11 @@ trait MagicCallTrait
      * To invoke an object as a function.
      * Warning : This method forwards the call the state's methode "invoke" and not "__invoke".
      *
-     * @api
-     *
+     * @param array<mixed> $args
      * @throws Exception
      * @throws Throwable
+     * @api
+     *
      * @see http://php.net/manual/en/language.oop5.magic.php#object.invoke
      */
     public function __invoke(...$args): mixed
@@ -64,11 +67,12 @@ trait MagicCallTrait
      * You cannot throw an exception from within a __toString() method. Doing so will result in a fatal error.
      * Warning : This method forwards the call the state's methode "toString" and not '__toString".
      *
+     * @throws AvailableSeveralMethodImplementations
+     * @throws MethodNotImplemented
+     *
      * @api
      *
-     * @throws Exception\MethodNotImplemented if any enabled state implement the required method
-     *
-     * @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
+     *  @see http://php.net/manual/en/language.oop5.magic.php#object.tostring
      */
     public function __toString(): string
     {

@@ -59,7 +59,7 @@ class Property extends AbstractAssertion
      */
     public function with(string $property, ConstraintInterface $exceptedValue): Property
     {
-        if (!is_string($property) || is_numeric($property)) {
+        if (is_numeric($property)) {
             throw new IllegalArgument("Property $property is not a valid property name");
         }
 
@@ -83,7 +83,7 @@ class Property extends AbstractAssertion
 
         //extract first constraint set
         [$property] = array_keys($that->constraints);
-        $constraints = (array) array_shift($that->constraints);
+        $constraints = array_shift($that->constraints);
 
         $proxy->checkProperty(
             (string) $property,
@@ -96,6 +96,7 @@ class Property extends AbstractAssertion
     /**
      * @throws \Teknoo\States\Proxy\Exception\StateNotFound
      */
+    #[\Override]
     public function isValid(): AssertionInterface
     {
         if (null === $this->proxy) {
