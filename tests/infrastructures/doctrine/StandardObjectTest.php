@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\Doctrine;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use Teknoo\States\Doctrine\AbstractStandardObject;
 use Teknoo\States\Doctrine\StandardTrait;
 use Teknoo\States\Proxy\ProxyInterface;
@@ -41,7 +42,7 @@ use Teknoo\Tests\States\Proxy\StandardTest;
  * @author      Richard Déloge <richard@teknoo.software>
  */
 #[CoversClass(AbstractStandardObject::class)]
-#[CoversClass(StandardTrait::class)]
+#[CoversTrait(StandardTrait::class)]
 class StandardObjectTest extends StandardTest
 {
     /**
@@ -49,6 +50,7 @@ class StandardObjectTest extends StandardTest
      *
      * @return ProxyInterface
      */
+    #[\Override]
     protected function buildProxy()
     {
         $this->proxy = new StandardObject();
@@ -63,8 +65,6 @@ class StandardObjectTest extends StandardTest
     {
         $proxyReflectionClass = new \ReflectionClass(StandardObject::class);
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
-        self::assertInstanceOf(ProxyInterface::class, $proxy->postLoadDoctrine());
-
-        return;
+        $this->assertInstanceOf(ProxyInterface::class, $proxy->postLoadDoctrine());
     }
 }

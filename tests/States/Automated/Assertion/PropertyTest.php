@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\Automated\Assertion;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\MockObject;
 use Teknoo\States\Automated\Assertion\AbstractAssertion;
 use Teknoo\States\Automated\Assertion\Property;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
@@ -44,20 +45,17 @@ use Teknoo\States\Exception\IllegalArgument;
 #[CoversClass(Property::class)]
 class PropertyTest extends AbstractAssertionTests
 {
-    public function buildInstance(): \Teknoo\States\Automated\Assertion\Property
+    public function buildInstance(): Property
     {
         return new Property(['state1', 'state2']);
     }
 
     public function testWithConstraint(): void
     {
-        self::assertInstanceOf(
-            Property::class,
-            $this->buildInstance()->with(
-                'fooBar',
-                $this->createMock(Property\ConstraintInterface::class)
-            )
-        );
+        $this->assertInstanceOf(Property::class, $this->buildInstance()->with(
+            'fooBar',
+            $this->createMock(Property\ConstraintInterface::class)
+        ));
     }
 
     public function testWithBadPropertyName(): void
@@ -79,7 +77,7 @@ class PropertyTest extends AbstractAssertionTests
         $proxy->expects($this->exactly(2))
             ->method('enableState')
             ->with($this->callback(
-                fn ($value) => match ($value) {
+                fn ($value): bool => match ($value) {
                     'state1' => true,
                     'state2' => true,
                     default => false,
@@ -89,8 +87,8 @@ class PropertyTest extends AbstractAssertionTests
 
         $assertionChecked = $assertion->check($proxy);
 
-        self::assertInstanceOf(Property::class, $assertionChecked);
-        self::assertNotSame($assertion, $assertionChecked);
+        $this->assertInstanceOf(Property::class, $assertionChecked);
+        $this->assertNotSame($assertion, $assertionChecked);
     }
 
     public function testCheckWithInvalidPropertyNameInConstraint(): void
@@ -108,7 +106,7 @@ class PropertyTest extends AbstractAssertionTests
         $proxy->expects($this->exactly(2))
             ->method('enableState')
             ->with($this->callback(
-                fn ($value) => match ($value) {
+                fn ($value): bool => match ($value) {
                     'state1' => true,
                     'state2' => true,
                     default => false,
@@ -118,23 +116,25 @@ class PropertyTest extends AbstractAssertionTests
 
         $proxy->expects($this->once())
             ->method('checkProperty')
-            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use ($proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
-                self::assertEquals('prop1', $name);
-                $value = 123;
-                $set->check($value);
+            ->willReturnCallback(
+                function ($name, ConstraintsSetInterface $set) use ($proxy): MockObject&AutomatedInterface {
+                    $this->assertEquals('prop1', $name);
+                    $value = 123;
+                    $set->check($value);
 
-                return $proxy;
-            });
+                    return $proxy;
+                }
+            );
 
         $assertion2 = $assertion->with('prop1', new Property\IsNotNull());
 
-        self::assertInstanceOf(Property::class, $assertion2);
-        self::assertNotSame($assertion, $assertion2);
+        $this->assertInstanceOf(Property::class, $assertion2);
+        $this->assertNotSame($assertion, $assertion2);
 
         $assertionChecked = $assertion2->check($proxy);
 
-        self::assertInstanceOf(Property::class, $assertionChecked);
-        self::assertNotSame($assertion2, $assertionChecked);
+        $this->assertInstanceOf(Property::class, $assertionChecked);
+        $this->assertNotSame($assertion2, $assertionChecked);
     }
 
     public function testCheckOneConstraintIsNotValid(): void
@@ -146,23 +146,25 @@ class PropertyTest extends AbstractAssertionTests
 
         $proxy->expects($this->once())
             ->method('checkProperty')
-            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use ($proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
-                self::assertEquals('prop1', $name);
-                $var = null;
-                $set->check($var);
+            ->willReturnCallback(
+                function ($name, ConstraintsSetInterface $set) use ($proxy): MockObject&AutomatedInterface {
+                    $this->assertEquals('prop1', $name);
+                    $var = null;
+                    $set->check($var);
 
-                return $proxy;
-            });
+                    return $proxy;
+                }
+            );
 
         $assertion2 = $assertion->with('prop1', new Property\IsNotNull());
 
-        self::assertInstanceOf(Property::class, $assertion2);
-        self::assertNotSame($assertion, $assertion2);
+        $this->assertInstanceOf(Property::class, $assertion2);
+        $this->assertNotSame($assertion, $assertion2);
 
         $assertionChecked = $assertion2->check($proxy);
 
-        self::assertInstanceOf(Property::class, $assertionChecked);
-        self::assertNotSame($assertion2, $assertionChecked);
+        $this->assertInstanceOf(Property::class, $assertionChecked);
+        $this->assertNotSame($assertion2, $assertionChecked);
     }
 
     public function testCheckTwoPropertyConstraintIsValid(): void
@@ -172,7 +174,7 @@ class PropertyTest extends AbstractAssertionTests
         $proxy->expects($this->exactly(2))
             ->method('enableState')
             ->with($this->callback(
-                fn ($value) => match ($value) {
+                fn ($value): bool => match ($value) {
                     'state1' => true,
                     'state2' => true,
                     default => false,
@@ -183,31 +185,33 @@ class PropertyTest extends AbstractAssertionTests
         $counter = 0;
         $proxy->expects($this->exactly(2))
             ->method('checkProperty')
-            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
-                if (0 === $counter++) {
-                    self::assertEquals('prop1', $name);
-                } else {
-                    self::assertEquals('prop2', $name);
+            ->willReturnCallback(
+                function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy): MockObject&AutomatedInterface {
+                    if (0 === $counter++) {
+                        $this->assertEquals('prop1', $name);
+                    } else {
+                        $this->assertEquals('prop2', $name);
+                    }
+
+                    $value = 123;
+                    $set->check($value);
+
+                    return $proxy;
                 }
-
-                $value = 123;
-                $set->check($value);
-
-                return $proxy;
-            });
+            );
 
         $assertion2 = $assertion->with('prop1', new Property\IsNotNull());
         $assertion3 = $assertion2->with('prop2', new Property\IsEqual(123));
 
-        self::assertInstanceOf(Property::class, $assertion2);
-        self::assertNotSame($assertion, $assertion2);
-        self::assertInstanceOf(Property::class, $assertion3);
-        self::assertNotSame($assertion2, $assertion3);
+        $this->assertInstanceOf(Property::class, $assertion2);
+        $this->assertNotSame($assertion, $assertion2);
+        $this->assertInstanceOf(Property::class, $assertion3);
+        $this->assertNotSame($assertion2, $assertion3);
 
         $assertionChecked = $assertion3->check($proxy);
 
-        self::assertInstanceOf(Property::class, $assertionChecked);
-        self::assertNotSame($assertion3, $assertionChecked);
+        $this->assertInstanceOf(Property::class, $assertionChecked);
+        $this->assertNotSame($assertion3, $assertionChecked);
     }
 
     public function testCheckTwoPropertyOneNotValidSoNotValid(): void
@@ -220,30 +224,32 @@ class PropertyTest extends AbstractAssertionTests
         $counter = 0;
         $proxy->expects($this->exactly(2))
             ->method('checkProperty')
-            ->willReturnCallback(function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy): \PHPUnit\Framework\MockObject\MockObject&\Teknoo\States\Automated\AutomatedInterface {
-                if (0 === $counter++) {
-                    self::assertEquals('prop1', $name);
-                } else {
-                    self::assertEquals('prop2', $name);
+            ->willReturnCallback(
+                function ($name, ConstraintsSetInterface $set) use (&$counter, $proxy): MockObject&AutomatedInterface {
+                    if (0 === $counter++) {
+                        $this->assertEquals('prop1', $name);
+                    } else {
+                        $this->assertEquals('prop2', $name);
+                    }
+
+                    $var = 456;
+                    $set->check($var);
+
+                    return $proxy;
                 }
-
-                $var = 456;
-                $set->check($var);
-
-                return $proxy;
-            });
+            );
 
         $assertion2 = $assertion->with('prop1', new Property\IsNotNull());
         $assertion3 = $assertion2->with('prop2', new Property\IsEqual(123));
 
-        self::assertInstanceOf(Property::class, $assertion2);
-        self::assertNotSame($assertion, $assertion2);
-        self::assertInstanceOf(Property::class, $assertion3);
-        self::assertNotSame($assertion2, $assertion3);
+        $this->assertInstanceOf(Property::class, $assertion2);
+        $this->assertNotSame($assertion, $assertion2);
+        $this->assertInstanceOf(Property::class, $assertion3);
+        $this->assertNotSame($assertion2, $assertion3);
 
         $assertionChecked = $assertion3->check($proxy);
 
-        self::assertInstanceOf(Property::class, $assertionChecked);
-        self::assertNotSame($assertion3, $assertionChecked);
+        $this->assertInstanceOf(Property::class, $assertionChecked);
+        $this->assertNotSame($assertion3, $assertionChecked);
     }
 }

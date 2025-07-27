@@ -32,7 +32,6 @@ use Teknoo\States\Exception\WrongConfiguration;
 use Teknoo\States\Proxy\Exception\StateNotFound;
 use Teknoo\States\State\StateInterface;
 use Teknoo\States\State\Visibility;
-use Throwable;
 
 use function array_flip;
 use function array_keys;
@@ -225,27 +224,33 @@ trait ProxyTrait
         $currentClassName = static::class;
 
         if (isset(self::$loadedStatesCaches[$currentClassName])) {
-            list(
+            [
                 $this->activesStates,
                 $this->states,
                 $this->classesByStates,
                 $this->statesAliasesList,
-            ) = self::$loadedStatesCaches[$currentClassName];
+            ] = self::$loadedStatesCaches[$currentClassName];
 
             return $this;
         }
 
+        /** @var array<string> $loadedStatesList */
         $loadedStatesList = [];
 
-        $initializesStates = function ($className, $privateMode, &$loadedStatesList): void {
+        /**
+         * @param array<string> &$loadedStatesList
+         */
+        $initializesStates = function (string $className, bool $privateMode, array &$loadedStatesList): void {
+            /** @var class-string<self> $className */
+            /** @var array<string> $loadedStatesList */
             $rfm = new ReflectionMethod($className, 'statesListDeclaration');
             if ($rfm->getDeclaringClass()->getName() === $className) {
                 //Private mode is only enable for states directly defined in this stated class.
                 $this->initializeStates(
-                    $className::statesListDeclaration(),
-                    $privateMode,
-                    $className,
-                    $loadedStatesList
+                    statesList: $className::statesListDeclaration(),
+                    enablePrivateMode: $privateMode,
+                    selfClassName: $className,
+                    loadedStatesList: $loadedStatesList
                 );
             }
         };
@@ -260,6 +265,7 @@ trait ProxyTrait
                 && is_callable([$parentClassName, 'statesListDeclaration'])
                 && is_subclass_of($parentClassName, ProxyInterface::class)
             ) {
+                /** @var array<string> $loadedStatesList */
                 $initializesStates($parentClassName, true, $loadedStatesList);
             }
         } while (false !== $parentClassName);
@@ -295,7 +301,7 @@ trait ProxyTrait
         $stateClass = $state::class;
 
         if (!isset($this->classesByStates[$stateClass])) {
-            throw new WrongConfiguration("Error, no original class name defined for $stateClass");
+            throw new WrongConfiguration('Error, no original class name defined for ' . $stateClass);
         }
 
         $this->callerStatedClassesStack?->push($this->classesByStates[$stateClass]);
@@ -535,7 +541,7 @@ trait ProxyTrait
     ): ProxyInterface {
         $stateName = $this->validateName($stateName);
 
-        if (!is_a($stateObject, $stateName)) {
+        if (!$stateObject instanceof $stateName) {
             throw new Exception\IllegalName(
                 "Error, the state does not implement the class or interface '$stateName'"
             );
@@ -736,7 +742,8 @@ trait ProxyTrait
 
     /**
      * @param array<mixed> $arguments
-     * @throws Throwable
+     * @throws Exception\AvailableSeveralMethodImplementations
+     * @throws Exception\MethodNotImplemented
      */
     public function __call(string $methodName, #[SensitiveParameter] array $arguments): mixed
     {

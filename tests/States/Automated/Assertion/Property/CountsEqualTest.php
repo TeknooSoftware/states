@@ -53,9 +53,9 @@ class CountsEqualTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->once())->method('isValid')->with($value = [1,2])->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
-            $this->buildInstance(2)->inConstraintSet($constraintSet)->check($value)
+            $this->buildInstance(2)->inConstraintSet($constraintSet)->check($value),
         );
     }
 
@@ -65,9 +65,9 @@ class CountsEqualTest extends AbstractConstraintTests
         $constraintSet->expects($this->never())->method('isValid');
 
         $value = [];
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
-            $this->buildInstance(2)->inConstraintSet($constraintSet)->check($value)
+            $this->buildInstance(2)->inConstraintSet($constraintSet)->check($value),
         );
     }
 
@@ -76,9 +76,9 @@ class CountsEqualTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->once())->method('isValid')->with($value = new \ArrayObject([1,2]))->willReturnSelf();
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
-            $this->buildInstance(2)->inConstraintSet($constraintSet)->check($value)
+            $this->buildInstance(2)->inConstraintSet($constraintSet)->check($value),
         );
     }
 
@@ -88,9 +88,9 @@ class CountsEqualTest extends AbstractConstraintTests
         $constraintSet->expects($this->never())->method('isValid');
 
         $value = new \ArrayObject([]);
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
-            $this->buildInstance(2)->inConstraintSet($constraintSet)->check($value)
+            $this->buildInstance(2)->inConstraintSet($constraintSet)->check($value),
         );
     }
 
@@ -100,9 +100,9 @@ class CountsEqualTest extends AbstractConstraintTests
         $constraintSet->expects($this->never())->method('isValid');
 
         $value = new \stdClass();
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             ConstraintInterface::class,
-            $this->buildInstance(2)->inConstraintSet($constraintSet)->check($value)
+            $this->buildInstance(2)->inConstraintSet($constraintSet)->check($value),
         );
     }
 }

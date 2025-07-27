@@ -1,5 +1,13 @@
 # Teknoo Software - States library - Change Log
 
+## [7.0.0] - 2025-07-27
+### Stable Release
+- Drop support of PHP 8.3
+- Upgrade code to PHP 8.4
+- Upgrade to PHPUnit 12
+- Upgrade to PHPStan 2.1
+- Prepare States to PHP 8.5 and Closure in constant.
+
 ## [6.4.3] - 2025-02-07
 ### Stable Release
 - Update dev lib requirements

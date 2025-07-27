@@ -85,30 +85,21 @@ class AutomatedAcme implements AutomatedInterface
         ];
     }
 
-    /**
-     * @return self
-     */
-    public function setFoo(mixed $foo)
+    public function setFoo(mixed $foo): static
     {
         $this->foo = $foo;
 
         return $this;
     }
 
-    /**
-     * @return self
-     */
-    public function setFoo1(mixed $foo1)
+    public function setFoo1(mixed $foo1): static
     {
         $this->foo1 = $foo1;
 
         return $this;
     }
 
-    /**
-     * @return self
-     */
-    public function setFoo2(mixed $foo2)
+    public function setFoo2(mixed $foo2): static
     {
         $this->foo2 = $foo2;
 
@@ -121,9 +112,9 @@ class AutomatedAcme implements AutomatedInterface
     public function listAssertions(): array
     {
         return [
-            (new Property([State1::class]))
+            new Property([State1::class])
                 ->with('foo', new Property\IsEqual('bar')),
-            (new Property([State2::class]))
+            new Property([State2::class])
                 ->with('foo1', new Property\IsEqual('bar1'))
                 ->with('foo2', new Property\IsNull()),
         ];
@@ -136,8 +127,8 @@ class AutomatedAcme implements AutomatedInterface
     {
         if (!empty($this->activesStates) && \is_array($this->activesStates)) {
             return \array_keys($this->activesStates);
-        } else {
-            return [];
         }
+
+        return [];
     }
 }

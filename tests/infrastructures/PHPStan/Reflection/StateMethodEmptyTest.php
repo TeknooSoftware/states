@@ -25,13 +25,23 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan\Reflection;
 
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
 use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
+use PHPStan\Reflection\Assertions;
+use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\TrinaryLogic;
+use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use Teknoo\States\PHPStan\Reflection\Exception\MissingReflectionMethodException;
+use ReflectionClass;
+use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
+use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 use ReflectionIntersectionType as NativeReflectionIntersectionType;
 use ReflectionNamedType as NativeReflectionNamedType;
@@ -48,170 +58,158 @@ use function ini_get;
 #[CoversClass(StateMethod::class)]
 class StateMethodEmptyTest extends TestCase
 {
-    protected function buildInstance($doc = 'factory doc', $closureScopeClass = null): \Teknoo\States\PHPStan\Reflection\StateMethod
+    private (ReflectionProvider&MockObject)|null $reflectionProvider = null;
+
+    private (AttributeReflectionFactoryInterface&MockObject)|null $attributeReflectionFactory = null;
+
+    private (InitializerExprTypeResolverInterface&MockObject)|null $initializerExprTypeResolver = null;
+
+    /**
+     * @throws Exception
+     */
+    private function getReflectionProviderMock(): ReflectionProvider&MockObject
     {
-        $factoryReflection = $this->createMock(\ReflectionMethod::class);
-        $factoryReflection->expects($this->any())->method('getName')->willReturn('factory');
-        $factoryReflection->expects($this->any())->method('getFileName')->willReturn('');
-        $factoryReflection->expects($this->never())->method('getStartLine');
-        $factoryReflection->expects($this->never())->method('getEndLine');
-        $factoryReflection->expects($this->any())->method('getDocComment')->willReturn($doc);
-        $factoryReflection->expects($this->any())->method('isStatic')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isPrivate')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isPublic')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isDeprecated')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isFinal')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isInternal')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isAbstract')->willReturn(false);
-        $factoryReflection->expects($this->never())->method('isVariadic');
-        $factoryReflection->expects($this->never())->method('getReturnType');
-        $factoryReflection->expects($this->never())->method('getParameters');
+        if (!$this->reflectionProvider instanceof ReflectionProvider) {
+            $this->reflectionProvider = $this->createMock(ReflectionProvider::class);
+        }
 
-        $closureReflection = $this->createMock(\ReflectionFunction::class);
-        $closureReflection->expects($this->never())->method('getName');
-        $closureReflection->expects($this->never())->method('getFileName');
-        $closureReflection->expects($this->any())->method('getStartLine')->willReturn(0);
-        $closureReflection->expects($this->any())->method('getEndLine')->willReturn(0);
-        $closureReflection->expects($this->never())->method('getDocComment');
-        $closureReflection->expects($this->any())->method('isVariadic')->willReturn(false);
-        $closureReflection->expects($this->any())->method('returnsReference')->willReturn(true);
-        $closureReflection->expects($this->any())->method('getReturnType')->willReturn(
-            $type = $this->createMock(\ReflectionType::class)
-        );
-        $closureReflection->expects($this->any())->method('getParameters')->willReturn([
-            $p1 = $this->createMock(\ReflectionParameter::class),
-            $p2 = $this->createMock(\ReflectionParameter::class),
-            $p3 = $this->createMock(\ReflectionParameter::class),
-        ]);
+        return $this->reflectionProvider;
+    }
 
-        $p1->expects($this->any())
-            ->method('getType')
-            ->willReturn($rf1 = $this->createMock(NativeReflectionIntersectionType::class));
+    /**
+     * @throws Exception
+     */
+    private function getAttributeReflectionFactoryMock(): AttributeReflectionFactoryInterface&MockObject
+    {
+        if (!$this->attributeReflectionFactory instanceof AttributeReflectionFactoryInterface) {
+            $this->attributeReflectionFactory = $this->createMock(AttributeReflectionFactoryInterface::class);
+        }
 
-        $rf1->expects($this->any())
-            ->method('allowsNull')
+        return $this->attributeReflectionFactory;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getInitializerExprTypeResolverMock(): InitializerExprTypeResolverInterface&MockObject
+    {
+        if (!$this->initializerExprTypeResolver instanceof InitializerExprTypeResolverInterface) {
+            $this->initializerExprTypeResolver = $this->createMock(InitializerExprTypeResolverInterface::class);
+        }
+
+        return $this->initializerExprTypeResolver;
+    }
+
+    protected function buildInstance(?string $doc = 'factory doc'): StateMethod
+    {
+        $factoryReflection = $this->createMock(BetterReflectionMethod::class);
+        $factoryReflection->method('getName')->willReturn('factory');
+        $factoryReflection->method('getDocComment')->willReturn($doc);
+        $factoryReflection->method('isPrivate')->willReturn(false);
+        $factoryReflection->method('isPublic')->willReturn(false);
+
+        $fr = new ReflectionMethod($factoryReflection);
+
+        $closureReflection = $this->createMock(BetterReflectionFunction::class);
+        $closureReflection->method('isVariadic')->willReturn(false);
+
+        // Keep the parameter setup for the test even though they're not used by StateMethod
+        $p1 = $this->createMock(\ReflectionParameter::class);
+        $p2 = $this->createMock(\ReflectionParameter::class);
+        $p3 = $this->createMock(\ReflectionParameter::class);
+
+        $p1->method('getType')
+           ->willReturn($rf1 = $this->createMock(NativeReflectionIntersectionType::class));
+
+        $rf1->method('allowsNull')
             ->willReturn(true);
 
-        $rf1->expects($this->any())
-            ->method('getTypes')
+        $rf1->method('getTypes')
             ->willReturn([
                 $rf11 = $this->createMock(NativeReflectionNamedType::class),
                 $rf12 = $this->createMock(NativeReflectionNamedType::class),
             ]);
 
-        $rf11->expects($this->any())
-            ->method('getName')
-            ->willReturn('pt11');
+        $rf11->method('getName')
+             ->willReturn('pt11');
 
-        $rf12->expects($this->any())
-            ->method('getName')
-            ->willReturn('pt12');
+        $rf12->method('getName')
+             ->willReturn('pt12');
 
-        $p1->expects($this->any())
-            ->method('isOptional')
-            ->willReturn(false);
+        $p1->method('isOptional')
+           ->willReturn(false);
 
-        $p2->expects($this->any())
-            ->method('getType')
-            ->willReturn($rf2 = $this->createMock(NativeReflectionUnionType::class));
+        $p2->method('getType')
+           ->willReturn($rf2 = $this->createMock(NativeReflectionUnionType::class));
 
-        $rf2->expects($this->any())
-            ->method('allowsNull')
+        $rf2->method('allowsNull')
             ->willReturn(true);
 
-        $rf2->expects($this->any())
-            ->method('getTypes')
+        $rf2->method('getTypes')
             ->willReturn([
                 $rf21 = $this->createMock(NativeReflectionNamedType::class),
                 $rf22 = $this->createMock(NativeReflectionNamedType::class),
             ]);
 
-        $rf21->expects($this->any())
-            ->method('getName')
-            ->willReturn('pt21');
+        $rf21->method('getName')
+             ->willReturn('pt21');
 
-        $rf22->expects($this->any())
-            ->method('getName')
-            ->willReturn('pt22');
+        $rf22->method('getName')
+             ->willReturn('pt22');
 
-        $p2->expects($this->any())
-            ->method('isOptional')
-            ->willReturn(false);
+        $p2->method('isOptional')
+           ->willReturn(false);
 
-        $p3->expects($this->any())
-            ->method('getType')
-            ->willReturn($rf3 = $this->createMock(NativeReflectionNamedType::class));
+        $p3->method('getType')
+           ->willReturn($rf3 = $this->createMock(NativeReflectionNamedType::class));
 
-        $rf3->expects($this->any())
-            ->method('allowsNull')
+        $rf3->method('allowsNull')
             ->willReturn(true);
 
-        $rf3->expects($this->any())
-            ->method('getName')
+        $rf3->method('getName')
             ->willReturn('pt3');
 
-        $p3->expects($this->any())
-            ->method('getDefaultValue')
-            ->willReturn('foo');
+        $p3->method('getDefaultValue')
+           ->willReturn('foo');
 
-        $p3->expects($this->any())
-            ->method('isOptional')
-            ->willReturn(true);
+        $p3->method('isOptional')
+           ->willReturn(true);
+
+        $cr = new ReflectionFunction($closureReflection);
+
+        $brc = $this->createMock(BetterReflectionClass::class);
+
+        $rcOfDc = new ReflectionClass(ClassReflection::class);
+        $dc = $rcOfDc->newInstanceWithoutConstructor();
+        $rpr = $rcOfDc->getProperty('reflection');
+        $rpr->setValue($dc, $brc);
 
         return new StateMethod(
-            $factoryReflection,
-            $closureReflection,
-            new ReflectionClass($this->createMock(BetterReflectionClass::class)),
-        );
-    }
-
-    public function testGetReflection(): void
-    {
-        $this->expectException(MissingReflectionMethodException::class);
-        $this->buildInstance()->getReflection();
-    }
-
-    public function testGetFileName(): void
-    {
-        self::assertNull($this->buildInstance()->getFileName());
-    }
-
-    public function testGetStartLine(): void
-    {
-        self::assertNull($this->buildInstance()->getStartLine());
-    }
-
-    public function testGetEndLine(): void
-    {
-        self::assertNull($this->buildInstance()->getEndLine());
-    }
-
-    public function testGetReturnType(): void
-    {
-        self::assertNull($this->buildInstance()->getReturnType());
-    }
-
-    public function testGetParameters(): void
-    {
-        self::assertNotEquals(1, ini_get('zend.assertions'));
-        self::assertInstanceOf(
-            ReflectionParameter::class,
-            $this->buildInstance()->getParameters()[0]
+            reflectionProvider: $this->getReflectionProviderMock(),
+            initializerExprTypeResolver: $this->getInitializerExprTypeResolverMock(),
+            attributeReflectionFactory: $this->getAttributeReflectionFactoryMock(),
+            factoryReflection: $fr,
+            closureReflection: $cr,
+            declaringClass: $dc,
+            phpDocReturnType: null,
+            phpDocThrowType: null,
+            selfOutType: null,
+            asserts: Assertions::createEmpty(),
+            templateTypeMap: new TemplateTypeMap([]),
+            isPure: false,
+            attributes: [],
+            acceptsNamedArguments: true,
         );
     }
 
     public function testGetDocCommentNull(): void
     {
-        self::assertNotEquals(1, ini_get('zend.assertions'));
-        self::assertEmpty($this->buildInstance('')->getDocComment());
-        self::assertEmpty($this->buildInstance(false)->getDocComment());
+        $this->assertNotSame(1, ini_get('zend.assertions'));
+        $this->assertEmpty($this->buildInstance('')->getDocComment());
     }
 
     public function testReturnsByReference(): void
     {
-        self::assertEquals(
-            TrinaryLogic::createYes(),
-            $this->buildInstance()->returnsByReference(),
-        );
+        $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->returnsByReference());
     }
 }

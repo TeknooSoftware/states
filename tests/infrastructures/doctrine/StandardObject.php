@@ -120,13 +120,14 @@ class StandardObject extends AbstractStandardObject implements
         return 'fooBar';
     }
 
+    #[\Override]
     protected static function statesListDeclaration(): array
     {
         return [];
     }
 
 
-    public function setProxyInitializer(?Closure $initializer = null)
+    public function setProxyInitializer(?Closure $initializer = null): void
     {
         // TODO: Implement setProxyInitializer() method.
     }

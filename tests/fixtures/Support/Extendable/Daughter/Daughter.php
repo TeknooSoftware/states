@@ -43,6 +43,7 @@ use Teknoo\Tests\Support\Extendable\Mother\Mother;
  */
 class Daughter extends Mother
 {
+    #[\Override]
     protected static function statesListDeclaration(): array
     {
         return [

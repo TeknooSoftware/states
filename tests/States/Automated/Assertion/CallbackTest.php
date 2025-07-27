@@ -51,7 +51,7 @@ class CallbackTest extends AbstractAssertionTests
 
     public function testCallClosure(): void
     {
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             Callback::class,
             $this->buildInstance()->call(function (): void {
             })
@@ -60,7 +60,7 @@ class CallbackTest extends AbstractAssertionTests
 
     public function testCallCalback(): void
     {
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             Callback::class,
             $this->buildInstance()->call('time')
         );
@@ -85,7 +85,7 @@ class CallbackTest extends AbstractAssertionTests
         $proxy->expects($this->exactly(2))
             ->method('enableState')
             ->with($this->callback(
-                fn ($value) => match ($value) {
+                fn ($value): bool => match ($value) {
                     'state1' => true,
                     'state2' => true,
                     default => false,
@@ -94,23 +94,17 @@ class CallbackTest extends AbstractAssertionTests
             ->willReturnSelf();
 
         $assertion->call(function ($proxy, $callback): void {
-            self::assertInstanceOf(AutomatedInterface::class, $proxy);
-            self::assertInstanceOf(Callback::class, $callback);
+            $this->assertInstanceOf(AutomatedInterface::class, $proxy);
+            $this->assertInstanceOf(Callback::class, $callback);
 
-            self::assertInstanceOf(Callback::class, $callback->isValid());
+            $this->assertInstanceOf(Callback::class, $callback->isValid());
         });
 
         $assertion2 = $assertion->check($proxy);
 
-        self::assertInstanceOf(
-            Callback::class,
-            $assertion2
-        );
+        $this->assertInstanceOf(Callback::class, $assertion2);
 
-        self::assertNotSame(
-            $assertion,
-            $assertion2
-        );
+        $this->assertNotSame($assertion, $assertion2);
     }
 
     public function testCheckCallbackIsNotValid(): void
@@ -121,20 +115,14 @@ class CallbackTest extends AbstractAssertionTests
             ->method('enableState');
 
         $assertion->call(function ($proxy, $callback): void {
-            self::assertInstanceOf(AutomatedInterface::class, $proxy);
-            self::assertInstanceOf(Callback::class, $callback);
+            $this->assertInstanceOf(AutomatedInterface::class, $proxy);
+            $this->assertInstanceOf(Callback::class, $callback);
         });
 
         $assertion2 = $assertion->check($proxy);
 
-        self::assertInstanceOf(
-            Callback::class,
-            $assertion2
-        );
+        $this->assertInstanceOf(Callback::class, $assertion2);
 
-        self::assertNotSame(
-            $assertion,
-            $assertion2
-        );
+        $this->assertNotSame($assertion, $assertion2);
     }
 }

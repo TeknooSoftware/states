@@ -25,20 +25,36 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan\Reflection;
 
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionClass;
+use _PHPStan_5878035a0\Nette\PhpGenerator\ClassType;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionNamedType;
-use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
+use PHPStan\BetterReflection\Reflection\ReflectionAttribute;
 use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
-use PHPStan\BetterReflection\Reflection\ReflectionNamedType as BetterReflectionNamedType;
-use PHPStan\BetterReflection\Reflection\ReflectionParameter as BetterReflectionParameter;
+use PHPStan\BetterReflection\Reflection\ReflectionNamedType;
+use PHPStan\Reflection\Assertions;
+use PHPStan\Reflection\AttributeReflection;
+use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\ExtendedParametersAcceptor;
+use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\TrinaryLogic;
+use PHPStan\Type\Generic\TemplateTypeMap;
+use PHPStan\Type\StringType;
+use PHPStan\Type\ThisType;
+use PHPStan\Type\Type;
+use PHPStan\Type\VoidType;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\MockObject\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use stdClass;
+use Teknoo\States\Automated\AutomatedInterface;
+use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
+use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
+use Teknoo\States\Proxy\ProxyInterface;
 
 /**
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
@@ -49,157 +65,359 @@ use Teknoo\States\PHPStan\Reflection\StateMethod;
 #[CoversClass(StateMethod::class)]
 class StateMethodTest extends TestCase
 {
-    protected function buildInstance($doc = 'factory doc'): \Teknoo\States\PHPStan\Reflection\StateMethod
+    private (ReflectionProvider&MockObject)|null $reflectionProvider = null;
+
+    private (AttributeReflectionFactoryInterface&MockObject)|null $attributeReflectionFactory = null;
+
+    private (InitializerExprTypeResolverInterface&MockObject)|null $initializerExprTypeResolver = null;
+
+    /**
+     * @throws Exception
+     */
+    private function getReflectionProviderMock(): ReflectionProvider&MockObject
     {
+        if (!$this->reflectionProvider instanceof ReflectionProvider) {
+            $this->reflectionProvider = $this->createMock(ReflectionProvider::class);
+        }
+
+        return $this->reflectionProvider;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getAttributeReflectionFactoryMock(): AttributeReflectionFactoryInterface&MockObject
+    {
+        if (!$this->attributeReflectionFactory instanceof AttributeReflectionFactoryInterface) {
+            $this->attributeReflectionFactory = $this->createMock(AttributeReflectionFactoryInterface::class);
+        }
+
+        return $this->attributeReflectionFactory;
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function getInitializerExprTypeResolverMock(): InitializerExprTypeResolverInterface&MockObject
+    {
+        if (!$this->initializerExprTypeResolver instanceof InitializerExprTypeResolverInterface) {
+            $this->initializerExprTypeResolver = $this->createMock(InitializerExprTypeResolverInterface::class);
+        }
+
+        return $this->initializerExprTypeResolver;
+    }
+
+    /**
+     * @param list<AttributeReflection> $attributes
+     */
+    protected function buildInstance(
+        ?string $doc = 'factory doc',
+        ?bool $isDeprecated = false,
+        ?bool $acceptsNamedArguments = true,
+        ?bool $isPure = false,
+        ?Type $phpDocReturnType = null,
+        ?Type $phpDocThrowType = null,
+        ?Type $selfOutType = null,
+        ?ReflectionNamedType $tentativeReturnType = null,
+        array $attributes = [],
+    ): StateMethod {
         $factoryReflection = $this->createMock(BetterReflectionMethod::class);
-        $factoryReflection->expects($this->any())->method('getName')->willReturn('factory');
-        $factoryReflection->expects($this->any())->method('getFileName')->willReturn('factory.php');
+        $factoryReflection->method('getName')->willReturn('factory');
+        $factoryReflection->method('getFileName')->willReturn('factory.php');
         $factoryReflection->expects($this->never())->method('getStartLine');
         $factoryReflection->expects($this->never())->method('getEndLine');
-        $factoryReflection->expects($this->any())->method('getDocComment')->willReturn($doc);
-        $factoryReflection->expects($this->any())->method('isStatic')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isPrivate')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isPublic')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isDeprecated')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isFinal')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isInternal')->willReturn(false);
-        $factoryReflection->expects($this->any())->method('isAbstract')->willReturn(false);
+        $factoryReflection->method('getDocComment')->willReturn($doc);
+        $factoryReflection->method('isStatic')->willReturn(false);
+        $factoryReflection->method('isPrivate')->willReturn(false);
+        $factoryReflection->method('isPublic')->willReturn(false);
+        $factoryReflection->method('isDeprecated')->willReturn($isDeprecated);
+        $factoryReflection->method('getPrototype')->willReturnSelf();
+        $factoryReflection->method('getTentativeReturnType')->willReturn($tentativeReturnType);
+
+        $attribute = $this->createMock(ReflectionAttribute::class);
+        $attribute->method('getName')->willReturn('Deprecated');
+        $attribute->method('getArguments')->willReturn([
+            'foo bar',
+        ]);
+
+        $factoryReflection->method('getAttributes')->willReturn([$attribute]);
+        $factoryReflection->method('isFinal')->willReturn(false);
+        $factoryReflection->method('isInternal')->willReturn(false);
+        $factoryReflection->method('isAbstract')->willReturn(false);
         $factoryReflection->expects($this->never())->method('isVariadic');
         $factoryReflection->expects($this->never())->method('getReturnType');
         $factoryReflection->expects($this->never())->method('getParameters');
 
+        $fr = new ReflectionMethod($factoryReflection);
+
         $closureReflection = $this->createMock(BetterReflectionFunction::class);
         $closureReflection->expects($this->never())->method('getName');
         $closureReflection->expects($this->never())->method('getFileName');
-        $closureReflection->expects($this->any())->method('getStartLine')->willReturn(12);
-        $closureReflection->expects($this->any())->method('getEndLine')->willReturn(34);
+        $closureReflection->method('getStartLine')->willReturn(12);
+        $closureReflection->method('getEndLine')->willReturn(34);
         $closureReflection->expects($this->never())->method('getDocComment');
-        $closureReflection->expects($this->any())->method('isVariadic')->willReturn(false);
-        $closureReflection->expects($this->any())->method('returnsReference')->willReturn(false);
-        $closureReflection->expects($this->any())->method('getReturnType')->willReturn(
-            $this->createMock(BetterReflectionNamedType::class)
-        );
+        $closureReflection->method('isVariadic')->willReturn(false);
+        $closureReflection->method('returnsReference')->willReturn(false);
 
-        $closureReflection->expects($this->any())->method('getParameters')->willReturn([
-            $this->createMock(BetterReflectionParameter::class)
-        ]);
+        $closureReflection->method('getParameters')->willReturn([]);
+
+        $cr = new ReflectionFunction($closureReflection);
+
+        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc->method('getName')->willReturn(ProxyInterface::class);
+
+        $rcOfDc = new ReflectionClass(ClassReflection::class);
+        $dc = $rcOfDc->newInstanceWithoutConstructor();
+        $rpr = $rcOfDc->getProperty('reflection');
+        $rpr->setValue($dc, $brc);
+        $rpr = $rcOfDc->getProperty('ancestors');
+        $rpr->setValue($dc, []);
+        $rpr = $rcOfDc->getProperty('methodsClassReflectionExtensions');
+        $rpr->setValue($dc, [0 => null]);
+        $rpr = $rcOfDc->getProperty('isGeneric');
+        $rpr->setValue($dc, false);
+        $rpr = $rcOfDc->getProperty('finalByKeywordOverride');
+        $rpr->setValue($dc, false);
+        $rpr = $rcOfDc->getProperty('anonymousFilename');
+        $rpr->setValue($dc, null);
+        $rpr = $rcOfDc->getProperty('acceptsNamedArguments');
+        $rpr->setValue($dc, $acceptsNamedArguments);
+
+        $this->getReflectionProviderMock()
+            ->method('getClass')
+            ->willReturn($dc);
 
         return new StateMethod(
-            new ReflectionMethod($factoryReflection),
-            new ReflectionFunction($closureReflection),
-            new ReflectionClass($this->createMock(BetterReflectionClass::class)),
+            reflectionProvider: $this->getReflectionProviderMock(),
+            initializerExprTypeResolver: $this->getInitializerExprTypeResolverMock(),
+            attributeReflectionFactory: $this->getAttributeReflectionFactoryMock(),
+            factoryReflection: $fr,
+            closureReflection: $cr,
+            declaringClass: $dc,
+            phpDocReturnType: $phpDocReturnType,
+            phpDocThrowType: $phpDocThrowType,
+            selfOutType: $selfOutType,
+            asserts: Assertions::createEmpty(),
+            templateTypeMap: new TemplateTypeMap([]),
+            isPure: $isPure,
+            attributes: $attributes,
+            acceptsNamedArguments: $acceptsNamedArguments,
         );
     }
 
     public function testGetName(): void
     {
-        self::assertEquals('factory', $this->buildInstance()->getName());
-    }
-
-    public function testGetReflection(): void
-    {
-        self::assertInstanceOf(ReflectionMethod::class, $this->buildInstance()->getReflection());
-    }
-
-    public function testGetFileName(): void
-    {
-        self::assertEquals('factory.php', $this->buildInstance()->getFileName());
+        $this->assertSame('factory', $this->buildInstance()->getName());
     }
 
     public function testGetDeclaringClass(): void
     {
-        self::assertInstanceOf(\ReflectionClass::class, $this->buildInstance()->getDeclaringClass());
-    }
-
-    public function testGetStartLine(): void
-    {
-        self::assertEquals(12, $this->buildInstance()->getStartLine());
-    }
-
-    public function testGetEndLine(): void
-    {
-        self::assertEquals(34, $this->buildInstance()->getEndLine());
+        $this->assertInstanceOf(ClassReflection::class, $this->buildInstance()->getDeclaringClass());
     }
 
     public function testGetDocComment(): void
     {
-        self::assertEquals('factory doc', $this->buildInstance()->getDocComment());
+        $this->assertSame('factory doc', $this->buildInstance()->getDocComment());
     }
 
     public function testGetDocCommentNull(): void
     {
-        self::assertNotEquals(1, ini_get('zend.assertions'));
-        self::assertEmpty($this->buildInstance('')->getDocComment());
+        $this->assertNotSame(1, ini_get('zend.assertions'));
+        $this->assertEmpty($this->buildInstance(null)->getDocComment());
     }
 
     public function testIsStatic(): void
     {
-        self::assertFalse($this->buildInstance()->isStatic());
+        $this->assertFalse($this->buildInstance()->isStatic());
     }
 
     public function testIsPrivate(): void
     {
-        self::assertFalse($this->buildInstance()->isPrivate());
+        $this->assertFalse($this->buildInstance()->isPrivate());
     }
 
     public function testIsPublic(): void
     {
-        self::assertFalse($this->buildInstance()->isPublic());
+        $this->assertFalse($this->buildInstance()->isPublic());
     }
 
     public function testGetPrototype(): void
     {
-        self::assertInstanceOf(StateMethod::class, $this->buildInstance()->getPrototype());
+        $this->assertInstanceOf(StateMethod::class, $this->buildInstance()->getPrototype());
+    }
+
+    public function testGetPrototypeWithTentativeReturnType(): void
+    {
+        $type = $this->createMock(ReflectionNamedType::class);
+        $type->expects($this->once())->method('getName')->willReturn(stdClass::class);
+        $this->assertInstanceOf(StateMethod::class, $this->buildInstance(tentativeReturnType: $type)->getPrototype());
     }
 
     public function testIsDeprecated(): void
     {
-        self::assertEquals(TrinaryLogic::createFromBoolean(false), $this->buildInstance()->isDeprecated());
+        $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->isDeprecated());
+        $this->assertEquals(TrinaryLogic::createYes(), $this->buildInstance(isDeprecated: true)->isDeprecated());
     }
 
     public function testIsFinal(): void
     {
-        self::assertFalse($this->buildInstance()->isFinal());
+        $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->isFinal());
     }
 
     public function testIsInternal(): void
     {
-        self::assertFalse($this->buildInstance()->isInternal());
+        $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->isInternal());
     }
 
     public function testIsAbstract(): void
     {
-        self::assertFalse($this->buildInstance()->isAbstract());
+        $this->assertFalse($this->buildInstance()->isAbstract());
     }
 
     public function testIsVariadic(): void
     {
-        self::assertFalse($this->buildInstance()->isVariadic());
-    }
-
-    public function testGetReturnType(): void
-    {
-        self::assertInstanceOf(ReflectionNamedType::class, $this->buildInstance()->getReturnType());
-    }
-
-    public function testGetTentativeReturnType(): void
-    {
-        self::assertNull($this->buildInstance()->getTentativeReturnType());
-    }
-
-    public function testGetParameters(): void
-    {
-        self::assertInstanceOf(
-            ReflectionParameter::class,
-            current($this->buildInstance()->getParameters()),
-        );
+        $this->assertFalse($this->buildInstance()->isVariadic());
     }
 
     public function testReturnsByReference(): void
     {
-        self::assertEquals(
-            TrinaryLogic::createNo(),
-            $this->buildInstance()->returnsByReference(),
-        );
+        $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->returnsByReference());
+    }
+
+    public function testIsFinalByKeyword(): void
+    {
+        $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->isFinalByKeyword());
+    }
+
+    public function testGetDeprecatedDescription(): void
+    {
+        $this->assertNull($this->buildInstance()->getDeprecatedDescription());
+    }
+
+    public function testGetDeprecatedDescriptionWhenDeprecated(): void
+    {
+        $this->assertSame('foo bar', $this->buildInstance(isDeprecated: true)->getDeprecatedDescription());
+    }
+
+    public function testGetAttributes(): void
+    {
+        $this->assertSame([], $this->buildInstance()->getAttributes());
+    }
+
+    public function testGetThrowType(): void
+    {
+        $this->assertNotInstanceOf(\PHPStan\Type\Type::class, $this->buildInstance()->getThrowType());
+    }
+
+    public function testGetSelfOutType(): void
+    {
+        $this->assertNotInstanceOf(\PHPStan\Type\Type::class, $this->buildInstance()->getSelfOutType());
+    }
+
+    public function testGetAsserts(): void
+    {
+        $this->assertInstanceOf(Assertions::class, $this->buildInstance()->getAsserts());
+    }
+
+    public function testIsBuiltin(): void
+    {
+        $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->isBuiltin());
+    }
+
+    public function testGetNamedArgumentsVariants(): void
+    {
+        $this->assertNull($this->buildInstance()->getNamedArgumentsVariants());
+    }
+
+    public function testAcceptsNamedArguments(): void
+    {
+        $this->assertEquals(TrinaryLogic::createYes(), $this->buildInstance(acceptsNamedArguments: true)->acceptsNamedArguments());
+        $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance(acceptsNamedArguments: false)->acceptsNamedArguments());
+    }
+
+    public function testIsPure(): void
+    {
+        $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance(isPure: false)->isPure());
+        $this->assertEquals(TrinaryLogic::createMaybe(), $this->buildInstance(isPure: null)->isPure());
+        $this->assertEquals(TrinaryLogic::createYes(), $this->buildInstance(isPure: true)->isPure());
+    }
+
+    public function testGetVariants(): void
+    {
+        $variants = $this->buildInstance()->getVariants();
+        $this->assertIsArray($variants);
+        $this->assertCount(1, $variants);
+        $this->assertInstanceOf(ExtendedParametersAcceptor::class, $variants[0]);
+    }
+
+    public function testGetOnlyVariant(): void
+    {
+        $variant = $this->buildInstance()->getOnlyVariant();
+        $this->assertInstanceOf(ExtendedParametersAcceptor::class, $variant);
+    }
+
+    public function testHasSideEffects(): void
+    {
+        $result = $this->buildInstance()->hasSideEffects();
+        $this->assertInstanceOf(TrinaryLogic::class, $result);
+
+        $result = $this->buildInstance(phpDocReturnType: new VoidType())->hasSideEffects();
+        $this->assertEquals(TrinaryLogic::createYes(), $result);
+
+        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc->method('getName')->willReturn(ProxyInterface::class);
+
+        $rcOfDc = new ReflectionClass(ClassReflection::class);
+        $dc = $rcOfDc->newInstanceWithoutConstructor();
+        $rpr = $rcOfDc->getProperty('reflection');
+        $rpr->setValue($dc, $brc);
+        $rpr = $rcOfDc->getProperty('ancestors');
+        $rpr->setValue($dc, []);
+        $rpr = $rcOfDc->getProperty('methodsClassReflectionExtensions');
+        $rpr->setValue($dc, [0 => null]);
+        $rpr = $rcOfDc->getProperty('isGeneric');
+        $rpr->setValue($dc, false);
+        $rpr = $rcOfDc->getProperty('finalByKeywordOverride');
+        $rpr->setValue($dc, false);
+        $rcOfDc->getProperty('acceptsNamedArguments');
+
+        $result = $this->buildInstance(isPure: null, phpDocReturnType: new ThisType($dc))->hasSideEffects();
+        $this->assertEquals(TrinaryLogic::createYes(), $result);
+
+        $result = $this->buildInstance(isPure: null)->hasSideEffects();
+        $this->assertEquals(TrinaryLogic::createMaybe(), $result);
+    }
+
+    public function testGetPrototypeException(): void
+    {
+        $result = $this->buildInstance()->getPrototype();
+        $this->assertInstanceOf(StateMethod::class, $result);
+    }
+
+    public function testGetVariantWithPhpDocReturnType(): void
+    {
+        $variants = $this->buildInstance(phpDocReturnType: new StringType())->getVariants();
+        $this->assertCount(1, $variants);
+    }
+
+    public function testWithThrowType(): void
+    {
+        $throwType = new StringType();
+
+        $this->assertInstanceOf(StringType::class, $this->buildInstance(phpDocThrowType: $throwType)->getThrowType());
+    }
+
+    public function testWithSelfOutType(): void
+    {
+        $selfOutType = new StringType();
+
+        $this->assertInstanceOf(StringType::class, $this->buildInstance(selfOutType: $selfOutType)->getSelfOutType());
+    }
+
+    public function testWithAttributes(): void
+    {
+        $attributes = [new AttributeReflection('foo', [])];
+
+        $this->assertEquals($attributes, $this->buildInstance(attributes: $attributes)->getAttributes());
     }
 }

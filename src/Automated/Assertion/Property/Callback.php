@@ -60,6 +60,7 @@ class Callback extends AbstractConstraint
         return $this;
     }
 
+    #[\Override]
     public function isValid(mixed &$value): ConstraintInterface
     {
         return parent::isValid($value);

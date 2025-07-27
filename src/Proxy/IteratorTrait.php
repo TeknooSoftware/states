@@ -109,7 +109,7 @@ trait IteratorTrait
      *
      * @see http://php.net/manual/en/class.iterator.php
      */
-    public function seek($position): void
+    public function seek(int $position): void
     {
         $args = [$position];
 
@@ -136,6 +136,7 @@ trait IteratorTrait
      *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      * @throws Throwable
+     * @return iterable<mixed>
      *
      * @see http://php.net/manual/en/class.iterator.php
      */

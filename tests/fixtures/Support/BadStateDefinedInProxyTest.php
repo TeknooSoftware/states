@@ -26,7 +26,9 @@ declare(strict_types=1);
 namespace Teknoo\Tests\Support;
 
 use AllowDynamicProperties;
+use DateTime;
 use Teknoo\States\Proxy;
+use Teknoo\States\Proxy\ProxyTrait;
 use Teknoo\States\State\StateInterface;
 
 /**
@@ -39,12 +41,12 @@ use Teknoo\States\State\StateInterface;
 #[AllowDynamicProperties]
 class BadStateDefinedInProxyTest implements Proxy\ProxyInterface
 {
-    use Proxy\ProxyTrait;
+    use ProxyTrait;
 
     protected static function statesListDeclaration(): array
     {
         return [
-            \DateTime::class
+            DateTime::class
         ];
     }
 

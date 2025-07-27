@@ -25,9 +25,11 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support;
 
+use Stringable;
 use Teknoo\States\Proxy\Exception;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
+use Traversable;
 
 /**
  * Class MockProxy
@@ -39,7 +41,7 @@ use Teknoo\States\State\StateInterface;
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-class MockProxyWithoutDeclaration implements ProxyInterface, \Stringable
+class MockProxyWithoutDeclaration implements ProxyInterface, Stringable
 {
     /**
      * Local registry of loaded states, to simulate a real proxy.
@@ -180,7 +182,7 @@ class MockProxyWithoutDeclaration implements ProxyInterface, \Stringable
     /**
      * {@inheritdoc}
      */
-    public function __invoke(...$args)
+    public function __invoke(...$args): void
     {
         //Not used in tests
     }
@@ -329,7 +331,7 @@ class MockProxyWithoutDeclaration implements ProxyInterface, \Stringable
     /**
      * {@inheritdoc}
      */
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         //Not used in tests
     }

@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\Automated;
 
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversTrait;
 use stdClass;
 use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
@@ -41,7 +42,7 @@ use Teknoo\States\Proxy\ProxyTrait;
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-#[CoversClass(AutomatedTrait::class)]
+#[CoversTrait(AutomatedTrait::class)]
 class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
 {
     public function buildProxy(array $assertions): AutomatedInterface
@@ -80,9 +81,9 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
         $assertion2 = $this->createMock(AssertionInterface::class);
         $assertion2->expects($this->once())->method('check');
 
-        self::assertInstanceOf(
+        $this->assertInstanceOf(
             AutomatedInterface::class,
-            $this->buildProxy([$assertion1, $assertion2])->updateStates()
+            $this->buildProxy([$assertion1, $assertion2])->updateStates(),
         );
     }
 
@@ -108,10 +109,7 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
             ->with(null)
             ->willReturnSelf();
 
-        self::assertInstanceOf(
-            AutomatedInterface::class,
-            $this->buildProxy([])->checkProperty('prop1', $set)
-        );
+        $this->assertInstanceOf(AutomatedInterface::class, $this->buildProxy([])->checkProperty('prop1', $set));
     }
 
     public function testCheckPropertyWithSetProperty(): void
@@ -125,9 +123,6 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
         $proxy = $this->buildProxy([]);
         $proxy->prop1 = 'fooBar';
 
-        self::assertInstanceOf(
-            AutomatedInterface::class,
-            $proxy->checkProperty('prop1', $set)
-        );
+        $this->assertInstanceOf(AutomatedInterface::class, $proxy->checkProperty('prop1', $set));
     }
 }

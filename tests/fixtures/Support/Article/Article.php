@@ -72,8 +72,6 @@ class Article implements Proxy\ProxyInterface
         if (isset($this->data[$name])) {
             return $this->data[$name];
         }
-
-        return;
     }
 
     /**

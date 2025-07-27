@@ -25,9 +25,9 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support;
 
-use Teknoo\States\Proxy\Exception;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
+use Traversable;
 
 /**
  * Class MockProxy
@@ -185,7 +185,7 @@ class MockProxy implements ProxyInterface, \Stringable
     /**
      * {@inheritdoc}
      */
-    public function __invoke(...$args)
+    public function __invoke(...$args): void
     {
         //Not used in tests
     }
@@ -334,7 +334,7 @@ class MockProxy implements ProxyInterface, \Stringable
     /**
      * {@inheritdoc}
      */
-    public function getIterator(): \Traversable
+    public function getIterator(): Traversable
     {
         //Not used in tests
     }

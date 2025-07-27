@@ -44,23 +44,23 @@ class MultipleTest extends \PHPUnit\Framework\TestCase
     {
         //Initialize user
         $simpleUser = new User('simple 1');
-        self::assertEquals('simple 1', $simpleUser->getName());
+        $this->assertEquals('simple 1', $simpleUser->getName());
         //Initialize moderator
         $moderator = new User('modo', false, true);
-        self::assertEquals('modo', $moderator->getName());
+        $this->assertEquals('modo', $moderator->getName());
         //Initialize admin
         $administrator = new User('admin', true, true);
-        self::assertEquals('admin', $administrator->getName());
+        $this->assertEquals('admin', $administrator->getName());
 
         //Method not available, because state Moderator is not enabled
         $this->expectException(MethodNotImplemented::class);
         $simpleUser->isModerator();
 
-        self::assertTrue($moderator->isModerator());
-        self::assertTrue($administrator->isModerator());
+        $this->assertTrue($moderator->isModerator());
+        $this->assertTrue($administrator->isModerator());
 
         //admin transforms the user as modo
         $administrator->setModerator($simpleUser);
-        self::assertTrue($simpleUser->isModerator());
+        $this->assertTrue($simpleUser->isModerator());
     }
 }

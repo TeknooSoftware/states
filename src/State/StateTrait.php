@@ -82,7 +82,7 @@ trait StateTrait
 {
     /**
      * Reflection class object of this state to extract closures and description.
-     * @var ReflectionClass<object>
+     * @var ReflectionClass<$this>
      */
     private ?ReflectionClass $reflectionClass = null;
 
@@ -105,6 +105,9 @@ trait StateTrait
      */
     private array $visibilityCache = [];
 
+    /**
+     * @param class-string $statedClassName
+     */
     public function __construct(
         private bool $privateModeStatus,
         private string $statedClassName,
@@ -116,7 +119,7 @@ trait StateTrait
      *
      * @api
      *
-     * @return ReflectionClass<object>
+     * @return ReflectionClass<$this>
      * @throws ReflectionException
      */
     private function getReflectionClass(): ReflectionClass

@@ -42,6 +42,8 @@ trait SerializableTrait
     /**
      * @api
      *
+     * @return array<string, mixed>
+     *
      * @throws Exception\MethodNotImplemented if any enabled state implement the required method
      */
     public function __serialize(): array

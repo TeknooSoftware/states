@@ -32,8 +32,6 @@ namespace Teknoo\States\Automated\Assertion\Property;
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
- *
- * @SuppressWarnings(PHPMD.NumberOfChildren)
  */
 abstract class AbstractConstraint implements ConstraintInterface
 {

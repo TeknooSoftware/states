@@ -5,7 +5,6 @@
 .*.un~
 .*.swp
 *.*~
-*.sqlite
 *.done
 composer.lock
 /vendor/*

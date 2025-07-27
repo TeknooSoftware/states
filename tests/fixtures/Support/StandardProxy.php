@@ -26,7 +26,14 @@ declare(strict_types=1);
 namespace Teknoo\Tests\Support;
 
 use AllowDynamicProperties;
+use ArrayAccess;
+use Countable;
+use SeekableIterator;
 use Teknoo\States\Proxy;
+use Teknoo\States\Proxy\ArrayAccessTrait;
+use Teknoo\States\Proxy\IteratorTrait;
+use Teknoo\States\Proxy\MagicCallTrait;
+use Teknoo\States\Proxy\SerializableTrait;
 
 /**
  * Class StandardProxy
@@ -46,14 +53,14 @@ use Teknoo\States\Proxy;
  */
 #[AllowDynamicProperties]
 class StandardProxy extends Proxy\Standard implements
-    \ArrayAccess,
-    \SeekableIterator,
-    \Countable
+    ArrayAccess,
+    SeekableIterator,
+    Countable
 {
-    use Proxy\MagicCallTrait;
-    use Proxy\ArrayAccessTrait;
-    use Proxy\IteratorTrait;
-    use Proxy\SerializableTrait;
+    use MagicCallTrait;
+    use ArrayAccessTrait;
+    use IteratorTrait;
+    use SerializableTrait;
 
     /**
      * Property to test behavior of proxy when a method in a state want access to a public property.

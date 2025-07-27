@@ -44,8 +44,6 @@ class DoctrineMockProxy extends MockProxy implements LazyLoadingInterface
      * Retrieves the callback to be used when cloning the proxy.
      *
      * @see __setCloner
-     *
-     * @return Closure
      */
     public function __getCloner(): void
     {
@@ -55,8 +53,6 @@ class DoctrineMockProxy extends MockProxy implements LazyLoadingInterface
      * Retrieves the initializer callback used to initialize the proxy.
      *
      * @see __setInitializer
-     *
-     * @return Closure
      */
     public function __getInitializer(): void
     {
@@ -74,8 +70,6 @@ class DoctrineMockProxy extends MockProxy implements LazyLoadingInterface
 
     /**
      * Returns whether this proxy is initialized or not.
-     *
-     * @return bool
      */
     public function __isInitialized(): void
     {
@@ -84,10 +78,8 @@ class DoctrineMockProxy extends MockProxy implements LazyLoadingInterface
     /**
      * Sets the callback to be used when cloning the proxy. That initializer should accept
      * a single parameter, which is the cloned proxy instance itself.
-     *
-     * @param Closure|null $cloner
      */
-    public function __setCloner(Closure $cloner = null): void
+    public function __setCloner(?Closure $cloner = null): void
     {
     }
 
@@ -105,10 +97,8 @@ class DoctrineMockProxy extends MockProxy implements LazyLoadingInterface
      * initializer should accept 3 parameters: $proxy, $method and $params. Those
      * are respectively the proxy object that is being initialized, the method name
      * that triggered initialization and the parameters passed to that method.
-     *
-     * @param Closure|null $initializer
      */
-    public function __setInitializer(Closure $initializer = null): void
+    public function __setInitializer(?Closure $initializer = null): void
     {
     }
 
@@ -121,7 +111,7 @@ class DoctrineMockProxy extends MockProxy implements LazyLoadingInterface
     {
     }
 
-    public function setProxyInitializer(?Closure $initializer = null)
+    public function setProxyInitializer(?Closure $initializer = null): void
     {
         // TODO: Implement setProxyInitializer() method.
     }

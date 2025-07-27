@@ -43,6 +43,7 @@ use Teknoo\Tests\Support\Multiple\Post\States\StateDefault;
  */
 class Post extends Proxy\Standard
 {
+    #[\Override]
     protected static function statesListDeclaration(): array
     {
         return [

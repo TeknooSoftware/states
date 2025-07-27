@@ -40,7 +40,7 @@ use Throwable;
  * @license     https://teknoo.software/license/mit         MIT License
  * @author      Richard Déloge <richard@teknoo.software>
  *
- * @mixin ArrayAccess
+ * @mixin ArrayAccess<string, mixed>
  * @mixin ProxyTrait
  */
 trait ArrayAccessTrait

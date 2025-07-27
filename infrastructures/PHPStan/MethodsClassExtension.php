@@ -25,32 +25,41 @@ declare(strict_types=1);
 
 namespace Teknoo\States\PHPStan;
 
+use Closure;
 use OutOfBoundsException;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
+use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
 use PHPStan\BetterReflection\SourceLocator\Exception\NoClosureOnLine;
-use PHPStan\Cache\Cache;
-use PHPStan\Parser\Parser;
-use PHPStan\Parser\FunctionCallStatementFinder;
+use PHPStan\Broker\ClassNotFoundException;
+use PHPStan\PhpDoc\PhpDocInheritanceResolver;
+use PHPStan\PhpDoc\ResolvedPhpDocBlock;
+use PHPStan\Reflection\Assertions;
+use PHPStan\Reflection\AttributeReflectionFactory;
 use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\ExtendedMethodReflection;
+use PHPStan\Reflection\InitializerExprContext;
 use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
-use PHPStan\Reflection\Php\PhpMethodReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
-use PHPStan\Type\Generic\TemplateTypeMap;
-use PHPStan\Reflection\Assertions;
+use PHPStan\Type\Generic\TemplateTypeHelper;
+use PHPStan\Type\Generic\TemplateTypeVariance;
 use PHPStan\Type\Type;
+use PHPStan\Type\TypehintHelper;
 use ReflectionClass;
 use ReflectionException;
-use ReflectionFunction as NatveReflectionFunction;
+use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
+use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
+use Teknoo\States\PHPStan\Contracts\Reflection\PhpDocInheritanceResolverInterface;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
+use function array_map;
 use function array_pop;
 use function class_exists;
 use function explode;
@@ -68,7 +77,7 @@ use function implode;
 class MethodsClassExtension implements MethodsClassReflectionExtension
 {
     /**
-     * @var array<ReflectionClass<object>>>
+     * @var array<ReflectionClass<object>>
      */
     private array $proxyNativeReflection = [];
 
@@ -78,14 +87,16 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
     private array $hasMethodsCache = [];
 
     public function __construct(
-        private readonly Parser $parser,
-        private readonly FunctionCallStatementFinder $functionCallStatementFinder,
-        private readonly Cache $cache,
         private readonly ReflectionProvider $reflectionProvider,
-        private readonly InitializerExprTypeResolver $initializerExprTypeResolver,
+        private readonly AttributeReflectionFactory|AttributeReflectionFactoryInterface $attributeReflectionFactory,
+        private readonly InitializerExprTypeResolver|InitializerExprTypeResolverInterface $initializerExprTypeResolver,
+        private readonly PhpDocInheritanceResolver|PhpDocInheritanceResolverInterface $phpDocInheritanceResolver,
     ) {
     }
 
+    /**
+     * @throws ReflectionException
+     */
     private function checkIfManagedClass(ClassReflection $reflection): bool
     {
         if ($reflection->isInterface()) {
@@ -126,15 +137,17 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
 
     /**
      * @return array<class-string>
-     * @throws ReflectionException
      */
     private function listStateClassFor(string $className): array
     {
         try {
             $listDeclarationReflection = $this->proxyNativeReflection[$className]->getMethod('statesListDeclaration');
-            $listClosure = $listDeclarationReflection->getClosure(null);
+            $listClosure = $listDeclarationReflection->getClosure();
 
-            return $listClosure();
+            /** @var array<class-string> $statesClasses */
+            $statesClasses = $listClosure();
+
+            return $statesClasses;
             //@codeCoverageIgnoreStart
         } catch (ReflectionException) {
             return [];
@@ -143,9 +156,6 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         //@codeCoverageIgnoreEnd
     }
 
-    /**
-     * @throws ReflectionException
-     */
     private function checkMethod(ClassReflection $reflection, string $methodName): bool
     {
         $proxyClassName = $reflection->getName();
@@ -176,28 +186,54 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         return $this->hasMethodsCache[$cacheKey] = $this->checkMethod($classReflection, $methodName);
     }
 
+    private function getPhpDocReturnType(
+        ClassReflection $phpDocBlockClassReflection,
+        ResolvedPhpDocBlock $resolvedPhpDoc,
+        Type $nativeReturnType
+    ): ?Type {
+        $returnTag = $resolvedPhpDoc->getReturnTag();
+
+        if (null === $returnTag) {
+            return null;
+        }
+
+        $phpDocReturnType = $returnTag->getType();
+        $phpDocReturnType = TemplateTypeHelper::resolveTemplateTypes(
+            type: $phpDocReturnType,
+            standins: $phpDocBlockClassReflection->getActiveTemplateTypeMap(),
+            callSiteVariances: $phpDocBlockClassReflection->getCallSiteVarianceMap(),
+            positionVariance: TemplateTypeVariance::createCovariant(),
+        );
+
+        if ($returnTag->isExplicit() || $nativeReturnType->isSuperTypeOf($phpDocReturnType)->yes()) {
+            return $phpDocReturnType;
+        }
+
+        return null;
+    }
+
     /**
      * @param class-string<object> $proxyClassName
      * @param ReflectionClass<object> $stateNativeReflection
      * @param non-empty-string $method
-     * @throws \PHPStan\Broker\ClassNotFoundException
-     * @throws ReflectionException
+     * @throws ClassNotFoundException
+     * @throws ReflectionException|ShouldNotHappenException
      */
     private function getMethodReflection(
         string $proxyClassName,
         ClassReflection $classReflection,
-        string $stateClass,
         ReflectionClass $stateNativeReflection,
         string $method
-    ): PhpMethodReflection {
+    ): ExtendedMethodReflection {
         $factoryNativeReflection = $stateNativeReflection->getMethod($method);
-        /** @var \Closure $factoryClosure */
-        $factoryClosure = $factoryNativeReflection->getClosure($stateNativeReflection->newInstanceWithoutConstructor());
+        $stateInstance = $stateNativeReflection->newInstanceWithoutConstructor();
+        $factoryClosure = $factoryNativeReflection->getClosure($stateInstance);
+        /** @var Closure $stateClosure */
         $stateClosure = $factoryClosure();
 
         //To use the original \ReflectionClass api and not "BetterReflectionClass" whome not implements all the api.
         $stateClosure = @$stateClosure->bindTo(
-            (new ReflectionClass($proxyClassName))->newInstanceWithoutConstructor(),
+            new ReflectionClass($proxyClassName)->newInstanceWithoutConstructor(),
             $proxyClassName,
         );
 
@@ -208,57 +244,100 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         }
 
         try {
-            $factoryReflection = new ReflectionMethod(BetterReflectionMethod::createFromName($stateClass, $method));
+            $factoryReflection = new ReflectionMethod(
+                BetterReflectionMethod::createFromInstance($stateInstance, $method)
+            );
             //@codeCoverageIgnoreStart
         } catch (OutOfBoundsException) {
-            $factoryReflection = $factoryNativeReflection;
+            throw new ShouldNotHappenException(
+                "Closure returned by {$stateNativeReflection->getName()}::{$method} must be not static"
+            );
         }
 
         //@codeCoverageIgnoreEnd
-
         try {
             $closureReflection = new ReflectionFunction(BetterReflectionFunction::createFromClosure($stateClosure));
             //@codeCoverageIgnoreStart
         } catch (NoClosureOnLine) {
-            $closureReflection = new NatveReflectionFunction($stateClosure);
+            throw new ShouldNotHappenException(
+                "Closure returned by {$stateNativeReflection->getName()}::{$method} must be not static"
+            );
         }
 
         //@codeCoverageIgnoreEnd
-        return new PhpMethodReflection(
-            initializerExprTypeResolver: $this->initializerExprTypeResolver,
-            declaringClass: $classReflection,
-            declaringTrait: null,
-            reflection: new StateMethod(
-                factoryReflection: $factoryReflection,
-                closureReflection: $closureReflection,
-                reflectionClass: $classReflection->getNativeReflection(),
-            ),
+        $docComment = $factoryReflection->getDocComment();
+        if (false === $docComment) {
+            $docComment = null;
+        }
+
+        $positionalParameterNames = array_map(
+            static fn (ReflectionParameter $parameter): string => $parameter->getName(),
+            $closureReflection->getParameters()
+        );
+
+        $resolvedPhpDoc = $this->phpDocInheritanceResolver->resolvePhpDocForMethod(
+            $docComment,
+            $classReflection->getFileName(),
+            $classReflection,
+            null,
+            $factoryReflection->getName(),
+            $positionalParameterNames,
+        );
+
+        $templateTypeMap = $resolvedPhpDoc->getTemplateTypeMap();
+        $nativeReturnType = TypehintHelper::decideTypeFromReflection(
+            reflectionType: $closureReflection->getReturnType(),
+            selfClass: $classReflection,
+        );
+        $phpDocReturnType = $this->getPhpDocReturnType(
+            $classReflection,
+            $resolvedPhpDoc,
+            $nativeReturnType
+        );
+
+        $phpDocThrowType = null;
+        if ($resolvedPhpDoc->getThrowsTag() !== null) {
+            $phpDocThrowType = $resolvedPhpDoc->getThrowsTag()->getType();
+        }
+
+        $selfOutType = null;
+        if ($resolvedPhpDoc->getSelfOutTag() !== null) {
+            $selfOutType = $resolvedPhpDoc->getSelfOutTag()->getType();
+        }
+
+        $asserts = Assertions::createFromResolvedPhpDocBlock($resolvedPhpDoc);
+
+        $acceptsNamedArguments = $resolvedPhpDoc->acceptsNamedArguments();
+
+        return new StateMethod(
             reflectionProvider: $this->reflectionProvider,
-            parser: $this->parser,
-            functionCallStatementFinder: $this->functionCallStatementFinder,
-            cache: $this->cache,
-            templateTypeMap: new TemplateTypeMap([]),
-            phpDocParameterTypes: [],
-            phpDocReturnType: null,
-            phpDocThrowType: null,
-            deprecatedDescription: null,
-            isDeprecated: false,
-            isInternal: false,
-            isFinal: false,
-            isPure: null,
-            asserts: Assertions::createEmpty(),
-            acceptsNamedArguments: true,
-            selfOutType: null,
-            phpDocComment: null,
-            phpDocParameterOutTypes: [],
-            immediatelyInvokedCallableParameters: [],
-            phpDocClosureThisTypeParameters: [],
+            initializerExprTypeResolver: $this->initializerExprTypeResolver,
+            attributeReflectionFactory: $this->attributeReflectionFactory,
+            factoryReflection: $factoryReflection,
+            closureReflection: $closureReflection,
+            declaringClass: $classReflection,
+            phpDocReturnType: $phpDocReturnType,
+            phpDocThrowType: $phpDocThrowType,
+            selfOutType: $selfOutType,
+            asserts: $asserts,
+            templateTypeMap: $templateTypeMap,
+            isPure: $resolvedPhpDoc->isPure(),
+            attributes: $this->attributeReflectionFactory->fromNativeReflection(
+                reflections: $closureReflection->getAttributes(),
+                context: InitializerExprContext::fromClassMethod(
+                    className: $classReflection->getName(),
+                    traitName: null,
+                    methodName: $factoryReflection->getName(),
+                    fileName: $classReflection->getFileName()
+                )
+            ),
+            acceptsNamedArguments: $acceptsNamedArguments,
         );
     }
 
     /**
      * @throws ShouldNotHappenException
-     * @throws \PHPStan\Broker\ClassNotFoundException
+     * @throws ClassNotFoundException
      * @param non-empty-string $methodName
      * @throws ReflectionException
      */
@@ -276,7 +355,6 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
                 return $this->getMethodReflection(
                     proxyClassName: $proxyClassName,
                     classReflection: $classReflection,
-                    stateClass: $stateClass,
                     stateNativeReflection: $stateNativeReflection,
                     method: $methodName,
                 );
