@@ -6,7 +6,8 @@
 - Upgrade code to PHP 8.4
 - Upgrade to PHPUnit 12
 - Upgrade to PHPStan 2.1
-- Prepare States to PHP 8.5 and Closure in constant.
+- Prepare States to PHP 8.5 and Closure in constant
+- Switch license from MIT to 3-Clause BSD
 
 ## [6.4.3] - 2025-02-07
 ### Stable Release

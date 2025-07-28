@@ -167,7 +167,7 @@ sharing knowledge and skills.
 
 License
 -------
-State is licensed under the MIT License - see the licenses folder for details.
+State is licensed under the 3-Clause BSD License - see the licenses folder for details.
 
 Installation & Requirements
 ---------------------------

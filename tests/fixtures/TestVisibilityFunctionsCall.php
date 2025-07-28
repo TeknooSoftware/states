@@ -7,7 +7,7 @@ declare(strict_types=1);
  *
  * LICENSE
  *
- * This source file is subject to the MIT license
+ * This source file is subject to the 3-Clause BSD license
  * it is available in LICENSE file at the root of this package
  * If you did not receive a copy of the license and are unable to
  * obtain it through the world-wide-web, please send an email
@@ -19,7 +19,7 @@ declare(strict_types=1);
  *
  * @link        https://teknoo.software/libraries/states Project website
  *
- * @license     https://teknoo.software/license/mit         MIT License
+ * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
 if (!function_exists('testCallFromFunctionPrivate')) {
@@ -31,7 +31,7 @@ if (!function_exists('testCallFromFunctionPrivate')) {
      *
      * @link        https://teknoo.software/libraries/states Project website
      *
-     * @license     https://teknoo.software/license/mit         MIT License
+     * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
      * @author      Richard Déloge <richard@teknoo.software>
      */
     function testCallFromFunctionPrivate(): void
@@ -50,7 +50,7 @@ if (!function_exists('testCallFromFunctionProtected')) {
      *
      * @link        https://teknoo.software/libraries/states Project website
      *
-     * @license     https://teknoo.software/license/mit         MIT License
+     * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
      * @author      Richard Déloge <richard@teknoo.software>
      */
     function testCallFromFunctionProtected(): void
@@ -69,7 +69,7 @@ if (!function_exists('testCallFromFunctionPublic')) {
      *
      * @link        https://teknoo.software/libraries/states Project website
      *
-     * @license     https://teknoo.software/license/mit         MIT License
+     * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
      * @author      Richard Déloge <richard@teknoo.software>
      *
      * @return mixed
@@ -91,7 +91,7 @@ if (!trait_exists('testCallTrait')) {
      *
      * @link        https://teknoo.software/libraries/states Project website
      *
-     * @license     https://teknoo.software/license/mit         MIT License
+     * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
      * @author      Richard Déloge <richard@teknoo.software>
      */
     trait testCallTrait
@@ -149,7 +149,7 @@ if (!class_exists('testCallFromOtherObject')) {
      *
      * @link        https://teknoo.software/libraries/states Project website
      *
-     * @license     https://teknoo.software/license/mit         MIT License
+     * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
      * @author      Richard Déloge <richard@teknoo.software>
      */
     class testCallFromOtherObject
