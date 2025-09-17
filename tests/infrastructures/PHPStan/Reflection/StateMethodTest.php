@@ -37,6 +37,7 @@ use PHPStan\Reflection\Assertions;
 use PHPStan\Reflection\AttributeReflection;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ExtendedParametersAcceptor;
+use PHPStan\Reflection\Php\PhpClassReflectionExtension;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\TemplateTypeMap;
@@ -166,6 +167,9 @@ class StateMethodTest extends TestCase
         $brc = $this->createMock(BetterReflectionClass::class);
         $brc->method('getName')->willReturn(ProxyInterface::class);
 
+        $rcPfPcre = new ReflectionClass(PhpClassReflectionExtension::class);
+        $pcre = $rcPfPcre->newInstanceWithoutConstructor();
+
         $rcOfDc = new ReflectionClass(ClassReflection::class);
         $dc = $rcOfDc->newInstanceWithoutConstructor();
         $rpr = $rcOfDc->getProperty('reflection');
@@ -182,6 +186,8 @@ class StateMethodTest extends TestCase
         $rpr->setValue($dc, null);
         $rpr = $rcOfDc->getProperty('acceptsNamedArguments');
         $rpr->setValue($dc, $acceptsNamedArguments);
+        $rpr = $rcOfDc->getProperty('phpClassReflectionExtension');
+        $rpr->setValue($dc, $pcre);
 
         $this->getReflectionProviderMock()
             ->method('getClass')
