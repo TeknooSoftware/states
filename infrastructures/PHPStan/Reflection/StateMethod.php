@@ -56,6 +56,7 @@ use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterfa
 use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
 
 use function array_map;
+use function strtolower;
 
 /**
  * To provide a PHPStan reflection for state's methode in a stated class.
@@ -382,5 +383,16 @@ class StateMethod implements ExtendedMethodReflection
         }
 
         return $this->returnType;
+    }
+
+    public function mustUseReturnValue(): TrinaryLogic
+    {
+        foreach ($this->attributes as $attrib) {
+            if ('nodiscard' === strtolower($attrib->getName())) {
+                return TrinaryLogic::createYes();
+            }
+        }
+
+        return TrinaryLogic::createNo();
     }
 }

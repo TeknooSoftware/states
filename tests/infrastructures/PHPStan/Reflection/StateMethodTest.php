@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan\Reflection;
 
-use _PHPStan_5878035a0\Nette\PhpGenerator\ClassType;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
 use PHPStan\BetterReflection\Reflection\ReflectionAttribute;
@@ -51,7 +50,6 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use stdClass;
-use Teknoo\States\Automated\AutomatedInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
@@ -425,5 +423,58 @@ class StateMethodTest extends TestCase
         $attributes = [new AttributeReflection('foo', [])];
 
         $this->assertEquals($attributes, $this->buildInstance(attributes: $attributes)->getAttributes());
+    }
+
+    public function testMustUseReturnValueWithNoAttributes(): void
+    {
+        $result = $this->buildInstance(attributes: [])->mustUseReturnValue();
+        $this->assertEquals(TrinaryLogic::createNo(), $result);
+    }
+
+    public function testMustUseReturnValueWithNoDiscardAttribute(): void
+    {
+        $attributes = [
+            new AttributeReflection('SomeOtherAttribute', []),
+            new AttributeReflection('AnotherAttribute', [])
+        ];
+
+        $result = $this->buildInstance(attributes: $attributes)->mustUseReturnValue();
+        $this->assertEquals(TrinaryLogic::createNo(), $result);
+    }
+
+    public function testMustUseReturnValueWithNoDiscardAttributeLowerCase(): void
+    {
+        $attributes = [new AttributeReflection('nodiscard', [])];
+
+        $result = $this->buildInstance(attributes: $attributes)->mustUseReturnValue();
+        $this->assertEquals(TrinaryLogic::createYes(), $result);
+    }
+
+    public function testMustUseReturnValueWithNoDiscardAttributeUpperCase(): void
+    {
+        $attributes = [new AttributeReflection('NODISCARD', [])];
+
+        $result = $this->buildInstance(attributes: $attributes)->mustUseReturnValue();
+        $this->assertEquals(TrinaryLogic::createYes(), $result);
+    }
+
+    public function testMustUseReturnValueWithNoDiscardAttributeMixedCase(): void
+    {
+        $attributes = [new AttributeReflection('NoDiscard', [])];
+
+        $result = $this->buildInstance(attributes: $attributes)->mustUseReturnValue();
+        $this->assertEquals(TrinaryLogic::createYes(), $result);
+    }
+
+    public function testMustUseReturnValueWithMultipleAttributesIncludingNoDiscard(): void
+    {
+        $attributes = [
+            new AttributeReflection('SomeAttribute', []),
+            new AttributeReflection('nodiscard', []),
+            new AttributeReflection('AnotherAttribute', [])
+        ];
+
+        $result = $this->buildInstance(attributes: $attributes)->mustUseReturnValue();
+        $this->assertEquals(TrinaryLogic::createYes(), $result);
     }
 }

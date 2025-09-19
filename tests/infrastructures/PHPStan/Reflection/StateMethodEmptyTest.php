@@ -100,7 +100,7 @@ class StateMethodEmptyTest extends TestCase
         return $this->initializerExprTypeResolver;
     }
 
-    protected function buildInstance(?string $doc = 'factory doc'): StateMethod
+    protected function buildInstance(?string $doc = 'factory doc', array $attributes = []): StateMethod
     {
         $factoryReflection = $this->createMock(BetterReflectionMethod::class);
         $factoryReflection->method('getName')->willReturn('factory');
@@ -197,7 +197,7 @@ class StateMethodEmptyTest extends TestCase
             asserts: Assertions::createEmpty(),
             templateTypeMap: new TemplateTypeMap([]),
             isPure: false,
-            attributes: [],
+            attributes: $attributes,
             acceptsNamedArguments: true,
         );
     }
@@ -211,5 +211,11 @@ class StateMethodEmptyTest extends TestCase
     public function testReturnsByReference(): void
     {
         $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->returnsByReference());
+    }
+
+    public function testMustUseReturnValueWithEmptyAttributes(): void
+    {
+        $result = $this->buildInstance(attributes: [])->mustUseReturnValue();
+        $this->assertEquals(TrinaryLogic::createNo(), $result);
     }
 }

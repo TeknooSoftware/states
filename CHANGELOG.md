@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [7.0.1] - 2025-09-19
+### Stable Release
+- Fix some BC break introduced by PHPStan bugfix version.
+
 ## [7.0.0] - 2025-07-27
 ### Stable Release
 - Drop support of PHP 8.3

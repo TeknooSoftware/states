@@ -41,9 +41,9 @@
     },
     "require-dev": {
         "roave/security-advisories": "dev-latest",
-        "phpunit/phpunit": "^12.2.7",
+        "phpunit/phpunit": "^12.3.11",
         "squizlabs/php_codesniffer": "^4",
-        "phpstan/phpstan": "^2.1.27",
+        "phpstan/phpstan": "^2.1.28",
         "phpstan/phpdoc-parser": "^2.2",
         "symfony/property-access": "^6.4||^7.3",
         "nikic/php-parser": "^5.5",
