@@ -1,4 +1,9 @@
 parameters:
+    level: max
+    paths:
+        - src/
+        - infrastructures/
+        - tests/fixtures/Phpstan/
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
         -
