@@ -33,8 +33,4 @@ parameters:
             path: infrastructures/PHPStan/Reflection/StateMethod.php
         -
             message: "#ReflectionException in PHPDoc @throws tag but it's not thrown#"
-        -
-            message: "#AvailableSeveralMethodImplementations in PHPDoc @throws tag but it's not thrown#"
-        -
-            message: "#MethodNotImplemented in PHPDoc @throws tag but it's not thrown#"
 
