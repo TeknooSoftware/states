@@ -33,6 +33,8 @@ defined('TK_STATES_TEST_PATH')
 
 ini_set('memory_limit', '64M');
 
+error_reporting(E_ALL);
+
 require_once __DIR__.'/../vendor/autoload.php';
 
 date_default_timezone_set('UTC');

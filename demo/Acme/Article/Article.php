@@ -12,14 +12,16 @@
  * to richard@teknoo.software so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
- * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
+ * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
+ * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  *
  * @link        https://teknoo.software/libraries/states Project website
  *
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+
+declare(strict_types=1);
 
 namespace demo\Acme\Article;
 
@@ -29,35 +31,31 @@ use demo\Acme\Article\States\Extended;
 use demo\Acme\Article\States\Promoted;
 use demo\Acme\Article\States\Published;
 use demo\Acme\Article\States\StateDefault;
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Proxy;
 
 /**
  * Proxy Article
  * Proxy class of the stated class Article.
  *
- *
- * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
- * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
+ * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
+ * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  *
  * @link        https://teknoo.software/libraries/states Project website
  *
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[StateClass([
+    Archived::class,
+    Draft::class,
+    Extended::class,
+    Promoted::class,
+    Published::class,
+    StateDefault::class
+])]
 class Article extends Proxy\Standard
 {
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            Archived::class,
-            Draft::class,
-            Extended::class,
-            Promoted::class,
-            Published::class,
-            StateDefault::class
-        ];
-    }
-
     /**
      * Get an article's attribute.
      *

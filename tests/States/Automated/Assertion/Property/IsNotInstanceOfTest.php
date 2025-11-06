@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Automated\Assertion\Property;
 
+use DateTime;
 use PHPUnit\Framework\Attributes\CoversClass;
 use Teknoo\States\Automated\Assertion\Property\AbstractConstraint;
 use Teknoo\States\Automated\Assertion\Property\ConstraintInterface;
@@ -45,7 +46,7 @@ class IsNotInstanceOfTest extends AbstractConstraintTests
 {
     public function buildInstance(): ConstraintInterface
     {
-        return new IsNotInstanceOf(\DateTime::class);
+        return new IsNotInstanceOf(DateTime::class);
     }
 
     public function testNotInstanceProperty(): void
@@ -64,7 +65,7 @@ class IsNotInstanceOfTest extends AbstractConstraintTests
         $constraintSet = $this->createMock(ConstraintsSetInterface::class);
         $constraintSet->expects($this->never())->method('isValid');
 
-        $value = new \DateTime();
+        $value = new DateTime();
         $this->assertInstanceOf(
             ConstraintInterface::class,
             $this->buildInstance()->inConstraintSet($constraintSet)->check($value)

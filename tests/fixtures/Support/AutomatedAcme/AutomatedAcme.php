@@ -25,11 +25,11 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support\AutomatedAcme;
 
-use Teknoo\States\Automated\Assertion\AssertionInterface;
+use Teknoo\States\Attributes\Assertion;
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Automated\Assertion\Property;
 use Teknoo\States\Automated\AutomatedInterface;
 use Teknoo\States\Automated\AutomatedTrait;
-use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\Proxy\ProxyTrait;
 use Teknoo\Tests\Support\AutomatedAcme\States\State1;
 use Teknoo\Tests\Support\AutomatedAcme\States\State2;
@@ -43,6 +43,14 @@ use Teknoo\Tests\Support\AutomatedAcme\States\State2;
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[StateClass(State1::class)]
+#[StateClass(State2::class)]
+#[Assertion\Property(State1::class, ['foo', Property\IsEqual::class, 'bar'])]
+#[Assertion\Property(
+    State2::class,
+    ['foo1', Property\IsEqual::class, 'bar1'],
+    ['foo2', Property\IsNull::class],
+)]
 class AutomatedAcme implements AutomatedInterface
 {
     use ProxyTrait;
@@ -77,14 +85,6 @@ class AutomatedAcme implements AutomatedInterface
         $this->initializeStateProxy();
     }
 
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            State1::class,
-            State2::class,
-        ];
-    }
-
     public function setFoo(mixed $foo): static
     {
         $this->foo = $foo;
@@ -104,20 +104,6 @@ class AutomatedAcme implements AutomatedInterface
         $this->foo2 = $foo2;
 
         return $this;
-    }
-
-    /**
-     * @return AssertionInterface[]
-     */
-    public function listAssertions(): array
-    {
-        return [
-            new Property([State1::class])
-                ->with('foo', new Property\IsEqual('bar')),
-            new Property([State2::class])
-                ->with('foo1', new Property\IsEqual('bar1'))
-                ->with('foo2', new Property\IsNull()),
-        ];
     }
 
     /**

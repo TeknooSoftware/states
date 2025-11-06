@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\Support\Multiple\Post\States;
 
 use Teknoo\States\State\AbstractState;
+use Teknoo\Tests\Support\Multiple\Post\Post;
 
 /**
  * State Published

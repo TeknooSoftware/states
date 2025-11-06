@@ -73,12 +73,6 @@ class MockProxy implements ProxyInterface, \Stringable
     /***********************
      *** States Management *
      ***********************/
-
-    protected static function statesListDeclaration(): array
-    {
-        return [];
-    }
-
     /**
      * {@inheritdoc}
      */

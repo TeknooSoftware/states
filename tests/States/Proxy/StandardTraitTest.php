@@ -24,10 +24,12 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Proxy;
 
-use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversTrait;
+use Proxy\ProxyInterface;
+use RuntimeException;
 use Teknoo\States\Proxy;
 use Teknoo\Tests\Support;
+use Teknoo\Tests\Support\StandardTraitProxy;
 
 /**
  * Class StandardTraitTest
@@ -53,18 +55,18 @@ class StandardTraitTest extends AbstractProxyTests
     /**
      * Build a proxy object, into $this->proxy to test it.
      */
-    protected function buildProxy(): \Proxy\ProxyInterface|\Teknoo\Tests\Support\StandardTraitProxy
+    protected function buildProxy(): ProxyInterface|StandardTraitProxy
     {
-        $this->proxy = new Support\StandardTraitProxy();
+        $this->proxy = new StandardTraitProxy();
 
         return $this->proxy;
     }
 
     public function testExceptionWhenStateIsNotCorrectlyInitializedWithItsAssociatedClassName(): void
     {
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         $proxy = $this->buildProxy();
-        $proxy->registerStateWithoutOriginal('badState', new Support\MockState1(false, Support\StandardTraitProxy::class));
+        $proxy->registerStateWithoutOriginal('badState', new Support\MockState1(false, StandardTraitProxy::class));
 
         $this->proxy->test();
     }

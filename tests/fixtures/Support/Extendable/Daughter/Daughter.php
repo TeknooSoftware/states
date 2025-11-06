@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support\Extendable\Daughter;
 
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateOne;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateThree;
@@ -41,15 +42,9 @@ use Teknoo\Tests\Support\Extendable\Mother\Mother;
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[StateClass(StateDefault::class)]
+#[StateClass(StateOne::class)]
+#[StateClass(StateThree::class)]
 class Daughter extends Mother
 {
-    #[\Override]
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            StateDefault::class,
-            StateOne::class,
-            StateThree::class,
-        ];
-    }
 }

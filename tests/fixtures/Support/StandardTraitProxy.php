@@ -120,11 +120,6 @@ class StandardTraitProxy extends MotherProxy implements
         return 'fooBar';
     }
 
-    protected static function statesListDeclaration(): array
-    {
-        return [];
-    }
-
     /**
      * To test a bad state injection
      */

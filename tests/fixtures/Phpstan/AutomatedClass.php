@@ -25,7 +25,6 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support\PHPStan;
 
-use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\AutomatedInterface;
 use Teknoo\States\Automated\AutomatedTrait;
 use Teknoo\States\Proxy\ProxyInterface;
@@ -35,14 +34,4 @@ class AutomatedClass implements ProxyInterface, AutomatedInterface
 {
     use ProxyTrait;
     use AutomatedTrait;
-
-    protected static function statesListDeclaration(): array
-    {
-        return [];
-    }
-
-    protected function listAssertions(): array
-    {
-        return [];
-    }
 }

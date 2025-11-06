@@ -28,11 +28,13 @@ namespace Teknoo\Tests\States\Doctrine;
 use AllowDynamicProperties;
 use Closure;
 use ProxyManager\Proxy\LazyLoadingInterface;
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Doctrine\AbstractStandardObject;
 use Teknoo\States\Proxy\ArrayAccessTrait;
 use Teknoo\States\Proxy\IteratorTrait;
 use Teknoo\States\Proxy\MagicCallTrait;
 use Teknoo\States\Proxy\SerializableTrait;
+use Teknoo\Tests\Support\States\SimpleState;
 
 /**
  * Class StandardObject
@@ -50,6 +52,7 @@ use Teknoo\States\Proxy\SerializableTrait;
  * @author      Richard Déloge <richard@teknoo.software>
  */
 #[AllowDynamicProperties]
+#[StateClass([SimpleState::class])]
 class StandardObject extends AbstractStandardObject implements
     \ArrayAccess,
     \SeekableIterator,
@@ -118,12 +121,6 @@ class StandardObject extends AbstractStandardObject implements
     private function privateMethodToCall(): string
     {
         return 'fooBar';
-    }
-
-    #[\Override]
-    protected static function statesListDeclaration(): array
-    {
-        return [];
     }
 
 

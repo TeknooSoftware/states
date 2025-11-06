@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support\Multiple\User;
 
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Proxy;
 use Teknoo\Tests\Support\Multiple\User\States\Administrator;
 use Teknoo\Tests\Support\Multiple\User\States\Moderator;
@@ -38,16 +39,27 @@ use Teknoo\Tests\Support\Multiple\User\States\StateDefault;
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
+ *
+ * @link        https://teknoo.software/libraries/states Project website
+ *
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[StateClass([
+    Administrator::class,
+    Moderator::class,
+    StateDefault::class,
+])]
 class User extends Proxy\Standard
 {
     /**
      * To initialize this user with some data.
      */
-    public function __construct(protected string $userName, protected bool $isAdmin = false, protected bool $isModerator = false)
-    {
+    public function __construct(
+        protected string $userName,
+        protected bool $isAdmin = false,
+        protected bool $isModerator = false,
+    ) {
         //Initialize user
         parent::__construct();
         //Load states
@@ -59,15 +71,5 @@ class User extends Proxy\Standard
         if (!empty($this->isModerator)) {
             $this->enableState(Moderator::class);
         }
-    }
-
-    #[\Override]
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            Administrator::class,
-            Moderator::class,
-            StateDefault::class,
-        ];
     }
 }

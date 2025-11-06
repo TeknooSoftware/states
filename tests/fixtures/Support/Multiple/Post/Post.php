@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support\Multiple\Post;
 
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Proxy;
 use Teknoo\Tests\Support\Multiple\Post\States\Deleted;
 use Teknoo\Tests\Support\Multiple\Post\States\Published;
@@ -38,18 +39,17 @@ use Teknoo\Tests\Support\Multiple\Post\States\StateDefault;
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
+ *
+ * @link        https://teknoo.software/libraries/states Project website
+ *
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[StateClass([
+    Deleted::class,
+    Published::class,
+    StateDefault::class,
+])]
 class Post extends Proxy\Standard
 {
-    #[\Override]
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            Deleted::class,
-            Published::class,
-            StateDefault::class,
-        ];
-    }
 }

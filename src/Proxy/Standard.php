@@ -26,9 +26,8 @@ declare(strict_types=1);
 namespace Teknoo\States\Proxy;
 
 /**
- * Default implementation of the proxy class in stated classes. Unlike previous major versions of States, It can be
- * instantiate directly, factories are not needed, States are directly defined in the proxy class in the static method
- * statesListDeclaration.
+ * Default implementation of the proxy class in stated classes. The proxy class is mandatory.states configurations
+ * must be defined with the class attribute #[Teknoo\States\Attributes\StateClass()]
  *
  * The proxy, by default, redirect all calls, of non defined methods in the proxy, to enabled states.
  * $this, static and self keywords in all methods the stated class instance (aka in proxy's method and states' methods)
@@ -68,13 +67,5 @@ abstract class Standard implements ProxyInterface
     {
         //Call the method of the trait to initialize local attributes of the proxy
         $this->initializeStateProxy();
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected static function statesListDeclaration(): array
-    {
-        return [];
     }
 }

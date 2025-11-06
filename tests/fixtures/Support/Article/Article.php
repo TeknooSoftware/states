@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support\Article;
 
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Proxy;
 use Teknoo\Tests\Support\Article\Article\Archived;
 use Teknoo\Tests\Support\Article\Article\Draft;
@@ -44,21 +45,17 @@ use Teknoo\Tests\Support\Article\Article\StateDefault;
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[StateClass([
+    Archived::class,
+    Draft::class,
+    Extended::class,
+    Promoted::class,
+    Published::class,
+    StateDefault::class,
+])]
 class Article implements Proxy\ProxyInterface
 {
     use Proxy\ProxyTrait;
-
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            Archived::class,
-            Draft::class,
-            Extended::class,
-            Promoted::class,
-            Published::class,
-            StateDefault::class,
-        ];
-    }
 
     /**
      * Get an article's attribute.

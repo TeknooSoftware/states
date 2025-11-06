@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support\Extendable\GrandDaughter;
 
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
 use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateFour;
 use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree;
@@ -40,17 +41,14 @@ use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree;
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[StateClass([
+    StateThree::class,
+    StateFour::class,
+])]
 class GrandDaughter extends Daughter
 {
     private int $privateValueOfGrandGauther = 42;
 
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            StateThree::class,
-            StateFour::class,
-        ];
-    }
 
     public function callPrivateMethod(): int
     {

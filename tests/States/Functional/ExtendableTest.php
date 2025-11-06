@@ -54,11 +54,43 @@ use PHPUnit\Framework\TestCase;
 class ExtendableTest extends TestCase
 {
     /**
+     * @return Mother
+     */
+    public function buildMother()
+    {
+        return new Mother();
+    }
+
+    /**
+     * @return Daughter
+     */
+    public function buildDaughter()
+    {
+        return new Daughter();
+    }
+
+    /**
+     * @return GrandDaughter
+     */
+    public function buildGrandDaughter()
+    {
+        return new GrandDaughter();
+    }
+
+    /**
+     * @return GrandGrandDaughter
+     */
+    public function buildGrandGrandDaughter()
+    {
+        return new GrandGrandDaughter();
+    }
+
+    /**
      * Check if the list of states for the mother contains only its states and not states of its children classes.
      */
     public function testListAvailablesStatesMother(): void
     {
-        $motherInstance = new Mother();
+        $motherInstance = $this->buildMother();
         $statesList = $motherInstance->listAvailableStates();
         sort($statesList);
         $this->assertSame([StateDefault::class, StateOneMother::class, StateTwo::class], $statesList);
@@ -70,7 +102,7 @@ class ExtendableTest extends TestCase
      */
     public function testListAvailablesStatesDaughter(): void
     {
-        $daughterInstance = new Daughter();
+        $daughterInstance = $this->buildDaughter();
         $statesList = $daughterInstance->listAvailableStates();
         sort($statesList);
         $this->assertEquals(
@@ -84,7 +116,7 @@ class ExtendableTest extends TestCase
      */
     public function testListAvailableStatesGrandDaughter(): void
     {
-        $grandDaughterInstance = new GrandDaughter();
+        $grandDaughterInstance = $this->buildGrandDaughter();
         $statesList = $grandDaughterInstance->listAvailableStates();
         sort($statesList);
         $this->assertEquals(
@@ -104,7 +136,7 @@ class ExtendableTest extends TestCase
      */
     public function testListAvailableStatesGrandGrandDaughter(): void
     {
-        $grandGrandDaughterInstance = new GrandGrandDaughter();
+        $grandGrandDaughterInstance = $this->buildGrandGrandDaughter();
         $statesList = $grandGrandDaughterInstance->listAvailableStates();
         sort($statesList);
         $this->assertEquals(
@@ -124,7 +156,7 @@ class ExtendableTest extends TestCase
      */
     public function testListMethodsByStatesMother(): void
     {
-        $motherInstance = new Mother();
+        $motherInstance = $this->buildMother();
         $this->assertEquals(
             [
                 StateDefault::class => [],
@@ -151,7 +183,7 @@ class ExtendableTest extends TestCase
      */
     public function testListMethodsByStatesDaughter(): void
     {
-        $daughterInstance = new Daughter();
+        $daughterInstance = $this->buildDaughter();
         $this->assertEquals(
             [
                 StateDefaultDaughter::class => [],
@@ -176,7 +208,7 @@ class ExtendableTest extends TestCase
      */
     public function testListMethodsByStatesGrandDaughter(): void
     {
-        $grandDaughterInstance = new GrandDaughter();
+        $grandDaughterInstance = $this->buildGrandDaughter();
         $this->assertEquals(
             [
                 StateDefaultDaughter::class => [],
@@ -207,7 +239,7 @@ class ExtendableTest extends TestCase
      */
     public function testListMethodsByStatesGrandGrandDaughter(): void
     {
-        $grandGrandDaughterInstance = new GrandGrandDaughter();
+        $grandGrandDaughterInstance = $this->buildGrandGrandDaughter();
         $this->assertEquals(
             [
                 StateDefaultDaughter::class => [],
@@ -237,12 +269,12 @@ class ExtendableTest extends TestCase
      */
     public function testOverloadedState(): void
     {
-        $motherInstance = new Mother();
+        $motherInstance = $this->buildMother();
         $motherInstance->enableState(StateOneMother::class);
         $this->assertEquals(123, $motherInstance->method1());
         $this->assertEquals(456, $motherInstance->method2());
 
-        $daughterInstance = new Daughter();
+        $daughterInstance = $this->buildDaughter();
         $daughterInstance->enableState(StateOne::class);
         $this->assertEquals(321, $daughterInstance->method3());
         $this->assertEquals(654, $daughterInstance->method4());
@@ -294,16 +326,16 @@ class ExtendableTest extends TestCase
      */
     public function testExtendedState(): void
     {
-        $daughterInstance = new Daughter();
+        $daughterInstance = $this->buildDaughter();
         $daughterInstance->enableState(StateThree::class);
         $this->assertEquals(666, $daughterInstance->method6());
 
-        $grandDaughterInstance = new GrandDaughter();
+        $grandDaughterInstance = $this->buildGrandDaughter();
         $grandDaughterInstance->enableState(StateThreeGD::class);
         $this->assertEquals(666, $grandDaughterInstance->method6());
         $this->assertEquals(777, $grandDaughterInstance->method7());
 
-        $grandGrandDaughterInstance = new GrandGrandDaughter();
+        $grandGrandDaughterInstance = $this->buildGrandGrandDaughter();
         $grandGrandDaughterInstance->enableState(StateThreeGD::class);
         $this->assertEquals(666, $grandGrandDaughterInstance->method6());
         $this->assertEquals(777, $grandGrandDaughterInstance->method7());
@@ -314,7 +346,7 @@ class ExtendableTest extends TestCase
      */
     public function testMotherCanCallPrivate(): void
     {
-        $motherInstance = new Mother();
+        $motherInstance = $this->buildMother();
         $motherInstance->enableState(StateTwo::class);
         $this->assertEquals(2 * 789, $motherInstance->methodRecallPrivate());
     }
@@ -325,7 +357,7 @@ class ExtendableTest extends TestCase
      */
     public function testDaughterCanCallPrivateViaMotherMethod(): void
     {
-        $daughterInstance = new Daughter();
+        $daughterInstance = $this->buildDaughter();
         $daughterInstance->enableState(StateTwo::class);
         $this->assertEquals(2 * 789, $daughterInstance->methodRecallPrivate());
     }
@@ -336,7 +368,7 @@ class ExtendableTest extends TestCase
      */
     public function testDaughterCanCallMotherProtected(): void
     {
-        $daughterInstance = new Daughter();
+        $daughterInstance = $this->buildDaughter();
         $daughterInstance->enableState(StateTwo::class)
             ->enableState(StateThree::class);
         $this->assertEquals(3 * 456, $daughterInstance->methodRecallMotherProtected());
@@ -350,7 +382,7 @@ class ExtendableTest extends TestCase
     {
         $this->expectException(MethodNotImplemented::class);
 
-        $daughterInstance = new Daughter();
+        $daughterInstance = $this->buildDaughter();
         $daughterInstance->enableState(StateTwo::class)
             ->enableState(StateThree::class);
 
@@ -359,7 +391,7 @@ class ExtendableTest extends TestCase
 
     public function testAccessToPrivateAttributeWithBindOfClosure(): void
     {
-        $daughterInstance = new Daughter();
+        $daughterInstance = $this->buildDaughter();
         $daughterInstance->enableState(StateTwo::class);
 
         $daughterInstance->updateVariable('fooBar');
@@ -371,7 +403,7 @@ class ExtendableTest extends TestCase
 
     public function testAccessToPrivateAttributeWithBindOfClosureFromGrandDaughter(): void
     {
-        $daughterInstance = new GrandDaughter();
+        $daughterInstance = $this->buildGrandDaughter();
         $daughterInstance->enableState(StateTwo::class);
 
         $daughterInstance->updateVariable('fooBar');
@@ -383,7 +415,7 @@ class ExtendableTest extends TestCase
 
     public function testAccessToPrivateAttributeWithBindOfClosureFromGrandGrandDaughter(): void
     {
-        $daughterInstance = new GrandGrandDaughter();
+        $daughterInstance = $this->buildGrandGrandDaughter();
         $daughterInstance->enableState(StateTwo::class);
 
         $daughterInstance->updateVariable('fooBar');
@@ -395,18 +427,18 @@ class ExtendableTest extends TestCase
 
     public function testStatesLoadingWhenStatesListDeclarationIsNotImplementedInClass(): void
     {
-        $gdIinstance = new GrandDaughter();
+        $gdIinstance = $this->buildGrandDaughter();
         $gdIinstance->enableState(StateFour::class);
         $this->assertEquals(42, $gdIinstance->getPrivateValueOfGrandGauther());
 
-        $gddInstance = new GrandGrandDaughter();
+        $gddInstance = $this->buildGrandGrandDaughter();
         $gddInstance->enableState(StateFour::class);
         $this->assertEquals(42, $gddInstance->getPrivateValueOfGrandGauther());
     }
 
     public function testCallPrivateMethodFromAPublicMethodInParent(): void
     {
-        $gddInstance = new GrandGrandDaughter();
+        $gddInstance = $this->buildGrandGrandDaughter();
         $gddInstance->enableState(StateFour::class);
 
         $this->assertSame(42, $gddInstance->callPrivateMethod());
@@ -416,7 +448,7 @@ class ExtendableTest extends TestCase
     {
         $this->expectException(MethodNotImplemented::class);
 
-        $gddInstance = new GrandGrandDaughter();
+        $gddInstance = $this->buildGrandGrandDaughter();
         $gddInstance->enableState(StateFour::class);
 
         $gddInstance->callPrivateMethodSo();

@@ -38,8 +38,4 @@ class ArrayAccessClass implements ArrayAccess, ProxyInterface
     use ProxyTrait;
     use ArrayAccessTrait;
 
-    protected static function statesListDeclaration(): array
-    {
-        return [];
-    }
 }

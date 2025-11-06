@@ -33,7 +33,8 @@ standard PHP classes :
 *   A main standard PHP class, called proxy, implementing the `ProxyInterface` via the `ProxyTrait`,
     extended to represent stated class instances (from stated classes). `$this` referencing these proxy.
   *   With the `ProxyTrait` implementation, each state class must be declared into the proxy class,
-      via the protected static method `statesListDeclaration()`.
+     * via the attribute #[Teknoo\States\Attributes\StateClass()]
+     * via the protected static method `statesListDeclaration()` **(deprecated)**.
 
 During proxy instantiating, the proxy finds and loads all states declared.
 
