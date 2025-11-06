@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Automated\Assertion\Property;
 
+use PHPUnit\Framework\TestCase;
 use Teknoo\States\Automated\Assertion\Property\ConstraintInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 use Teknoo\States\Automated\Assertion\Property\IsEqual;
@@ -35,7 +36,7 @@ use Teknoo\States\Automated\Assertion\Property\IsEqual;
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-abstract class AbstractConstraintTests extends \PHPUnit\Framework\TestCase
+abstract class AbstractConstraintTests extends TestCase
 {
     abstract public function buildInstance(): ConstraintInterface;
 

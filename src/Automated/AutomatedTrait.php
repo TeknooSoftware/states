@@ -25,6 +25,10 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Automated;
 
+use ReflectionClass;
+use ReflectionAttribute;
+use Teknoo\States\Attributes\Assertion;
+use Teknoo\States\Attributes\AssertionInterface as AttrInterface;
 use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 use Teknoo\States\Automated\Exception\AssertionException;
@@ -48,7 +52,10 @@ trait AutomatedTrait
      *
      * @return AssertionInterface[]
      */
-    abstract protected function listAssertions(): array;
+    protected function listAssertions(): array
+    {
+         return [];
+    }
 
     /**
      * To iterate defined assertions and check if they implements the interface AssertionInterface.
@@ -57,6 +64,16 @@ trait AutomatedTrait
      */
     private function iterateAssertions(): iterable
     {
+        $className = $this::class;
+
+        $reflectionClass = new ReflectionClass($className);
+        $attributesList = $reflectionClass->getAttributes(AttrInterface::class, ReflectionAttribute::IS_INSTANCEOF);
+        foreach ($attributesList as $attribute) {
+            /** @var ReflectionAttribute<AttrInterface> $attribute */
+            $assertion = $attribute->newInstance()->getAssertion($this);
+            yield $assertion;
+        }
+
         foreach ($this->listAssertions() as $assertion) {
             if (!$assertion instanceof AssertionInterface) {
                 throw new AssertionException('Error, all assertions must implements AssertionInterface');

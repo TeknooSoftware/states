@@ -37,9 +37,4 @@ class IteratorClass implements Iterator, ProxyInterface
 {
     use ProxyTrait;
     use IteratorTrait;
-
-    protected static function statesListDeclaration(): array
-    {
-        return [];
-    }
 }

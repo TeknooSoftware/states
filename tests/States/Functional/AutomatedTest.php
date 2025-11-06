@@ -27,6 +27,7 @@ namespace Teknoo\Tests\States\Functional;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversTrait;
+use PHPUnit\Framework\TestCase;
 use Teknoo\States\Automated\AutomatedTrait;
 use Teknoo\States\Proxy\Exception\MethodNotImplemented;
 use Teknoo\Tests\Support\AutomatedAcme\AutomatedAcme;
@@ -42,9 +43,12 @@ use Teknoo\Tests\Support\AutomatedAcme\States\State2;
  * @author      Richard Déloge <richard@teknoo.software>
  */
 #[CoversTrait(AutomatedTrait::class)]
-class AutomatedTest extends \PHPUnit\Framework\TestCase
+class AutomatedTest extends TestCase
 {
-    public function buildInstance(): \Teknoo\Tests\Support\AutomatedAcme\AutomatedAcme
+    /**
+     * @return AutomatedAcme
+     */
+    public function buildInstance()
     {
         return new AutomatedAcme();
     }

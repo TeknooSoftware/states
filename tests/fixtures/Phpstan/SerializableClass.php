@@ -33,9 +33,4 @@ class SerializableClass implements ProxyInterface
 {
     use ProxyTrait;
     use SerializableTrait;
-
-    protected static function statesListDeclaration(): array
-    {
-        return [];
-    }
 }

@@ -29,7 +29,16 @@ The trait proxy can be compliant with standard interfaces `\Serializable`, `\Arr
 `\Countable` and magic methods. To enable it, use also trait `ArrayAccessTrait`, `IteratorTrait`, `MagicCallTrait` and 
 `SerializableTrait` available in the namespace `\Teknoo\States\Proxy`.
 
-All states class must be declared into this proxy class via the static method `statesListDeclaration()`, like here :
+All states class must be declared into this proxy class via the attribute #[Teknoo\States\Attributes\StateClass()]
+
+    #[StateClass(English::class)]
+    #[StateClass(French::class)]
+
+or
+
+    #[StateClass([English::class, French::class])]
+
+or via the deprecated static method `statesListDeclaration()`, like here :
 
     public static function statesListDeclaration(): array
     {

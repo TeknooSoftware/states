@@ -27,12 +27,15 @@ namespace Teknoo\Tests\States\Automated;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\CoversTrait;
+use PHPUnit\Framework\TestCase;
 use stdClass;
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 use Teknoo\States\Automated\AutomatedInterface;
 use Teknoo\States\Automated\AutomatedTrait;
 use Teknoo\States\Proxy\ProxyTrait;
+use Teknoo\Tests\Support\States\SimpleState;
 
 /**
  * Class AbstractAutomatedTest.
@@ -43,11 +46,11 @@ use Teknoo\States\Proxy\ProxyTrait;
  * @author      Richard Déloge <richard@teknoo.software>
  */
 #[CoversTrait(AutomatedTrait::class)]
-class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
+class AutomatedTraitTest extends TestCase
 {
     public function buildProxy(array $assertions): AutomatedInterface
     {
-        return new class ($assertions) extends stdClass implements AutomatedInterface {
+        $object = new #[StateClass([SimpleState::class])] class ($assertions) extends stdClass implements AutomatedInterface {
             use AutomatedTrait;
             use ProxyTrait;
 
@@ -56,16 +59,13 @@ class AutomatedTraitTest extends \PHPUnit\Framework\TestCase
                 $this->initializeStateProxy();
             }
 
-            protected static function statesListDeclaration(): array
-            {
-                return [];
-            }
-
             protected function listAssertions(): array
             {
                 return $this->assertions;
             }
         };
+
+        return $object;
     }
 
     public function testBadAssertions(): void

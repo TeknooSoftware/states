@@ -11,9 +11,6 @@ parameters:
         -
             message: '#is not covered by backward compatibility promise#'
         -
-            message: '#expects class-string, string given#'
-            path: infrastructures/PHPStan/Analyser/ASTVisitor.php
-        -
             message: '#Cannot cast mixed to string#'
             path: src/Proxy/MagicCallTrait.php
         -

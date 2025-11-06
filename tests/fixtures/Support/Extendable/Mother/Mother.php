@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support\Extendable\Mother;
 
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\Proxy\ProxyTrait;
 use Teknoo\Tests\Support\Extendable\GrandMother\GrandMother;
@@ -43,6 +44,11 @@ use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[StateClass([
+    StateDefault::class,
+    StateOne::class,
+])]
+#[StateClass(StateTwo::class)]
 class Mother extends GrandMother implements ProxyInterface
 {
     use ProxyTrait;
@@ -56,15 +62,6 @@ class Mother extends GrandMother implements ProxyInterface
     {
         //Call the method of the trait to initialize local attributes of the proxy
         $this->initializeStateProxy();
-    }
-
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            StateDefault::class,
-            StateOne::class,
-            StateTwo::class,
-        ];
     }
 
     /**

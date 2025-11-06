@@ -50,6 +50,10 @@ in a state, in the proxy or outside the stated class.
 Example
 -------
 
+    #[StateClass(English::class)]
+    #[StateClass(French::class)]
+    #[PropertyAssertion(English::class, ['country', IsEqual::class, 'en'])]
+    #[PropertyAssertion(French::class, ['country', IsEqual::class, 'fr'])]
     class Person implements ProxyInterface, AutomatedInterface
     {
         use ProxyTrait;
@@ -62,24 +66,6 @@ Example
         public function __construct()
         {
             $this->initializeStateProxy();
-        }
-    
-        protected static function statesListDeclaration(): array
-        {
-            return [
-                English::class,
-                French::class
-            ];
-        }
-    
-        protected function listAssertions(): array
-        {
-            return [
-                (new Property([English::class]))
-                    ->with('country', new IsEqual('en')),
-                (new Property([French::class]))
-                    ->with('country', new IsEqual('fr')),
-            ];
         }
     //....
     }

@@ -25,7 +25,9 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Proxy;
 
+use DateTime;
 use PHPUnit\Framework\Error\Warning;
+use PHPUnit\Framework\TestCase;
 use Teknoo\States\Proxy;
 use Teknoo\States\Proxy\Exception;
 use Teknoo\States\State\StateInterface;
@@ -49,7 +51,7 @@ use const E_WARNING;
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
+abstract class AbstractProxyTests extends TestCase
 {
     /**
      * Mock state 1, used in these tests.
@@ -182,7 +184,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
     public function testExceptionOnRegisterAStateWithAClassNameNotImplementingTheState(): void
     {
         $this->expectException(Exception\IllegalName::class);
-        $this->proxy->registerState(\DateTime::class, $this->state1);
+        $this->proxy->registerState(DateTime::class, $this->state1);
     }
 
     /**
@@ -231,7 +233,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
     public function testExceptionOnUnRegisterAStateWithNonRegisteredState(): void
     {
         $this->expectException(Exception\StateNotFound::class);
-        $this->proxy->unregisterState(\DateTime::class);
+        $this->proxy->unregisterState(DateTime::class);
     }
 
     /**
@@ -324,7 +326,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
     public function testExceptionOnEnableStateWithNonRegisteredState(): void
     {
         $this->expectException(Exception\StateNotFound::class);
-        $this->proxy->enableState(\DateTime::class);
+        $this->proxy->enableState(DateTime::class);
     }
 
     /**
@@ -371,7 +373,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
     public function testExceptionOnDisableStateWithNonRegisteredState(): void
     {
         $this->expectException(Exception\StateNotFound::class);
-        $this->proxy->disableState(\DateTime::class);
+        $this->proxy->disableState(DateTime::class);
     }
 
     /**
@@ -433,7 +435,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         $proxy = $proxyReflectionClass->newInstanceWithoutConstructor();
         $this->assertInstanceOf(
             Proxy\ProxyInterface::class,
-            $proxy->isInState([\DateTime::class], function (): never {
+            $proxy->isInState([DateTime::class], function (): never {
                 self::fail();
             })
         );
@@ -579,7 +581,7 @@ abstract class AbstractProxyTests extends \PHPUnit\Framework\TestCase
         $called = false;
         $this->assertInstanceOf(
             Proxy\ProxyInterface::class,
-            $proxy->isNotInState([\DateTime::class], function () use (&$called): void {
+            $proxy->isNotInState([DateTime::class], function () use (&$called): void {
                 $called = true;
             })
         );

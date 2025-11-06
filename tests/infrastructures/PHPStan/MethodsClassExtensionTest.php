@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan;
 
+use DateTime;
 use PHPStan\Analyser\NameScope;
 use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
 use PHPStan\PhpDoc\PhpDocNodeResolver;
@@ -683,7 +684,7 @@ class MethodsClassExtensionTest extends TestCase
             [StateInterface::class, true],
         ]);
 
-        $brc->method('getName')->willReturn(\DateTime::class.'\\Foo');
+        $brc->method('getName')->willReturn(DateTime::class.'\\Foo');
 
         $rcOfCr = new ReflectionClass(ClassReflection::class);
         $cr = $rcOfCr->newInstanceWithoutConstructor();

@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Functional;
 
+use PHPUnit\Framework\TestCase;
 use Teknoo\Tests\Support\Article\Article;
 use Teknoo\Tests\Support\Article\Article\Archived;
 use Teknoo\Tests\Support\Article\Article\Draft;
@@ -44,14 +45,22 @@ use Teknoo\States\Proxy\Exception\MethodNotImplemented;
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-class ArticleTest extends \PHPUnit\Framework\TestCase
+class ArticleTest extends TestCase
 {
+    /**
+     * @return Article
+     */
+    public function buildObject()
+    {
+        return new Article();
+    }
+
     /**
      * Functional test on article.
      */
     public function testArticle(): void
     {
-        $article = new Article();
+        $article = $this->buildObject();
 
         //It is a new article, not published, the constructor load the state 'Draft'
         //Empty article, getTitle return nothing
@@ -103,29 +112,30 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
 
     public function testStatesFullQualifiedClassName(): void
     {
-        $article = new Article();
+        $article = $this->buildObject();
+        $articleClass = $article::class;
 
-        $this->assertInstanceOf(Article::class, $article->isInState([Archived::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Archived::class], function (): never {
             self::fail();
         }));
         $called = false;
-        $this->assertInstanceOf(Article::class, $article->isInState([Draft::class], function ($states) use (&$called): void {
+        $this->assertInstanceOf($articleClass, $article->isInState([Draft::class], function ($states) use (&$called): void {
             $this->assertEquals([Draft::class, StateDefault::class], $states);
             $called = true;
         }));
         $this->assertTrue($called);
-        $this->assertInstanceOf(Article::class, $article->isInState([Extended::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Extended::class], function (): never {
             self::fail();
         }));
-        $this->assertInstanceOf(Article::class, $article->isInState([Promoted::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Promoted::class], function (): never {
             self::fail();
         }));
-        $this->assertInstanceOf(Article::class, $article->isInState([Published::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Published::class], function (): never {
             self::fail();
         }));
         $called = false;
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState(
                 [StateDefault::class],
                 function ($states) use (&$called): void {
@@ -138,21 +148,21 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
 
         $article->switchState(Published::class);
 
-        $this->assertInstanceOf(Article::class, $article->isInState([Archived::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Archived::class], function (): never {
             self::fail();
         }));
-        $this->assertInstanceOf(Article::class, $article->isInState([Draft::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Draft::class], function (): never {
             self::fail();
         }));
-        $this->assertInstanceOf(Article::class, $article->isInState([Extended::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Extended::class], function (): never {
             self::fail();
         }));
-        $this->assertInstanceOf(Article::class, $article->isInState([Promoted::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Promoted::class], function (): never {
             self::fail();
         }));
         $called = false;
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState(
                 [Published::class],
                 function ($states) use (&$called): void {
@@ -162,7 +172,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
             )
         );
         $this->assertTrue($called);
-        $this->assertInstanceOf(Article::class, $article->isInState([StateDefault::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([StateDefault::class], function (): never {
             self::fail();
         }));
 
@@ -170,18 +180,18 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $article->switchState(Promoted::class);
 
 
-        $this->assertInstanceOf(Article::class, $article->isInState([Archived::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Archived::class], function (): never {
             self::fail();
         }));
-        $this->assertInstanceOf(Article::class, $article->isInState([Draft::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Draft::class], function (): never {
             self::fail();
         }));
-        $this->assertInstanceOf(Article::class, $article->isInState([Extended::class], function (): never {
+        $this->assertInstanceOf($articleClass, $article->isInState([Extended::class], function (): never {
             self::fail();
         }));
         $called = false;
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Promoted::class], function ($states) use (&$called): void {
                 $this->assertEquals([Promoted::class], $states);
                 $called = true;
@@ -190,7 +200,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($called);
         $called = false;
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Published::class], function ($states) use (&$called): void {
                 $this->assertEquals([Promoted::class], $states);
                 $called = true;
@@ -198,7 +208,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         );
         $this->assertTrue($called);
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([StateDefault::class], function (): never {
                 self::fail();
             })
@@ -210,7 +220,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
 
         $called = false;
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Archived::class], function ($states) use (&$called): void {
                 $this->assertEquals([Archived::class], $states);
                 $called = true;
@@ -218,26 +228,26 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         );
         $this->assertTrue($called);
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Draft::class], function (): never {
                 self::fail();
             })
         );
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Extended::class], function (): never {
                 self::fail();
             })
         );
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Promoted::class], function (): never {
                 self::fail();
             })
         );
         $called = false;
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Published::class], function ($states) use (&$called): void {
                 $this->assertEquals([Archived::class], $states);
                 $called = true;
@@ -245,7 +255,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         );
         $this->assertTrue($called);
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([StateDefault::class], function (): never {
                 self::fail();
             })
@@ -256,20 +266,20 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
 
 
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Archived::class], function (): never {
                 self::fail();
             })
         );
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Draft::class], function (): never {
                 self::fail();
             })
         );
         $called = false;
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Extended::class], function ($states) use (&$called): void {
                 $this->assertEquals([Extended::class], $states);
                 $called = true;
@@ -278,7 +288,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($called);
         $called = false;
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Promoted::class], function ($states) use (&$called): void {
                 $this->assertEquals([Extended::class], $states);
                 $called = true;
@@ -287,7 +297,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($called);
         $called = false;
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([Published::class], function ($states) use (&$called): void {
                 $this->assertEquals([Extended::class], $states);
                 $called = true;
@@ -295,7 +305,7 @@ class ArticleTest extends \PHPUnit\Framework\TestCase
         );
         $this->assertTrue($called);
         $this->assertInstanceOf(
-            Article::class,
+            $articleClass,
             $article->isInState([StateDefault::class], function (): never {
                 self::fail();
             })

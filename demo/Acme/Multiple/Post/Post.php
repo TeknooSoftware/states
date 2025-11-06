@@ -12,43 +12,42 @@
  * to richard@teknoo.software so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
- * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
+ * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
+ * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  *
  * @link        https://teknoo.software/libraries/states Project website
  *
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+
+declare(strict_types=1);
 
 namespace demo\Acme\Multiple\Post;
 
 use demo\Acme\Multiple\Post\States\Deleted;
 use demo\Acme\Multiple\Post\States\Published;
 use demo\Acme\Multiple\Post\States\StateDefault;
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Proxy;
 
 /**
  * Proxy Class
  * Proxy for the stated class "Post".
  *
- *
- * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
- * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
+ * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
+ * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  *
  * @link        https://teknoo.software/libraries/states Project website
  *
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+#[StateClass([
+    Deleted::class,
+    Published::class,
+    StateDefault::class,
+])]
 class Post extends Proxy\Standard
 {
-    protected static function statesListDeclaration(): array
-    {
-        return [
-            Deleted::class,
-            Published::class,
-            StateDefault::class
-        ];
-    }
 }

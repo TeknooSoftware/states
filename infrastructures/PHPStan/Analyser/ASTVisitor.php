@@ -39,12 +39,15 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use ReflectionClass;
 use ReflectionException;
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
 use function array_flip;
 use function array_keys;
 use function array_map;
+use function array_merge;
+use function array_unique;
 use function get_parent_class;
 use function strtolower;
 
@@ -91,7 +94,7 @@ class ASTVisitor extends NodeVisitorAbstract
     }
 
     /**
-     * @return array<class-string>
+     * @return array<class-string, int>
      * @throws ReflectionException
      */
     private function listStatesFromProxyClass(string $proxyClass): array
@@ -115,23 +118,36 @@ class ASTVisitor extends NodeVisitorAbstract
 
     /**
      * @param class-string $className
-     * @return array<class-string>
+     * @return array<class-string, int>
      * @throws ReflectionException
      */
     private function extractStatesClassesDeclaration(string $className): array
     {
         $nativeReflection = new ReflectionClass($className);
 
-        if (!$nativeReflection->hasMethod('statesListDeclaration')) {
-            return [];
+        $attributeStatesList = [];
+        foreach ($nativeReflection->getAttributes(StateClass::class) as $attribute) {
+            /** @var \ReflectionAttribute<StateClass> $attribute */
+            $attributeStatesList[] = $attribute->newInstance()->getClassNames();
         }
 
-        $listDeclarationReflection = $nativeReflection->getMethod('statesListDeclaration');
+        $methodStatesList = [];
+        if ($nativeReflection->hasMethod('statesListDeclaration')) {
+            $listDeclarationReflection = $nativeReflection->getMethod('statesListDeclaration');
 
-        /** @var array<class-string, int> $classesList */
-        $classesList = $listDeclarationReflection->getClosure()();
+            /** @var array<class-string> $methodStatesList */
+            $methodStatesList = $listDeclarationReflection->getClosure()();
 
-        return array_flip($classesList);
+            if ([] !== $methodStatesList && is_array($methodStatesList)) {
+                trigger_error(
+                    "Since teknoo/states 7.1.0, Method '{$className}::statesListDeclaration()' is deprecated, "
+                    . "use instead PHP attribute #[StateClass]",
+                    E_USER_DEPRECATED,
+                );
+            }
+        }
+
+        return array_flip(array_unique(array_merge($methodStatesList, ...$attributeStatesList)));
     }
 
     /**

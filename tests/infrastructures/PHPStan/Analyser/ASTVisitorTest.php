@@ -31,6 +31,7 @@ use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
 use PHPStan\Parser\Parser;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -38,6 +39,7 @@ use Teknoo\States\PHPStan\Analyser\ASTVisitor;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 use Teknoo\Tests\Support\Extendable\Mother\Mother;
+use Teknoo\Tests\Support\Extendable\Mother\MotherLegacy;
 use Teknoo\Tests\Support\Extendable\Mother\States\StateOne;
 use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
 use Teknoo\Tests\Support\MockProxy;
@@ -260,7 +262,6 @@ class ASTVisitorTest extends TestCase
         $this->assertCount(1, $result->stmts);
     }
 
-
     public function testLeaveNodeWithProxyClassNode(): void
     {
         $state1Class = new Class_(
@@ -301,6 +302,62 @@ class ASTVisitorTest extends TestCase
             ]
         );
         $proxyClass->namespacedName = new Name(Mother::class);
+
+        $visitor = $this->buildVisitor();
+
+        $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($state1Class));
+        $this->assertCount(1, $result->stmts);
+
+        $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($state2Class));
+        $this->assertCount(1, $result->stmts);
+
+        $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($proxyClass));
+
+        $this->assertNotEmpty($result->stmts);
+        $this->assertCount(5, $result->stmts);
+    }
+
+    #[IgnoreDeprecations]
+    public function testLeaveNodeWithLegacyProxyClassNode(): void
+    {
+        $state1Class = new Class_(
+            'StateOne',
+            [
+                'stmts' => [
+                    $this->createMock(Node::class),
+                    new ClassMethod(new Node\Identifier('foo'), []),
+                ],
+                'implements' => [new Name(StateInterface::class)]
+            ]
+        );
+
+        $state1Class->namespacedName = new Name(StateOne::class);
+
+        $state2Class = new Class_(
+            'StateTwo',
+            [
+                'stmts' => [
+                    $this->createMock(Node::class),
+                    new ClassMethod(new Node\Identifier('foo'), []),
+                    new ClassMethod(new Node\Identifier('bar'), []),
+                ],
+                'implements' => [new Name(StateInterface::class)]
+            ]
+        );
+
+        $state2Class->namespacedName = new Name(StateTwo::class);
+
+        $proxyClass = new Class_(
+            Mother::class,
+            [
+                'stmts' => [
+                    $this->createMock(Node::class),
+                    new ClassMethod(new Node\Identifier('hello'), []),
+                ],
+                'implements' => [new Name(ProxyInterface::class)]
+            ]
+        );
+        $proxyClass->namespacedName = new Name(MotherLegacy::class);
 
         $visitor = $this->buildVisitor();
 

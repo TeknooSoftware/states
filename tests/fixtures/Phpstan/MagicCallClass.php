@@ -33,9 +33,4 @@ class MagicCallClass implements ProxyInterface
 {
     use ProxyTrait;
     use MagicCallTrait;
-
-    protected static function statesListDeclaration(): array
-    {
-        return [];
-    }
 }

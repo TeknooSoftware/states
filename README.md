@@ -31,26 +31,30 @@ Quick Example
     
     require 'vendor/autoload.php';
     
-    use Teknoo\States\Automated\AutomatedInterface;
-    use Teknoo\States\Automated\AutomatedTrait;
+    use Closure;
+    use DateTime;
+    use Teknoo\States\Attributes\Assertion\Property as PropertyAssertion;
+    use Teknoo\States\Attributes\StateClass;
     use Teknoo\States\Automated\Assertion\Property;
     use Teknoo\States\Automated\Assertion\Property\IsEqual;
+    use Teknoo\States\Automated\AutomatedInterface;
+    use Teknoo\States\Automated\AutomatedTrait;
     use Teknoo\States\Proxy\ProxyInterface;
     use Teknoo\States\Proxy\ProxyTrait;
     use Teknoo\States\State\AbstractState;
     
     class English extends AbstractState
     {
-        public function sayHello(): \Closure
+        public function sayHello(): Closure
         {
             return function(): string {
                 return 'Good morning, '.$this->name;
             };
         }
     
-        public function displayDate(): \Closure
+        public function displayDate(): Closure
         {
-            return function(\DateTime $now): string {
+            return function(DateTime $now): string {
                 return $now->format('m d, Y');
             };
         }
@@ -58,21 +62,25 @@ Quick Example
     
     class French extends AbstractState
     {
-        public function sayHello(): \Closure
+        public function sayHello(): Closure
         {
             return function(): string {
                 return 'Bonjour, '.$this->name;
             };
         }
     
-        public function displayDate(): \Closure
+        public function displayDate(): Closure
         {
-            return function(\DateTime $now): string {
+            return function(DateTime $now): string {
                 return $now->format('d m Y');
             };
         }
     }
     
+    #[StateClass(English::class)]
+    #[StateClass(French::class)]
+    #[PropertyAssertion(English::class, ['country', IsEqual::class, 'en'])]
+    #[PropertyAssertion(French::class, ['country', IsEqual::class, 'fr'])]
     class Person implements ProxyInterface, AutomatedInterface
     {
         use ProxyTrait;
@@ -85,24 +93,6 @@ Quick Example
         public function __construct()
         {
             $this->initializeStateProxy();
-        }
-    
-        protected static function statesListDeclaration(): array
-        {
-            return [
-                English::class,
-                French::class
-            ];
-        }
-    
-        protected function listAssertions(): array
-        {
-            return [
-                (new Property([English::class]))
-                    ->with('country', new IsEqual('en')),
-                (new Property([French::class]))
-                    ->with('country', new IsEqual('fr')),
-            ];
         }
     
         public function setName(string $name): Person
@@ -129,7 +119,7 @@ Quick Example
     $englishMan->setCountry('en');
     $englishMan->setName('Richard');
     
-    $now = new \DateTime('2022-07-01');
+    $now = new DateTime('2016-07-01');
     
     foreach ([$frenchMan, $englishMan] as $man) {
         echo $man->sayHello().PHP_EOL;

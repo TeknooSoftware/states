@@ -1,5 +1,22 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.0] - 2025-11-06
+### Stable Release
+- Added the attribute `#[Teknoo\States\Attributes\StateClass()]` to define the state classes of a proxy class, as a
+  replacement for the `statesListDeclaration()` method.
+- Marked the static method `statesListDeclaration()` as deprecated when it returns a non-empty array. 
+  This method will be removed in the next major release.
+- Added the attribute interface `Teknoo\States\Attributes\AssertionInterface` to define assertions via attributes 
+  instead of using `listAssertions()`.  
+  However, unlike `statesListDeclaration()`, the `listAssertions()` method is **not** deprecated, because attributes 
+  cannot cover all use cases.
+  - Added the attribute `#[Teknoo\States\Attributes\Assertion\Property([StateClassName::class], [with], ...)]`
+    - The `[with]` argument must follow the structure
+      `['propertyName', ConstraintClass::class, <optional constructor arguments for the constraint>]`.
+  - Added the attribute `#[Teknoo\States\Attributes\Assertion\Callback([StateClassName::class], [callable])]`
+    - The `[callable]` argument must be either an array referencing a static method, or the name of a method to be 
+      called on the proxy.
+
 ## [7.0.1] - 2025-09-19
 ### Stable Release
 - Fix some BC break introduced by PHPStan bugfix version.

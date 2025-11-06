@@ -12,8 +12,8 @@
  * to richard@teknoo.software so we can send you a copy immediately.
  *
  *
- * @copyright   Copyright (c) 2009-2021 EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
- * @copyright   Copyright (c) 2020-2021 SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
+ * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
+ * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  *
  * @link        https://teknoo.software/libraries/states Project website
  *
@@ -21,9 +21,12 @@
  * @author      Richard Déloge <richard@teknoo.software>
  */
 
+declare(strict_types=1);
 namespace demo;
 
 use Acme\Extendable\Daughter\Daughter;
+use Acme\Extendable\Daughter\States\StateOne as DaughterStateOne;
+use Acme\Extendable\Daughter\States\StateThree as DaughterStateThree;
 use Acme\Extendable\GrandDaughter\GrandDaughter;
 use Acme\Extendable\GrandDaughter\States\StateThree;
 use Acme\Extendable\Mother\Mother;
@@ -55,7 +58,7 @@ $motherInstance->enableState(StateOne::class);
 echo PHP_EOL.'Call method1 of mother object : '.GREEN_COLOR.$motherInstance->method1().RESET_COLOR;
 echo PHP_EOL.'Call method2 of mother object : '.GREEN_COLOR.$motherInstance->method2().RESET_COLOR;
 
-$daughterInstance->enableState(\Acme\Extendable\Daughter\States\StateOne::class);
+$daughterInstance->enableState(DaughterStateOne::class);
 echo PHP_EOL.'Call method3 of daughter object : '.GREEN_COLOR.$daughterInstance->method3().RESET_COLOR;
 echo PHP_EOL.'Call method4 of daughter object : '.GREEN_COLOR.$daughterInstance->method4().RESET_COLOR.PHP_EOL;
 $daughterInstance->disableAllStates();
@@ -98,7 +101,7 @@ echo GREEN_COLOR.$daughterInstance->methodRecallPrivate().RESET_COLOR;
 
 echo PHP_EOL.'Test behavior when we call a private method defined '
     . 'in mother class, via a public method in daughter class, by a daughter object : ';
-$daughterInstance->enableState(StateTwo::class)->enableState(\Acme\Extendable\Daughter\States\StateThree::class);
+$daughterInstance->enableState(StateTwo::class)->enableState(DaughterStateThree::class);
 
 try {
     $daughterInstance->methodRecallMotherPrivate();

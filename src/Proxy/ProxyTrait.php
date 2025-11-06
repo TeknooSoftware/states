@@ -25,17 +25,22 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Proxy;
 
+use ReflectionClass;
+use ReflectionAttribute;
 use ReflectionMethod;
 use SensitiveParameter;
 use SplStack;
+use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Exception\WrongConfiguration;
 use Teknoo\States\Proxy\Exception\StateNotFound;
 use Teknoo\States\State\StateInterface;
 use Teknoo\States\State\Visibility;
 
 use function array_flip;
+use function array_merge;
 use function array_keys;
 use function array_pop;
+use function array_unique;
 use function class_exists;
 use function count;
 use function current;
@@ -54,6 +59,9 @@ use function sort;
 use function sprintf;
 use function strrpos;
 use function substr;
+use function trigger_error;
+
+use const E_USER_DEPRECATED;
 
 /**
  * Implementation of the proxy class in stated class. It is used in this library to create stated class instance.
@@ -62,9 +70,8 @@ use function substr;
  * $this, static and self keywords in all methods the stated class instance (aka in proxy's method and states' methods)
  * represent the proxy instance.
  *
- * The proxy class is mandatory. Since States 3.0 has no factories or no loader : proxies embedded directly theirs
- * states' configurations. Since 3.2, states configurations must be returned by the protected method
- * `statesListDeclaration()`, required by this trait.
+ * The proxy class is mandatory.states configurations must be defined with the class attribute
+ * #[Teknoo\States\Attributes\StateClass()]
  *
  * States can be overload by children of a stated class : The overloading uses only the non qualified name.
  *
@@ -150,6 +157,7 @@ trait ProxyTrait
     private static array $loadedStatesCaches = [];
 
     /**
+     * Deprecated
      * List all states's classes available in this state. It's not mandatory to redefine states of parent's class,
      * They are automatically loaded by the proxy. Warning, if you redeclare a state of a parent's class with its full
      * qualified class name, you can access to its private method: this declaration overloads the parent's state and
@@ -163,8 +171,8 @@ trait ProxyTrait
      *
      * @internal
      * @return array<string>
-     */
-    abstract protected static function statesListDeclaration(): array;
+     * abstract protected static function statesListDeclaration(): array;
+    */
 
     /**
      * To instantiate a state class defined in this proxy. Is a state have a same non fullqualified class name of
@@ -214,8 +222,9 @@ trait ProxyTrait
 
     /**
      * To initialize the proxy instance with all declared states. This method fetch all states defined for this class,
-     * (states returned by `statesListDeclaration()`), but checks also parent's states by calling theirs static methods
-     * `statesListDeclaration`.
+     * (states returned by the attribute #[Teknoo\States\Attributes\StateClass()] or via the deprecated method
+     * `statesListDeclaration()`), but checks also parent's states by calling theirs StateClass attributes and static
+     * methods `statesListDeclaration`.
      *
      * @throws Exception\StateNotFound
      */
@@ -243,16 +252,49 @@ trait ProxyTrait
         $initializesStates = function (string $className, bool $privateMode, array &$loadedStatesList): void {
             /** @var class-string<self> $className */
             /** @var array<string> $loadedStatesList */
-            $rfm = new ReflectionMethod($className, 'statesListDeclaration');
-            if ($rfm->getDeclaringClass()->getName() === $className) {
-                //Private mode is only enable for states directly defined in this stated class.
-                $this->initializeStates(
-                    statesList: $className::statesListDeclaration(),
-                    enablePrivateMode: $privateMode,
-                    selfClassName: $className,
-                    loadedStatesList: $loadedStatesList
+
+
+            $attributeStatesList = [];
+
+            $reflectionClass = new ReflectionClass($className);
+            foreach ($reflectionClass->getAttributes(StateClass::class) as $attribute) {
+                /** @var ReflectionAttribute<StateClass> $attribute */
+                $attributeStatesList[] = $attribute->newInstance()->getClassNames();
+            }
+
+            $methodStatesList = [];
+            if (
+                is_callable([$className, 'statesListDeclaration'])
+                && $reflectionClass->hasMethod('statesListDeclaration')
+            ) {
+                $rfm = new ReflectionMethod($className, 'statesListDeclaration');
+                if ($rfm->getDeclaringClass()->getName() === $className) {
+                    /** @var class-string[] $methodStatesList */
+                    $methodStatesList = $className::statesListDeclaration();
+                }
+            }
+
+            if ([] !== $methodStatesList && is_array($methodStatesList)) {
+                trigger_error(
+                    "Since teknoo/states 7.1.0, Method '{$className}::statesListDeclaration()' is deprecated, "
+                        . "use instead PHP attribute #[StateClass]",
+                    E_USER_DEPRECATED,
                 );
             }
+
+            $statesList = array_unique(array_merge($methodStatesList, ...$attributeStatesList));
+
+            if (empty($statesList)) {
+                return;
+            }
+
+            //Private mode is only enabled for states directly defined in this stated class.
+            $this->initializeStates(
+                statesList: $statesList,
+                enablePrivateMode: $privateMode,
+                selfClassName: $className,
+                loadedStatesList: $loadedStatesList
+            );
         };
 
         $initializesStates($currentClassName, false, $loadedStatesList);
@@ -262,7 +304,6 @@ trait ProxyTrait
             $parentClassName = get_parent_class($parentClassName);
             if (
                 false !== $parentClassName
-                && is_callable([$parentClassName, 'statesListDeclaration'])
                 && is_subclass_of($parentClassName, ProxyInterface::class)
             ) {
                 /** @var array<string> $loadedStatesList */
