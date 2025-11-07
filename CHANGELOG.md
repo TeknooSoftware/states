@@ -16,6 +16,7 @@
   - Added the attribute `#[Teknoo\States\Attributes\Assertion\Callback([StateClassName::class], [callable])]`
     - The `[callable]` argument must be either an array referencing a static method, or the name of a method to be 
       called on the proxy.
+  - Add the attribute `#[Teknoo\States\Attributes\Assertions]` to configure behavior of automations on inheritance
 
 ## [7.0.1] - 2025-09-19
 ### Stable Release

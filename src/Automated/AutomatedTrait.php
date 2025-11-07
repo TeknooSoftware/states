@@ -27,11 +27,14 @@ namespace Teknoo\States\Automated;
 
 use ReflectionClass;
 use ReflectionAttribute;
-use Teknoo\States\Attributes\Assertion;
 use Teknoo\States\Attributes\AssertionInterface as AttrInterface;
+use Teknoo\States\Attributes\Assertions;
 use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 use Teknoo\States\Automated\Exception\AssertionException;
+use Teknoo\States\Proxy\ProxyInterface;
+
+use function is_array;
 
 /**
  * Trait to implement in proxy of your stated classes to add automated behaviors.
@@ -47,6 +50,16 @@ use Teknoo\States\Automated\Exception\AssertionException;
 trait AutomatedTrait
 {
     /**
+     * @var array<class-string, array<callable(ProxyInterface):AssertionInterface>>
+     */
+    private static array $listAttrAssertions = [];
+
+    /**
+     * @var array<AssertionInterface>|null
+     */
+    private ?array $compiledAssertions = null;
+
+    /**
      * To get all validations rules needed by instances.
      * (Internal getter)
      *
@@ -58,20 +71,45 @@ trait AutomatedTrait
     }
 
     /**
-     * To iterate defined assertions and check if they implements the interface AssertionInterface.
-     *
-     * @return AssertionInterface[]
+     * @param class-string $className
+     * @param class-string $forClass
      */
-    private function iterateAssertions(): iterable
+    private function extractAttrAssertions(string $className, string $forClass): void
     {
-        $className = $this::class;
-
         $reflectionClass = new ReflectionClass($className);
         $attributesList = $reflectionClass->getAttributes(AttrInterface::class, ReflectionAttribute::IS_INSTANCEOF);
         foreach ($attributesList as $attribute) {
             /** @var ReflectionAttribute<AttrInterface> $attribute */
-            $assertion = $attribute->newInstance()->getAssertion($this);
-            yield $assertion;
+            self::$listAttrAssertions[$forClass][] = fn (ProxyInterface $proxy) => $attribute->newInstance()
+                ->getAssertion($proxy);
+        }
+
+        $inheritsFromParents = true;
+
+        $configs = $reflectionClass->getAttributes(Assertions::class);
+        foreach ($configs as $config) {
+            /** @var ReflectionAttribute<Assertions> $config */
+            $inheritsFromParents = $config->newInstance()->inheritsFromParent;
+        }
+
+        if ($inheritsFromParents && $reflectionClass->getParentClass()) {
+            $parentClassName = $reflectionClass->getParentClass()->getName();
+            $this->extractAttrAssertions($parentClassName, $forClass);
+        }
+    }
+
+    private function compileAssertions(): void
+    {
+        if (!isset(self::$listAttrAssertions[$this::class])) {
+            self::$listAttrAssertions[$this::class] = [];
+
+            $this->extractAttrAssertions($this::class, $this::class);
+        }
+
+        $this->compiledAssertions = [];
+        assert(is_array(self::$listAttrAssertions[$this::class]));
+        foreach (self::$listAttrAssertions[$this::class] as $assertionFactory) {
+            $this->compiledAssertions[] = $assertionFactory($this);
         }
 
         foreach ($this->listAssertions() as $assertion) {
@@ -79,8 +117,23 @@ trait AutomatedTrait
                 throw new AssertionException('Error, all assertions must implements AssertionInterface');
             }
 
-            yield $assertion;
+            $this->compiledAssertions[] = $assertion;
         }
+    }
+
+    /**
+     * To iterate defined assertions and check if they implements the interface AssertionInterface.
+     *
+     * @return AssertionInterface[]
+     */
+    private function iterateAssertions(): iterable
+    {
+        if (null === $this->compiledAssertions) {
+            $this->compileAssertions();
+        }
+
+        assert(is_array($this->compiledAssertions));
+        yield from $this->compiledAssertions;
     }
 
     public function updateStates(): AutomatedInterface
