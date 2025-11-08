@@ -35,6 +35,8 @@ use Teknoo\States\Automated\Exception\AssertionException;
 use Teknoo\States\Proxy\ProxyInterface;
 
 use function is_array;
+use function is_iterable;
+use function method_exists;
 
 /**
  * Trait to implement in proxy of your stated classes to add automated behaviors.
@@ -64,11 +66,8 @@ trait AutomatedTrait
      * (Internal getter)
      *
      * @return AssertionInterface[]
+     * protected function listAssertions(): array
      */
-    protected function listAssertions(): array
-    {
-         return [];
-    }
 
     /**
      * @param class-string $className
@@ -112,12 +111,19 @@ trait AutomatedTrait
             $this->compiledAssertions[] = $assertionFactory($this);
         }
 
-        foreach ($this->listAssertions() as $assertion) {
-            if (!$assertion instanceof AssertionInterface) {
-                throw new AssertionException('Error, all assertions must implements AssertionInterface');
+        if (method_exists($this, 'listAssertions')) {
+            $objectAssertions = $this->listAssertions();
+            if (!is_iterable($objectAssertions)) {
+                throw new AssertionException('Error, listAssertions() must return an iterable of AssertionInterface');
             }
 
-            $this->compiledAssertions[] = $assertion;
+            foreach ($objectAssertions as $assertion) {
+                if (!$assertion instanceof AssertionInterface) {
+                    throw new AssertionException('Error, all assertions must implements AssertionInterface');
+                }
+
+                $this->compiledAssertions[] = $assertion;
+            }
         }
     }
 

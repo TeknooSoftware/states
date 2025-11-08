@@ -48,18 +48,18 @@ use Teknoo\Tests\Support\States\SimpleState;
 #[CoversTrait(AutomatedTrait::class)]
 class AutomatedTraitTest extends TestCase
 {
-    public function buildProxy(array $assertions): AutomatedInterface
+    public function buildProxy(mixed $assertions): AutomatedInterface
     {
         $object = new #[StateClass([SimpleState::class])] class ($assertions) extends stdClass implements AutomatedInterface {
             use AutomatedTrait;
             use ProxyTrait;
 
-            public function __construct(private readonly array $assertions)
+            public function __construct(private readonly mixed $assertions)
             {
                 $this->initializeStateProxy();
             }
 
-            protected function listAssertions(): array
+            protected function listAssertions(): mixed
             {
                 return $this->assertions;
             }
@@ -68,10 +68,16 @@ class AutomatedTraitTest extends TestCase
         return $object;
     }
 
-    public function testBadAssertions(): void
+    public function testBadAssertionInstance(): void
     {
         $this->expectException(\RuntimeException::class);
         $this->buildProxy([new stdClass()])->updateStates();
+    }
+
+    public function testBadAssertionsList(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->buildProxy(new stdClass())->updateStates();
     }
 
     public function testUpdateStatesCallAssertions(): void
