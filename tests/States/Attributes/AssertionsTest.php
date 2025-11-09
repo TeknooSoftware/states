@@ -23,7 +23,7 @@
 
 declare(strict_types=1);
 
-namespace States\Attributes;
+namespace Teknoo\Tests\States\Attributes;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
