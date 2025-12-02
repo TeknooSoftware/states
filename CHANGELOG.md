@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.1] - 2025-12-02
+### Stable Release
+- Update dev libraries
+
 ## [7.1.0] - 2025-11-06
 ### Stable Release
 - Added the attribute `#[Teknoo\States\Attributes\StateClass()]` to define the state classes of a proxy class, as a
