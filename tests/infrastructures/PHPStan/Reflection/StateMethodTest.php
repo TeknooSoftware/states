@@ -32,9 +32,11 @@ use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
 use PHPStan\BetterReflection\Reflection\ReflectionNamedType;
+use PHPStan\DependencyInjection\Reflection\ClassReflectionExtensionRegistryProvider;
 use PHPStan\Reflection\Assertions;
 use PHPStan\Reflection\AttributeReflection;
 use PHPStan\Reflection\ClassReflection;
+use PHPStan\Reflection\ClassReflectionExtensionRegistry;
 use PHPStan\Reflection\ExtendedParametersAcceptor;
 use PHPStan\Reflection\Php\PhpClassReflectionExtension;
 use PHPStan\Reflection\ReflectionProvider;
@@ -47,6 +49,7 @@ use PHPStan\Type\VoidType;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use stdClass;
@@ -64,19 +67,19 @@ use Teknoo\States\Proxy\ProxyInterface;
 #[CoversClass(StateMethod::class)]
 class StateMethodTest extends TestCase
 {
-    private (ReflectionProvider&MockObject)|null $reflectionProvider = null;
+    private (ReflectionProvider&Stub)|null $reflectionProvider = null;
 
-    private (AttributeReflectionFactoryInterface&MockObject)|null $attributeReflectionFactory = null;
+    private (AttributeReflectionFactoryInterface&Stub)|null $attributeReflectionFactory = null;
 
-    private (InitializerExprTypeResolverInterface&MockObject)|null $initializerExprTypeResolver = null;
+    private (InitializerExprTypeResolverInterface&Stub)|null $initializerExprTypeResolver = null;
 
     /**
      * @throws Exception
      */
-    private function getReflectionProviderMock(): ReflectionProvider&MockObject
+    private function getReflectionProviderMock(): ReflectionProvider&Stub
     {
         if (!$this->reflectionProvider instanceof ReflectionProvider) {
-            $this->reflectionProvider = $this->createMock(ReflectionProvider::class);
+            $this->reflectionProvider = $this->createStub(ReflectionProvider::class);
         }
 
         return $this->reflectionProvider;
@@ -85,10 +88,10 @@ class StateMethodTest extends TestCase
     /**
      * @throws Exception
      */
-    private function getAttributeReflectionFactoryMock(): AttributeReflectionFactoryInterface&MockObject
+    private function getAttributeReflectionFactoryMock(): AttributeReflectionFactoryInterface&Stub
     {
         if (!$this->attributeReflectionFactory instanceof AttributeReflectionFactoryInterface) {
-            $this->attributeReflectionFactory = $this->createMock(AttributeReflectionFactoryInterface::class);
+            $this->attributeReflectionFactory = $this->createStub(AttributeReflectionFactoryInterface::class);
         }
 
         return $this->attributeReflectionFactory;
@@ -97,10 +100,10 @@ class StateMethodTest extends TestCase
     /**
      * @throws Exception
      */
-    private function getInitializerExprTypeResolverMock(): InitializerExprTypeResolverInterface&MockObject
+    private function getInitializerExprTypeResolverMock(): InitializerExprTypeResolverInterface&Stub
     {
         if (!$this->initializerExprTypeResolver instanceof InitializerExprTypeResolverInterface) {
-            $this->initializerExprTypeResolver = $this->createMock(InitializerExprTypeResolverInterface::class);
+            $this->initializerExprTypeResolver = $this->createStub(InitializerExprTypeResolverInterface::class);
         }
 
         return $this->initializerExprTypeResolver;
@@ -133,7 +136,7 @@ class StateMethodTest extends TestCase
         $factoryReflection->method('getPrototype')->willReturnSelf();
         $factoryReflection->method('getTentativeReturnType')->willReturn($tentativeReturnType);
 
-        $attribute = $this->createMock(ReflectionAttribute::class);
+        $attribute = $this->createStub(ReflectionAttribute::class);
         $attribute->method('getName')->willReturn('Deprecated');
         $attribute->method('getArguments')->willReturn([
             'foo bar',
@@ -162,7 +165,7 @@ class StateMethodTest extends TestCase
 
         $cr = new ReflectionFunction($closureReflection);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('getName')->willReturn(ProxyInterface::class);
 
         $rcPfPcre = new ReflectionClass(PhpClassReflectionExtension::class);
@@ -172,10 +175,16 @@ class StateMethodTest extends TestCase
         $dc = $rcOfDc->newInstanceWithoutConstructor();
         $rpr = $rcOfDc->getProperty('reflection');
         $rpr->setValue($dc, $brc);
+        $rpr = $rcOfDc->getProperty('classReflectionExtensionRegistryProvider');
+        $providerMock = $this->createStub(ClassReflectionExtensionRegistryProvider::class);
+        $registryReflection = new ReflectionClass(ClassReflectionExtensionRegistry::class);
+        $registry = $registryReflection->newInstanceWithoutConstructor();
+        $phpClassReflectionExtensionProp = $registryReflection->getProperty('phpClassReflectionExtension');
+        $phpClassReflectionExtensionProp->setValue($registry, $pcre);
+        $providerMock->method('getRegistry')->willReturn($registry);
+        $rpr->setValue($dc, $providerMock);
         $rpr = $rcOfDc->getProperty('ancestors');
         $rpr->setValue($dc, []);
-        $rpr = $rcOfDc->getProperty('methodsClassReflectionExtensions');
-        $rpr->setValue($dc, [0 => null]);
         $rpr = $rcOfDc->getProperty('isGeneric');
         $rpr->setValue($dc, false);
         $rpr = $rcOfDc->getProperty('finalByKeywordOverride');
@@ -184,8 +193,6 @@ class StateMethodTest extends TestCase
         $rpr->setValue($dc, null);
         $rpr = $rcOfDc->getProperty('acceptsNamedArguments');
         $rpr->setValue($dc, $acceptsNamedArguments);
-        $rpr = $rcOfDc->getProperty('phpClassReflectionExtension');
-        $rpr->setValue($dc, $pcre);
 
         $this->getReflectionProviderMock()
             ->method('getClass')
@@ -310,12 +317,12 @@ class StateMethodTest extends TestCase
 
     public function testGetThrowType(): void
     {
-        $this->assertNotInstanceOf(\PHPStan\Type\Type::class, $this->buildInstance()->getThrowType());
+        $this->assertNotInstanceOf(Type::class, $this->buildInstance()->getThrowType());
     }
 
     public function testGetSelfOutType(): void
     {
-        $this->assertNotInstanceOf(\PHPStan\Type\Type::class, $this->buildInstance()->getSelfOutType());
+        $this->assertNotInstanceOf(Type::class, $this->buildInstance()->getSelfOutType());
     }
 
     public function testGetAsserts(): void
@@ -368,7 +375,7 @@ class StateMethodTest extends TestCase
         $result = $this->buildInstance(phpDocReturnType: new VoidType())->hasSideEffects();
         $this->assertEquals(TrinaryLogic::createYes(), $result);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('getName')->willReturn(ProxyInterface::class);
 
         $rcOfDc = new ReflectionClass(ClassReflection::class);
@@ -377,8 +384,6 @@ class StateMethodTest extends TestCase
         $rpr->setValue($dc, $brc);
         $rpr = $rcOfDc->getProperty('ancestors');
         $rpr->setValue($dc, []);
-        $rpr = $rcOfDc->getProperty('methodsClassReflectionExtensions');
-        $rpr->setValue($dc, [0 => null]);
         $rpr = $rcOfDc->getProperty('isGeneric');
         $rpr->setValue($dc, false);
         $rpr = $rcOfDc->getProperty('finalByKeywordOverride');

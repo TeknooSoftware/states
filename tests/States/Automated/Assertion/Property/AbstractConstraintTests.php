@@ -49,7 +49,7 @@ abstract class AbstractConstraintTests extends TestCase
     public function testInConstraintSet(): void
     {
         $instance = $this->buildInstance();
-        $instanceWithSet = $instance->inConstraintSet($this->createMock(ConstraintsSetInterface::class));
+        $instanceWithSet = $instance->inConstraintSet($this->createStub(ConstraintsSetInterface::class));
 
         $this->assertInstanceOf(ConstraintInterface::class, $instance);
 

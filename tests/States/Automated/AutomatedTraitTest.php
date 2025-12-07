@@ -97,7 +97,7 @@ class AutomatedTraitTest extends TestCase
     {
         $this->expectException(\TypeError::class);
         $this->buildProxy([])
-            ->checkProperty(new stdClass(), $this->createMock(ConstraintsSetInterface::class));
+            ->checkProperty(new stdClass(), $this->createStub(ConstraintsSetInterface::class));
     }
 
     public function testExceptionOnCheckPropertyWithBadConstraintSet(): void

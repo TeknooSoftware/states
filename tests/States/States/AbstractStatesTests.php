@@ -92,7 +92,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testWhenExecuteAnNonExistentMethodExceptionMustBeThrew(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'badMethod',
             [1, 2],
             Visibility::Private,
@@ -117,7 +117,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testWhenExecuteAnStaticMethodAnExceptionMustBeNotThrew(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'staticMethod3',
             [],
             Visibility::Private,
@@ -143,7 +143,7 @@ abstract class AbstractStatesTests extends TestCase
     {
         $this->expectException(\TypeError::class);
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             [],
             [1, 2],
             Visibility::Private,
@@ -163,7 +163,7 @@ abstract class AbstractStatesTests extends TestCase
     {
         $this->expectException(\TypeError::class);
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod1',
             [1, 2],
             'badScope',
@@ -182,7 +182,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecutePrivateMethodInAPrivateScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod10',
             [1, 2],
             Visibility::Private,
@@ -207,7 +207,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecuteAProtectedMethodInAPrivateScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod6',
             [1, 2],
             Visibility::Private,
@@ -235,7 +235,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecuteAPublicMethodInAPrivateScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod1',
             [1, 2],
             Visibility::Private,
@@ -260,7 +260,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testNonExecutionOfAPrivateMethodInAProtectedScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod10',
             [1, 2],
             Visibility::Protected,
@@ -284,7 +284,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecuteAProtectedMethodInAProtectedScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod6',
             [1, 2],
             Visibility::Protected,
@@ -312,7 +312,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecuteAPublicMethodInAProtectedScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod1',
             [1, 2],
             Visibility::Protected,
@@ -337,7 +337,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testNonExecutionOfAPrivateMethodInAPublicScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod10',
             [1, 2],
             Visibility::Public,
@@ -361,7 +361,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testNonExecutionOfProtectedMethodInAPublicScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod6',
             [1, 2],
             Visibility::Public,
@@ -385,7 +385,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecutePublicMethodInAPublicScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod1',
             [1, 2],
             Visibility::Public,
@@ -410,7 +410,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testNonExecutionOfParentPrivateMethodInPrivateScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod10',
             [1, 2],
             Visibility::Private,
@@ -437,7 +437,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecuteParentProtectedMethodInPrivateScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod6',
             [1, 2],
             Visibility::Private,
@@ -465,7 +465,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecuteParentPublicMethodInPrivateScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod1',
             [1, 2],
             Visibility::Private,
@@ -493,7 +493,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testNonExecutionOfParentPrivateMethodInProtectedScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod10',
             [1, 2],
             Visibility::Protected,
@@ -520,7 +520,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecuteParentProtectedMethodInProtectedScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod6',
             [1, 2],
             Visibility::Protected,
@@ -548,7 +548,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecuteParentPublicMethodInProtectedScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod1',
             [1, 2],
             Visibility::Protected,
@@ -576,7 +576,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testNonExecutionOfParentPrivateMethodInPublicScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod10',
             [1, 2],
             Visibility::Public,
@@ -603,7 +603,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testNonExecutionOfParentProtectedMethodInPublicScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod6',
             [1, 2],
             Visibility::Public,
@@ -630,7 +630,7 @@ abstract class AbstractStatesTests extends TestCase
     public function testExecuteParentPublicMethodInPublicScope(): void
     {
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'standardMethod1',
             [1, 2],
             Visibility::Public,
@@ -659,7 +659,7 @@ abstract class AbstractStatesTests extends TestCase
     {
         $this->expectException(MethodNotImplemented::class);
         $args = [
-            $this->createMock(ProxyInterface::class),
+            $this->createStub(ProxyInterface::class),
             'methodBuilderNoReturnClosure',
             [],
             Visibility::Public,

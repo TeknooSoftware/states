@@ -33,6 +33,7 @@ use PHPStan\Parser\Parser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Teknoo\States\PHPStan\Analyser\ASTVisitor;
@@ -66,10 +67,10 @@ class ASTVisitorTest extends TestCase
     private function getReflectionProviderMock(bool|string $file = 'foo/bar.php'): callable
     {
         if (!$this->reflectionProvider) {
-            $this->reflectionProvider = function (string $class) use ($file): ReflectionClass&MockObject {
+            $this->reflectionProvider = function (string $class) use ($file): ReflectionClass {
                 $this->currentClass = $class;
 
-                $mock = $this->createMock(ReflectionClass::class);
+                $mock = $this->createStub(ReflectionClass::class);
 
                 $mock->method('getFileName')->willReturn($file);
 
@@ -80,13 +81,10 @@ class ASTVisitorTest extends TestCase
         return $this->reflectionProvider;
     }
 
-    /**
-     * @return Parser|MockObject
-     */
-    private function getParserMock(): Parser
+    private function getParserStub(): Parser&Stub
     {
         if (!$this->parser instanceof Parser) {
-            $this->parser = $this->createMock(Parser::class);
+            $this->parser = $this->createStub(Parser::class);
         }
 
         return $this->parser;
@@ -96,7 +94,7 @@ class ASTVisitorTest extends TestCase
     {
         return new ASTVisitor(
             $this->getReflectionProviderMock(),
-            $this->getParserMock()
+            $this->getParserStub()
         );
     }
 
@@ -105,7 +103,7 @@ class ASTVisitorTest extends TestCase
         $this->assertInstanceOf(
             Node::class,
             $this->buildVisitor()->leaveNode(
-                $this->createMock(Node::class)
+                $this->createStub(Node::class)
             )
         );
     }
@@ -115,14 +113,14 @@ class ASTVisitorTest extends TestCase
         $this->assertInstanceOf(
             Node::class,
             $this->buildVisitor()->leaveNode(
-                $this->createMock(Class_::class)
+                $this->createStub(Class_::class)
             )
         );
     }
 
     public function testLeaveNodeWithStateClassNode(): void
     {
-        $closure = $this->createMock(
+        $closure = $this->createStub(
             Node\Expr\Closure::class
         );
         $closure->params = [];
@@ -147,7 +145,7 @@ class ASTVisitorTest extends TestCase
             'state',
             [
                 'stmts' => [
-                    $this->createMock(Node::class),
+                    $this->createStub(Node::class),
                     $method,
                 ],
                 'implements' => [new Name(StateInterface::class)]
@@ -169,7 +167,7 @@ class ASTVisitorTest extends TestCase
             MockProxy::class,
             [
                 'stmts' => [
-                    $this->createMock(Node::class),
+                    $this->createStub(Node::class),
                 ],
                 'implements' => [new Name(ProxyInterface::class)]
             ]
@@ -190,7 +188,7 @@ class ASTVisitorTest extends TestCase
         $proxyClass = new Class_(
             MockProxyWithoutDeclaration::class,
             [
-                'stmts' => [$this->createMock(Node::class)],
+                'stmts' => [$this->createStub(Node::class)],
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
@@ -216,16 +214,13 @@ class ASTVisitorTest extends TestCase
         $proxyClass = new Class_(
             Mother::class,
             [
-                'stmts' => [$this->createMock(Node::class)],
+                'stmts' => [$this->createStub(Node::class)],
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
         $proxyClass->namespacedName = new Name(Mother::class);
 
         $visitor = $this->buildVisitor();
-
-        $this->getParserMock()
-            ->method('parseFile');
 
         $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($stateClass));
 
@@ -239,22 +234,24 @@ class ASTVisitorTest extends TestCase
 
     public function testLeaveNodeWithProxyClassNodeWithStateFileNotFound(): void
     {
-        $this->getReflectionProviderMock(false);
-
         $proxyClass = new Class_(
             Mother::class,
             [
-                'stmts' => [$this->createMock(Node::class)],
+                'stmts' => [$this->createStub(Node::class)],
                 'implements' => [new Name(ProxyInterface::class)]
             ]
         );
         $proxyClass->namespacedName = new Name(Mother::class);
 
-        $visitor = $this->buildVisitor();
-
-        $this->getParserMock()
+        $parserMock = $this->createMock(Parser::class);
+        $parserMock
             ->expects($this->never())
             ->method('parseFile');
+
+        $visitor = new ASTVisitor(
+            $this->getReflectionProviderMock(false),
+            $parserMock
+        );
 
         $this->assertInstanceOf(Node::class, $result = $visitor->leaveNode($proxyClass));
 
@@ -268,7 +265,7 @@ class ASTVisitorTest extends TestCase
             'StateOne',
             [
                 'stmts' => [
-                    $this->createMock(Node::class),
+                    $this->createStub(Node::class),
                     new ClassMethod(new Node\Identifier('foo'), []),
                 ],
                 'implements' => [new Name(StateInterface::class)]
@@ -281,7 +278,7 @@ class ASTVisitorTest extends TestCase
             'StateTwo',
             [
                 'stmts' => [
-                    $this->createMock(Node::class),
+                    $this->createStub(Node::class),
                     new ClassMethod(new Node\Identifier('foo'), []),
                     new ClassMethod(new Node\Identifier('bar'), []),
                 ],
@@ -295,7 +292,7 @@ class ASTVisitorTest extends TestCase
             Mother::class,
             [
                 'stmts' => [
-                    $this->createMock(Node::class),
+                    $this->createStub(Node::class),
                     new ClassMethod(new Node\Identifier('hello'), []),
                 ],
                 'implements' => [new Name(ProxyInterface::class)]
@@ -324,7 +321,7 @@ class ASTVisitorTest extends TestCase
             'StateOne',
             [
                 'stmts' => [
-                    $this->createMock(Node::class),
+                    $this->createStub(Node::class),
                     new ClassMethod(new Node\Identifier('foo'), []),
                 ],
                 'implements' => [new Name(StateInterface::class)]
@@ -337,7 +334,7 @@ class ASTVisitorTest extends TestCase
             'StateTwo',
             [
                 'stmts' => [
-                    $this->createMock(Node::class),
+                    $this->createStub(Node::class),
                     new ClassMethod(new Node\Identifier('foo'), []),
                     new ClassMethod(new Node\Identifier('bar'), []),
                 ],
@@ -351,7 +348,7 @@ class ASTVisitorTest extends TestCase
             Mother::class,
             [
                 'stmts' => [
-                    $this->createMock(Node::class),
+                    $this->createStub(Node::class),
                     new ClassMethod(new Node\Identifier('hello'), []),
                 ],
                 'implements' => [new Name(ProxyInterface::class)]

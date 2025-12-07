@@ -37,7 +37,7 @@ use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\Exception;
-use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
@@ -58,19 +58,19 @@ use function ini_get;
 #[CoversClass(StateMethod::class)]
 class StateMethodEmptyTest extends TestCase
 {
-    private (ReflectionProvider&MockObject)|null $reflectionProvider = null;
+    private (ReflectionProvider&Stub)|null $reflectionProvider = null;
 
-    private (AttributeReflectionFactoryInterface&MockObject)|null $attributeReflectionFactory = null;
+    private (AttributeReflectionFactoryInterface&Stub)|null $attributeReflectionFactory = null;
 
-    private (InitializerExprTypeResolverInterface&MockObject)|null $initializerExprTypeResolver = null;
+    private (InitializerExprTypeResolverInterface&Stub)|null $initializerExprTypeResolver = null;
 
     /**
      * @throws Exception
      */
-    private function getReflectionProviderMock(): ReflectionProvider&MockObject
+    private function getReflectionProviderMock(): ReflectionProvider&Stub
     {
         if (!$this->reflectionProvider instanceof ReflectionProvider) {
-            $this->reflectionProvider = $this->createMock(ReflectionProvider::class);
+            $this->reflectionProvider = $this->createStub(ReflectionProvider::class);
         }
 
         return $this->reflectionProvider;
@@ -79,10 +79,10 @@ class StateMethodEmptyTest extends TestCase
     /**
      * @throws Exception
      */
-    private function getAttributeReflectionFactoryMock(): AttributeReflectionFactoryInterface&MockObject
+    private function getAttributeReflectionFactoryMock(): AttributeReflectionFactoryInterface&Stub
     {
         if (!$this->attributeReflectionFactory instanceof AttributeReflectionFactoryInterface) {
-            $this->attributeReflectionFactory = $this->createMock(AttributeReflectionFactoryInterface::class);
+            $this->attributeReflectionFactory = $this->createStub(AttributeReflectionFactoryInterface::class);
         }
 
         return $this->attributeReflectionFactory;
@@ -91,10 +91,10 @@ class StateMethodEmptyTest extends TestCase
     /**
      * @throws Exception
      */
-    private function getInitializerExprTypeResolverMock(): InitializerExprTypeResolverInterface&MockObject
+    private function getInitializerExprTypeResolverMock(): InitializerExprTypeResolverInterface&Stub
     {
         if (!$this->initializerExprTypeResolver instanceof InitializerExprTypeResolverInterface) {
-            $this->initializerExprTypeResolver = $this->createMock(InitializerExprTypeResolverInterface::class);
+            $this->initializerExprTypeResolver = $this->createStub(InitializerExprTypeResolverInterface::class);
         }
 
         return $this->initializerExprTypeResolver;
@@ -102,7 +102,7 @@ class StateMethodEmptyTest extends TestCase
 
     protected function buildInstance(?string $doc = 'factory doc', array $attributes = []): StateMethod
     {
-        $factoryReflection = $this->createMock(BetterReflectionMethod::class);
+        $factoryReflection = $this->createStub(BetterReflectionMethod::class);
         $factoryReflection->method('getName')->willReturn('factory');
         $factoryReflection->method('getDocComment')->willReturn($doc);
         $factoryReflection->method('isPrivate')->willReturn(false);
@@ -110,24 +110,24 @@ class StateMethodEmptyTest extends TestCase
 
         $fr = new ReflectionMethod($factoryReflection);
 
-        $closureReflection = $this->createMock(BetterReflectionFunction::class);
+        $closureReflection = $this->createStub(BetterReflectionFunction::class);
         $closureReflection->method('isVariadic')->willReturn(false);
 
         // Keep the parameter setup for the test even though they're not used by StateMethod
-        $p1 = $this->createMock(\ReflectionParameter::class);
-        $p2 = $this->createMock(\ReflectionParameter::class);
-        $p3 = $this->createMock(\ReflectionParameter::class);
+        $p1 = $this->createStub(\ReflectionParameter::class);
+        $p2 = $this->createStub(\ReflectionParameter::class);
+        $p3 = $this->createStub(\ReflectionParameter::class);
 
         $p1->method('getType')
-           ->willReturn($rf1 = $this->createMock(NativeReflectionIntersectionType::class));
+           ->willReturn($rf1 = $this->createStub(NativeReflectionIntersectionType::class));
 
         $rf1->method('allowsNull')
             ->willReturn(true);
 
         $rf1->method('getTypes')
             ->willReturn([
-                $rf11 = $this->createMock(NativeReflectionNamedType::class),
-                $rf12 = $this->createMock(NativeReflectionNamedType::class),
+                $rf11 = $this->createStub(NativeReflectionNamedType::class),
+                $rf12 = $this->createStub(NativeReflectionNamedType::class),
             ]);
 
         $rf11->method('getName')
@@ -140,15 +140,15 @@ class StateMethodEmptyTest extends TestCase
            ->willReturn(false);
 
         $p2->method('getType')
-           ->willReturn($rf2 = $this->createMock(NativeReflectionUnionType::class));
+           ->willReturn($rf2 = $this->createStub(NativeReflectionUnionType::class));
 
         $rf2->method('allowsNull')
             ->willReturn(true);
 
         $rf2->method('getTypes')
             ->willReturn([
-                $rf21 = $this->createMock(NativeReflectionNamedType::class),
-                $rf22 = $this->createMock(NativeReflectionNamedType::class),
+                $rf21 = $this->createStub(NativeReflectionNamedType::class),
+                $rf22 = $this->createStub(NativeReflectionNamedType::class),
             ]);
 
         $rf21->method('getName')
@@ -161,7 +161,7 @@ class StateMethodEmptyTest extends TestCase
            ->willReturn(false);
 
         $p3->method('getType')
-           ->willReturn($rf3 = $this->createMock(NativeReflectionNamedType::class));
+           ->willReturn($rf3 = $this->createStub(NativeReflectionNamedType::class));
 
         $rf3->method('allowsNull')
             ->willReturn(true);
@@ -177,7 +177,7 @@ class StateMethodEmptyTest extends TestCase
 
         $cr = new ReflectionFunction($closureReflection);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(\ReflectionClass::class);
 
         $rcOfDc = new ReflectionClass(ClassReflection::class);
         $dc = $rcOfDc->newInstanceWithoutConstructor();

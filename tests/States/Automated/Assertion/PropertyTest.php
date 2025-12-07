@@ -54,7 +54,7 @@ class PropertyTest extends AbstractAssertionTests
     {
         $this->assertInstanceOf(Property::class, $this->buildInstance()->with(
             'fooBar',
-            $this->createMock(Property\ConstraintInterface::class)
+            $this->createStub(Property\ConstraintInterface::class)
         ));
     }
 

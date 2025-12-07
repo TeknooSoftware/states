@@ -51,13 +51,13 @@ class ConstraintsSetTest extends TestCase
     public function testConstructorWithBadConstraintsArray(): void
     {
         $this->expectException(\TypeError::class);
-        $this->buildInstance(new \stdClass(), $this->createMock(Property::class));
+        $this->buildInstance(new \stdClass(), $this->createStub(Property::class));
     }
 
     public function testConstructorWithBadProperty(): void
     {
         $this->expectException(\TypeError::class);
-        $this->buildInstance([$this->createMock(ConstraintInterface::class)], new \stdClass());
+        $this->buildInstance([$this->createStub(ConstraintInterface::class)], new \stdClass());
     }
 
     public function testCheckWithoutConstraintMustValid(): void

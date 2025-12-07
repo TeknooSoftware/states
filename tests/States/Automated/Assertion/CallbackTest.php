@@ -75,7 +75,7 @@ class CallbackTest extends AbstractAssertionTests
     public function testExceptionWhenCheckAssertionWithNoCallbackDefined(): void
     {
         $this->expectException(\RuntimeException::class);
-        $this->buildInstance()->check($this->createMock(AutomatedInterface::class));
+        $this->buildInstance()->check($this->createStub(AutomatedInterface::class));
     }
 
     public function testCheckCallbackIsValid(): void

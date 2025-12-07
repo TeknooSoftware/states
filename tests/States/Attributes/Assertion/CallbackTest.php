@@ -99,7 +99,7 @@ final class CallbackTest extends TestCase
     {
         $attr = new Callback(SimpleState::class, self::toCall(...));
 
-        $assertion = $attr->getAssertion($this->createMock(ProxyInterface::class));
+        $assertion = $attr->getAssertion($this->createStub(ProxyInterface::class));
 
         $this->assertInstanceOf(AssertionCallback::class, $assertion);
 
@@ -113,7 +113,7 @@ final class CallbackTest extends TestCase
     {
         $attr = new Callback(SimpleState::class, 'registerState');
 
-        $assertion = $attr->getAssertion($proxy = $this->createMock(ProxyInterface::class));
+        $assertion = $attr->getAssertion($proxy = $this->createStub(ProxyInterface::class));
 
         $this->assertInstanceOf(AssertionCallback::class, $assertion);
 

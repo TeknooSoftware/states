@@ -44,6 +44,7 @@ use PHPStan\Type\Type;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use ReflectionClass;
 use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
@@ -66,45 +67,45 @@ use Teknoo\Tests\Support\Article\Article\Draft;
 #[CoversClass(MethodsClassExtension::class)]
 class MethodsClassExtensionWithLegacyTest extends TestCase
 {
-    private (ReflectionProvider&MockObject)|null $reflectionProvider = null;
+    private (ReflectionProvider&Stub)|null $reflectionProvider = null;
 
-    private (AttributeReflectionFactoryInterface&MockObject)|null $attributeReflectionFactory = null;
+    private (AttributeReflectionFactoryInterface&Stub)|null $attributeReflectionFactory = null;
 
-    private (InitializerExprTypeResolverInterface&MockObject)|null $initializerExprTypeResolver = null;
+    private (InitializerExprTypeResolverInterface&Stub)|null $initializerExprTypeResolver = null;
 
-    private (PhpDocInheritanceResolverInterface&MockObject)|null $phpDocInheritanceResolver = null;
+    private (PhpDocInheritanceResolverInterface&Stub)|null $phpDocInheritanceResolver = null;
 
-    private function getReflectionProviderMock(): ReflectionProvider&MockObject
+    private function getReflectionProviderMock(): ReflectionProvider&Stub
     {
         if (!$this->reflectionProvider instanceof ReflectionProvider) {
-            $this->reflectionProvider = $this->createMock(ReflectionProvider::class);
+            $this->reflectionProvider = $this->createStub(ReflectionProvider::class);
         }
 
         return $this->reflectionProvider;
     }
 
-    private function getAttributeReflectionFactoryMock(): AttributeReflectionFactoryInterface&MockObject
+    private function getAttributeReflectionFactoryMock(): AttributeReflectionFactoryInterface&Stub
     {
         if (!$this->attributeReflectionFactory instanceof AttributeReflectionFactoryInterface) {
-            $this->attributeReflectionFactory = $this->createMock(AttributeReflectionFactoryInterface::class);
+            $this->attributeReflectionFactory = $this->createStub(AttributeReflectionFactoryInterface::class);
         }
 
         return $this->attributeReflectionFactory;
     }
 
-    private function getInitializerExprTypeResolverMock(): InitializerExprTypeResolverInterface&MockObject
+    private function getInitializerExprTypeResolverMock(): InitializerExprTypeResolverInterface&Stub
     {
         if (!$this->initializerExprTypeResolver instanceof InitializerExprTypeResolverInterface) {
-            $this->initializerExprTypeResolver = $this->createMock(InitializerExprTypeResolverInterface::class);
+            $this->initializerExprTypeResolver = $this->createStub(InitializerExprTypeResolverInterface::class);
         }
 
         return $this->initializerExprTypeResolver;
     }
 
-    private function getPhpDocInheritanceResolverMock(): PhpDocInheritanceResolverInterface&MockObject
+    private function getPhpDocInheritanceResolverMock(): PhpDocInheritanceResolverInterface&Stub
     {
         if (!$this->phpDocInheritanceResolver instanceof PhpDocInheritanceResolverInterface) {
-            $this->phpDocInheritanceResolver = $this->createMock(PhpDocInheritanceResolverInterface::class);
+            $this->phpDocInheritanceResolver = $this->createStub(PhpDocInheritanceResolverInterface::class);
         }
 
         return $this->phpDocInheritanceResolver;
@@ -122,7 +123,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testHasMethodIsInterface(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(true);
 
         $rcOfCr = new ReflectionClass(ClassReflection::class);
@@ -137,7 +138,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testHasMethodNotImplementProxyAndNotImplementState(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturn(false);
 
@@ -153,7 +154,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testHasMethodImplementProxyMethodInProxy(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -173,7 +174,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testStatesListDeclaratoionReflectionError(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -191,7 +192,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testHasMethodImplementProxyMethodInState(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -211,7 +212,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testHasMethodImplementProxyMethodNotExist(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -229,7 +230,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testHasMethodImplementStateProxyNotFound(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
@@ -248,7 +249,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testHasMethodImplementStateMethodInState(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
@@ -267,7 +268,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testHasMethodImplementStateMethodInProxy(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
@@ -286,7 +287,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testHasMethodImplementStateMethodNotExist(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
@@ -307,7 +308,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
     {
         $this->expectException(ShouldNotHappenException::class);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(true);
 
         $rcOfCr = new ReflectionClass(ClassReflection::class);
@@ -322,7 +323,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
     {
         $this->expectException(ShouldNotHappenException::class);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturn(false);
 
@@ -338,7 +339,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
     {
         $this->expectException(ShouldNotHappenException::class);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -356,7 +357,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testGetMethodImplementProxyMethodInState(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -387,7 +388,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $rpr = $rcOfRPB->getProperty('phpDocNode');
         $rpr->setValue(
             $resolvedPHPDocBlock,
-            $this->createMock(PhpDocNode::class),
+            $this->createStub(PhpDocNode::class),
         );
 
         $rpr = $rcOfRPB->getProperty('nameScope');
@@ -405,7 +406,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testGetMethodImplementProxyMethodInStateWithThrowTypeAndSelfOutTag(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+            $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -436,7 +437,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $rpr = $rcOfRPB->getProperty('phpDocNode');
         $rpr->setValue(
             $resolvedPHPDocBlock,
-            $this->createMock(PhpDocNode::class),
+            $this->createStub(PhpDocNode::class),
         );
 
         $rpr = $rcOfRPB->getProperty('nameScope');
@@ -448,7 +449,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $rcofval = new ReflectionClass(ThrowsTag::class);
         $throwTag = $rcofval->newInstanceWithoutConstructor();
         $rpr = $rcofval->getProperty('type');
-        $rpr->setValue($throwTag, $this->createMock(Type::class));
+        $rpr->setValue($throwTag, $this->createStub(Type::class));
 
         $rpr = $rcOfRPB->getProperty('throwsTag');
         $rpr->setValue(
@@ -460,7 +461,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $rcofval = new ReflectionClass(SelfOutTypeTag::class);
         $selfOutTag = $rcofval->newInstanceWithoutConstructor();
         $rpr = $rcofval->getProperty('type');
-        $rpr->setValue($selfOutTag, $this->createMock(Type::class));
+        $rpr->setValue($selfOutTag, $this->createStub(Type::class));
 
         $rpr = $rcOfRPB->getProperty('selfOutTypeTag');
         $rpr->setValue(
@@ -477,7 +478,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testGetMethodImplementProxyMethodInStateWithExplicitReturnTag(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -514,7 +515,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $rpr = $rcOfRPB->getProperty('phpDocNode');
         $rpr->setValue(
             $resolvedPHPDocBlock,
-            $this->createMock(PhpDocNode::class),
+            $this->createStub(PhpDocNode::class),
         );
 
         $rpr = $rcOfRPB->getProperty('nameScope');
@@ -526,7 +527,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $rcofval = new ReflectionClass(ReturnTag::class);
         $returnTag = $rcofval->newInstanceWithoutConstructor();
         $rpr = $rcofval->getProperty('type');
-        $rpr->setValue($returnTag, $this->createMock(Type::class));
+        $rpr->setValue($returnTag, $this->createStub(Type::class));
 
         $rpr = $rcofval->getProperty('isExplicit');
         $rpr->setValue($returnTag, true);
@@ -547,7 +548,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testGetMethodImplementProxyMethodInStateWithNonExplicitReturnTag(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -584,7 +585,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $rpr = $rcOfRPB->getProperty('phpDocNode');
         $rpr->setValue(
             $resolvedPHPDocBlock,
-            $this->createMock(PhpDocNode::class),
+            $this->createStub(PhpDocNode::class),
         );
 
         $rpr = $rcOfRPB->getProperty('nameScope');
@@ -596,7 +597,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $rcofval = new ReflectionClass(ReturnTag::class);
         $returnTag = $rcofval->newInstanceWithoutConstructor();
         $rpr = $rcofval->getProperty('type');
-        $rpr->setValue($returnTag, $this->createMock(Type::class));
+        $rpr->setValue($returnTag, $this->createStub(Type::class));
 
         $rpr = $rcofval->getProperty('isExplicit');
         $rpr->setValue($returnTag, false);
@@ -618,7 +619,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
     {
         $this->expectException(ShouldNotHappenException::class);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -638,7 +639,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
     {
         $this->expectException(ShouldNotHappenException::class);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, true],
@@ -658,7 +659,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
     {
         $this->expectException(ShouldNotHappenException::class);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
@@ -679,7 +680,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
     {
         $this->expectException(ShouldNotHappenException::class);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
@@ -698,7 +699,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
 
     public function testGetMethodImplementStateMethodInState(): void
     {
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
@@ -730,7 +731,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $rpr = $rcOfRPB->getProperty('phpDocNode');
         $rpr->setValue(
             $resolvedPHPDocBlock,
-            $this->createMock(PhpDocNode::class),
+            $this->createStub(PhpDocNode::class),
         );
 
         $rpr = $rcOfRPB->getProperty('nameScope');
@@ -753,7 +754,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
     {
         $this->expectException(ShouldNotHappenException::class);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],
@@ -774,7 +775,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
     {
         $this->expectException(ShouldNotHappenException::class);
 
-        $brc = $this->createMock(BetterReflectionClass::class);
+        $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
             [ProxyInterface::class, false],

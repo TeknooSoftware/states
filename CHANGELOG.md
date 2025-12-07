@@ -1,5 +1,11 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.2] - 2025-12-08
+### Stable Release
+- Fix bc break introduced into patch of phpstan and phpunit
+- Support PHPStan 2.1.33+
+- Support PHPUnit 12.5.1+
+
 ## [7.1.1] - 2025-12-02
 ### Stable Release
 - Update dev libraries
