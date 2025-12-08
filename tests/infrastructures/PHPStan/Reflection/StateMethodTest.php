@@ -76,7 +76,7 @@ class StateMethodTest extends TestCase
     /**
      * @throws Exception
      */
-    private function getReflectionProviderMock(): ReflectionProvider&Stub
+    private function getReflectionProviderStub(): ReflectionProvider&Stub
     {
         if (!$this->reflectionProvider instanceof ReflectionProvider) {
             $this->reflectionProvider = $this->createStub(ReflectionProvider::class);
@@ -88,7 +88,7 @@ class StateMethodTest extends TestCase
     /**
      * @throws Exception
      */
-    private function getAttributeReflectionFactoryMock(): AttributeReflectionFactoryInterface&Stub
+    private function getAttributeReflectionFactoryStub(): AttributeReflectionFactoryInterface&Stub
     {
         if (!$this->attributeReflectionFactory instanceof AttributeReflectionFactoryInterface) {
             $this->attributeReflectionFactory = $this->createStub(AttributeReflectionFactoryInterface::class);
@@ -100,7 +100,7 @@ class StateMethodTest extends TestCase
     /**
      * @throws Exception
      */
-    private function getInitializerExprTypeResolverMock(): InitializerExprTypeResolverInterface&Stub
+    private function getInitializerExprTypeResolverStub(): InitializerExprTypeResolverInterface&Stub
     {
         if (!$this->initializerExprTypeResolver instanceof InitializerExprTypeResolverInterface) {
             $this->initializerExprTypeResolver = $this->createStub(InitializerExprTypeResolverInterface::class);
@@ -194,14 +194,14 @@ class StateMethodTest extends TestCase
         $rpr = $rcOfDc->getProperty('acceptsNamedArguments');
         $rpr->setValue($dc, $acceptsNamedArguments);
 
-        $this->getReflectionProviderMock()
+        $this->getReflectionProviderStub()
             ->method('getClass')
             ->willReturn($dc);
 
         return new StateMethod(
-            reflectionProvider: $this->getReflectionProviderMock(),
-            initializerExprTypeResolver: $this->getInitializerExprTypeResolverMock(),
-            attributeReflectionFactory: $this->getAttributeReflectionFactoryMock(),
+            reflectionProvider: $this->getReflectionProviderStub(),
+            initializerExprTypeResolver: $this->getInitializerExprTypeResolverStub(),
+            attributeReflectionFactory: $this->getAttributeReflectionFactoryStub(),
             factoryReflection: $fr,
             closureReflection: $cr,
             declaringClass: $dc,

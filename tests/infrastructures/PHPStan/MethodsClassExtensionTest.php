@@ -73,7 +73,7 @@ class MethodsClassExtensionTest extends TestCase
 
     private (PhpDocInheritanceResolverInterface&Stub)|null $phpDocInheritanceResolver = null;
 
-    private function getReflectionProviderMock(): ReflectionProvider&Stub
+    private function getReflectionProviderStub(): ReflectionProvider&Stub
     {
         if (!$this->reflectionProvider instanceof ReflectionProvider) {
             $this->reflectionProvider = $this->createStub(ReflectionProvider::class);
@@ -82,7 +82,7 @@ class MethodsClassExtensionTest extends TestCase
         return $this->reflectionProvider;
     }
 
-    private function getAttributeReflectionFactoryMock(): AttributeReflectionFactoryInterface&Stub
+    private function getAttributeReflectionFactoryStub(): AttributeReflectionFactoryInterface&Stub
     {
         if (!$this->attributeReflectionFactory instanceof AttributeReflectionFactoryInterface) {
             $this->attributeReflectionFactory = $this->createStub(AttributeReflectionFactoryInterface::class);
@@ -91,7 +91,7 @@ class MethodsClassExtensionTest extends TestCase
         return $this->attributeReflectionFactory;
     }
 
-    private function getInitializerExprTypeResolverMock(): InitializerExprTypeResolverInterface&Stub
+    private function getInitializerExprTypeResolverStub(): InitializerExprTypeResolverInterface&Stub
     {
         if (!$this->initializerExprTypeResolver instanceof InitializerExprTypeResolverInterface) {
             $this->initializerExprTypeResolver = $this->createStub(InitializerExprTypeResolverInterface::class);
@@ -100,7 +100,7 @@ class MethodsClassExtensionTest extends TestCase
         return $this->initializerExprTypeResolver;
     }
 
-    private function getPhpDocInheritanceResolverMock(): PhpDocInheritanceResolverInterface&Stub
+    private function getPhpDocInheritanceResolverStub(): PhpDocInheritanceResolverInterface&Stub
     {
         if (!$this->phpDocInheritanceResolver instanceof PhpDocInheritanceResolverInterface) {
             $this->phpDocInheritanceResolver = $this->createStub(PhpDocInheritanceResolverInterface::class);
@@ -112,10 +112,10 @@ class MethodsClassExtensionTest extends TestCase
     protected function buildInstance(): MethodsClassReflectionExtension
     {
         return new MethodsClassExtension(
-            reflectionProvider: $this->getReflectionProviderMock(),
-            attributeReflectionFactory: $this->getAttributeReflectionFactoryMock(),
-            initializerExprTypeResolver: $this->getInitializerExprTypeResolverMock(),
-            phpDocInheritanceResolver: $this->getPhpDocInheritanceResolverMock(),
+            reflectionProvider: $this->getReflectionProviderStub(),
+            attributeReflectionFactory: $this->getAttributeReflectionFactoryStub(),
+            initializerExprTypeResolver: $this->getInitializerExprTypeResolverStub(),
+            phpDocInheritanceResolver: $this->getPhpDocInheritanceResolverStub(),
         );
     }
 
@@ -395,7 +395,7 @@ class MethodsClassExtensionTest extends TestCase
             new NameScope('foo', []),
         );
 
-        $this->getPhpDocInheritanceResolverMock()
+        $this->getPhpDocInheritanceResolverStub()
             ->method('resolvePhpDocForMethod')
             ->willReturn($resolvedPHPDocBlock);
 
@@ -467,7 +467,7 @@ class MethodsClassExtensionTest extends TestCase
             $selfOutTag
         );
 
-        $this->getPhpDocInheritanceResolverMock()
+        $this->getPhpDocInheritanceResolverStub()
             ->method('resolvePhpDocForMethod')
             ->willReturn($resolvedPHPDocBlock);
 
@@ -536,7 +536,7 @@ class MethodsClassExtensionTest extends TestCase
             $returnTag,
         );
 
-        $this->getPhpDocInheritanceResolverMock()
+        $this->getPhpDocInheritanceResolverStub()
             ->method('resolvePhpDocForMethod')
             ->willReturn($resolvedPHPDocBlock);
 
@@ -606,7 +606,7 @@ class MethodsClassExtensionTest extends TestCase
             $returnTag,
         );
 
-        $this->getPhpDocInheritanceResolverMock()
+        $this->getPhpDocInheritanceResolverStub()
             ->method('resolvePhpDocForMethod')
             ->willReturn($resolvedPHPDocBlock);
 
@@ -738,7 +738,7 @@ class MethodsClassExtensionTest extends TestCase
             new NameScope('foo', []),
         );
 
-        $this->getPhpDocInheritanceResolverMock()
+        $this->getPhpDocInheritanceResolverStub()
             ->method('resolvePhpDocForMethod')
             ->willReturn($resolvedPHPDocBlock);
 
