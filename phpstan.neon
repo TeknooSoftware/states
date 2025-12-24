@@ -29,5 +29,8 @@ parameters:
             message: '#initializerExprTypeResolver#'
             path: infrastructures/PHPStan/Reflection/StateMethod.php
         -
+            message: '#|ReflectionClass#'
+            path: infrastructures/doctrine/StandardTrait.php
+        -
             message: "#ReflectionException in PHPDoc @throws tag but it's not thrown#"
 

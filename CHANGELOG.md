@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.3] - 2025-12-24
+### Stable Release
+- Fix issue with uninitialized lazy object with doctrine and native proxy
+
 ## [7.1.2] - 2025-12-08
 ### Stable Release
 - Fix bc break introduced into patch of phpstan and phpunit

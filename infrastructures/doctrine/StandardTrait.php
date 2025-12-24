@@ -25,6 +25,7 @@ declare(strict_types=1);
 
 namespace Teknoo\States\Doctrine;
 
+use ReflectionClass;
 use ProxyManager\Proxy\LazyLoadingInterface;
 use SensitiveParameter;
 use Teknoo\States\Proxy\ProxyInterface;
@@ -44,6 +45,9 @@ trait StandardTrait
     use ProxyTrait {
         __call as private __callTrait;
     }
+
+    /** @var array<string, ReflectionClass<ProxyInterface>> */
+    private static array $currentReflectionClass = [];
 
     /**
      * Doctrine does not call the construction and create a new instance without it.
@@ -72,6 +76,15 @@ trait StandardTrait
     }
 
     /**
+     * @return ReflectionClass<ProxyInterface>
+     */
+    private function getReflectionClass(): ReflectionClass
+    {
+        assert($this instanceof ProxyInterface);
+        return self::$currentReflectionClass[$this::class] ??= new ReflectionClass($this);
+    }
+
+    /**
      * @param array<mixed> $arguments
      * @throws Throwable
      */
@@ -79,6 +92,11 @@ trait StandardTrait
     {
         if ($this instanceof LazyLoadingInterface && !$this->isProxyInitialized()) {
             $this->initializeProxy();
+        }
+
+        $rc = $this->getReflectionClass();
+        if ($rc->isUninitializedLazyObject($this)) {
+            $rc->initializeLazyObject($this);
         }
 
         return $this->__callTrait($methodName, $arguments);
