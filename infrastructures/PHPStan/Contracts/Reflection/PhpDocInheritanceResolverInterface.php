@@ -48,5 +48,5 @@ interface PhpDocInheritanceResolverInterface
         ?string $declaringTraitName,
         string $methodName,
         array $positionalParameterNames
-    ): ResolvedPhpDocBlock;
+    ): ?ResolvedPhpDocBlock;
 }

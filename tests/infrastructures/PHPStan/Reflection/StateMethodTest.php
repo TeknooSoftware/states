@@ -482,4 +482,9 @@ class StateMethodTest extends TestCase
         $result = $this->buildInstance(attributes: $attributes)->mustUseReturnValue();
         $this->assertEquals(TrinaryLogic::createYes(), $result);
     }
+
+    public function testGetResolvedPhpDoc()
+    {
+        $this->assertNull($this->buildInstance()->getResolvedPhpDoc());
+    }
 }

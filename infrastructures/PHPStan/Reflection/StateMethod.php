@@ -29,6 +29,7 @@ use PHPStan\BetterReflection\Reflection\Adapter\ReflectionFunction;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionMethod;
 use PHPStan\BetterReflection\Reflection\Adapter\ReflectionParameter;
 use PHPStan\Internal\DeprecatedAttributeHelper;
+use PHPStan\PhpDoc\ResolvedPhpDocBlock;
 use PHPStan\Reflection\Assertions;
 use PHPStan\Reflection\AttributeReflection;
 use PHPStan\Reflection\AttributeReflectionFactory;
@@ -394,5 +395,10 @@ class StateMethod implements ExtendedMethodReflection
         }
 
         return TrinaryLogic::createNo();
+    }
+
+    public function getResolvedPhpDoc(): ?ResolvedPhpDocBlock
+    {
+        return null;
     }
 }

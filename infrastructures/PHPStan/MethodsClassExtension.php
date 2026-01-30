@@ -47,6 +47,7 @@ use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\Type\Generic\TemplateTypeHelper;
+use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\Generic\TemplateTypeVariance;
 use PHPStan\Type\Type;
 use PHPStan\Type\TypehintHelper;
@@ -305,30 +306,38 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             $positionalParameterNames,
         );
 
-        $templateTypeMap = $resolvedPhpDoc->getTemplateTypeMap();
+        $templateTypeMap = $resolvedPhpDoc?->getTemplateTypeMap() ?? TemplateTypeMap::createEmpty();
         $nativeReturnType = TypehintHelper::decideTypeFromReflection(
             reflectionType: $closureReflection->getReturnType(),
             selfClass: $classReflection,
         );
-        $phpDocReturnType = $this->getPhpDocReturnType(
-            $classReflection,
-            $resolvedPhpDoc,
-            $nativeReturnType
-        );
+
+        $phpDocReturnType = null;
+        if (null !== $resolvedPhpDoc) {
+            $phpDocReturnType = $this->getPhpDocReturnType(
+                $classReflection,
+                $resolvedPhpDoc,
+                $nativeReturnType
+            );
+        }
 
         $phpDocThrowType = null;
-        if ($resolvedPhpDoc->getThrowsTag() !== null) {
+        if (null !== $resolvedPhpDoc?->getThrowsTag()) {
             $phpDocThrowType = $resolvedPhpDoc->getThrowsTag()->getType();
         }
 
         $selfOutType = null;
-        if ($resolvedPhpDoc->getSelfOutTag() !== null) {
+        if (null !== $resolvedPhpDoc?->getSelfOutTag()) {
             $selfOutType = $resolvedPhpDoc->getSelfOutTag()->getType();
         }
 
-        $asserts = Assertions::createFromResolvedPhpDocBlock($resolvedPhpDoc);
+        if (null !== $resolvedPhpDoc) {
+            $asserts = Assertions::createFromResolvedPhpDocBlock($resolvedPhpDoc);
+        } else {
+            $asserts = Assertions::createEmpty();
+        }
 
-        $acceptsNamedArguments = $resolvedPhpDoc->acceptsNamedArguments();
+        $acceptsNamedArguments = $resolvedPhpDoc?->acceptsNamedArguments() ?? true;
 
         return new StateMethod(
             reflectionProvider: $this->reflectionProvider,
@@ -342,7 +351,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             selfOutType: $selfOutType,
             asserts: $asserts,
             templateTypeMap: $templateTypeMap,
-            isPure: $resolvedPhpDoc->isPure(),
+            isPure: $resolvedPhpDoc?->isPure() ?? false,
             attributes: $this->attributeReflectionFactory->fromNativeReflection(
                 reflections: $closureReflection->getAttributes(),
                 context: InitializerExprContext::fromClassMethod(

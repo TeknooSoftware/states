@@ -789,4 +789,101 @@ class MethodsClassExtensionTest extends TestCase
 
         $this->buildInstance()->getMethod($cr, 'notExistantMethod');
     }
+
+    public function testGetMethodImplementProxyMethodInStateWithNullResolvedPhpDoc(): void
+    {
+        $brc = $this->createStub(ReflectionClass::class);
+        $brc->method('isInterface')->willReturn(false);
+        $brc->method('implementsInterface')->willReturnMap([
+            [ProxyInterface::class, true],
+            [StateInterface::class, false],
+        ]);
+        $brc->method('getName')->willReturn(Article::class);
+
+        $rcOfCr = new ReflectionClass(ClassReflection::class);
+        $cr = $rcOfCr->newInstanceWithoutConstructor();
+        $rpr = $rcOfCr->getProperty('reflection');
+        $rpr->setValue($cr, $brc);
+
+        $rpr = $rcOfCr->getProperty('anonymousFilename');
+        $rpr->setValue($cr, 'foo/bar.php');
+
+        $this->getPhpDocInheritanceResolverStub()
+            ->method('resolvePhpDocForMethod')
+            ->willReturn(null);
+
+        $this->assertInstanceOf(StateMethod::class, $this->buildInstance()->getMethod($cr, 'getFormattedBody'));
+    }
+
+
+    public function testGetMethodImplementProxyMethodInStateWithNonExplicitReturnTagCompatibleType(): void
+    {
+        $brc = $this->createStub(ReflectionClass::class);
+        $brc->method('isInterface')->willReturn(false);
+        $brc->method('implementsInterface')->willReturnMap([
+            [ProxyInterface::class, true],
+            [StateInterface::class, false],
+        ]);
+        $brc->method('getName')->willReturn(Article::class);
+
+        $rcOfCr = new ReflectionClass(ClassReflection::class);
+        $cr = $rcOfCr->newInstanceWithoutConstructor();
+        $rpr = $rcOfCr->getProperty('reflection');
+        $rpr->setValue($cr, $brc);
+
+        $rpr = $rcOfCr->getProperty('anonymousFilename');
+        $rpr->setValue($cr, 'foo/bar.php');
+
+        $rpr = $rcOfCr->getProperty('activeTemplateTypeMap');
+        $rpr->setValue($cr, new TemplateTypeMap([], []));
+
+        $rpr = $rcOfCr->getProperty('callSiteVarianceMap');
+        $rpr->setValue($cr, new TemplateTypeVarianceMap([]));
+
+        $rcOfRPB = new ReflectionClass(ResolvedPhpDocBlock::class);
+        $resolvedPHPDocBlock = $rcOfRPB->newInstanceWithoutConstructor();
+
+        $rpr = $rcOfRPB->getProperty('templateTypeMap');
+        $rpr->setValue($resolvedPHPDocBlock, new TemplateTypeMap([], []));
+
+        $rpr = $rcOfRPB->getProperty('phpDocNodeResolver');
+        $rpr->setValue(
+            $resolvedPHPDocBlock,
+            new ReflectionClass(PhpDocNodeResolver::class)->newInstanceWithoutConstructor()
+        );
+
+        $rpr = $rcOfRPB->getProperty('phpDocNode');
+        $rpr->setValue(
+            $resolvedPHPDocBlock,
+            $this->createStub(PhpDocNode::class),
+        );
+
+        $rpr = $rcOfRPB->getProperty('nameScope');
+        $rpr->setValue(
+            $resolvedPHPDocBlock,
+            new NameScope('foo', []),
+        );
+
+        $rcofval = new ReflectionClass(ReturnTag::class);
+        $returnTag = $rcofval->newInstanceWithoutConstructor();
+
+        $typeStub = $this->createStub(Type::class);
+        $rpr = $rcofval->getProperty('type');
+        $rpr->setValue($returnTag, $typeStub);
+
+        $rpr = $rcofval->getProperty('isExplicit');
+        $rpr->setValue($returnTag, false);
+
+        $rpr = $rcOfRPB->getProperty('returnTag');
+        $rpr->setValue(
+            $resolvedPHPDocBlock,
+            $returnTag,
+        );
+
+        $this->getPhpDocInheritanceResolverStub()
+            ->method('resolvePhpDocForMethod')
+            ->willReturn($resolvedPHPDocBlock);
+
+        $this->assertInstanceOf(StateMethod::class, $this->buildInstance()->getMethod($cr, 'getFormattedBody'));
+    }
 }
