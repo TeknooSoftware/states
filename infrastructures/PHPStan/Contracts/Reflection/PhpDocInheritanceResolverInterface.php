@@ -39,14 +39,12 @@ use PHPStan\Reflection\ClassReflection;
 interface PhpDocInheritanceResolverInterface
 {
     /**
-     * @param array<int, string> $positionalParameterNames
+     * @param array<int, string> $currentPositionalParameterNames
      */
     public function resolvePhpDocForMethod(
-        ?string $docComment,
-        ?string $fileName,
-        ClassReflection $classReflection,
-        ?string $declaringTraitName,
+        ClassReflection $declaringClass,
         string $methodName,
-        array $positionalParameterNames
+        ?ResolvedPhpDocBlock $currentResolvedPhpDoc,
+        array $currentPositionalParameterNames
     ): ?ResolvedPhpDocBlock;
 }

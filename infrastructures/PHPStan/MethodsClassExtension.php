@@ -298,11 +298,9 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         );
 
         $resolvedPhpDoc = $this->phpDocInheritanceResolver->resolvePhpDocForMethod(
-            $docComment,
-            $classReflection->getFileName(),
             $classReflection,
-            null,
             $factoryReflection->getName(),
+            null,
             $positionalParameterNames,
         );
 
