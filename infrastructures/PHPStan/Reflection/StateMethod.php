@@ -339,7 +339,8 @@ class StateMethod implements ExtendedMethodReflection
                     $this->attributeReflectionFactory->fromNativeReflection(
                         $reflection->getAttributes(),
                         InitializerExprContext::fromReflectionParameter($reflection)
-                    )
+                    ),
+                    null,
                 ),
                 $this->closureReflection->getParameters()
             );

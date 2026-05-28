@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.6] - 2026-02-28
+### Stable Release
+- Fix another another BC Break from PHPStan introduced in patch version...
+
 ## [7.1.5] - 2026-01-30
 ### Stable Release
 - Fix another another BC Break from PHPStan introduced in patch version...

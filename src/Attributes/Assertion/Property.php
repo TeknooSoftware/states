@@ -57,7 +57,7 @@ final class Property implements AssertionInterface
 
     /**
      * @param string|array<int, string> $states
-     * @param array{0: string, 1: class-string<PropertyAssertion\ConstraintInterface>, ...} ...$withs
+     * @param array{0: string, 1: class-string<PropertyAssertion\ConstraintInterface>, ...<int, mixed>} ...$withs
      */
     public function __construct(
         string|array $states,
