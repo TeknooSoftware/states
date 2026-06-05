@@ -97,14 +97,14 @@ final class CallbackTest extends TestCase
 
     public function testGetAssertionWithCallableCallback(): void
     {
-        $attr = new Callback(SimpleState::class, self::toCall(...));
+        $attr = new Callback(SimpleState::class, 'uniqid');
 
         $assertion = $attr->getAssertion($this->createStub(ProxyInterface::class));
 
         $this->assertInstanceOf(AssertionCallback::class, $assertion);
 
         $this->assertEquals(
-            new CallbackAssertion([SimpleState::class])->call(self::toCall(...)),
+            new CallbackAssertion([SimpleState::class])->call('uniqid'),
             $assertion,
         );
     }
