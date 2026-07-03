@@ -2,7 +2,7 @@
 
 ## [7.1.7] - 2026-07-03
 ### Stable Release
-- Manage another bug into DeadCodeRule in PHPStan...
+- Improve AST Visitor to avoid other bug into phpstan
 
 ## [7.1.6] - 2026-05-28
 ### Stable Release

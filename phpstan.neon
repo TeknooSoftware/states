@@ -4,11 +4,6 @@ parameters:
         - src/
         - infrastructures/
         - tests/fixtures/Phpstan/
-    excludePaths:
-        analyse:
-            # Extends PHPStan's Nette CompilerExtension via a runtime class_alias to the
-            # build-randomized `_PHPStan_<hash>` namespace, so it cannot be analysed statically.
-            - infrastructures/PHPStan/DI/DisableUnusedPrivateMethodRuleExtension.php
     treatPhpDocTypesAsCertain: false
     ignoreErrors:
         -

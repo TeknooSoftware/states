@@ -31,6 +31,8 @@ use PhpParser\Node\Identifier;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\NodeTraverser;
+use PhpParser\NodeVisitor\CloningVisitor;
 use PhpParser\NodeVisitorAbstract;
 use PHPStan\Node\AnonymousClassNode;
 use PHPStan\Parser\Parser;
@@ -66,11 +68,6 @@ class ASTVisitor extends NodeVisitorAbstract
      * @var array<string, array<int, ClassMethod>>
      */
     private array $statesStmts = [];
-
-    /**
-     * @var array<string, true>
-     */
-    private array $classesUpdated = [];
 
     /**
      * @var callable(string): (\ReflectionClass<object>|ClassReflection)
@@ -169,11 +166,29 @@ class ASTVisitor extends NodeVisitorAbstract
         }
 
         $this->statesStmts[$className] ??= [];
-        foreach ($this->statesStmts[$className] as $stmt) {
+
+        // Return independent clones so the shared cache is never mutated by
+        // mergeStmts (name/flags) nor by the parent attribute set below.
+        $stmts = $this->cloneStmts($this->statesStmts[$className]);
+        foreach ($stmts as $stmt) {
             $stmt->setAttribute('parent', $parent);
         }
 
-        return $this->statesStmts[$className];
+        return $stmts;
+    }
+
+    /**
+     * @param array<int, ClassMethod> $stmts
+     * @return array<int, ClassMethod>
+     */
+    private function cloneStmts(array $stmts): array
+    {
+        $traverser = new NodeTraverser(new CloningVisitor());
+
+        /** @var array<int, ClassMethod> $cloned */
+        $cloned = $traverser->traverse($stmts);
+
+        return $cloned;
     }
 
     /**
@@ -220,39 +235,45 @@ class ASTVisitor extends NodeVisitorAbstract
             return $node;
         }
 
+        $merged = false;
         foreach ($node->implements as $className) {
             $interfaceName = $className->toString();
 
             $className = (string) $node->namespacedName;
             if (
-                !isset($this->classesUpdated[$className])
+                !$merged
                 && (
                     ProxyInterface::class === $interfaceName
                     || is_subclass_of($interfaceName, ProxyInterface::class)
                 )
             ) {
-                $this->classesUpdated[$className] = true;
+                $merged = true;
                 $classes = array_keys($this->listStatesFromProxyClass($className));
                 $node->stmts = $this->mergeStmts(
                     $node->stmts,
                     array_map(
-                        /**
-                         * @throws ParserErrorsException
-                         */
+                    /**
+                     * @throws ParserErrorsException
+                     */
                         fn ($class): array => $this->getStateStmts((string) $class, $node),
                         $classes,
                     )
                 );
             }
 
-            if (
-                StateInterface::class === $interfaceName
-                && !isset($this->statesStmts[$className])
-            ) {
+            if (StateInterface::class === $interfaceName) {
+                // The methods are ALWAYS stripped so the output node is deterministic
+                // on every parse; they are collected into the cache only on the first
+                // parse of this state class.
+                $collect = !isset($this->statesStmts[$className]);
                 $stmtsToKeep = [];
                 foreach ($node->stmts as $stmt) {
                     if (!$stmt instanceof ClassMethod) {
                         $stmtsToKeep[] = $stmt;
+                        continue;
+                    }
+
+                    if (!$collect) {
                         continue;
                     }
 
