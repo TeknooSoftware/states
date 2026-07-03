@@ -1,8 +1,12 @@
 # Teknoo Software - States library - Change Log
 
-## [7.1.7] - 2026-07-03
+## [7.1.8] - 2026-07-03
 ### Stable Release
 - Improve AST Visitor to avoid other bug into phpstan
+
+## [7.1.7] - 2026-07-03
+### Stable Release
+- Dropped
 
 ## [7.1.6] - 2026-05-28
 ### Stable Release
