@@ -1,6 +1,10 @@
 # Teknoo Software - States library - Change Log
 
-## [7.1.6] - 2026-02-28
+## [7.1.7] - 2026-07-03
+### Stable Release
+- Manage another bug into DeadCodeRule in PHPStan...
+
+## [7.1.6] - 2026-05-28
 ### Stable Release
 - Fix another another BC Break from PHPStan introduced in patch version...
 
