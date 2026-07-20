@@ -37,12 +37,10 @@ Implement $\rightarrow$ Review $\rightarrow$ Verify $\rightarrow$ Report**.
 
 No task is considered "done" until the following checks are successfully performed:
 
-| Check Type          | Command                      | Requirement                                     |
-|:--------------------|:-----------------------------|:------------------------------------------------|
-| **Unit Tests**      | `vendor/bin/phpunit`         | All tests must pass without failures or errors. |
-| **Static Analysis** | `vendor/bin/phpstan analyse` | Zero errors reported.                           |
-| **Linting**         | `vendor/bin/phpcs`           | Code must adhere to project style guidelines.   |
-| **Refactoring**     | `vendor/bin/rector process`  | Must not introduce regressions in behavior.     |
+| Check Type     | Command     | Requirement                                     |
+|:---------------|:------------|:------------------------------------------------|
+| **Unit Tests** | `make test` | All tests must pass without failures or errors. |
+| **QA**         | `make qa`   | Zero errors reported.                           |
 
 *Note: If a check fails, the agent must fix the issue and re-run the verification.*
 
