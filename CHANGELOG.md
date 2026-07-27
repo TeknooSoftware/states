@@ -1,5 +1,9 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.9] - 2026-07-27
+### Stable Release
+- Fix another another BC Break from PHPStan introduced in patch version 2.2.6
+
 ## [7.1.8] - 2026-07-03
 ### Stable Release
 - Improve AST Visitor to avoid other bug into phpstan
