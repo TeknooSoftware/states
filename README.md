@@ -138,8 +138,8 @@ An example of using this library is available in the folder : [Demo](demo/demo_a
 
 Support this project
 ---------------------
-This project is free and will remain free. It is fully supported by the activities of the EIRL.
-If you like it and help me maintain it and evolve it, don't hesitate to support me on
+This project is free and will remain free. It is fully supported by commercial activities of SASU Teknoo Software
+and EIRL Richard DELOGE. If you like it and help me maintain it and evolve it, don't hesitate to support me on
 [Patreon](https://patreon.com/teknoo_software) or [Github](https://github.com/sponsors/TeknooSoftware).
 
 Thanks :) Richard.
