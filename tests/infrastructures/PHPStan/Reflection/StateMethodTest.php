@@ -124,6 +124,7 @@ class StateMethodTest extends TestCase
         array $attributes = [],
     ): StateMethod {
         $factoryReflection = $this->createMock(BetterReflectionMethod::class);
+        $factoryReflection->modifiers = 0;
         $factoryReflection->method('getName')->willReturn('factory');
         $factoryReflection->method('getFileName')->willReturn('factory.php');
         $factoryReflection->expects($this->never())->method('getStartLine');
@@ -137,6 +138,7 @@ class StateMethodTest extends TestCase
         $factoryReflection->method('getTentativeReturnType')->willReturn($tentativeReturnType);
 
         $attribute = $this->createStub(ReflectionAttribute::class);
+        $attribute->name = 'Deprecated';
         $attribute->method('getName')->willReturn('Deprecated');
         $attribute->method('getArguments')->willReturn([
             'foo bar',
@@ -260,6 +262,8 @@ class StateMethodTest extends TestCase
     public function testGetPrototypeWithTentativeReturnType(): void
     {
         $type = $this->createMock(ReflectionNamedType::class);
+        $type->name = stdClass::class;
+        $type->isIdentifier = false;
         $type->expects($this->once())->method('getName')->willReturn(stdClass::class);
         $this->assertInstanceOf(StateMethod::class, $this->buildInstance(tentativeReturnType: $type)->getPrototype());
     }

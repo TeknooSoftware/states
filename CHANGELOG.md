@@ -1,5 +1,10 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.10] - 2026-09-14
+### Stable Release
+- Fix another BC Break from PHPStan introduced in patch version 2.2.14 (BetterReflection adapters now read
+  `modifiers` and `name` properties directly instead of calling methods)
+
 ## [7.1.9] - 2026-07-27
 ### Stable Release
 - Fix another another BC Break from PHPStan introduced in patch version 2.2.6
