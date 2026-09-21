@@ -23,27 +23,29 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Attributes;
+namespace Teknoo\Tests\Support\Extendable\Daughter;
 
-use Attribute;
+use Teknoo\Tests\Support\Extendable\Mother\Mother;
 
 /**
- * Attribute to configure assertions about automation of a stated class.
- * By default, all assertions attributes are inherited from parent class.
- *
- * Usage examples:
- *   #[Assertions(inheritsFromParent: false)]
+ * Child stated class used to check that the visibility scope computed for a static caller does not depend on
+ * previous calls : a static method of a child class can call protected methods of its parent's states, but never
+ * theirs private methods.
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-#[Attribute(Attribute::TARGET_CLASS)]
-final class Assertions
+class StaticCallerDaughter extends Daughter
 {
-    public function __construct(
-        public readonly bool $inheritsFromParent = true,
-    ) {
+    public static function stealMotherPrivate(Mother $mother): mixed
+    {
+        return $mother->methodPrivate();
+    }
+
+    public static function callMotherProtected(Mother $mother): mixed
+    {
+        return $mother->methodProtected();
     }
 }

@@ -51,6 +51,7 @@ use function array_map;
 use function array_merge;
 use function array_unique;
 use function get_parent_class;
+use function is_subclass_of;
 use function strtolower;
 
 /**
@@ -208,7 +209,8 @@ class ASTVisitor extends NodeVisitorAbstract
                 if (isset($currentMethodsList[$lowerName])) {
                     //The method is renamed and virtualy set a public to avoid false positive about duplicated code.
                     $stmt->name = new Identifier(((string) $stmt->name) . $currentMethodsList[$lowerName]);
-                    $stmt->flags &= Modifiers::PUBLIC & ~Modifiers::PROTECTED & ~Modifiers::PRIVATE;
+                    //Only the visibility is replaced, others modifiers (static, final, abstract) must be kept
+                    $stmt->flags = ($stmt->flags & ~Modifiers::VISIBILITY_MASK) | Modifiers::PUBLIC;
                     ++$currentMethodsList[$lowerName];
                 } else {
                     $currentMethodsList[$lowerName] = 1;
@@ -219,6 +221,59 @@ class ASTVisitor extends NodeVisitorAbstract
         }
 
         return $proxyStmts;
+    }
+
+    /**
+     * To replace, in the state's method, the builder by the closure it directly returns (closure or arrow
+     * function) : arguments, return type, attributes and body of the method become theirs of the closure, to be
+     * analysed as a method of the proxy. All others builders are kept unchanged.
+     * A static closure is only bound to the scope of the proxy, `$this` is not available : its method is static too.
+     */
+    private function replaceBuilderByItsClosure(ClassMethod $stmt): void
+    {
+        $returnType = $stmt->returnType;
+        if (
+            !(
+                $returnType instanceof Identifier
+                && 'callable' === strtolower($returnType->name)
+            )
+            && !(
+                $returnType instanceof Node\Name\FullyQualified
+                && 'closure' === strtolower((string) $returnType)
+            )
+        ) {
+            return;
+        }
+
+        $returnStmt = $stmt->stmts[0] ?? null;
+        if (!$returnStmt instanceof Stmt\Return_) {
+            return;
+        }
+
+        $closureExpr = $returnStmt->expr;
+        if (
+            ($closureExpr instanceof Node\Expr\Closure || $closureExpr instanceof Node\Expr\ArrowFunction)
+            && true === ($closureExpr->static ?? false)
+        ) {
+            $stmt->flags |= Modifiers::STATIC;
+        }
+
+        if ($closureExpr instanceof Node\Expr\Closure) {
+            $stmt->params = $closureExpr->params;
+            $stmt->returnType = $closureExpr->returnType;
+            $stmt->attrGroups = $closureExpr->attrGroups;
+            $stmt->stmts = $closureExpr->stmts;
+
+            return;
+        }
+
+        if ($closureExpr instanceof Node\Expr\ArrowFunction) {
+            //An arrow function has no statements, only a returned expression
+            $stmt->params = $closureExpr->params;
+            $stmt->returnType = $closureExpr->returnType;
+            $stmt->attrGroups = $closureExpr->attrGroups;
+            $stmt->stmts = [new Stmt\Return_($closureExpr->expr, $closureExpr->getAttributes())];
+        }
     }
 
     /**
@@ -235,76 +290,56 @@ class ASTVisitor extends NodeVisitorAbstract
             return $node;
         }
 
-        $merged = false;
-        foreach ($node->implements as $className) {
-            $interfaceName = $className->toString();
+        $className = (string) $node->namespacedName;
 
-            $className = (string) $node->namespacedName;
-            if (
-                !$merged
-                && (
-                    ProxyInterface::class === $interfaceName
-                    || is_subclass_of($interfaceName, ProxyInterface::class)
+        $isProxy = false;
+        $isState = false;
+        foreach ($node->implements as $implement) {
+            $interfaceName = $implement->toString();
+
+            $isProxy = $isProxy
+                || ProxyInterface::class === $interfaceName
+                || is_subclass_of($interfaceName, ProxyInterface::class);
+
+            $isState = $isState || StateInterface::class === $interfaceName;
+        }
+
+        if ($isProxy) {
+            $classes = array_keys($this->listStatesFromProxyClass($className));
+            $node->stmts = $this->mergeStmts(
+                $node->stmts,
+                array_map(
+                /**
+                 * @throws ParserErrorsException
+                 */
+                    fn ($class): array => $this->getStateStmts((string) $class, $node),
+                    $classes,
                 )
-            ) {
-                $merged = true;
-                $classes = array_keys($this->listStatesFromProxyClass($className));
-                $node->stmts = $this->mergeStmts(
-                    $node->stmts,
-                    array_map(
-                    /**
-                     * @throws ParserErrorsException
-                     */
-                        fn ($class): array => $this->getStateStmts((string) $class, $node),
-                        $classes,
-                    )
-                );
-            }
+            );
+        }
 
-            if (StateInterface::class === $interfaceName) {
-                // The methods are ALWAYS stripped so the output node is deterministic
-                // on every parse; they are collected into the cache only on the first
-                // parse of this state class.
-                $collect = !isset($this->statesStmts[$className]);
-                $stmtsToKeep = [];
-                foreach ($node->stmts as $stmt) {
-                    if (!$stmt instanceof ClassMethod) {
-                        $stmtsToKeep[] = $stmt;
-                        continue;
-                    }
-
-                    if (!$collect) {
-                        continue;
-                    }
-
-                    if (
-                        isset($stmt->stmts[0])
-                        && (
-                            (
-                                $stmt->returnType instanceof Identifier
-                                && strtolower($stmt->returnType->name) === 'callable'
-                            )
-                            || (
-                                $stmt->returnType instanceof Node\Name\FullyQualified
-                                && 'closure' === strtolower((string) $stmt->returnType)
-                            )
-                        )
-                    ) {
-                        /** @var Stmt\Return_ $returnStmt */
-                        $returnStmt = $stmt->stmts[0];
-                        /** @var Node\Expr\Closure $closureStmt */
-                        $closureStmt =  $returnStmt->expr;
-                        $stmt->params = $closureStmt->params;
-                        $stmt->returnType = $closureStmt->returnType;
-                        $stmt->attrGroups = $closureStmt->attrGroups;
-                        $stmt->stmts = $closureStmt->stmts;
-                    }
-
-                    $this->statesStmts[$className][] = $stmt;
+        if ($isState) {
+            // The methods are ALWAYS stripped so the output node is deterministic
+            // on every parse; they are collected into the cache only on the first
+            // parse of this state class.
+            $collect = !isset($this->statesStmts[$className]);
+            $stmtsToKeep = [];
+            foreach ($node->stmts as $stmt) {
+                if (!$stmt instanceof ClassMethod) {
+                    $stmtsToKeep[] = $stmt;
+                    continue;
                 }
 
-                $node->stmts = $stmtsToKeep;
+                if (!$collect) {
+                    continue;
+                }
+
+                $this->replaceBuilderByItsClosure($stmt);
+
+                $this->statesStmts[$className][] = $stmt;
             }
+
+            $node->stmts = $stmtsToKeep;
         }
 
         return $node;

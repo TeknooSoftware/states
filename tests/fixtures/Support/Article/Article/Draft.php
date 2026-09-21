@@ -54,6 +54,22 @@ class Draft extends AbstractState
         };
     }
 
+    public function publishAndGetTitle()
+    {
+        /*
+         * Publish this article, then call a method available in the new states : to check that a method of a
+         * disabled state is never kept into the proxy's cache of called methods.
+         */
+        return function () {
+            $this->setAttribute('is_published', true);
+            $this->disableAllStates();
+            $this->enableState(StateDefault::class);
+            $this->enableState(Published::class);
+
+            return $this->getTitle();
+        };
+    }
+
     public function setTitle()
     {
         /*

@@ -23,27 +23,32 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Attributes;
+namespace Teknoo\Tests\Support\Person\States;
 
-use Attribute;
+use Closure;
+use DateTimeInterface;
+use Teknoo\States\State\AbstractState;
+use Teknoo\Tests\Support\Person\Person;
 
 /**
- * Attribute to configure assertions about automation of a stated class.
- * By default, all assertions attributes are inherited from parent class.
- *
- * Usage examples:
- *   #[Assertions(inheritsFromParent: false)]
+ * @mixin Person
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-#[Attribute(Attribute::TARGET_CLASS)]
-final class Assertions
+class French extends AbstractState
 {
-    public function __construct(
-        public readonly bool $inheritsFromParent = true,
-    ) {
+    public function sayHello(): Closure
+    {
+        return function (): string {
+            return 'Bonjour, ' . $this->name;
+        };
+    }
+
+    public function displayDate(): Closure
+    {
+        return fn (DateTimeInterface $now): string => $this->getName() . ', ' . $now->format('d m Y');
     }
 }

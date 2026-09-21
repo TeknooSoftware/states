@@ -28,6 +28,7 @@ namespace Teknoo\Tests\States\Proxy;
 use DateTime;
 use PHPUnit\Framework\Error\Warning;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
 use Teknoo\States\Proxy;
 use Teknoo\States\Proxy\Exception;
 use Teknoo\States\State\StateInterface;
@@ -656,6 +657,81 @@ abstract class AbstractProxyTests extends TestCase
         );
     }
 
+    /**
+     * Without the flag "all forbidden", isNotInState() means "at least one of these states is not enabled" :
+     * the callback must not be called when all listed states are enabled.
+     */
+    public function testIsNotInStateCallbackIsNotCalledWhenAllListedStatesAreActive(): void
+    {
+        $proxy = $this->buildProxy();
+        $proxy->registerState(MockState1::class, new MockState1(false, "It/A/StatedClass"));
+        $proxy->registerState(MockState2::class, new MockState2(false, "It/A/StatedClass"));
+        $proxy->enableState(MockState1::class);
+        $proxy->enableState(MockState2::class);
+
+        $this->assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isNotInState([MockState1::class, MockState2::class], function (): never {
+                self::fail('All listed states are enabled');
+            })
+        );
+
+        $this->assertInstanceOf(
+            Proxy\ProxyInterface::class,
+            $proxy->isNotInState([MockState2::class, MockState1::class], function (): never {
+                self::fail('All listed states are enabled');
+            })
+        );
+    }
+
+    /**
+     * Without the flag "all forbidden", isNotInState() means "at least one of these states is not enabled" :
+     * the callback must be called when only some listed states are enabled, whatever theirs order in the list.
+     */
+    public function testIsNotInStateCallbackIsCalledWhenOneListedStateIsInactive(): void
+    {
+        $proxy = $this->buildProxy();
+        $proxy->registerState(MockState1::class, new MockState1(false, "It/A/StatedClass"));
+        $proxy->registerState(MockState2::class, new MockState2(false, "It/A/StatedClass"));
+        $proxy->enableState(MockState1::class);
+
+        $called = 0;
+        $callback = function (array $statesList) use (&$called): void {
+            ++$called;
+            $this->assertSame([MockState1::class], $statesList);
+        };
+
+        $proxy->isNotInState([MockState1::class, MockState2::class], $callback);
+        $proxy->isNotInState([MockState2::class, MockState1::class], $callback);
+
+        $this->assertSame(2, $called);
+    }
+
+    /**
+     * A state present several times in the list must be counted once.
+     */
+    public function testIsInStateAllRequiredWithDuplicatedNames(): void
+    {
+        $proxy = $this->buildProxy();
+        $proxy->registerState(MockState1::class, new MockState1(false, "It/A/StatedClass"));
+        $proxy->registerState(MockState2::class, new MockState2(false, "It/A/StatedClass"));
+        $proxy->enableState(MockState1::class);
+
+        $called = false;
+        $proxy->isInState([MockState1::class, MockState1::class], function () use (&$called): void {
+            $called = true;
+        }, true);
+        $this->assertTrue($called);
+
+        $proxy->isInState([MockState1::class, MockState1::class, MockState2::class], function (): never {
+            self::fail('The state MockState2 is not enabled');
+        }, true);
+
+        $proxy->isNotInState([MockState1::class, MockState1::class], function (): never {
+            self::fail('The state MockState1 is enabled');
+        });
+    }
+
     public function testIsNotInStateCallbackOnEmptyList(): void
     {
         $proxy = $this->buildProxy();
@@ -716,6 +792,127 @@ abstract class AbstractProxyTests extends TestCase
         $this->assertSame('myCustomMethod', $this->state1->getMethodNameCalled());
         $this->assertSame(AbstractProxyTests::class, $this->state1->getStatedClassOrigin());
         $this->assertSame(['foo', 'bar'], $this->state1->getCalledArguments());
+    }
+
+    /**
+     * Two proxies with same states registered and enabled must be equal (`assertEquals()` of PHPUnit, operator `==`),
+     * whatever the count of changes of states performed on each one : a proxy must not keep any value depending on
+     * its history, like a counter of changes.
+     */
+    public function testProxiesInSameStatesAreEqualWhateverTheirHistory(): void
+    {
+        $buildProxyWithStates = function (): Proxy\ProxyInterface {
+            $proxy = $this->buildProxy();
+            $proxy->registerState(MockState1::class, $this->state1);
+            $proxy->registerState(MockState2::class, $this->state2);
+            $proxy->registerState(MockState3::class, $this->state3);
+
+            return $proxy;
+        };
+
+        $proxy1 = $buildProxyWithStates();
+        $proxy1->enableState(MockState1::class);
+
+        $proxy2 = $buildProxyWithStates();
+        $proxy2->enableState(MockState2::class);
+        $proxy2->switchState(MockState3::class);
+        $proxy2->disableAllStates();
+        $proxy2->enableState(MockState1::class);
+
+        $this->assertEquals($proxy1, $proxy2);
+        $this->assertTrue($proxy1 == $proxy2);
+
+        $proxy2->enableState(MockState2::class);
+        $this->assertFalse($proxy1 == $proxy2);
+    }
+
+    /**
+     * The stack of callers' stated classes must be empty for a clone, even when the proxy is cloned during the
+     * execution of a state's method (the stack of the original proxy is then not empty) : a clone must never keep
+     * callers of the original proxy.
+     */
+    public function testCloneCreatedInAStateMethodHasAnEmptyCallersStack(): void
+    {
+        $extractStack = static function (object $proxy): mixed {
+            $reflectionClass = new ReflectionClass($proxy);
+            while (!$reflectionClass->hasProperty('callersStack')) {
+                $reflectionClass = $reflectionClass->getParentClass();
+                self::assertNotFalse($reflectionClass, 'The property callersStack was not found');
+            }
+
+            return $reflectionClass->getProperty('callersStack')->getValue($proxy);
+        };
+
+        $stackDuringTheCall = null;
+        $state = new MockState1(
+            false,
+            'my\Stated\Class',
+            function () use ($extractStack, &$stackDuringTheCall): object {
+                $stackDuringTheCall = $extractStack($this);
+
+                return clone $this;
+            }
+        );
+        $state->allowMethod();
+
+        $this->proxy->registerState(MockState1::class, $state);
+        $this->proxy->enableState(MockState1::class);
+
+        $clonedProxy = $this->proxy->cloneMe();
+
+        $this->assertInstanceOf($this->proxy::class, $clonedProxy);
+        $this->assertNotSame($this->proxy, $clonedProxy);
+
+        //During the call, the caller was the stated class owning the state
+        $this->assertSame([$this->proxy::class], $stackDuringTheCall);
+        //The clone has not kept it, and the stack of the original proxy is restored after the call
+        $this->assertSame([], $extractStack($clonedProxy));
+        $this->assertSame([], $extractStack($this->proxy));
+    }
+
+    /**
+     * When a state is registered again, with a new instance, while it is enabled, the new instance must be
+     * immediately used, the old one must not be called anymore (from actives states or from the proxy's cache).
+     */
+    public function testRegisterStateOnAnEnabledStateReplacesTheActiveInstance(): void
+    {
+        $this->initializeStateProxy(MockState1::class, true);
+
+        $this->proxy->myCustomMethod('foo');
+        $this->assertTrue($this->state1->methodWasCalled());
+        $this->assertSame(['foo'], $this->state1->getCalledArguments());
+
+        $newState = new MockState1(false, 'my\Stated\Class');
+        $newState->allowMethod();
+        $this->proxy->registerState(MockState1::class, $newState);
+
+        $this->proxy->myCustomMethod('bar');
+        $this->assertTrue($newState->methodWasCalled());
+        $this->assertSame(['bar'], $newState->getCalledArguments());
+        //The old instance was not called again (the mock resets these values when they are read)
+        $this->assertFalse($this->state1->methodWasCalled());
+        $this->assertNull($this->state1->getCalledArguments());
+    }
+
+    /**
+     * A state can be registered under another name than its class name (an interface implemented by this state, it
+     * is required for states defined with anonymous classes) : its methods must be callable.
+     */
+    public function testCallMethodOfStateRegisteredUnderAnInterfaceName(): void
+    {
+        $this->proxy->registerState(StateInterface::class, $this->state1);
+        $this->proxy->enableState(StateInterface::class);
+        $this->state1->allowMethod();
+
+        $this->proxy->myCustomMethod('foo', 'bar');
+
+        $this->assertTrue($this->state1->methodWasCalled());
+        $this->assertSame('myCustomMethod', $this->state1->getMethodNameCalled());
+        $this->assertSame(['foo', 'bar'], $this->state1->getCalledArguments());
+
+        //Same behavior when the method is found from the proxy's cache
+        $this->proxy->myCustomMethod('bar', 'foo');
+        $this->assertSame(['bar', 'foo'], $this->state1->getCalledArguments());
     }
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -1085,7 +1282,8 @@ abstract class AbstractProxyTests extends TestCase
         \testCallFromOtherObject::publicMethodStatic();
         $this->assertTrue($this->state1->methodWasCalled());
         $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame('', $this->state1->getStatedClassOrigin());
+        //The origin is the class owning the static method
+        $this->assertSame('testCallFromOtherObject', $this->state1->getStatedClassOrigin());
         $this->assertSame([], $this->state1->getCalledArguments());
     }
 
@@ -1128,7 +1326,8 @@ abstract class AbstractProxyTests extends TestCase
         $childClassName::protectedMethodStatic();
         $this->assertTrue($this->state1->methodWasCalled());
         $this->assertSame('protectedTest', $this->state1->getMethodNameCalled());
-        $this->assertSame('', $this->state1->getStatedClassOrigin());
+        //The origin is the class owning the static method
+        $this->assertSame($childClassName, $this->state1->getStatedClassOrigin());
         $this->assertSame([], $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1136,7 +1335,8 @@ abstract class AbstractProxyTests extends TestCase
         $childClassName::publicMethodStatic();
         $this->assertTrue($this->state1->methodWasCalled());
         $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame('', $this->state1->getStatedClassOrigin());
+        //The origin is the class owning the static method
+        $this->assertSame($childClassName, $this->state1->getStatedClassOrigin());
         $this->assertSame([], $this->state1->getCalledArguments());
     }
 
@@ -1175,7 +1375,8 @@ abstract class AbstractProxyTests extends TestCase
         $childClassName::privateMethodStatic();
         $this->assertTrue($this->state1->methodWasCalled());
         $this->assertSame('privateTest', $this->state1->getMethodNameCalled());
-        $this->assertSame('', $this->state1->getStatedClassOrigin());
+        //The origin is the class owning the static method
+        $this->assertSame($childClassName, $this->state1->getStatedClassOrigin());
         $this->assertSame([], $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1183,7 +1384,8 @@ abstract class AbstractProxyTests extends TestCase
         $childClassName::protectedMethodStatic();
         $this->assertTrue($this->state1->methodWasCalled());
         $this->assertSame('protectedTest', $this->state1->getMethodNameCalled());
-        $this->assertSame('', $this->state1->getStatedClassOrigin());
+        //The origin is the class owning the static method
+        $this->assertSame($childClassName, $this->state1->getStatedClassOrigin());
         $this->assertSame([], $this->state1->getCalledArguments());
 
         //Build temp functions to test proxy behavior with different scope visibility
@@ -1191,8 +1393,40 @@ abstract class AbstractProxyTests extends TestCase
         $childClassName::publicMethodStatic();
         $this->assertTrue($this->state1->methodWasCalled());
         $this->assertSame('publicTest', $this->state1->getMethodNameCalled());
-        $this->assertSame('', $this->state1->getStatedClassOrigin());
+        //The origin is the class owning the static method
+        $this->assertSame($childClassName, $this->state1->getStatedClassOrigin());
         $this->assertSame([], $this->state1->getCalledArguments());
+    }
+
+    /**
+     * The stated class origin, passed to states to check the visibility, must only depend on the current caller :
+     * it must never be kept from a previous call.
+     */
+    public function testStatedClassOriginIsNotKeptFromAPreviousCall(): void
+    {
+        $this->initializeStateProxy(MockState1::class, true);
+        //To access to the proxy in the method
+        global $proxy;
+        $proxy = $this->proxy;
+
+        include_once dirname(__DIR__, 2).'/fixtures/TestVisibilityFunctionsCall.php';
+
+        //Call from an object : the origin is the class of this object
+        $object = new \testCallFromOtherObject();
+        $object->publicMethod();
+        $this->assertSame('testCallFromOtherObject', $this->state1->getStatedClassOrigin());
+
+        //Call from a function : there are no origin, the previous one must not be reused
+        testCallFromFunctionPublic();
+        $this->assertSame('', $this->state1->getStatedClassOrigin());
+
+        //Call from a static method : the origin is the class owning this static method
+        $object->publicMethod();
+        \testCallFromOtherObject::publicMethodStatic();
+        $this->assertSame('testCallFromOtherObject', $this->state1->getStatedClassOrigin());
+
+        testCallFromFunctionPublic();
+        $this->assertSame('', $this->state1->getStatedClassOrigin());
     }
 
     /**

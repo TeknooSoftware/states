@@ -38,13 +38,18 @@ use function class_exists;
 use function is_a;
 use function is_callable;
 use function is_string;
+use function method_exists;
+use function str_contains;
 
 /**
- * Attribute to declare one or many state class names for a proxy class.
+ * Attribute to declare, on an automated proxy class, an assertion delegated to a callback : listed states are enabled
+ * by `updateStates()` when the callback calls the method `isValid()` of the assertion. The callback is the name of a
+ * public method of the proxy (always preferred to a PHP function with the same name) or a callable. It is called with
+ * the proxy and the assertion.
  *
  * Usage examples:
- *   #[StateClass(FooState::class)]
- *   #[StateClass([FooState::class, BarState::class])]
+ *   #[Callback(FooState::class, 'aMethodOfTheProxy')]
+ *   #[Callback([FooState::class, BarState::class], [Foo::class, 'aStaticMethod'])]
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
@@ -95,7 +100,12 @@ final class Callback implements AssertionInterface
     public function getAssertion(ProxyInterface $proxy): AutomatedAssertionInterface
     {
         $callback = $this->callback;
-        if (!is_callable($callback)) {
+        if (
+            !is_callable($callback)
+            || (is_string($callback) && !str_contains($callback, '::') && method_exists($proxy, $callback))
+        ) {
+            //It is the name of a method of the proxy. A method of the proxy is always preferred to a PHP function
+            //with the same name (key, current, count, ...), which is callable too.
             $callback = [$proxy, $callback];
         }
 

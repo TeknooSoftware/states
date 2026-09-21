@@ -7,18 +7,18 @@ Teknoo Software - States library
 [![License](https://poser.pugx.org/teknoo/states/license)](https://packagist.org/packages/teknoo/states)
 [![PHPStan](https://img.shields.io/badge/PHPStan-enabled-brightgreen.svg?style=flat)](https://github.com/phpstan/phpstan)
 
-States allows you to create PHP classes following the [State Pattern](http://en.wikipedia.org/wiki/State_pattern) in 
-PHP. This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic 
-conditional statements and this improve maintainability and workflows writing.
+States allows you to create PHP classes following the [State Pattern](https://en.wikipedia.org/wiki/State_pattern) in
+PHP. This can be a cleaner way for an object to change its behavior at runtime without resorting to large monolithic
+conditional statements, and this improves maintainability and workflow writing.
 
 Features
 --------
 
-* **Create Several States** : Split classes in states to avoid un-understandable large monolithic statements.
-* **Inherit States and Classes** : Complete and factorize states thanks to inheritance. 
+* **Create Several States** : Split classes in states to avoid unmaintainable large monolithic statements.
+* **Inherit States and Classes** : Complete and factorize states thanks to inheritance.
   * Stated classes can be also inherited.
 * **Automate States Switching** : Define states switching rules based on object's properties.
-* **Implement Every Where**: Thanks to traits and interfaces, use this pattern on your existing code.
+* **Implement Everywhere**: Thanks to traits and interfaces, use this pattern on your existing code.
   * Compatible with Doctrine.
 
 A complete documentation is available in [documentation/README.md](documentation/README.md)
@@ -29,13 +29,14 @@ Quick Example
     
     declare(strict_types=1);
     
+    namespace Acme;
+    
     require 'vendor/autoload.php';
     
     use Closure;
     use DateTime;
     use Teknoo\States\Attributes\Assertion\Property as PropertyAssertion;
     use Teknoo\States\Attributes\StateClass;
-    use Teknoo\States\Automated\Assertion\Property;
     use Teknoo\States\Automated\Assertion\Property\IsEqual;
     use Teknoo\States\Automated\AutomatedInterface;
     use Teknoo\States\Automated\AutomatedTrait;
@@ -128,9 +129,9 @@ Quick Example
     
     //Display
     //Bonjour, Roger
-    //Date: 01 07 2022
+    //Date: 01 07 2016
     //Good morning, Richard
-    //Date: 07 01, 2022
+    //Date: 07 01, 2016
  
 Full Example
 ------------
@@ -157,7 +158,7 @@ sharing knowledge and skills.
 
 License
 -------
-State is licensed under the 3-Clause BSD License - see the licenses folder for details.
+States is licensed under the 3-Clause BSD License - see the [LICENSE](LICENSE) file for details.
 
 Installation & Requirements
 ---------------------------
@@ -167,43 +168,60 @@ To install this library with composer, run this command :
 
 This library requires :
 
-    * PHP 8.1+
+    * PHP 8.4+
     * A PHP autoloader (Composer is recommended)
-    * Teknoo/Immutable (for Automated features).
-    
+    * teknoo/immutable (installed by Composer)
+
+Doctrine ORM or ODM and PHPStan are only required to use theirs integrations.
+
 A complete documentation is available in [documentation/README.md](documentation/README.md)
 
-News from Teknoo State 6.0
---------------------------
-This library requires PHP 8.1 or newer. Some change causes bc breaks :
+News from Teknoo States 7.1
+---------------------------
+- States of a proxy class are declared with the attribute `#[Teknoo\States\Attributes\StateClass]`. The static method
+  `statesListDeclaration()` is deprecated and will be removed in the next major release.
+- Assertions of automated stated classes can be declared with attributes `#[Assertion\Property]` and
+  `#[Assertion\Callback]`, the attribute `#[Assertions]` configures theirs inheritance. The method `listAssertions()`
+  is not deprecated, attributes can not cover all use cases.
+
+News from Teknoo States 7.0
+---------------------------
+This library requires PHP 8.4 or newer. Some changes cause BC breaks :
+
+- Drop support of PHP 8.3.
+- The license is now the 3-Clause BSD license instead of the MIT license.
+
+News from Teknoo States 6.0
+---------------------------
+This library requires PHP 8.1 or newer. Some changes cause BC breaks :
 
 - Replace `StateInterface::VISIBILITY_*` by `Enum Visibility` in same namespace.
 - Use readonly behavior on immutables objects' classes.
 - Prevent bug of mutability on automated features with `Property` and `ConstraintsSet`.
 - `ProxyInterface::DEFAULT_STATE_NAME` is now final
 
-News from Teknoo State 5.0
---------------------------
-This library requires PHP 8.0 or newer. Some change causes bc breaks :
+News from Teknoo States 5.0
+---------------------------
+This library requires PHP 8.0 or newer. Some changes cause BC breaks :
 
 - Constructor Property Promotion
 - Non-capturing catches
 - Some optimisations on array functions to limit O(n)
 
 
-News from Teknoo State 4.0
---------------------------
-This library requires PHP 7.4 or newer. Some change causes bc breaks :
-    
+News from Teknoo States 4.0
+---------------------------
+This library requires PHP 7.4 or newer. Some changes cause BC breaks :
+
 - PHP 7.4 is the minimum required
 - Most methods have been updated to include type hints where applicable. Please check your extension points to make sure the function signatures are correct.
-_ All files use strict typing. Please make sure to not rely on type coercion.
+- All files use strict typing. Please make sure to not rely on type coercion.
 - Switch to typed properties
-- Remove some PHP useless DockBlocks
+- Remove some useless PHP DocBlocks
 - Replace array_merge by "..." operators
-- Enable PHPStan in QA Tools and disable PHPMd
-- Add PHPStan extension dedicated to support Stated classes analyze and avoid false positive.
-    
+- Enable PHPStan in QA Tools and disable PHPMD
+- Add PHPStan extension dedicated to support stated classes analysis and avoid false positives.
+
 Quick How-to to implement your first stated class
 -------------------------------------------------
 Quick How-to to learn how to use this library : [Startup](documentation/howto/write-stated-class.md).
@@ -223,19 +241,23 @@ From the version 3.1, this library provide base implementation for doctrine from
 * teknoo/statesBundle is deprecated and not compatible with this library since 3.1.
 
 From the version 3.0, this library has been redesigned to
-* States's method are now builders of closure : They must return a closure, bindable with \Closure::call(). 
-  The Reflection API is no longer used to get a closure.
-* The library uses \Closure::call() instead of \Closure::rebindTo(), more efficient.  
-* States's class must be referenced declared in the proxy class, via the static method `statesListDeclaration()`.
+* States' methods are now builders of closures : They must return a closure, bindable with `\Closure::call()`.
+  The Reflection API is no longer used to get a closure, see
+  [why](documentation/howto/state-methods.md).
+* The library uses `\Closure::call()` instead of `\Closure::bindTo()`, more efficient.
+* States' classes must be declared in the proxy class (since 7.1 with the attribute `#[StateClass]`, the static method
+  `statesListDeclaration()` is deprecated).
 * Factories and Loaders are removed, they have become useless.
-* Proxy standard can be now directly instantiate. Integrated proxy are also removed.
+* Integrated proxies are also removed : a stated class extends the abstract class `Proxy\Standard` or uses the
+  `ProxyTrait`.
 
 From the version 2.0, this library has been redesigned to 
-* Reuse all composer's autoloader features instead internal autoloader.
-* Reduce the number of necessary components to the internal functioning of this library (Dependency Injector, Closure Injector). 
-* Forbid the usage of slows functions like `call_user_func`.
-* Use Scalar Type Hinting to use PHP Engine's check instead if statements.
+* Reuse all composer's autoloader features instead of an internal autoloader.
+* Reduce the number of necessary components to the internal functioning of this library (Dependency Injector, Closure Injector).
+* Forbid the usage of slow functions like `call_user_func`.
+* Use Scalar Type Hinting to use PHP Engine's check instead of if statements.
 
 Contribute :)
 -------------
-You are welcome to contribute to this project. [Fork it on Github](CONTRIBUTING.md)
+You are welcome to contribute to this project : read [CONTRIBUTING.md](CONTRIBUTING.md) and fork it on
+[Github](https://github.com/TeknooSoftware/states).

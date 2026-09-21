@@ -635,10 +635,12 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $this->buildInstance()->getMethod($cr, 'notExistantMethod');
     }
 
+    /**
+     * A builder can return a static closure : it can not be bound to an instance of the proxy, only to its scope.
+     * It stays a method of the stated class, called from an instance.
+     */
     public function testGetMethodImplementProxyMethodClosureReturnedIsStatic(): void
     {
-        $this->expectException(ShouldNotHappenException::class);
-
         $brc = $this->createStub(ReflectionClass::class);
         $brc->method('isInterface')->willReturn(false);
         $brc->method('implementsInterface')->willReturnMap([
@@ -652,7 +654,18 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         $rpr = $rcOfCr->getProperty('reflection');
         $rpr->setValue($cr, $brc);
 
-        $this->buildInstance()->getMethod($cr, 'returnStaticClosure');
+        $rpr = $rcOfCr->getProperty('anonymousFilename');
+        $rpr->setValue($cr, 'foo/bar.php');
+
+        $this->getPhpDocInheritanceResolverStub()
+            ->method('resolvePhpDocForMethod')
+            ->willReturn(null);
+
+        $method = $this->buildInstance()->getMethod($cr, 'returnStaticClosure');
+
+        $this->assertInstanceOf(StateMethod::class, $method);
+        $this->assertSame('returnStaticClosure', $method->getName());
+        $this->assertFalse($method->isStatic());
     }
 
     public function testGetMethodImplementStateProxyNotFound(): void

@@ -23,27 +23,49 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Attributes;
+namespace Teknoo\Tests\Support\Person;
 
-use Attribute;
+use DateTimeInterface;
+use Teknoo\States\Attributes\StateClass;
+use Teknoo\States\Proxy\Standard;
+use Teknoo\Tests\Support\Person\States\English;
+use Teknoo\Tests\Support\Person\States\French;
 
 /**
- * Attribute to configure assertions about automation of a stated class.
- * By default, all assertions attributes are inherited from parent class.
- *
- * Usage examples:
- *   #[Assertions(inheritsFromParent: false)]
+ * Stated class written like in the quick example of the README : the proxy extends the Standard class and its
+ * states extend the AbstractState class. Builders return closures or arrow functions, using private properties and
+ * private methods of the proxy.
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-#[Attribute(Attribute::TARGET_CLASS)]
-final class Assertions
+#[StateClass(English::class)]
+#[StateClass(French::class)]
+class Person extends Standard
 {
     public function __construct(
-        public readonly bool $inheritsFromParent = true,
+        private string $name,
+        private string $country,
     ) {
+        parent::__construct();
+
+        $this->enableState(
+            match ($this->country) {
+                'fr' => French::class,
+                default => English::class,
+            }
+        );
+    }
+
+    private function getName(): string
+    {
+        return $this->name;
+    }
+
+    public function introduce(DateTimeInterface $now): string
+    {
+        return $this->sayHello() . ' (' . $this->displayDate($now) . ')';
     }
 }

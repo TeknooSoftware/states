@@ -23,27 +23,19 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Attributes;
+namespace Teknoo\Tests\Support\States;
 
-use Attribute;
+use Teknoo\States\State\StateInterface;
 
 /**
- * Attribute to configure assertions about automation of a stated class.
- * By default, all assertions attributes are inherited from parent class.
- *
- * Usage examples:
- *   #[Assertions(inheritsFromParent: false)]
+ * Interface to name a state defined with an anonymous class : an anonymous class has no usable name, so its state
+ * must be registered and enabled with the name of an interface implemented by this anonymous class.
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-#[Attribute(Attribute::TARGET_CLASS)]
-final class Assertions
+interface NamedStateInterface extends StateInterface
 {
-    public function __construct(
-        public readonly bool $inheritsFromParent = true,
-    ) {
-    }
 }

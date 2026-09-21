@@ -44,11 +44,26 @@ class MockOnlyPrivate implements StateInterface
     use StateTrait;
 
     /**
+     * To count executions of the builder `methodWithBuilderSideEffect`.
+     */
+    public static int $builderCalls = 0;
+
+    /**
      * Standard Method 10.
      */
     private function standardMethod10()
     {
         return fn ($a = 0, $b = 0): float|int|array => $a + $b;
+    }
+
+    /**
+     * Builder with a side effect, to check it is not executed when the caller can not call the method.
+     */
+    private function methodWithBuilderSideEffect()
+    {
+        ++self::$builderCalls;
+
+        return fn (): string => 'foo';
     }
 
     private static function _staticMethod12()

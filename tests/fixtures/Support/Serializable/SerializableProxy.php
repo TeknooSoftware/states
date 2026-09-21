@@ -23,27 +23,34 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Attributes;
+namespace Teknoo\Tests\Support\Serializable;
 
-use Attribute;
+use Teknoo\States\Attributes\StateClass;
+use Teknoo\States\Proxy\ProxyInterface;
+use Teknoo\States\Proxy\ProxyTrait;
+use Teknoo\States\Proxy\SerializableTrait;
+use Teknoo\Tests\Support\Serializable\States\Other;
+use Teknoo\Tests\Support\Serializable\States\StateDefault;
 
 /**
- * Attribute to configure assertions about automation of a stated class.
- * By default, all assertions attributes are inherited from parent class.
- *
- * Usage examples:
- *   #[Assertions(inheritsFromParent: false)]
+ * Stated class using the SerializableTrait : its serialization is delegated to the method `__serialize()` provided
+ * by one of its enabled states.
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-#[Attribute(Attribute::TARGET_CLASS)]
-final class Assertions
+#[StateClass(StateDefault::class)]
+#[StateClass(Other::class)]
+class SerializableProxy implements ProxyInterface
 {
+    use ProxyTrait;
+    use SerializableTrait;
+
     public function __construct(
-        public readonly bool $inheritsFromParent = true,
+        public string $value = '',
     ) {
+        $this->initializeStateProxy();
     }
 }

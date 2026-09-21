@@ -25,59 +25,22 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\Support;
 
-use Teknoo\States\State\StateInterface;
-use Teknoo\States\State\StateTrait;
+use Teknoo\States\State\AbstractState;
 
 /**
- * Class MockOnlyPublic
- * Mock class to test the default trait State behavior with public methods.
- * All methods have not a description to check the state's behavior with these methods.
- *
+ * Class MockAbstractOnlyPrivate
+ * Mock class to test the behavior of a state extending the AbstractState class with private methods : they are
+ * not visible from the AbstractState class's scope, where the StateTrait is used.
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
-class MockOnlyPublic implements StateInterface
+class MockAbstractOnlyPrivate extends AbstractState
 {
-    use StateTrait;
-
-    /**
-     * Standard Method 1.
-     */
-    public function standardMethod1()
+    private function standardMethod10()
     {
         return fn ($a = 0, $b = 0): float|int|array => $a + $b;
-    }
-
-    /**
-     * Final Method 2.
-     */
-    final public function finalMethod2()
-    {
-        return fn ($a = 0, $b = 0): float|int|array => $a + $b;
-    }
-
-    public static function staticMethod3()
-    {
-        return fn ($a = 0, $b = 0): float|int|array => $a + $b;
-    }
-
-    public function standardMethod4()
-    {
-        return fn ($a = 0, $b = 0): float|int|array => $a + $b;
-    }
-
-    public function methodBuilderNoReturnClosure(): void
-    {
-    }
-
-    /**
-     * A static closure can not be bound to an instance, only to a scope : it returns its scope to check it.
-     */
-    public function methodBuilderReturnStaticClosure()
-    {
-        return static fn (string $argument): array => ['scope' => self::class, 'argument' => $argument];
     }
 }

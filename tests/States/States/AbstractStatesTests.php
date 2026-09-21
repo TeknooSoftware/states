@@ -26,6 +26,7 @@ declare(strict_types=1);
 namespace Teknoo\Tests\States\States;
 
 use My\Stated\ClassName;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\Exception\MethodNotImplemented;
@@ -87,6 +88,48 @@ abstract class AbstractStatesTests extends TestCase
         $s = trim(str_replace(['*', '/'], '', (string)$text->getDocComment()));
 
         return preg_replace('~[[:cntrl:]]~', '', $s);
+    }
+
+    /**
+     * Methods provided by the state's implementation (to build, check and execute closures) are not methods of the
+     * stated class : they must be ignored like any non existent method, even in a private scope.
+     */
+    #[DataProvider('infrastructureMethodsProvider')]
+    public function testInfrastructureMethodsAreNotStateMethods(string $methodName): void
+    {
+        $args = [
+            $this->createStub(ProxyInterface::class),
+            $methodName,
+            [],
+            Visibility::Private,
+            ClassName::class,
+            function (): never {
+                self::fail('A method of the state implementation must not be callable as a method of the stated class');
+            }
+        ];
+
+        $this->assertInstanceOf(
+            StateInterface::class,
+            $this->getPublicClassObject(false, ClassName::class)->executeClosure(...$args)
+        );
+    }
+
+    /**
+     * @return array<string, array{0: string}>
+     */
+    public static function infrastructureMethodsProvider(): array
+    {
+        return [
+            '__construct' => ['__construct'],
+            'executeClosure' => ['executeClosure'],
+            'getClosure' => ['getClosure'],
+            'loadMethodDescription' => ['loadMethodDescription'],
+            'getReflectionClass' => ['getReflectionClass'],
+            'checkVisibility' => ['checkVisibility'],
+            'checkVisibilityPrivate' => ['checkVisibilityPrivate'],
+            'checkVisibilityProtected' => ['checkVisibilityProtected'],
+            'checkVisibilityPublic' => ['checkVisibilityPublic'],
+        ];
     }
 
     public function testWhenExecuteAnNonExistentMethodExceptionMustBeThrew(): void
@@ -655,9 +698,66 @@ abstract class AbstractStatesTests extends TestCase
         );
     }
 
+    /**
+     * A static closure does not use $this, nor properties and methods of the instance : it is supported, but PHP
+     * forbids to bind an instance to it ("Cannot bind an instance to a static closure"). It must be only bound to the
+     * scope of the stated class (`self` and `static`), without instance, whatever the private mode of the state :
+     * - with the private mode, the scope is the stated class owning the state,
+     * - without the private mode, the scope is the class of the proxy, like for non static closures.
+     */
+    #[DataProvider('privateModesProvider')]
+    public function testExecuteStaticClosureOnlyBoundToTheScopeOfTheStatedClass(bool $privateMode): void
+    {
+        $proxy = $this->createStub(ProxyInterface::class);
+
+        $results = [];
+        $args = [
+            $proxy,
+            'methodBuilderReturnStaticClosure',
+            ['foo'],
+            Visibility::Public,
+            ClassName::class,
+            function ($result) use (&$results): void {
+                $results[] = $result;
+            }
+        ];
+
+        $statePublicMock = $this->getPublicClassObject($privateMode, ClassName::class);
+
+        $expectedScope = $proxy::class;
+        if ($privateMode) {
+            $expectedScope = ClassName::class;
+        }
+
+        //Executed twice to check also the behavior when the closure is reused
+        $this->assertInstanceOf(StateInterface::class, $statePublicMock->executeClosure(...$args));
+        $this->assertInstanceOf(StateInterface::class, $statePublicMock->executeClosure(...$args));
+
+        $this->assertSame(
+            [
+                ['scope' => $expectedScope, 'argument' => 'foo'],
+                ['scope' => $expectedScope, 'argument' => 'foo'],
+            ],
+            $results,
+        );
+    }
+
+    /**
+     * @return array<string, array{0: bool}>
+     */
+    public static function privateModesProvider(): array
+    {
+        return [
+            'private mode disabled' => [false],
+            'private mode enabled' => [true],
+        ];
+    }
+
     public function testExceptionWhenExecutingAMethodWithABadBuilderNotReturningAClosure(): void
     {
         $this->expectException(MethodNotImplemented::class);
+        //The message must help to find the faulty builder : its name and the type of the returned value
+        $this->expectExceptionMessage('::methodBuilderNoReturnClosure() must return a Closure, ');
         $args = [
             $this->createStub(ProxyInterface::class),
             'methodBuilderNoReturnClosure',

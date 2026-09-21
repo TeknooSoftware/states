@@ -109,6 +109,26 @@ final class CallbackTest extends TestCase
         );
     }
 
+    /**
+     * A method's name of the proxy can also be the name of a PHP function (`key`, `current`, `count`, ...) : the
+     * method of the proxy must be preferred, the function must not be called instead.
+     */
+    public function testGetAssertionPrefersProxyMethodOverHomonymousGlobalFunction(): void
+    {
+        $proxy = new MockProxy([]);
+
+        foreach (['key', 'current', 'count'] as $methodName) {
+            $this->assertTrue(\function_exists($methodName));
+
+            $assertion = new Callback(SimpleState::class, $methodName)->getAssertion($proxy);
+
+            $this->assertEquals(
+                new CallbackAssertion([SimpleState::class])->call([$proxy, $methodName]),
+                $assertion,
+            );
+        }
+    }
+
     public function testGetAssertionWithMethodNameCallback(): void
     {
         $attr = new Callback(SimpleState::class, 'registerState');

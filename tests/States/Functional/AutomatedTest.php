@@ -84,6 +84,54 @@ class AutomatedTest extends TestCase
         $this->assertSame([], $instance->listEnabledStates());
     }
 
+    /**
+     * Two instances with same values and same states must be equal (`assertEquals()` of PHPUnit, operator `==`) :
+     * an automated instance must not keep any value specific to itself, like an identifier.
+     */
+    public function testInstancesWithSameValuesAreEqualAfterUpdateStates(): void
+    {
+        $instance1 = $this->buildInstance();
+        $instance1->setFoo('bar');
+        $instance1->updateStates();
+
+        $instance2 = $this->buildInstance();
+        $instance2->setFoo('bar');
+        $instance2->updateStates();
+
+        $this->assertSame([State1::class], $instance1->listEnabledStates());
+        $this->assertEquals($instance1, $instance2);
+        $this->assertTrue($instance1 == $instance2);
+
+        $instance2->setFoo('foo');
+        $instance2->updateStates();
+        $this->assertFalse($instance1 == $instance2);
+    }
+
+    /**
+     * Same check whatever the count of calls to `updateStates()` on each instance, and for a clone.
+     */
+    public function testInstancesWithSameValuesAreEqualWhateverTheCountOfUpdates(): void
+    {
+        $instance1 = $this->buildInstance();
+        $instance1->setFoo('bar');
+        $instance1->updateStates();
+
+        $instance2 = $this->buildInstance();
+        $instance2->updateStates();
+        $instance2->setFoo('bar');
+        $instance2->updateStates();
+        $instance2->updateStates();
+
+        $this->assertEquals($instance1, $instance2);
+        $this->assertTrue($instance1 == $instance2);
+
+        $clone = clone $instance1;
+        $clone->updateStates();
+
+        $this->assertEquals($instance1, $clone);
+        $this->assertTrue($instance1 == $clone);
+    }
+
     public function testPreventCacheWhenUpdateStateInState(): void
     {
         $instance = $this->buildInstance();

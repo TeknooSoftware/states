@@ -39,11 +39,13 @@ use function is_a;
 use function is_string;
 
 /**
- * Attribute to declare one or many state class names for a proxy class.
+ * Attribute to declare, on an automated proxy class, an assertion on its properties : listed states are enabled by
+ * `updateStates()` when all constraints are valid. Each constraint is an array with the name of the property, the class
+ * name of the constraint, then optional arguments of the constraint's constructor.
  *
  * Usage examples:
- *   #[StateClass(FooState::class)]
- *   #[StateClass([FooState::class, BarState::class])]
+ *   #[Property(FooState::class, ['foo', IsEqual::class, 'bar'])]
+ *   #[Property([FooState::class, BarState::class], ['foo', IsNotNull::class], ['bar', IsEqual::class, 42])]
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)

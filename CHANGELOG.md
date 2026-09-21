@@ -1,5 +1,54 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.11] - 2026-09-21
+### Stable Release
+- Security: fix a visibility bypass. The stated class of the caller was kept from a previous call: after a legitimate
+  internal call, a static method of a child class was able to call a private method of a state owned by its parent
+  class (and was denied to call a protected method on a fresh instance).
+  - States now receive the class owning the static method as stated class origin for static callers (it was an empty
+    string).
+- Fix the cache of called methods keeping a method of a state disabled during its execution, when states were switched
+  by another method called by this method: the method of the disabled state was executed at next calls.
+- Fix methods found in the cache executed without theirs stated class as caller: a public method of a parent's state,
+  calling a private method of this state, failed from the second call.
+- Fix states registered with another name than theirs class names (interface's name, mandatory for states defined with
+  an anonymous class), they threw `WrongConfiguration` at each call.
+- Fix `registerState()` ignored when the state is already enabled, and the stack of callers shared between a proxy and
+  its clones.
+- Fix `isNotInState()` with several states: the callback was called although all listed states were enabled. States
+  listed several times, or with the name of an overloaded state, are counted once.
+  - `isNotInState()` now validates all listed names.
+- Fix private methods of states extending `AbstractState` (`Error` "Call to private method ... from scope
+  AbstractState").
+- The visibility of a state's method is checked before executing its builder.
+- The constructor, methods of `StateTrait` and methods with required arguments are not callable anymore as methods of
+  the stated class (they threw `ArgumentCountError`).
+- Support static closures returned by builders: they do not use `$this`, so they are only bound to the scope of the
+  stated class (`self` and `static`), without instance. They raised a PHP warning ("Cannot bind an instance to a static
+  closure", an error in PHP 9) with a `null` result, or were not available in states owned by a parent class.
+- The exception thrown when a builder does not return a closure is more explicit.
+- Fix stated class instances not serializable after a first call to a state's method (`Serialization of
+  'ReflectionClass' is not allowed`): runtime values of states are stored in the new internal class `RuntimeCache`.
+- Performance: values kept by states (closures, results of visibility's checks) are directly read when a method was
+  already called, and the stack of callers is now an array managed by `__call()` without others methods' calls.
+  A clone created during the execution of a state's method never keeps callers of the original proxy.
+- Automation:
+  - Fix states of a clone computed from values of the original instance, with callbacks on methods of the proxy.
+  - Fix the attribute `Assertion\Callback` calling a PHP function instead of the proxy's method with the same name
+    (`key`, `current`, `count`, ...).
+  - Fix property's constraints not processed in theirs declaration order with three constraints or more.
+- PHPStan extension:
+  - Support static closures returned by builders, they stopped the analysis with an internal error ("must be not
+    static"). They are analysed as static methods of the proxy. Messages of others internal errors are fixed, they
+    wrongly reported a static closure.
+  - Fix modifiers (static, final) lost on methods available in several states.
+  - Fix builders returning an arrow function, or not directly returning a closure.
+- Documentation:
+  - Fix the PHPStan configuration, requirements (PHP 8.4), the list of constraints, the README's example.
+  - New pages about methods of states (and why they are builders of closures) and about Doctrine.
+  - Rewrite `AGENTS.md`, fix `CONTRIBUTING.md` and `SECURITY.md`.
+  - Version developed with Claude's assistance (Fable 5.1).
+
 ## [7.1.10] - 2026-09-14
 ### Stable Release
 - Fix another BC Break from PHPStan introduced in patch version 2.2.14 (BetterReflection adapters now read
@@ -87,11 +136,11 @@
 Fix issue with last Doctrine Proxy behavior, entities and objects's events postLoad is only initialized when a property
 is readed
 
-## [6.4.1] - 2024-19-11
+## [6.4.1] - 2024-11-19
 ### Stable Release
 Fixed wrong behavior with the new cache about calls when states are updated from a stated method.
 
-## [6.4.0] - 2024-19-11
+## [6.4.0] - 2024-11-19
 ### Stable Release
 - Add caches in `ProxyTrait` and `StateTrait` about found state for a method name and visibility check when a call
   to not reperform all operations when the context stay unchanged.

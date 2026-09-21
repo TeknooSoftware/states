@@ -31,7 +31,6 @@
     <exclude>
       <directory>documentation</directory>
       <directory>demo</directory>
-      <directory>licences</directory>
     </exclude>
   </source>
 </phpunit>

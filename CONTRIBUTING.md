@@ -1,6 +1,6 @@
 # Contributing
 
- * Coding standard for the project is [PSR-2](https://github.com/php-fig/fig-standards/blob/master/accepted/PSR-2-coding-style-guide.md)
+ * Coding standard for the project is [PSR-12](https://www.php-fig.org/psr/psr-12/), checked by `make qa`
  * Any contribution must provide tests for additional introduced conditions
  * Any un-confirmed issue needs a failing test case before being accepted
  * Pull requests must be sent from a new hotfix/feature branch, not from `master`.
@@ -10,16 +10,17 @@
 To install the project and run the tests, you need to clone it first:
 
 ```sh
-$ git clone git://github.com/TeknooSoftware/states
+$ git clone https://github.com/TeknooSoftware/states.git
 ```
 
-You will then need to run a composer installation:
+You will then need to install dependencies with [Composer](https://getcomposer.org/) :
 
 ```sh
-$ cd Instantiator
-$ curl -s https://getcomposer.org/installer | php
-$ php composer.phar update
+$ cd states
+$ make depend
 ```
+
+Warning : `make`, without target, deletes the `vendor` folder before installing dependencies.
 
 ## Testing
 
@@ -29,10 +30,19 @@ The PHPUnit version to be used is the one installed as a dev- dependency via com
 $ make test
 ```
 
+This command requires Xdebug to compute the code coverage. The quality of the code (syntax, PHPStan at its max level
+and PSR-12) is checked with :
+
+```sh
+$ make qa
+```
+
+`make qa-offline` runs the same checks without `composer audit`, which requires a network access.
+
 Accepted coverage for new contributions is 90%. Any contribution not satisfying this requirement
 won't be merged.
 
-For any questions, contact me : [richard@teknoo.software](richard@teknoo.software) :)
+For any questions, contact me : [richard@teknoo.software](mailto:richard@teknoo.software) :)
 
 ## Support this project
 

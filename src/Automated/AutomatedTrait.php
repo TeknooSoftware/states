@@ -33,6 +33,7 @@ use Teknoo\States\Automated\Assertion\AssertionInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSetInterface;
 use Teknoo\States\Automated\Exception\AssertionException;
 use Teknoo\States\Proxy\ProxyInterface;
+use WeakMap;
 
 use function is_array;
 use function is_iterable;
@@ -57,9 +58,16 @@ trait AutomatedTrait
     private static array $listAttrAssertions = [];
 
     /**
-     * @var array<AssertionInterface>|null
+     * Compiled assertions of each instance. Assertions can be bound to theirs instance (callback on a method of the
+     * instance, closure returned by `listAssertions()`) : they are compiled once by instance and must never be
+     * reused by its clones.
+     * They are not kept by the instance itself : an instance must not own any value specific to itself (two
+     * instances with same values must stay equal for the operator `==` and for `assertEquals()`) and closures are
+     * not serializable. An entry is automatically removed when its instance is destroyed.
+     *
+     * @var WeakMap<object, list<AssertionInterface>>|null
      */
-    private ?array $compiledAssertions = null;
+    private static ?WeakMap $compiledAssertions = null;
 
     /**
      * To get all validations rules needed by instances.
@@ -97,7 +105,10 @@ trait AutomatedTrait
         }
     }
 
-    private function compileAssertions(): void
+    /**
+     * @return list<AssertionInterface>
+     */
+    private function compileAssertions(): array
     {
         if (!isset(self::$listAttrAssertions[$this::class])) {
             self::$listAttrAssertions[$this::class] = [];
@@ -105,10 +116,10 @@ trait AutomatedTrait
             $this->extractAttrAssertions($this::class, $this::class);
         }
 
-        $this->compiledAssertions = [];
+        $compiledAssertions = [];
         assert(is_array(self::$listAttrAssertions[$this::class]));
         foreach (self::$listAttrAssertions[$this::class] as $assertionFactory) {
-            $this->compiledAssertions[] = $assertionFactory($this);
+            $compiledAssertions[] = $assertionFactory($this);
         }
 
         if (method_exists($this, 'listAssertions')) {
@@ -122,9 +133,11 @@ trait AutomatedTrait
                     throw new AssertionException('Error, all assertions must implements AssertionInterface');
                 }
 
-                $this->compiledAssertions[] = $assertion;
+                $compiledAssertions[] = $assertion;
             }
         }
+
+        return $compiledAssertions;
     }
 
     /**
@@ -134,12 +147,14 @@ trait AutomatedTrait
      */
     private function iterateAssertions(): iterable
     {
-        if (null === $this->compiledAssertions) {
-            $this->compileAssertions();
+        self::$compiledAssertions ??= new WeakMap();
+
+        if (!isset(self::$compiledAssertions[$this])) {
+            //Not yet compiled for this instance (a clone is another instance)
+            self::$compiledAssertions[$this] = $this->compileAssertions();
         }
 
-        assert(is_array($this->compiledAssertions));
-        yield from $this->compiledAssertions;
+        yield from self::$compiledAssertions[$this];
     }
 
     public function updateStates(): AutomatedInterface

@@ -28,10 +28,12 @@ namespace Teknoo\States\State;
 use Closure;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionFunction;
 use ReflectionMethod;
 use SensitiveParameter;
 use Teknoo\States\Proxy\ProxyInterface;
 
+use function get_debug_type;
 use function is_subclass_of;
 
 /**
@@ -39,7 +41,7 @@ use function is_subclass_of;
  * A trait implementation has been chosen to allow developer to write theirs owns factory, extendable from any class.
  *
  * Objects implementing this interface must find, bind and execute closure via the method executeClosure() for the
- * required method. (Rebind must use `\Closure::call()` to rebind `static`, `self` and `$this` or `rebindTo()`).
+ * required method. (Rebind must use `\Closure::call()` to rebind `static`, `self` and `$this` or `\Closure::bindTo()`).
  *
  * Objects must follow instruction passed to `executeClosure()` and manage the visibility of the method and not allow
  * executing a private method from an outside call.
@@ -81,29 +83,12 @@ use function is_subclass_of;
 trait StateTrait
 {
     /**
-     * Reflection class object of this state to extract closures and description.
-     * @var ReflectionClass<$this>
+     * Reflections of this state and of its methods, closures returned by its builders and results of visibility's
+     * checks, kept to not compute them at each call. They are stored in a dedicated object, always serialized as an
+     * empty object, because reflections and closures are not serializable : a state, and so its stated class
+     * instances, must stay serializable after a call. It is created on demand.
      */
-    private ?ReflectionClass $reflectionClass = null;
-
-    /**
-     * Reflections methods of this state to extract description and closures.
-     *
-     * @var ReflectionMethod[]|bool[]
-     */
-    private array $reflectionsMethods = [];
-
-    /**
-     * List of closures already extracted and set into Injection Closure Container.
-     *
-     * @var Closure[]
-     */
-    private array $closuresObjects = [];
-
-    /**
-     * @var array<string, array<int|string, array<int|string, bool>>>
-     */
-    private array $visibilityCache = [];
+    private ?RuntimeCache $runtimeCache = null;
 
     /**
      * @param class-string $statedClassName
@@ -119,16 +104,14 @@ trait StateTrait
      *
      * @api
      *
-     * @return ReflectionClass<$this>
+     * @return ReflectionClass<covariant object>
      * @throws ReflectionException
      */
     private function getReflectionClass(): ReflectionClass
     {
-        if (null === $this->reflectionClass) {
-            $this->reflectionClass = new ReflectionClass($this::class);
-        }
+        $cache = $this->runtimeCache ??= new RuntimeCache();
 
-        return $this->reflectionClass;
+        return $cache->reflectionClass ??= new ReflectionClass($this::class);
     }
 
     /**
@@ -139,11 +122,13 @@ trait StateTrait
      */
     private function checkVisibilityPrivate(string &$methodName, string &$statedClassOrigin): bool
     {
+        $methodDescription = $this->runtimeCache?->reflectionsMethods[$methodName] ?? false;
+
         if (
             true === $this->privateModeStatus
             && $statedClassOrigin !== $this->statedClassName
-            && $this->reflectionsMethods[$methodName] instanceof ReflectionMethod
-            && true === $this->reflectionsMethods[$methodName]->isPrivate()
+            && $methodDescription instanceof ReflectionMethod
+            && true === $methodDescription->isPrivate()
         ) {
             return false;
         }
@@ -156,9 +141,11 @@ trait StateTrait
      */
     private function checkVisibilityProtected(string &$methodName, string &$statedClassOrigin): bool
     {
+        $methodDescription = $this->runtimeCache?->reflectionsMethods[$methodName] ?? false;
+
         //It's a public or protected method, do like if there is no method
-        return $this->reflectionsMethods[$methodName] instanceof ReflectionMethod
-            && false === $this->reflectionsMethods[$methodName]->isPrivate()
+        return $methodDescription instanceof ReflectionMethod
+            && false === $methodDescription->isPrivate()
             && !empty($statedClassOrigin)
             && (
                 $statedClassOrigin === $this->statedClassName
@@ -171,9 +158,11 @@ trait StateTrait
      */
     private function checkVisibilityPublic(string &$methodName): bool
     {
+        $methodDescription = $this->runtimeCache?->reflectionsMethods[$methodName] ?? false;
+
         //It's a public method, do like if there is no method
-        return $this->reflectionsMethods[$methodName] instanceof ReflectionMethod
-            && true === $this->reflectionsMethods[$methodName]->isPublic();
+        return $methodDescription instanceof ReflectionMethod
+            && true === $methodDescription->isPublic();
     }
 
     /**
@@ -191,8 +180,10 @@ trait StateTrait
         Visibility $scope,
         string &$statedClassOrigin
     ): bool {
+        $cache = $this->runtimeCache ??= new RuntimeCache();
+
         //Check visibility scope
-        return $this->visibilityCache[$scope->value][$statedClassOrigin][$methodName] ??= match ($scope) {
+        return $cache->visibilityCache[$scope->value][$statedClassOrigin][$methodName] ??= match ($scope) {
             Visibility::Private => $this->checkVisibilityPrivate($methodName, $statedClassOrigin),
             Visibility::Protected => $this->checkVisibilityProtected($methodName, $statedClassOrigin),
             Visibility::Public => $this->checkVisibilityPublic($methodName),
@@ -214,26 +205,36 @@ trait StateTrait
      */
     private function loadMethodDescription(string &$methodName): bool
     {
-        if (isset($this->reflectionsMethods[$methodName])) {
-            return $this->reflectionsMethods[$methodName] instanceof ReflectionMethod;
+        $cache = $this->runtimeCache ??= new RuntimeCache();
+
+        if (isset($cache->reflectionsMethods[$methodName])) {
+            return $cache->reflectionsMethods[$methodName] instanceof ReflectionMethod;
         }
 
         $thisReflectionClass = $this->getReflectionClass();
         if (!$thisReflectionClass->hasMethod($methodName)) {
-            $this->reflectionsMethods[$methodName] = false;
+            $cache->reflectionsMethods[$methodName] = false;
 
             return false;
         }
 
         //Load Reflection Method if it is not already done
         $methodDescription = $thisReflectionClass->getMethod($methodName);
-        if (false !== $methodDescription->isStatic()) {
-            $this->reflectionsMethods[$methodName] = false;
+        if (
+            false !== $methodDescription->isStatic()
+            || $methodDescription->isConstructor()
+            || $methodDescription->getNumberOfRequiredParameters() > 0
+            || __FILE__ === $methodDescription->getFileName()
+        ) {
+            //Static methods are not managed, and methods of the state's implementation (constructor, methods of
+            //this trait, methods with required arguments, a builder is always called without argument) are not
+            //methods of the stated class : they must not be callable from the proxy
+            $cache->reflectionsMethods[$methodName] = false;
 
             return false;
         }
 
-        $this->reflectionsMethods[$methodName] = $methodDescription;
+        $cache->reflectionsMethods[$methodName] = $methodDescription;
 
         return true;
     }
@@ -252,28 +253,35 @@ trait StateTrait
      */
     private function getClosure(
         string &$methodName
-    ): ?Closure {
-        if (isset($this->closuresObjects[$methodName])) {
-            return $this->closuresObjects[$methodName];
+    ): Closure {
+        $cache = $this->runtimeCache ??= new RuntimeCache();
+
+        if (isset($cache->closuresObjects[$methodName])) {
+            return $cache->closuresObjects[$methodName];
         }
 
-        //Check if the method exist and prepare description for checkVisibility methods
-        if (!$this->loadMethodDescription($methodName)) {
-            return null;
+        //The method's description is always loaded and checked by executeClosure() before building the closure.
+        //Call the closure builder from its reflection : this trait can be used by a parent class of the state
+        //(like AbstractState), and a private builder is not callable from the scope of this parent class.
+        //It is performed only once by builder, the closure is kept to be reused.
+        $methodDescription = $cache->reflectionsMethods[$methodName] ?? null;
+        $closure = null;
+        if ($methodDescription instanceof ReflectionMethod) {
+            $closure = $methodDescription->invoke($this);
         }
-
-        //Call directly the closure builder, more efficient
-        $closure = $this->{$methodName}();
 
         if (!$closure instanceof Closure) {
             throw new Exception\MethodNotImplemented(
-                "Method '$methodName' is not a valid Closure"
+                "Method '$methodName' is not a valid Closure : the builder " . $this::class . "::$methodName() "
+                    . 'must return a Closure, ' . get_debug_type($closure) . ' returned'
             );
         }
 
-        $this->closuresObjects[$methodName] = $closure;
+        //A static closure is supported, but it can not be bound to the stated class instance, only to its scope
+        $cache->staticClosures[$methodName] = new ReflectionFunction($closure)->isStatic();
+        $cache->closuresObjects[$methodName] = $closure;
 
-        return $this->closuresObjects[$methodName];
+        return $closure;
     }
 
     /**
@@ -287,18 +295,45 @@ trait StateTrait
         string &$statedClassOrigin,
         callable &$returnCallback
     ): StateInterface {
-        $closure = $this->getClosure($methodName);
+        $cache = $this->runtimeCache ??= new RuntimeCache();
 
-        //Check visibility scope
-        if (
-            !$closure instanceof Closure
-            || false === $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin)
-        ) {
+        //Fast path, without any other method call : the closure is already built and the visibility was already
+        //checked for this scope and this caller. The result read here is the one computed by checkVisibility().
+        $closure = $cache->closuresObjects[$methodName] ?? null;
+        $isAllowed = $cache->visibilityCache[$requiredScope->value][$statedClassOrigin][$methodName] ?? null;
+
+        if (null === $closure || null === $isAllowed) {
+            //Check visibility scope, before building the closure : a builder must not be executed for a denied caller
+            if (
+                !$this->loadMethodDescription($methodName)
+                || false === $this->checkVisibility($methodName, $requiredScope, $statedClassOrigin)
+            ) {
+                return $this;
+            }
+
+            $closure = $this->getClosure($methodName);
+        } elseif (false === $isAllowed) {
             return $this;
         }
 
-        if (true === $this->privateModeStatus) {
-            $closure = $closure->bindTo($object, $this->statedClassName);
+        $isStatic = $cache->staticClosures[$methodName] ?? false;
+
+        if (true === $this->privateModeStatus || true === $isStatic) {
+            //The scope is the class of the proxy, like with \Closure::call(), except with the private mode : it is
+            //the stated class owning this state.
+            $scope = $object::class;
+            if (true === $this->privateModeStatus) {
+                $scope = $this->statedClassName;
+            }
+
+            //A static closure does not use $this : PHP forbids to bind an instance to it ("Cannot bind an instance to
+            //a static closure", an error since PHP 9). Only its scope (self and static) is bound to the stated class.
+            $newThis = $object;
+            if (true === $isStatic) {
+                $newThis = null;
+            }
+
+            $closure = Closure::bind($closure, $newThis, $scope);
             if ($closure instanceof Closure) {
                 $returnValue = $closure(...$arguments);
                 $returnCallback($returnValue);

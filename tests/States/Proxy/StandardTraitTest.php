@@ -26,7 +26,9 @@ namespace Teknoo\Tests\States\Proxy;
 
 use PHPUnit\Framework\Attributes\CoversTrait;
 use Proxy\ProxyInterface;
+use ReflectionProperty;
 use RuntimeException;
+use Teknoo\States\Exception\WrongConfiguration;
 use Teknoo\States\Proxy;
 use Teknoo\Tests\Support;
 use Teknoo\Tests\Support\StandardTraitProxy;
@@ -69,5 +71,27 @@ class StandardTraitTest extends AbstractProxyTests
         $proxy->registerStateWithoutOriginal('badState', new Support\MockState1(false, StandardTraitProxy::class));
 
         $this->proxy->test();
+    }
+
+    /**
+     * Same check when the state providing the method is found from the proxy's cache of called methods.
+     */
+    public function testExceptionWhenACachedStateLosesItsAssociatedClassName(): void
+    {
+        $proxy = $this->buildProxy();
+        $state = new Support\MockState1(false, StandardTraitProxy::class);
+        $state->allowMethod();
+        $proxy->registerState(Support\MockState1::class, $state);
+        $proxy->enableState(Support\MockState1::class);
+
+        //First call : the state providing the method is kept into the proxy's cache
+        $proxy->test();
+        $this->assertTrue($state->methodWasCalled());
+
+        //The proxy is corrupted : the stated class owning the state is lost
+        new ReflectionProperty(StandardTraitProxy::class, 'classesByStates')->setValue($proxy, []);
+
+        $this->expectException(WrongConfiguration::class);
+        $proxy->test();
     }
 }

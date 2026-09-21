@@ -22,6 +22,22 @@ declare(strict_types=1);
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
  */
+if (!function_exists('testCallMethodFromFunction')) {
+    /**
+     * To call any public method of an object from a function : a caller without object and without class
+     * (like the main script), so the proxy never keeps this call into its cache of called methods.
+     *
+     * @link        https://teknoo.software/libraries/states Project website
+     *
+     * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
+     * @author      Richard Déloge <richard@teknoo.software>
+     */
+    function testCallMethodFromFunction(object $object, string $methodName, mixed ...$arguments): mixed
+    {
+        return $object->{$methodName}(...$arguments);
+    }
+}
+
 if (!function_exists('testCallFromFunctionPrivate')) {
     /**
      * Build temp functions to test proxy behavior with different scope visibility

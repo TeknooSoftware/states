@@ -29,7 +29,6 @@ use ReflectionClass;
 use ReflectionAttribute;
 use ReflectionMethod;
 use SensitiveParameter;
-use SplStack;
 use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Exception\WrongConfiguration;
 use Teknoo\States\Proxy\Exception\StateNotFound;
@@ -37,13 +36,13 @@ use Teknoo\States\State\StateInterface;
 use Teknoo\States\State\Visibility;
 
 use function array_flip;
+use function array_key_last;
 use function array_merge;
 use function array_keys;
 use function array_pop;
 use function array_unique;
 use function class_exists;
 use function count;
-use function current;
 use function debug_backtrace;
 use function get_parent_class;
 use function interface_exists;
@@ -54,7 +53,6 @@ use function is_object;
 use function is_string;
 use function is_subclass_of;
 use function ltrim;
-use function next;
 use function sort;
 use function sprintf;
 use function strrpos;
@@ -125,21 +123,20 @@ trait ProxyTrait
 
     /**
      * Stack to know the caller full qualified stated class when an internal method call a parent method to forbid
-     * private method access.
+     * private method access : stated classes owning states' methods in execution, the last one is the current caller.
+     * It is an array, directly managed by the method `__call()`, to avoid several methods' calls at each call.
      *
-     * @var SplStack<string>
+     * @var list<string>
      */
-    private ?SplStack $callerStatedClassesStack = null;
+    private array $callersStack = [];
 
     /**
-     * Cache to store the selected state for a method to avoid search at each call of the same method
+     * Cache to store the name of the selected state for a method to avoid search at each call of the same method
      * This cache is cleared at each change of active state
      *
-     * @var array<string, array<string, StateInterface>>
+     * @var array<string, array<string, string>>
      */
     private array $calledMethodCache = [];
-
-    private bool $disableCalledMethodCache = false;
 
     /**
      * Default class name extracted from call stack by extractVisibilityScopeFromObject
@@ -322,47 +319,6 @@ trait ProxyTrait
     }
 
     /**
-     * To get the class name of the caller according to scope visibility.
-     */
-    private function getCallerStatedClassName(): string
-    {
-        if (false === $this->callerStatedClassesStack?->isEmpty()) {
-            return $this->callerStatedClassesStack->top();
-        }
-
-        return $this->defaultCallerStatedClassName;
-    }
-
-    /**
-     * To push in the caller stated classes name stack
-     * the class of the current object.
-     */
-    private function pushCallerStatedClassName(StateInterface $state): ProxyInterface
-    {
-        $stateClass = $state::class;
-
-        if (!isset($this->classesByStates[$stateClass])) {
-            throw new WrongConfiguration('Error, no original class name defined for ' . $stateClass);
-        }
-
-        $this->callerStatedClassesStack?->push($this->classesByStates[$stateClass]);
-
-        return $this;
-    }
-
-    /**
-     * To pop the current caller in the stated class name stack.
-     */
-    private function popCallerStatedClassName(): ProxyInterface
-    {
-        if (false === $this->callerStatedClassesStack?->isEmpty()) {
-            $this->callerStatedClassesStack->pop();
-        }
-
-        return $this;
-    }
-
-    /**
      * To test if the identifier is an non empty string and a valif full qualified class/interface name.
      *
      * @throws Exception\IllegalName   when the identifier is not a valid full qualified class/interface  name
@@ -398,7 +354,7 @@ trait ProxyTrait
         $this->activesStates = [];
         $this->classesByStates = [];
         $this->statesAliasesList  = [];
-        $this->callerStatedClassesStack = new SplStack();
+        $this->callersStack = [];
         $this->clearCalledMethodCache();
         //Creates
         $this->loadStates();
@@ -487,6 +443,11 @@ trait ProxyTrait
     {
         $limit = $this->alterVisibilityScopeLimit($limit);
 
+        //The caller's class must only depend on the current call, never on a previous one : without this reset,
+        //a caller without object (static method, function, main script) inherits the class of the previous caller
+        //and can be granted to call private methods of a parent stated class.
+        $this->defaultCallerStatedClassName = '';
+
         //Get the calling stack
         $callingStack = debug_backtrace(DEBUG_BACKTRACE_PROVIDE_OBJECT | DEBUG_BACKTRACE_IGNORE_ARGS, $limit);
 
@@ -516,6 +477,7 @@ trait ProxyTrait
                 //It is a class
                 $callerName = $callerLine['class'];
 
+                $this->defaultCallerStatedClassName = $callerName;
                 return $this->extractVisibilityScopeFromClass($callerName);
             }
         }
@@ -542,6 +504,11 @@ trait ProxyTrait
      */
     public function cloneProxy(): ProxyInterface
     {
+        //A proxy can be cloned during the execution of a state's method : the stack of callers is then not empty.
+        //These callers are only callers of the original proxy, a clone must never keep them : else, all its next
+        //callers are considered as the stated class owning this method, and are granted to call its private methods.
+        $this->callersStack = [];
+
         //Clone states stack
         if (!empty($this->states)) {
             $clonedStatesArray = [];
@@ -596,6 +563,12 @@ trait ProxyTrait
 
         $this->classesByStates[$stateName] = $originalClassName;
 
+        if (isset($this->activesStates[$stateName])) {
+            //The state is already enabled : the new instance replaces immediately the old one
+            $this->activesStates[$stateName] = $stateObject;
+            $this->clearCalledMethodCache();
+        }
+
         return $this;
     }
 
@@ -643,7 +616,6 @@ trait ProxyTrait
     private function clearCalledMethodCache(): void
     {
         $this->calledMethodCache = [];
-        $this->disableCalledMethodCache = !$this->callerStatedClassesStack?->isEmpty();
     }
 
     /**
@@ -702,41 +674,41 @@ trait ProxyTrait
     }
 
     /**
+     * To list enabled states present in the passed list, and to count states of this list. A state present several
+     * times, or referenced with its name and with the name of a state it overloads, is counted once.
+     *
      * @param array<string> $enabledStatesList
      * @param array<string> $statesNames
-     * @return array<string, true>
+     * @return array{0: array<string, true>, 1: int}
      * @throws Exception\StateNotFound
      */
-    private function statesIntersect(array $enabledStatesList, array $statesNames, bool $allStates): array
+    private function statesIntersect(array $enabledStatesList, array $statesNames, bool $stopAtFirstMatch): array
     {
-        if (empty($statesNames)) {
-            return [];
-        }
-
-        reset($statesNames);
-
         $inStates = [];
+        $requestedStates = [];
         $list = array_flip($enabledStatesList);
 
-        do {
-            $stateName = current($statesNames);
-
+        foreach ($statesNames as $stateName) {
             $stateName = $this->validateName($stateName);
+            $requestedStates[$stateName] = true;
 
             if (isset($list[$stateName])) {
                 $inStates[$stateName] = true;
-                continue;
-            }
-
-            foreach ($enabledStatesList as $enableStateName) {
-                if (is_subclass_of($enableStateName, $stateName)) {
-                    $inStates[$stateName] = true;
-                    break;
+            } else {
+                foreach ($enabledStatesList as $enableStateName) {
+                    if (is_subclass_of($enableStateName, $stateName)) {
+                        $inStates[$stateName] = true;
+                        break;
+                    }
                 }
             }
-        } while (false !== next($statesNames) && (true === empty($inStates) || true === $allStates));
 
-        return $inStates;
+            if ($stopAtFirstMatch && !empty($inStates)) {
+                break;
+            }
+        }
+
+        return [$inStates, count($requestedStates)];
     }
 
     /**
@@ -749,11 +721,17 @@ trait ProxyTrait
 
         sort($enabledStatesList);
 
-        $inStates = $this->statesIntersect($enabledStatesList, $statesNames, $allStates);
+        //The search can only be stopped at the first enabled state found when a single enabled state is enough.
+        //In all other cases, all states of the list must be checked to be compared to the count of listed states.
+        [$inStates, $statesCount] = $this->statesIntersect(
+            $enabledStatesList,
+            $statesNames,
+            $mustActive && !$allStates,
+        );
 
         if (
-            (((!$allStates && !empty($inStates)) || count($inStates) === count($statesNames)) && $mustActive)
-            || ((empty($inStates) || (!$allStates && count($inStates) < count($statesNames))) && !$mustActive)
+            (((!$allStates && !empty($inStates)) || count($inStates) === $statesCount) && $mustActive)
+            || ((empty($inStates) || (!$allStates && count($inStates) < $statesCount)) && !$mustActive)
         ) {
             $callback($enabledStatesList);
         }
@@ -805,17 +783,36 @@ trait ProxyTrait
             $activeStateFound = true;
         };
 
-        $callerStatedClass = $this->getCallerStatedClassName();
+        //The caller is the stated class owning the state's method in execution, else the class found in the call stack
+        $callerStatedClass = $this->defaultCallerStatedClassName;
+        if ([] !== $this->callersStack) {
+            $callerStatedClass = $this->callersStack[array_key_last($this->callersStack)];
+        }
 
-        if (isset($this->calledMethodCache[$callerStatedClass][$methodName])) {
-            $this->calledMethodCache[$callerStatedClass][$methodName]->executeClosure(
-                $this,
-                $methodName,
-                $arguments,
-                $scopeVisibility,
-                $callerStatedClass,
-                $callback
-            );
+        $cachedStateName = $this->calledMethodCache[$callerStatedClass][$methodName] ?? null;
+        if (null !== $cachedStateName && isset($this->activesStates[$cachedStateName])) {
+            //Like in the search below, the stated class owning the state must be the caller of all methods called
+            //by this method, else they are called with the caller of a previous method, still present in the stack.
+            $cachedStateObject = $this->activesStates[$cachedStateName];
+            if (!isset($this->classesByStates[$cachedStateName])) {
+                throw new WrongConfiguration('Error, no original class name defined for ' . $cachedStateName);
+            }
+
+            $this->callersStack[] = $this->classesByStates[$cachedStateName];
+
+            try {
+                $cachedStateObject->executeClosure(
+                    $this,
+                    $methodName,
+                    $arguments,
+                    $scopeVisibility,
+                    $callerStatedClass,
+                    $callback
+                );
+            } finally {
+                //Restore stated class name stack
+                array_pop($this->callersStack);
+            }
 
             if (true === $activeStateFound) {
                 return $returnValue;
@@ -823,11 +820,17 @@ trait ProxyTrait
         }
 
         //browse all enabled state to find the method
-        $stateToCache = null;
-        $callerStatedClassToCache = null;
+        $stateNameToCache = null;
         $activesStatesStack = $this->activesStates;
-        foreach ($activesStatesStack as $activeStateObject) {
-            $this->pushCallerStatedClassName($activeStateObject);
+        foreach ($activesStatesStack as $stateName => $activeStateObject) {
+            //The state is identified by the name used to register it and not by its class name : a state can be
+            //registered with the name of an interface it implements (mandatory for states defined with anonymous
+            //classes).
+            if (!isset($this->classesByStates[$stateName])) {
+                throw new WrongConfiguration('Error, no original class name defined for ' . $stateName);
+            }
+
+            $this->callersStack[] = $this->classesByStates[$stateName];
 
             //Call it
             try {
@@ -841,26 +844,28 @@ trait ProxyTrait
                 );
             } finally {
                 //Restore stated class name stack
-                $this->popCallerStatedClassName();
+                array_pop($this->callersStack);
             }
 
-            if (true === $activeStateFound && null === $stateToCache) {
-                $stateToCache = $activeStateObject;
-                $callerStatedClassToCache = $callerStatedClass;
+            if (true === $activeStateFound && null === $stateNameToCache) {
+                $stateNameToCache = $stateName;
             }
         }
 
         if (true === $activeStateFound) {
             if (
-                null !== $stateToCache
-                && $methodName
-                && $callerStatedClassToCache
-                && !$this->disableCalledMethodCache
+                null !== $stateNameToCache
+                && '' !== $methodName
+                && '' !== $callerStatedClass
+                && $activesStatesStack === $this->activesStates
             ) {
-                $this->calledMethodCache[(string) $callerStatedClassToCache][(string) $methodName] = $stateToCache;
+                //A called method is kept into the cache only if actives states are the same (same states, same
+                //instances, same order) before and after its execution : a state's method can change states itself,
+                //or call another method doing it, and must not be kept when its state is not enabled anymore.
+                //The proxy must not keep any value depending on its history (like a counter of changes) to detect
+                //it : two proxies with same states must stay equal.
+                $this->calledMethodCache[$callerStatedClass][$methodName] = $stateNameToCache;
             }
-
-            $this->disableCalledMethodCache = false;
 
             return $returnValue;
         }

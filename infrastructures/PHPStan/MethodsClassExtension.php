@@ -53,6 +53,7 @@ use PHPStan\Type\Type;
 use PHPStan\Type\TypehintHelper;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionFunction as NativeReflectionFunction;
 use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
@@ -253,18 +254,24 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         /** @var Closure $stateClosure */
         $stateClosure = $factoryClosure();
 
-        //To use the original \ReflectionClass api and not "BetterReflectionClass" whome not implements all the api.
-        $stateClosure = @$stateClosure->bindTo(
-            new ReflectionClass($proxyClassName)->newInstanceWithoutConstructor(),
-            $proxyClassName,
-        );
+        //Like the library does, a static closure is only bound to the scope of the proxy : PHP forbids to bind an
+        //instance to a static closure. All others closures are bound to an instance of the proxy.
+        $newThis = null;
+        if (!new NativeReflectionFunction($stateClosure)->isStatic()) {
+            //To use the original \ReflectionClass api and not "BetterReflectionClass" whome not implements all the api.
+            $newThis = new ReflectionClass($proxyClassName)->newInstanceWithoutConstructor();
+        }
 
+        $stateClosure = @$stateClosure->bindTo($newThis, $proxyClassName);
+
+        //@codeCoverageIgnoreStart
         if (null === $stateClosure) {
             throw new ShouldNotHappenException(
-                "Closure returned by {$stateNativeReflection->getName()}::{$method} must be not static"
+                "Closure returned by {$stateNativeReflection->getName()}::{$method} can not be bound to $proxyClassName"
             );
         }
 
+        //@codeCoverageIgnoreEnd
         try {
             $factoryReflection = new ReflectionMethod(
                 BetterReflectionMethod::createFromInstance($stateInstance, $method)
@@ -272,7 +279,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             //@codeCoverageIgnoreStart
         } catch (OutOfBoundsException) {
             throw new ShouldNotHappenException(
-                "Closure returned by {$stateNativeReflection->getName()}::{$method} must be not static"
+                "Builder {$stateNativeReflection->getName()}::{$method} was not found by the reflection of PHPStan"
             );
         }
 
@@ -282,7 +289,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             //@codeCoverageIgnoreStart
         } catch (NoClosureOnLine) {
             throw new ShouldNotHappenException(
-                "Closure returned by {$stateNativeReflection->getName()}::{$method} must be not static"
+                "Closure returned by {$stateNativeReflection->getName()}::{$method} was not found in its file"
             );
         }
 

@@ -25,7 +25,9 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\Functional;
 
+use Closure;
 use PHPUnit\Framework\TestCase;
+use Teknoo\States\State\AbstractState;
 use Teknoo\Tests\Support\Article\Article;
 use Teknoo\Tests\Support\Article\Article\Archived;
 use Teknoo\Tests\Support\Article\Article\Draft;
@@ -34,6 +36,9 @@ use Teknoo\Tests\Support\Article\Article\Promoted;
 use Teknoo\Tests\Support\Article\Article\Published;
 use Teknoo\Tests\Support\Article\Article\StateDefault;
 use Teknoo\States\Proxy\Exception\MethodNotImplemented;
+use Teknoo\Tests\Support\States\NamedStateInterface;
+
+use function strtoupper;
 
 /**
  * Class ArticleTest
@@ -310,5 +315,90 @@ class ArticleTest extends TestCase
                 self::fail();
             })
         );
+    }
+
+    /**
+     * A state's method switching states, then calling another state's method, must not be kept into the proxy's
+     * cache of called methods : at the second call its state is disabled, so the method must not be available.
+     */
+    public function testDisabledStateIsNotExecutedFromCalledMethodCache(): void
+    {
+        $article = $this->buildObject();
+        $article->setTitle('Hello world');
+
+        //Method of the state Draft : it enables the state Published, then calls getTitle() in the new states
+        $this->assertSame('Hello world', $article->publishAndGetTitle());
+
+        //The state Draft is now disabled, its methods are not available, even from the proxy's cache
+        $this->expectException(MethodNotImplemented::class);
+        $article->publishAndGetTitle();
+    }
+
+    /**
+     * A stated class instance must be serializable whether methods of its states have already been called or not
+     * (states are shared between all instances of a same stated class : a call on any instance must not forbid
+     * the serialization of others). Enabled states are restored with the object.
+     */
+    public function testArticleIsSerializableAfterStateMethodCalls(): void
+    {
+        $article = $this->buildObject();
+        $article->setTitle('Hello world');
+        $article->setBody('Lorem [b]Ipsum[/b]');
+        $this->assertSame('Hello world', $article->getTitle());
+
+        $unserializedArticle = unserialize(serialize($article));
+        $this->assertInstanceOf($article::class, $unserializedArticle);
+
+        //States enabled before the serialization are always enabled
+        $this->assertSame('Hello world', $unserializedArticle->getTitle());
+        $this->assertSame('Lorem [b]Ipsum[/b]', $unserializedArticle->getBodySource());
+
+        //States can be switched on the restored object
+        $unserializedArticle->publishing();
+        $this->assertSame('Lorem <strong>Ipsum</strong>', $unserializedArticle->getFormattedBody());
+
+        //A new instance, never called, shares its states with previous instances
+        $this->assertInstanceOf($article::class, unserialize(serialize($this->buildObject())));
+    }
+
+    /**
+     * A method of a state can be a static closure, when it does not need the instance : it is executed without
+     * error nor PHP warning ("Cannot bind an instance to a static closure"), at each call.
+     */
+    public function testStaticClosureOfAStateIsExecuted(): void
+    {
+        $article = $this->buildObject();
+
+        $this->assertNull($article->returnStaticClosure());
+        $this->assertNull($article->returnStaticClosure());
+    }
+
+    /**
+     * A state can be defined with an anonymous class, registered and enabled with the name of an interface
+     * implemented by this state.
+     */
+    public function testAnonymousStateRegisteredWithAnInterfaceName(): void
+    {
+        $article = $this->buildObject();
+        $article->setTitle('Hello world');
+
+        $state = new class (false, $article::class) extends AbstractState implements NamedStateInterface {
+            public function getUpperTitle(): Closure
+            {
+                return fn (): string => strtoupper((string) $this->getTitle());
+            }
+        };
+
+        $article->registerState(NamedStateInterface::class, $state);
+        $article->enableState(NamedStateInterface::class);
+
+        $this->assertSame('HELLO WORLD', $article->getUpperTitle());
+        $this->assertSame('HELLO WORLD', $article->getUpperTitle());
+
+        $called = false;
+        $article->isInState([NamedStateInterface::class], function () use (&$called): void {
+            $called = true;
+        });
+        $this->assertTrue($called);
     }
 }

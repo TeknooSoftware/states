@@ -23,27 +23,29 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Attributes;
+namespace Teknoo\Tests\Support\Extendable\Daughter\States;
 
-use Attribute;
+use Teknoo\States\State\AbstractState;
+use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
 
 /**
- * Attribute to configure assertions about automation of a stated class.
- * By default, all assertions attributes are inherited from parent class.
- *
- * Usage examples:
- *   #[Assertions(inheritsFromParent: false)]
+ * State StateRecall
+ * State of the daughter class, not declared in its StateClass attributes : it must be registered at runtime.
+ * Its method calls a public method of a mother's state, itself calling a private method of this mother's state.
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
+ * @mixin Daughter
  */
-#[Attribute(Attribute::TARGET_CLASS)]
-final class Assertions
+class StateRecall extends AbstractState
 {
-    public function __construct(
-        public readonly bool $inheritsFromParent = true,
-    ) {
+    public function recallMotherPublic()
+    {
+        /*
+         * @return int
+         */
+        return fn (): int|float => $this->methodRecallPrivate() * 3;
     }
 }

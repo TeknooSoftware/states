@@ -32,7 +32,7 @@ namespace Teknoo\States\State;
  * A trait implementation has been chosen to allow developer to write theirs owns factory, extendable from any class.
  *
  * Objects implementing this interface must find, bind and execute closure via the method executeClosure() for the
- * required method. (Rebind must use \Closure::call() to rebind static, self and $this or rebindTo()).
+ * required method. (Rebind must use \Closure::call() to rebind static, self and $this or \Closure::bindTo()).
  *
  * Objects must follow instruction passed to executeClosure() and manage the visibility of the method and not allow
  * executing a private method from an outside call.

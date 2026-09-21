@@ -28,8 +28,8 @@ namespace Teknoo\States\Automated\Assertion\Property;
 use Teknoo\Immutable\ImmutableTrait;
 use Teknoo\States\Automated\Assertion\Property;
 
-use function end;
-use function array_reverse;
+use function array_slice;
+use function array_values;
 
 /**
  * Set of constraints, passed to automated object to check the value from the defined property
@@ -45,7 +45,9 @@ class ConstraintsSet implements ConstraintsSetInterface
     use ImmutableTrait;
 
     /**
-     * @var ConstraintInterface[]
+     * Constraints to process, in theirs declaration order.
+     *
+     * @var list<ConstraintInterface>
      */
     private array $constraints = [];
 
@@ -58,16 +60,12 @@ class ConstraintsSet implements ConstraintsSetInterface
     ) {
         $this->uniqueConstructorCheck();
 
-        $this->constraints = array_reverse($constraints);
+        $this->constraints = array_values($constraints);
     }
 
     private function nextConstraint(): ?ConstraintInterface
     {
-        if (!empty($this->constraints)) {
-            return end($this->constraints);
-        }
-
-        return null;
+        return $this->constraints[0] ?? null;
     }
 
     /**
@@ -78,8 +76,9 @@ class ConstraintsSet implements ConstraintsSetInterface
         $constraint = $this->nextConstraint();
 
         if ($constraint instanceof ConstraintInterface) {
+            //The next set owns all remaining constraints, always in theirs declaration order
             $that = new self(
-                array_slice($this->constraints, 0, -1),
+                array_slice($this->constraints, 1),
                 $this->property,
             );
             $constraint = $constraint->inConstraintSet($that);

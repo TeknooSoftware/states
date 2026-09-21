@@ -28,6 +28,7 @@ namespace Teknoo\Tests\States\Functional;
 use Teknoo\States\Proxy\Exception\MethodNotImplemented;
 use Teknoo\Tests\Support\Extendable\Daughter\Daughter;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateOne;
+use Teknoo\Tests\Support\Extendable\Daughter\States\StateRecall;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateThree;
 use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateFour;
 use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree as StateThreeGD;
@@ -39,6 +40,7 @@ use Teknoo\Tests\Support\Extendable\Mother\States\StateOne as StateOneMother;
 use Teknoo\Tests\Support\Extendable\Mother\States\StateTwo;
 use Teknoo\Tests\Support\Extendable\Daughter\States\StateDefault as StateDefaultDaughter;
 use Teknoo\Tests\Support\Extendable\GrandDaughter\States\StateThree as StateThreeGrandDaughter;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -452,5 +454,83 @@ class ExtendableTest extends TestCase
         $gddInstance->enableState(StateFour::class);
 
         $gddInstance->callPrivateMethodSo();
+    }
+
+    /**
+     * Methods of the state's implementation (StateInterface, StateTrait) are not methods of the stated class.
+     */
+    #[DataProvider('infrastructureMethodsProvider')]
+    public function testInfrastructureMethodIsNotReachableThroughTheProxy(string $methodName): void
+    {
+        $mother = $this->buildMother();
+        $mother->enableState(StateTwo::class);
+
+        $this->expectException(MethodNotImplemented::class);
+        $mother->{$methodName}();
+    }
+
+    /**
+     * @return array<string, array{0: string}>
+     */
+    public static function infrastructureMethodsProvider(): array
+    {
+        return [
+            'executeClosure' => ['executeClosure'],
+            'getClosure' => ['getClosure'],
+            'getReflectionClass' => ['getReflectionClass'],
+            'checkVisibility' => ['checkVisibility'],
+        ];
+    }
+
+    /**
+     * A state overloaded by the daughter class can be referenced with its name or with the name of the overloaded
+     * mother's state : they represent the same state, which must be counted once when all states are required.
+     */
+    public function testIsInStateAllRequiredWithAliasOfOverloadedState(): void
+    {
+        $daughter = $this->buildDaughter();
+        $daughter->enableState(StateOne::class);
+
+        $called = false;
+        $daughter->isInState([StateOneMother::class, StateOne::class], function () use (&$called): void {
+            $called = true;
+        }, true);
+
+        $this->assertTrue($called);
+    }
+
+    /**
+     * A daughter's method calls a public method of a mother's state, which calls a private method of this same
+     * mother's state : the result must be the same at each call, whether the proxy's cache of called methods is
+     * used or not.
+     */
+    public function testDaughterStateCanCallMotherPublicRecallingPrivateSeveralTimes(): void
+    {
+        $daughter = $this->buildDaughter();
+        $daughter->registerState(StateRecall::class, new StateRecall(false, $daughter::class));
+        $daughter->enableState(StateTwo::class);
+        $daughter->enableState(StateRecall::class);
+
+        $this->assertSame(4734, $daughter->recallMotherPublic());
+        $this->assertSame(4734, $daughter->recallMotherPublic());
+        $this->assertSame(4734, $daughter->recallMotherPublic());
+    }
+
+    /**
+     * Same behavior when the first call comes from a function or from the main script : this call is never kept into
+     * the proxy's cache, but calls performed by the state's methods are.
+     */
+    public function testDaughterStateCanCallMotherPublicRecallingPrivateSeveralTimesFromAFunction(): void
+    {
+        include_once dirname(__DIR__, 2) . '/fixtures/TestVisibilityFunctionsCall.php';
+
+        $daughter = $this->buildDaughter();
+        $daughter->registerState(StateRecall::class, new StateRecall(false, $daughter::class));
+        $daughter->enableState(StateTwo::class);
+        $daughter->enableState(StateRecall::class);
+
+        $this->assertSame(4734, \testCallMethodFromFunction($daughter, 'recallMotherPublic'));
+        $this->assertSame(4734, \testCallMethodFromFunction($daughter, 'recallMotherPublic'));
+        $this->assertSame(4734, \testCallMethodFromFunction($daughter, 'recallMotherPublic'));
     }
 }

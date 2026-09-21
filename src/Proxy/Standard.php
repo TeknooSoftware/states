@@ -34,8 +34,8 @@ namespace Teknoo\States\Proxy;
  * represent the proxy instance.
  *
  * The proxy class is mandatory. Since States 3.0 has no factories or no loader : proxies embedded directly theirs
- * states' configurations. Since 3.2, states configurations must be returned by the protected method
- * statesListDeclaration(), required by this trait.
+ * states' configurations. Since 7.1, the protected static method statesListDeclaration() is deprecated, states must be
+ * declared with the attribute #[Teknoo\States\Attributes\StateClass()].
  *
  * States can be overload by children of a stated class : The overloading uses only the non qualified name.
  *

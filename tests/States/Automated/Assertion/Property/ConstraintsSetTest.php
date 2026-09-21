@@ -29,6 +29,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Teknoo\States\Automated\Assertion\Property;
+use Teknoo\States\Automated\Assertion\Property\Callback as CallbackConstraint;
 use Teknoo\States\Automated\Assertion\Property\ConstraintInterface;
 use Teknoo\States\Automated\Assertion\Property\ConstraintsSet;
 
@@ -78,6 +79,34 @@ class ConstraintsSetTest extends TestCase
         $value = 'foo';
 
         $this->assertInstanceOf(ConstraintsSet::class, $this->buildInstance([], $property)->isValid($value));
+    }
+
+    /**
+     * Constraints must be processed in theirs declaration order, whatever theirs count : the first constraints are
+     * often guards for the next ones (`IsArray` then `HasKey`, `IsNotNull` then `Callback`, ...).
+     */
+    public function testConstraintsAreProcessedInDeclarationOrder(): void
+    {
+        $property = $this->createMock(Property::class);
+        $property->expects($this->once())->method('isValid');
+
+        $order = [];
+        $buildConstraint = function (string $name) use (&$order): CallbackConstraint {
+            return new CallbackConstraint(
+                function (mixed &$value, ConstraintInterface $constraint) use ($name, &$order): void {
+                    $order[] = $name;
+                    $constraint->isValid($value);
+                }
+            );
+        };
+
+        $value = 'foo';
+        $this->buildInstance(
+            [$buildConstraint('A'), $buildConstraint('B'), $buildConstraint('C'), $buildConstraint('D')],
+            $property,
+        )->check($value);
+
+        $this->assertSame(['A', 'B', 'C', 'D'], $order);
     }
 
     public function testProcessWithTwoConstraintOnlyOneValidSoPropertyIsNotValid(): void

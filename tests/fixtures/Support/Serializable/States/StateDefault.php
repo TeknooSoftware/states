@@ -23,27 +23,31 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Attributes;
+namespace Teknoo\Tests\Support\Serializable\States;
 
-use Attribute;
+use Closure;
+use Teknoo\States\State\AbstractState;
+use Teknoo\Tests\Support\Serializable\SerializableProxy;
 
 /**
- * Attribute to configure assertions about automation of a stated class.
- * By default, all assertions attributes are inherited from parent class.
- *
- * Usage examples:
- *   #[Assertions(inheritsFromParent: false)]
+ * Default state, providing the method `__serialize()` called by the SerializableTrait of the proxy.
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
+ * @mixin SerializableProxy
  */
-#[Attribute(Attribute::TARGET_CLASS)]
-final class Assertions
+class StateDefault extends AbstractState
 {
-    public function __construct(
-        public readonly bool $inheritsFromParent = true,
-    ) {
+    /**
+     * PHP requires the return type `array` when a return type is declared for this magic method : the builder must
+     * be declared without return type.
+     *
+     * @return Closure
+     */
+    public function __serialize()
+    {
+        return fn (): array => ['value' => $this->value];
     }
 }

@@ -23,27 +23,26 @@
 
 declare(strict_types=1);
 
-namespace Teknoo\States\Attributes;
+namespace Teknoo\Tests\Support\Extendable\Mother\States;
 
-use Attribute;
+use Teknoo\States\State\AbstractState;
+use Teknoo\Tests\Support\Extendable\Mother\Mother;
 
 /**
- * Attribute to configure assertions about automation of a stated class.
- * By default, all assertions attributes are inherited from parent class.
- *
- * Usage examples:
- *   #[Assertions(inheritsFromParent: false)]
+ * State StateCloner
+ * State of the mother class, not declared in its StateClass attributes : it must be registered at runtime.
+ * Its method clones the stated class instance during its execution, like immutable objects do (`$that = clone $this`).
  *
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
  * @copyright   Copyright (c) SASU Teknoo Software (https://teknoo.software - contact@teknoo.software)
  * @license     http://teknoo.software/license/bsd-3         3-Clause BSD License
  * @author      Richard Déloge <richard@teknoo.software>
+ * @mixin Mother
  */
-#[Attribute(Attribute::TARGET_CLASS)]
-final class Assertions
+class StateCloner extends AbstractState
 {
-    public function __construct(
-        public readonly bool $inheritsFromParent = true,
-    ) {
+    public function cloneMe()
+    {
+        return fn (): Mother => clone $this;
     }
 }
