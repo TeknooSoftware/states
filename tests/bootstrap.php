@@ -31,7 +31,11 @@ defined('PHPUNIT')
 defined('TK_STATES_TEST_PATH')
     || define('TK_STATES_TEST_PATH', __DIR__);
 
-ini_set('memory_limit', '64M');
+if (version_compare(PHP_VERSION, '8.4', '>=') && version_compare(PHP_VERSION, '8.5', '<')) {
+    ini_set('memory_limit', '128M');
+} else {
+    ini_set('memory_limit', '64M');
+}
 
 error_reporting(E_ALL);
 
