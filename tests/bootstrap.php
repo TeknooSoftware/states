@@ -34,7 +34,7 @@ defined('TK_STATES_TEST_PATH')
 if (version_compare(PHP_VERSION, '8.4', '>=') && version_compare(PHP_VERSION, '8.5', '<')) {
     ini_set('memory_limit', '128M');
 } else {
-    ini_set('memory_limit', '64M');
+    ini_set('memory_limit', '75M');
 }
 
 error_reporting(E_ALL);
