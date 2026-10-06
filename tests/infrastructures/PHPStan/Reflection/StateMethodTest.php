@@ -32,12 +32,15 @@ use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass
 use PHPStan\BetterReflection\Reflection\ReflectionFunction as BetterReflectionFunction;
 use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
 use PHPStan\BetterReflection\Reflection\ReflectionNamedType;
+use PHPStan\BetterReflection\Reflection\ReflectionParameter as BetterReflectionParameter;
 use PHPStan\DependencyInjection\Reflection\ClassReflectionExtensionRegistryProvider;
 use PHPStan\Reflection\Assertions;
 use PHPStan\Reflection\AttributeReflection;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ClassReflectionExtensionRegistry;
+use PHPStan\Reflection\ExtendedParameterReflection;
 use PHPStan\Reflection\ExtendedParametersAcceptor;
+use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Reflection\Php\PhpClassReflectionExtension;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\TrinaryLogic;
@@ -111,6 +114,7 @@ class StateMethodTest extends TestCase
 
     /**
      * @param list<AttributeReflection> $attributes
+     * @param list<BetterReflectionParameter> $closureParameters
      */
     protected function buildInstance(
         ?string $doc = 'factory doc',
@@ -122,6 +126,8 @@ class StateMethodTest extends TestCase
         ?Type $selfOutType = null,
         ?ReflectionNamedType $tentativeReturnType = null,
         array $attributes = [],
+        array $closureParameters = [],
+        ?InitializerExprTypeResolver $initializerExprTypeResolver = null,
     ): StateMethod {
         $factoryReflection = $this->createMock(BetterReflectionMethod::class);
         $factoryReflection->modifiers = 0;
@@ -163,7 +169,7 @@ class StateMethodTest extends TestCase
         $closureReflection->method('isVariadic')->willReturn(false);
         $closureReflection->method('returnsReference')->willReturn(false);
 
-        $closureReflection->method('getParameters')->willReturn([]);
+        $closureReflection->method('getParameters')->willReturn($closureParameters);
 
         $cr = new ReflectionFunction($closureReflection);
 
@@ -202,7 +208,7 @@ class StateMethodTest extends TestCase
 
         return new StateMethod(
             reflectionProvider: $this->getReflectionProviderStub(),
-            initializerExprTypeResolver: $this->getInitializerExprTypeResolverStub(),
+            initializerExprTypeResolver: $initializerExprTypeResolver ?? $this->getInitializerExprTypeResolverStub(),
             attributeReflectionFactory: $this->getAttributeReflectionFactoryStub(),
             factoryReflection: $fr,
             closureReflection: $cr,
@@ -355,6 +361,39 @@ class StateMethodTest extends TestCase
         $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance(isPure: false)->isPure());
         $this->assertEquals(TrinaryLogic::createMaybe(), $this->buildInstance(isPure: null)->isPure());
         $this->assertEquals(TrinaryLogic::createYes(), $this->buildInstance(isPure: true)->isPure());
+    }
+
+    public function testGetPureUnlessCallableIsImpureParameters(): void
+    {
+        $this->assertSame([], $this->buildInstance()->getPureUnlessCallableIsImpureParameters());
+    }
+
+    public function testGetPureUnlessParameterPassedParameters(): void
+    {
+        $this->assertSame([], $this->buildInstance()->getPureUnlessParameterPassedParameters());
+    }
+
+    public function testParametersAreNotConditionallyPure(): void
+    {
+        $declaringFunction = $this->createStub(BetterReflectionFunction::class);
+        $declaringFunction->method('getName')->willReturn('{closure}');
+        $declaringFunction->method('getFileName')->willReturn('closure.php');
+
+        $parameter = $this->createStub(BetterReflectionParameter::class);
+        $parameter->function = $declaringFunction;
+        $parameter->attributes = [];
+
+        // PhpParameterReflection requires the final class InitializerExprTypeResolver, not the contract
+        $resolver = new ReflectionClass(InitializerExprTypeResolver::class)->newInstanceWithoutConstructor();
+
+        $parameters = $this->buildInstance(closureParameters: [$parameter], initializerExprTypeResolver: $resolver)
+            ->getOnlyVariant()
+            ->getParameters();
+
+        $this->assertCount(1, $parameters);
+        $this->assertInstanceOf(ExtendedParameterReflection::class, $parameters[0]);
+        $this->assertEquals(TrinaryLogic::createNo(), $parameters[0]->isPureUnlessCallableIsImpureParameter());
+        $this->assertEquals(TrinaryLogic::createNo(), $parameters[0]->isPureUnlessParameterPassedParameter());
     }
 
     public function testGetVariants(): void

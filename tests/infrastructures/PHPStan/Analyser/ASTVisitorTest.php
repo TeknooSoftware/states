@@ -613,6 +613,108 @@ class ASTVisitorTest extends TestCase
         $this->assertInstanceOf(Node\Stmt\Return_::class, $result->stmts[0]->stmts[1]);
     }
 
+    /**
+     * Only methods declaring `Closure` or `callable` as return type are builders : a method declaring another type is
+     * kept unchanged, even if it returns a closure.
+     */
+    public function testLeaveNodeWithMethodNotDeclaringAClosureAsReturnType(): void
+    {
+        $closure = new Node\Expr\Closure([
+            'params' => [new Node\Param(new Node\Expr\Variable('name'))],
+            'stmts' => [],
+        ]);
+
+        $stateClass = new Class_(
+            'StateOne',
+            [
+                'stmts' => [
+                    new ClassMethod(
+                        new Node\Identifier('foo'),
+                        [
+                            'returnType' => new Node\Identifier('mixed'),
+                            'stmts' => [new Node\Stmt\Return_($closure)],
+                        ]
+                    ),
+                ],
+                'implements' => [new Name(StateInterface::class)],
+            ]
+        );
+        $stateClass->namespacedName = new Name(StateOne::class);
+
+        $proxyClass = new Class_(
+            Mother::class,
+            [
+                'stmts' => [],
+                'implements' => [new Name(ProxyInterface::class)]
+            ]
+        );
+        $proxyClass->namespacedName = new Name(Mother::class);
+
+        $visitor = $this->buildVisitor();
+        $visitor->leaveNode($stateClass);
+        $result = $visitor->leaveNode($proxyClass);
+
+        $this->assertInstanceOf(Class_::class, $result);
+        $this->assertCount(1, $result->stmts);
+        $this->assertInstanceOf(ClassMethod::class, $result->stmts[0]);
+        //Nodes are cloned by the visitor : only theirs values are compared
+        $this->assertSame('foo', (string) $result->stmts[0]->name);
+        $this->assertSame([], $result->stmts[0]->params);
+        $this->assertInstanceOf(Node\Identifier::class, $result->stmts[0]->returnType);
+        $this->assertSame('mixed', $result->stmts[0]->returnType->name);
+        $this->assertIsArray($result->stmts[0]->stmts);
+        $this->assertCount(1, $result->stmts[0]->stmts);
+        $this->assertInstanceOf(Node\Stmt\Return_::class, $result->stmts[0]->stmts[0]);
+        $this->assertInstanceOf(Node\Expr\Closure::class, $result->stmts[0]->stmts[0]->expr);
+    }
+
+    /**
+     * A state's file can be parsed several times : its methods are always removed from its node, but they are only
+     * collected at the first parse, to not be added several times in the proxy's node.
+     */
+    public function testLeaveNodeWithStateClassNodeParsedSeveralTimes(): void
+    {
+        $buildStateClass = static function (): Class_ {
+            $stateClass = new Class_(
+                'StateOne',
+                [
+                    'stmts' => [
+                        new Node\Stmt\ClassConst([new Node\Const_('BAR', new Node\Scalar\Int_(1))]),
+                        new ClassMethod(new Node\Identifier('foo'), []),
+                    ],
+                    'implements' => [new Name(StateInterface::class)],
+                ]
+            );
+            $stateClass->namespacedName = new Name(StateOne::class);
+
+            return $stateClass;
+        };
+
+        $proxyClass = new Class_(
+            Mother::class,
+            [
+                'stmts' => [],
+                'implements' => [new Name(ProxyInterface::class)]
+            ]
+        );
+        $proxyClass->namespacedName = new Name(Mother::class);
+
+        $visitor = $this->buildVisitor();
+
+        $this->assertInstanceOf(Class_::class, $result = $visitor->leaveNode($buildStateClass()));
+        $this->assertCount(1, $result->stmts);
+        $this->assertInstanceOf(Node\Stmt\ClassConst::class, $result->stmts[0]);
+
+        $this->assertInstanceOf(Class_::class, $result = $visitor->leaveNode($buildStateClass()));
+        $this->assertCount(1, $result->stmts);
+        $this->assertInstanceOf(Node\Stmt\ClassConst::class, $result->stmts[0]);
+
+        $this->assertInstanceOf(Class_::class, $result = $visitor->leaveNode($proxyClass));
+        $this->assertCount(1, $result->stmts);
+        $this->assertInstanceOf(ClassMethod::class, $result->stmts[0]);
+        $this->assertSame('foo', (string) $result->stmts[0]->name);
+    }
+
     #[IgnoreDeprecations]
     public function testLeaveNodeWithLegacyProxyClassNode(): void
     {

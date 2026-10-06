@@ -341,7 +341,8 @@ class StateMethod implements ExtendedMethodReflection
                         InitializerExprContext::fromReflectionParameter($reflection)
                     ),
                     null,
-                    TrinaryLogic::createMaybe(),
+                    TrinaryLogic::createNo(),
+                    TrinaryLogic::createNo(),
                 ),
                 $this->closureReflection->getParameters()
             );
@@ -400,6 +401,11 @@ class StateMethod implements ExtendedMethodReflection
     }
 
     public function getPureUnlessCallableIsImpureParameters(): array
+    {
+        return [];
+    }
+
+    public function getPureUnlessParameterPassedParameters(): array
     {
         return [];
     }

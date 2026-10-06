@@ -233,14 +233,8 @@ class ASTVisitor extends NodeVisitorAbstract
     {
         $returnType = $stmt->returnType;
         if (
-            !(
-                $returnType instanceof Identifier
-                && 'callable' === strtolower($returnType->name)
-            )
-            && !(
-                $returnType instanceof Node\Name\FullyQualified
-                && 'closure' === strtolower((string) $returnType)
-            )
+            !($returnType instanceof Identifier && 'callable' === strtolower($returnType->name))
+            && !($returnType instanceof Node\Name\FullyQualified && 'closure' === strtolower((string) $returnType))
         ) {
             return;
         }

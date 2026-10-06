@@ -1,5 +1,13 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.12] - 2026-10-06
+### Stable Release
+- Fix another BC Break from PHPStan introduced in minor version 2.3.0 (new method
+  `ExtendedMethodReflection::getPureUnlessParameterPassedParameters()` and new required argument of
+  `PhpParameterReflection`'s constructor)
+- PHPStan extension: parameters of states' methods were reported as conditionally pure (`Maybe` instead of `No`
+  for `pureUnlessCallableIsImpure`), PHPStan could consider a call to these methods without side effect
+
 ## [7.1.11] - 2026-09-21
 ### Stable Release
 - Security: fix a visibility bypass. The stated class of the caller was kept from a previous call: after a legitimate
