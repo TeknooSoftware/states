@@ -1,5 +1,14 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.13] - 2026-10-25
+### Stable Release
+- Fix another BC Break from PHPStan introduced in patch version 2.3.2 (BetterReflection now reads the trailing doc
+  comment of each parameter in the source of its class's file, at the parameter's file position): the analysis of
+  stated classes in analysed paths stopped with the internal error "Failed to scan trailing parameter comment" or
+  "Builder ... was not found by the reflection of PHPStan".
+  - States' methods moved by the AST visitor into the proxy's class node kept file positions of their state's file:
+    file positions of their parameters are now removed.
+
 ## [7.1.12] - 2026-10-06
 ### Stable Release
 - Fix another BC Break from PHPStan introduced in minor version 2.3.0 (new method
