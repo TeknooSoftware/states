@@ -25,11 +25,13 @@ declare(strict_types=1);
 
 namespace Teknoo\Tests\States\PHPStan\Analyser;
 
+use PhpParser\Comment;
 use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Name;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\NodeFinder;
 use PHPStan\Parser\Parser;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\IgnoreDeprecations;
@@ -713,6 +715,103 @@ class ASTVisitorTest extends TestCase
         $this->assertCount(1, $result->stmts);
         $this->assertInstanceOf(ClassMethod::class, $result->stmts[0]);
         $this->assertSame('foo', (string) $result->stmts[0]->name);
+    }
+
+    /**
+     * States' methods merged into the proxy's node keep file positions of the state's file, but BetterReflection reads
+     * the source of the proxy's file at the file position of each parameter (since PHPStan 2.3.2), and failed with
+     * "Failed to scan trailing parameter comment" when this position is outside of the proxy's file.
+     */
+    public function testLeaveNodeRemovesFilePositionsOfStatesParametersMergedInProxy(): void
+    {
+        $doc = new Comment\Doc('/** @var int */');
+
+        $nestedClosure = new Node\Expr\Closure(
+            [
+                'params' => [
+                    new Node\Param(
+                        var: new Node\Expr\Variable('nested'),
+                        attributes: ['startLine' => 12, 'endLine' => 12, 'startFilePos' => 9000, 'endFilePos' => 9006],
+                    ),
+                ],
+            ]
+        );
+
+        $stateClass = new Class_(
+            'StateOne',
+            [
+                'stmts' => [
+                    new ClassMethod(
+                        new Node\Identifier('foo'),
+                        [
+                            'returnType' => new Name\FullyQualified('Closure'),
+                            'stmts' => [
+                                new Node\Stmt\Return_(
+                                    new Node\Expr\Closure(
+                                        [
+                                            'params' => [
+                                                new Node\Param(
+                                                    var: new Node\Expr\Variable('bar'),
+                                                    default: $nestedClosure,
+                                                    attributes: [
+                                                        'startLine' => 10,
+                                                        'endLine' => 11,
+                                                        'startFilePos' => 8000,
+                                                        'endFilePos' => 8100,
+                                                        'comments' => [$doc],
+                                                    ],
+                                                ),
+                                            ],
+                                        ]
+                                    )
+                                ),
+                            ],
+                        ]
+                    ),
+                ],
+                'implements' => [new Name(StateInterface::class)],
+            ]
+        );
+        $stateClass->namespacedName = new Name(StateOne::class);
+
+        $buildProxyClass = static function (): Class_ {
+            $proxyClass = new Class_(
+                Mother::class,
+                [
+                    'stmts' => [],
+                    'implements' => [new Name(ProxyInterface::class)]
+                ]
+            );
+            $proxyClass->namespacedName = new Name(Mother::class);
+
+            return $proxyClass;
+        };
+
+        $visitor = $this->buildVisitor();
+        $visitor->leaveNode($stateClass);
+
+        //The second proxy's node receives new clones of the state's methods
+        foreach ([$buildProxyClass(), $buildProxyClass()] as $proxyClass) {
+            $this->assertInstanceOf(Class_::class, $result = $visitor->leaveNode($proxyClass));
+            $this->assertCount(1, $result->stmts);
+            $this->assertInstanceOf(ClassMethod::class, $method = $result->stmts[0]);
+
+            $this->assertCount(1, $method->params);
+            $params = new NodeFinder()->findInstanceOf($method, Node\Param::class);
+            $this->assertCount(2, $params);
+
+            foreach ($params as $param) {
+                $this->assertFalse($param->hasAttribute('startFilePos'));
+                $this->assertFalse($param->hasAttribute('endFilePos'));
+            }
+
+            [$bar, $nested] = $params;
+            $this->assertSame(10, $bar->getStartLine());
+            $this->assertSame(11, $bar->getEndLine());
+            $this->assertSame([$doc], $bar->getAttribute('comments'));
+            $this->assertSame(12, $nested->getStartLine());
+            $this->assertSame(12, $nested->getEndLine());
+        }
     }
 
     #[IgnoreDeprecations]

@@ -5,6 +5,7 @@ services:
             attributeReflectionFactory: @PHPStan\Reflection\AttributeReflectionFactory
             initializerExprTypeResolver: @PHPStan\Reflection\InitializerExprTypeResolver
             phpDocInheritanceResolver: @PHPStan\PhpDoc\PhpDocInheritanceResolver
+            fileTypeMapper: @PHPStan\Type\FileTypeMapper
         tags:
             - phpstan.broker.methodsClassReflectionExtension
 

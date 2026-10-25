@@ -28,9 +28,11 @@ namespace Teknoo\States\PHPStan\Analyser;
 use PhpParser\Modifiers;
 use PhpParser\Node;
 use PhpParser\Node\Identifier;
+use PhpParser\Node\Param;
 use PhpParser\Node\Stmt;
 use PhpParser\Node\Stmt\Class_;
 use PhpParser\Node\Stmt\ClassMethod;
+use PhpParser\NodeFinder;
 use PhpParser\NodeTraverser;
 use PhpParser\NodeVisitor\CloningVisitor;
 use PhpParser\NodeVisitorAbstract;
@@ -45,6 +47,7 @@ use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\Proxy\ProxyInterface;
 use Teknoo\States\State\StateInterface;
 
+use function array_diff_key;
 use function array_flip;
 use function array_keys;
 use function array_map;
@@ -169,8 +172,10 @@ class ASTVisitor extends NodeVisitorAbstract
         $this->statesStmts[$className] ??= [];
 
         // Return independent clones so the shared cache is never mutated by
-        // mergeStmts (name/flags) nor by the parent attribute set below.
+        // mergeStmts (name/flags), nor by the parent attribute set below, nor
+        // by the removal of parameters' file positions.
         $stmts = $this->cloneStmts($this->statesStmts[$className]);
+        $this->removeFilePositionsOfParameters($stmts);
         foreach ($stmts as $stmt) {
             $stmt->setAttribute('parent', $parent);
         }
@@ -190,6 +195,23 @@ class ASTVisitor extends NodeVisitorAbstract
         $cloned = $traverser->traverse($stmts);
 
         return $cloned;
+    }
+
+    /**
+     * Statements of a state keep file positions of the state's file, but they are merged into the proxy's node :
+     * BetterReflection reads the source of the proxy's file at the file position of each parameter (to find its
+     * trailing doc comment), and fails when this position is outside of the proxy's file. Without file positions,
+     * BetterReflection uses the comments of the parameter's node.
+     *
+     * @param array<int, ClassMethod> $stmts
+     */
+    private function removeFilePositionsOfParameters(array $stmts): void
+    {
+        foreach (new NodeFinder()->findInstanceOf($stmts, Param::class) as $param) {
+            $param->setAttributes(
+                array_diff_key($param->getAttributes(), ['startFilePos' => true, 'endFilePos' => true])
+            );
+        }
     }
 
     /**
