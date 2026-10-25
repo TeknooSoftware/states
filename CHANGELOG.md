@@ -8,6 +8,21 @@
   "Builder ... was not found by the reflection of PHPStan".
   - States' methods moved by the AST visitor into the proxy's class node kept file positions of their state's file:
     file positions of their parameters are now removed.
+- PHPStan extension, methods of stated classes outside analysed paths (`MethodsClassExtension` and `StateMethod`):
+  - The phpdoc of builders was ignored, only a phpdoc inherited from a parent class or an interface was used. The
+    phpdoc of a builder documents its closure: its tags (`@param`, `@return`, `@throws`, `@template`, `@param-out`,
+    `@phpstan-assert`, `@phpstan-pure`, `@internal`, `@deprecated`, ...) are now applied to the method of the stated
+    class, like the AST visitor does for analysed classes. New errors can be reported in projects calling these
+    methods with wrong arguments.
+  - Fix calls to these methods reported "on a separate line has no effect": methods without phpdoc were considered
+    without side effect, and `hasSideEffects()` was inverted for methods tagged `@phpstan-pure` or `@phpstan-impure`.
+  - `StateMethod` returns real values instead of default values added for PHPStan's BC breaks:
+    `getResolvedPhpDoc()`, `getPureUnlessCallableIsImpureParameters()`, `getPureUnlessParameterPassedParameters()`,
+    `isInternal()` (tag `@internal`, it reported an internal method of PHP), `isFinal()` and `isFinalByKeyword()`
+    (keyword `final` of the builder, or tag `@final`), the message of `@deprecated`, and for each parameter its
+    phpdoc type, `@param-out`, `@param-closure-this`, `@param-immediately-invoked-callable` and purity's tags.
+    `isStatic()` and `returnsByReference()` stay `false`: these methods are always called with `__call()`.
+  - `MethodsClassExtension` requires the PHPStan's service `FileTypeMapper` (`extension.neon` is updated).
 
 ## [7.1.12] - 2026-10-06
 ### Stable Release

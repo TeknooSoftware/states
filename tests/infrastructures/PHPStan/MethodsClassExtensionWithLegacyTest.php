@@ -47,6 +47,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use ReflectionClass;
 use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
+use Teknoo\States\PHPStan\Contracts\Reflection\FileTypeMapperInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\PhpDocInheritanceResolverInterface;
 use Teknoo\States\PHPStan\MethodsClassExtension;
@@ -74,6 +75,8 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
     private (InitializerExprTypeResolverInterface&Stub)|null $initializerExprTypeResolver = null;
 
     private (PhpDocInheritanceResolverInterface&Stub)|null $phpDocInheritanceResolver = null;
+
+    private (FileTypeMapperInterface&Stub)|null $fileTypeMapper = null;
 
     private function getReflectionProviderStub(): ReflectionProvider&Stub
     {
@@ -111,6 +114,15 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
         return $this->phpDocInheritanceResolver;
     }
 
+    private function getFileTypeMapperStub(): FileTypeMapperInterface&Stub
+    {
+        if (!$this->fileTypeMapper instanceof FileTypeMapperInterface) {
+            $this->fileTypeMapper = $this->createStub(FileTypeMapperInterface::class);
+        }
+
+        return $this->fileTypeMapper;
+    }
+
     protected function buildInstance(): MethodsClassReflectionExtension
     {
         return new MethodsClassExtension(
@@ -118,6 +130,7 @@ class MethodsClassExtensionWithLegacyTest extends TestCase
             attributeReflectionFactory: $this->getAttributeReflectionFactoryStub(),
             initializerExprTypeResolver: $this->getInitializerExprTypeResolverStub(),
             phpDocInheritanceResolver: $this->getPhpDocInheritanceResolverStub(),
+            fileTypeMapper: $this->getFileTypeMapperStub(),
         );
     }
 

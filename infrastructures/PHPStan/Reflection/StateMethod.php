@@ -46,7 +46,9 @@ use PHPStan\Reflection\Php\PhpParameterReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
 use PHPStan\TrinaryLogic;
+use PHPStan\Type\Generic\TemplateTypeHelper;
 use PHPStan\Type\Generic\TemplateTypeMap;
+use PHPStan\Type\Generic\TemplateTypeVariance;
 use PHPStan\Type\MixedType;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
@@ -89,6 +91,7 @@ class StateMethod implements ExtendedMethodReflection
 
     /**
      * @param list<AttributeReflection> $attributes
+     * @param ResolvedPhpDocBlock|null $resolvedPhpDoc phpdoc of the builder, it documents the closure
      */
     public function __construct(
         private readonly ReflectionProvider $reflectionProvider,
@@ -105,6 +108,7 @@ class StateMethod implements ExtendedMethodReflection
         private readonly ?bool $isPure,
         private readonly array $attributes,
         private readonly bool $acceptsNamedArguments,
+        private readonly ?ResolvedPhpDocBlock $resolvedPhpDoc = null,
     ) {
     }
 
@@ -156,6 +160,8 @@ class StateMethod implements ExtendedMethodReflection
 
     public function isStatic(): bool
     {
+        //Methods of states are only callable from an instance, with `__call()` (proxies have no `__callStatic()`),
+        //even when the builder returns a static closure
         return false;
     }
 
@@ -171,26 +177,35 @@ class StateMethod implements ExtendedMethodReflection
 
     public function isFinal(): TrinaryLogic
     {
-        return TrinaryLogic::createNo();
+        return TrinaryLogic::createFromBoolean(
+            ($this->resolvedPhpDoc?->isFinal() ?? false) || $this->factoryReflection->isFinal()
+        );
     }
 
     public function isFinalByKeyword(): TrinaryLogic
     {
-        return TrinaryLogic::createNo();
+        return TrinaryLogic::createFromBoolean($this->factoryReflection->isFinal());
     }
 
     public function isInternal(): TrinaryLogic
     {
-        return TrinaryLogic::createFromBoolean($this->factoryReflection->isInternal());
+        //The tag `@internal`, internal methods of PHP are reported by `isBuiltin()`
+        return TrinaryLogic::createFromBoolean($this->resolvedPhpDoc?->isInternal() ?? false);
     }
 
     public function isDeprecated(): TrinaryLogic
     {
-        return TrinaryLogic::createFromBoolean($this->factoryReflection->isDeprecated());
+        return TrinaryLogic::createFromBoolean(
+            ($this->resolvedPhpDoc?->isDeprecated() ?? false) || $this->factoryReflection->isDeprecated()
+        );
     }
 
     public function getDeprecatedDescription(): ?string
     {
+        if (true === $this->resolvedPhpDoc?->isDeprecated()) {
+            return $this->resolvedPhpDoc->getDeprecatedTag()?->getMessage();
+        }
+
         if ($this->factoryReflection->isDeprecated()) {
             $attributes = $this->factoryReflection->getBetterReflection()->getAttributes();
             return DeprecatedAttributeHelper::getDeprecatedDescription($attributes);
@@ -233,8 +248,8 @@ class StateMethod implements ExtendedMethodReflection
             return TrinaryLogic::createYes();
         }
 
-        if (!$this->isPure()->maybe()) {
-            return $this->isPure();
+        if (null !== $this->isPure) {
+            return TrinaryLogic::createFromBoolean(!$this->isPure);
         }
 
         if (new ThisType($this->getDeclaringClass())->isSuperTypeOf($this->getReturnType())->yes()) {
@@ -260,6 +275,7 @@ class StateMethod implements ExtendedMethodReflection
 
     public function returnsByReference(): TrinaryLogic
     {
+        //Methods of states are called with `__call()`, theirs results are always returned by value
         return TrinaryLogic::createNo();
     }
 
@@ -296,6 +312,7 @@ class StateMethod implements ExtendedMethodReflection
 
     public function getNamedArgumentsVariants(): ?array
     {
+        //Like PHPStan for methods written in PHP : named arguments use the same signature
         return null;
     }
 
@@ -318,7 +335,57 @@ class StateMethod implements ExtendedMethodReflection
 
     public function isAbstract(): bool
     {
+        //A closure has always a body
         return false;
+    }
+
+    private function resolveParameterPhpDocType(?Type $type, TemplateTypeVariance $positionVariance): ?Type
+    {
+        if (null === $type) {
+            return null;
+        }
+
+        return TemplateTypeHelper::resolveTemplateTypes(
+            type: $type,
+            standins: $this->declaringClass->getActiveTemplateTypeMap(),
+            callSiteVariances: $this->declaringClass->getCallSiteVarianceMap(),
+            positionVariance: $positionVariance,
+        );
+    }
+
+    private function buildParameter(ReflectionParameter $reflection): PhpParameterReflection
+    {
+        $name = $reflection->getName();
+        $phpDoc = $this->resolvedPhpDoc;
+
+        $immediatelyInvokedCallable = TrinaryLogic::createMaybe();
+        if (null !== ($isImmediatelyInvoked = $phpDoc?->getParamsImmediatelyInvokedCallable()[$name] ?? null)) {
+            $immediatelyInvokedCallable = TrinaryLogic::createFromBoolean($isImmediatelyInvoked);
+        }
+
+        return new PhpParameterReflection(
+            $this->initializerExprTypeResolver,
+            $reflection,
+            $this->resolveParameterPhpDocType(
+                ($phpDoc?->getParamTags()[$name] ?? null)?->getType(),
+                TemplateTypeVariance::createContravariant(),
+            ),
+            $this->getDeclaringClass(),
+            $this->resolveParameterPhpDocType(
+                ($phpDoc?->getParamOutTags()[$name] ?? null)?->getType(),
+                TemplateTypeVariance::createCovariant(),
+            ),
+            $immediatelyInvokedCallable,
+            ($phpDoc?->getParamClosureThisTags()[$name] ?? null)?->getType(),
+            $this->attributeReflectionFactory->fromNativeReflection(
+                $reflection->getAttributes(),
+                InitializerExprContext::fromReflectionParameter($reflection)
+            ),
+            //Constants allowed by parameters are only defined by PHPStan for internal functions of PHP
+            null,
+            TrinaryLogic::createFromBoolean($phpDoc?->getParamsPureUnlessCallableIsImpure()[$name] ?? false),
+            TrinaryLogic::createFromBoolean($phpDoc?->getParamsPureUnlessParameterPassed()[$name] ?? false),
+        );
     }
 
     /**
@@ -328,22 +395,7 @@ class StateMethod implements ExtendedMethodReflection
     {
         if ($this->parameters === null) {
             $this->parameters = array_map(
-                fn (ReflectionParameter $reflection): PhpParameterReflection => new PhpParameterReflection(
-                    $this->initializerExprTypeResolver,
-                    $reflection,
-                    null,
-                    $this->getDeclaringClass(),
-                    null,
-                    TrinaryLogic::createMaybe(),
-                    null,
-                    $this->attributeReflectionFactory->fromNativeReflection(
-                        $reflection->getAttributes(),
-                        InitializerExprContext::fromReflectionParameter($reflection)
-                    ),
-                    null,
-                    TrinaryLogic::createNo(),
-                    TrinaryLogic::createNo(),
-                ),
+                $this->buildParameter(...),
                 $this->closureReflection->getParameters()
             );
         }
@@ -400,18 +452,27 @@ class StateMethod implements ExtendedMethodReflection
         return TrinaryLogic::createNo();
     }
 
+    /**
+     * @param array<string, bool> $parameters
+     * @return array<string, TrinaryLogic>
+     */
+    private function toTrinaryLogics(array $parameters): array
+    {
+        return array_map(TrinaryLogic::createFromBoolean(...), $parameters);
+    }
+
     public function getPureUnlessCallableIsImpureParameters(): array
     {
-        return [];
+        return $this->toTrinaryLogics($this->resolvedPhpDoc?->getParamsPureUnlessCallableIsImpure() ?? []);
     }
 
     public function getPureUnlessParameterPassedParameters(): array
     {
-        return [];
+        return $this->toTrinaryLogics($this->resolvedPhpDoc?->getParamsPureUnlessParameterPassed() ?? []);
     }
 
     public function getResolvedPhpDoc(): ?ResolvedPhpDocBlock
     {
-        return null;
+        return $this->resolvedPhpDoc;
     }
 }

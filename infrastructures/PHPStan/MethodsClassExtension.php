@@ -46,6 +46,7 @@ use PHPStan\Reflection\MethodReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
+use PHPStan\Type\FileTypeMapper;
 use PHPStan\Type\Generic\TemplateTypeHelper;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\Generic\TemplateTypeVariance;
@@ -56,6 +57,7 @@ use ReflectionException;
 use ReflectionFunction as NativeReflectionFunction;
 use Teknoo\States\Attributes\StateClass;
 use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
+use Teknoo\States\PHPStan\Contracts\Reflection\FileTypeMapperInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\PhpDocInheritanceResolverInterface;
 use Teknoo\States\PHPStan\Reflection\StateMethod;
@@ -96,6 +98,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         private readonly AttributeReflectionFactory|AttributeReflectionFactoryInterface $attributeReflectionFactory,
         private readonly InitializerExprTypeResolver|InitializerExprTypeResolverInterface $initializerExprTypeResolver,
         private readonly PhpDocInheritanceResolver|PhpDocInheritanceResolverInterface $phpDocInheritanceResolver,
+        private readonly FileTypeMapper|FileTypeMapperInterface $fileTypeMapper,
     ) {
     }
 
@@ -236,6 +239,35 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
     }
 
     /**
+     * The phpdoc of the builder documents the closure, it is resolved like PHPStan does for methods : in the scope of
+     * the class implementing the builder (and of its trait, if the builder comes from a trait).
+     */
+    private function resolveBuilderPhpDoc(ReflectionMethod $factoryReflection): ?ResolvedPhpDocBlock
+    {
+        $docComment = $factoryReflection->getDocComment();
+        if (false === $docComment) {
+            return null;
+        }
+
+        $builder = $factoryReflection->getBetterReflection();
+        $implementingClass = $builder->getImplementingClass();
+        $declaringClass = $builder->getDeclaringClass();
+
+        $traitName = null;
+        if ($declaringClass->isTrait()) {
+            $traitName = $declaringClass->getName();
+        }
+
+        return $this->fileTypeMapper->getResolvedPhpDoc(
+            $implementingClass->getFileName(),
+            $implementingClass->getName(),
+            $traitName,
+            $factoryReflection->getName(),
+            $docComment,
+        );
+    }
+
+    /**
      * @param class-string<object> $proxyClassName
      * @param ReflectionClass<object> $stateNativeReflection
      * @param non-empty-string $method
@@ -294,11 +326,6 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         }
 
         //@codeCoverageIgnoreEnd
-        $docComment = $factoryReflection->getDocComment();
-        if (false === $docComment) {
-            $docComment = null;
-        }
-
         $positionalParameterNames = array_map(
             static fn (ReflectionParameter $parameter): string => $parameter->getName(),
             $closureReflection->getParameters()
@@ -307,7 +334,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
         $resolvedPhpDoc = $this->phpDocInheritanceResolver->resolvePhpDocForMethod(
             $classReflection,
             $factoryReflection->getName(),
-            null,
+            $this->resolveBuilderPhpDoc($factoryReflection),
             $positionalParameterNames,
         );
 
@@ -356,7 +383,8 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
             selfOutType: $selfOutType,
             asserts: $asserts,
             templateTypeMap: $templateTypeMap,
-            isPure: $resolvedPhpDoc?->isPure() ?? false,
+            //Without the tags `@phpstan-pure` or `@phpstan-impure`, the purity is unknown
+            isPure: $resolvedPhpDoc?->isPure(),
             attributes: $this->attributeReflectionFactory->fromNativeReflection(
                 reflections: $closureReflection->getAttributes(),
                 context: InitializerExprContext::fromClassMethod(
@@ -367,6 +395,7 @@ class MethodsClassExtension implements MethodsClassReflectionExtension
                 )
             ),
             acceptsNamedArguments: $acceptsNamedArguments,
+            resolvedPhpDoc: $resolvedPhpDoc,
         );
     }
 
