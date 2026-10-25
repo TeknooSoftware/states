@@ -28,6 +28,9 @@ Requirements on your stated classes
 * Builders must declare the return type `Closure` (or `callable`), and must directly return the closure or the arrow
   function : `return function () {...};` or `return fn () => ...;`. Others builders are not analysed as methods
   of the proxy.
+* The phpdoc of a builder documents its closure : `@param` describes arguments of the closure, `@return` its result,
+  and all others tags (`@throws`, `@template`, `@phpstan-pure`, `@phpstan-assert`, ...) are applied to the method of
+  the proxy.
 * Static closures are supported : like the library does, they are only bound to the scope of the proxy. Theirs
   methods are analysed as static methods of the proxy, so any usage of `$this` in a static closure is reported.
 * The AST visitor only detects states and proxies **directly implementing** `StateInterface` and `ProxyInterface`

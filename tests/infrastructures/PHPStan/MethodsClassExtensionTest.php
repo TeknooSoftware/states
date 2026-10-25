@@ -28,6 +28,7 @@ namespace Teknoo\Tests\States\PHPStan;
 use DateTime;
 use PHPStan\Analyser\NameScope;
 use PHPStan\BetterReflection\Reflection\ReflectionClass as BetterReflectionClass;
+use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMethod;
 use PHPStan\PhpDoc\PhpDocNodeResolver;
 use PHPStan\PhpDoc\ResolvedPhpDocBlock;
 use PHPStan\PhpDoc\Tag\ReturnTag;
@@ -38,6 +39,7 @@ use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\MethodsClassReflectionExtension;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\ShouldNotHappenException;
+use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\TemplateTypeMap;
 use PHPStan\Type\Generic\TemplateTypeVarianceMap;
 use PHPStan\Type\Type;
@@ -46,6 +48,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use ReflectionClass;
 use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
+use Teknoo\States\PHPStan\Contracts\Reflection\FileTypeMapperInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\PhpDocInheritanceResolverInterface;
 use Teknoo\States\PHPStan\MethodsClassExtension;
@@ -55,6 +58,10 @@ use Teknoo\States\State\StateInterface;
 use PHPUnit\Framework\TestCase;
 use Teknoo\Tests\Support\Article\Article;
 use Teknoo\Tests\Support\Article\Article\Draft;
+use Teknoo\Tests\Support\Article\Article\StateDefault;
+use Teknoo\Tests\Support\Greeter\Greeter;
+use Teknoo\Tests\Support\Greeter\States\GreetingTrait;
+use Teknoo\Tests\Support\Greeter\States\Polite;
 
 /**
  * @copyright   Copyright (c) EIRL Richard Déloge (https://deloge.io - richard@deloge.io)
@@ -72,6 +79,8 @@ class MethodsClassExtensionTest extends TestCase
     private (InitializerExprTypeResolverInterface&Stub)|null $initializerExprTypeResolver = null;
 
     private (PhpDocInheritanceResolverInterface&Stub)|null $phpDocInheritanceResolver = null;
+
+    private (FileTypeMapperInterface&Stub)|null $fileTypeMapper = null;
 
     private function getReflectionProviderStub(): ReflectionProvider&Stub
     {
@@ -109,6 +118,15 @@ class MethodsClassExtensionTest extends TestCase
         return $this->phpDocInheritanceResolver;
     }
 
+    private function getFileTypeMapperStub(): FileTypeMapperInterface&Stub
+    {
+        if (!$this->fileTypeMapper instanceof FileTypeMapperInterface) {
+            $this->fileTypeMapper = $this->createStub(FileTypeMapperInterface::class);
+        }
+
+        return $this->fileTypeMapper;
+    }
+
     protected function buildInstance(): MethodsClassReflectionExtension
     {
         return new MethodsClassExtension(
@@ -116,6 +134,7 @@ class MethodsClassExtensionTest extends TestCase
             attributeReflectionFactory: $this->getAttributeReflectionFactoryStub(),
             initializerExprTypeResolver: $this->getInitializerExprTypeResolverStub(),
             phpDocInheritanceResolver: $this->getPhpDocInheritanceResolverStub(),
+            fileTypeMapper: $this->getFileTypeMapperStub(),
         );
     }
 
@@ -826,6 +845,141 @@ class MethodsClassExtensionTest extends TestCase
             ->willReturn(null);
 
         $this->assertInstanceOf(StateMethod::class, $this->buildInstance()->getMethod($cr, 'getFormattedBody'));
+    }
+
+    /**
+     * @param class-string $className
+     */
+    private function buildProxyClassReflection(string $className = Article::class): ClassReflection
+    {
+        $brc = $this->createStub(ReflectionClass::class);
+        $brc->method('isInterface')->willReturn(false);
+        $brc->method('implementsInterface')->willReturnMap([
+            [ProxyInterface::class, true],
+            [StateInterface::class, false],
+        ]);
+        $brc->method('getName')->willReturn($className);
+
+        $rcOfCr = new ReflectionClass(ClassReflection::class);
+        $cr = $rcOfCr->newInstanceWithoutConstructor();
+        $rcOfCr->getProperty('reflection')->setValue($cr, $brc);
+        $rcOfCr->getProperty('anonymousFilename')->setValue($cr, 'foo/bar.php');
+
+        return $cr;
+    }
+
+    /**
+     * The phpdoc of the builder documents the closure : it is resolved in the scope of the state's file, and merged
+     * with the phpdoc inherited by the stated class.
+     */
+    public function testGetMethodResolvesThePhpDocOfTheBuilder(): void
+    {
+        $cr = $this->buildProxyClassReflection();
+
+        $builderPhpDoc = ResolvedPhpDocBlock::createEmpty();
+        $resolvedPhpDoc = ResolvedPhpDocBlock::createEmpty();
+        $nativeBuilder = new \ReflectionMethod(StateDefault::class, 'isPublished');
+        //Like PHPStan, the phpdoc read by BetterReflection, reformatted
+        $docComment = BetterReflectionMethod::createFromInstance(
+            new ReflectionClass(StateDefault::class)->newInstanceWithoutConstructor(),
+            'isPublished',
+        )->getDocComment();
+
+        $fileTypeMapper = $this->createMock(FileTypeMapperInterface::class);
+        $fileTypeMapper->expects($this->once())
+            ->method('getResolvedPhpDoc')
+            ->with(
+                $this->callback(
+                    static fn (?string $file): bool => realpath((string) $file) === $nativeBuilder->getFileName()
+                ),
+                StateDefault::class,
+                null,
+                'isPublished',
+                $docComment,
+            )
+            ->willReturn($builderPhpDoc);
+        $this->fileTypeMapper = $fileTypeMapper;
+
+        $phpDocInheritanceResolver = $this->createMock(PhpDocInheritanceResolverInterface::class);
+        $phpDocInheritanceResolver->expects($this->once())
+            ->method('resolvePhpDocForMethod')
+            ->with($cr, 'isPublished', $builderPhpDoc, [])
+            ->willReturn($resolvedPhpDoc);
+        $this->phpDocInheritanceResolver = $phpDocInheritanceResolver;
+
+        $method = $this->buildInstance()->getMethod($cr, 'isPublished');
+
+        $this->assertInstanceOf(StateMethod::class, $method);
+        $this->assertSame($resolvedPhpDoc, $method->getResolvedPhpDoc());
+    }
+
+    /**
+     * Like PHPStan does for methods, the phpdoc of a builder provided by a trait is resolved in the scope of the trait.
+     */
+    public function testGetMethodResolvesThePhpDocOfABuilderFromATrait(): void
+    {
+        $cr = $this->buildProxyClassReflection(Greeter::class);
+
+        $builderPhpDoc = ResolvedPhpDocBlock::createEmpty();
+        //Like PHPStan, in the file of the class using the trait, not in the trait's file
+        $stateFile = new ReflectionClass(Polite::class)->getFileName();
+        $docComment = BetterReflectionMethod::createFromInstance(
+            new ReflectionClass(Polite::class)->newInstanceWithoutConstructor(),
+            'greet',
+        )->getDocComment();
+
+        $fileTypeMapper = $this->createMock(FileTypeMapperInterface::class);
+        $fileTypeMapper->expects($this->once())
+            ->method('getResolvedPhpDoc')
+            ->with(
+                $this->callback(
+                    static fn (?string $file): bool => realpath((string) $file) === $stateFile
+                ),
+                Polite::class,
+                GreetingTrait::class,
+                'greet',
+                $docComment,
+            )
+            ->willReturn($builderPhpDoc);
+        $this->fileTypeMapper = $fileTypeMapper;
+
+        $phpDocInheritanceResolver = $this->createMock(PhpDocInheritanceResolverInterface::class);
+        $phpDocInheritanceResolver->expects($this->once())
+            ->method('resolvePhpDocForMethod')
+            ->with($cr, 'greet', $builderPhpDoc, ['name'])
+            ->willReturn($builderPhpDoc);
+        $this->phpDocInheritanceResolver = $phpDocInheritanceResolver;
+
+        $method = $this->buildInstance()->getMethod($cr, 'greet');
+
+        $this->assertInstanceOf(StateMethod::class, $method);
+        $this->assertSame($builderPhpDoc, $method->getResolvedPhpDoc());
+    }
+
+    /**
+     * Without phpdoc, the purity of the method is unknown : it is not considered as a method without side effect.
+     */
+    public function testGetMethodWithoutPhpDocOnTheBuilder(): void
+    {
+        $cr = $this->buildProxyClassReflection();
+
+        $fileTypeMapper = $this->createMock(FileTypeMapperInterface::class);
+        $fileTypeMapper->expects($this->never())->method('getResolvedPhpDoc');
+        $this->fileTypeMapper = $fileTypeMapper;
+
+        $phpDocInheritanceResolver = $this->createMock(PhpDocInheritanceResolverInterface::class);
+        $phpDocInheritanceResolver->expects($this->once())
+            ->method('resolvePhpDocForMethod')
+            ->with($cr, 'getFormattedBody', null, [])
+            ->willReturn(null);
+        $this->phpDocInheritanceResolver = $phpDocInheritanceResolver;
+
+        $method = $this->buildInstance()->getMethod($cr, 'getFormattedBody');
+
+        $this->assertInstanceOf(StateMethod::class, $method);
+        $this->assertNull($method->getResolvedPhpDoc());
+        $this->assertEquals(TrinaryLogic::createMaybe(), $method->isPure());
+        $this->assertEquals(TrinaryLogic::createMaybe(), $method->hasSideEffects());
     }
 
 

@@ -34,6 +34,11 @@ use PHPStan\BetterReflection\Reflection\ReflectionMethod as BetterReflectionMeth
 use PHPStan\BetterReflection\Reflection\ReflectionNamedType;
 use PHPStan\BetterReflection\Reflection\ReflectionParameter as BetterReflectionParameter;
 use PHPStan\DependencyInjection\Reflection\ClassReflectionExtensionRegistryProvider;
+use PHPStan\PhpDoc\ResolvedPhpDocBlock;
+use PHPStan\PhpDoc\Tag\DeprecatedTag;
+use PHPStan\PhpDoc\Tag\ParamClosureThisTag;
+use PHPStan\PhpDoc\Tag\ParamOutTag;
+use PHPStan\PhpDoc\Tag\ParamTag;
 use PHPStan\Reflection\Assertions;
 use PHPStan\Reflection\AttributeReflection;
 use PHPStan\Reflection\ClassReflection;
@@ -42,9 +47,14 @@ use PHPStan\Reflection\ExtendedParameterReflection;
 use PHPStan\Reflection\ExtendedParametersAcceptor;
 use PHPStan\Reflection\InitializerExprTypeResolver;
 use PHPStan\Reflection\Php\PhpClassReflectionExtension;
+use PHPStan\Reflection\Php\PhpParameterReflection;
 use PHPStan\Reflection\ReflectionProvider;
 use PHPStan\TrinaryLogic;
 use PHPStan\Type\Generic\TemplateTypeMap;
+use PHPStan\Type\Generic\TemplateTypeVarianceMap;
+use PHPStan\Type\IntegerType;
+use PHPStan\Type\MixedType;
+use PHPStan\Type\ObjectType;
 use PHPStan\Type\StringType;
 use PHPStan\Type\ThisType;
 use PHPStan\Type\Type;
@@ -55,6 +65,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
+use ReflectionProperty;
 use stdClass;
 use Teknoo\States\PHPStan\Contracts\Reflection\AttributeReflectionFactoryInterface;
 use Teknoo\States\PHPStan\Contracts\Reflection\InitializerExprTypeResolverInterface;
@@ -113,6 +124,19 @@ class StateMethodTest extends TestCase
     }
 
     /**
+     * @param array<string, mixed> $values values of the phpdoc's properties, others are empty
+     */
+    private function buildPhpDoc(array $values): ResolvedPhpDocBlock
+    {
+        $phpDoc = ResolvedPhpDocBlock::createEmpty();
+        foreach ($values as $property => $value) {
+            new ReflectionProperty($phpDoc, $property)->setValue($phpDoc, $value);
+        }
+
+        return $phpDoc;
+    }
+
+    /**
      * @param list<AttributeReflection> $attributes
      * @param list<BetterReflectionParameter> $closureParameters
      */
@@ -128,9 +152,15 @@ class StateMethodTest extends TestCase
         array $attributes = [],
         array $closureParameters = [],
         ?InitializerExprTypeResolver $initializerExprTypeResolver = null,
+        ?ResolvedPhpDocBlock $resolvedPhpDoc = null,
+        bool $isFinal = false,
     ): StateMethod {
         $factoryReflection = $this->createMock(BetterReflectionMethod::class);
         $factoryReflection->modifiers = 0;
+        if ($isFinal) {
+            $factoryReflection->modifiers = \ReflectionMethod::IS_FINAL;
+        }
+
         $factoryReflection->method('getName')->willReturn('factory');
         $factoryReflection->method('getFileName')->willReturn('factory.php');
         $factoryReflection->expects($this->never())->method('getStartLine');
@@ -201,6 +231,10 @@ class StateMethodTest extends TestCase
         $rpr->setValue($dc, null);
         $rpr = $rcOfDc->getProperty('acceptsNamedArguments');
         $rpr->setValue($dc, $acceptsNamedArguments);
+        $rpr = $rcOfDc->getProperty('activeTemplateTypeMap');
+        $rpr->setValue($dc, TemplateTypeMap::createEmpty());
+        $rpr = $rcOfDc->getProperty('callSiteVarianceMap');
+        $rpr->setValue($dc, TemplateTypeVarianceMap::createEmpty());
 
         $this->getReflectionProviderStub()
             ->method('getClass')
@@ -221,6 +255,7 @@ class StateMethodTest extends TestCase
             isPure: $isPure,
             attributes: $attributes,
             acceptsNamedArguments: $acceptsNamedArguments,
+            resolvedPhpDoc: $resolvedPhpDoc,
         );
     }
 
@@ -280,14 +315,32 @@ class StateMethodTest extends TestCase
         $this->assertEquals(TrinaryLogic::createYes(), $this->buildInstance(isDeprecated: true)->isDeprecated());
     }
 
+    public function testIsDeprecatedFromPhpDoc(): void
+    {
+        $phpDoc = $this->buildPhpDoc(['isDeprecated' => true, 'deprecatedTag' => new DeprecatedTag('use bar')]);
+
+        $method = $this->buildInstance(resolvedPhpDoc: $phpDoc);
+        $this->assertEquals(TrinaryLogic::createYes(), $method->isDeprecated());
+        $this->assertSame('use bar', $method->getDeprecatedDescription());
+    }
+
     public function testIsFinal(): void
     {
         $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->isFinal());
+        $this->assertEquals(TrinaryLogic::createYes(), $this->buildInstance(isFinal: true)->isFinal());
+        $this->assertEquals(
+            TrinaryLogic::createYes(),
+            $this->buildInstance(resolvedPhpDoc: $this->buildPhpDoc(['isFinal' => true]))->isFinal()
+        );
     }
 
     public function testIsInternal(): void
     {
         $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->isInternal());
+        $this->assertEquals(
+            TrinaryLogic::createYes(),
+            $this->buildInstance(resolvedPhpDoc: $this->buildPhpDoc(['isInternal' => true]))->isInternal()
+        );
     }
 
     public function testIsAbstract(): void
@@ -308,6 +361,11 @@ class StateMethodTest extends TestCase
     public function testIsFinalByKeyword(): void
     {
         $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance()->isFinalByKeyword());
+        $this->assertEquals(TrinaryLogic::createYes(), $this->buildInstance(isFinal: true)->isFinalByKeyword());
+        $this->assertEquals(
+            TrinaryLogic::createNo(),
+            $this->buildInstance(resolvedPhpDoc: $this->buildPhpDoc(['isFinal' => true]))->isFinalByKeyword()
+        );
     }
 
     public function testGetDeprecatedDescription(): void
@@ -366,11 +424,76 @@ class StateMethodTest extends TestCase
     public function testGetPureUnlessCallableIsImpureParameters(): void
     {
         $this->assertSame([], $this->buildInstance()->getPureUnlessCallableIsImpureParameters());
+
+        $phpDoc = $this->buildPhpDoc(['paramsPureUnlessCallableIsImpure' => ['callback' => true, 'other' => false]]);
+        $this->assertEquals(
+            ['callback' => TrinaryLogic::createYes(), 'other' => TrinaryLogic::createNo()],
+            $this->buildInstance(resolvedPhpDoc: $phpDoc)->getPureUnlessCallableIsImpureParameters()
+        );
     }
 
     public function testGetPureUnlessParameterPassedParameters(): void
     {
         $this->assertSame([], $this->buildInstance()->getPureUnlessParameterPassedParameters());
+
+        $phpDoc = $this->buildPhpDoc(['paramsPureUnlessParameterPassed' => ['flag' => true]]);
+        $this->assertEquals(
+            ['flag' => TrinaryLogic::createYes()],
+            $this->buildInstance(resolvedPhpDoc: $phpDoc)->getPureUnlessParameterPassedParameters()
+        );
+    }
+
+    /**
+     * The builder's phpdoc documents the closure : its tags about parameters are applied to the closure's parameters.
+     */
+    public function testParametersFromPhpDoc(): void
+    {
+        $declaringFunction = $this->createStub(BetterReflectionFunction::class);
+        $declaringFunction->method('getName')->willReturn('{closure}');
+        $declaringFunction->method('getFileName')->willReturn('closure.php');
+
+        $buildParameter = function (string $name) use ($declaringFunction): BetterReflectionParameter {
+            $parameter = $this->createStub(BetterReflectionParameter::class);
+            $parameter->function = $declaringFunction;
+            $parameter->attributes = [];
+            $parameter->name = $name;
+
+            return $parameter;
+        };
+
+        $phpDoc = $this->buildPhpDoc([
+            'paramTags' => ['documented' => new ParamTag(new IntegerType(), false)],
+            'paramOutTags' => ['documented' => new ParamOutTag(new StringType())],
+            'paramsImmediatelyInvokedCallable' => ['documented' => true],
+            'paramClosureThisTags' => ['documented' => new ParamClosureThisTag(new ObjectType(stdClass::class))],
+            'paramsPureUnlessCallableIsImpure' => ['documented' => true],
+            'paramsPureUnlessParameterPassed' => ['documented' => true],
+        ]);
+
+        // PhpParameterReflection requires the final class InitializerExprTypeResolver, not the contract
+        $resolver = new ReflectionClass(InitializerExprTypeResolver::class)->newInstanceWithoutConstructor();
+
+        [$documented, $undocumented] = $this->buildInstance(
+            closureParameters: [$buildParameter('documented'), $buildParameter('undocumented')],
+            initializerExprTypeResolver: $resolver,
+            resolvedPhpDoc: $phpDoc,
+        )->getOnlyVariant()->getParameters();
+
+        $this->assertInstanceOf(PhpParameterReflection::class, $documented);
+        $this->assertInstanceOf(IntegerType::class, $documented->getPhpDocType());
+        $this->assertInstanceOf(StringType::class, $documented->getOutType());
+        $this->assertEquals(TrinaryLogic::createYes(), $documented->isImmediatelyInvokedCallable());
+        $this->assertInstanceOf(ObjectType::class, $documented->getClosureThisType());
+        $this->assertEquals(TrinaryLogic::createYes(), $documented->isPureUnlessCallableIsImpureParameter());
+        $this->assertEquals(TrinaryLogic::createYes(), $documented->isPureUnlessParameterPassedParameter());
+
+        $this->assertInstanceOf(PhpParameterReflection::class, $undocumented);
+        $this->assertInstanceOf(MixedType::class, $undocumented->getPhpDocType());
+        $this->assertNull($undocumented->getOutType());
+        $this->assertEquals(TrinaryLogic::createMaybe(), $undocumented->isImmediatelyInvokedCallable());
+        $this->assertNull($undocumented->getClosureThisType());
+        $this->assertEquals(TrinaryLogic::createNo(), $undocumented->isPureUnlessCallableIsImpureParameter());
+        $this->assertEquals(TrinaryLogic::createNo(), $undocumented->isPureUnlessParameterPassedParameter());
     }
 
     public function testParametersAreNotConditionallyPure(): void
@@ -382,6 +505,7 @@ class StateMethodTest extends TestCase
         $parameter = $this->createStub(BetterReflectionParameter::class);
         $parameter->function = $declaringFunction;
         $parameter->attributes = [];
+        $parameter->name = 'value';
 
         // PhpParameterReflection requires the final class InitializerExprTypeResolver, not the contract
         $resolver = new ReflectionClass(InitializerExprTypeResolver::class)->newInstanceWithoutConstructor();
@@ -438,6 +562,15 @@ class StateMethodTest extends TestCase
 
         $result = $this->buildInstance(isPure: null)->hasSideEffects();
         $this->assertEquals(TrinaryLogic::createMaybe(), $result);
+    }
+
+    /**
+     * A pure method (`@phpstan-pure`) has no side effect, an impure method (`@phpstan-impure`) has side effects.
+     */
+    public function testHasSideEffectsOfPureAndImpureMethods(): void
+    {
+        $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance(isPure: true)->hasSideEffects());
+        $this->assertEquals(TrinaryLogic::createYes(), $this->buildInstance(isPure: false)->hasSideEffects());
     }
 
     public function testGetPrototypeException(): void
@@ -526,8 +659,11 @@ class StateMethodTest extends TestCase
         $this->assertEquals(TrinaryLogic::createYes(), $result);
     }
 
-    public function testGetResolvedPhpDoc()
+    public function testGetResolvedPhpDoc(): void
     {
         $this->assertNull($this->buildInstance()->getResolvedPhpDoc());
+
+        $phpDoc = $this->buildPhpDoc([]);
+        $this->assertSame($phpDoc, $this->buildInstance(resolvedPhpDoc: $phpDoc)->getResolvedPhpDoc());
     }
 }
