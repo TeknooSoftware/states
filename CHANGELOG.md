@@ -1,5 +1,12 @@
 # Teknoo Software - States library - Change Log
 
+## [7.1.14] - 2026-11-16
+### Stable Release
+- Fix another BC Break from PHPStan introduced in patch version 2.3.6 (types call `ClassReflection::isGeneric()`
+  when they compare a union type): only tests of the PHPStan extension were broken, the analysis is unchanged.
+- PHPStan extension: like PHPStan 2.3.6 does for its own methods, a state's method returning `$this`, called on a new
+  instance (`new Foo()->bar()`), has side effects (`Yes` instead of `Maybe` for `hasSideEffects()`).
+
 ## [7.1.13] - 2026-10-25
 ### Stable Release
 - Fix another BC Break from PHPStan introduced in patch version 2.3.2 (BetterReflection now reads the trailing doc

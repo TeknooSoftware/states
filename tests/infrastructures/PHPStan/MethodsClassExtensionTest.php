@@ -864,6 +864,8 @@ class MethodsClassExtensionTest extends TestCase
         $cr = $rcOfCr->newInstanceWithoutConstructor();
         $rcOfCr->getProperty('reflection')->setValue($cr, $brc);
         $rcOfCr->getProperty('anonymousFilename')->setValue($cr, 'foo/bar.php');
+        $rcOfCr->getProperty('isGeneric')->setValue($cr, false);
+        $rcOfCr->getProperty('finalByKeywordOverride')->setValue($cr, null);
 
         return $cr;
     }

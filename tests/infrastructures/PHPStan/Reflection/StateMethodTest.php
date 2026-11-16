@@ -43,6 +43,7 @@ use PHPStan\Reflection\Assertions;
 use PHPStan\Reflection\AttributeReflection;
 use PHPStan\Reflection\ClassReflection;
 use PHPStan\Reflection\ClassReflectionExtensionRegistry;
+use PHPStan\Reflection\ClassReflectionFactory;
 use PHPStan\Reflection\ExtendedParameterReflection;
 use PHPStan\Reflection\ExtendedParametersAcceptor;
 use PHPStan\Reflection\InitializerExprTypeResolver;
@@ -154,6 +155,7 @@ class StateMethodTest extends TestCase
         ?InitializerExprTypeResolver $initializerExprTypeResolver = null,
         ?ResolvedPhpDocBlock $resolvedPhpDoc = null,
         bool $isFinal = false,
+        ?ClassReflection $declaringClass = null,
     ): StateMethod {
         $factoryReflection = $this->createMock(BetterReflectionMethod::class);
         $factoryReflection->modifiers = 0;
@@ -226,7 +228,7 @@ class StateMethodTest extends TestCase
         $rpr = $rcOfDc->getProperty('isGeneric');
         $rpr->setValue($dc, false);
         $rpr = $rcOfDc->getProperty('finalByKeywordOverride');
-        $rpr->setValue($dc, false);
+        $rpr->setValue($dc, null);
         $rpr = $rcOfDc->getProperty('anonymousFilename');
         $rpr->setValue($dc, null);
         $rpr = $rcOfDc->getProperty('acceptsNamedArguments');
@@ -246,7 +248,7 @@ class StateMethodTest extends TestCase
             attributeReflectionFactory: $this->getAttributeReflectionFactoryStub(),
             factoryReflection: $fr,
             closureReflection: $cr,
-            declaringClass: $dc,
+            declaringClass: $declaringClass ?? $dc,
             phpDocReturnType: $phpDocReturnType,
             phpDocThrowType: $phpDocThrowType,
             selfOutType: $selfOutType,
@@ -571,6 +573,54 @@ class StateMethodTest extends TestCase
     {
         $this->assertEquals(TrinaryLogic::createNo(), $this->buildInstance(isPure: true)->hasSideEffects());
         $this->assertEquals(TrinaryLogic::createYes(), $this->buildInstance(isPure: false)->hasSideEffects());
+    }
+
+    /**
+     * Like PHPStan does for its own methods, a method returning `$this` has side effects, also when it is called on a
+     * new instance (`new Foo()->bar()`) : the reflection of its class is then final by keyword override.
+     */
+    public function testHasSideEffectsOfAMethodReturningThisCalledOnANewInstance(): void
+    {
+        $brc = $this->createStub(ReflectionClass::class);
+        $brc->method('getName')->willReturn(ProxyInterface::class);
+
+        $rcOfDc = new ReflectionClass(ClassReflection::class);
+
+        $declaredClass = $rcOfDc->newInstanceWithoutConstructor();
+        $rcOfDc->getProperty('reflection')->setValue($declaredClass, $brc);
+        $rcOfDc->getProperty('ancestors')->setValue($declaredClass, []);
+        $rcOfDc->getProperty('isGeneric')->setValue($declaredClass, false);
+        $rcOfDc->getProperty('finalByKeywordOverride')->setValue($declaredClass, null);
+        $rcOfDc->getProperty('activeTemplateTypeMap')->setValue($declaredClass, TemplateTypeMap::createEmpty());
+        $rcOfDc->getProperty('callSiteVarianceMap')->setValue($declaredClass, TemplateTypeVarianceMap::createEmpty());
+
+        $classReflectionFactory = $this->createMock(ClassReflectionFactory::class);
+        $classReflectionFactory->expects($this->once())
+            ->method('create')
+            ->with(ProxyInterface::class, $brc, null, null, null, null, null, null)
+            ->willReturn($declaredClass);
+
+        $newInstanceClass = $rcOfDc->newInstanceWithoutConstructor();
+        $rcOfDc->getProperty('classReflectionFactory')->setValue($newInstanceClass, $classReflectionFactory);
+        $rcOfDc->getProperty('displayName')->setValue($newInstanceClass, ProxyInterface::class);
+        $rcOfDc->getProperty('reflection')->setValue($newInstanceClass, $brc);
+        $rcOfDc->getProperty('anonymousFilename')->setValue($newInstanceClass, null);
+        $rcOfDc->getProperty('resolvedTemplateTypeMap')->setValue($newInstanceClass, null);
+        $rcOfDc->getProperty('stubPhpDocBlockCallback')->setValue($newInstanceClass, null);
+        $rcOfDc->getProperty('resolvedCallSiteVarianceMap')->setValue($newInstanceClass, null);
+        $rcOfDc->getProperty('ancestors')->setValue($newInstanceClass, []);
+        $rcOfDc->getProperty('isGeneric')->setValue($newInstanceClass, false);
+        $rcOfDc->getProperty('finalByKeywordOverride')->setValue($newInstanceClass, true);
+        $rcOfDc->getProperty('activeTemplateTypeMap')->setValue($newInstanceClass, TemplateTypeMap::createEmpty());
+        $rcOfDc->getProperty('callSiteVarianceMap')->setValue($newInstanceClass, TemplateTypeVarianceMap::createEmpty());
+
+        $result = $this->buildInstance(
+            isPure: null,
+            phpDocReturnType: new ThisType($declaredClass),
+            declaringClass: $newInstanceClass,
+        )->hasSideEffects();
+
+        $this->assertEquals(TrinaryLogic::createYes(), $result);
     }
 
     public function testGetPrototypeException(): void

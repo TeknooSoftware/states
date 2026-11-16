@@ -252,7 +252,9 @@ class StateMethod implements ExtendedMethodReflection
             return TrinaryLogic::createFromBoolean(!$this->isPure);
         }
 
-        if (new ThisType($this->getDeclaringClass())->isSuperTypeOf($this->getReturnType())->yes()) {
+        //Like PHPStan, ignore the finality given by `new Foo()`, else `$this` of a fluent method is not recognized
+        $declaringClass = $this->getDeclaringClass()->withoutFinalByKeywordOverride();
+        if (new ThisType($declaringClass)->isSuperTypeOf($this->getReturnType())->yes()) {
             return TrinaryLogic::createYes();
         }
 
